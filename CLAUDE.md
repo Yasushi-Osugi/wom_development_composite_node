@@ -1308,7 +1308,7 @@ Buffer node の startup CO 解消には「販売開始より前から供給準�
 - `tools/plot_allocation_map.py`：**各シナリオの大判単独地形図**（直角三角形 X=x_US/Y=x_EU、利益等高線・尾根線・最適★・基準○・FXB=1.0線。`--each` で全シナリオ1枚ずつ＝訴求用の必須出力）＋層別断面（交互作用ハッチ・>5%警告）＋シナリオタイル（共通スケール）。
 
 ### 確定した回帰値（受入 #10-#16 / 付録A）
-- 最大利益：s1=132.1M / s2(円安)=207.2M / s4(円安×原油)=176.7M(台地3・最適(0.00,0.45,0.55)) / s5(円高)=85.8M / s6(US関税25%)=121.0M / s7(金利)=132.1M(=s1 ＝金利は粗利に無影響)。
+- 最大利益：s1=132.1M / s2(円安)=207.2M / s4(円安×原油)=176.7M(台地3・最適(0.00,0.45,0.55)) / s5(円高)=85.8M / s6(US関税25%)=121.0M / s7(金利)=132.1M(=s1 ＝金利は粗利に無影響)。**これらは全てδ=0.05格子上の最大値であり、連続最適ではない**（Phase 4 §2.5 で検証：soysauceのメリットオーダー連続解は135.53M・格子最適132.13Mとの乖離+2.57%は格子解像度に起因すると確認済み、下記 v1r4m0 Phase 4 節参照）。
 - 尾根 x_JP=0.362/x_US=0.423/x_EU=0.423（合計1.208＞1）。台地 800→1/1500→28。切替点 117/119円。
 - FXB：基準配分 FCR0.588/FRR0.787/**FXB0.747**、FXB=1.0 は輸出42.4%。最大点(0.10,0.45,0.45)は FXB0.664＝**山頂は中立線の外側**。
 - 交互作用：base −8.3M(−40.2%)/optimum −7.9M(−18%)/domestic-heavy −6.3M(符号反転)。**常に5%超＝規準が機能**。
@@ -1651,5 +1651,80 @@ golden 12ケース（13件）         : 全PASS（不変、Planning Engine 無�
 **テスト実行時の注意（次のClaude君へ）**：`tests/test_golden.py`を含む複数のpytestプロセスを**並行して**同一リポジトリに対して実行すると、`apparel-us-2026`のwarm-up materialize（write-if-needed、CSV再生成）が競合し、`test_golden_matches[apparel-us-2026]`が一時的にFAILすることがある（本セッションで実際に再現）。単独実行・逐次実行では再現せず13件common全PASSに戻る。**golden系テストは他のpytest実行と並行させず、常に単独で（または`tests/`全体を1プロセスで）実行すること。**
 
 **追加の微調整（大杉さんの目視QAで発見、2026-09-06）**：F2-2でタイトルを`fig.suptitle()`へ移した際、上部の余白が図全体の高さの約15%（133px/910px）にまで間延びする副作用があった。`fig.suptitle(..., y=0.995)` ＋ `fig.tight_layout(rect=(0, 0, 1, 0.99))`（`y`と`rect`上端をともに1.0へ寄せる）に調整し、ピクセル計測で約50px（5.5%）まで圧縮——タイトル・凡例・`supply_risk`ピークいずれも重ならない範囲で詰められる限界値に近い（`rect`上端を0.99超にしてもtight_layoutの効果が頭打ちになることを確認済み）。
+
+---
+
+## v1r4m0: Phase 4 - 生産配分の利益地形図：メリットオーダー曲線とレジーム地図（完了、2026-09-08）
+
+**設計正典**: `requests/Phase4_DesignMD_AllocationMeritRegime.md`。
+
+**位置づけ**: Phase 1-3（B系統・週次「どのサプライヤーから調達するか」）とは対象問題が異なる**A系統**（`ask_global_allocation`・年次「どの市場に何個供給するか」）向けの新規モジュール群。既存 A系統4モジュール（`transmission.py`/`cost_block.py`/`grid.py`/`analytics.py`）・B系統（`wom/visualization/*`）とも**無変更**。禁足コア無接触、golden 13ケース不変。検証台は`data/sample/soysauce-jpy-2027-alloc`（三角図で答えが出ている唯一のケース）。
+
+### ① メリットオーダー曲線（配分版）：`wom/allocation/merit_order.py`（新規）
+市場を単位マージン**降順**（Phase 3のサプライヤー単価**昇順**とは逆）に積み、能力線（`cap_wk × weeks`）との交点＝**能力のシャドープライスλ**を読む。`build_allocation_merit_order()`が連続最適解（x, profit, λ, marginal_market）を返す。**R1確定**：負マージン市場（供給するほど損）は積み上げ対象から除外し（`excluded`）、Y軸負側にハッチ矩形で「供給対象外」を明示——`evaluate_point()`は符号を見ずに配分するため①と格子スキャンで扱いが非対称になるが意図的（格子スキャンは面を出すため、①は「あるべき配分」を示す図のため）。
+
+`compare_with_grid()`でメリットオーダー連続解と231点格子最適の乖離を定量化。soysauceで実測：連続解135,529,822.5 JPY vs 格子最適132,133,072.5 JPY、乖離+2.57%（既存CLAUDE.md L1311の回帰値`s1=132.1M`と一致——**この値はδ=0.05格子上の最大であり連続最適ではない**ことが判明したため、L1311に注記を追加済み）。soysauceの利益関数は分離可能・区分線形（関税階段・ルート固定費・MOQなし）なので均等限界原理が厳密に成立し、メリットオーダーは連続最適の厳密解——**乖離の全量が格子解像度の誤差であって、非凹性等の構造的発見ではない**（設計書§2.4）。
+
+**R2確定**：乖離の帰属判定（§3.5）は、メリットオーダー解の各成分をδの倍数に切り上げ・切り捨てした全組合せ（Σx=1を満たすもの）のうち格子上に実在する点の最良値と、格子最適とを比較する方式で実装。soysauceでの実測値は**厳密一致ではなく相対誤差0.15%**（131,939,812.5 vs 132,133,072.5）だったため、判定の許容誤差を**相対0.5%**（`tol=0.005`、デフォルト値）としてTrueと判定する設計にした——`best_point()`の`plateau_tol=0.001`（0.1%）よりわずかに緩いが、「格子解像度で説明できる」という定性的結論を機械的に再現するための実務的な選択（次回`ev-thailand-2026`等の非凹ケースに適用する際、この閾値の妥当性を再検証する価値あり）。
+
+### ② レジーム地図（配分版）：`wom/allocation/regime_map.py`（新規）
+配分空間ではなく**外部環境パラメータ空間の2次元平面**を走査し、各点を`market_ranking()`が返す市場優先順位で塗り分ける（境界線＝決定反転面）。**市場数Nに依存しない**設計（描く平面は常に2次元）。`scan_regime_grid()`は新しい数学を持たず、既存`market_ranking()`を2次元グリッドで呼ぶだけ。
+
+**最重要の回帰テスト**：`material_usd=6.0`の水平断面が既存`switching_points()`の切替点（**117円/119円**）を完全再現することを確認——②が既存V&V方法論（決定反転テスト）と同じ数学的対象を見ていることの証明。
+
+**R3確定**：既定軸は`(fx_usd, material_usd)`（交互作用分析`interaction()`の基準150/6・ショック200/8と同一平面で、確定済み回帰値と直接照合できるため）。`tariff_rate:<市場>`も軸に取れる設計（`alloc_regime_map_tariff.png`で`(fx_usd, tariff_rate:US)`を実演）。負マージン領域は`negative_margin_mask`でハッチ表示、①の除外方針と一致させた。
+
+### 描画＋CLI：`tools/plot_allocation_merit_regime.py`（新規、Phase 3の`plot_merit_order_suite.py`とは別ファイル——対象問題が違うため意図的に分離、設計書§5.2）
+- `plot_allocation_merit_order()`：λ注記・idle/unmet明示・格子最適との乖離注記（`comparison`引数）
+- `plot_allocation_merit_shift()`：FX115→125（switching point 117円をまたぐ）のBefore/After重畳で順位入替を実演。JP(#1→#3)・EU(#2→#1)・US(#3→#2)の反転を確認
+- `plot_regime_map()`：ListedColormapで離散色分け＋contourで境界線＋負マージン領域のハッチ
+- CLI：`--model-dir`必須（`ga_scenario_master.csv`からシナリオ読込、`tools/run_allocation_map.py`の`load_scenarios()`/`_blocks_for()`を再利用）、`--demo`はcap_wk=800/scenario=s1_baseに固定して決定的に4枚生成
+
+### テスト・確認結果
+```
+tests/test_allocation_merit_order.py  : 8 passed
+tests/test_allocation_regime_map.py   : 9 passed（ロジック5 + 描画スモーク4、CLIテスト含む）
+リポジトリ全体                         : 356 passed（既存339 + 新規17、回帰なし）
+golden 13ケース                        : 全PASS（不変、単独実行で確認）
+```
+`--demo`で4枚のPNGを生成し目視確認：①メリットオーダー曲線（EU/US濃色フル・JP能力線で分割・λ=750水平線）、①Before/After（FX115→125でJP最優先→最劣後に反転）、②fx×material相図（117/119円の境界線・shock点(200,8)が負マージン領域内に正しく位置）、②fx×tariff相図（US関税を下げるほどUS優先になる境界が経済的に妥当）——いずれも意図通り。
+
+### R4対応
+CLAUDE.md L1311（本ファイル上部、v1r3m0節）の回帰値「最大利益：s1=132.1M」等に「δ=0.05格子上の最大であり連続最適ではない」旨を追記済み（値そのものは変更なし）。
+
+### 未対応・Phase 5送り
+- ③ Pareto＋平行座標（配分版）：目的軸をCost/Quality/LTから利益×ロバストネス（`robust_point()`）へ、share軸は市場配分比率（Phase 3 §5.2.1の和集合方式を流用可能）
+- ④ 階層化三角図：既存`tools/plot_allocation_map.py`の三角図を`oil-global-2027`（日欧米×Local/Import）に適用
+- N≥4市場への拡張：①②はN非依存なので③④より先に拡げられる
+- `ev-thailand-2026`（LC率閾値で関税が跳ぶ非凹ケース）への適用：`structural_residual`（下記Phase 4修正節参照）がそのまま構造由来の乖離量になるはず（設計書§3.5 rev.2・§10）
+- `AllocationMapPanel`のGUI組込（A系統の積み残し）
+
+### Phase 4 修正：乖離の帰属判定・図の判読性・`.gitignore`（G1-G4、完了、2026-09-08）
+
+**設計文書**: `requests/request_fix_phase4_gap_attribution.md`。`--demo`出力の目視QA後に依頼された4点の修正。**G2は設計書§3.5の欠陥が原因**（Code君の実装ミスではない）。
+
+- **G1**（`.gitignore`）：`output/`はあったが`out/`が無く、A系統`tools/plot_allocation_map.py`の既定出力先（`out/`）がコミット対象に入りうる漏れがあった（Phase 4以前から潜在）。`out/`を追加。
+- **G2**（`wom/allocation/merit_order.py`・`compare_with_grid()`）：乖離の帰属判定を全面差し替え。旧方式（メリットオーダー解の各成分をδに独立に丸めた組合せと格子最適を比較）は、単体制約Σx=1による「押し出し」（US/EUを需要天井超に丸めるとJPが0.10へ押し出される効果）を表現できず、格子最適点(0.10,0.45,0.45)が丸め候補に入らなかった——soysauceで相対誤差0.146%が残り、`tol=0.005`という恣意的な閾値でしか"True"判定できていなかった。**新方式**：`expected_gap = grid_idle × lambda`（格子最適点の遊休能力を限界市場に回したときの利益増分）と実測乖離`gap_abs`を比較し、`structural_residual = gap_abs − expected_gap`を算出。soysauceで実測すると**厳密一致（差0.000000 JPY）**——恣意的な閾値が不要になった。`structural_residual`はPhase 5で`ev-thailand-2026`等の非凹ケースに適用した際、構造由来の乖離量をそのまま切り出す主要な出力になる。判定式：`attributable_to_grid_resolution = absorbable and abs(structural_residual) <= abs_tol`（`abs_tol`既定1.0 JPY＝数値誤差のみ許容、`absorbable`＝限界市場が格子最適点でidle以上の未充足需要を残しているか）。戻り値から`rounded_best_profit`を削除し、`lambda`/`marginal_market`/`marginal_unmet_at_grid_best`/`absorbable`/`expected_gap_from_grid_resolution`/`structural_residual`/`structural_residual_pct`を追加。引数`tol`/`delta`を削除し`abs_tol`に統一。
+- **G3**（`plot_allocation_merit_order()`）：注記3行（λ・idle/unmet・乖離）が矩形ブロックの上に重なり判読不能だった。単位マージン**降順**に積むため、Phase 3の昇順とは逆に**左上が構造的に必ず埋まる**（最も背の高いブロックが来る）ことが原因。3行（実際は乖離注記が2行に分割され計4行）を軸の下（`transAxes`のy=-0.14から0.06刻み）に移動、`tight_layout(rect=(0,0.20,1,1))`で下部余白を確保。λの行はcrimsonを維持。除外市場の注記（負マージン）は軸内のまま。`capacity=...`凡例は`upper right`のまま（能力線右・λ上は構造的に空くため変更不要）。
+- **G4**（`plot_allocation_merit_shift()`）：Before/Afterの凡例がAfter曲線の左端（最も高いブロック）に重なっていた。G3と同じ理由（降順に積む前提）。`loc="upper left"`→`"lower left"`に変更（λ水平線より下は全面的に空くため構造的に安全）。
+
+**実装時に追加で発見した表示問題（letterに無い、目視QAで確認）**：G3で3行に分けた乖離注記の3行目（Merit order/Grid-optimal/gap を1行にまとめたもの）が図の右端からはみ出して読めなかった。Merit order/Grid-optimalの行とgap/判定の行を2行に分割し、`rect`下端を0.14→0.20に拡張して解消。
+
+**テスト**：`test_gap_attributable_to_grid_resolution`を書き換え（`absorbable`/`expected_gap_from_grid_resolution`/`structural_residual`を検証）、`test_expected_gap_equals_idle_times_lambda`を新規追加。`test_compare_with_grid_soysauce`は`rounded_best_profit`を参照していなかったため無変更で通過。
+
+```
+リポジトリ全体: 357 passed（既存356 + 新規1、letterの目標値と一致）
+```
+`--demo`再生成4枚を目視確認：①注記4行が全て軸下で判読可能・λ行がcrimson、①Before/Afterの凡例が左下でAfter曲線と重ならず、②2枚（fx×material・fx×tariff）はピクセル的に無変化（G2/G3/G4は②に触れないため）——いずれも意図通り。`git status`で`out/`がuntrackedに出ないことも確認済み。
+
+#### Phase 4 追加修正：`alloc_merit_order.png` の注記位置（G3の副作用、2026-09-08）
+
+大杉さんの目視QAで、G3修正の**副作用2点**が判明：① λ注記の冒頭がX軸ラベル「Cumulative allocated quantity (lots)」と重なって読めない、② 図下部に33.4%（271px）の過大な余白。
+
+**原因**：注記を`ax.text(..., transform=ax.transAxes, ...)`（軸フラクション）で配置していたため、`tight_layout(rect=...)`で軸の高さ自体が変わるたびに「軸フラクション換算での絶対位置」が動いてしまい、`xlabel`（matplotlibの既定＝ポイント単位の固定パディングで軸のすぐ下に配置）との間隔が予測不能になっていた——G3で`rect`下端を0.06→0.20に拡張した際、軸が縦に縮んだ結果、同じ`y=-0.14`が指す絶対距離が縮み、xlabelと衝突した。
+
+**修正**：注記を`transAxes`ではなく`fig.text(..., transform=fig.transFigure, ...)`（**図フラクション**）に変更——`rect`で軸の高さが変わっても図全体のフラクションは不変なので、xlabelとの間隔が予測可能になる。Phase 3の`regime_timeline`のときと同じくピクセル計測ベースで調整し、`rect=(0,0.22,1,1)`・注記開始`y=0.175`（0.037刻み）で、X目盛→X軸ラベル→注記4行の順序が正しく分離され、下部余白は**4.56%**（参考：`alloc_merit_shift.png`は9.0%）に収まることを確認。
+
+`alloc_merit_shift.png`/`alloc_regime_map.png`/`alloc_regime_map_tariff.png`の3枚はmd5完全一致（無変化）を確認。テストは357件のまま全PASS（描画スモークのみで件数は不変）。
 
 ---
