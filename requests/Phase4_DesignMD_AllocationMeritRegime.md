@@ -235,10 +235,42 @@ soysauce での検証：
 
 **成立条件（`absorbable`）**: 限界市場が格子最適点で `idle` 以上の未充足需要を残していること。soysauce では 21,830 ≥ 4,529 で成立。
 
-#### 3.5.3 この方式の利点
+#### 3.5.3 この方式の利点と、`residual` の解釈（**rev.3 で訂正**）
+
+**利点**
 
 - **恣意的な閾値が要らない。** 許容誤差は浮動小数の数値誤差分（`abs_tol = 1.0` JPY）のみ
-- **`structural_residual` が構造由来の乖離量そのものになる。** 非凹ケースでは `gap_abs > expected_gap` となり、超過分が定量値として切り出せる。Phase 5 で `ev-thailand-2026`（LC率閾値で非凹）に適用したとき、**これが chatlog の言う「構造的発見」の数値**になる
+- **`structural_residual` が非凹性の指標になる。** 線形・凹なケースではゼロ、非凹なケースでは非ゼロに振れる
+
+**`residual` の符号別の意味づけ**
+
+| `residual` | 意味 |
+|---|---|
+| ≈ 0 | 乖離は格子解像度で説明できる（線形・凹なケース。soysauce s1_base がこれ） |
+| **< 0** | **メリットオーダーが真の最適を外している ＝ 非凹性の証拠。絶対値は取りこぼし量の下界** |
+| > 0 | 想定外（要調査） |
+
+**⚠️ 初版の記述の訂正**
+
+初版は「非凹ケースでは `gap_abs > expected_gap` となり、超過分が定量値として切り出せる」と書いていたが、**符号が逆だった。**
+
+理屈は単純である。非凹だとメリットオーダーが最適を外すので `mo_profit` が**下がる**。`gap_abs = mo_profit − grid_best` は縮み、多くの場合は負になる。一方 `expected_gap = grid_idle × λ` は格子最適点の性質だけで決まるので影響を受けない。よって `residual` は**負**に振れる。
+
+判定式 `abs(structural_residual) <= abs_tol` は符号によらず False を返すので**実装の動作は正しかった**。訂正するのは意味づけのみであり、`compare_with_grid()` の変更は不要。
+
+**⚠️ 非凹ケースでは分解の精度が落ちる**
+
+Phase 5 の合成シナリオ `s9_fta_cliff`（soysauce・cap_wk=500・US 関税 0.125→0.000 が 25,000 lot で発動）で実測した内訳：
+
+| | 金額 |
+|---|---|
+| 構造由来の取りこぼし（真の連続最適 − 貪欲） | **10,057,058** |
+| 格子解像度の誤差（真の連続最適 − 格子最適） | 328,958 |
+| `residual` = −9,728,100 → `\|residual\|` は構造由来の **96.7%** | （**下界**） |
+
+非凹だと格子最適点が能力を使い切る（`grid_idle = 0`）ため `expected_gap = 0` となり、格子誤差の分だけ `|residual|` が構造由来を**過小評価**する。
+
+**したがって `residual` は「厳密な分解」ではなく、符号を非凹性の指標として、絶対値を取りこぼし量の下界として使う。** 詳細は `requests/Phase5_DesignMD_NonConcaveTariff.md` §2.4 を参照。
 
 #### 3.5.4 API
 
@@ -528,7 +560,7 @@ Planning Engine 保護対象コアには**一切触れない**。golden 13ケー
 | ③ Pareto ＋ 平行座標（配分版） | Phase 3 の `plot_pareto_scatter` / `plot_parallel_coordinates` ＋ A系統 `robust_point()` | 目的軸を Cost/Quality/LT から**利益 × ロバストネス（minimax）**へ。share 軸は市場配分比率になる（Phase 3 §5.2.1 の和集合方式がそのまま使える） |
 | ④ 階層化三角図 | 既存 `tools/plot_allocation_map.py` の三角図 | `oil-global-2027`（日本／欧州／米州 × Local/Import）を適用先に。束ね方の感度分析が要る |
 | N≥4 市場への拡張 | ① と ② | ①は N 非依存、②も N 非依存。**③④より先に N を拡げられる**のはこの2つだけ |
-| 非凹ケースでの構造的発見 | §3.5 の帰属判定が返す **`structural_residual`** | `ev-thailand-2026` の LC率閾値。`gap_abs − grid_idle × λ` がそのまま構造由来の乖離量になる。soysauce では 0 であることを確認済みなので、非ゼロが出れば構造由来と断定できる |
+| 非凹ケースでの構造的発見 | §3.5 の帰属判定が返す **`structural_residual`** | soysauce では 0（線形）であることを確認済みなので、**負に振れれば非凹性と断定できる**（rev.3 で符号を訂正）。ただし `ev-thailand-2026` に直接は適用できない — 現行の伝達式は関税率が固定スカラーで構造的に線形であり、LC率閾値がモデルに存在しないため residual は必ずゼロになる。**先に伝達式へ数量依存の関税を導入する必要がある**（Phase 5 で対応、`requests/Phase5_DesignMD_NonConcaveTariff.md` §1.2） |
 
 ---
 
@@ -541,3 +573,4 @@ Planning Engine 保護対象コアには**一切触れない**。golden 13ケー
   §5.2/§5.3 出力先を `output/allocation_p4/` に追認、`.gitignore` への `out/` 追加を追記。
   §7 にテスト1件追加（357件）。§8 に注記・凡例・`.gitignore` の確認項目を追加。§9 を決定表に更新。§10 の Phase 5 引き継ぎを `structural_residual` ベースに具体化。
   修正依頼は `requests/request_fix_phase4_gap_attribution.md`
+- 2026-09-08 rev.3 — **§3.5.3 の `residual` の符号を訂正**。初版・rev.2 は「非凹ケースでは `gap_abs > expected_gap`」と書いていたが逆で、実際には `residual` が**負**に振れる（非凹だとメリットオーダーが最適を外して `mo_profit` が下がるため）。符号別の意味づけ表を追加し、非凹ケースでは `grid_idle = 0` となって分解精度が落ちるため **`|residual|` は取りこぼし量の下界**であることを明記。§10 の引き継ぎに「ev-thailand には現行の伝達式では適用できない（関税率が固定スカラーで線形）」ことを追記。**実装（`compare_with_grid()`）の変更は不要** — 判定式は符号によらず正しく働いていた。検証の詳細は `requests/Phase5_DesignMD_NonConcaveTariff.md` §2

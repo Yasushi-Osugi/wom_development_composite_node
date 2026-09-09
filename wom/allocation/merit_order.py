@@ -19,7 +19,9 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional
 
-from wom.allocation.transmission import CostBlock, DEFAULT_TRANSFER_PRICE_USD, Scenario, unit_pnl
+from wom.allocation.transmission import (
+    CostBlock, DEFAULT_TRANSFER_PRICE_USD, Scenario, unit_pnl, unit_pnl_at_quantity,
+)
 from wom.allocation.grid import MARKETS, WEEKS, best_point
 
 
@@ -37,6 +39,16 @@ def build_allocation_merit_order(
     積み上げ対象から除外する（`excluded` に列挙）。`evaluate_point()` は
     符号を見ずに配分するため、この非対称は意図的（格子スキャンは面を出す
     ためのものであり、①は「あるべき配分」を示す図であるため）。
+
+    Phase 5（数量依存の関税・cliff型、requests/Phase5_DesignMD_NonConcaveTariff.md §3.5）:
+    ①は**意図的に近視眼的**なままにする。順位付けと利益計算で使う単価を分ける：
+      - 順位付け：配分量0における単価（cb.tariff_rate、特恵なし）＝貪欲法が
+        決定時点で見えている値。これが「近視眼的」の実体
+      - 利益計算：実際の配分量に応じた単価（tariff_at(allocated) 適用後）。
+        現実に発生する損益は実配分量で決まるため、閾値をたまたま超えていれば
+        特恵は実際に効く
+    cliff未設定の CostBlock では両者は常に一致するため、Phase 4 の回帰値
+    （135,529,822.5 等）は1円も変わらない。
 
     Args:
         blocks: 市場 -> CostBlock（derive_cost_blocks() の戻り値）
@@ -59,9 +71,10 @@ def build_allocation_merit_order(
             "lambda": 750.0,                  # 能力のシャドープライス（余力ありなら 0.0）
             "marginal_market": "JP",          # None なら能力が余っている
             "x": {"JP": 0.1544, "US": 0.4228, "EU": 0.4228},
-            "profit": 135529822.5,
+            "profit": 135529822.5,            # margin_effective ベース（Phase 5）
             "idle": 0.0,                      # 遊休能力
             "unmet": {"JP": 17301, "US": 0, "EU": 0},
+            "preferential": None,             # cliff の発動状況（設定市場が無ければ None）
         }
     """
     cap = cap_wk * weeks
@@ -73,6 +86,7 @@ def build_allocation_merit_order(
     merit_blocks: List[dict] = []
     x: Dict[str, float] = {m: 0.0 for m in MARKETS}
     unmet: Dict[str, float] = {}
+    preferential: Dict[str, dict] = {}
 
     cum = 0.0
     lam = 0.0
@@ -91,10 +105,29 @@ def build_allocation_merit_order(
             served = "partial"
 
         cum = cum + allocated
+
+        # 利益計算は実配分量に応じた単価（cliff が実際に発動していれば効く）
+        margin_effective = unit_pnl_at_quantity(
+            blocks[m], sc, allocated, transfer_price_usd
+        )["margin"]
+
         merit_blocks.append({
             "market": m, "margin": margins[m], "width": width,
             "allocated": allocated, "cumulative": cum, "served": served,
+            "margin_effective": margin_effective,
         })
+
+        cb = blocks[m]
+        if cb.tariff_rate_preferential is not None and cb.preferential_threshold_lot is not None:
+            preferential[m] = {
+                "threshold": cb.preferential_threshold_lot,
+                "allocated": allocated,
+                "triggered": allocated >= cb.preferential_threshold_lot,
+                "rate_base": cb.tariff_rate,
+                "rate_preferential": cb.tariff_rate_preferential,
+                "margin_ranking": margins[m],
+                "margin_effective": margin_effective,
+            }
 
         if served == "partial" and marginal_market is None:
             lam = margins[m]
@@ -115,7 +148,10 @@ def build_allocation_merit_order(
         unmet[m] = float(blocks[m].demand_qty)
         x[m] = 0.0
 
-    profit = sum(b["allocated"] * b["margin"] for b in merit_blocks)
+    # 実配分量に応じた単価（margin_effective）で利益を計算する。
+    # cliff未設定・未発動なら margin_effective == margin（ランキング用単価）なので
+    # Phase 4 の回帰値は変わらない。
+    profit = sum(b["allocated"] * b["margin_effective"] for b in merit_blocks)
 
     return {
         "cap": cap,
@@ -128,6 +164,7 @@ def build_allocation_merit_order(
         "profit": profit,
         "idle": idle,
         "unmet": unmet,
+        "preferential": preferential if preferential else None,
     }
 
 

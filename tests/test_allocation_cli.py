@@ -38,9 +38,10 @@ def test_profit_surface_row_count(tmp_path):
     out = str(tmp_path)
     run(ALLOC_DIR, cap_wk=800, out_dir=out, verbose=False)
     rows = _read(os.path.join(out, "ga_profit_surface.csv"))
-    # 7 定常シナリオ × 231 点
-    assert len(rows) == 7 * 231
-    assert set(r["scenario_id"] for r in rows) >= {"s1_base", "s2_weak_yen", "s4_compound"}
+    # 8 定常シナリオ（s1-s7 + s9_fta_cliff、Phase 5。s8 は時系列で対象外）× 231 点
+    assert len(rows) == 8 * 231
+    assert set(r["scenario_id"] for r in rows) >= {"s1_base", "s2_weak_yen", "s4_compound",
+                                                     "s9_fta_cliff"}
 
 
 def test_plateau_max_profit_regression(tmp_path):

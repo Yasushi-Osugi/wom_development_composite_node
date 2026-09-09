@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Sequence, Tuple
 
-from wom.allocation.transmission import CostBlock, Scenario, unit_pnl
+from wom.allocation.transmission import CostBlock, Scenario, unit_pnl_at_quantity
 
 # x の並び（proto_terrain2.py と同一。地図座標は X=x_US, Y=x_EU, x_JP=残余）
 MARKETS: Tuple[str, str, str] = ("JP", "US", "EU")
@@ -39,10 +39,17 @@ def simplex_grid(delta: float = 0.05) -> List[Tuple[float, float, float]]:
 def evaluate_point(x: Sequence[float], blocks: Dict[str, CostBlock],
                    transfer_price_usd: float, sc: Scenario,
                    cap_wk: float, weeks: int = WEEKS) -> dict:
-    """1 配分点の Demand Anchored 損益（Step 7〜11・粗利）。"""
+    """1 配分点の Demand Anchored 損益（Step 7〜11・粗利）。
+
+    Phase 5（数量依存の関税・cliff型）: 単価は数量 q が決まってから解決する
+    （unit_pnl_at_quantity()）。「A系統4モジュール無変更」の唯一の例外
+    （requests/Phase5_DesignMD_NonConcaveTariff.md §3.4）。cliff未設定の
+    CostBlock では unit_pnl_at_quantity() は unit_pnl() と完全に一致するため、
+    既存の231点評価・Phase 4 の回帰値は1円も変わらない。
+    """
     cap = cap_wk * weeks
-    ue = {m: unit_pnl(blocks[m], sc, transfer_price_usd) for m in MARKETS}
-    q = {m: min(xi * cap, blocks[m].demand_qty) for m, xi in zip(MARKETS, x)}
+    q = {m: min(xi * cap, blocks[m].demand_qty) for m, xi in zip(MARKETS, x)}   # ← 数量を先に
+    ue = {m: unit_pnl_at_quantity(blocks[m], sc, q[m], transfer_price_usd) for m in MARKETS}
     rev = sum(q[m] * ue[m]["rev"] for m in MARKETS)
     cost = sum(q[m] * ue[m]["cost"] for m in MARKETS)
     fcost = sum(q[m] * ue[m]["fcost"] for m in MARKETS)

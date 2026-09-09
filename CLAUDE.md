@@ -1728,3 +1728,70 @@ CLAUDE.md L1311（本ファイル上部、v1r3m0節）の回帰値「最大利�
 `alloc_merit_shift.png`/`alloc_regime_map.png`/`alloc_regime_map_tariff.png`の3枚はmd5完全一致（無変化）を確認。テストは357件のまま全PASS（描画スモークのみで件数は不変）。
 
 ---
+
+## v1r4m0: Phase 5 - 数量依存関税（cliff型）の導入と構造的乖離の検証（完了、2026-09-09）
+
+**設計正典**: `requests/Phase5_DesignMD_NonConcaveTariff.md`。Code君の実装者レビュー（cliff型確定・`tariff_rate_preferential`方式・`evaluate_point()`改修の必要性）を反映した設計書。
+
+**目的**: Phase 4で定義した`structural_residual`（メリットオーダー連続解と格子最適の乖離のうち格子解像度で説明できない分）が、**非凹な利益関数のもとでは非ゼロになる**ことを実証する。`ev-thailand-2026`への直接適用は3つの障害（`MARKETS`ハードコード／`ga_*.csv`不在／LC率閾値が現行伝達式に存在しない）により見送り、**soysauceの合成シナリオで先に検証**する方針（Phase 6送り、設計書§1.2）。
+
+### 1. cliff型で確定（TRQ型を不採用）
+「配分量が閾値以上なら税率が丸ごと切り替わる」cliff型はFTA原産地規則そのもの。TRQ型（関税割当・超過分だけ税率変化）は量を増やすほど不利＝凹方向に効く別の制度で、検証したい非凹性（量を増やすほど有利）とは逆方向のため不採用。
+
+### 2. `CostBlock`の後方互換な拡張：`wom/allocation/transmission.py`（追加のみ）
+`tariff_rate_preferential`/`preferential_threshold_lot`（既定`None`）を追加、`tariff_at(qty)`メソッドで税率を解決。`unit_pnl()`本体は無変更のまま、新関数`unit_pnl_at_quantity(cb, sc, qty, tp)`が`dataclasses.replace()`経由で税率だけ差し替えて`unit_pnl()`を呼ぶ（計算式を二重に持たない）。cliff未設定なら常に`unit_pnl()`と完全一致。
+
+### 3. `evaluate_point()`の改修：`wom/allocation/grid.py`（「A系統無変更」の唯一の例外）
+現行実装は`単価を数量より先に確定`させる順序（`ue = {...}` → `q = {...}`）で、これが非凹性を扱えない構造の根。**`q`を先に計算し、`unit_pnl_at_quantity(blocks[m], sc, q[m], tp)`で単価を数量確定後に解決する**よう2行の順序を入れ替えるだけの改修。Phase 3/4の「A系統4モジュール無変更」原則からの逸脱はここに限定し、`transmission.py`本体・`cost_block.py`・`analytics.py`は無変更を維持。cliff未設定時は231点全点で従来の`unit_pnl()`ベース計算と厳密一致することを独立再計算で確認済み。
+
+### 4. ①メリットオーダーは意図的に近視眼的なまま：`wom/allocation/merit_order.py`
+**順位付け**（どの市場を先に積むか）は配分量0における単価（`cb.tariff_rate`、特恵なし）を使う——貪欲法が決定時点で見えている値のみを使うことが「近視眼的」の実体。**利益計算**は実配分量に応じた単価（`tariff_at(allocated)`適用後、`margin_effective`）を使う——閾値をたまたま超えていれば特恵は実際に効くため。両者が食い違う市場は戻り値の`preferential`フィールドに`{threshold, allocated, triggered, rate_base, rate_preferential, margin_ranking, margin_effective}`として記録。cliff未設定なら`preferential=None`。
+
+### 5. シナリオ読込の配線：`tools/run_allocation_map.py`（`load_scenarios()`/`_blocks_for()`改修）
+`ga_scenario_master.csv`に`tariff_rate_preferential`/`preferential_threshold_lot`の2列を追加（既存192行は空欄＝従来動作、`s9_fta_cliff`シナリオ24行を新規追加）。`load_scenarios()`が2列を読み`tariff_preferential`/`preferential_threshold`辞書を返す（列が無い古いCSVでも`.get()`で安全に`None`扱い）。`_blocks_for()`は2つの新規オプション引数（既定`None`）を追加し、`CostBlock`へ`replace()`で反映。**設計書は`cost_block.py`の改修も示唆していたが、実際には`derive_cost_blocks()`が`ga_scenario_master.csv`を一切読まない（シナリオ別上書きは元々`run_allocation_map.py`側の役割）ため、`cost_block.py`は無変更のまま`run_allocation_map.py`のみ改修**——設計書との小さな乖離だが、既存コード構造により忠実な実装。
+
+### 6. 合成シナリオ`s9_fta_cliff`とcap_wk=500（レビュー事項R1・R3）
+現行`cap_wk=800`ではEU+US=70,351<83,200で上位2市場が必ずフル供給され、cliffを置いても葛藤が生まれない（設計書§2.2で実データ検証済み）。**`cap_wk=500`（cap=52,000）に絞りUSを限界市場にする**ことで初めて成立——`soysauce-jpy-2027-alloc`自体を作った際の前例（能力1500→800）と同型の操作。`cap_wk`はCSVに持ち込まずCLI/テストで明示的に渡す方式（R1確定、既存シナリオ全行を触らずに済む）。閾値T=25,000は「貪欲解16,825の約1.5倍・明確に届かない水準」として選定（R3確定）。
+
+### 7. 検証結果（実データ・設計書§2の値と完全一致）
+```
+s1_base / cap_wk=800（Phase 4回帰、1円も変わらないことを確認）:
+  λ=750.0 / x=(0.1544,0.4228,0.4228) / profit=135,529,822.5 / grid_best=132,133,072.5 / residual=0.0
+
+s9_fta_cliff / cap_wk=500（非凹性の検証）:
+  ①近視眼的メリットオーダー: US=16,825(triggered=False) / EU=35,175 / profit=93,824,700.0
+  δ=0.05格子最適: x=(0.00,0.65,0.35) / profit=103,552,800.0 / grid_idle=0.0
+  gap_abs=-9,728,100.0 / expected_gap=0.0 / structural_residual=-9,728,100.0（負）
+  attributable_to_grid_resolution=False
+  （手計算による真の連続最適: profit=103,881,758、構造由来の取りこぼし10,057,058のうち
+   |residual|が96.7%を捉える＝下界として機能）
+```
+
+### 8. `residual`の符号別の意味づけ（Phase 4設計書§3.5.3 rev.3で訂正）
+初版は「非凹ケースでは`gap_abs > expected_gap`」としていたが**符号が逆**だった。非凹だと貪欲法が最適を外して`mo_profit`が下がるため`gap_abs`は縮み負になる一方、`expected_gap`は格子最適点の性質だけで決まるため影響を受けない。正しい意味づけ：
+
+| `residual` | 意味 |
+|---|---|
+| ≈ 0 | 格子解像度で説明できる（線形・凹なケース。soysauce s1_base） |
+| **< 0** | **メリットオーダーが真の最適を外している＝非凹性の証拠。絶対値は取りこぼし量の下界** |
+| > 0 | 想定外（要調査） |
+
+**`compare_with_grid()`自体の実装変更は不要だった**——判定式`abs(structural_residual) <= abs_tol`は符号によらず正しく動作していた。訂正したのは意味づけ（ドキュメント）のみ。非凹ケースでは格子最適点が能力を使い切り（`grid_idle=0`）`expected_gap=0`となるため、`|residual|`は構造由来の乖離を過小評価する（この例では96.7%）——「厳密な分解」ではなく「符号を非凹性の指標、絶対値を下界」として使う設計。
+
+### テスト結果
+```
+tests/test_allocation_nonconcave.py（新規）: 13 passed
+A系統関連テスト全体: 75 passed（既存62 + 新規13）
+リポジトリ全体: 370 passed（既存357 + 新規13、letterの目標値と一致）
+```
+既存の`tests/test_allocation_plot.py::test_plot_each_scenario`・`tests/test_allocation_cli.py::test_profit_surface_row_count`は、`s9_fta_cliff`追加で定常シナリオ数が7→8になったことに伴うハードコード値の更新が必要だった（7→8、7×231→8×231）——設計変更ではなく、シナリオ追加の自然な帰結。
+
+### レビュー事項R1-R4（設計書§9）はいずれも設計書の推奨どおり確定・実装
+R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキング単価で高さを描く）・R3（T=25,000）・R4（`evaluate_point()`改修をA系統無変更の例外として容認）——いずれも実装で確定。
+
+### 未対応・Phase 6送り
+- `MARKETS`ハードコード解除（`grid.py`の定数を外部から与える形に、4モジュールへの影響範囲確認が要る）
+- `ev-thailand-2026`用`ga_*.csv`3本の新規作成と実ケースでの`structural_residual`検証
+- ③Pareto＋平行座標（配分版）、④階層化三角図（Phase 4からの持ち越し）
+
+---

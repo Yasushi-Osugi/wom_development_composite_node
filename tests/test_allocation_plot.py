@@ -47,7 +47,10 @@ def test_plot_terrain_only(tmp_path):
 
 def test_plot_each_scenario(tmp_path):
     made = plot_each_scenario(ALLOC_DIR, 800, str(tmp_path / "terrains"))
-    assert len(made) == 7 and all(_nonempty(p) for p in made)   # s1-s7（s8は時系列で対象外）
+    # s1-s7 + s9_fta_cliff（Phase 5、s8は時系列で対象外）。
+    # s9 は cap_wk=500 前提の合成シナリオだが、本テストの cap_wk=800 では
+    # cliff が発動しない条件（Phase5設計書§2.2）でも例外にはならず描画できる。
+    assert len(made) == 8 and all(_nonempty(p) for p in made)
 
 
 def test_bx_s_format():

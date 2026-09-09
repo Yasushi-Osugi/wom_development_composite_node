@@ -28,7 +28,7 @@ import csv
 import os
 from collections import defaultdict
 from dataclasses import replace
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from wom.allocation.cost_block import derive_cost_blocks
 from wom.allocation.transmission import CostBlock, Scenario
@@ -47,8 +47,15 @@ def _rows(path: str) -> List[dict]:
 def load_scenarios(model_dir: str) -> List[dict]:
     """ga_scenario_master.csv → シナリオごとの代表パラメータ。
 
-    各 dict: {id, fx_usd, material_usd, tariff{market:rate}, interest, time_series}
+    各 dict: {id, fx_usd, material_usd, tariff{market:rate}, interest, time_series,
+              tariff_preferential{market:rate}, preferential_threshold{market:lot}}
     s1〜s7 は全期間一定。時系列（s8）は time_series=True としてサーフェス対象外にする。
+
+    Phase 5（cliff型の数量依存関税）: `tariff_rate_preferential` /
+    `preferential_threshold_lot` の2列を読む。両方が空欄でない市場のみ
+    `tariff_preferential` / `preferential_threshold` に入る。**列が存在しない
+    古い CSV でも動く**（`csv.DictReader` の行 dict に無いキーは `.get()` で
+    None として扱われる）。
     """
     rows = _rows(os.path.join(model_dir, "ga_scenario_master.csv"))
     by_id: Dict[str, List[dict]] = defaultdict(list)
@@ -63,6 +70,18 @@ def load_scenarios(model_dir: str) -> List[dict]:
         material = float(rs[0]["material_price_usd"])
         q0 = rs[0]["quarter"]
         tariff = {r["market"]: float(r["tariff_rate"]) for r in rs if r["quarter"] == q0}
+
+        tariff_preferential: Dict[str, float] = {}
+        preferential_threshold: Dict[str, float] = {}
+        for r in rs:
+            if r["quarter"] != q0:
+                continue
+            rate_str = (r.get("tariff_rate_preferential") or "").strip()
+            thr_str = (r.get("preferential_threshold_lot") or "").strip()
+            if rate_str and thr_str:
+                tariff_preferential[r["market"]] = float(rate_str)
+                preferential_threshold[r["market"]] = float(thr_str)
+
         interest = float(rs[0]["interest_rate_annual"])
         # 時系列判定：いずれかの市場で (fx, material, tariff) が quarter 間で変動するか
         time_series = any(
@@ -70,14 +89,34 @@ def load_scenarios(model_dir: str) -> List[dict]:
                  for r in rs if r["market"] == m}) > 1
             for m in MARKETS)
         scens.append({"id": sid, "fx_usd": fx_usd, "material_usd": material,
-                      "tariff": tariff, "interest": interest, "time_series": time_series})
+                      "tariff": tariff, "interest": interest, "time_series": time_series,
+                      "tariff_preferential": tariff_preferential,
+                      "preferential_threshold": preferential_threshold})
     return scens
 
 
-def _blocks_for(base_blocks: Dict[str, CostBlock], tariff: Dict[str, float]) -> Dict[str, CostBlock]:
-    """シナリオの関税率で CostBlock を上書き（tariff は Step3 で使用）。"""
-    return {m: replace(base_blocks[m], tariff_rate=tariff.get(m, base_blocks[m].tariff_rate))
-            for m in MARKETS}
+def _blocks_for(
+    base_blocks: Dict[str, CostBlock], tariff: Dict[str, float],
+    tariff_preferential: Optional[Dict[str, float]] = None,
+    preferential_threshold: Optional[Dict[str, float]] = None,
+) -> Dict[str, CostBlock]:
+    """シナリオの関税率で CostBlock を上書き（tariff は Step3 で使用）。
+
+    Phase 5: `tariff_preferential` / `preferential_threshold` は既定 None
+    （＝上書きなし、従来動作）。指定された市場のみ cliff 型の特恵税率・閾値を
+    CostBlock に載せる。
+    """
+    tariff_preferential = tariff_preferential or {}
+    preferential_threshold = preferential_threshold or {}
+    result: Dict[str, CostBlock] = {}
+    for m in MARKETS:
+        kwargs = {"tariff_rate": tariff.get(m, base_blocks[m].tariff_rate)}
+        if m in tariff_preferential:
+            kwargs["tariff_rate_preferential"] = tariff_preferential[m]
+        if m in preferential_threshold:
+            kwargs["preferential_threshold_lot"] = preferential_threshold[m]
+        result[m] = replace(base_blocks[m], **kwargs)
+    return result
 
 
 def _fmt_x(x) -> str:
@@ -94,10 +133,11 @@ def run(model_dir: str, cap_wk: float = 800.0, out_dir: str = "output/allocation
     eval_scenarios = [Scenario(fx_usd=s["fx_usd"], material_usd=s["material_usd"])
                       for s in const_scens]
 
-    # サーフェスをシナリオ別に計算（関税上書き込み）
+    # サーフェスをシナリオ別に計算（関税上書き込み、Phase 5: cliff型の特恵込み）
     surfaces: Dict[str, Tuple[list, Dict[str, CostBlock]]] = {}
     for s in const_scens:
-        blocks = _blocks_for(base_blocks, s["tariff"])
+        blocks = _blocks_for(base_blocks, s["tariff"],
+                             s.get("tariff_preferential"), s.get("preferential_threshold"))
         S = Scenario(fx_usd=s["fx_usd"], material_usd=s["material_usd"])
         surfaces[s["id"]] = (scan_surface(blocks, tp, S, cap_wk, delta=delta), blocks)
 
@@ -181,7 +221,8 @@ def run(model_dir: str, cap_wk: float = 800.0, out_dir: str = "output/allocation
     # 7) ga_constraint_cost.csv（国内20%フロア × 各シナリオ）
     cc_rows = []
     for s in const_scens:
-        blocks = _blocks_for(base_blocks, s["tariff"])
+        blocks = _blocks_for(base_blocks, s["tariff"],
+                             s.get("tariff_preferential"), s.get("preferential_threshold"))
         S = Scenario(fx_usd=s["fx_usd"], material_usd=s["material_usd"])
         r = constraint_cost(blocks, tp, S, cap_wk, constraint=lambda x: x[0] >= 0.20, delta=delta)
         cc_rows.append([s["id"], "x_JP>=0.20", round(r["profit_unconstrained"], 1),

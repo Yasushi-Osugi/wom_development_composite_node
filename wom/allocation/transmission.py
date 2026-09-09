@@ -23,11 +23,17 @@ Step 対応:
   FX200 $6 → JP 295.0 / US 2855.0 / EU 2967.0
   FX200 $8 → JP -105.0 / US 2455.0 / EU 2567.0
   FX115 $6 → JP 1068.5 / US 972.25 / EU 1036.65
+
+Phase 5（数量依存の関税・cliff型）:
+  正典：requests/Phase5_DesignMD_NonConcaveTariff.md §3
+  CostBlock.tariff_at(qty) / unit_pnl_at_quantity() を追加（本節末尾）。
+  unit_pnl() 本体は無変更——unit_pnl_at_quantity() は dataclasses.replace() 経由で
+  呼ぶだけで、計算式を二重に持たない。
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Dict
+from dataclasses import dataclass, replace
+from typing import Dict, Optional
 
 # 移転価格（Step 2）: 終端 MOM 累積原価 16.0 USD × (1 + 0.1) = 17.6 USD
 #   ppc_transfer_price_rule.csv: Bottling_Noda cost_plus 0.1 USD
@@ -61,6 +67,13 @@ class CostBlock:
     price_local       : 販売価格（現地通貨建て・ppc_market_price）
     ccy               : 販売通貨 'JPY' / 'USD' / 'EUR'
     demand_qty        : 市場需要（lot・Step 6 の D[m]）
+
+    tariff_rate_preferential : Phase 5・cliff型の特恵税率（既定 None＝従来動作）。
+        配分量が preferential_threshold_lot 以上になったときに tariff_rate の
+        代わりに適用される（FTA原産地規則の「域内付加価値比率が閾値を超えれば
+        特恵税率」を数量依存関税として表現したもの）。
+    preferential_threshold_lot : 特恵発動の閾値（lot、既定 None）。
+        どちらか一方でも None なら常に tariff_rate（従来動作、後方互換）。
     """
     usd: float
     eur: float
@@ -70,6 +83,19 @@ class CostBlock:
     ccy: str
     demand_qty: int
     material_usd_base: float = 6.0
+    tariff_rate_preferential: Optional[float] = None
+    preferential_threshold_lot: Optional[float] = None
+
+    def tariff_at(self, qty: float) -> float:
+        """配分量 qty のときに適用される関税率（Step 3 用）。
+
+        cliff型: qty >= preferential_threshold_lot なら tariff_rate_preferential、
+        そうでなければ tariff_rate。どちらかが None なら常に tariff_rate。
+        """
+        if self.tariff_rate_preferential is None or self.preferential_threshold_lot is None:
+            return self.tariff_rate
+        return (self.tariff_rate_preferential
+                if qty >= self.preferential_threshold_lot else self.tariff_rate)
 
 
 def rates(sc: Scenario) -> Dict[str, float]:
@@ -98,3 +124,21 @@ def unit_pnl(cb: CostBlock, sc: Scenario,
     frev = rev if cb.ccy != "JPY" else 0.0
     return {"rev": rev, "cost": cost, "margin": rev - cost,
             "fcost": fcost, "frev": frev}
+
+
+def unit_pnl_at_quantity(
+    cb: CostBlock, sc: Scenario, qty: float,
+    transfer_price_usd: float = DEFAULT_TRANSFER_PRICE_USD,
+) -> Dict[str, float]:
+    """配分量 qty のときの per-lot 損益（Phase 5・cliff型の数量依存関税）。
+
+    cb.tariff_at(qty) で税率を解決し、その税率を持つ CostBlock の複製に対して
+    既存の unit_pnl() を呼ぶ。計算式そのものは unit_pnl() のまま（重複実装しない）。
+    cliff未設定（tariff_rate_preferential/preferential_threshold_lot が None）の
+    CostBlock では tariff_at(qty) は常に cb.tariff_rate を返すため、
+    このとき unit_pnl(cb, ...) と完全に一致する（後方互換）。
+    """
+    rate = cb.tariff_at(qty)
+    if rate == cb.tariff_rate:
+        return unit_pnl(cb, sc, transfer_price_usd)       # 従来経路そのまま
+    return unit_pnl(replace(cb, tariff_rate=rate), sc, transfer_price_usd)
