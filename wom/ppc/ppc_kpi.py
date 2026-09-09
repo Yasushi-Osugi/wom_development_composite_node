@@ -75,7 +75,7 @@ def build_node_week_summary(events: List[PPCEvent]) -> pd.DataFrame:
             "revenue_base":      g.loc[g["is_revenue"],  "amount_base"].sum(),
             "cost_base":         g.loc[g["is_cost"],     "amount_base"].sum(),
             "tariff_base":       g.loc[g["is_tariff"],   "amount_base"].sum(),
-        }))
+        }), include_groups=False)
         .reset_index()
     )
     agg["gross_profit_base"] = agg["revenue_base"] - agg["cost_base"]
@@ -114,7 +114,7 @@ def build_profit_zone_summary(events: List[PPCEvent]) -> pd.DataFrame:
             "cost_base":       g.loc[g["is_cost"],       "amount_base"].sum(),
             "tariff_base":     g.loc[g["is_tariff"],     "amount_base"].sum(),
             "mom_profit_base": g.loc[g["is_mom_profit"], "amount_base"].sum(),
-        }))
+        }), include_groups=False)
         .reset_index()
     )
     agg["gross_profit_base"] = agg["revenue_base"] - agg["cost_base"] + agg["mom_profit_base"]
@@ -170,7 +170,7 @@ def build_node_pl_summary(events: List[PPCEvent]) -> pd.DataFrame:
             "cost_base":    g.loc[g["is_cost"],    "amount_base"].sum(),
             "tariff_base":  g.loc[g["is_tariff"],  "amount_base"].sum(),
             "lot_events":   len(g),
-        }))
+        }), include_groups=False)
         .reset_index()
     )
     agg["gross_profit_base"] = agg["revenue_base"] - agg["cost_base"]
