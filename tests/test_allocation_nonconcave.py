@@ -195,7 +195,7 @@ def test_structural_residual_is_negative(s9_blocks):
     surface = scan_surface(blocks, tp, sc, cap_wk)
 
     cmp = compare_with_grid(mo, surface)
-    assert cmp["gap_abs"] == pytest.approx(-9_728_100.0, abs=1.0)
+    assert cmp["gap_amt"] == pytest.approx(-9_728_100.0, abs=1.0)
     assert cmp["expected_gap_from_grid_resolution"] == pytest.approx(0.0, abs=1e-6)
     assert cmp["structural_residual"] == pytest.approx(-9_728_100.0, abs=1.0)
     assert cmp["structural_residual"] < 0

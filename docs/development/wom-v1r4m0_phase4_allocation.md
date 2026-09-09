@@ -68,7 +68,7 @@ FX200・原料$8シナリオではJPのマージンが−105.0 JPY/lotになる�
 
 ```
 soysauce: merit_order_profit=135,529,822.5 / grid_best_profit=132,133,072.5
-          gap_abs=3,396,750.0 / gap_pct=+2.57%
+          gap_amt=3,396,750.0 / gap_pct=+2.57%
 ```
 
 **この乖離はsoysauceでは格子解像度の誤差であって、非凹性等の構造的発見ではない**
@@ -96,18 +96,18 @@ vs `grid_best_profit=132,133,072.5`＝**相対誤差0.146%**で厳密一致せ�
 成分ごとの独立な丸めでは表現できなかった。
 
 **新方式（idle×λ、現行）**：格子最適点の遊休能力`grid_idle`を限界市場（マージンλ）に
-回したときの利益増分`expected_gap = grid_idle × lambda`と、実測乖離`gap_abs`を比較する。
+回したときの利益増分`expected_gap = grid_idle × lambda`と、実測乖離`gap_amt`を比較する。
 
 ```python
 marginal_unmet = grid_pt["unmet"][marginal] if marginal is not None else 0.0
 absorbable = (marginal is not None) and (marginal_unmet >= grid_idle)
 expected_gap = grid_idle * lam
-structural_residual = gap_abs - expected_gap
+structural_residual = gap_amt - expected_gap
 attributable = absorbable and (abs(structural_residual) <= abs_tol)
 ```
 
 **実測結果**: soysauceで`grid_idle=4,529`・`lambda=750.0`・
-`expected_gap=4,529×750.0=3,396,750.0`——実測乖離`gap_abs=3,396,750.0`と
+`expected_gap=4,529×750.0=3,396,750.0`——実測乖離`gap_amt=3,396,750.0`と
 **厳密一致（差0.000000 JPY）**。恣意的な閾値が不要になり、`abs_tol`は数値誤差
 （既定1.0 JPY）のみを吸収する。
 

@@ -179,7 +179,7 @@ def compare_with_grid(
 
     判定式:
         expected_gap = grid_idle × lambda
-        structural_residual = gap_abs − expected_gap
+        structural_residual = gap_amt − expected_gap
         attributable_to_grid_resolution =
             absorbable and abs(structural_residual) <= abs_tol
 
@@ -208,7 +208,7 @@ def compare_with_grid(
             "merit_order_profit": 135529822.5,
             "grid_best_profit": 132133072.5,
             "grid_best_x": (0.10, 0.45, 0.45),
-            "gap_abs": 3396750.0,
+            "gap_amt": 3396750.0,
             "gap_pct": 0.0257,
             "grid_idle": 4529.0,
             "lambda": 750.0,
@@ -225,8 +225,8 @@ def compare_with_grid(
     grid_pt = plateau[0]
     grid_x, grid_idle = grid_pt["x"], grid_pt["idle"]
 
-    gap_abs = mo["profit"] - best
-    gap_pct = (gap_abs / best) if best else float("nan")
+    gap_amt = mo["profit"] - best
+    gap_pct = (gap_amt / best) if best else float("nan")
 
     lam = mo["lambda"]
     marginal = mo["marginal_market"]
@@ -237,7 +237,7 @@ def compare_with_grid(
     absorbable = (marginal is not None) and (marginal_unmet >= grid_idle)
 
     expected_gap = grid_idle * lam
-    structural_residual = gap_abs - expected_gap
+    structural_residual = gap_amt - expected_gap
     structural_residual_pct = (structural_residual / best) if best else float("nan")
 
     attributable = absorbable and (abs(structural_residual) <= abs_tol)
@@ -246,7 +246,7 @@ def compare_with_grid(
         "merit_order_profit": mo["profit"],
         "grid_best_profit": best,
         "grid_best_x": grid_x,
-        "gap_abs": gap_abs,
+        "gap_amt": gap_amt,
         "gap_pct": gap_pct,
         "grid_idle": grid_idle,
         "lambda": lam,

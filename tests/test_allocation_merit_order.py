@@ -111,7 +111,7 @@ def test_compare_with_grid_soysauce(soysauce_blocks):
     cmp = compare_with_grid(mo, surface)
 
     assert cmp["grid_best_profit"] == pytest.approx(132_133_072.5, abs=1.0)
-    assert cmp["gap_abs"] == pytest.approx(3_396_750.0, abs=1.0)
+    assert cmp["gap_amt"] == pytest.approx(3_396_750.0, abs=1.0)
     assert cmp["gap_pct"] == pytest.approx(0.0257, abs=1e-3)
     assert cmp["grid_best_x"] == pytest.approx((0.10, 0.45, 0.45))
 
@@ -128,7 +128,7 @@ def test_gap_attributable_to_grid_resolution(soysauce_blocks):
     assert cmp["absorbable"] is True
     assert cmp["marginal_market"] == "JP"
     # 予測乖離が実測乖離と厳密に一致する（1 JPY 未満）
-    assert abs(cmp["expected_gap_from_grid_resolution"] - cmp["gap_abs"]) < 1.0
+    assert abs(cmp["expected_gap_from_grid_resolution"] - cmp["gap_amt"]) < 1.0
     assert abs(cmp["structural_residual"]) < 1.0
     assert cmp["attributable_to_grid_resolution"] is True
 
@@ -145,7 +145,7 @@ def test_expected_gap_equals_idle_times_lambda(soysauce_blocks):
     assert cmp["grid_idle"] == pytest.approx(4529.0)
     assert cmp["lambda"] == pytest.approx(750.0)
     assert cmp["expected_gap_from_grid_resolution"] == pytest.approx(4529.0 * 750.0)
-    assert cmp["gap_abs"] == pytest.approx(3396750.0)
+    assert cmp["gap_amt"] == pytest.approx(3396750.0)
     # 限界市場に回せる余地があること
     assert cmp["marginal_unmet_at_grid_best"] >= cmp["grid_idle"]
 

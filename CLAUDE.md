@@ -1704,7 +1704,7 @@ CLAUDE.md L1311（本ファイル上部、v1r3m0節）の回帰値「最大利�
 **設計文書**: `requests/request_fix_phase4_gap_attribution.md`。`--demo`出力の目視QA後に依頼された4点の修正。**G2は設計書§3.5の欠陥が原因**（Code君の実装ミスではない）。
 
 - **G1**（`.gitignore`）：`output/`はあったが`out/`が無く、A系統`tools/plot_allocation_map.py`の既定出力先（`out/`）がコミット対象に入りうる漏れがあった（Phase 4以前から潜在）。`out/`を追加。
-- **G2**（`wom/allocation/merit_order.py`・`compare_with_grid()`）：乖離の帰属判定を全面差し替え。旧方式（メリットオーダー解の各成分をδに独立に丸めた組合せと格子最適を比較）は、単体制約Σx=1による「押し出し」（US/EUを需要天井超に丸めるとJPが0.10へ押し出される効果）を表現できず、格子最適点(0.10,0.45,0.45)が丸め候補に入らなかった——soysauceで相対誤差0.146%が残り、`tol=0.005`という恣意的な閾値でしか"True"判定できていなかった。**新方式**：`expected_gap = grid_idle × lambda`（格子最適点の遊休能力を限界市場に回したときの利益増分）と実測乖離`gap_abs`を比較し、`structural_residual = gap_abs − expected_gap`を算出。soysauceで実測すると**厳密一致（差0.000000 JPY）**——恣意的な閾値が不要になった。`structural_residual`はPhase 5で`ev-thailand-2026`等の非凹ケースに適用した際、構造由来の乖離量をそのまま切り出す主要な出力になる。判定式：`attributable_to_grid_resolution = absorbable and abs(structural_residual) <= abs_tol`（`abs_tol`既定1.0 JPY＝数値誤差のみ許容、`absorbable`＝限界市場が格子最適点でidle以上の未充足需要を残しているか）。戻り値から`rounded_best_profit`を削除し、`lambda`/`marginal_market`/`marginal_unmet_at_grid_best`/`absorbable`/`expected_gap_from_grid_resolution`/`structural_residual`/`structural_residual_pct`を追加。引数`tol`/`delta`を削除し`abs_tol`に統一。
+- **G2**（`wom/allocation/merit_order.py`・`compare_with_grid()`）：乖離の帰属判定を全面差し替え。旧方式（メリットオーダー解の各成分をδに独立に丸めた組合せと格子最適を比較）は、単体制約Σx=1による「押し出し」（US/EUを需要天井超に丸めるとJPが0.10へ押し出される効果）を表現できず、格子最適点(0.10,0.45,0.45)が丸め候補に入らなかった——soysauceで相対誤差0.146%が残り、`tol=0.005`という恣意的な閾値でしか"True"判定できていなかった。**新方式**：`expected_gap = grid_idle × lambda`（格子最適点の遊休能力を限界市場に回したときの利益増分）と実測乖離`gap_amt`を比較し、`structural_residual = gap_amt − expected_gap`を算出。soysauceで実測すると**厳密一致（差0.000000 JPY）**——恣意的な閾値が不要になった。`structural_residual`はPhase 5で`ev-thailand-2026`等の非凹ケースに適用した際、構造由来の乖離量をそのまま切り出す主要な出力になる。判定式：`attributable_to_grid_resolution = absorbable and abs(structural_residual) <= abs_tol`（`abs_tol`既定1.0 JPY＝数値誤差のみ許容、`absorbable`＝限界市場が格子最適点でidle以上の未充足需要を残しているか）。戻り値から`rounded_best_profit`を削除し、`lambda`/`marginal_market`/`marginal_unmet_at_grid_best`/`absorbable`/`expected_gap_from_grid_resolution`/`structural_residual`/`structural_residual_pct`を追加。引数`tol`/`delta`を削除し`abs_tol`に統一。
 - **G3**（`plot_allocation_merit_order()`）：注記3行（λ・idle/unmet・乖離）が矩形ブロックの上に重なり判読不能だった。単位マージン**降順**に積むため、Phase 3の昇順とは逆に**左上が構造的に必ず埋まる**（最も背の高いブロックが来る）ことが原因。3行（実際は乖離注記が2行に分割され計4行）を軸の下（`transAxes`のy=-0.14から0.06刻み）に移動、`tight_layout(rect=(0,0.20,1,1))`で下部余白を確保。λの行はcrimsonを維持。除外市場の注記（負マージン）は軸内のまま。`capacity=...`凡例は`upper right`のまま（能力線右・λ上は構造的に空くため変更不要）。
 - **G4**（`plot_allocation_merit_shift()`）：Before/Afterの凡例がAfter曲線の左端（最も高いブロック）に重なっていた。G3と同じ理由（降順に積む前提）。`loc="upper left"`→`"lower left"`に変更（λ水平線より下は全面的に空くため構造的に安全）。
 
@@ -1761,14 +1761,14 @@ s1_base / cap_wk=800（Phase 4回帰、1円も変わらないことを確認）:
 s9_fta_cliff / cap_wk=500（非凹性の検証）:
   ①近視眼的メリットオーダー: US=16,825(triggered=False) / EU=35,175 / profit=93,824,700.0
   δ=0.05格子最適: x=(0.00,0.65,0.35) / profit=103,552,800.0 / grid_idle=0.0
-  gap_abs=-9,728,100.0 / expected_gap=0.0 / structural_residual=-9,728,100.0（負）
+  gap_amt=-9,728,100.0 / expected_gap=0.0 / structural_residual=-9,728,100.0（負）
   attributable_to_grid_resolution=False
   （手計算による真の連続最適: profit=103,881,758、構造由来の取りこぼし10,057,058のうち
    |residual|が96.7%を捉える＝下界として機能）
 ```
 
 ### 8. `residual`の符号別の意味づけ（Phase 4設計書§3.5.3 rev.3で訂正）
-初版は「非凹ケースでは`gap_abs > expected_gap`」としていたが**符号が逆**だった。非凹だと貪欲法が最適を外して`mo_profit`が下がるため`gap_abs`は縮み負になる一方、`expected_gap`は格子最適点の性質だけで決まるため影響を受けない。正しい意味づけ：
+初版は「非凹ケースでは`gap_amt > expected_gap`」としていたが**符号が逆**だった。非凹だと貪欲法が最適を外して`mo_profit`が下がるため`gap_amt`は縮み負になる一方、`expected_gap`は格子最適点の性質だけで決まるため影響を受けない。正しい意味づけ：
 
 | `residual` | 意味 |
 |---|---|
@@ -1810,6 +1810,8 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 - **scipy.optimize等のLPライブラリは持ち込まない**。各ケードは相変わらず単価降順に容量を詰めるだけの閉形式アルゴリズムで、`wom/allocation/grid.py`の既存スタイル（外部最適化ライブラリ非依存）をそのまま踏襲できる。
 
 **検算（手計算・実装前の裏付け）**：soysauceのs9_fta_cliffで上記方式を手で計算したところ、ケースA=35,175×1831.5+16,825×1747.5=**93,824,700.0**（①の実測値と厳密一致）、ケースB≈35,176×2077.5+16,824×1831.5≈**103.89M**（設計書の103,881,758.0とほぼ一致、差は`derive_cost_blocks()`側の需要按分の詳細を概算で追った誤差と推測）。この一致から、設計書の103,881,758.0はまさにこの方式の手計算だったと考えられ、実装はこの方式のコード化で足りる。
+
+**フィールド名（2026-09-09追記）**：Phase 6で`compare_with_grid()`に実装する際、`true_optimum − mo["profit"]`（真の連続最適−貪欲解）の値は`structural_optimality_gap`という名前で返す。既存の`structural_residual`（`gap_amt − expected_gap`、実装が返す下界）と対になる関係——`structural_residual ≤ structural_optimality_gap`（今回の実測では9,728,100 ≤ 10,057,058）——であることをフィールド名からも読み取れるようにする。
 
 **WOMとの関係**：Planning Engine（禁足コア）には一切関係しない。`(x_JP,x_US,x_EU)`という3変数上の分析に閉じており、週次PSIシミュレーション・SCTree・BackwardPlanner/ForwardPlannerには触れない。役割は`compare_with_grid()`に厳密な参照点を追加すること——現状は格子最適点を真の最適の代役に使わざるを得ず`structural_residual`が「下界」（今回96.7%）にしかならないが、真の連続最適が手に入れば乖離を**格子解像度の誤差**（真の連続最適−格子最適）と**非凹性由来の取りこぼし**（真の連続最適−貪欲法の利益）に**厳密に**2分解できるようになる。既存の231点グリッドスキャン（地形図描画用）は置き換えない——面を見せる役割はグリッドのまま、新関数は`compare_with_grid()`内部の参照値だけを差し替える想定。
 

@@ -95,7 +95,7 @@ Phase 5 の目的は、**「非凹な利益関数のもとでは `structural_res
 Phase 4 の判定式を当てると：
 
 ```
-gap_abs      =  -9,728,100
+gap_amt      =  -9,728,100
 expected_gap =           0     (grid_idle 0 × λ 1,747.5)
 residual     =  -9,728,100     ← 負
 ```
@@ -104,9 +104,9 @@ residual     =  -9,728,100     ← 負
 
 ### 2.4 `residual` の符号と、分解の限界（**Phase 4 §3.5.3 の訂正**）
 
-Phase 4 設計書には「非凹ケースでは `gap_abs > expected_gap` となり、超過分が構造由来として切り出せる」と書いたが、**符号が逆だった。**
+Phase 4 設計書には「非凹ケースでは `gap_amt > expected_gap` となり、超過分が構造由来として切り出せる」と書いたが、**符号が逆だった。**
 
-理屈は単純である。非凹だとメリットオーダーが最適を外すので `mo_profit` が**下がる**。`gap_abs = mo_profit − grid_best` は縮み、この例では負になる。一方 `expected_gap = grid_idle × λ` は格子最適点の性質だけで決まるので影響を受けない。よって residual は負に振れる。
+理屈は単純である。非凹だとメリットオーダーが最適を外すので `mo_profit` が**下がる**。`gap_amt = mo_profit − grid_best` は縮み、この例では負になる。一方 `expected_gap = grid_idle × λ` は格子最適点の性質だけで決まるので影響を受けない。よって residual は負に振れる。
 
 判定式 `abs(residual) <= abs_tol` は False を返すので**動作としては正しく働いていた**が、意味づけが逆だった。
 
@@ -114,7 +114,7 @@ Phase 4 設計書には「非凹ケースでは `gap_abs > expected_gap` とな�
 
 | | 金額 |
 |---|---|
-| 構造由来の取りこぼし（真の最適 − 貪欲） | **10,057,058** |
+| 構造由来の取りこぼし（真の最適 − 貪欲、= structural optimality gap） | **10,057,058** |
 | 格子解像度の誤差（真の最適 − 格子最適） | 328,958 |
 | `\|residual\|` = 9,728,100 は構造由来の **96.7%** | （**下界**） |
 
@@ -278,7 +278,7 @@ scenario_id,quarter,market,currency,tariff_rate,tariff_rate_preferential,prefere
 
 §2.4 の内容を Phase 4 設計書に反映する。
 
-- 「非凹ケースでは `gap_abs > expected_gap` となり」→ **符号が逆。`residual` は負に振れる**
+- 「非凹ケースでは `gap_amt > expected_gap` となり」→ **符号が逆。`residual` は負に振れる**
 - `residual` の符号別の意味づけ表を追加
 - 非凹ケースでは `expected_gap` の推定精度が落ちるため、**`|residual|` は取りこぼし量の下界**であることを明記（厳密な分解を主張しない）
 

@@ -183,7 +183,7 @@ def compare_with_grid(
             "merit_order_profit": 135529822.0,
             "grid_best_profit": 132133072.0,   # best_point(surface)[0]
             "grid_best_x": (0.10, 0.45, 0.45),
-            "gap_abs": 3396750.0,
+            "gap_amt": 3396750.0,
             "gap_pct": 0.0257,
             "grid_idle": 4529.0,               # 格子最適点の遊休能力
             "attributable_to_grid_resolution": True,   # §3.5 の判定
@@ -218,7 +218,7 @@ soysauce での丸め候補は以下の3点にしかならない。
 
 ```
 expected_gap        = grid_idle × λ
-structural_residual = gap_abs − expected_gap
+structural_residual = gap_amt − expected_gap
 ```
 
 soysauce での検証：
@@ -252,9 +252,9 @@ soysauce での検証：
 
 **⚠️ 初版の記述の訂正**
 
-初版は「非凹ケースでは `gap_abs > expected_gap` となり、超過分が定量値として切り出せる」と書いていたが、**符号が逆だった。**
+初版は「非凹ケースでは `gap_amt > expected_gap` となり、超過分が定量値として切り出せる」と書いていたが、**符号が逆だった。**
 
-理屈は単純である。非凹だとメリットオーダーが最適を外すので `mo_profit` が**下がる**。`gap_abs = mo_profit − grid_best` は縮み、多くの場合は負になる。一方 `expected_gap = grid_idle × λ` は格子最適点の性質だけで決まるので影響を受けない。よって `residual` は**負**に振れる。
+理屈は単純である。非凹だとメリットオーダーが最適を外すので `mo_profit` が**下がる**。`gap_amt = mo_profit − grid_best` は縮み、多くの場合は負になる。一方 `expected_gap = grid_idle × λ` は格子最適点の性質だけで決まるので影響を受けない。よって `residual` は**負**に振れる。
 
 判定式 `abs(structural_residual) <= abs_tol` は符号によらず False を返すので**実装の動作は正しかった**。訂正するのは意味づけのみであり、`compare_with_grid()` の変更は不要。
 
@@ -284,7 +284,7 @@ def compare_with_grid(
     """Returns:
         {
             "merit_order_profit", "grid_best_profit", "grid_best_x",
-            "gap_abs", "gap_pct",
+            "gap_amt", "gap_pct",
             "grid_idle", "lambda", "marginal_market",
             "marginal_unmet_at_grid_best",
             "absorbable": bool,
@@ -489,7 +489,7 @@ Planning Engine 保護対象コアには**一切触れない**。golden 13ケー
 6. `test_compare_with_grid_soysauce` — **グリッド最適 132,133,072 JPY、乖離 3,396,750 JPY（+2.57%）**（§2.3 の値を固定）
 7. `test_gap_attributable_to_grid_resolution` — soysauce で `structural_residual` が 1 JPY 未満、`absorbable` / `attributable_to_grid_resolution` がともに True
 8. `test_merit_order_x_sums_to_one_when_capacity_binding` — 能力が制約になるとき Σx = 1.0
-9. `test_expected_gap_equals_idle_times_lambda`（rev.2 で追加）— **恒等式 `gap_abs == grid_idle × λ`**（4,529 × 750 = 3,396,750）と、限界市場が idle を吸収できること（21,830 ≥ 4,529）を固定。§3.5.2 の判定の根拠そのもの
+9. `test_expected_gap_equals_idle_times_lambda`（rev.2 で追加）— **恒等式 `gap_amt == grid_idle × λ`**（4,529 × 750 = 3,396,750）と、限界市場が idle を吸収できること（21,830 ≥ 4,529）を固定。§3.5.2 の判定の根拠そのもの
 
 ### 7.2 ② レジーム地図（`tests/test_allocation_regime_map.py`、5件）
 
@@ -525,7 +525,7 @@ Planning Engine 保護対象コアには**一切触れない**。golden 13ケー
 
 - [ ] `build_allocation_merit_order()` が soysauce で λ=750 / x=(0.1544, 0.4228, 0.4228) / 利益 135,529,822 JPY を返す
 - [ ] `compare_with_grid()` がグリッド最適 132,133,072 JPY と乖離 +2.57% を返し、**CLAUDE.md L1311 の回帰値 s1=132.1M と整合する**
-- [ ] **`gap_abs == grid_idle × λ`（4,529 × 750 = 3,396,750 JPY）が厳密に成立し、`structural_residual` が 1 JPY 未満**
+- [ ] **`gap_amt == grid_idle × λ`（4,529 × 750 = 3,396,750 JPY）が厳密に成立し、`structural_residual` が 1 JPY 未満**
 - [ ] `attributable_to_grid_resolution` が soysauce で True（恣意的な閾値に依存せずに）
 - [ ] **`scan_regime_grid()` の mat=6.0 断面が `switching_points()` の 117円/119円 を再現する**
 - [ ] 負マージン市場が①で除外され、②でハッチ表示される
@@ -573,4 +573,4 @@ Planning Engine 保護対象コアには**一切触れない**。golden 13ケー
   §5.2/§5.3 出力先を `output/allocation_p4/` に追認、`.gitignore` への `out/` 追加を追記。
   §7 にテスト1件追加（357件）。§8 に注記・凡例・`.gitignore` の確認項目を追加。§9 を決定表に更新。§10 の Phase 5 引き継ぎを `structural_residual` ベースに具体化。
   修正依頼は `requests/request_fix_phase4_gap_attribution.md`
-- 2026-09-08 rev.3 — **§3.5.3 の `residual` の符号を訂正**。初版・rev.2 は「非凹ケースでは `gap_abs > expected_gap`」と書いていたが逆で、実際には `residual` が**負**に振れる（非凹だとメリットオーダーが最適を外して `mo_profit` が下がるため）。符号別の意味づけ表を追加し、非凹ケースでは `grid_idle = 0` となって分解精度が落ちるため **`|residual|` は取りこぼし量の下界**であることを明記。§10 の引き継ぎに「ev-thailand には現行の伝達式では適用できない（関税率が固定スカラーで線形）」ことを追記。**実装（`compare_with_grid()`）の変更は不要** — 判定式は符号によらず正しく働いていた。検証の詳細は `requests/Phase5_DesignMD_NonConcaveTariff.md` §2
+- 2026-09-08 rev.3 — **§3.5.3 の `residual` の符号を訂正**。初版・rev.2 は「非凹ケースでは `gap_amt > expected_gap`」と書いていたが逆で、実際には `residual` が**負**に振れる（非凹だとメリットオーダーが最適を外して `mo_profit` が下がるため）。符号別の意味づけ表を追加し、非凹ケースでは `grid_idle = 0` となって分解精度が落ちるため **`|residual|` は取りこぼし量の下界**であることを明記。§10 の引き継ぎに「ev-thailand には現行の伝達式では適用できない（関税率が固定スカラーで線形）」ことを追記。**実装（`compare_with_grid()`）の変更は不要** — 判定式は符号によらず正しく働いていた。検証の詳細は `requests/Phase5_DesignMD_NonConcaveTariff.md` §2

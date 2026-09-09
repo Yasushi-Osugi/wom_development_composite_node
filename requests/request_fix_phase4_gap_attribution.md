@@ -102,7 +102,7 @@ soysauce で検算した結果：
 
 **この方式の利点**:
 - **恣意的な閾値が要らない**（数値誤差分の許容のみ）
-- 非凹ケースでは `gap_abs > expected_gap` になり、**超過分がそのまま構造由来の量として切り出せる**。Phase 5 で `ev-thailand-2026`（LC率閾値で非凹）に適用したときに、これが「構造的発見」の定量値になる
+- 非凹ケースでは `gap_amt > expected_gap` になり、**超過分がそのまま構造由来の量として切り出せる**。Phase 5 で `ev-thailand-2026`（LC率閾値で非凹）に適用したときに、これが「構造的発見」の定量値になる
 
 ### G2.4 実装仕様
 
@@ -118,7 +118,7 @@ def compare_with_grid(
 
     判定式（§3.5 rev.2）:
         expected_gap = grid_idle × lambda
-        structural_residual = gap_abs − expected_gap
+        structural_residual = gap_amt − expected_gap
         attributable_to_grid_resolution =
             absorbable and abs(structural_residual) <= abs_tol
 
@@ -127,7 +127,7 @@ def compare_with_grid(
             "merit_order_profit": 135529822.5,
             "grid_best_profit": 132133072.5,
             "grid_best_x": (0.10, 0.45, 0.45),
-            "gap_abs": 3396750.0,
+            "gap_amt": 3396750.0,
             "gap_pct": 0.0257,
             "grid_idle": 4529.0,
             "lambda": 750.0,
@@ -149,8 +149,8 @@ best, plateau = best_point(surface)
 grid_pt = plateau[0]
 grid_x, grid_idle = grid_pt["x"], grid_pt["idle"]
 
-gap_abs = mo["profit"] - best
-gap_pct = (gap_abs / best) if best else float("nan")
+gap_amt = mo["profit"] - best
+gap_pct = (gap_amt / best) if best else float("nan")
 
 lam = mo["lambda"]
 marginal = mo["marginal_market"]
@@ -164,7 +164,7 @@ else:
 absorbable = (marginal is not None) and (marginal_unmet >= grid_idle)
 
 expected_gap = grid_idle * lam
-structural_residual = gap_abs - expected_gap
+structural_residual = gap_amt - expected_gap
 structural_residual_pct = (structural_residual / best) if best else float("nan")
 
 attributable = absorbable and (abs(structural_residual) <= abs_tol)
@@ -186,7 +186,7 @@ attributable = absorbable and (abs(structural_residual) <= abs_tol)
 - `absorbable = False`
 - `attributable_to_grid_resolution = False`
 
-**この場合そもそも乖離がほぼゼロのはず**（連続解も格子解も全需要を満たせる）なので、False でよい。ただし `structural_residual` は `gap_abs` そのものになるため、値としては意味を持ち続ける。
+**この場合そもそも乖離がほぼゼロのはず**（連続解も格子解も全需要を満たせる）なので、False でよい。ただし `structural_residual` は `gap_amt` そのものになるため、値としては意味を持ち続ける。
 
 ### G2.5 テスト仕様
 
@@ -203,7 +203,7 @@ def test_gap_attributable_to_grid_resolution(soysauce_blocks):
     assert cmp["absorbable"] is True
     assert cmp["marginal_market"] == "JP"
     # 予測乖離が実測乖離と厳密に一致する（1 JPY 未満）
-    assert abs(cmp["expected_gap_from_grid_resolution"] - cmp["gap_abs"]) < 1.0
+    assert abs(cmp["expected_gap_from_grid_resolution"] - cmp["gap_amt"]) < 1.0
     assert abs(cmp["structural_residual"]) < 1.0
     assert cmp["attributable_to_grid_resolution"] is True
 ```
@@ -219,14 +219,14 @@ def test_expected_gap_equals_idle_times_lambda(soysauce_blocks):
     assert cmp["grid_idle"] == pytest.approx(4529.0)
     assert cmp["lambda"] == pytest.approx(750.0)
     assert cmp["expected_gap_from_grid_resolution"] == pytest.approx(4529.0 * 750.0)
-    assert cmp["gap_abs"] == pytest.approx(3396750.0)
+    assert cmp["gap_amt"] == pytest.approx(3396750.0)
     # 限界市場に回せる余地があること
     assert cmp["marginal_unmet_at_grid_best"] >= cmp["grid_idle"]
 ```
 
 #### 影響を受ける既存テスト
 
-`test_compare_with_grid_soysauce` は `merit_order_profit` / `grid_best_profit` / `gap_abs` / `gap_pct` を見ているだけなら**無変更で通る**。`rounded_best_profit` を参照している場合は削除すること。
+`test_compare_with_grid_soysauce` は `merit_order_profit` / `grid_best_profit` / `gap_amt` / `gap_pct` を見ているだけなら**無変更で通る**。`rounded_best_profit` を参照している場合は削除すること。
 
 ---
 
@@ -401,7 +401,7 @@ Phase 4 fix: 乖離の帰属判定・図の判読性・.gitignore
       → 相対誤差 0.146% が残り tol=0.005 で回避していた
   新: expected_gap = grid_idle × lambda
       soysauce で実測乖離と厳密一致（差 0.000000 JPY）、閾値が不要
-      structural_residual = gap_abs − expected_gap を新たに返し、
+      structural_residual = gap_amt − expected_gap を新たに返し、
       非凹ケースでの構造由来の乖離量を切り出せるようにした（Phase 5 で使用）
   ※ 設計書 §3.5 の欠陥に起因（実装ミスではない）
 

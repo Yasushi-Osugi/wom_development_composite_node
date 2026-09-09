@@ -230,7 +230,7 @@ mo["profit"] == 93_824_700.0          # US=16,825(triggered=False), EU=35,175
 mo["lambda"] == 1747.5                # marginal_market = US
 grid_best == 103_552_800.0            # x=(0.00, 0.65, 0.35), idle=0.0
 
-cmp["gap_abs"] == -9_728_100.0
+cmp["gap_amt"] == -9_728_100.0
 cmp["expected_gap_from_grid_resolution"] == 0.0     # grid_idle=0 のため
 cmp["structural_residual"] == -9_728_100.0           # 負
 cmp["attributable_to_grid_resolution"] is False
@@ -244,11 +244,11 @@ profit=103,881,758。構造由来の取りこぼし＝10,057,058に対し、
 
 ## 10. `residual`の符号別の意味づけ（Phase 4設計書§3.5.3 rev.3で訂正）
 
-Phase 4初版は「非凹ケースでは`gap_abs > expected_gap`となり、超過分が構造由来として
+Phase 4初版は「非凹ケースでは`gap_amt > expected_gap`となり、超過分が構造由来として
 切り出せる」としていたが、**符号が逆だった**。
 
 理屈：非凹だと貪欲法（メリットオーダー）が最適を外すので`mo_profit`が**下がる**。
-`gap_abs = mo_profit − grid_best`は縮み、多くの場合は負になる。一方
+`gap_amt = mo_profit − grid_best`は縮み、多くの場合は負になる。一方
 `expected_gap = grid_idle × λ`は格子最適点の性質だけで決まるので影響を受けない。
 よって`residual`は**負**に振れる。
 

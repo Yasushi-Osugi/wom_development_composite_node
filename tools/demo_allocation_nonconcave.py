@@ -89,7 +89,7 @@ def main() -> None:
 
     cmp9 = compare_with_grid(mo9, surf9)
     print("\n  --- 乖離の帰属判定 ---")
-    print(f"  gap_abs (merit - grid_best): {cmp9['gap_abs']:,.1f}")
+    print(f"  gap_amt (merit - grid_best): {cmp9['gap_amt']:,.1f}")
     print(f"  expected_gap (grid_idle x lambda): {cmp9['expected_gap_from_grid_resolution']:,.1f}")
     print(f"  structural_residual: {cmp9['structural_residual']:,.1f}  (負 = 非凹性の証拠)")
     print(f"  attributable_to_grid_resolution: {cmp9['attributable_to_grid_resolution']}"
@@ -99,7 +99,7 @@ def main() -> None:
     true_gap = true_optimum - mo9["profit"]
     print("\n  --- 参考：真の連続最適との比較（設計書の手計算値） ---")
     print(f"  真の連続最適 profit: {true_optimum:,.1f}")
-    print(f"  構造由来の取りこぼし: {true_gap:,.1f}")
+    print(f"  構造由来の取りこぼし (structural optimality gap): {true_gap:,.1f}")
     print(f"  |structural_residual| / 取りこぼし = "
           f"{abs(cmp9['structural_residual']) / true_gap * 100:.1f}%  (residualは下界として機能)")
 
