@@ -328,10 +328,12 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
     inventory_peak_weeks: dict = {}
     leaf_out_S: dict = {}
     leaf_out_CO: dict = {}
+    leaf_out_S_weekly: dict = {}     # Phase 7a・A2.4: fx_effective の出荷数量加重に使う
     for prod in sc_tree.products:
         peaks_prod: dict = {}
         s_prod: dict = {}
         co_prod: dict = {}
+        s_weekly_prod: dict = {}
         for nd in sc_tree.iter_all_nodes(prod):
             sup = nd.psi4supply
             i_series = [len(sup[w][I]) for w in range(n_weeks)]
@@ -339,8 +341,8 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
             avg_s = (sum(s_series) / n_weeks) if n_weeks else 0.0
             ss_wks = getattr(nd, "ss_wks", 0) or 0
             threshold = PEAK_INVENTORY_MULTIPLE * avg_s * ss_wks
+            labels = nd.week_labels if getattr(nd, "week_labels", None) else None
             if threshold > 0:
-                labels = nd.week_labels if getattr(nd, "week_labels", None) else None
                 over_weeks = [(labels[w] if labels else str(w))
                              for w, v in enumerate(i_series) if v > threshold]
                 if over_weeks:
@@ -349,10 +351,14 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
                 co_series = [len(sup[w][CO]) for w in range(n_weeks)]
                 s_prod[nd.node_name] = sum(s_series)
                 co_prod[nd.node_name] = sum(co_series)
+                s_weekly_prod[nd.node_name] = {
+                    (labels[w] if labels else str(w)): s_series[w] for w in range(n_weeks)
+                }
         if peaks_prod:
             inventory_peak_weeks[prod] = peaks_prod
         leaf_out_S[prod] = s_prod
         leaf_out_CO[prod] = co_prod
+        leaf_out_S_weekly[prod] = s_weekly_prod
 
     return {
         "cap_hard_violation_weeks": sorted(cap_hard_weeks),
@@ -361,6 +367,7 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
         "inventory_peak_weeks": inventory_peak_weeks,
         "leaf_out_S": leaf_out_S,
         "leaf_out_CO": leaf_out_CO,
+        "leaf_out_S_weekly": leaf_out_S_weekly,
     }
 
 

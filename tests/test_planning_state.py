@@ -3,6 +3,8 @@
 tests/test_planning_state.py — Planning State と層間ハンドオフ（Phase 7）
 ================================================================================
 正典: requests/Phase7_RequestLetter_to_CodeKun.md V4
+      requests/Phase7a_Addendum_to_CodeKun.md A5（plan_eval / gap_decomposition /
+      reversal の追加テスト。`gap_vs_plan_pct` は廃止されたためテストも削除）
 
 **GUI は一切対象にしない**（本 Phase の成果物は JSON とコマンドだけ）。
 """
@@ -137,12 +139,18 @@ def test_zero_weeks_preserved(tmp_path):
 # V4.5 state 遷移・allocation_id の連番
 # ---------------------------------------------------------------------------
 
+_DUMMY_PLAN_EVAL = {
+    "basis": "allocation_layer", "fx_usd": 150.0, "material_usd": 6.0,
+    "profit": 100.0, "revenue": 200.0, "cost": 100.0, "lots": 100,
+}
+
+
 def test_state_transitions(tmp_path):
     out_dir = str(tmp_path / "planning_state")
 
     state = planning_state.new_state(
         "case1", "s1_base", {"JP": 0.1, "US": 0.45, "EU": 0.45},
-        {"P_opt": 100.0})
+        {"P_opt": 100.0}, _DUMMY_PLAN_EVAL)
     assert state["state"] == "pre_plan"
     assert state["realized"] is None
 
@@ -150,17 +158,23 @@ def test_state_transitions(tmp_path):
     assert os.path.basename(path1) == "A01.json"
 
     state2 = planning_state.new_state(
-        "case1", "s1_base", {"JP": 0.2, "US": 0.4, "EU": 0.4}, {"P_opt": 90.0})
+        "case1", "s1_base", {"JP": 0.2, "US": 0.4, "EU": 0.4},
+        {"P_opt": 90.0}, _DUMMY_PLAN_EVAL)
     path2 = planning_state.save(state2, out_dir=out_dir)
     assert os.path.basename(path2) == "A02.json"
 
+    # lots を _DUMMY_PLAN_EVAL と一致させる（不一致だと attach_realized() が
+    # A2.5 の検査で ValueError を投げる仕様のため）。model_dir/cap_wk を渡さない
+    # ので分解（gap_decomposition 等）は計算されない——ロールアップ等の基本動作のみ確認。
     snapshot = {
-        "ppc": {"gross_profit_base": 105.0},
+        "ppc": {"gross_profit_base": 105.0, "revenue_base": 205.0,
+               "cost_base": 100.0, "total_lots": 3},
         "planning_state_extras": {
             "leaf_out_S": {"P1": {"JP": 10, "US": 45, "EU": 45}},
             "leaf_out_CO": {"P1": {"JP": 0, "US": 0, "EU": 0}},
             "cap_hard_violation_weeks": [], "cap_soft_violation_weeks": [],
             "backward_envelope_weeks": [], "inventory_peak_weeks": {},
+            "leaf_out_S_weekly": {},
         },
     }
     realized_state = planning_state.attach_realized(planning_state.load("case1", "A01", out_dir),
@@ -168,39 +182,14 @@ def test_state_transitions(tmp_path):
     assert realized_state["state"] == "feasible_plan"
     realized = realized_state["realized"]
     assert set(realized.keys()) == {
-        "allocation", "profit_ppc", "gap_vs_plan_pct", "unmet_lots",
-        "capacity_violation_weeks", "peak_inventory_weeks", "issues",
+        "allocation", "ppc", "fx_effective", "plan_at_realized_fx",
+        "gap_decomposition", "unmet_lots", "capacity_violation_weeks",
+        "peak_inventory_weeks", "issues",
     }
-
-
-# ---------------------------------------------------------------------------
-# V4.6 gap_vs_plan_pct は P_opt 基準
-# ---------------------------------------------------------------------------
-
-def test_gap_vs_plan_uses_P_opt():
-    p_opt = 135_529_822.5
-    p_grid = 132_133_072.5
-    profit_ppc = 140_000_000.0
-
-    state = planning_state.new_state(
-        "soysauce-jpy-2027-alloc", "s1_base", {"JP": 0.1, "US": 0.45, "EU": 0.45},
-        {"P_opt": p_opt, "P_grid": p_grid})
-    snapshot = {
-        "ppc": {"gross_profit_base": profit_ppc},
-        "planning_state_extras": {
-            "leaf_out_S": {}, "leaf_out_CO": {},
-            "cap_hard_violation_weeks": [], "cap_soft_violation_weeks": [],
-            "backward_envelope_weeks": [], "inventory_peak_weeks": {},
-        },
-    }
-    realized_state = planning_state.attach_realized(state, snapshot)
-    gap = realized_state["realized"]["gap_vs_plan_pct"]
-
-    expected_p_opt_gap = (profit_ppc - p_opt) / p_opt * 100.0
-    expected_p_grid_gap = (profit_ppc - p_grid) / p_grid * 100.0
-
-    assert gap == pytest.approx(expected_p_opt_gap, abs=1e-6)
-    assert gap != pytest.approx(expected_p_grid_gap, abs=1e-6)
+    # model_dir/cap_wk 無しなので分解は計算されない（None・空のまま）
+    assert realized["gap_decomposition"] is None
+    assert realized["plan_at_realized_fx"] is None
+    assert realized["fx_effective"] == {}
 
 
 # ---------------------------------------------------------------------------
@@ -264,6 +253,94 @@ def test_warmup_respects_demand_file(tmp_path):
 
     assert summary_alt["real_start"] != summary_default["real_start"]
     assert summary_alt["real_start"] == cutoff
+
+
+# ---------------------------------------------------------------------------
+# Phase 7a・A5: plan_eval / gap_decomposition / reversal
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(scope="module")
+def closed_loop_state(tmp_path_factory):
+    """soysauce s1_base / cap_wk=800 / 配分 (0.10,0.45,0.45) で1周させた最終 state。
+    複数のテストで使い回す（headless 実行は重いので module scope で1回だけ回す）。
+    """
+    tmp_path = tmp_path_factory.mktemp("phase7a_loop")
+    model_dir = _copy_model(tmp_path, "soysauce-jpy-2027-alloc")
+    out_dir = str(tmp_path / "planning_state")
+    ppc_out = str(tmp_path / "ppc")
+
+    rc = run_planning_loop_main([
+        "--model-dir", model_dir, "--scenario", "s1_base", "--cap-wk", "800",
+        "--allocation", "0.10,0.45,0.45",
+        "--out-dir", out_dir, "--ppc-out", ppc_out, "--quiet",
+    ])
+    assert rc == 0
+
+    path = os.path.join(out_dir, "soysauce-jpy-2027-alloc", "A01.json")
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def test_plan_eval_uses_chosen_allocation(closed_loop_state):
+    """A5.1: --allocation を明示したとき、plan_eval.profit は P_opt ではなく
+    その配分自体の評価（(0.10,0.45,0.45) は格子点なので P_grid と一致）になること。"""
+    plan_eval = closed_loop_state["plan_eval"]
+    profit_levels = closed_loop_state["profit_levels"]
+
+    assert plan_eval["profit"] == pytest.approx(132_133_072.5, abs=1.0)
+    assert profit_levels["source"] == "manual"
+    # P_opt を流用していないことの直接証拠（P_opt はこれより高い値）
+    assert plan_eval["profit"] != pytest.approx(profit_levels["P_opt"], abs=1.0)
+
+
+def test_gap_decomposition_identity(closed_loop_state):
+    """A5.2（最重要）: total == quantity + fx_assumption + residual（±1円）。"""
+    gap = closed_loop_state["realized"]["gap_decomposition"]
+    assert gap is not None
+    assert gap["total"] == pytest.approx(
+        gap["quantity"] + gap["fx_assumption"] + gap["residual"], abs=1.0)
+    # 数量ハンドオフが厳密なので quantity=0（A2.5）
+    assert gap["quantity"] == pytest.approx(0.0, abs=1e-9)
+
+
+def test_no_gap_vs_plan_pct_key(closed_loop_state):
+    """A5.3: realized に gap_vs_plan_pct キーが存在しないこと（null でも残さない）。"""
+    assert "gap_vs_plan_pct" not in closed_loop_state["realized"]
+
+
+def test_reversal_populated(closed_loop_state):
+    """A5.5: soysauce（fx_usd=150）で reversal.boundary が 117.0 または 119.0。"""
+    reversal = closed_loop_state["reversal"]
+    assert reversal.get("boundary") in (117.0, 119.0)
+    assert reversal.get("axis") == "fx_usd"
+    assert reversal.get("current") == pytest.approx(150.0, abs=1e-9)
+
+
+def test_fx_effective_is_quantity_weighted(tmp_path):
+    """A5.4: 出荷が偏る合成ケースで、単純平均とは異なる値になること。"""
+    model_dir = tmp_path / "fx_synthetic"
+    model_dir.mkdir()
+    with open(model_dir / "ppc_market_price.csv", "w", encoding="utf-8", newline="") as f:
+        f.write("market_node,product_id,week,market_price,currency\n")
+        f.write("Leaf_US,P1,2027-W01,100,USD\n")
+    with open(model_dir / "ppc_fx_rate.csv", "w", encoding="utf-8", newline="") as f:
+        f.write("week,currency,base_currency,rate\n")
+        f.write("2027-W01,USD,JPY,150.0\n")
+        f.write("2027-W02,USD,JPY,200.0\n")
+
+    simple_avg = (150.0 + 200.0) / 2.0
+
+    weekly_front = {"P1": {"Leaf_US": {"2027-W01": 100, "2027-W02": 1}}}
+    fx_front = planning_state.fx_effective_from_weekly(str(model_dir), weekly_front)["USD"]
+
+    weekly_back = {"P1": {"Leaf_US": {"2027-W01": 1, "2027-W02": 100}}}
+    fx_back = planning_state.fx_effective_from_weekly(str(model_dir), weekly_back)["USD"]
+
+    assert fx_front == pytest.approx(150.0, abs=1.0)
+    assert fx_back == pytest.approx(200.0, abs=1.0)
+    assert fx_front != pytest.approx(simple_avg, abs=1.0)
+    assert fx_back != pytest.approx(simple_avg, abs=1.0)
+    assert fx_front != pytest.approx(fx_back, abs=1.0)
 
 
 if __name__ == "__main__":
