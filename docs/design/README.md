@@ -35,6 +35,12 @@ push_production_lead_time.md
 planning_warmup_and_reporting_horizon.md
   Detailed design for planning warm-up periods and the separation of the
   Planning Horizon from the Management Reporting Horizon.
+
+wom_model_typology.md
+  How to classify a WOM allocation case by the structure of its profit function
+  (linear / non-concave / fixed-charge), using structural_optimality_gap as the
+  measuring instrument. Records measured results per case and the vocabulary of
+  mechanisms that make the profit function non-linear in the allocation.
 ```
 
 ## Relationship among the planning design documents
