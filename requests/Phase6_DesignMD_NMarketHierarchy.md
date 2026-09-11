@@ -260,7 +260,19 @@ def markets_of(blocks: Dict[str, CostBlock]) -> Tuple[str, ...]:
 
 **順序の決定則**は明示する。既定は `ga_market_aggregation.csv` の記載順、無い場合は辞書のキー順（Python 3.7+ の挿入順）。**アルファベット順にはしない**——現行の `("JP","US","EU")` がアルファベット順ではないため、既存の回帰値が壊れる。
 
-**(b) `simplex_grid()` を N 次元へ**
+**実装上の注記（rev.3・実測で確認）**: 上の2つ——「CSV の記載順」と「辞書のキー順」——は**元から同じもの**になる。`derive_cost_blocks()` が `by_market` を `defaultdict` に CSV の行順で積み、その `items()` 順で `result` を組んでいるため、返る dict のキー順が `ga_market_aggregation.csv` の `market_group` 初出順と一致する。
+
+```
+CSV 行順             : JP, US/US_W, US/US_E, EU/FR, EU/BE, EU/NL
+market_group の初出順 : JP, US, EU
+derive_cost_blocks() : list(blocks.keys()) == ['JP', 'US', 'EU']   ← MARKETS と完全一致
+```
+
+**したがって `markets_of()` は `tuple(blocks.keys())` の1行でよく、`grid.py` に CSV のファイル I/O を持ち込む必要はない。**
+
+**副作用（rev.3 で追記）**: `markets_of()` 化により、**単位マージンが同値のときの並び順**が「`("JP","US","EU")` 固定」から「`blocks` のキー順」に変わる。影響するのは `analytics.py:33`（`market_ranking()`）・`merit_order.py:85,291`（Merit Order で積む順）・`regime_map.py:119`（レジームのラベル文字列）の3箇所である。soysauce では両者が一致するため**既存の回帰値は1つも変わらない**が、新しいケースで同値が起きたときに「CSV の記載順に従う」ことになる点を、**仕様として docstring に明記する**こと。暗黙にしない。
+
+**(b) `simplex_grid()` を N 次元へ**（**rev.3 で実装方式を確定**）
 
 ```python
 def simplex_grid(delta: float = 0.05, n_dim: int = 3) -> List[Tuple[float, ...]]:
@@ -271,7 +283,46 @@ def simplex_grid(delta: float = 0.05, n_dim: int = 3) -> List[Tuple[float, ...]]
     """
 ```
 
-再帰または `itertools.combinations_with_replacement` で実装する。いずれにせよ **n_dim=3 での点列一致がテストで担保**されること。
+**実装は再帰で書く。`itertools.combinations_with_replacement` は使えない。**
+
+rev.2 までは「再帰または `itertools.combinations_with_replacement` で実装する」としていたが、231点を実際に照合したところ、**後者は集合は同じで順序が異なる**ことが分かった。上の絶対条件を満たすのは再帰版だけである。
+
+```
+現行の二重ループ                          : 231点
+itertools.combinations_with_replacement : 231点（集合は同じ、**順序が異なる**）
+再帰版                                    : 231点（**値も順序も完全一致**）
+```
+
+確定した実装方式:
+
+```python
+def simplex_grid(delta: float = 0.05, n_dim: int = 3) -> List[Tuple[float, ...]]:
+    if n_dim < 2:
+        raise ValueError(f"n_dim must be >= 2, got {n_dim}")
+    n = int(round(1.0 / delta))
+    pts: List[Tuple[float, ...]] = []
+    idx = [0] * (n_dim - 1)
+
+    def rec(k: int, remaining: int) -> None:
+        if k == n_dim - 1:
+            # 第0成分は残余（現行実装で x_JP が残余であるのと同じ）
+            pts.append(tuple([remaining / n] + [v / n for v in idx]))
+            return
+        for v in range(remaining + 1):
+            idx[k] = v
+            rec(k + 1, remaining - v)
+
+    rec(0, n)
+    return pts
+```
+
+`n_dim=3` のとき `idx = [i, j]` で外側ループが `i` 昇順・内側が `j` 昇順、第0成分が `(n − i − j)/n` となり、現行の二重ループと同じ走査になる。**全231点での完全一致を確認済み。**
+
+**座標系の規約**: 現行は `x_JP` が残余（`1 − x_US − x_EU`）で、地図の軸は `X = x_US`, `Y = x_EU` である。N次元化してもこの規約を維持し、**`markets_of(blocks)` の先頭の市場が残余**になる。
+
+**再帰深さ**は `n_dim − 1`（N=21 でも20）なので Python の再帰上限には当たらない。**点数のほうが先に破綻する**（→ (c)）。
+
+いずれにせよ **n_dim=3 での点列一致がテストで担保**されること（§7.2 のテスト8）。
 
 **(c) 爆発の防止（必須）**
 
@@ -530,5 +581,6 @@ wom/allocation/hierarchical_simplex.py   ← 新規
 
 ## 改版履歴
 
+- 2026-09-11 rev.3 — **ステップ 6-2 の Request Letter 執筆時の実測**（`requests/Phase6-2_RequestLetter_to_CodeKun.md`、commit `1ecf769`）を受けた更新。§4.3(b) の実装方式を**再帰に確定**：rev.2 までの「再帰または `itertools.combinations_with_replacement`」という記述は誤りで、**後者は231点の集合は同じだが順序が異なる**ため、後方互換の絶対条件（231点の順序不変）を満たさない。確定した再帰実装を全文で記載し、現行の二重ループと全231点で一致することを確認した。§4.3(a) に2点追記：(1) 「CSV の記載順」と「辞書のキー順」は `derive_cost_blocks()` の構造上**元から同じもの**であり、`markets_of()` は `tuple(blocks.keys())` の1行でよい（`grid.py` に CSV の I/O を持ち込まない）、(2) `markets_of()` 化の**副作用として単位マージン同値時の tie-break が変わる**（soysauce では回帰値不変だが、仕様として docstring に明記する）
 - 2026-09-11 rev.2 — **ステップ 6-1 実装完了**（377件全PASS）を受けた更新。§3.3 を全面改訂：rev.1 の「解いてから整合性チェック」方式は**閾値が binding な解を取り逃す**ため誤りで、閾値を**上下界の制約として先に持たせる**方式に差し替えた（実装仕様は Request Letter V1.2）。§3.5 の回帰値を実測値に更新：`true_optimum = 103,891,296.0`（配分 JP=0/US=35,176/EU=16,824）、`structural_optimality_gap = 10,066,596`、`grid_resolution_error = 338,496`、`residual_coverage = 0.966`。**rev.1 の手計算値 103,881,758 は丸め誤差ではなく最適化の誤りだった**ことを、差 +9,538.5 の1円までの分解とともに記録
 - 2026-09-09 rev.1 — 初版。大杉さんからの問い「直角三角図のN階層化の優先度は低いのか」を受けて、Phase 6 バックログ5項目の整理を見直した。**階層化は4番目の可視化手法ではなく N市場化そのものの実現手段である**（`oil-global-2027` の21市場は平坦格子で1,378億点、階層化で3,003点）、および**4枚の地図のうち地形＝ロバストネスを担うのは第1の地図だけである**という2点から、優先度を HIGH に引き上げ、`true_optimum` 実計算・次元の一般化・階層化単体格子を「N市場化」という1つの Phase の3ステップとして再構成した。`true_optimum` の方式は CLAUDE.md L1798-1816 で確定済みのものを踏襲し、**整合性チェック**を設計の要として明記。用語の落とし穴（`hierarchical_triangulation` が配分空間と目的空間の両方を指している）を §2 で解消し、配分空間側を `hierarchical_simplex` に確定。
