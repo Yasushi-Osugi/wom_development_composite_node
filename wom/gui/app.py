@@ -40,6 +40,7 @@ from wom.engine.simulator import WOMSimulator
 from wom.engine.scenario import ScenarioManager
 from wom.reports.output import write_csv, write_excel
 from wom.engine.management import ManagementAnalysisResult
+from wom.gui.allocation_panel import AllocationPanel   # Phase 8-1: S1 Allocate タブ
 
 # NetworkX – optional (graceful fallback if not installed)
 try:
@@ -4673,6 +4674,10 @@ class WOMApp(tk.Tk):
         style.configure("TNotebook.Tab",   background=BG_MID,  foreground=FG_WHITE,
                         font=("Segoe UI", 9), padding=[10, 4])
         style.map("TNotebook.Tab", background=[("selected", BG_LIGHT)])
+
+        # Phase 8-1: S1 Allocate（第1層・配分）。既存9タブは無変更、10枚目として追加。
+        self._alloc_panel = AllocationPanel(nb, app_ref=self)
+        nb.add(self._alloc_panel, text="  \U0001f9ed Allocate  ")   # 🧭（絵文字は要相談・大杉さん確認後に変更可）
 
         self._chart_panel = ChartPanel(nb)
         nb.add(self._chart_panel, text="  \U0001f4c8 Charts  ")
