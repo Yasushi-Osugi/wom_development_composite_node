@@ -99,7 +99,13 @@ WOMは、**「週次」というリズムで経営の意思決定とサプライ
 
 ### 前提
 - Python 3.10+
-- 本リポジトリをclone済み（`wom-v1r0m5` ブランチを推奨・最新機能を含む）
+- 本リポジトリをclone済み（**`wom-v1r4m0` ブランチを推奨**・最新機能を含む）
+
+```bash
+git clone https://github.com/Yasushi-Osugi/wom_v1r0m0.git
+cd wom_v1r0m0
+git checkout wom-v1r4m0
+```
 
 ### 1) 依存パッケージのインストール
 
@@ -131,6 +137,8 @@ python -m main --cli --start-week 2027-W01 --num-weeks 156
 | `iphone-2027-2029` | グローバル製造業 | Multi-MOM配分、PUSH/PULLブレークポイント（DBR設計） |
 | `Cookie-jp-2026` | 食品（国内生産 vs 輸入） | Landed Cost比較、複数段DADチェーンでの安全在庫バッファ最適配置 |
 | `ev-thailand-2026` / `ev-europe-2026` | 自動車（現地生産 vs 越境輸入） | 複数Tier-1サプライヤーのコスト集計、拠点別損益（Node P&L） |
+| `soysauce-jpy-2027-alloc` | 調味料（3市場へのグローバル配分） | **利益地形図**（231点の配分スキャン）、メリットオーダー曲線、レジーム地図、関税の崖による構造的な取りこぼしの検出。A系統（年次の市場配分）を扱う唯一のケースで、`ga_*.csv` を持つ |
+| `india-ghee-2026` / `oil-global-2027` / `apparel-us-2026` / `smartx-2027-2029` ほか | 各種 | `data/sample/` 配下に全18ケース。上記以外も同じ手順でロードできる |
 
 各モデルの背景・分析結果は note記事で解説しています（下記「関連記事」参照）。
 
@@ -157,6 +165,7 @@ WOMの設計思想や、実際の業界モデルを使った分析事例を記�
 | 第2回 | スマートフォンの例 |https://note.com/osuosu1123/n/nc88e8cd0192e |
 | 第3回 | クッキー事例（国内生産 vs 輸入、Landed Cost） | https://note.com/osuosu1123/n/n11c413ea31d5 |
 | 第4回 | 現地生産 vs 越境輸入 — 欧州EV市場の例 | https://note.com/osuosu1123/n/n665ddf3b2609 |
+| 最新 | **利益地形図で読み解く事業計画**（v1r4m0：配分の利益地形、メリットオーダー、レジーム地図、関税の崖） | https://note.com/osuosu1123/n/nde1d9b686a6e |
 
 ---
 
