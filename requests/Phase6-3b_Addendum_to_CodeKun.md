@@ -266,3 +266,94 @@ A3 は数値を都合よく変える作業ではない。**`uom` 列がいま事
 
 **4. 数値が合わなかったら、合わせにいかず報告すること。**
 A6 の実測値は Code君の `hierarchical_simplex.py` に A1 の修正だけを当てて Claude君が測ったものである。A2/A4 の実装次第で細部が動く可能性はあるが、**木の形（10ノード・1,050点）は動かないはず**である。ここが違ったら先に相談すること。
+
+---
+
+## A8（2026-09-11 追記・**A5 / A6 の訂正**）— CSV は21行のままにする
+
+**Code君の指摘が正しい。A7.2 のテストコードは A5 と矛盾していた。** A5 が「生成後の CSV は15行になる」と指示している以上、その CSV に対する `derive_cost_blocks(OIL_DIR)`（`uom` 未指定）は落ちようがない。`KL100KBBL` の行がもう無いからである。
+
+**ただし、直すべきはテストではなく A5 のほうだった。**
+
+### 何を間違えたか
+
+`derive_cost_blocks(uom=...)` は `sku_master.csv` の `uom` を `leaf_out → product_name → sku_id` と辿って解決している。**`ga_market_aggregation.csv` に `uom` 列は要らないし、行を削る必要もない。** それなのに A5 で「生成時に絞り込む」と書いたため、絞り込みが**2箇所（生成時と読み取り時）**に分かれ、生成時のほうが読み取り時のガードを無効化していた。
+
+### 訂正
+
+**`ga_market_aggregation.csv` は21行すべてを持つ。絞り込みは `derive_cost_blocks(uom=...)` の1箇所だけで行う。**
+
+- `tools/gen_oil_ga_aggregation.py` の `--uom` は**既定を「絞り込まない」に変える**（全行を書く）。`--uom KL` を明示したときだけ絞る（他用途のために残す）
+- `note` 列の `uom=<値>` はそのまま残す（人が CSV を読んだときに単位が分かる）
+- `data/sample/oil-global-2027/ga_market_aggregation.csv` を**21行で再生成**する
+
+### なぜこちらが良いか
+
+1. **ガードが実データの上で効く。** `derive_cost_blocks(OIL_DIR)` が本当に落ちる。A7.2 に `tmp_path` の合成 CSV が要らなくなる
+2. **データが完全に残る。** 21市場とその単位が CSV に記録される。生成時に削ると「なぜ6行足りないのか」が CSV から読めない
+3. **タンカー単位の配分問題も解ける。** `derive_cost_blocks(OIL_DIR, uom="KL100KBBL")` が6市場を返す。再生成が要らない
+4. **単位の分岐が1箇所に集まる。** 仕様書 v0r5 §2.6 は「1回の配分問題に混ぜることを禁止する」であって「データから消す」ではない
+
+### 実測（Claude君が21行版で確認済み）
+
+```
+derive_cost_blocks(OIL_DIR)            -> ValueError
+  "model has markets in 2 different lot units ['KL', 'KL100KBBL'];
+   an allocation problem must use a single unit (spec v0r5 §2.4).
+   Pass uom='KL' (15 markets) or uom='KL100KBBL' (6 markets)."
+
+derive_cost_blocks(OIL_DIR, uom="KL")         -> 15市場
+  build_hierarchy  -> 10ノード
+  scan_hierarchical(cap_wk=800) -> 1,050点  profit = 20,885,805,337.0
+  hierarchy_gap    -> 558,359,363.0   P_flat = None
+
+derive_cost_blocks(OIL_DIR, uom="KL100KBBL")  -> 6市場
+  build_hierarchy  -> 3ノード
+  scan_hierarchical(cap_wk=8) -> 483点   （タンカー単位の配分問題も走る）
+```
+
+**15市場側の数値は15行版とまったく同じである。** 行を残しても結果は1円も変わらない。
+
+### A7.2 の書き直し
+
+`tmp_path` の合成 CSV は不要になる。実データに対して直接書けること。
+
+```python
+def test_oil_uom_split_and_hierarchy():
+    # uom 未指定 -> 2種類あることを理由に落ちる（実データで効く）
+    with pytest.raises(ValueError, match="KL100KBBL"):
+        derive_cost_blocks(OIL_DIR)
+
+    blocks, tp = derive_cost_blocks(OIL_DIR, uom="KL")
+    assert len(blocks) == 15
+    tree = build_hierarchy(blocks, OIL_DIR)
+    r = scan_hierarchical(blocks, tree, tp, SC_OIL, cap_wk=800.0)
+    assert r["nodes"] == 10 and r["points"] == 1_050
+    assert r["profit"] == pytest.approx(20_885_805_337.0, abs=1.0)
+
+    g = hierarchy_gap(blocks, tree, tp, SC_OIL, cap_wk=800.0)
+    assert g["P_flat"] is None
+    assert g["hierarchy_gap"] == pytest.approx(558_359_363.0, abs=1.0)
+
+    # タンカー単位の6市場も、別の配分問題として成立する
+    b6, tp6 = derive_cost_blocks(OIL_DIR, uom="KL100KBBL")
+    assert len(b6) == 6
+    assert scan_hierarchical(b6, build_hierarchy(b6, OIL_DIR), tp6,
+                             SC_OIL, cap_wk=8.0)["nodes"] == 3
+```
+
+### エラー文言について（Code君の判断を採用）
+
+A7.1 の `match="mixed currency"` を実装の文言（`"mix currencies"`）に合わせて `match="currenc"` にした判断は**正しい**。Request Letter の疑似コードは文言まで指定したものではなく、既存実装の文言を維持するほうがよい。
+
+### 成功基準（更新）
+
+- [ ] `ga_market_aggregation.csv` が **21行**
+- [ ] `derive_cost_blocks(OIL_DIR)` が実データで `ValueError`
+- [ ] `uom="KL"` → 15市場・10ノード・1,050点・`profit = 20,885,805,337.0`
+- [ ] `uom="KL100KBBL"` → 6市場・3ノード
+- [ ] **398件全PASS**（件数は変わらない。A7.2 の中身が入れ替わるだけ）
+
+### 申し送り
+
+**A5 も Claude君の指示ミスである。** 「絞り込みをどこで行うか」を決めきらないまま、生成時と読み取り時の両方に書いてしまった。**フィルタは1箇所にしか置かない**——2箇所に置くと、上流のフィルタが下流のガードを黙って無効化する。今回まさにそれが起きた。
