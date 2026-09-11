@@ -206,19 +206,23 @@ def test_structural_residual_is_negative(s9_blocks):
 
 
 def test_residual_underestimates_true_gap(s9_blocks):
-    """真の連続最適 103,881,758（手計算・§2.3 検証値）に対し、|residual| が
-    構造由来の取りこぼし 10,057,058 の下界であること（96.7%）"""
+    """真の連続最適 103,891,296.0（Phase 6-1 で true_continuous_optimum() が実計算した
+    回帰値）に対し、|residual| が構造由来の取りこぼし 10,066,596 の下界であること（96.6%）"""
     blocks, tp, sc, cap_wk = s9_blocks
     mo = build_allocation_merit_order(blocks, sc, cap_wk, transfer_price_usd=tp)
     surface = scan_surface(blocks, tp, sc, cap_wk)
     cmp = compare_with_grid(mo, surface)
 
-    true_optimum_profit = 103_881_758.0  # 設計書§2.3の手計算値（本コードでは計算しない）
+    # true_continuous_optimum() を実計算で呼ぶ（ハードコードしない）。
+    # ケースが変わっても自動追従する。
+    true_optimum = true_continuous_optimum(blocks, sc, cap_wk, transfer_price_usd=tp)
+    true_optimum_profit = true_optimum["profit"]
+    assert true_optimum_profit == pytest.approx(103_891_296.0, abs=1.0)
     true_structural_gap = true_optimum_profit - mo["profit"]
-    assert true_structural_gap == pytest.approx(10_057_058.0, abs=1.0)
+    assert true_structural_gap == pytest.approx(10_066_596.0, abs=1.0)
 
     ratio = abs(cmp["structural_residual"]) / true_structural_gap
-    assert ratio == pytest.approx(0.967, abs=0.005)
+    assert ratio == pytest.approx(0.966, abs=0.005)
     assert abs(cmp["structural_residual"]) <= true_structural_gap  # 下界であること
 
 
@@ -261,17 +265,17 @@ def test_scenario_csv_missing_columns_ok(tmp_path):
 # 正典: requests/Phase6-1_RequestLetter_to_CodeKun.md V4
 # ---------------------------------------------------------------------------
 
-def test_true_optimum_s9_matches_design_value(s9_blocks):
-    """s9_fta_cliff の真の連続最適が設計書§2.3の手計算値 103,881,758.0 に近いこと。
+def test_true_optimum_s9_regression(s9_blocks):
+    """s9_fta_cliff の真の連続最適 103,891,296.0 JPY（Phase 6-1 で実装確定した回帰値）。
 
-    許容差は±10,000 JPYとする（Request Letter V4.1）。設計書の値は需要按分を
-    概算で追った手計算であり、derive_cost_blocks() の実際の需要量とは末尾が
-    一致しない可能性があるため、厳密一致は要求しない。
+    設計書§2.3の手計算値 103,881,758.0 は誤りだった（配分 JP=7/US=35,168/EU=16,825 は
+    最適ではなく、US +8 lot・JP -7 lot で +9,538.5 円改善できる）。この実装が正しい
+    最適点 JP=0/US=35,176/EU=16,824 を検出したことで判明した（Request Letter V4.1 追記）。
     """
     blocks, tp, sc, cap_wk = s9_blocks
     result = true_continuous_optimum(blocks, sc, cap_wk, transfer_price_usd=tp)
 
-    assert result["profit"] == pytest.approx(103_881_758.0, abs=10_000.0)
+    assert result["profit"] == pytest.approx(103_891_296.0, abs=1.0)
     assert "US" in result["active_cliffs"]
     assert result["idle"] == pytest.approx(0.0, abs=1e-6)
 
