@@ -19,7 +19,7 @@ Phase 4 / 5 で、配分問題を「メリットオーダー（貪欲）」「23
 
 - `wom/allocation/grid.py:24` — `MARKETS: Tuple[str, str, str] = ("JP", "US", "EU")`
 - `simplex_grid()` — 二重ループで3次元単体を生成（次元がコードに埋まっている）
-- `tools/demo_allocation_nonconcave.py` — `true_optimum = 103_881_758.0`（手計算値のハードコード）
+- `tools/demo_allocation_nonconcave.py` — `true_optimum = 103_881_758.0`（手計算値のハードコード）**→ 6-1 で撤去済み**
 
 Phase 6 は、この3つを順に外す。
 
@@ -125,19 +125,31 @@ true_optimum = 103_881_758.0   # 設計書 §2.3 の手計算値。実行時に�
 
 計算量は `2^|K| × O(N log N)`。実務ケースで |K| は高々2〜3なので、実質コストはゼロに近い。
 
-### 3.3 整合性チェック（**この設計の要**）
+### 3.3 閾値の扱い（**この設計の要**・rev.2 で全面改訂）
 
-ステップ3で得た配分は、**ステップ2で置いた仮定と矛盾していないか**を必ず検査する。
+**rev.1 の記述は誤りだったため、全面的に差し替える。** rev.1 では「税率を固定して解いてから、結果が仮定と矛盾していないか検査する」としていたが、この方式は**閾値が binding になる解を取り逃す**。
+
+「US が特恵を発動している」ケースの真の最適は、しばしば「**US をちょうど閾値まで積む**」点にある。税率だけ固定して素直に貪欲に解くと、US の順位によっては閾値未満で止まり、そのケースを「仮定と矛盾」として棄却してしまう。本来そのケースで最適だった解が候補から消える。
+
+**正しい方式は、閾値を配分量の上下界として先に制約に持たせることである。**
 
 ```
-ケース「US が特恵を発動している」と仮定して解いた結果、
-  q[US] >= preferential_threshold_lot[US]  … 整合  → 候補に残す
-  q[US] <  preferential_threshold_lot[US]  … 矛盾  → このケースは棄却
+ケース S（S に属する市場が特恵を発動していると仮定）について：
+
+  m ∈ S       : rate  = 特恵税率
+                lower = preferential_threshold_lot     ← 下界制約
+                upper = demand_qty
+  m ∈ K \ S   : rate  = 基本税率
+                lower = 0
+                upper = min(demand_qty, threshold)     ← 上界制約
+  m ∉ K       : rate  = 基本税率, lower = 0, upper = demand_qty
 ```
 
-逆向きも同様に、「US が発動していない」と仮定したケースでは `q[US] < threshold` を要求する。
+こうすると、解いた結果は**構造的に仮定と矛盾し得ない**（`m ∈ S` なら `q[m] ≥ threshold`、`m ∈ K\S` なら `q[m] ≤ threshold` が制約により保証される）。事後の整合性チェックそのものが不要になる。棄却するのは `Σ lower > cap` で実行不可能なケースのみ。
 
-**このチェックを省くと、実現不可能な配分を「真の最適」として返す。** Phase 4 §3.5 で一度やった「丸め方向での帰属判定」と同じ種類の失敗（存在しない点を参照点にする）なので、明示的にテストを置く。
+**境界（`q == threshold`）の扱い**: 発動していないケースの上界に閉区間 `threshold` を使ってよい。ちょうど閾値の点は本来「発動する」側に属するが、その点は発動ケースでも評価され、特恵税率のほうが利益が高いため、最大値を取る段階で正しい側が選ばれる。取りこぼしは生じない。
+
+実装仕様は `requests/Phase6-1_RequestLetter_to_CodeKun.md` V1.2 に、この方式で記述してある（Code君はそちらに従って実装済み）。
 
 ### 3.4 実装位置と返却フィールド
 
@@ -167,31 +179,36 @@ def true_continuous_optimum(blocks, sc, cap, transfer_price_usd) -> dict:
 | `grid_resolution_error` | `P_opt − P_grid` | 新規。**格子解像度の誤差** |
 | `residual_coverage` | `abs(structural_residual) / structural_optimality_gap` | 新規。下界が本体を何%覆っているか |
 
-### 3.5 回帰値（**実装前に確定している検算値**）
+### 3.5 回帰値（**実装で確定・rev.2 で更新**）
 
-soysauce `s9_fta_cliff` で、上記方式を手計算した結果が CLAUDE.md L1812 に記録されている。
-
-```
-ケースA（特恵 未発動）: 35,175 × 1,831.5 + 16,825 × 1,747.5 = 93,824,700.0
-                        ← ① メリットオーダーの実測値と厳密一致
-ケースB（特恵 発動）  : ≈ 35,176 × 2,077.5 + 16,824 × 1,831.5 ≈ 103.89M
-                        ← 設計書 §2.3 の 103,881,758.0 とほぼ一致
-```
-
-実装後、以下が成立すること。
+soysauce `s9_fta_cliff` の実測値。**2026-09-11 の実装（Code君）で確定した。**
 
 ```
-true_optimum              = 103,881,758        （設計書 §2.3 と一致、許容差 ±1 JPY）
-structural_optimality_gap =  10,057,058
-grid_resolution_error     =     328,958
-|structural_residual|     =   9,728,100
-residual_coverage         =       0.967
-恒等式: |structural_residual| + grid_resolution_error = structural_optimality_gap
+true_optimum              = 103,891,296.0    配分 JP=0 / US=35,176 / EU=16,824
+structural_optimality_gap =  10,066,596.0
+grid_resolution_error      =     338,496.0
+|structural_residual|      =   9,728,100.0   （実装済み・変更なし）
+residual_coverage          =       0.966
+恒等式: 9,728,100 + 338,496 = 10,066,596
 ```
 
-`s1_base`（線形）では `structural_optimality_gap = 0`、`residual_coverage` は 0/0 となるため **None を返す**（ゼロ除算を起こさない）。
+**設計書 rev.1 が記載していた手計算値 103,881,758 は誤りだった（記録）。**
 
----
+rev.1 は真の最適配分を `JP=7 / US=35,168 / EU=16,825` としていたが、これは最適点ではない。単位マージン 2,077.5 の US の需要を 8 lot 残したまま、最もマージンの低い JP（750）に 7 lot 配っており、厳密に劣る。差は1円まで分解できる。
+
+```
+US  +8 lot × 2,077.5 = +16,620.0
+EU  −1 lot × 1,831.5 =  −1,831.5
+JP  −7 lot ×   750.0 =  −5,250.0
+                       ──────────
+                        +9,538.5     ← 103,891,296.0 − 103,881,757.5
+```
+
+**丸め誤差ではなく、手計算側の最適化の誤りである。** 実装がそれを検出した。Request Letter の「手計算値に実装を合わせない」という指示が機能した事例として記録しておく。
+
+ケースA（特恵 未発動）の `35,175 × 1,831.5 + 16,825 × 1,747.5 = 93,824,700.0` は正しく、①メリットオーダーの実測値と厳密一致する（V4.2 で厳密テスト済み）。
+
+`s1_base`（線形）では `structural_optimality_gap = 0`、`residual_coverage` は 0/0 となるため **None を返す**（ゼロ除算を起こさない）。また cliff が無いため `true_optimum == P_greedy == 135,529,822.5` が厳密に成立する。
 
 ## 4. ステップ 6-2 — 次元の一般化
 
@@ -437,7 +454,7 @@ wom/allocation/hierarchical_simplex.py   ← 新規
 
 ### 7.1 ステップ 6-1（真の最適、7件）
 
-1. `test_true_optimum_s9_matches_design_value` — `s9_fta_cliff` で `103,881,758`（±1 JPY）
+1. `test_true_optimum_s9_matches_design_value` — `s9_fta_cliff` で `103,891,296.0`（±1 JPY・実装で確定した回帰値）
 2. `test_true_optimum_case_a_matches_greedy` — 特恵未発動ケースが `93,824,700.0` と厳密一致
 3. `test_true_optimum_rejects_infeasible_case` — 閾値を満たさない仮定のケースが棄却されること（**最重要**）
 4. `test_structural_optimality_gap_identity` — `|structural_residual| + grid_resolution_error == structural_optimality_gap`
@@ -473,7 +490,7 @@ wom/allocation/hierarchical_simplex.py   ← 新規
 
 ## 8. 成功基準
 
-- [ ] `true_optimum` が実行時に計算され、`s9_fta_cliff` で `103,881,758`（±1 JPY）を返す
+- [x] `true_optimum` が実行時に計算され、`s9_fta_cliff` で `103,891,296.0`（±1 JPY）を返す
 - [ ] 整合性チェックが機能し、実現不可能なケースを棄却する
 - [ ] `simplex_grid(0.05)` の 231点が**順序まで**不変
 - [ ] N=6（53,130点）が現実的な時間で走り、N=7 は**計算前に**止まる
@@ -513,4 +530,5 @@ wom/allocation/hierarchical_simplex.py   ← 新規
 
 ## 改版履歴
 
+- 2026-09-11 rev.2 — **ステップ 6-1 実装完了**（377件全PASS）を受けた更新。§3.3 を全面改訂：rev.1 の「解いてから整合性チェック」方式は**閾値が binding な解を取り逃す**ため誤りで、閾値を**上下界の制約として先に持たせる**方式に差し替えた（実装仕様は Request Letter V1.2）。§3.5 の回帰値を実測値に更新：`true_optimum = 103,891,296.0`（配分 JP=0/US=35,176/EU=16,824）、`structural_optimality_gap = 10,066,596`、`grid_resolution_error = 338,496`、`residual_coverage = 0.966`。**rev.1 の手計算値 103,881,758 は丸め誤差ではなく最適化の誤りだった**ことを、差 +9,538.5 の1円までの分解とともに記録
 - 2026-09-09 rev.1 — 初版。大杉さんからの問い「直角三角図のN階層化の優先度は低いのか」を受けて、Phase 6 バックログ5項目の整理を見直した。**階層化は4番目の可視化手法ではなく N市場化そのものの実現手段である**（`oil-global-2027` の21市場は平坦格子で1,378億点、階層化で3,003点）、および**4枚の地図のうち地形＝ロバストネスを担うのは第1の地図だけである**という2点から、優先度を HIGH に引き上げ、`true_optimum` 実計算・次元の一般化・階層化単体格子を「N市場化」という1つの Phase の3ステップとして再構成した。`true_optimum` の方式は CLAUDE.md L1798-1816 で確定済みのものを踏襲し、**整合性チェック**を設計の要として明記。用語の落とし穴（`hierarchical_triangulation` が配分空間と目的空間の両方を指している）を §2 で解消し、配分空間側を `hierarchical_simplex` に確定。

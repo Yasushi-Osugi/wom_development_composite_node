@@ -17,6 +17,8 @@ A系統（`ask_global_allocation`・年次「どの市場に何個供給する�
 """
 from __future__ import annotations
 
+import itertools
+from dataclasses import replace
 from typing import Dict, List, Optional
 
 from wom.allocation.transmission import (
@@ -168,11 +170,179 @@ def build_allocation_merit_order(
     }
 
 
+def true_continuous_optimum(
+    blocks: Dict[str, CostBlock],
+    sc: Scenario,
+    cap_wk: float,
+    *,
+    transfer_price_usd: float = DEFAULT_TRANSFER_PRICE_USD,
+    weeks: int = WEEKS,
+    _return_all_cases: bool = False,
+) -> dict:
+    """cliff（数量依存関税）の on/off を全列挙し、各ケースを線形問題として
+    厳密に解いて、真の連続最適解を返す（Phase 6-1）。
+
+    利益関数は cliff の on/off を固定すれば区間ごとに線形・分離可能になる。
+    したがって「どの市場が特恵を発動しているか」の組合せを全列挙し、各組合せ
+    の中で厳密解を求め、その最大値が真の連続最適である。
+
+    正典: requests/Phase6-1_RequestLetter_to_CodeKun.md V1（設計書
+    requests/Phase6_DesignMD_NMarketHierarchy.md §3 の実装仕様）。
+
+    **§3.3 との相違（重要）**: 設計書 §3.3 は「税率を固定して解いてから、
+    結果が閾値と矛盾しないか事後チェックする」方式を示していたが、この方式は
+    閾値が binding な解（＝ちょうど閾値まで積むのが最適な解）を取り逃す欠陥が
+    ある。本実装は Request Letter V1.2 の方式（**閾値を配分量の下限/上限として
+    先に制約に持たせてから解く**）に従う。この方式では `S` の仮定と解の間に
+    構造的な矛盾が起こり得ないため、事後の整合性チェックは不要（かつ存在しない）。
+    大杉さん確認済み：「§3.3 は Request Letter V1.2 が優先」（2026-09-11）。
+
+    Args:
+        blocks: 市場 -> CostBlock
+        sc: 外部環境シナリオ
+        cap_wk: 週次能力（lot/週）
+        transfer_price_usd: 移転価格（USD）
+        weeks: 計画期間（週数、既定 104）
+        _return_all_cases: テスト用の内部引数（既定 False）。True のとき
+            戻り値に "_all_cases"（全ケースの active_cliffs/profit/feasible の
+            リスト）を追加する。公開 API の一部ではない。
+
+    Returns:
+        {
+            "profit": 103881758.0,              # 真の連続最適利益（P_opt）
+            "x": {"JP": 0.0001, "US": 0.6763, "EU": 0.3236},  # 配分比率（q / cap）
+            "q": {"JP": 7.0, "US": 35168.0, "EU": 16825.0},   # 配分量（lot）
+            "active_cliffs": ["US"],             # 最適ケースで発動している特恵（MARKETS 順）
+            "cases_evaluated": 2,                # 列挙したケース数（= 2^|K|）
+            "cases_feasible": 2,                 # 手順4(a) を通ったケース数
+            "idle": 0.0,                         # cap − Σq
+        }
+
+    Raises:
+        ValueError: cliff を持つ市場が12を超える場合（2^13 通り以上は実務ケースとして
+            想定しない）。
+    """
+    cap = cap_wk * weeks
+
+    # 手順1: cliff を持つ市場の集合 K（MARKETS の順序を維持）
+    K = [m for m in MARKETS
+         if blocks[m].tariff_rate_preferential is not None
+         and blocks[m].preferential_threshold_lot is not None]
+
+    if len(K) > 12:
+        raise ValueError(
+            f"true_continuous_optimum(): cliff を持つ市場が多すぎます "
+            f"(len(K)={len(K)} > 12)。2^{len(K)} 通りの列挙は実務時間で終わりません。"
+        )
+
+    cases_evaluated = 0
+    cases_feasible = 0
+    best_case: Optional[dict] = None
+    all_cases: List[dict] = []
+
+    # 手順2: 部分集合 S ⊆ K を |S|=0,1,...,|K| の順に全列挙する（決定的な順序）
+    for r in range(len(K) + 1):
+        for S in itertools.combinations(K, r):
+            cases_evaluated += 1
+            in_s = set(S)
+
+            # 手順3: 下界・上界・税率を固定する（設計の要。§3.3 ではなく
+            # Request Letter V1.2 に従う——事後チェックではなく先に制約として持たせる）
+            rate: Dict[str, float] = {}
+            lower: Dict[str, float] = {}
+            upper: Dict[str, float] = {}
+            for m in MARKETS:
+                cb = blocks[m]
+                if m in in_s:                        # 特恵を発動していると仮定
+                    rate[m] = cb.tariff_rate_preferential
+                    lower[m] = cb.preferential_threshold_lot
+                    upper[m] = float(cb.demand_qty)
+                elif m in K:                          # cliff を持つが未発動と仮定
+                    rate[m] = cb.tariff_rate
+                    lower[m] = 0.0
+                    upper[m] = min(float(cb.demand_qty), cb.preferential_threshold_lot)
+                else:                                 # cliff を持たない市場
+                    rate[m] = cb.tariff_rate
+                    lower[m] = 0.0
+                    upper[m] = float(cb.demand_qty)
+
+            # 単位マージン（税率固定済みの一時 CostBlock 経由・既存 unit_pnl() を再利用）
+            margins: Dict[str, float] = {}
+            for m in MARKETS:
+                fixed_cb = replace(blocks[m], tariff_rate=rate[m],
+                                   tariff_rate_preferential=None,
+                                   preferential_threshold_lot=None)
+                margins[m] = unit_pnl(fixed_cb, sc, transfer_price_usd)["margin"]
+
+            # 手順4(a): 下界を先に確保する
+            floor_total = sum(lower.values())
+            if floor_total > cap + 1e-9:
+                if _return_all_cases:
+                    all_cases.append({
+                        "active_cliffs": tuple(m for m in MARKETS if m in in_s),
+                        "profit": None, "feasible": False,
+                    })
+                continue    # このケースは実行不可能
+
+            q = dict(lower)
+            remaining = cap - floor_total
+
+            # 手順4(b): 残余容量を単位マージン降順に、上界まで詰める
+            order = sorted(MARKETS, key=lambda m: -margins[m])
+            for m in order:
+                if margins[m] <= 0:
+                    continue
+                headroom = upper[m] - q[m]
+                if headroom <= 0:
+                    continue
+                add = min(headroom, remaining)
+                q[m] += add
+                remaining -= add
+                if remaining <= 1e-9:
+                    break
+
+            # 手順4(c): 利益を計算する
+            profit = sum(q[m] * margins[m] for m in MARKETS)
+            cases_feasible += 1
+
+            active_cliffs = tuple(m for m in MARKETS if m in in_s)
+            if _return_all_cases:
+                all_cases.append({
+                    "active_cliffs": active_cliffs, "profit": profit, "feasible": True,
+                })
+
+            if best_case is None or profit > best_case["profit"]:
+                best_case = {"profit": profit, "q": dict(q), "active_cliffs": active_cliffs}
+
+    # 手順5: 実行可能なケースの最大値を返す
+    if best_case is None:
+        # 全ケースが実行不可能（閾値の合計が能力を超える等）——全市場0配分で返す
+        best_case = {"profit": 0.0, "q": {m: 0.0 for m in MARKETS}, "active_cliffs": ()}
+
+    q_best = best_case["q"]
+    x = {m: (q_best[m] / cap if cap else 0.0) for m in MARKETS}
+    idle = cap - sum(q_best.values())
+
+    result = {
+        "profit": best_case["profit"],
+        "x": x,
+        "q": q_best,
+        "active_cliffs": list(best_case["active_cliffs"]),
+        "cases_evaluated": cases_evaluated,
+        "cases_feasible": cases_feasible,
+        "idle": idle,
+    }
+    if _return_all_cases:
+        result["_all_cases"] = all_cases
+    return result
+
+
 def compare_with_grid(
     mo: dict,
     surface: List[dict],
     *,
     abs_tol: float = 1.0,
+    true_optimum: Optional[dict] = None,
 ) -> dict:
     """メリットオーダー連続解と格子最適の乖離を定量化し、
     格子解像度で説明できる分と、構造由来の残差とに分解する（設計書 §3.5 rev.2）。
@@ -197,11 +367,19 @@ def compare_with_grid(
     ケースがあった（soysauce で相対誤差 0.146%、恣意的な閾値でしか救えなかった）。
     本方式はその欠陥を解消し、閾値を数値誤差の許容（既定 1.0 JPY）だけにする。
 
+    Phase 6-1（requests/Phase6-1_RequestLetter_to_CodeKun.md V2）: `true_optimum`
+    （`true_continuous_optimum()` の戻り値）を渡すと、真の連続最適 `P_opt` を
+    基準にした4フィールドを追加で返す。既定 `None`（渡さない）のときは
+    Phase 5 までの返却と完全に同一——4フィールドは追加されるが値は全て `None`。
+
     Args:
         mo: build_allocation_merit_order() の戻り値
         surface: scan_surface() の戻り値（mo と同じ blocks/sc/cap_wk で評価したもの）
         abs_tol: structural_residual をゼロ（=格子解像度で完全に説明できる）と
             みなす絶対誤差の許容幅（JPY、既定 1.0＝浮動小数の数値誤差のみ許容）
+        true_optimum: true_continuous_optimum() の戻り値（既定 None）。渡すと
+            true_optimum/structural_optimality_gap/grid_resolution_error/
+            residual_coverage の4キーに実値が入る
 
     Returns:
         {
@@ -219,6 +397,10 @@ def compare_with_grid(
             "structural_residual": 0.0,                # ★ Phase 5 で使う主要な出力
             "structural_residual_pct": 0.0,
             "attributable_to_grid_resolution": True,
+            "true_optimum": None,                      # ★ Phase 6-1 で追加（P_opt）
+            "structural_optimality_gap": None,          # P_opt − merit_order_profit
+            "grid_resolution_error": None,              # P_opt − grid_best_profit
+            "residual_coverage": None,                  # |structural_residual| / structural_optimality_gap
         }
     """
     best, plateau = best_point(surface)
@@ -242,6 +424,20 @@ def compare_with_grid(
 
     attributable = absorbable and (abs(structural_residual) <= abs_tol)
 
+    # Phase 6-1: 真の連続最適が渡されたときだけ実値を入れる（既定 None）
+    true_opt_profit: Optional[float] = None
+    structural_optimality_gap: Optional[float] = None
+    grid_resolution_error: Optional[float] = None
+    residual_coverage: Optional[float] = None
+    if true_optimum is not None:
+        true_opt_profit = true_optimum["profit"]
+        structural_optimality_gap = true_opt_profit - mo["profit"]
+        grid_resolution_error = true_opt_profit - best
+        if structural_optimality_gap == 0:
+            residual_coverage = None    # ゼロ除算ではなく「定義できない」を意味する None
+        else:
+            residual_coverage = abs(structural_residual) / structural_optimality_gap
+
     return {
         "merit_order_profit": mo["profit"],
         "grid_best_profit": best,
@@ -257,4 +453,8 @@ def compare_with_grid(
         "structural_residual": structural_residual,
         "structural_residual_pct": structural_residual_pct,
         "attributable_to_grid_resolution": attributable,
+        "true_optimum": true_opt_profit,
+        "structural_optimality_gap": structural_optimality_gap,
+        "grid_resolution_error": grid_resolution_error,
+        "residual_coverage": residual_coverage,
     }
