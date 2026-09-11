@@ -80,18 +80,22 @@ Planning State はそのための**1枚の記録**です。計画案1つにつ�
 | フィールド | 意味 | 経営の言葉で | 出どころ |
 |---|---|---|---|
 | `allocation` | 実際に供給できた配分比率 | 「計画 JP10/US45/EU45 に対し、実際は JP12/US43/EU45 だった」 | Forward の各市場 S 合計 |
-| `profit_ppc` | PPC 台帳の実現利益 | 「地形図では 1.32 億、実行してみたら 1.29 億」 | `ppc_kpi_summary.json` |
-| `gap_vs_plan_pct` | `(profit_ppc − P_grid) / P_grid` | 「計画比 −2.4%」 | 計算 |
+| `ppc.profit` | PPC 台帳の実現利益 | 「地形図では 1.32 億、実行してみたら 1.63 億」 | `ppc_kpi_summary.json` |
+| `gap_decomposition` | 計画と実績の差を**3つに分解**したもの | 「差 3,100万のうち 3,650万は為替前提、−560万が原価モデル」 | 計算（§2.4） |
 | `unmet_lots` | 未充足（CO）の合計 | 「240 lot が納期に間に合わない」 | Forward の CO |
 | `capacity_violation_weeks` | cap_hard 超過 or cap_soft 超過の週 | 「W32〜W35 は3直でも足りない」 | `cap_soft_violation_count` の週内訳 |
 | `peak_inventory_weeks` | 在庫が安全在庫の N 倍を超えた週 | 「W10〜W14 に在庫が膨らむ」 | Forward の I |
-| `issues` | severity 付きの問題一覧 | 既存 Management Issues & Risks そのまま | `ManagementAnalysisResult` |
+| `issues` | severity 付きの問題一覧 | 既存 Management Issues & Risks そのまま | `ManagementAnalysisResult`（**Phase 8 で配線**・下記） |
+
+**`issues` は Phase 7 では埋まらない（rev.3）。** `ManagementAnalysisResult` の生成には運転資本指標（`ccc_wks` / `ar_value` / `ap_value` / `inv_value`）が要るが、headless スナップショットにそれらを作る経路が無い。**Phase 8 で S4 Evaluate を作るときに、その経路ごと用意する。**
+
+**`gap_vs_plan_pct`（単一の比率）は廃止した（rev.3）。** 理由は §2.4。
 
 **載せないもの**: Lot ID 一覧、週次の全系列。これらは Drill-down の葉が見せる。履歴書には**結論だけ**を載せます。
 
-なぜこの7つか——**Operational DD で「赤信号」にすべきものを逆算した**からです。DD の問いは「提示された計画は本当に成立するか」。成立しない理由は、①供給できない（`allocation` のズレ）、②儲からない（`profit_ppc` / `gap_vs_plan_pct`）、③間に合わない（`unmet_lots`）、④能力が足りない（`capacity_violation_weeks`）、⑤在庫で首が絞まる（`peak_inventory_weeks`）——の5種類しかありません。`issues` はその根拠の一覧です。
+なぜこの7つか——**Operational DD で「赤信号」にすべきものを逆算した**からです。DD の問いは「提示された計画は本当に成立するか」。成立しない理由は、①供給できない（`allocation` のズレ）、②儲からない（`ppc.profit` / `gap_decomposition`）、③間に合わない（`unmet_lots`）、④能力が足りない（`capacity_violation_weeks`）、⑤在庫で首が絞まる（`peak_inventory_weeks`）——の5種類しかありません。`issues` はその根拠の一覧です。
 
-### 2.3 スキーマ（Phase 7 の実装対象）
+### 2.3 スキーマ（**Phase 7 / 7a で実装済み**・`2a47c86` ほか）
 
 ```json
 {
@@ -103,14 +107,25 @@ Planning State はそのための**1枚の記録**です。計画案1つにつ�
   "created": "2026-09-09T14:20:00",
 
   "allocation": {"JP": 0.10, "US": 0.45, "EU": 0.45},
+
+  // どの水準を「選べたか」の一覧。compare_with_grid() / hierarchy_gap() の返却そのまま
   "profit_levels": {
-    "P_greedy": 135529822.5,
-    "P_grid":   132133072.5,
-    "P_opt":    135529822.5,                  // Phase 6-1 まで null
-    "gap_amt": 3396750.0,
-    "expected_gap": 3396750.0,
-    "structural_residual": 0.0,
-    "structural_optimality_gap": 0.0          // Phase 6-1 まで null
+    "P_opt":     135529822.5,                 // 基準。true_continuous_optimum()
+    "P_greedy":  135529822.5,
+    "P_grid":    132133072.5,
+    "P_hier":    null,                        // N>=4 のとき scan_hierarchical()
+    "gap_amt": 3396750.0, "expected_gap": 3396750.0,
+    "structural_residual": 0.0, "structural_optimality_gap": 0.0,
+    "grid_resolution_error": 3396750.0, "residual_coverage": null,
+    "hierarchy_gap": null, "n_markets": 3,
+    "source": "manual"                        // P_opt|P_greedy|P_grid|P_hier|manual
+  },
+
+  // 「選んだ配分そのもの」を地図の前提で評価した値（rev.3 で新設）
+  "plan_eval": {
+    "basis": "allocation_layer", "fx_usd": 150.0, "material_usd": 6.0,
+    "profit": 132133072.5, "revenue": 459542100.0, "cost": 327409027.5,
+    "lots": 78671
   },
   "reversal": {                               // Regime Map から。S1 結論行の3行目
     "axis": "fx_usd", "current": 150.0, "boundary": 119.0,
@@ -118,21 +133,71 @@ Planning State はそのための**1枚の記録**です。計画案1つにつ�
   },
 
   "placement": {                              // S2 で埋まる
-    "backward_envelope_violations": 0,
-    "earliest_start_week": "2027-W03"
+    "earliest_start_week": "2026-W28",
+    "backward_envelope_violation_weeks": []   // rev.3 で改名（件数は len() を取る）
   },
 
   "realized": {                               // S3/S4 で埋まる。それまで null
-    "allocation": {"JP": 0.12, "US": 0.43, "EU": 0.45},
-    "profit_ppc": 128900000.0,
-    "gap_vs_plan_pct": -2.4,
-    "unmet_lots": 240,
-    "capacity_violation_weeks": ["2027-W32", "2027-W33", "2027-W34", "2027-W35"],
-    "peak_inventory_weeks": ["2027-W10", "2027-W11"],
-    "issues": [{"severity": "HIGH", "code": "CAP_HARD", "title_ja": "…"}]
+    "allocation": {"JP": 0.1058, "US": 0.4471, "EU": 0.4471},
+
+    "ppc": {                                  // 週次の価格・FX を積み上げた台帳
+      "basis": "ppc_ledger",
+      "profit": 163057410.69, "revenue": 531159148.0, "cost": 368101737.0,
+      "lots": 78671, "lot_records": 624
+    },
+    "fx_effective": {"USD": 175.12, "EUR": 189.13},   // 出荷数量加重平均
+    "plan_at_realized_fx": {                  // A系統を fx_effective で再評価
+      "profit": 169874401.0, "revenue": 531159148.0, "cost": 361284747.0
+    },
+    "gap_decomposition": {
+      "total":            30924338.19,        // ppc − plan_eval
+      "quantity":                0.0,
+      "fx_assumption":    37741328.44,
+      "residual":         -6816990.25,
+      "residual_revenue":        0.0,
+      "residual_cost":     6816990.25
+    },
+
+    "unmet_lots": 0,
+    "capacity_violation_weeks": ["2027-W13", "2027-W17", "2028-W13", "2028-W17"],
+    "peak_inventory_weeks": [],
+    "issues": []                              // Phase 8 で配線
   }
 }
 ```
+
+### 2.4 計画と実績の差は、割り算ではなく分解で語る（**rev.3 で新設**）
+
+rev.2 までは `gap_vs_plan_pct = (profit_ppc − P_grid) / P_grid` という**単一の比率**を置いていた。**これは誤りだった。** Phase 7 で実際に1周させたところ **+20.3%**——実績が計画を2割上回るという値が出た。原因は2つある。
+
+**(1) 分母の取り違え。** 分母が `P_opt` でも `P_grid` でも、「**この配分は最善からどれだけ劣るか**」と「**計画どおりに実行できたか**」という別の問いを1つの数字に混ぜてしまう。前者は `profit_levels` が、後者は `plan_eval` との差が答えるべきものである。
+
+**(2) 2つの層が、違う為替を見ている（本体）。**
+
+```
+A系統   USD 150.00 / EUR 162.00          Scenario(fx_usd=150) の1点
+PPC     USD 平均 175.12 / EUR 189.13     ppc_fx_rate.csv の週次パス（150→200 / 162→216）
+```
+
+**A系統の利益地形図は「為替が基準値のまま」という前提の地図である。** Regime Map（為替×関税）は、まさにその前提を動かして見るための道具だった。PPC は与えられた為替パス上の実現値である。**どちらも正しい。引き算するには前提を揃える必要がある。**
+
+```
+P_plan(fx=150)        132,133,072      地図の前提
+  ＋ 為替前提の差      +37,741,328      基準 150円 → 実効 175.1円
+P_plan(fx=実効)       169,874,401
+  ＋ 残差               −6,816,990      原価モデルの粒度差
+P_ppc                 163,057,411      実現利益
+```
+
+**恒等式** `total == quantity + fx_assumption + residual` を ±1円で固定する（Phase 4/5 で `gap_amt = expected_gap + structural_residual` を固定したのと同じ規律）。
+
+**`residual_revenue` が厳密に 0 になる理由（記録）**: `fx_effective` を**出荷数量加重平均**で取ると、市場価格が週次で一定な限り
+
+```
+Σ_w q(w)・p・fx(w) = p・Σ_w q(w)・fx(w) = p・Q・fx_weighted
+```
+
+が恒等的に成立する。**現在の全18サンプルケースは市場価格が週次固定**（実測確認）なので、`residual_revenue` は常に 0 になり、残差は原価側に完全に集約される。**これは法則ではない。** 週次で価格が動くケースを作った瞬間に非ゼロになる。**0 を理論値として読まないこと。**
 
 保存先: `output/planning_state/<case>/<allocation_id>.json`。S5 はこのフォルダを読んで一覧にします。
 
@@ -215,8 +280,8 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 
 ```
 ┌ 結論行 ──────────────────────────────────────────────────────────────────┐
-│ 推奨配分  US 45 / EU 45 / JP 10            利益 1.32 億（格子最適）      │
-│ 貪欲法との差 +340 万 = 全量が格子解像度。構造由来の取りこぼし 0         │
+│ 推奨配分  US 45 / EU 45 / JP 10            利益 1.355 億（真の最適 P_opt）│
+│ 格子の最良点との差 +340 万 = 全量が格子解像度。構造由来の取りこぼし 0   │
 │ ただし USD/JPY が 119 円を割ると EU 優先へ判断反転                       │
 ├ 根拠 ────────────────────────────────┬ 補助 ──────────────────────────────┤
 │                                      │ 3つの利益水準                     │
@@ -225,8 +290,8 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 │   ● 現在地（Cockpit: 現行配分）      │   P_grid     132.1M  ─┘           │
 │   ◆ 検証対象（DD: 提示された計画）   │                                   │
 │                                      │   格子解像度の誤差    340万        │
-│   N≥4 のとき: 階層三角図             │   構造由来の取りこぼし   0         │
-│   グループ → クリックで市場へ        │   residual coverage    —          │
+│   N≥4 のとき: 階層ドリルダウン       │   構造由来の取りこぼし   0         │
+│   （下の「S1 の N市場対応」を参照）  │   residual coverage    —          │
 │                                      │                                   │
 │                                      │ 台地サイズ 7 点 / ロバスト点 …    │
 ├ Drill-down ──────────────────────────┴───────────────────────────────────┤
@@ -237,6 +302,10 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
+**推奨配分は `P_opt` 由来とする（rev.3 で変更）。** rev.2 までは「格子最適」を推奨していたが、Phase 6-1 で `true_continuous_optimum()` が実装され**真の最適配分が実行時に求まる**ようになった。格子の最良点は解像度と次元に依存する近似にすぎず、推奨する理由がもう無い。格子は**地形を描くため**の道具であって、最適点を選ぶための道具ではない。
+
+**S1 は「計画比 ○%」を出さない（rev.3）。** その数字は S4 Evaluate に属し、しかも**単一の比率では書けない**（§2.4）。S1 の結論行が答えるのは「どの配分を選ぶか」であって「選んだ結果どうだったか」ではない。
+
 **補助パネル「3つの利益水準」の並び規則（rev.2 で追記）**: 行は固定順ではなく**値の降順**で並べる。常に成り立つのは `P_opt ≥ P_greedy` と `P_opt ≥ P_grid` の2本だけで、`P_greedy` と `P_grid` の順序は決まっていない（`gap_amt` の符号そのもの）。
 
 | ケース | 並び | 表示 |
@@ -245,6 +314,47 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 | 非凹（s9_fta_cliff） | P_opt > P_grid > **P_greedy** | **貪欲法の行が最下段に落ち、赤で表示** |
 
 「貪欲法の行が格子の最良点より下に落ちたら、そこに構造がある」——行の移動を「構造由来の取りこぼし ≠ 0」の視覚信号にする。文字の注記より強い。
+
+#### S1 の N市場対応 — 階層ドリルダウン（**rev.3 で具体化**）
+
+直角三角図は単体の2次元射影なので **N=3 専用**である（Phase 6-2 で `_require_three_markets()` として実装済み）。N≥4 は **Phase 6-3 の階層化単体格子**を画面にする。
+
+**入力は `scan_hierarchical()` の返却の `surfaces` である。** ノードごとの走査結果をそのまま保持してあるのは、この画面のためだった（Phase 6-3 Request Letter V3 の申し送り4）。**新たに計算し直さない。**
+
+```
+┌ 結論行（**どのノードを見ていても、全体の利益を指す**）────────────────────┐
+│ 推奨配分  15市場・10ノード                  利益 186.7 億（真の最適 P_opt）│
+│ 階層化の誤差 −5.0 億（−2.68%）= 上位で確定した配分が下位の事情を見ていない │
+├ パンくず ────────────────────────────────────────────────────────────────┤
+│ ALL ▸ JPY ▸ SP_Oil_Local                            [▲ 1つ上へ]          │
+├ 根拠 ────────────────────────────────┬ 補助 ──────────────────────────────┤
+│                                      │ このノードの配分                  │
+│   いま見ているノードの単体を描く     │   KANTO   0.45  ← クリックで降りる │
+│     子3 → 三角図（231点）            │   KANSAI  0.30                    │
+│     子2 → 線分（21点・1次元単体）    │   CHUBU   0.25                    │
+│     子1 → 図を出さない（配分が一意） │                                   │
+│                                      │ このノードに割り当てられた能力     │
+│   ● 現在地 / ◆ 検証対象（DD）        │   22,314 lot（上位が確定した量）   │
+└──────────────────────────────────────┴───────────────────────────────────┘
+```
+
+**設計上の要点は4つ。**
+
+**(1) 結論行は木の全体を指す。ノードを降りても変わらない。**
+ノードごとに結論行が変わると、経営者が「いま見ている数字が全体なのか一部なのか」を見失う。降りて変わるのは**根拠パネルと補助パネルだけ**である。いま木のどこにいるかはパンくずが示す。
+
+**(2) 子が2つのノードは三角図ではなく線分にする。**
+1次元単体（21点）は横軸 0→1・縦軸 利益の**折れ線**で描ける。三角形に描こうとして潰れた図を出すより読みやすい。`oil-global-2027` の15市場では、10ノードのうち**6ノードが子2**である（JPY/EUR/USD の各地域ノードと、Import 系の供給ライン）。**線分のほうが多い。**
+
+**(3) 子が1つのノードは図を出さない。**
+配分が一意なので地形が存在しない。`simplex_grid()` も `n_dim >= 2` しか作れない（Phase 6-3 の実測）。パンくずの途中に現れたら**素通りして次の階層へ**降りる。
+
+**(4) 誤差は `P_opt − P_hier` で出す。`P_flat` と比べない。**
+階層化は単なる間引きではなく**多重解像度**であり、平坦格子に勝つことも負けることもある（Phase 6-3 の15通り実測で勝ち6・分け3・負け6）。**符号の定まらない量を経営者に見せない。** `hierarchy_gap()` の `hierarchy_gap`（常に0以上）だけを使う。
+
+**N=3 のときは従来どおり三角図1枚を出す。** パンくずも出さない。`markets_of(blocks)` の長さで分岐する。
+
+---
 
 **この画面の「⚑ この配分で計画する」が、note 記事で「生産配分の確定の意思入れ」と呼んだ操作の実体**です。押した瞬間に Planning State が生まれ（`pre_plan`）、`demand_forecast_<allocation_id>.csv` が生成され、S2 が開きます。
 
@@ -321,7 +431,7 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 │                                      │ P&L Summary（既存）               │
 │   ウォーターフォール                 │ Node P&L（既存）                  │
 │   P_grid → 未充足 → 残業 → 在庫 →    │ Landed Cost（既存）               │
-│   profit_ppc                         │ CCC（既存）                       │
+│   ppc.profit                         │ CCC（既存）                       │
 │                                      │ Issues & Risks（既存）            │
 ├ Drill-down ──────────────────────────┴───────────────────────────────────┤
 │ [PPC Financial KPI] [Profit Zone] [KPI Table] [Export]                   │
@@ -330,7 +440,7 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-「⚑ 保存」で `state = feasible_plan`、`realized.profit_ppc` / `gap_vs_plan_pct` / `issues` が書き込まれます。
+「⚑ 保存」で `state = feasible_plan`、`realized.ppc.profit` / `gap_decomposition` / `issues` が書き込まれます。
 
 **ウォーターフォールは新規**ですが、既存の PPC Cost Waterfall（`ppc_cockpit.py`）の描画をそのまま使えます。分解の項目（未充足／残業／在庫金利）は Phase 7 で `realized` に載せる内訳と一致させます。
 
@@ -420,12 +530,16 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 
 ## 8. 実装方針（Phase 7 → 8 → 9 への分割）
 
-### 8.1 Phase 7 — Planning State（GUI なし）
+### 8.1 Phase 7 — Planning State（GUI なし）**✅ 実装済み**（`2a47c86` ＋ Phase 7a）
 
-- `wom/planning_state/` 新設：スキーマ（§2.3）、生成・読込・書込
-- `wom/allocation/handoff.py`：`allocation_id` → `demand_forecast_<id>.csv` 生成（第1→第2層）
-- `tools/run_planning_loop.py`：S1〜S4 を CLI で1周し、`realized` まで埋める。**golden に固定**
-- `realized` の各項目を `run_headless_from_folder.run()` の snapshot から取り出す関数群
+- `wom/planning_state/`：スキーマ（§2.3）、生成・読込・書込。`allocation_id` は `A01` からの連番
+- `wom/allocation/handoff.py`：`allocation_id` → `demand_forecast_<id>.csv`。端数は**最大剰余法**（四捨五入では市場合計が目標とずれ、「配分は需要を増やさない」という不変条件が丸めのせいで 1 lot 破れる）
+- `tools/run_planning_loop.py`：A系統 → 変換 → headless → 書き戻しを1コマンドで。結論行は**日本語**
+- `run_headless_from_folder.run()` に `demand_file` / `planning_state` を追加（**既定の返却は不変**。週リストは opt-in の `planning_state_extras` に分離）
+
+**実測で確認できたこと**: 配分 `(0.10,0.45,0.45)` の `q` 合計 78,671 lot に対し PPC の PSI bridge も 78,671——**数量のハンドオフは 1 lot もずれない**。
+
+**Phase 8 に持ち越したもの**: `realized.issues`。`ManagementAnalysisResult` の生成に運転資本指標（`ccc_wks` / `ar_value` / `ap_value` / `inv_value`）が要るが、headless にその経路が無い。**S4 Evaluate を作るときに経路ごと用意する。**
 
 ### 8.2 Phase 8 — 縦1本（S0 → S1 → S3 → S4 → S5）
 
@@ -462,7 +576,7 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 
 **R4. Drill-down の開き方。** 「別ウィンドウで既存タブを開く」を既定にします（tkinter で堅牢）。「同一画面で根拠部分を差し替える」のほうが体験は滑らかですが、`FigureCanvasTkAgg` の差し替えは崩れやすい。**滑らかさを優先するなら Phase 8 の設計時に検証項目を1つ足します。**
 
-**R5. 結論行の日本語。** 経営者向け画面なので、結論行は**日本語**にしたいと考えています。ただし現行の「図中テキストは全て英語」（豆腐化防止）という制約と衝突します。結論行は matplotlib ではなく tkinter の Label なので日本語フォントの問題は起きにくいのですが、**日本語／英語／切替可能のどれにするか**ご判断ください。
+**R5. 結論行の日本語 → 日本語で決定**（2026-09-12・大杉さん）。結論行は matplotlib ではなく tkinter の Label／標準出力なので、「図中テキストは全て英語」（豆腐化防止）という制約とは衝突しない。Phase 7 の `run_planning_loop` の結論行で既に日本語を実運用し、問題が出ないことを確認済み。**図の中（軸ラベル・凡例）は従来どおり英語のまま。**
 
 **R6. 本書の扱い。** Phase 7 の Request Letter は §2 と §8.1 から、Phase 8 の Request Letter は §3〜§5 と §8.2 から起こせます。**合意いただければ、まず Phase 6 と並行して Phase 7 の Request Letter を書きます**（Phase 7 は GUI を含まないので、Phase 6 と同じく Code君に headless で任せられます）。
 
@@ -470,5 +584,6 @@ S0 で選びます。**画面は同じ6枚。変わるのは③結論行の中�
 
 ## 改版履歴
 
+- 2026-09-12 rev.3 — **Phase 6 / 7 / 7a の実装を反映**。(1) §2.3 のスキーマを実装済みの形に更新（`plan_eval` 新設、`backward_envelope_violation_weeks` に改名）。(2) **§2.4 を新設**——rev.2 までの `gap_vs_plan_pct`（単一の比率）は**誤りだった**。Phase 7 の1周で +20.3% という値が出た。原因は「配分の良さ」と「計画どおり実行できたか」を1つの数字に混ぜたことと、**A系統と PPC が違う為替を見ていること**（A系統は基準週の1点、PPC は週次パス）。割り算をやめ、`為替前提 / 残差 / 数量` の3項分解に置き換え、恒等式を ±1円で固定した。`residual_revenue` が厳密に 0 になる理由（出荷数量加重＋週次固定価格）と、**それが法則ではないこと**も記録。(3) **S1 の推奨配分を `P_opt` 由来に変更**——Phase 6-1 で真の最適配分が実行時に求まるようになり、格子の最良点を推奨する理由が無くなった。格子は地形を描く道具であって最適点を選ぶ道具ではない。S1 は「計画比 ○%」を出さない。(4) **S1 の N市場対応（階層ドリルダウン）を具体化**——入力は Phase 6-3 の `surfaces`、結論行は木の全体を指す、子2は線分・子1は図なし、誤差は `P_opt − P_hier`（`P_flat` と比べない）。(5) §8.1 を実装済みに更新し、`realized.issues` を Phase 8 送りとして明記。(6) R5（結論行の日本語）を決定済みに
 - 2026-09-09 rev.2 — 大杉さんの問い「P_opt > P_greedy > P_grid の並び順は正しいか（P_opt > P_grid > P_greedy では）」を受け、S1 補助パネル「3つの利益水準」の並び規則を**値の降順**に確定。P_greedy と P_grid の順序は線形／非凹で反転し、貪欲法の行が最下段に落ちることを「構造由来の取りこぼし ≠ 0」の視覚信号として使う。モックアップ（`wom-management-cockpit`）は線形ケース s1_base の並びで正しい
 - 2026-09-09 rev.1 — 初版。大杉さんの「個々のタブへの意思入れはほとんどない。適切と思う GUI を設計してほしい」を受け、`app.py` 5,650行の全パネルを読んで9タブを棚卸し（§1）、Planning State と `realized` を「計画案の履歴書」として定義（§2）、note 記事の図5の閉ループと1対1に対応する6画面（S0〜S5）を設計（§3〜§5）。現行タブは1つも捨てず葉として再利用（§7）。Due Diligence は結論行の組み立て関数の差し替えで実現（§6）。Phase 7/8/9 への分割（§8）。
