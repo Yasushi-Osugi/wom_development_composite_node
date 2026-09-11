@@ -264,9 +264,19 @@ def materialize_warmup(
     warmup_lt: Optional[int] = None,
     planning_start: Optional[str] = None,
     write: bool = True,
+    demand_file: str = _DEMAND,
 ) -> dict:
     """
     planning_config.csv（または明示引数）に基づき助走行を materialize する。
+
+    Args:
+        demand_file: 需要 CSV のファイル名（既定 "demand_forecast.csv"）。
+            Phase 7（`requests/Phase7_RequestLetter_to_CodeKun.md` V2.4）：
+            `run_headless_from_folder.run(demand_file=...)` で差し替えた需要 CSV
+            （例 `demand_forecast_A03.csv`）を warmup 側にも同じ値で渡すこと。
+            ここだけ既定値のまま呼ぶと、「需要は差し替わったのに warmup だけ
+            元の demand_forecast.csv を見る」という噛み合わせのズレが起きる
+            （Phase 6 で複数回踏んだ、2箇所に分かれた設定が片方だけ更新される形）。
 
     Returns（サマリー dict、stdout 出力・テスト・呼び出し側の判定に使う）:
       {
@@ -289,7 +299,7 @@ def materialize_warmup(
     eff_lt = warmup_lt if warmup_lt is not None else (cfg_lt or 0)
     eff_ps = planning_start if planning_start is not None else cfg_ps
 
-    dem_path = os.path.join(model_dir, _DEMAND)
+    dem_path = os.path.join(model_dir, demand_file)
     real_start = first_nonzero_demand_week(dem_path)
     if real_start is None:
         return {"skipped": True, "changed": False, "warmup_lt": eff_lt, "planning_start": eff_ps,
@@ -304,7 +314,7 @@ def materialize_warmup(
         "warm_weeks": len(warm_weeks), "files": {},
     }
 
-    targets = [(_DEMAND, "demand"), (_CAPACITY, "capacity"), (_OPCAL, "opcal")]
+    targets = [(demand_file, "demand"), (_CAPACITY, "capacity"), (_OPCAL, "opcal")]
     for fname, kind in targets:
         path = os.path.join(model_dir, fname)
         if not os.path.exists(path):

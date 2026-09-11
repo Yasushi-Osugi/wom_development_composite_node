@@ -96,8 +96,20 @@ def _select_plugins(spec: str):
 
 # ──────────────────────────────────────────────────────────────────────
 def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "output/ppc",
-        verbose: bool = True) -> dict:
-    """GUI の planning + PPC を再現し、KPI スナップショット dict を返す。"""
+        verbose: bool = True, demand_file: str = "demand_forecast.csv",
+        planning_state: bool = False) -> dict:
+    """GUI の planning + PPC を再現し、KPI スナップショット dict を返す。
+
+    Args:
+        demand_file: 需要 CSV のファイル名（既定 "demand_forecast.csv"）。
+            Phase 7（`requests/Phase7_RequestLetter_to_CodeKun.md` V2.3）：
+            `"demand_forecast_A03.csv"` のように、A系統の配分から生成した
+            需要ファイルを差し替えて読める。`materialize_warmup()` にも
+            **同じ値**を渡す（V2.4・`demand_file` の分岐が2箇所あることに注意）。
+        planning_state: True のときだけ、返却に `"planning_state_extras"` キーを
+            足す（週リスト・市場別 S/CO）。既定 False のときの返却は**現行と
+            1バイトも変わらない**（C8）。golden 13ケースはこの経路を通らない。
+    """
     from wom.model.lot_generator import assign_demand_lots_from_dict
     from wom.engine.lane_assignment import LaneTable
     from wom.engine.hook_bus import (
@@ -115,12 +127,12 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     #   planning_config.csv があれば助走行を materialize（demand=0 / cap・opcal コピー）。
     #   period 検出より前に走らせる（＝早い start 週を含める）。config 無し→no-op。
     from wom.engine.warmup import materialize_warmup, format_summary, read_cpu_size
-    _wsum = materialize_warmup(model_dir)
+    _wsum = materialize_warmup(model_dir, demand_file=demand_file)
     if verbose:
         print("[Headless]", format_summary(_wsum))
 
     # ── 期間の自動検出 ─────────────────────────────────────────────
-    dem_path = _p("demand_forecast.csv")
+    dem_path = _p(demand_file)
     start, n_weeks = _detect_period(dem_path)
     weeks = _build_week_labels(start, n_weeks)
     if verbose:
@@ -194,8 +206,11 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     _cap_hard_sealed = 0      # Forward が cap_hard で seal した lot 総数
     _cap_soft_viol   = 0      # Forward の cap_soft 違反（残業要）件数
     _bwd_soft_env    = 0      # Backward の cap_soft envelope 違反（計画段階の残業帯）件数
+    _bres_all: list = []      # Phase 7: planning_state=True のときだけ使う（週リスト用）
+    _fres_all: list = []
     for prod_nm in sc_tree.products:
         _bres = BackwardPlanner(sc_tree, lane_table=lane_table, config=cfg).run(prod_nm)
+        _bres_all.append(_bres)
         _bwd_soft_env += len(getattr(_bres, "cap_soft_envelope_violations", []) or [])
         bus.fire(HOOK_POST_BACKWARD, sc_tree=sc_tree, prod_nm=prod_nm, weeks=weeks, config=cfg)
         copy_demand_to_supply(sc_tree, prod_nm)
@@ -223,6 +238,7 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
                 PushProductionPlanner(sc_tree).setup_all(cfgs)
         opening_inv = getattr(harvest_plugin, "opening_inv", {}) if harvest_plugin else {}
         _fres = ForwardPlanner(sc_tree, opening_inv=opening_inv).run(prod_nm)
+        _fres_all.append(_fres)
         _cap_hard_sealed += int(getattr(_fres, "cap_hard_sealed", 0) or 0)
         _cap_soft_viol   += len(getattr(_fres, "cap_soft_violations", []) or [])
         bus.fire(HOOK_POST_FORWARD, sc_tree=sc_tree, prod_nm=prod_nm, weeks=weeks, config=cfg)
@@ -243,6 +259,10 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
         "ppc": ppc_kpi,
         "psi": _psi_signature(sc_tree, n_weeks),
     }
+    if planning_state:
+        # opt-in のみ。既定 False の返却（golden が依存する4キー）には一切触れない（C8）。
+        snap["planning_state_extras"] = _planning_state_extras(
+            sc_tree, n_weeks, _fres_all, _bres_all)
     return snap
 
 
@@ -282,6 +302,65 @@ def _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose) -> dict:
         "gross_margin_pct":  round(float(k.get("gross_margin_pct", 0) or 0), 6),
         "tariff_base":    round(float(k.get("total_tariff_base", 0) or 0), 2),
         "trust_event_count": int(k.get("trust_event_count", 0) or 0),
+    }
+
+
+def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
+    """Phase 7（opt-in・`planning_state=True` のときだけ呼ばれる）: `realized` の
+    7項目のうち `_psi_signature()`（golden 依存・変更禁止）に無い週リストを作る。
+    `wom.planning_state.PEAK_INVENTORY_MULTIPLE` を「在庫が安全在庫の何倍を
+    超えたら記録するか」の閾値として使う（既定 2.0）。
+    """
+    from wom.planning_state import PEAK_INVENTORY_MULTIPLE
+
+    cap_hard_weeks: set = set()
+    cap_soft_weeks: set = set()
+    bwd_env_weeks: set = set()
+    for _fres in fres_all:
+        for _node_id, wk, _cnt in getattr(_fres, "cap_hard_events", []) or []:
+            cap_hard_weeks.add(wk)
+        for _node_id, wk, _over in getattr(_fres, "cap_soft_violations", []) or []:
+            cap_soft_weeks.add(wk)
+    for _bres in bres_all:
+        for _node_id, wk, _over in getattr(_bres, "cap_soft_envelope_violations", []) or []:
+            bwd_env_weeks.add(wk)
+
+    inventory_peak_weeks: dict = {}
+    leaf_out_S: dict = {}
+    leaf_out_CO: dict = {}
+    for prod in sc_tree.products:
+        peaks_prod: dict = {}
+        s_prod: dict = {}
+        co_prod: dict = {}
+        for nd in sc_tree.iter_all_nodes(prod):
+            sup = nd.psi4supply
+            i_series = [len(sup[w][I]) for w in range(n_weeks)]
+            s_series = [len(sup[w][S]) for w in range(n_weeks)]
+            avg_s = (sum(s_series) / n_weeks) if n_weeks else 0.0
+            ss_wks = getattr(nd, "ss_wks", 0) or 0
+            threshold = PEAK_INVENTORY_MULTIPLE * avg_s * ss_wks
+            if threshold > 0:
+                labels = nd.week_labels if getattr(nd, "week_labels", None) else None
+                over_weeks = [(labels[w] if labels else str(w))
+                             for w, v in enumerate(i_series) if v > threshold]
+                if over_weeks:
+                    peaks_prod[nd.node_name] = over_weeks
+            if nd.node_type == "leaf_out":
+                co_series = [len(sup[w][CO]) for w in range(n_weeks)]
+                s_prod[nd.node_name] = sum(s_series)
+                co_prod[nd.node_name] = sum(co_series)
+        if peaks_prod:
+            inventory_peak_weeks[prod] = peaks_prod
+        leaf_out_S[prod] = s_prod
+        leaf_out_CO[prod] = co_prod
+
+    return {
+        "cap_hard_violation_weeks": sorted(cap_hard_weeks),
+        "cap_soft_violation_weeks": sorted(cap_soft_weeks),
+        "backward_envelope_weeks": sorted(bwd_env_weeks),
+        "inventory_peak_weeks": inventory_peak_weeks,
+        "leaf_out_S": leaf_out_S,
+        "leaf_out_CO": leaf_out_CO,
     }
 
 

@@ -22,3 +22,6 @@ data/worldmap_cache.db
 
 # commit message drafts (local-only; passed to `git commit -F`)
 /commit_msg*.txt
+
+# Phase 7 の層間ハンドオフが生成する需要CSV（allocation_id ごと・再生成可能）
+data/sample/*/demand_forecast_A*.csv
