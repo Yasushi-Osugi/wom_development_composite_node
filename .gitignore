@@ -19,3 +19,6 @@ data/worldmap_cache.db
 # keep these explicitly, even though they match the patterns above
 !/WOM_*.docx
 !/Oil_Global_SC_design_draft.md
+
+# commit message drafts (local-only; passed to `git commit -F`)
+/commit_msg*.txt
