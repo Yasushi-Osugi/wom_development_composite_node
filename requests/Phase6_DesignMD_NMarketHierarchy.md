@@ -649,14 +649,29 @@ oil-global-2027（uom="KL" の15市場）
 14. `test_plot_allocation_map_rejects_n4` — 三角図が N≥4 で明示エラー
 15. `test_regression_s1_base_unchanged` — soysauce の全回帰値が不変
 
-### 7.3 ステップ 6-3（階層化、6件）
+### 7.3 ステップ 6-3（階層化、実装済み・14件）
 
-16. `test_hierarchy_split_invariance` — 双子分割した6市場の最適利益が3市場と一致（**最重要**）
-17. `test_hierarchy_split_invariance_hierarchical` — 同上を階層化経由で
-18. `test_hierarchy_gap_measured` — 非対称6市場で `P_flat − P_hier` が算出できること
-19. `test_hierarchy_grouping_by_mother_plant` — グルーピングが 5.4 の第一原則どおりに構成される
-20. `test_hierarchy_point_count` — soysauce 6地域で **3ノード・483点**、`oil-global-2027` 21市場で **13ノード・1,743点**（§5.2 の実測値）
-21. `test_hierarchy_depth1_equals_flat` — 深さ1（3市場）で平坦スキャンと完全一致
+**（rev.8 で実態に同期）** 当初計画の6件（16〜21）は、実装に落とす過程でより詳細な14件に分解された。実装順に列挙する（`tests/test_allocation_hierarchical.py`、`requests/Phase6-3_RequestLetter_to_CodeKun.md` V7 / `Phase6-3b_Addendum_to_CodeKun.md` A7 / `Phase6-3c_Addendum_A9_to_CodeKun.md`）。
+
+**6-3a（8件、`Phase6-3_RequestLetter` V7）**:
+16. `test_aggregate_block_reproduces_market_blocks` — `aggregate_block()` が既存3市場ブロックを全フィールド再現（最重要）
+17. `test_build_hierarchy_reproduces_market_group` — soysauce で `market_group`（JP / US 2件 / EU 3件）を再現、3ノード
+18. `test_hierarchy_split_invariance` — 双子分割した6市場の最適利益が3市場と一致（階層経由・最重要）
+19. `test_hierarchy_gap_is_nonnegative` — `hierarchy_gap >= 0` が全シナリオで成立
+20. `test_hierarchy_gap_regression_cap500` — `cap_wk=500` の回帰値固定（483点/53,130点）
+21. `test_hier_minus_flat_has_no_fixed_sign` — `hier_minus_flat` の符号が固定されないことの固定
+22. `test_internal_ratio_freedom_only_when_cut_is_inside_group` — 内部比率解放の効果は限界市場の位置で決まる
+23. `test_hierarchy_errors` — 通貨混在・cliff混在・`max_children`超過・子1ノードの4エラー系
+
+**6-3b（2件、Addendum A7）**:
+24. `test_aggregate_block_averages_price` — `price_local` は需要加重平均、通貨混在は拒否（A1）
+25. `test_oil_uom_split_and_hierarchy` → **6-3c で `test_oil_uom_split_and_hierarchy` / `test_oil_structure_only` に分割**（下記）
+
+**6-3c（4件、Addendum A9・原価経路の再構成）**:
+26. `test_path_supplement_does_not_change_soysauce` — 経路補完後も soysauce が全フィールド完全一致（最重要）
+27. `test_tariff_found_on_path_not_only_final_edge` — 経路上探索でも soysauce の関税率が不変
+28. `test_unreachable_leaf_raises` — 経路が無い `leaf_out` は既定で `ValueError`、`require_full_path=False` なら `incomplete_paths` に記録
+29. `test_oil_uom_split_and_hierarchy` / `test_oil_structure_only` — `oil-global-2027` が15市場・10ノード・1,050点で完走（`uom="KL"`）。`uom="KL100KBBL"` は構造のみ（6市場・3ノード、profit は assert しない）
 
 ### 7.2a ステップ 6-2a（N市場経路の End-to-End、4件・実装済み）
 
@@ -673,9 +688,11 @@ oil-global-2027（uom="KL" の15市場）
 | 6-1 真の最適 | 7 | ✅ 実装済み（`64e7757` / `8a8eb1f`） |
 | 6-2 次元の一般化 | 7 | ✅ 実装済み（`32b2544`） |
 | 6-2a End-to-End | 4 | ✅ 実装済み（`b41581a`） |
-| 6-3 階層化 | 6 | 未着手 |
+| 6-3a 階層化コア | 8 | ✅ 実装済み |
+| 6-3b `price_local` 平均化・uom分離 | 2 | ✅ 実装済み |
+| 6-3c 原価経路の再構成 | 4 | ✅ 実装済み（A9） |
 
-既存370件 ＋ 18件（6-1/6-2/6-2a）＝ **388件が現状**。6-3 完了時は **394件全PASS** が条件。
+既存370件 ＋ 32件（6-1/6-2/6-2a/6-3a/6-3b/6-3c）＝ **402件全PASS（rev.8 時点）**。
 
 ---
 
@@ -686,12 +703,12 @@ oil-global-2027（uom="KL" の15市場）
 - [x] `simplex_grid(0.05)` の 231点が**順序まで**不変
 - [x] N=6（53,130点）が現実的な時間で走り、N=7 は**計算前に**止まる
 - [x] N市場経路が端から端まで動く（双子分割の不変性・6-2a で N=4 にて確認）
-- [ ] 双子分割した6市場の最適利益が3市場と一致する（**平坦・階層の両方で**）
-- [ ] soysauce の地域6件（非対称）で、階層化の誤差 `P_flat − P_hier` が**金額で**出る
-- [ ] `build_hierarchy()` が soysauce で `market_group`（JP / US 2件 / EU 3件）を再現する
-- [ ] `oil-global-2027`（`uom="KL"` の15市場）で階層化スキャンが **10ノード・1,050点**で完走する（→ **6-3b**。`ga_market_aggregation.csv` の作成と `uom` の是正を含む・R5 決定済み／rev.7 で 21市場から変更）
-- [ ] soysauce の全回帰値・Phase 4/5 の全分解値・golden 13ケースが不変
-- [ ] 394件全PASS
+- [x] 双子分割した6市場の最適利益が3市場と一致する（**平坦・階層の両方で**）
+- [x] soysauce の地域6件（非対称）で、階層化の誤差 `P_opt − P_hier` が**金額で**出る（基準を `P_flat` から `P_opt` へ rev.6 で訂正済み）
+- [x] `build_hierarchy()` が soysauce で `market_group`（JP / US 2件 / EU 3件）を再現する
+- [x] `oil-global-2027`（`uom="KL"` の15市場）で階層化スキャンが **10ノード・1,050点**で完走する（6-3b/6-3c。`ga_market_aggregation.csv` の作成・`uom` の是正・原価経路の再構成〔A9〕を含む）
+- [x] soysauce の全回帰値・Phase 4/5 の全分解値・golden 13ケースが不変
+- [x] 402件全PASS
 
 ---
 
@@ -737,6 +754,7 @@ oil-global-2027（uom="KL" の15市場）
 
 ## 改版履歴
 
+- 2026-09-11 rev.8 — **Phase 6-3c（A9・原価経路の再構成）完了を受けた更新。** `oil-global-2027`（`uom="KL"`）を接続した際、全15市場が `jpy=0/eur=0/tariff_rate=0` という「原価ゼロ」を返していることが発覚（Code君の報告）。原因は `cost_block.py` が `ppc_edge_cost_rule.csv` の "A->B" だけを遡る設計で、`Tank_*→Retail_*` という最終区間のコスト行を持たないモデルでは遡及が始まらなかったこと——**データの不備ではなく**、PPC（B系統）は同じ CSV をツリーから組んだ経路で正しく読んでいた（golden の `tariff_base` で確認済み）。修正は「コスト表を主、`side="outbound"` の `sc_tree` で `pred` に無い区間だけを補う」方式（soysauce では0本補い、回帰値は1円も動かない。実測確認済み）。関税照合も「leaf 直前の1エッジ」から「経路上の全エッジ＋`supply_point` を1つ飛ばした畳みエッジ」の探索に変更（soysauce は従来と同じ1件ヒットで不変。oil は `Gasoline_Import`=3%／`Gasoline_EU_Import`=2%を正しく拾えることを確認）。**A6/A8 で固定していた oil の利益・誤差の回帰値（`profit=20,885,805,337.0` 等）は原価ゼロの上の数字だったため破棄し、修正後の実測値（`profit=18,166,679,186.0`／`hierarchy_gap=499,524,694.0` @ cap_wk=800）を新しい正典とした。**木の形（15市場・10ノード・1,050点）は原価に依存しないため不変。** 合わせて、`ga_market_aggregation.csv` の絞り込みを「生成時」と「読み取り時」の2箇所に分けていた設計ミス（A5）を訂正し、絞り込みは `derive_cost_blocks(uom=...)` の1箇所に一本化（A8。生成器は既定で21行すべてを書く）。`transfer_price_usd`/`mat_usd` の導出も絞り込み後の SKU 集合に限定（A9-2。soysauce・oil の `uom="KL"` 側とも回帰値は不変、`uom="KL100KBBL"` 側は初めて自分自身の経済規模を持つ値になった）。**`region` の黙った上書き・価格の最後勝ち・経路の未到達——3件とも「例外を出さずに静かに間違った値を返す」という同じ家族の欠陥だった。** §7.3/§7.4/§8 を実装済みの14件・402件PASSに同期し、README の古い「三角図13枚×231点=3,003点」（rev.7 で21市場→15市場になった後も未更新だった二重に古い記述）を「10ノード・1,050点」に修正した。仕様書は `docs/design/ask_global_allocation_spec.md` を v0r6 に更新（§2.6 にシナリオ軸の単位束縛・経路到達可能性を追加、§5 Step 0.5/2/3 に経路再構成・関税探索・単一SKU前提の限界を明記）
 - 2026-09-11 rev.7 — **Phase 6-3 の実装で顕在化した単位の問題**を受けた更新。`oil-global-2027` は 1 lot の物理単位が市場ごとに違い（`Gasoline_Local_Hormuz` / `_RedSea` は 1 lot = 100,000 bbl ≈ 15,900 kL、他は kL 相当。価格比 15,882）、**A系統の「1つの能力プールを lot 単位で奪い合う」という前提が成立しない**。単位変換ではなく**単位ごとに別の配分問題として扱う**方針を決定し（大杉さん判断）、`uom="KL"` の**15市場**で接続する。木は **10ノード・1,050点**（平坦 N=15 は約13.9億点、削減 132万倍）、誤差は `cap_wk` により 0.51〜2.82%。これを仕様書 **v0r5 §2.6「単位軸の粒度束縛」**として明文化した——粒度束縛は 時間・製品・フロー・市場 の4軸を宣言していたが、**lot の物理単位の同一性という前提が明文化されていなかった**。あわせて §5.6 に2つの訂正を記録: (a) Request Letter V2 の「`price_local` は子で同一」は誤りで、**需要加重平均**にする（soysauce で同価だったため気づかなかった）、(b) `cost_block.py` の `price, ccy = pr, pc` はグループ内の最後の region の価格を黙って採っている（`region` 重複と同じ家族のバグ）
 - 2026-09-11 rev.6 — **Phase 6-3 の Request Letter 執筆時の実測**を反映。§5.5(2) の誤差の基準を訂正: rev.5 までの「階層化の誤差 = `P_flat − P_hier`、0 以上」は**誤り**で、15通りの実測で階層化は平坦格子に**勝ち6・分け3・負け6**だった。階層化は単なる間引きではなく**多重解像度**であり、誤差の源が2つ（枝刈りの取りこぼし／グループ内の解像度向上）逆を向くためである。**`gap_amt = P_greedy − P_grid` と同じ落とし穴が次元でも起きる。** 基準を格子非依存の `P_opt − P_hier`（常に 0 以上）に変更した。§5.5 に新たに実測を2つ追加: (a) **内部比率を解放して得られる利益は「能力の切れ目がグループの内側に落ちたとき」だけ生じ**、`cap_wk=400〜650` の帯域でのみ正（最大 +630,937.5 @ 500）、既定の `cap_wk=800` では 0 —— したがって**階層化のテストは `cap_wk=500` で書く**、(b) `simplex_grid()` は `n_dim>=2` しか作れないので**子1のノードは走査しない**。§5.6 に `cost_block.py` の **`region` 重複によるサイレントなデータ欠落**（`oil-global-2027` は 21 leaf に対し region 15種）を記録し、6-3b の起点とした
 - 2026-09-11 rev.5 — **R5 / R6 を決定**し、§9.2 を空にした。R5: `oil-global-2027` の `ga_market_aggregation.csv` を **6-3b** として 6-3 のスコープに含める。R6: 階層化が内部比率を最適化することを認め、**仕様書側を是正する**方針に決定——調査の結果 `internal_ratio` はコード上「原価集約の重み」としてしか使われておらず（`cost_block.py` の1箇所のみ）、「グループ内配分を固定する」という意味は実装されたことがなかった。したがって CSV も列の意味も変更不要で、直すべきは仕様書だった。**`docs/design/ask_global_allocation_spec.md` を v0r4 に更新**（§2.4 の束縛を「モデル全体で3市場」→「1ノードあたり3市場」、§2.5 の「4市場以上は拒否」を撤回して拒否条件を格子点数と三角図の描画可能性に置き換え、§4.2 の `market_group` 3種以下を撤廃）。**この3点は Phase 6-2（`32b2544`）の時点で既に実装と食い違っており、6-3 を待たずに是正すべきものだった**

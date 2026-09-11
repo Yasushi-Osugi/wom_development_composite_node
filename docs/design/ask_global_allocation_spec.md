@@ -1,18 +1,18 @@
-# ASK 仕様書: `ask_global_allocation` v0r5
+# ASK 仕様書: `ask_global_allocation` v0r6
 
 **グローバル生産配分シミュレーション — 外部環境パラメータ感度モデル**
 
 | 項目 | 内容 |
 |---|---|
 | ASK ID | `ask_global_allocation` |
-| Version | **v0r5** |
-| 前版 | v0r4 (2026-09-11) |
+| Version | **v0r6** |
+| 前版 | v0r5 (2026-09-11) |
 | WOM 層 | Management 層(戦略配分層) |
 | 対象ブランチ | `wom-v1r4m0`(baseline = `wom-v1r3m0`) |
-| 実装依頼書 | `requests/global-allocation-request-letter.md` Rev 3<br>`requests/Phase6-2_RequestLetter_to_CodeKun.md`(次元の一般化)<br>`requests/Phase6-2a_RequestLetter_to_CodeKun.md`(N市場 E2E) |
+| 実装依頼書 | `requests/global-allocation-request-letter.md` Rev 3<br>`requests/Phase6-2_RequestLetter_to_CodeKun.md`(次元の一般化)<br>`requests/Phase6-2a_RequestLetter_to_CodeKun.md`(N市場 E2E)<br>`requests/Phase6-3_RequestLetter_to_CodeKun.md` / `Phase6-3b_Addendum_to_CodeKun.md`(A1〜A8) / `Phase6-3c_Addendum_A9_to_CodeKun.md`(A9・原価経路の再構成) |
 | 参照実装 | `tools/proto_terrain2.py`(3 市場のみ) |
-| 検証ケース | `data/sample/soysauce-jpy-2027-alloc/` |
-| 状態 | Phase 6-2 まで実装済み(388 件全 PASS)。Phase 6-3(階層化)は未着手 |
+| 検証ケース | `data/sample/soysauce-jpy-2027-alloc/`、`data/sample/oil-global-2027/`(uom 分離・15/6 市場) |
+| 状態 | Phase 6-3(階層化 + oil-global-2027 接続 + 原価経路の再構成)まで実装済み(402 件全 PASS) |
 
 ---
 
@@ -65,6 +65,23 @@ v0r2 は「価格固定・弾力性なしなら利益が配分の線形関数に
 | ⑫ | §2.5 に **`uom` 混在時の挙動**を追加 | 拒否する。どの単位で解くかを利用者に指示させる(黙って片方を採らない) |
 
 **この束縛は「モデルの誤り」を指しているのではない。** `oil-global-2027` の混在単位は CLAUDE.md L528 が明記した意図的な設計であり、B系統(週次 PSI)では SKU ごとに能力が分かれているため問題にならない。**単一の能力プールを仮定する A系統だけが、単位の同一性を必要とする。**
+
+---
+
+## 0d. v0r5 からの変更点(Phase 6-3c・原価経路の再構成、A9)
+
+`oil-global-2027` を `uom="KL"` で接続した際、**21市場のうち全市場で `jpy=0 / eur=0 / tariff_rate=0`** という「原価ゼロ」のブロックが返っていることが判明した(Code君の報告)。`tariff_rate=0.0` を「関税ゼロとモデル化されている」と読んで先に進むのが自然なところを、「なぜゼロなのか」を追跡した結果である。
+
+**原因は `cost_block.py` の経路解決が、PPC(B系統)と違う規約で `ppc_edge_cost_rule.csv` を読んでいたことだった。** データの不備ではない — PPC の golden(`oil-global-2027` の `tariff_base = 53,620,617`)は原価も関税も正しく拾っている。PPC は経路をツリーから組み、`MOM→first_DAD` という規約でエッジ ID を作るが、A系統の `cost_block.py` は `leaf_out` から `ppc_edge_cost_rule.csv` の "A->B" だけを遡っており、**`Tank_*→Retail_*` という最終区間がコスト表に存在しない**モデル(`oil-global-2027`)では、遡及がそもそも始まらなかった。soysauce はコスト行が全区間に存在するため露見しなかった。
+
+| # | 変更 | 理由 |
+|---|---|---|
+| ⑬ | §2.6 に **シナリオ軸(`material_usd`)も同じ lot 単位で表現されていることを追加** | `material_usd` は「1 lot あたりの原料 USD」であり、市場の lot 単位に縛られる。単位の違う市場群(`uom` で分離済みでも、1つの `uom` 内に複数 SKU がある場合)に同じシナリオ軸を当てても、必ずしも意味を持たない |
+| ⑭ | §2.6 に **原価ブロックの経路到達可能性を明文化** | 原価ブロックの導出は、`leaf_out` から上流へ経路が到達できることを前提とする。経路は `ppc_edge_cost_rule.csv`("A->B")の流れを主とし、**`side="outbound"` の `sc_tree_master.csv` で `pred` に無い区間だけを補う**(`inbound` 側は親子が流れと逆を向いているため対象外)。到達できない `leaf_out` がある場合は既定で拒否する(`derive_cost_blocks(require_full_path=True)`、既定 True) |
+| ⑮ | Step 3(関税)を「leaf 直前の1エッジ」から**経路上の探索**に変更 | 課税点は国境であって `leaf_out` の直前とは限らない。経路上の全エッジ(+ `supply_point` を1つ飛ばした畳みエッジ。PPC の `MOM→first_DAD` 規約に合わせる)を関税表に照合し、ヒットが1件ならそれを採る。2件以上ヒットしたら課税点が一意に決まらないため拒否する |
+| ⑯ | Step 2(移転価格)に **単一 SKU 前提という既知の限界を明記** | `transfer_price_usd` の導出(`sku_master.csv` の先頭一致 `unit_cost`)は「モデル全体で1 SKU」を仮定した設計であり、soysauce(`Soy_Sauce` 1 種)では正しく動く。`uom` で分離しても、1つの `uom` グループに複数 SKU が混在する場合(`oil-global-2027` の `uom="KL"` は6 SKU)はこの前提が残る — 絞り込みは `uom` 単位までであり、SKU 跨ぎの移転価格・原料価格は解決していない |
+
+**この3件(`region` の黙った上書き・価格の最後勝ち・経路の未到達)は同じ家族の欠陥である。** いずれも例外を出さずに静かに間違った(またはゼロの)値を返していた。是正後、`oil-global-2027`(`uom="KL"`)の全15市場が原価と関税を正しく持つことを実測で確認した(`Gasoline_Import`=3%、`Gasoline_EU_Import`=2%、他は0%)。soysauce の全回帰値は経路の再構成後も1円も動かないことを実測で確認済み(コスト行が全区間に存在するモデルでは、outbound sc_tree からの補完は0本)。
 
 ---
 
@@ -191,6 +208,8 @@ sc_tree は不変。変わるのは `demand_forecast.csv` の region 別配分�
 - 宣言場所: `sku_master.csv` の **`uom` 列**。市場 → `leaf_out` → `product_name`(= `sku_id`) → `uom` と辿る
 - モデルが複数の `uom` を持つこと自体は禁止しない。**1 回の配分問題に混ぜることを禁止する**。`derive_cost_blocks(model_dir, uom=...)` で単位を選び、単位ごとに別々の配分問題として解く
 - 根拠: これは可視化の都合ではなく**加法性の要請**である。`Σ q[m] <= cap` という制約は、`q` が同じ単位で測られているときにしか書けない
+- **(v0r6 追加)シナリオ軸も同じ lot 単位で表現されていること。** `material_usd`(シナリオの原料価格)は「1 lot あたりの原料 USD」であり、市場の lot 単位に縛られる。`uom` で分離しても、1つの `uom` グループに複数 SKU が混在する場合は、SKU ごとの本来の原料価格とシナリオ軸の値が必ずしも一致しない(既知の限界。§5 Step 2 参照)
+- **(v0r6 追加)原価ブロックの導出は、`leaf_out` から上流へ経路が到達できることを前提とする。** 経路は `ppc_edge_cost_rule.csv` の "A->B" フローを主とし、`side="outbound"` の `sc_tree_master.csv` で経路の無い区間だけを補う(§5 Step 0.5)。到達できない `leaf_out` がある場合は既定で拒否する(`derive_cost_blocks(require_full_path=True)`)。黙ってゼロ原価のブロックを返さない
 
 > **`oil-global-2027` での実例**
 >
@@ -219,6 +238,8 @@ sc_tree は不変。変わるのは `demand_forecast.csv` の region 別配分�
 | 三角図(`plot_allocation_map`)に N ≥ 4 を渡す | 拒否。2 次元射影が定義できない。階層ドリルダウンを要求。**黙って上位 3 市場だけ描くことは禁止** |
 | δ < 0.01 の指定 | 拒否。粒度宣言に反する |
 | **1 つの配分問題に複数の `uom` が混在**(v0r5 で新設) | **拒否。** 見つかった `uom` の一覧と市場数を示し、`derive_cost_blocks(uom=...)` による指定を要求する。**黙って片方を採らない** |
+| `leaf_out` から上流への経路が1ホップも無い(v0r6 で新設) | **既定で拒否。** `require_full_path=False` を明示すれば続行できる(原価はゼロ相当・到達できなかった `leaf_out` の一覧を `incomplete_paths` に記録)。**黙ってゼロ原価のブロックを返さない** |
+| 経路上に関税表のヒットが2件以上(v0r6 で新設) | **拒否。** 課税点が一意に決まらない。どのエッジが課税点かをユーザーに確認させる |
 
 ---
 
@@ -363,13 +384,17 @@ e_dec[c,t]   = rate_internal[c, t − R[c]]      （シナリオ非依存）
 e_trf[c,t]   = ppc_transfer_price_rule.csv の currency に対応する e_set
 ```
 
-### Step 0.5: 原価ブロックの導出【v0r3 新設】
+### Step 0.5: 原価ブロックの導出【v0r3 新設・v0r6 で経路解決を修正】
 
 **原価ブロックは入力ではなく導出物である。**
 
 ```
 for each leaf_out チャネル c:
-    経路 = sc_tree_master を leaf_out から root まで遡って得たノード列・エッジ列
+    経路 = ppc_edge_cost_rule の "A->B" フローを c から遡って得た辺の列
+           ただし、side="outbound" の sc_tree_master で
+           経路がまだ無い区間だけを補う（v0r6・A9-6.1）
+           ※ side="inbound" は補わない — 親子が流れと逆を向いているため
+             （素朴に辿ると製造原価を取りこぼし、コスト表と混ぜると二重計上する）
 
     for each ノード n in 経路:
         ppc_node_cost_rule の (n, product) 行を通貨別に加算
@@ -378,10 +403,16 @@ for each leaf_out チャネル c:
     原料費:
         ppc_supplier_cost の leaf_in 行（週次 latest-prior-week 参照）
 
+    経路が1ホップも無い場合:
+        既定（require_full_path=True）では拒否する（v0r6・A9-6.3）
+        黙ってゼロ原価のブロックを返さない
+
     → ブロック集合 {(block_id, currency, amount_local)} を得る
 ```
 
 **通貨判定**: `currency != base_currency` であれば外貨建。v0r2 の `fx_exposure_flag` は不要。
+
+**v0r6 での修正の経緯**: `ppc_edge_cost_rule.csv` だけを遡る旧実装は、コスト行が経路の全区間に存在するモデル（soysauce）では正しく動いたが、`Tank_*→Retail_*` のような最終区間のコスト行を持たないモデル（`oil-global-2027`）では遡及が `leaf_out` から一歩も進まず、**原価ゼロのブロックを例外も出さずに返していた**。PPC（B系統）は同じ CSV をツリー（`sc_tree_master.csv`）から組んだ経路で正しく読んでおり、データの不備ではなく A系統の経路解決の規約の問題だった。
 
 **出力**: `output/allocation/ga_cost_block_derived.csv`(監査用)
 
@@ -416,13 +447,17 @@ transfer_price_local[p,k,t]
 
 > soysauce: `Bottling_Noda` 累積原価 16.0 USD × 1.1 = **17.6 USD**
 
-### Step 3: 関税【v0r3 で課税ベースを変更】
+**既知の限界（v0r6 で明記）**: 実装（`cost_block.py`）は `unit_cost` を `sku_master.csv` の先頭一致行から取る——**「モデル全体で1 SKU」を仮定した導出**である。soysauce（`Soy_Sauce` 1 種）ではこれで正しく動く。`uom`（§2.6）で市場を絞り込んでも、1つの `uom` グループに複数 SKU が混在する場合（`oil-global-2027` の `uom="KL"` は6 SKU）はこの前提が残る——v0r6 では絞り込み後の SKU 集合から先頭一致を取るよう修正した（uom 跨ぎの汚染は解消）が、**同一 uom 内の SKU 跨ぎの移転価格は未解決**である。
+
+### Step 3: 関税【v0r3 で課税ベースを変更・v0r6 で照合方式を修正】
 
 ```
 duty_local[m,k,s,t] = τ[m,k,s,t] × transfer_price_local
 ```
 
 **v0r2 との差**: v0r2 は `τ × CIF_local`(CIF = 製造原価 + 輸送費 + 保険)としていた。WOM の `ppc_tariff_rule.csv` は `tariff_basis = transfer_price` であり、こちらに合わせる。
+
+**v0r6 での修正**: `τ`（`tariff_rate`）を引くための `ppc_tariff_rule.csv` 照合は、旧実装では「`leaf_out` 直前の1エッジ」だけを見ていた。**課税点は国境であって `leaf_out` の直前とは限らない**（`oil-global-2027` の課税点は `Refinery_Local->Tank_Local` 等、MOM 直後）。v0r6 では Step 0.5 の経路上の全エッジ（＋ `supply_point` を1つ飛ばした畳みエッジ。PPC の `MOM→first_DAD` 規約に合わせる）を関税表に照合し、ヒット1件ならそれを採る。2件以上ヒットしたら課税点が一意に決まらないため拒否する（§2.5）。soysauce では従来どおり1件ヒットし、値は変わらない。
 
 **重要な帰結**: 移転価格が USD 建てで固定されているため、**円安が円建て関税額を押し上げる経路が存在する**。
 
