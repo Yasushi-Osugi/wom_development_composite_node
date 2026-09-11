@@ -13,9 +13,14 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 import matplotlib
 matplotlib.use("Agg")
 
+import pytest
+
 from tools.plot_allocation_map import (
     plot_tile, plot_layers, plot_single, plot_terrain_only, plot_each_scenario, bx_s,
+    _require_three_markets,
 )
+from wom.allocation.cost_block import derive_cost_blocks
+from wom.allocation.transmission import CostBlock
 
 ALLOC_DIR = os.path.join(os.path.dirname(__file__), "..",
                          "data", "sample", "soysauce-jpy-2027-alloc")
@@ -55,6 +60,18 @@ def test_plot_each_scenario(tmp_path):
 
 def test_bx_s_format():
     assert bx_s((0.1, 0.45, 0.45)) == "0.10/0.45/0.45"
+
+
+def test_plot_allocation_map_rejects_n4():
+    """三角図は N=3 専用（Phase 6-2 V6）。N>=4 は明示エラー、N=3 は通る。"""
+    blocks4 = {f"M{i}": CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
+                                  price_local=200, ccy="JPY", demand_qty=100)
+              for i in range(4)}
+    with pytest.raises(ValueError, match="3 markets"):
+        _require_three_markets(blocks4)
+
+    blocks3, _tp = derive_cost_blocks(ALLOC_DIR)
+    _require_three_markets(blocks3)   # 例外を投げないこと
 
 
 if __name__ == "__main__":

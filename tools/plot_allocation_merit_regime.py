@@ -41,7 +41,7 @@ import numpy as np
 
 from wom.allocation.cost_block import derive_cost_blocks
 from wom.allocation.transmission import Scenario
-from wom.allocation.grid import MARKETS, scan_surface
+from wom.allocation.grid import scan_surface
 from wom.allocation.merit_order import build_allocation_merit_order, compare_with_grid
 from wom.allocation.regime_map import scan_regime_grid
 from tools.run_allocation_map import load_scenarios, _blocks_for

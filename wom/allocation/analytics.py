@@ -20,7 +20,7 @@ from math import inf
 from typing import Callable, Dict, List, Sequence, Tuple
 
 from wom.allocation.transmission import CostBlock, Scenario, unit_pnl
-from wom.allocation.grid import MARKETS, evaluate_point, scan_surface
+from wom.allocation.grid import markets_of, evaluate_point, scan_surface
 
 # 交互作用の基準（円安×原油の複合ショックの分解基準）
 INTERACTION_BASE = (150.0, 6.0)
@@ -28,9 +28,14 @@ INTERACTION_BASE = (150.0, 6.0)
 
 def market_ranking(blocks: Dict[str, CostBlock], transfer_price_usd: float,
                    fx: float, mat: float = 6.0) -> Tuple[str, ...]:
-    """市場を単位マージン降順に並べた順序。"""
+    """市場を単位マージン降順に並べた順序。
+
+    同値時の並びは markets_of(blocks)（＝CSV の記載順）に従う
+    （Phase 6-2、requests/Phase6-2_RequestLetter_to_CodeKun.md V1.4）。
+    """
     sc = Scenario(fx_usd=fx, material_usd=mat)
-    return tuple(sorted(MARKETS,
+    markets = markets_of(blocks)
+    return tuple(sorted(markets,
                         key=lambda m: -unit_pnl(blocks[m], sc, transfer_price_usd)["margin"]))
 
 
@@ -42,6 +47,7 @@ def switching_points(blocks: Dict[str, CostBlock], transfer_price_usd: float,
     各要素 {"fx", "order", "margins"}。最初の点は初期順序。
     昇順走査なので "fx" は「その順序に切り替わる下限」。
     """
+    markets = markets_of(blocks)
     out: List[dict] = []
     prev: Tuple[str, ...] | None = None
     for fx in range(fx_lo, fx_hi + 1, step):
@@ -50,7 +56,7 @@ def switching_points(blocks: Dict[str, CostBlock], transfer_price_usd: float,
             sc = Scenario(fx_usd=fx, material_usd=mat)
             out.append({"fx": fx, "order": order,
                         "margins": {m: unit_pnl(blocks[m], sc, transfer_price_usd)["margin"]
-                                    for m in MARKETS}})
+                                    for m in markets}})
             prev = order
     return out
 

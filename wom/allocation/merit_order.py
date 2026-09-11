@@ -10,7 +10,7 @@ A系統（`ask_global_allocation`・年次「どの市場に何個供給する�
     Phase 4: 市場を単位マージン**降順**に積み、能力線との交点＝**能力のシャドープライス λ**
 
 正典: requests/Phase4_DesignMD_AllocationMeritRegime.md §2-3
-参照: wom/allocation/grid.py（MARKETS, evaluate_point, scan_surface, best_point）
+参照: wom/allocation/grid.py（markets_of, evaluate_point, scan_surface, best_point）
 
 このモジュールは純関数のみ（描画コードは tools/plot_allocation_merit_regime.py）。
 既存 A系統モジュール（transmission.py / cost_block.py / grid.py / analytics.py）は無変更。
@@ -24,7 +24,7 @@ from typing import Dict, List, Optional
 from wom.allocation.transmission import (
     CostBlock, DEFAULT_TRANSFER_PRICE_USD, Scenario, unit_pnl, unit_pnl_at_quantity,
 )
-from wom.allocation.grid import MARKETS, WEEKS, best_point
+from wom.allocation.grid import WEEKS, best_point, markets_of
 
 
 def build_allocation_merit_order(
@@ -80,13 +80,14 @@ def build_allocation_merit_order(
         }
     """
     cap = cap_wk * weeks
+    markets = markets_of(blocks)
 
-    margins = {m: unit_pnl(blocks[m], sc, transfer_price_usd)["margin"] for m in MARKETS}
-    included = sorted((m for m in MARKETS if margins[m] > 0), key=lambda m: -margins[m])
-    excluded = [m for m in MARKETS if margins[m] <= 0]
+    margins = {m: unit_pnl(blocks[m], sc, transfer_price_usd)["margin"] for m in markets}
+    included = sorted((m for m in markets if margins[m] > 0), key=lambda m: -margins[m])
+    excluded = [m for m in markets if margins[m] <= 0]
 
     merit_blocks: List[dict] = []
-    x: Dict[str, float] = {m: 0.0 for m in MARKETS}
+    x: Dict[str, float] = {m: 0.0 for m in markets}
     unmet: Dict[str, float] = {}
     preferential: Dict[str, dict] = {}
 
@@ -212,7 +213,7 @@ def true_continuous_optimum(
             "profit": 103881758.0,              # 真の連続最適利益（P_opt）
             "x": {"JP": 0.0001, "US": 0.6763, "EU": 0.3236},  # 配分比率（q / cap）
             "q": {"JP": 7.0, "US": 35168.0, "EU": 16825.0},   # 配分量（lot）
-            "active_cliffs": ["US"],             # 最適ケースで発動している特恵（MARKETS 順）
+            "active_cliffs": ["US"],             # 最適ケースで発動している特恵（markets_of(blocks) 順）
             "cases_evaluated": 2,                # 列挙したケース数（= 2^|K|）
             "cases_feasible": 2,                 # 手順4(a) を通ったケース数
             "idle": 0.0,                         # cap − Σq
@@ -223,9 +224,10 @@ def true_continuous_optimum(
             想定しない）。
     """
     cap = cap_wk * weeks
+    markets = markets_of(blocks)
 
-    # 手順1: cliff を持つ市場の集合 K（MARKETS の順序を維持）
-    K = [m for m in MARKETS
+    # 手順1: cliff を持つ市場の集合 K（markets_of(blocks) の順序を維持）
+    K = [m for m in markets
          if blocks[m].tariff_rate_preferential is not None
          and blocks[m].preferential_threshold_lot is not None]
 
@@ -251,7 +253,7 @@ def true_continuous_optimum(
             rate: Dict[str, float] = {}
             lower: Dict[str, float] = {}
             upper: Dict[str, float] = {}
-            for m in MARKETS:
+            for m in markets:
                 cb = blocks[m]
                 if m in in_s:                        # 特恵を発動していると仮定
                     rate[m] = cb.tariff_rate_preferential
@@ -268,7 +270,7 @@ def true_continuous_optimum(
 
             # 単位マージン（税率固定済みの一時 CostBlock 経由・既存 unit_pnl() を再利用）
             margins: Dict[str, float] = {}
-            for m in MARKETS:
+            for m in markets:
                 fixed_cb = replace(blocks[m], tariff_rate=rate[m],
                                    tariff_rate_preferential=None,
                                    preferential_threshold_lot=None)
@@ -279,7 +281,7 @@ def true_continuous_optimum(
             if floor_total > cap + 1e-9:
                 if _return_all_cases:
                     all_cases.append({
-                        "active_cliffs": tuple(m for m in MARKETS if m in in_s),
+                        "active_cliffs": tuple(m for m in markets if m in in_s),
                         "profit": None, "feasible": False,
                     })
                 continue    # このケースは実行不可能
@@ -288,7 +290,7 @@ def true_continuous_optimum(
             remaining = cap - floor_total
 
             # 手順4(b): 残余容量を単位マージン降順に、上界まで詰める
-            order = sorted(MARKETS, key=lambda m: -margins[m])
+            order = sorted(markets, key=lambda m: -margins[m])
             for m in order:
                 if margins[m] <= 0:
                     continue
@@ -302,10 +304,10 @@ def true_continuous_optimum(
                     break
 
             # 手順4(c): 利益を計算する
-            profit = sum(q[m] * margins[m] for m in MARKETS)
+            profit = sum(q[m] * margins[m] for m in markets)
             cases_feasible += 1
 
-            active_cliffs = tuple(m for m in MARKETS if m in in_s)
+            active_cliffs = tuple(m for m in markets if m in in_s)
             if _return_all_cases:
                 all_cases.append({
                     "active_cliffs": active_cliffs, "profit": profit, "feasible": True,
@@ -317,10 +319,10 @@ def true_continuous_optimum(
     # 手順5: 実行可能なケースの最大値を返す
     if best_case is None:
         # 全ケースが実行不可能（閾値の合計が能力を超える等）——全市場0配分で返す
-        best_case = {"profit": 0.0, "q": {m: 0.0 for m in MARKETS}, "active_cliffs": ()}
+        best_case = {"profit": 0.0, "q": {m: 0.0 for m in markets}, "active_cliffs": ()}
 
     q_best = best_case["q"]
-    x = {m: (q_best[m] / cap if cap else 0.0) for m in MARKETS}
+    x = {m: (q_best[m] / cap if cap else 0.0) for m in markets}
     idle = cap - sum(q_best.values())
 
     result = {

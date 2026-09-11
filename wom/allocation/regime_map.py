@@ -21,22 +21,26 @@ from dataclasses import replace
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from wom.allocation.transmission import CostBlock, DEFAULT_TRANSFER_PRICE_USD, Scenario, unit_pnl
-from wom.allocation.grid import MARKETS
+from wom.allocation.grid import markets_of
 
 _VALID_SCALAR_AXES = ("fx_usd", "material_usd")
 
 
-def _validate_axis_name(axis_name: str) -> None:
-    """軸名が 'fx_usd' / 'material_usd' / 'tariff_rate:<市場>' のいずれかであることを検証する。"""
+def _validate_axis_name(axis_name: str, markets: Tuple[str, ...]) -> None:
+    """軸名が 'fx_usd' / 'material_usd' / 'tariff_rate:<市場>' のいずれかであることを検証する。
+
+    Phase 6-2: `markets` は markets_of(blocks) から呼び出し元が渡す
+    （blocks を持たないこの関数自身は N を知らないため）。
+    """
     if axis_name in _VALID_SCALAR_AXES:
         return
     if axis_name.startswith("tariff_rate:"):
         market = axis_name.split(":", 1)[1]
-        if market in MARKETS:
+        if market in markets:
             return
         raise ValueError(
             f"Unknown market in axis {axis_name!r}: {market!r} "
-            f"(must be one of {MARKETS})"
+            f"(must be one of {markets})"
         )
     raise ValueError(
         f"axis must be 'fx_usd', 'material_usd', or 'tariff_rate:<market>', "
@@ -90,8 +94,9 @@ def scan_regime_grid(
     Raises:
         ValueError: axis_x / axis_y が不正な軸名のとき
     """
-    _validate_axis_name(axis_x)
-    _validate_axis_name(axis_y)
+    markets = markets_of(blocks)
+    _validate_axis_name(axis_x, markets)
+    _validate_axis_name(axis_y, markets)
 
     base_scenario = base_scenario or Scenario(fx_usd=150.0, material_usd=6.0)
 
@@ -115,8 +120,8 @@ def scan_regime_grid(
             sc_xy, blocks_xy = _apply_axis(axis_x, xv, sc_y, blocks_y)
 
             m = {mkt: unit_pnl(blocks_xy[mkt], sc_xy, transfer_price_usd)["margin"]
-                 for mkt in MARKETS}
-            order = tuple(sorted(MARKETS, key=lambda mkt: -m[mkt]))
+                 for mkt in markets}
+            order = tuple(sorted(markets, key=lambda mkt: -m[mkt]))
             label = ">".join(order)
 
             if label not in label_to_id:
@@ -126,7 +131,7 @@ def scan_regime_grid(
             row_labels.append(label)
             row_ids.append(label_to_id[label])
             row_margins.append(m)
-            row_neg.append([mkt for mkt in MARKETS if m[mkt] <= 0])
+            row_neg.append([mkt for mkt in markets if m[mkt] <= 0])
 
         regimes.append(row_labels)
         regime_ids.append(row_ids)

@@ -35,7 +35,7 @@ import numpy as np
 
 from wom.allocation.cost_block import derive_cost_blocks
 from wom.allocation.transmission import Scenario
-from wom.allocation.grid import MARKETS, scan_surface, best_point, demand_ceilings, evaluate_point
+from wom.allocation.grid import markets_of, scan_surface, best_point, demand_ceilings, evaluate_point
 from wom.allocation.analytics import interaction
 from tools.run_allocation_map import load_scenarios, _blocks_for
 
@@ -63,8 +63,23 @@ def _arrays(surf) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     return xus, xeu, z, fxb
 
 
+def _require_three_markets(blocks) -> None:
+    """三角図は単体の2次元射影なので N=3 専用。N≥4 は明示エラーで止める（Phase 6-2 V6）。
+
+    「黙って上位3市場だけ描く」という挙動は禁止する——利用者が3市場の図を
+    全体だと誤解するリスクがあるため（Request Letter §9 R4 で大杉さん確認済み）。
+    """
+    markets = markets_of(blocks)
+    if len(markets) != 3:
+        raise ValueError(
+            f"Triangle plot supports exactly 3 markets, got {len(markets)}: {markets}. "
+            f"For N>=4, use the hierarchical drill-down (Phase 6-3)."
+        )
+
+
 def _draw_terrain(ax, surf, blocks, cap_wk, title, norm=None, cmap="RdYlGn",
                   show_fxb=True, mark_point=None):
+    _require_three_markets(blocks)
     xus, xeu, z, fxb = _arrays(surf)
     if norm is None:
         norm = Normalize(vmin=z.min(), vmax=z.max())

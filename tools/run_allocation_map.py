@@ -32,7 +32,7 @@ from typing import Dict, List, Optional, Tuple
 
 from wom.allocation.cost_block import derive_cost_blocks
 from wom.allocation.transmission import CostBlock, Scenario
-from wom.allocation.grid import (MARKETS, scan_surface, best_point, demand_ceilings,
+from wom.allocation.grid import (markets_of, scan_surface, best_point, demand_ceilings,
                                  evaluate_point)
 from wom.allocation.analytics import (switching_points, interaction, robust_point,
                                       constraint_cost)
@@ -84,10 +84,14 @@ def load_scenarios(model_dir: str) -> List[dict]:
 
         interest = float(rs[0]["interest_rate_annual"])
         # 時系列判定：いずれかの市場で (fx, material, tariff) が quarter 間で変動するか
+        # Phase 6-2: MARKETS（3市場固定）ではなく、行に現れた市場から導出する
+        # （blocks が無いこの関数では markets_of() を使えないため）。
+        # dict.fromkeys() で順序を保ったまま重複除去（set は順序非決定的なので不可）。
+        scen_markets = tuple(dict.fromkeys(r["market"] for r in rs))
         time_series = any(
             len({(float(r["fx_spot_jpy"]), float(r["material_price_usd"]), float(r["tariff_rate"]))
                  for r in rs if r["market"] == m}) > 1
-            for m in MARKETS)
+            for m in scen_markets)
         scens.append({"id": sid, "fx_usd": fx_usd, "material_usd": material,
                       "tariff": tariff, "interest": interest, "time_series": time_series,
                       "tariff_preferential": tariff_preferential,
@@ -109,7 +113,7 @@ def _blocks_for(
     tariff_preferential = tariff_preferential or {}
     preferential_threshold = preferential_threshold or {}
     result: Dict[str, CostBlock] = {}
-    for m in MARKETS:
+    for m in markets_of(base_blocks):
         kwargs = {"tariff_rate": tariff.get(m, base_blocks[m].tariff_rate)}
         if m in tariff_preferential:
             kwargs["tariff_rate_preferential"] = tariff_preferential[m]
@@ -239,7 +243,7 @@ def run(model_dir: str, cap_wk: float = 800.0, out_dir: str = "output/allocation
         print(f"[allocation] scenarios: {len(const_scens)} constant "
               f"(+{len(scens)-len(const_scens)} time-series skipped)")
         print(f"[allocation] demand ceilings: " +
-              " ".join(f"x_{m}={ceil[m]:.3f}" for m in MARKETS))
+              " ".join(f"x_{m}={ceil[m]:.3f}" for m in ceil))
         for sid, (surf, _b) in surfaces.items():
             best, plateau = best_point(surf)
             print(f"   {sid:18s} max={best/1e6:8.1f}M plateau={len(plateau):2d} "
