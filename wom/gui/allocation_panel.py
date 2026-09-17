@@ -23,7 +23,7 @@ from typing import Optional
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-from wom.gui.s1_view_model import build_s1_view, evaluate_allocation
+from wom.gui.s1_view_model import build_s1_view, evaluate_allocation, format_market_name
 
 # app.py と同じ配色（新しい定数を増やさない）
 BG_DARK  = "#1E2A38"
@@ -101,6 +101,13 @@ class AllocationPanel(tk.Frame):
             lbl.pack(fill="x")
             self._headline_labels.append(lbl)
 
+        # --- 全市場の配分（省略なし・折り返し可）（Phase 8-2・C3.3） ---
+        # 結論行は上位4市場+要約に畳むため、答えを画面外に落とさないための控え。
+        self._full_allocation_label = tk.Label(
+            self, text="", bg=BG_DARK, fg="#90A4AE", font=("Segoe UI", 8),
+            anchor="w", justify="left", wraplength=1100)
+        self._full_allocation_label.pack(fill="x", padx=10, pady=(0, 4))
+
         # --- パンくず（hierarchy モードのときだけ表示。triangle モードでは
         #     pack_forget() で隠す。再表示時は before=self._mid_frame で
         #     headline と根拠パネルの間という正しい位置に戻す） ---
@@ -138,8 +145,10 @@ class AllocationPanel(tk.Frame):
                                      anchor="w", justify="left", wraplength=240)
         self._notes_label.pack(fill="x", padx=6, pady=(4, 6))
 
-        tk.Label(aux, text="子ノード（クリックで降りる）", bg=BG_MID, fg=FG_ACC,
-                 font=_JA_FONT_BOLD, anchor="w").pack(fill="x", padx=6, pady=(6, 2))
+        self._children_header_label = tk.Label(
+            aux, text="子ノード", bg=BG_MID, fg=FG_ACC,
+            font=_JA_FONT_BOLD, anchor="w", justify="left", wraplength=240)
+        self._children_header_label.pack(fill="x", padx=6, pady=(6, 2))
         self._children_frame = tk.Frame(aux, bg=BG_MID)
         self._children_frame.pack(fill="x", padx=6)
 
@@ -178,7 +187,11 @@ class AllocationPanel(tk.Frame):
 
         tk.Button(ops, text="⚑ この配分で計画する", command=self._on_commit,
                   bg="#4CAF50", fg="#0B1F14", relief="flat",
-                  font=_JA_FONT_BOLD).pack(side="left", padx=(4, 8))
+                  font=_JA_FONT_BOLD).pack(side="left", padx=(4, 4))
+        # Phase 8-2・C1.3: ⚑ が計画するのは結論行（P_opt）であって、子パネルの
+        # 走査結果（階層格子の点）ではないことを明示する。
+        tk.Label(ops, text="（計画するのは上の推奨配分です）", bg=BG_MID, fg="#78909C",
+                 font=("Segoe UI", 8)).pack(side="left", padx=(0, 8))
 
         self._status_var = tk.StringVar(value="")
         tk.Label(ops, textvariable=self._status_var, bg=BG_MID, fg=FG_ACC,
@@ -230,16 +243,24 @@ class AllocationPanel(tk.Frame):
         for i in range(len(view["headline"]["lines_ja"]), 3):
             self._headline_labels[i].config(text="")
 
+        # Phase 8-2・C3.3: 結論行で畳んだ配分の全文を、根拠パネルの上に控えとして出す
+        self._full_allocation_label.config(
+            text=f"全市場の配分（連続最適）: {view['headline']['full_allocation_ja']}")
+
         if view["mode"] == "hierarchy":
             if not self._breadcrumb_visible:
                 self._breadcrumb_frame.pack(fill="x", padx=8, pady=(0, 2),
                                             before=self._mid_frame)
                 self._breadcrumb_visible = True
             self._render_breadcrumb(view["breadcrumb"])
+            # Phase 8-2・C1.2: 「推奨配分（連続最適）」とは別物であることを見出しに書く
+            self._children_header_label.config(
+                text="このノードの走査結果（階層格子 δ=0.05・クリックで降りる）")
         else:
             if self._breadcrumb_visible:
                 self._breadcrumb_frame.pack_forget()
                 self._breadcrumb_visible = False
+            self._children_header_label.config(text="この配分の走査結果（格子 δ=0.05）")
 
         self._render_levels(view["levels"])
         self._notes_label.config(text="\n".join(view["level_notes_ja"]))
@@ -259,7 +280,7 @@ class AllocationPanel(tk.Frame):
                 tk.Label(self._breadcrumb_inner, text="▸", bg=BG_MID, fg="#78909C",
                         font=_JA_FONT).pack(side="left")
             is_last = (i == len(breadcrumb) - 1)
-            btn = tk.Label(self._breadcrumb_inner, text=name, bg=BG_MID,
+            btn = tk.Label(self._breadcrumb_inner, text=format_market_name(name), bg=BG_MID,
                           fg=(FG_WHITE if is_last else FG_ACC), font=_JA_FONT,
                           cursor="" if is_last else "hand2")
             btn.pack(side="left", padx=2)
@@ -281,23 +302,52 @@ class AllocationPanel(tk.Frame):
     def _render_children(self, node):
         for w in self._children_frame.winfo_children():
             w.destroy()
+        # Phase 8-2・C2: 配分ゼロの枝は child_x（意味の無い比率）を出さず、
+        # 判定は view 側の is_unallocated を読むだけ（cap_lots == 0 をここで書かない）。
+        if node["is_unallocated"]:
+            tk.Label(self._children_frame, text=node["unallocated_message"], bg=BG_MID,
+                    fg="#78909C", font=_JA_FONT, wraplength=240, justify="left",
+                    anchor="w").pack(fill="x", anchor="w")
+            return
         if node["plot_kind"] == "none":
-            tk.Label(self._children_frame, text="（配分が一意）", bg=BG_MID,
-                    fg="#78909C", font=_JA_FONT).pack(anchor="w")
+            tk.Label(self._children_frame, text="（配分が一意・下記の単位経済を参照）",
+                    bg=BG_MID, fg="#78909C", font=_JA_FONT, wraplength=240,
+                    justify="left").pack(anchor="w")
             return
         for child in node["children"]:
             x = node["child_x"].get(child, 0.0)
             row = tk.Frame(self._children_frame, bg=BG_MID)
             row.pack(fill="x", pady=1)
-            lbl = tk.Label(row, text=f"{child}  {x * 100:.0f}%", bg=BG_MID, fg=FG_ACC,
-                          font=_JA_FONT, cursor="hand2", anchor="w")
+            lbl = tk.Label(row, text=f"{format_market_name(child)}  {x * 100:.0f}%",
+                          bg=BG_MID, fg=FG_ACC, font=_JA_FONT, cursor="hand2", anchor="w")
             lbl.pack(fill="x")
             if self._view and self._view["mode"] == "hierarchy":
                 lbl.bind("<Button-1>", lambda _e, c=child: self._on_child_click(c))
 
     def _render_node_info(self, node, plateau_size):
+        le = node["leaf_economics"]
+        if le is not None:
+            # Phase 8-2・C4: 葉ノード（ドリルダウンの終点）は空白ではなく単位経済を出す。
+            # マージン・売上は JPY 建て、price_local は現地通貨——混ぜない（§C4）。
+            lines = [
+                f"需要 {le['demand_qty']:,.0f} lot　能力 {le['cap_lots']:,.0f} lot"
+                f"　出荷 {le['shipped']:,.0f} lot",
+                f"現地売価: {le['price_local']:,.0f} {le['ccy']}",
+                f"売上: {le['rev']:,.0f} 円/lot　原価: {le['cost']:,.0f} 円/lot",
+                f"単位マージン: {le['margin']:,.0f} 円/lot（{le['margin_pct'] * 100:.1f}%）",
+                f"全市場中の順位: {le['n_markets']}市場中 {le['rank']}位",
+                f"関税率: {le['tariff_rate'] * 100:.1f}%",
+            ]
+            if le["shipped"] <= 0.0 and le["marginal_market"]:
+                lines.append(
+                    f"（能力が{le['marginal_rank']}位（{le['marginal_market']}）で"
+                    f"尽きたため出荷 0）")
+            self._node_info_label.config(text="\n".join(lines))
+            return
+
         lines = [f"このノードの能力: {node['cap_lots']:,.0f} lot"]
-        if plateau_size is not None:
+        # Phase 8-2・C2: 配分ゼロの枝は台地サイズを出さない（意味を持たない）
+        if not node["is_unallocated"] and plateau_size is not None:
             lines.append(f"台地サイズ: {plateau_size} 点")
         self._node_info_label.config(text="\n".join(lines))
 
@@ -313,7 +363,21 @@ class AllocationPanel(tk.Frame):
 
         surface = node["surface"]
         children = node["children"]
-        if node["plot_kind"] == "triangle" and surface:
+        le = node["leaf_economics"]
+        if node["is_unallocated"]:
+            # Phase 8-2・C2: 平坦な0円の面を描いても意味が無い。図は描かない。
+            ax.text(0.5, 0.5, node["unallocated_message"], ha="center", va="center",
+                    color=FG_WHITE, fontsize=10, wrap=True, transform=ax.transAxes)
+            ax.set_xticks([]); ax.set_yticks([])
+        elif le is not None:
+            # Phase 8-2・C4: 葉ノードは 売上→原価→マージン の横棒1本
+            ax.barh(["マージン", "原価", "売上"],
+                   [le["margin"], le["cost"], le["rev"]],
+                   color=["#66BB6A", "#EF5350", FG_ACC])
+            ax.set_xlabel("円/lot")
+            ax.set_title(f"{format_market_name(node['name'])}"
+                        f"（{le['n_markets']}市場中 {le['rank']}位）", fontsize=10)
+        elif node["plot_kind"] == "triangle" and surface:
             xus = [pt["x"][1] for pt in surface]
             xeu = [pt["x"][2] for pt in surface]
             z = [pt["profit"] / 1e6 for pt in surface]
@@ -324,10 +388,11 @@ class AllocationPanel(tk.Frame):
             cx = node["child_x"].get(children[1], 0.0)
             cy = node["child_x"].get(children[2], 0.0)
             ax.plot(cx, cy, marker="*", ms=16, mfc="#111", mec="w", mew=0.8, zorder=5)
-            ax.set_xlabel(children[1]); ax.set_ylabel(children[2])
+            ax.set_xlabel(format_market_name(children[1]))
+            ax.set_ylabel(format_market_name(children[2]))
             ax.set_xlim(-0.02, 1.02); ax.set_ylim(-0.02, 1.02)
             ax.set_aspect("equal")
-            ax.set_title(f"{node['name']}", fontsize=10)
+            ax.set_title(f"{format_market_name(node['name'])}", fontsize=10)
         elif node["plot_kind"] == "line" and surface:
             pts = sorted(surface, key=lambda pt: pt["x"][1])
             xs = [pt["x"][1] for pt in pts]
@@ -336,8 +401,11 @@ class AllocationPanel(tk.Frame):
             cx = node["child_x"].get(children[1], 0.0)
             best_y = max(ys) if ys else 0.0
             ax.axvline(cx, color="#EF5350", ls="--", lw=1.0)
-            ax.set_xlabel(f"{children[1]} の比率"); ax.set_ylabel("利益（百万円）")
-            ax.set_title(f"{node['name']}（{children[0]} ⇄ {children[1]}）", fontsize=10)
+            ax.set_xlabel(f"{format_market_name(children[1])} の比率")
+            ax.set_ylabel("利益（百万円）")
+            ax.set_title(f"{format_market_name(node['name'])}"
+                        f"（{format_market_name(children[0])} ⇄ {format_market_name(children[1])}）",
+                        fontsize=10)
         else:
             ax.text(0.5, 0.5, "配分が一意（描画なし）", ha="center", va="center",
                     color=FG_WHITE, fontsize=11, transform=ax.transAxes)

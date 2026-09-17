@@ -29,9 +29,22 @@ from wom.allocation.hierarchical_simplex import build_hierarchy, scan_hierarchic
 from wom.allocation.merit_order import (
     build_allocation_merit_order, compare_with_grid, true_continuous_optimum,
 )
-from wom.allocation.transmission import Scenario
+from wom.allocation.transmission import CostBlock, Scenario, unit_pnl_at_quantity
 
 _AXIS_LABEL_JA = {"fx_usd": "USD/JPY", "material_usd": "原料価格"}
+
+_UNALLOCATED_EPS = 1e-6   # cap_lots がこれ未満なら「配分ゼロ」とみなす（C2）
+
+
+def format_market_name(name: str) -> str:
+    """市場名の表示用整形（Phase 8-2・C3）。'Retail_' 前置きを落とす。
+
+    **結論行・子ノードパネルの2箇所で必ずこの関数を使うこと**——別々に整形すると
+    A5/A8（region の上書き／価格の最後勝ち）と同じ「フィルタを2箇所に置く」家族の
+    欠陥になる（Phase 8-2 Request Letter §C3）。
+    """
+    prefix = "Retail_"
+    return name[len(prefix):] if name.startswith(prefix) else name
 
 
 # ---------------------------------------------------------------------------
@@ -163,22 +176,118 @@ def _plot_kind(n_children: int) -> str:
     return "none"          # 子0（葉）・子1（build_hierarchy() は通常作らない）
 
 
+def _is_unallocated(cap_lots: float) -> bool:
+    """cap_lots がゼロ（または浮動小数の誤差程度）か（Phase 8-2・C2）。
+
+    判定はここに一本化する——パネル側で `cap_lots == 0` を書かないこと
+    （計算と描画の分離、Phase 8-1 の設計の柱）。
+    """
+    return abs(cap_lots) < _UNALLOCATED_EPS
+
+
+def _unallocated_message_ja(parent_name: Optional[str], current_name: str) -> str:
+    """C2: 配分ゼロの枝に出す説明（child_x・図・台地サイズの代わりに1行）。
+
+    **ゼロなのは上位ノード自身ではなく、上位ノードから見た「このノード」への
+    配分**——Phase 8-2 検証で名指しが1つずれていると指摘された（旧実装は
+    「上位ノードでALLの比率が0のため」のように書いており、ALL自身の比率が
+    0であるかのように読めたが、実際に0なのは USD 側。「上位ノード {parent} に
+    おいて {current} の配分が 0 のため」の形にし、current を明示する）。
+    英数字（ノード名・数値）の前後には半角スペースを入れる（C6 と同じ理由）。
+    """
+    if parent_name:
+        return (
+            f"この枝には配分されていません（0 lot）。上位ノード {parent_name} において "
+            f"{current_name} の配分が 0 のため、ここから下の比率に意味はありません。"
+        )
+    return "この枝には配分されていません（0 lot）。"
+
+
+def _leaf_economics(name: str, cb: CostBlock, sc: Scenario, tp: float, cap_lots: float,
+                    ranked_markets: Sequence[str], marginal_market: Optional[str]) -> dict:
+    """葉ノード（末端市場）の単位経済（Phase 8-2・C4）。
+
+    **マージン・売上は JPY 建て、`price_local` は現地通貨。混ぜないこと**
+    ——一度混ぜて 14,191% という値を出した実例がある（Request Letter §C4）。
+    """
+    shipped = min(cap_lots, float(cb.demand_qty))
+    u = unit_pnl_at_quantity(cb, sc, shipped, tp)
+    margin_pct = (u["margin"] / u["rev"]) if u["rev"] else 0.0
+    rank = ranked_markets.index(name) + 1
+    marginal_rank = (ranked_markets.index(marginal_market) + 1
+                     if marginal_market is not None else None)
+    return {
+        "ccy": cb.ccy,
+        "price_local": cb.price_local,
+        "rev": u["rev"],                 # JPY/lot
+        "cost": u["cost"],                # JPY/lot
+        "margin": u["margin"],            # JPY/lot
+        "margin_pct": margin_pct,
+        "rank": rank,
+        "n_markets": len(ranked_markets),
+        "demand_qty": float(cb.demand_qty),
+        "cap_lots": cap_lots,
+        "shipped": shipped,
+        "tariff_rate": cb.tariff_rate,
+        "marginal_market": (format_market_name(marginal_market)
+                            if marginal_market is not None else None),
+        "marginal_rank": marginal_rank,
+    }
+
+
 # ---------------------------------------------------------------------------
 # 結論行・補助パネルの整形
 # ---------------------------------------------------------------------------
 
+def _format_allocation_summary_ja(markets: Sequence[str], x: Dict[str, float]) -> str:
+    """結論行に収める配分の要約（Phase 8-2・C3）。
+
+    15市場等をそのまま並べると1行が300文字超になり右端で切れ、しかも切れた
+    部分（配分ゼロの市場）が答えの一部だった（C3 の事故）。上位4市場 + 残りの
+    合計 + 配分ゼロの市場数、に畳む。**配分ゼロの市場を黙って落とさない**
+    ——0件のときも「配分ゼロ なし」と明示する。
+    """
+    sorted_m = sorted(markets, key=lambda m: -x.get(m, 0.0))
+    nonzero = [m for m in sorted_m if x.get(m, 0.0) > _UNALLOCATED_EPS]
+    zero = [m for m in sorted_m if m not in nonzero]
+
+    top = nonzero[:4]
+    rest = nonzero[4:]
+
+    parts = [f"{format_market_name(m)} {round(x.get(m, 0.0) * 100)}" for m in top]
+    if rest:
+        rest_pct = round(sum(x.get(m, 0.0) for m in rest) * 100)
+        parts.append(f"他{len(rest)}市場 計{rest_pct}")
+    parts.append(f"配分ゼロ {len(zero)}市場" if zero else "配分ゼロ なし")
+    return " / ".join(parts)
+
+
+def _format_full_allocation_ja(markets: Sequence[str], x: Dict[str, float]) -> str:
+    """全市場の配分を省略なしで並べる（Phase 8-2・C3.3）。根拠パネルに全文で出す用。"""
+    sorted_m = sorted(markets, key=lambda m: -x.get(m, 0.0))
+    return " / ".join(f"{format_market_name(m)} {round(x.get(m, 0.0) * 100)}" for m in sorted_m)
+
+
+def _format_structural_gap_ja(gap_val: Optional[float]) -> str:
+    """構造由来の取りこぼしの文言（Phase 8-2・C6）。0 のとき「+0万」を出さない。"""
+    if gap_val is None:
+        return "構造由来の取りこぼし 不明"
+    if gap_val == 0:
+        return "構造由来の取りこぼしなし"
+    return f"構造由来の取りこぼし {gap_val / 1e4:+.0f}万"
+
+
 def _headline_lines(markets: Sequence[str], to: dict, line2: str, reversal: dict) -> List[str]:
     x = to["x"]
-    sorted_m = sorted(markets, key=lambda m: -x.get(m, 0.0))
-    alloc_str = " / ".join(f"{m} {round(x.get(m, 0.0) * 100)}" for m in sorted_m)
-    line1 = f"推奨配分  {alloc_str}            利益 {to['profit'] / 1e8:.3f} 億（真の最適）"
+    alloc_str = _format_allocation_summary_ja(markets, x)
+    line1 = f"推奨配分（連続最適）  {alloc_str}   利益 {to['profit'] / 1e8:.3f} 億"
     lines = [line1, line2]
     if reversal:
         verb = "割る" if reversal["direction"] == "below" else "上回る"
-        leader = reversal["flips_to"].split(">")[0]
+        leader = format_market_name(reversal["flips_to"].split(">")[0])
         axis_ja = _AXIS_LABEL_JA.get(reversal["axis"], reversal["axis"])
         lines.append(
-            f"ただし {axis_ja} が {reversal['boundary']:.0f} 円を{verb}と"
+            f"ただし {axis_ja} が {reversal['boundary']:.0f} 円を{verb}と "
             f"{leader} 優先へ判断反転"
         )
     return lines
@@ -280,13 +389,13 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
         }
         level_notes_ja = [
             f"格子解像度の誤差 {cmp['expected_gap_from_grid_resolution'] / 1e4:+.0f}万",
-            f"構造由来の取りこぼし {cmp['structural_optimality_gap'] / 1e4:+.0f}万",
+            _format_structural_gap_ja(cmp["structural_optimality_gap"]),
         ]
         headline_line2 = (
             f"格子の最良点との差 {cmp['gap_amt'] / 1e4:+.0f}万 = "
             + ("全量が格子解像度" if cmp["attributable_to_grid_resolution"]
                else "構造由来の乖離あり")
-            + f"。構造由来の取りこぼし {cmp['structural_optimality_gap'] / 1e4:+.0f}万"
+            + "。" + _format_structural_gap_ja(cmp["structural_optimality_gap"])
         )
 
         chosen = plateau[0]
@@ -295,6 +404,8 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
             "name": "ALL", "children": list(markets),
             "child_x": dict(zip(markets, chosen["x"])),
             "cap_lots": cap_wk * WEEKS, "surface": surf, "plot_kind": "triangle",
+            "is_unallocated": False, "unallocated_message": None,
+            "leaf_economics": None,
         }
         plateau_size: Optional[int] = len(plateau)
 
@@ -305,6 +416,21 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
         surfaces = hier["surfaces"]
         hierarchy_gap_value = to["profit"] - hier["profit"]   # 常に 0 以上（V1.4）
 
+        # Phase 8-2・C5: 階層化の誤差を「配分ズレ」+「数量（出し切れず）」に分解する。
+        # 割り算1個（率）や差分1個（円）だけで語らない（Phase 7a・gap_vs_plan_pct と
+        # 同じ理由）。恒等式2本をテストで固定している（tests/test_s1_view_model.py）:
+        #   hierarchy_gap == mix + vol（±1円）
+        #   vol == unshipped × 限界市場の単位マージン（±1円）
+        # 限界市場は「メリットオーダー上、能力が尽きた市場」＝ mo["marginal_market"]
+        # （既に計算済みの mo をそのまま使う。再計算しない）。
+        q_hier_total = sum(hier["q"].values())
+        same = true_continuous_optimum(blocks, sc, cap_wk=q_hier_total / WEEKS,
+                                       transfer_price_usd=tp)
+        hier_mix = same["profit"] - hier["profit"]        # 配分ズレ（上位が下位を見ていない）
+        hier_vol = to["profit"] - same["profit"]          # 数量（出し切れず）
+        unshipped = sum(to["q"].values()) - q_hier_total
+        marginal_market = mo["marginal_market"]
+
         profit_levels = {
             "P_opt": to["profit"], "P_greedy": mo["profit"], "P_grid": None,
             "P_hier": hier["profit"],
@@ -312,18 +438,29 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
             "structural_optimality_gap": None, "grid_resolution_error": None,
             "residual_coverage": None,
             "hierarchy_gap": hierarchy_gap_value, "n_markets": n_markets,
+            "hierarchy_mix": hier_mix, "hierarchy_vol": hier_vol,
+            "hierarchy_unshipped": unshipped,
+            "hierarchy_marginal_market": marginal_market,
         }
-        pct = (-hierarchy_gap_value / to["profit"] * 100.0) if to["profit"] else 0.0
+        summary_line = (
+            f"階層化の誤差 {-hierarchy_gap_value / 1e8:+.2f}億"
+            f" = 配分ズレ {-hier_mix / 1e8:+.2f}億"
+            f" ＋ 出し切れず {-hier_vol / 1e8:+.2f}億（未出荷 {unshipped:,.0f} lot）"
+        )
         level_notes_ja = [
-            f"階層化の誤差 {-hierarchy_gap_value / 1e8:+.2f}億（{pct:+.2f}%）"
-            f" = 上位で確定した配分が下位の事情を見ていない",
+            summary_line,
+            f"配分ズレ {-hier_mix / 1e8:+.2f}億: 上位で確定した配分が下位の事情を見ていない",
+            f"出し切れず {-hier_vol / 1e8:+.2f}億: 下位の需要上限で能力が余ったため"
+            + (f"（限界市場 {format_market_name(marginal_market)}）"
+               if marginal_market else ""),
         ]
-        headline_line2 = level_notes_ja[0]
+        headline_line2 = summary_line
 
         cur, cap_lots, path_nodes = _walk_hierarchy(tree, surfaces, node_path, cap_wk, WEEKS)
         breadcrumb = [n["name"] for n in path_nodes]
 
         children_names = [c["name"] for c in cur["children"]]
+        is_leaf = not children_names
         if cur["name"] in surfaces:
             _b, plat = best_point(surfaces[cur["name"]])
             chosen_node = plat[0]
@@ -335,10 +472,29 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
             plateau_size = None
             surface_for_node = []
 
+        # Phase 8-2・C2: 配分ゼロの枝（葉ではない）に「意味の無い比率」を出さない。
+        # 葉自身が cap_lots==0 のときは C4 の単位経済（出荷0・順位）で説明が付くので
+        # is_unallocated 扱いにしない（葉が優先）。
+        is_unallocated = (not is_leaf) and _is_unallocated(cap_lots)
+        unallocated_parent = (format_market_name(path_nodes[-2]["name"])
+                              if is_unallocated and len(path_nodes) >= 2 else None)
+        unallocated_message = (
+            _unallocated_message_ja(unallocated_parent, format_market_name(cur["name"]))
+            if is_unallocated else None)
+
+        leaf_economics = None
+        if is_leaf:
+            ranked_markets = [b["market"] for b in mo["blocks"]] + mo["excluded"]
+            leaf_economics = _leaf_economics(
+                cur["name"], blocks[cur["name"]], sc, tp, cap_lots,
+                ranked_markets, marginal_market)
+
         node = {
             "name": cur["name"], "children": children_names, "child_x": child_x,
             "cap_lots": cap_lots, "surface": surface_for_node,
             "plot_kind": _plot_kind(len(cur["children"])),
+            "is_unallocated": is_unallocated, "unallocated_message": unallocated_message,
+            "leaf_economics": leaf_economics,
         }
 
     headline = {
@@ -346,6 +502,9 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
         "profit": to["profit"],
         "profit_source": "P_opt",
         "lines_ja": _headline_lines(markets, to, headline_line2, reversal),
+        # Phase 8-2・C3.3: 全市場の配分（省略なし）。根拠パネルに全文で出す用
+        # （結論行は上位4市場+要約に畳むため、答えを画面外に落とさないための控え）。
+        "full_allocation_ja": _format_full_allocation_ja(markets, to["x"]),
     }
     levels = _levels_list(profit_levels)
 
