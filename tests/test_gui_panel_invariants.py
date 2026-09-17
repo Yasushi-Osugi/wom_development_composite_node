@@ -5,7 +5,8 @@ tests/test_gui_panel_invariants.py — Gate 0: GUI の Anti-Degrade 網
 正典: requests/Gate0_RequestLetter_GuiSmokeTests_to_CodeKun.md
 
 `AllocationPanel`（S1 Allocate タブ）を headless に近い形で実体化し、代表的な
-6状態を通しながら**構造として壊れていないか**だけを検査する。
+6状態を通しながら**構造として壊れていないか**だけを検査する（条件7のみ、
+描画結果の警告を見る例外——Phase 8-3a 追補参照）。
 
 **この網は意味を判定しない。** 「この数字が経営者にどう読めるか」は対象外。
 検査するのは汎用の不変条件だけであり、特定の市場名・特定の node_path を
@@ -42,6 +43,7 @@ from __future__ import annotations
 import os
 import sys
 import time
+import warnings
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -329,3 +331,28 @@ def test_renders_without_exception(state):
         assert panel._view is view
     finally:
         root.destroy()
+
+
+# ---------------------------------------------------------------------------
+# 条件7: 日本語を含む図が豆腐にならない（Phase 8-3a 追補）
+# ---------------------------------------------------------------------------
+# コックピット移設直後、日本語フォント設定（`matplotlib.rcParams["font.family"]`）
+# を `wom/gui/app.py` の import 時設定に頼ったまま持ち出しており、`app.py` を
+# import しないコックピットでは効かず、図中の日本語が豆腐化していた
+# （`UserWarning: Glyph ... missing from font(s) DejaVu Sans`）。この欠陥は
+# 描画結果を見て初めて分かるもので、既存の6条件（構造だけを見る）では鳴らない
+# ——matplotlib が glyph 不足を検出すると必ず `UserWarning` を出すことを使い、
+# 描画時の警告を捕まえる形で検査する。
+
+@pytest.mark.parametrize("state", STATES)
+def test_plot_has_no_missing_glyph_warnings(state):
+    view = _build_view(state)
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        root, panel = _make_panel(view)
+        try:
+            pass
+        finally:
+            root.destroy()
+    tofu = [str(w.message) for w in caught if "missing from font" in str(w.message)]
+    assert not tofu, f"glyph(s) missing from configured font (tofu): {tofu}"

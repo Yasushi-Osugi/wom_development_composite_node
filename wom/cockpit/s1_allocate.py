@@ -9,8 +9,10 @@ wom/cockpit/s1_allocate.py — S1 Allocate タブ（Phase 8-1・Phase 8-3a で w
 正典: requests/Phase8-1_RequestLetter_to_CodeKun.md V2
       requests/Phase8-3a_RequestLetter_CockpitFrame_to_CodeKun.md（移設・F1）
 
-【GUI 内の matplotlib は日本語可】（C4）: `app.py` が
-`matplotlib.rcParams["font.family"] = ["Yu Gothic", "DejaVu Sans"]` を設定済み。
+【GUI 内の matplotlib は日本語可】（C4）: `wom/cockpit/__init__.py` が
+`matplotlib.rcParams["font.family"] = ["Yu Gothic", "DejaVu Sans"]` を設定済み
+（Phase 8-3a 追補で修正——移設直後は `app.py` の設定を当てにしたままで、
+コックピットでは `app.py` を import しないため日本語が豆腐化する欠陥だった）。
 「図中テキストは全て英語」は `tools/` の PNG 出力に対する制約であり、GUI には
 及ばない。このパネルの軸ラベル・凡例・注記は日本語でよい。
 """

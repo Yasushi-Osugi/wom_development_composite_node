@@ -11,8 +11,10 @@ tkinter は自動テストが難しいので、テストできる部分（本フ
       requests/Phase8_DesignMD_CockpitGUI.md rev.3 §4 S1
       requests/Phase8-3a_RequestLetter_CockpitFrame_to_CodeKun.md（移設・F1）
 
-【GUI 内の matplotlib は日本語可】（Phase 8-1・C4）: `wom/gui/app.py` が
-`matplotlib.rcParams["font.family"] = ["Yu Gothic", "DejaVu Sans"]` を設定済み。
+【GUI 内の matplotlib は日本語可】（Phase 8-1・C4）: `wom/cockpit/__init__.py` が
+`matplotlib.rcParams["font.family"] = ["Yu Gothic", "DejaVu Sans"]` を設定済み
+（Phase 8-3a 追補で修正——移設直後は `wom/gui/app.py` の設定を当てにしたままで、
+コックピットは `app.py` を import しないため日本語が豆腐化する欠陥だった）。
 「図中テキストは全て英語」という制約は `tools/` の PNG 出力（`tools/plot_*.py`
 はフォント未設定＝豆腐化する）に対するものであり、**GUI には及ばない**。本ファイル
 が作る `lines_ja` 等の日本語ラベルはそのまま GUI の Label / 軸ラベルに使ってよい。
