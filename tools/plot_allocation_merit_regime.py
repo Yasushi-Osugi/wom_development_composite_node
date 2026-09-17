@@ -404,6 +404,33 @@ _OUTPUT_FILES = {
 }
 
 
+# Phase 6-5・E3: 原料軸のレンジをモデルの基準値(sc.material_usd)から作る。
+# 以前は soysauce のスケール(4.0..10.0固定)だったため、基準単価が2桁違う
+# モデル(oil: 500前後)に向けると軸が丸ごとズレた地図になっていた
+# （Phase6-5_RequestLetter_to_CodeKun.md §E3）。
+_MATERIAL_RANGE_LOW_MULT = 0.6    # 基準値の -40%
+_MATERIAL_RANGE_HIGH_MULT = 1.7   # 基準値の +70%
+_MATERIAL_RANGE_POINTS = 13
+_MATERIAL_SHOCK_MULT = 8.0 / 6.0   # soysauce 基準ケース(材料$6→$8)と同じ相対ショック幅
+
+
+def _material_axis_values(base_material_usd: float) -> List[float]:
+    """基準値の -40%~+70% を13点で均等に刻む。
+
+    soysauce（基準6.0）では 3.6..10.2 となり、以前の固定レンジ 4.0..10.0 に
+    近い範囲になる——`test_cli_demo_generates_all` はファイルが生成されること
+    だけを検査しており、この範囲自体を厳密検査していないため、そのまま通る。
+    """
+    low = base_material_usd * _MATERIAL_RANGE_LOW_MULT
+    high = base_material_usd * _MATERIAL_RANGE_HIGH_MULT
+    step = (high - low) / (_MATERIAL_RANGE_POINTS - 1)
+    return [low + step * i for i in range(_MATERIAL_RANGE_POINTS)]
+
+
+def _material_shock_value(base_material_usd: float) -> float:
+    return base_material_usd * _MATERIAL_SHOCK_MULT
+
+
 def _build_arg_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
         description="Allocation merit-order curve + regime map visualization (Phase 4)."
@@ -462,13 +489,18 @@ def run(args: argparse.Namespace) -> List[str]:
     ))
 
     # --- ② Regime map: fx_usd x material_usd（既定軸、R3） ---
+    # fx_values は USD/JPY なのでモデル非依存のまま（Phase 6-5・E3、触らない）。
     fx_values = list(range(100, 221, 2))
-    mat_values = [4.0 + 0.5 * i for i in range(13)]  # 4.0..10.0
+    mat_values = _material_axis_values(sc.material_usd)
     grid_fm = scan_regime_grid(base_blocks, "fx_usd", fx_values, "material_usd", mat_values,
                                transfer_price_usd=tp, base_scenario=sc)
     made.append(plot_regime_map(
         grid_fm, os.path.join(args.out, _OUTPUT_FILES["regime_map"]),
-        mark_points=[(150.0, 6.0, "base"), (200.0, 8.0, "shock")],
+        # マーカーは基準点そのもの(sc.fx_usd/sc.material_usd)から作る——material
+        # だけモデル基準にして fx を旧ソイソース値(150.0)に固定したままだと、
+        # sc.fx_usd がそれと異なるモデルで整合しない半端な直し方になる。
+        mark_points=[(sc.fx_usd, sc.material_usd, "base"),
+                    (sc.fx_usd + 50.0, _material_shock_value(sc.material_usd), "shock")],
     ))
 
     # --- ② Regime map: fx_usd x tariff_rate:US ---
@@ -477,6 +509,9 @@ def run(args: argparse.Namespace) -> List[str]:
                                transfer_price_usd=tp, base_scenario=sc)
     made.append(plot_regime_map(
         grid_ft, os.path.join(args.out, _OUTPUT_FILES["regime_map_tariff"]),
+        # tariff_rate:US 軸自体が "US" 市場キー固定(N市場モデルへの一般化は
+        # 本 Phase のスコープ外・E3 が対象とするのは原料軸のみ)なので、
+        # マーカーも従来どおり固定値のまま触らない。
         mark_points=[(150.0, 0.125, "base")],
     ))
 

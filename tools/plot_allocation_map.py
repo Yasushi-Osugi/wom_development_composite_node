@@ -35,7 +35,9 @@ import numpy as np
 
 from wom.allocation.cost_block import derive_cost_blocks
 from wom.allocation.transmission import Scenario
-from wom.allocation.grid import markets_of, scan_surface, best_point, demand_ceilings, evaluate_point
+from wom.allocation.grid import (
+    markets_of, scan_surface, best_point, chosen_point, demand_ceilings, evaluate_point,
+)
 from wom.allocation.analytics import interaction
 from tools.run_allocation_map import load_scenarios, _blocks_for
 
@@ -98,8 +100,8 @@ def _draw_terrain(ax, surf, blocks, cap_wk, title, norm=None, cmap="RdYlGn",
         ax.tricontour(xus, xeu, fxb, levels=[1.0], colors="k", linestyles=":", linewidths=1.6)
 
     # 最適点★・基準点●
-    best, plateau = best_point(surf)
-    bx = plateau[0]["x"]
+    best, _plateau = best_point(surf)
+    bx = chosen_point(surf)["x"]   # 格子の真の最良点（Phase 6-5・E1）
     ax.plot(bx[1], bx[2], marker="*", ms=17, mfc="#111", mec="w", mew=0.8, zorder=6)
     ax.plot(BASE_ALLOC[1], BASE_ALLOC[2], marker="o", ms=8, mfc="none", mec="#111", mew=1.6, zorder=6)
     if mark_point is not None:
@@ -118,8 +120,8 @@ def plot_single(model_dir, scenario_id, cap_wk, out, point=None):
     base_blocks, tp, scens = _engine(model_dir, cap_wk)
     s = next(x for x in scens if x["id"] == scenario_id)
     surf, blocks = _surface(base_blocks, tp, s, cap_wk)
-    best0, plateau0 = best_point(surf)
-    bx0 = plateau0[0]["x"]
+    best0, _plateau0 = best_point(surf)
+    bx0 = chosen_point(surf)["x"]   # 格子の真の最良点（Phase 6-5・E1）
     mname = os.path.basename(model_dir.rstrip("/\\"))
 
     fig, (axL, axR) = plt.subplots(1, 2, figsize=(13, 5.4), gridspec_kw={"width_ratios": [1.05, 1]})
@@ -145,8 +147,8 @@ def plot_terrain_only(model_dir, scenario_id, cap_wk, out, point=None):
     base_blocks, tp, scens = _engine(model_dir, cap_wk)
     s = next(x for x in scens if x["id"] == scenario_id)
     surf, blocks = _surface(base_blocks, tp, s, cap_wk)
-    best, plateau = best_point(surf)
-    bx = plateau[0]["x"]
+    best, _plateau = best_point(surf)
+    bx = chosen_point(surf)["x"]   # 格子の真の最良点（Phase 6-5・E1）
     fig, ax = plt.subplots(figsize=(6.6, 6.2))
     title = (f"{scenario_id}   cap {cap_wk:.0f}/wk   USD {s['fx_usd']:.0f}   material ${s['material_usd']:.1f}\n"
              f"optimum * ({bx_s(bx)})   max = {best/1e6:.0f}M JPY")
@@ -182,8 +184,8 @@ def plot_tile(model_dir, cap_wk, out):
     axes = np.array(axes).reshape(-1)
     tcf = None
     for ax, (sid, surf, blocks) in zip(axes, surfaces):
-        b0, pl0 = best_point(surf)
-        bx0 = pl0[0]["x"]
+        b0, _pl0 = best_point(surf)
+        bx0 = chosen_point(surf)["x"]   # 格子の真の最良点（Phase 6-5・E1）
         tcf, _b, _x = _draw_terrain(ax, surf, blocks, cap_wk,
                                     f"{sid}\nmax {b0/1e6:.0f}M  opt {bx_s(bx0)}",
                                     norm=norm, show_fxb=True)

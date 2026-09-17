@@ -35,7 +35,8 @@ from typing import Callable, Dict, List, Optional, Sequence, Set, Tuple
 
 from wom.allocation.transmission import CostBlock, Scenario, unit_pnl_at_quantity
 from wom.allocation.grid import (
-    MAX_GRID_POINTS, WEEKS, best_point, grid_point_count, markets_of, scan_surface,
+    MAX_GRID_POINTS, WEEKS, best_point, chosen_point, grid_point_count, markets_of,
+    scan_surface,
 )
 from wom.allocation.merit_order import true_continuous_optimum
 
@@ -352,8 +353,7 @@ def scan_hierarchical(blocks: Dict[str, CostBlock], tree: dict,
                      for c in children}
         surf = scan_surface(sub_blocks, transfer_price_usd, sc, cap_wk_here,
                             weeks=weeks, delta=delta)
-        _best, plateau = best_point(surf)
-        chosen = plateau[0]                    # 台地の先頭（グリッド順）を採る
+        chosen = chosen_point(surf)             # 格子の真の最良点（Phase 6-5・E1）
         surfaces[node["name"]] = surf
         counters["points"] += len(surf)
         counters["nodes"] += 1

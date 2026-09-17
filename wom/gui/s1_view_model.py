@@ -24,7 +24,7 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 from wom.allocation.analytics import switching_points
 from wom.allocation.cost_block import derive_cost_blocks
-from wom.allocation.grid import WEEKS, best_point, markets_of, scan_surface
+from wom.allocation.grid import WEEKS, best_point, chosen_point, markets_of, scan_surface
 from wom.allocation.hierarchical_simplex import build_hierarchy, scan_hierarchical
 from wom.allocation.merit_order import (
     build_allocation_merit_order, compare_with_grid, true_continuous_optimum,
@@ -154,8 +154,7 @@ def _walk_hierarchy(tree: dict, surfaces: Dict[str, list], node_path: Sequence[s
                 f"build_s1_view: node {cur['name']!r} has no children to descend "
                 f"into (requested {name!r})"
             )
-        _best, plateau = best_point(surfaces[cur["name"]])
-        chosen = plateau[0]
+        chosen = chosen_point(surfaces[cur["name"]])   # 格子の真の最良点（Phase 6-5・E1）
         nxt = next((c for c in cur["children"] if c["name"] == name), None)
         if nxt is None:
             raise ValueError(
@@ -411,7 +410,7 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
             + "。" + _format_structural_gap_ja(cmp["structural_optimality_gap"])
         )
 
-        chosen = plateau[0]
+        chosen = chosen_point(surf)   # 格子の真の最良点（Phase 6-5・E1）
         breadcrumb: List[str] = []
         node = {
             "name": "ALL", "children": list(markets),
@@ -476,7 +475,7 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
         is_leaf = not children_names
         if cur["name"] in surfaces:
             _b, plat = best_point(surfaces[cur["name"]])
-            chosen_node = plat[0]
+            chosen_node = chosen_point(surfaces[cur["name"]])   # Phase 6-5・E1
             child_x = dict(zip(children_names, chosen_node["x"]))
             plateau_size = len(plat)
             surface_for_node = surfaces[cur["name"]]

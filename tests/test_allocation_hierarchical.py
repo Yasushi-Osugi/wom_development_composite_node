@@ -322,11 +322,15 @@ def test_oil_uom_split_and_hierarchy():
     r = scan_hierarchical(blocks, tree, tp, SC_OIL, cap_wk=800.0)
     assert r["nodes"] == 10
     assert r["points"] == 1_050
-    assert r["profit"] == pytest.approx(12_136_116_531.0, abs=1.0)   # Phase 8-1b後の実測値（原料$500/kL）
+    # Phase 6-5・E1: _descend() が plateau[0]（格子順の先頭）ではなく
+    # chosen_point()（格子の真の最良点）を採るようになったため、この経路で
+    # +1,025,033 円（Phase 6-5 Request Letter §E1 の実測どおり）だけ P_hier が
+    # 増えた。値は実測値（Code君が正典）。
+    assert r["profit"] == pytest.approx(12_137_141_564.0, abs=1.0)
 
     g = hierarchy_gap(blocks, tree, tp, SC_OIL, cap_wk=800.0)
     assert g["P_flat"] is None                    # 13.9億点なので走らせない
-    assert g["hierarchy_gap"] == pytest.approx(364_967_349.0, abs=1.0)   # Phase 8-1b後の実測値（原料$500/kL）
+    assert g["hierarchy_gap"] == pytest.approx(363_942_316.0, abs=1.0)   # P_hier 改善分だけ縮小
 
 
 def test_oil_structure_only():

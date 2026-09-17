@@ -170,7 +170,30 @@ def best_point(surface: List[dict], plateau_tol: float = 0.001) -> Tuple[float, 
 
     台地サイズ = len(plateau)。台地が 1 なら意思決定が一意。市場数に依存しない
     ので Phase 6-2 の N市場化でも無変更。
+
+    **シグネチャ・返り値は変えない**（Phase 6-5・E1）。台地の長さは意思決定の
+    自由度の報告として正しく、`plateau` の長さを assert している既存テストが
+    ある（`tests/test_allocation_grid.py`）。「採用する1点」を選ぶ用途には
+    `chosen_point()` を使うこと——`plateau[0]`（グリッド順の先頭）は「格子順で
+    たまたま最初に許容誤差内に入った点」であって、真の最良点（profit の
+    argmax）とは限らない（Phase 6-5 Request Letter §E1）。
     """
     best = max(r["profit"] for r in surface)
     plateau = [r for r in surface if r["profit"] >= best - abs(best) * plateau_tol]
     return best, plateau
+
+
+def chosen_point(surface: List[dict]) -> dict:
+    """『採用する1点』を明示的な規則(格子の真の最良点=profitのargmax)で選ぶ。
+
+    `best_point()` の `plateau[0]`（格子順の先頭）に替わる、点選択の一本化先
+    （Phase 6-5・E1）。`plateau_tol` という相対許容誤差に依存しないため、
+    シナリオ間で採用点が意味なく動くことも無い（`plateau_tol` はシナリオ間で
+    台地サイズを比較できない問題を持つが、`chosen_point()` はその影響を受けない
+    ——台地の報告用途と、実際に1点を選ぶ用途を分離したのが本関数の狙い）。
+
+    同点（浮動小数の完全一致）が複数あるときは、格子順（`simplex_grid()` の
+    生成順）で最初のものを採用する——`max()` の仕様どおり決定的だが、その順序
+    自体に意味はない。
+    """
+    return max(surface, key=lambda r: r["profit"])

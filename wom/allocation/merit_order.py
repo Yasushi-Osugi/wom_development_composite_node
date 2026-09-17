@@ -24,7 +24,7 @@ from typing import Dict, List, Optional
 from wom.allocation.transmission import (
     CostBlock, DEFAULT_TRANSFER_PRICE_USD, Scenario, unit_pnl, unit_pnl_at_quantity,
 )
-from wom.allocation.grid import WEEKS, best_point, markets_of
+from wom.allocation.grid import WEEKS, best_point, chosen_point, markets_of
 
 
 def build_allocation_merit_order(
@@ -405,8 +405,8 @@ def compare_with_grid(
             "residual_coverage": None,                  # |structural_residual| / structural_optimality_gap
         }
     """
-    best, plateau = best_point(surface)
-    grid_pt = plateau[0]
+    best, _plateau = best_point(surface)
+    grid_pt = chosen_point(surface)   # 格子の真の最良点（Phase 6-5・E1）
     grid_x, grid_idle = grid_pt["x"], grid_pt["idle"]
 
     gap_amt = mo["profit"] - best

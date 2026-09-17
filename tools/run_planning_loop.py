@@ -39,7 +39,9 @@ from typing import Dict, Optional
 
 from wom.allocation.analytics import switching_points
 from wom.allocation.cost_block import derive_cost_blocks
-from wom.allocation.grid import WEEKS, best_point, evaluate_point, markets_of, scan_surface
+from wom.allocation.grid import (
+    WEEKS, best_point, chosen_point, evaluate_point, markets_of, scan_surface,
+)
 from wom.allocation.handoff import write_demand_for_allocation
 from wom.allocation.hierarchical_simplex import build_hierarchy, scan_hierarchical
 from wom.allocation.merit_order import (
@@ -128,9 +130,9 @@ def main(argv=None) -> int:
     cmp: dict = {}
     try:
         surf = scan_surface(blocks, tp, sc, a.cap_wk)
-        grid_best, plateau = best_point(surf)
+        grid_best, _plateau = best_point(surf)
         cmp = compare_with_grid(mo, surf, true_optimum=to)
-        grid_x = dict(zip(markets, plateau[0]["x"]))
+        grid_x = dict(zip(markets, chosen_point(surf)["x"]))   # Phase 6-5・E1
     except ValueError:
         pass
 

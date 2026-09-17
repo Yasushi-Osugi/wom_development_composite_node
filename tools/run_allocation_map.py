@@ -32,8 +32,8 @@ from typing import Dict, List, Optional, Tuple
 
 from wom.allocation.cost_block import derive_cost_blocks
 from wom.allocation.transmission import CostBlock, Scenario
-from wom.allocation.grid import (markets_of, scan_surface, best_point, demand_ceilings,
-                                 evaluate_point)
+from wom.allocation.grid import (markets_of, scan_surface, best_point, chosen_point,
+                                 demand_ceilings, evaluate_point)
 from wom.allocation.analytics import (switching_points, interaction, robust_point,
                                       constraint_cost)
 
@@ -64,9 +64,15 @@ def load_scenarios(model_dir: str) -> List[dict]:
 
     scens: List[dict] = []
     for sid, rs in by_id.items():
-        # USD レート（US 市場の fx_spot）・原料・関税（先頭 quarter）
-        us_rows = [r for r in rs if r["market"] == "US"]
-        fx_usd = float(us_rows[0]["fx_spot_jpy"])
+        # USD レート（fx_spot）・原料・関税（先頭 quarter）
+        # Phase 6-5・E2: market == "US"（3市場固定の決め打ち）から
+        # currency == "USD" に変更。oil-global-2027 のように market が
+        # leaf_out ノード名（Retail_US_TX 等）になる N市場モデルでは
+        # market == "US" が一致しない（wom/gui/s1_view_model.py の
+        # _load_scenario_row() が既に currency 基準で N市場対応している
+        # のと同じ基準に揃える）。
+        usd_rows = [r for r in rs if r["currency"] == "USD"]
+        fx_usd = float(usd_rows[0]["fx_spot_jpy"])
         material = float(rs[0]["material_price_usd"])
         q0 = rs[0]["quarter"]
         tariff = {r["market"]: float(r["tariff_rate"]) for r in rs if r["quarter"] == q0}
@@ -186,7 +192,7 @@ def run(model_dir: str, cap_wk: float = 800.0, out_dir: str = "output/allocation
         best, plateau = best_point(surf)
         fxbs = [r["FXB"] for r in plateau if r["FXB"] != float("inf")]
         rp = robust_point(plateau, blocks, tp, eval_scenarios, cap_wk)
-        argmax = plateau[0]["x"]
+        argmax = chosen_point(surf)["x"]   # 格子の真の最良点（Phase 6-5・E1）
         argmax_worst = min(evaluate_point(argmax, blocks, tp, sc, cap_wk)["profit"]
                            for sc in eval_scenarios)
         pl_rows.append([sid, len(plateau), round(best, 1), _fmt_x(argmax),
@@ -247,7 +253,7 @@ def run(model_dir: str, cap_wk: float = 800.0, out_dir: str = "output/allocation
         for sid, (surf, _b) in surfaces.items():
             best, plateau = best_point(surf)
             print(f"   {sid:18s} max={best/1e6:8.1f}M plateau={len(plateau):2d} "
-                  f"argmax={_fmt_x(plateau[0]['x'])}")
+                  f"argmax={_fmt_x(chosen_point(surf)['x'])}")   # Phase 6-5・E1
         print(f"[allocation] wrote {len(written)} files -> {out_dir}/")
     return written
 
