@@ -465,7 +465,7 @@ def run(args: argparse.Namespace) -> List[str]:
     fx_values = list(range(100, 221, 2))
     mat_values = [4.0 + 0.5 * i for i in range(13)]  # 4.0..10.0
     grid_fm = scan_regime_grid(base_blocks, "fx_usd", fx_values, "material_usd", mat_values,
-                               transfer_price_usd=tp)
+                               transfer_price_usd=tp, base_scenario=sc)
     made.append(plot_regime_map(
         grid_fm, os.path.join(args.out, _OUTPUT_FILES["regime_map"]),
         mark_points=[(150.0, 6.0, "base"), (200.0, 8.0, "shock")],
@@ -474,7 +474,7 @@ def run(args: argparse.Namespace) -> List[str]:
     # --- ② Regime map: fx_usd x tariff_rate:US ---
     tariff_values = [round(0.02 * i, 2) for i in range(16)]  # 0.00..0.30
     grid_ft = scan_regime_grid(base_blocks, "fx_usd", fx_values, "tariff_rate:US", tariff_values,
-                               transfer_price_usd=tp)
+                               transfer_price_usd=tp, base_scenario=sc)
     made.append(plot_regime_map(
         grid_ft, os.path.join(args.out, _OUTPUT_FILES["regime_map_tariff"]),
         mark_points=[(150.0, 0.125, "base")],

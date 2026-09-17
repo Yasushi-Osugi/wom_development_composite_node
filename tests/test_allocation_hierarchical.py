@@ -36,6 +36,9 @@ OIL_DIR = os.path.join(os.path.dirname(__file__), "..",
                        "data", "sample", "oil-global-2027")
 
 SC = Scenario(fx_usd=150.0, material_usd=6.0)
+# oil-global-2027 専用（Phase 8-1b）: 原油 $500/kL（soysauce の $6 とは別物、CLAUDE.md
+# Phase 8-1b 参照）。soysauce 系のテスト（SC のまま）と混同しないこと。
+SC_OIL = Scenario(fx_usd=150.0, material_usd=500.0)
 
 
 @pytest.fixture(scope="module")
@@ -220,18 +223,22 @@ def test_hierarchy_errors(region_blocks):
 
     # (a) 通貨が混在するグループを aggregate_block() に渡すと ValueError（C10）
     jpy_cb = CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                       price_local=200, ccy="JPY", demand_qty=100)
+                       price_local=200, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0)
     usd_cb = CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                       price_local=200, ccy="USD", demand_qty=100)
+                       price_local=200, ccy="USD", demand_qty=100,
+                     material_usd_base=6.0)
     with pytest.raises(ValueError, match="currenc"):
         aggregate_block([jpy_cb, usd_cb])
 
     # (b) cliff を持つブロックが混ざるグループで ValueError
     cliff_cb = CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.125,
                          price_local=200, ccy="JPY", demand_qty=100,
-                         tariff_rate_preferential=0.0, preferential_threshold_lot=50)
+                         tariff_rate_preferential=0.0, preferential_threshold_lot=50,
+                     material_usd_base=6.0)
     plain_cb = CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                         price_local=200, ccy="JPY", demand_qty=100)
+                         price_local=200, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0)
     with pytest.raises(ValueError, match="cliff"):
         aggregate_block([cliff_cb, plain_cb])
 
@@ -254,9 +261,11 @@ def test_hierarchy_errors(region_blocks):
     }
     blocks2 = {
         "A": CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                       price_local=200, ccy="JPY", demand_qty=100),
+                       price_local=200, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0),
         "B": CostBlock(usd=0, eur=0, jpy=120, tariff_rate=0.0,
-                       price_local=220, ccy="JPY", demand_qty=100),
+                       price_local=220, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0),
     }
     hier = scan_hierarchical(blocks2, single_child_tree, 0.0,
                              Scenario(fx_usd=150.0, material_usd=6.0), cap_wk=100.0)
@@ -272,18 +281,22 @@ def test_aggregate_block_averages_price():
     """demand 3:1・price 100:200 -> 加重平均 125（例外にならない）。
     通貨混在は引き続き ValueError（維持）。"""
     cb_a = CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                     price_local=100.0, ccy="JPY", demand_qty=300)
+                     price_local=100.0, ccy="JPY", demand_qty=300,
+                     material_usd_base=6.0)
     cb_b = CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                     price_local=200.0, ccy="JPY", demand_qty=100)
+                     price_local=200.0, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0)
     agg = aggregate_block([cb_a, cb_b])
     assert agg.price_local == pytest.approx(125.0, abs=1e-9)
     assert agg.ccy == "JPY"
     assert agg.demand_qty == 400
 
     jpy_block = CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                          price_local=200.0, ccy="JPY", demand_qty=100)
+                          price_local=200.0, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0)
     usd_block = CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                          price_local=200.0, ccy="USD", demand_qty=100)
+                          price_local=200.0, ccy="USD", demand_qty=100,
+                     material_usd_base=6.0)
     with pytest.raises(ValueError, match="currenc"):
         aggregate_block([jpy_block, usd_block])
 
@@ -306,14 +319,14 @@ def test_oil_uom_split_and_hierarchy():
     assert len(blocks) == 15
 
     tree = build_hierarchy(blocks, OIL_DIR)
-    r = scan_hierarchical(blocks, tree, tp, SC, cap_wk=800.0)
+    r = scan_hierarchical(blocks, tree, tp, SC_OIL, cap_wk=800.0)
     assert r["nodes"] == 10
     assert r["points"] == 1_050
-    assert r["profit"] == pytest.approx(18_166_679_186.0, abs=1.0)   # A9-6後の実測値（新正典）
+    assert r["profit"] == pytest.approx(12_136_116_531.0, abs=1.0)   # Phase 8-1b後の実測値（原料$500/kL）
 
-    g = hierarchy_gap(blocks, tree, tp, SC, cap_wk=800.0)
+    g = hierarchy_gap(blocks, tree, tp, SC_OIL, cap_wk=800.0)
     assert g["P_flat"] is None                    # 13.9億点なので走らせない
-    assert g["hierarchy_gap"] == pytest.approx(499_524_694.0, abs=1.0)   # A9-6後の実測値（新正典）
+    assert g["hierarchy_gap"] == pytest.approx(364_967_349.0, abs=1.0)   # Phase 8-1b後の実測値（原料$500/kL）
 
 
 def test_oil_structure_only():
@@ -325,7 +338,7 @@ def test_oil_structure_only():
     assert len(b6) == 6
 
     tree6 = build_hierarchy(b6, OIL_DIR)
-    r6 = scan_hierarchical(b6, tree6, tp6, SC, cap_wk=8.0)
+    r6 = scan_hierarchical(b6, tree6, tp6, SC_OIL, cap_wk=8.0)
     assert r6["nodes"] == 3
 
 

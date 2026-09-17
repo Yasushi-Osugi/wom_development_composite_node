@@ -49,7 +49,9 @@ class Scenario:
     eur_per_usd   : EUR/USD 比（ppc_fx_rate.csv 実関係 = 1.08）
     """
     fx_usd: float
-    material_usd: float = 6.0
+    material_usd: float          # 既定値なし（Phase 8-1b）: soysauce の $6 が汎用既定値の
+                                  # 席に座り、oil-global-2027 に黙って複写されていたことの是正。
+                                  # 呼び出し側は必ず明示すること。
     eur_per_usd: float = 1.08
 
 
@@ -82,7 +84,7 @@ class CostBlock:
     price_local: float
     ccy: str
     demand_qty: int
-    material_usd_base: float = 6.0
+    material_usd_base: float     # 既定値なし（Phase 8-1b、material_usd と同じ理由）
     tariff_rate_preferential: Optional[float] = None
     preferential_threshold_lot: Optional[float] = None
 

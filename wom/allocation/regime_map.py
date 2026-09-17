@@ -78,7 +78,9 @@ def scan_regime_grid(
         axis_x, axis_y: "fx_usd" | "material_usd" | "tariff_rate:<市場>"
         x_values, y_values: 各軸の走査値
         transfer_price_usd: 移転価格（USD）
-        base_scenario: 軸で上書きされない成分（既定 fx_usd=150, material_usd=6.0）
+        base_scenario: 軸で上書きされない成分（省略時のフォールバックは soysauce 固有の
+            値 fx_usd=150, material_usd=6.0——Phase 8-1b。他モデル（oil 等）で
+            material_usd を軸にしない場合は必ず明示的に渡すこと）
 
     Returns:
         {
@@ -98,6 +100,8 @@ def scan_regime_grid(
     _validate_axis_name(axis_x, markets)
     _validate_axis_name(axis_y, markets)
 
+    # soysauce 固有の値（Phase 8-1b）。呼び出し側が material_usd をモデル固有の値に
+    # したい場合（oil 等）は必ず base_scenario を明示的に渡すこと。
     base_scenario = base_scenario or Scenario(fx_usd=150.0, material_usd=6.0)
 
     regimes: List[List[str]] = []

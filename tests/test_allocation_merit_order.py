@@ -69,11 +69,14 @@ def test_merit_order_capacity_surplus():
     """需要合計 < 能力のとき λ=0、marginal_market が None、idle > 0"""
     blocks = {
         "JP": CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                        price_local=200, ccy="JPY", demand_qty=100),
+                        price_local=200, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0),
         "US": CostBlock(usd=0, eur=0, jpy=150, tariff_rate=0.0,
-                        price_local=300, ccy="JPY", demand_qty=100),
+                        price_local=300, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0),
         "EU": CostBlock(usd=0, eur=0, jpy=120, tariff_rate=0.0,
-                        price_local=250, ccy="JPY", demand_qty=100),
+                        price_local=250, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0),
     }
     sc = Scenario(fx_usd=150.0, material_usd=6.0)
     # cap_wk × weeks を需要合計(300)よりずっと大きくする

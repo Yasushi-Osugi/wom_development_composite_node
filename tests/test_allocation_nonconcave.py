@@ -47,7 +47,8 @@ def s9_blocks():
 def test_tariff_at_returns_base_when_no_cliff():
     """tariff_rate_preferential=None なら tariff_at(qty) が常に tariff_rate"""
     cb = CostBlock(usd=0, eur=0, jpy=0, tariff_rate=0.125,
-                   price_local=100, ccy="JPY", demand_qty=10)
+                   price_local=100, ccy="JPY", demand_qty=10,
+                     material_usd_base=6.0)
     assert cb.tariff_at(0) == 0.125
     assert cb.tariff_at(1e9) == 0.125
 
@@ -107,7 +108,8 @@ def test_tariff_at_switches_at_threshold():
     """qty が閾値の前後で税率が切り替わる（境界値 qty==T は特恵側）"""
     cb = CostBlock(usd=0, eur=0, jpy=0, tariff_rate=0.125,
                    price_local=100, ccy="JPY", demand_qty=100,
-                   tariff_rate_preferential=0.0, preferential_threshold_lot=50)
+                   tariff_rate_preferential=0.0, preferential_threshold_lot=50,
+                     material_usd_base=6.0)
     assert cb.tariff_at(49) == 0.125
     assert cb.tariff_at(49.999) == 0.125
     assert cb.tariff_at(50) == 0.0

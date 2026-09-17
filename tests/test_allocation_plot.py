@@ -65,7 +65,8 @@ def test_bx_s_format():
 def test_plot_allocation_map_rejects_n4():
     """三角図は N=3 専用（Phase 6-2 V6）。N>=4 は明示エラー、N=3 は通る。"""
     blocks4 = {f"M{i}": CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                                  price_local=200, ccy="JPY", demand_qty=100)
+                                  price_local=200, ccy="JPY", demand_qty=100,
+                     material_usd_base=6.0)
               for i in range(4)}
     with pytest.raises(ValueError, match="3 markets"):
         _require_three_markets(blocks4)

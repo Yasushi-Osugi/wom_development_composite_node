@@ -22,9 +22,12 @@ from wom.allocation.transmission import CostBlock, Scenario, rates, unit_pnl
 
 
 # --- soysauce 3 チャネルの原価ブロック（proto_terrain2.py / 仕様 §5 Step0.5 導出表）---
-JP = CostBlock(usd=9.10,  eur=0.00, jpy=1725, tariff_rate=0.00,  price_local=3840.0, ccy="JPY", demand_qty=30150)
-US = CostBlock(usd=15.65, eur=0.00, jpy=1575, tariff_rate=0.125, price_local=40.0,   ccy="USD", demand_qty=35176)
-EU = CostBlock(usd=14.60, eur=2.15, jpy=1575, tariff_rate=0.08,  price_local=38.0,   ccy="EUR", demand_qty=35175)
+JP = CostBlock(usd=9.10,  eur=0.00, jpy=1725, tariff_rate=0.00,  price_local=3840.0, ccy="JPY", demand_qty=30150,
+                     material_usd_base=6.0)
+US = CostBlock(usd=15.65, eur=0.00, jpy=1575, tariff_rate=0.125, price_local=40.0,   ccy="USD", demand_qty=35176,
+                     material_usd_base=6.0)
+EU = CostBlock(usd=14.60, eur=2.15, jpy=1575, tariff_rate=0.08,  price_local=38.0,   ccy="EUR", demand_qty=35175,
+                     material_usd_base=6.0)
 CH = {"JP": JP, "US": US, "EU": EU}
 
 # 付録 A.1 の単位マージン期待値（JPY/lot、EUR=USD×1.08、transfer_price=17.6）

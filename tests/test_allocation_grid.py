@@ -66,8 +66,8 @@ def test_appendix_a3_regression(cap, fx, mat, max_m, plat, argmax):
 
 def test_plateau_800_vs_1500():
     """#11: 能力800で台地1点、能力1500で台地28点（退化の再現）。"""
-    s800 = scan_surface(BLOCKS, TP, Scenario(fx_usd=150), cap_wk=800)
-    s1500 = scan_surface(BLOCKS, TP, Scenario(fx_usd=150), cap_wk=1500)
+    s800 = scan_surface(BLOCKS, TP, Scenario(fx_usd=150, material_usd=6.0), cap_wk=800)
+    s1500 = scan_surface(BLOCKS, TP, Scenario(fx_usd=150, material_usd=6.0), cap_wk=1500)
     assert len(best_point(s800)[1]) == 1
     assert len(best_point(s1500)[1]) == 28
 
@@ -75,7 +75,7 @@ def test_plateau_800_vs_1500():
 # --- 基準配分の FXB（#12・全需要充足時） ---------------------------------------
 def test_base_allocation_fxb():
     # 基準配分 (0.30,0.35,0.35)。全需要が満たせる能力（1500）で評価＝単位経済の需要加重。
-    r = evaluate_point((0.30, 0.35, 0.35), BLOCKS, TP, Scenario(fx_usd=150), cap_wk=1500)
+    r = evaluate_point((0.30, 0.35, 0.35), BLOCKS, TP, Scenario(fx_usd=150, material_usd=6.0), cap_wk=1500)
     assert r["FCR"] == pytest.approx(0.588, abs=0.001)
     assert r["FRR"] == pytest.approx(0.787, abs=0.001)
     assert r["FXB"] == pytest.approx(0.747, abs=0.001)
@@ -83,7 +83,7 @@ def test_base_allocation_fxb():
 
 def test_profit_identity():
     """損益恒等式：profit = rev − cost（残差ゼロ）。"""
-    surf = scan_surface(BLOCKS, TP, Scenario(fx_usd=150), cap_wk=800)
+    surf = scan_surface(BLOCKS, TP, Scenario(fx_usd=150, material_usd=6.0), cap_wk=800)
     for r in surf:
         assert r["profit"] == pytest.approx(r["rev"] - r["cost"], abs=1e-6)
 
@@ -139,7 +139,8 @@ def test_markets_order_not_alphabetical():
 
 def _dummy_blocks(n: int):
     return {f"M{i}": CostBlock(usd=0, eur=0, jpy=100, tariff_rate=0.0,
-                               price_local=200, ccy="JPY", demand_qty=100)
+                               price_local=200, ccy="JPY", demand_qty=100,
+                               material_usd_base=6.0)
             for i in range(n)}
 
 
