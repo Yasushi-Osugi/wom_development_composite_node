@@ -305,6 +305,57 @@ def test_unallocated_branch_does_not_apply_to_leaves():
     assert v["node"]["leaf_economics"] is not None
 
 
+# ---------------------------------------------------------------------------
+# Phase 8-2a: D1〜D3（大杉さんが実機で見つけた3件）
+# 正典: requests/Phase8-2a_Addendum_to_CodeKun.md
+# ---------------------------------------------------------------------------
+
+# --- D1: 配分ゼロの枝を経由しても view model は葉まで到達できる ----------------
+
+def test_d1_path_through_zero_branch_reaches_leaf_economics():
+    """配分ゼロの枝を経由する node_path で build_s1_view() を呼ぶと、
+    葉の leaf_economics が返る（rank==15 / shipped==0）——view model 側の
+    経路は Phase 8-2 の時点で既に生きていた。塞いでいたのはパネルの
+    `_render_children()` が `is_unallocated` のとき早期 return して子ノードの
+    クリックリンクごと消していたことだけである（D1 の根本原因）。
+    これが落ちたら「降りられない」が再発したということになる。
+    """
+    # 中間ノード（USD, SP_Oil_US_Local）は is_unallocated=True だが、
+    # children は空ではない——降りる経路そのものは view model 上は生きている
+    v_mid = build_s1_view(OIL_DIR, scenario_id="s1_base", cap_wk=800.0, uom="KL",
+                          node_path=("USD", "SP_Oil_US_Local"))
+    assert v_mid["node"]["is_unallocated"] is True
+    assert v_mid["node"]["children"] != []
+
+    v_leaf = build_s1_view(OIL_DIR, scenario_id="s1_base", cap_wk=800.0, uom="KL",
+                           node_path=("USD", "SP_Oil_US_Local", "Retail_US_TX"))
+    le = v_leaf["node"]["leaf_economics"]
+    assert le is not None
+    assert le["rank"] == 15
+    assert le["shipped"] == pytest.approx(0.0, abs=1e-6)
+
+
+# --- D2: 市場名と数字の間はノーブレークスペース -------------------------------
+
+def test_market_share_uses_nbsp_between_name_and_number():
+    """名前と数字の間が通常の半角スペースだと、wraplength 制約下の折返しで
+    市場名と数字が分離しうる（実機で US_NY と 0 が分離して確認された）。
+    区切りの ' / ' でしか折れないよう、ノーブレークスペース（\\u00a0）を使う。
+    """
+    v = build_s1_view(OIL_DIR, scenario_id="s1_base", cap_wk=800.0, uom="KL")
+    full = v["headline"]["full_allocation_ja"]
+    line1 = v["headline"]["lines_ja"][0]
+
+    assert " " in full
+    assert " " in line1
+
+    # 市場名（英数字・アンダースコア）の直後に半角スペース+数字が続く箇所が
+    # 無いこと（あればそこが折返しで分離しうる）
+    import re
+    assert re.search(r"[A-Za-z_]+ \d", full) is None
+    assert re.search(r"[A-Za-z_]+ \d", line1) is None
+
+
 # --- C4: 葉ノードの単位経済 ---------------------------------------------------
 
 def test_leaf_economics_kanto():

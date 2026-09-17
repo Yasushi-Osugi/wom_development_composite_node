@@ -103,10 +103,14 @@ class AllocationPanel(tk.Frame):
 
         # --- 全市場の配分（省略なし・折り返し可）（Phase 8-2・C3.3） ---
         # 結論行は上位4市場+要約に畳むため、答えを画面外に落とさないための控え。
+        # Phase 8-2a・D2: wraplength は窓幅に追従させる（固定ピクセルだと、窓が
+        # 狭いとき右端の市場が折り返されずに切られ、C3 で潰したはずの「答えが
+        # 画面外に落ちる」が一段下で再発する）。
         self._full_allocation_label = tk.Label(
             self, text="", bg=BG_DARK, fg="#90A4AE", font=("Segoe UI", 8),
-            anchor="w", justify="left", wraplength=1100)
+            anchor="w", justify="left", wraplength=1000)
         self._full_allocation_label.pack(fill="x", padx=10, pady=(0, 4))
+        self.bind("<Configure>", self._on_panel_resize)
 
         # --- パンくず（hierarchy モードのときだけ表示。triangle モードでは
         #     pack_forget() で隠す。再表示時は before=self._mid_frame で
@@ -121,7 +125,52 @@ class AllocationPanel(tk.Frame):
         self._breadcrumb_frame.pack(fill="x", padx=8, pady=(0, 2))
         self._breadcrumb_visible = True
 
-        # --- 根拠（matplotlib）＋ 補助パネル ---
+        # --- 操作行・Drill-down（先に確保）（Phase 8-2a・D3） ---
+        # mid（Figure・aux）を fill="both", expand=True で先に pack すると、
+        # 窓が縮んだとき一番下の操作行から真っ先に切り取られる（1280x820の
+        # 既定サイズでも ⚑ ボタンの行が半分欠ける事故が実機で確認された）。
+        # ops → drill の順に side="bottom" で先に確保し、縮むのは常に図の
+        # ほうになるようにする（tkinter の定石。mid は最後に pack する）。
+        ops = tk.Frame(self, bg=BG_MID)
+        ops.pack(side="bottom", fill="x", padx=8, pady=(0, 6))
+        tk.Label(ops, text="配分:", bg=BG_MID, fg=FG_WHITE, font=_JA_FONT).pack(
+            side="left", padx=(6, 2))
+        self._alloc_choice = tk.StringVar(value="recommended")
+        tk.Radiobutton(ops, text="推奨配分（真の最適 P_opt）", variable=self._alloc_choice,
+                       value="recommended", bg=BG_MID, fg=FG_WHITE, selectcolor=BG_DARK,
+                       activebackground=BG_MID, font=_JA_FONT).pack(side="left")
+        self._manual_radio = tk.Radiobutton(
+            ops, text="手入力(N=3のみ)", variable=self._alloc_choice, value="manual",
+            bg=BG_MID, fg=FG_WHITE, selectcolor=BG_DARK, activebackground=BG_MID,
+            font=_JA_FONT)
+        self._manual_radio.pack(side="left", padx=(8, 2))
+        self._manual_var = tk.StringVar(value="")
+        tk.Entry(ops, textvariable=self._manual_var, bg=BG_DARK, fg=FG_WHITE,
+                 insertbackground=FG_WHITE, relief="flat", font=("Segoe UI", 9),
+                 width=20).pack(side="left")
+        tk.Label(ops, text="(例 0.10,0.45,0.45)", bg=BG_MID, fg="#78909C",
+                 font=("Segoe UI", 8)).pack(side="left", padx=(2, 12))
+
+        tk.Button(ops, text="⚑ この配分で計画する", command=self._on_commit,
+                  bg="#4CAF50", fg="#0B1F14", relief="flat",
+                  font=_JA_FONT_BOLD).pack(side="left", padx=(4, 4))
+        # Phase 8-2・C1.3: ⚑ が計画するのは結論行（P_opt）であって、子パネルの
+        # 走査結果（階層格子の点）ではないことを明示する。
+        tk.Label(ops, text="（計画するのは上の推奨配分です）", bg=BG_MID, fg="#78909C",
+                 font=("Segoe UI", 8)).pack(side="left", padx=(0, 8))
+
+        self._status_var = tk.StringVar(value="")
+        tk.Label(ops, textvariable=self._status_var, bg=BG_MID, fg=FG_ACC,
+                 font=("Segoe UI", 8)).pack(side="left")
+
+        # --- Drill-down（ops の直上・side="bottom" で ops より先に確保） ---
+        drill = tk.Frame(self, bg=BG_DARK)
+        drill.pack(side="bottom", fill="x", padx=8, pady=(0, 4))
+        tk.Button(drill, text="[ メリットオーダー曲線 ]", command=self._on_merit_order,
+                  bg=BG_LIGHT, fg=FG_WHITE, relief="flat",
+                  font=_JA_FONT).pack(side="left")
+
+        # --- 根拠（matplotlib）＋ 補助パネル（残り全部。最後に pack する） ---
         mid = tk.Frame(self, bg=BG_DARK)
         mid.pack(fill="both", expand=True, padx=8, pady=4)
         self._mid_frame = mid
@@ -157,49 +206,17 @@ class AllocationPanel(tk.Frame):
                                          wraplength=240)
         self._node_info_label.pack(fill="x", padx=6, pady=(8, 6))
 
-        # --- Drill-down ---
-        drill = tk.Frame(self, bg=BG_DARK)
-        drill.pack(fill="x", padx=8, pady=(0, 4))
-        tk.Button(drill, text="[ メリットオーダー曲線 ]", command=self._on_merit_order,
-                  bg=BG_LIGHT, fg=FG_WHITE, relief="flat",
-                  font=_JA_FONT).pack(side="left")
-
-        # --- 操作行 ---
-        ops = tk.Frame(self, bg=BG_MID)
-        ops.pack(fill="x", padx=8, pady=(0, 6))
-        tk.Label(ops, text="配分:", bg=BG_MID, fg=FG_WHITE, font=_JA_FONT).pack(
-            side="left", padx=(6, 2))
-        self._alloc_choice = tk.StringVar(value="recommended")
-        tk.Radiobutton(ops, text="推奨配分（真の最適 P_opt）", variable=self._alloc_choice,
-                       value="recommended", bg=BG_MID, fg=FG_WHITE, selectcolor=BG_DARK,
-                       activebackground=BG_MID, font=_JA_FONT).pack(side="left")
-        self._manual_radio = tk.Radiobutton(
-            ops, text="手入力(N=3のみ)", variable=self._alloc_choice, value="manual",
-            bg=BG_MID, fg=FG_WHITE, selectcolor=BG_DARK, activebackground=BG_MID,
-            font=_JA_FONT)
-        self._manual_radio.pack(side="left", padx=(8, 2))
-        self._manual_var = tk.StringVar(value="")
-        tk.Entry(ops, textvariable=self._manual_var, bg=BG_DARK, fg=FG_WHITE,
-                 insertbackground=FG_WHITE, relief="flat", font=("Segoe UI", 9),
-                 width=20).pack(side="left")
-        tk.Label(ops, text="(例 0.10,0.45,0.45)", bg=BG_MID, fg="#78909C",
-                 font=("Segoe UI", 8)).pack(side="left", padx=(2, 12))
-
-        tk.Button(ops, text="⚑ この配分で計画する", command=self._on_commit,
-                  bg="#4CAF50", fg="#0B1F14", relief="flat",
-                  font=_JA_FONT_BOLD).pack(side="left", padx=(4, 4))
-        # Phase 8-2・C1.3: ⚑ が計画するのは結論行（P_opt）であって、子パネルの
-        # 走査結果（階層格子の点）ではないことを明示する。
-        tk.Label(ops, text="（計画するのは上の推奨配分です）", bg=BG_MID, fg="#78909C",
-                 font=("Segoe UI", 8)).pack(side="left", padx=(0, 8))
-
-        self._status_var = tk.StringVar(value="")
-        tk.Label(ops, textvariable=self._status_var, bg=BG_MID, fg=FG_ACC,
-                 font=("Segoe UI", 8)).pack(side="left")
-
     # ------------------------------------------------------------------
     # データ読み込み・再描画
     # ------------------------------------------------------------------
+    def _on_panel_resize(self, event):
+        """Phase 8-2a・D2: 「全市場の配分」控え欄の折返し幅を窓幅に追従させる。"""
+        if event.widget is not self:
+            return
+        new_wrap = max(event.width - 24, 200)   # padx=10×2 + 余白
+        if new_wrap != self._full_allocation_label.cget("wraplength"):
+            self._full_allocation_label.config(wraplength=new_wrap)
+
     def _on_browse(self):
         d = filedialog.askdirectory(title="モデルフォルダを選択")
         if d:
@@ -302,24 +319,32 @@ class AllocationPanel(tk.Frame):
     def _render_children(self, node):
         for w in self._children_frame.winfo_children():
             w.destroy()
-        # Phase 8-2・C2: 配分ゼロの枝は child_x（意味の無い比率）を出さず、
+
+        # Phase 8-2a・D1: 「比率を出す/出さない」と「降りられる/降りられない」を
+        # 別の軸にする。C2 の意図は前者（意味の無い比率を出さない）だけであり、
+        # 子ノードへ降りる手段まで塞ぐべきではなかった——「なぜこの枝がゼロ
+        # なのか」を最もよく説明する画面（C4 の葉の単位経済）が、その先にある。
         # 判定は view 側の is_unallocated を読むだけ（cap_lots == 0 をここで書かない）。
         if node["is_unallocated"]:
             tk.Label(self._children_frame, text=node["unallocated_message"], bg=BG_MID,
                     fg="#78909C", font=_JA_FONT, wraplength=240, justify="left",
-                    anchor="w").pack(fill="x", anchor="w")
-            return
-        if node["plot_kind"] == "none":
+                    anchor="w").pack(fill="x", anchor="w", pady=(0, 4))
+        elif node["plot_kind"] == "none":
             tk.Label(self._children_frame, text="（配分が一意・下記の単位経済を参照）",
                     bg=BG_MID, fg="#78909C", font=_JA_FONT, wraplength=240,
                     justify="left").pack(anchor="w")
             return
+
         for child in node["children"]:
-            x = node["child_x"].get(child, 0.0)
             row = tk.Frame(self._children_frame, bg=BG_MID)
             row.pack(fill="x", pady=1)
-            lbl = tk.Label(row, text=f"{format_market_name(child)}  {x * 100:.0f}%",
-                          bg=BG_MID, fg=FG_ACC, font=_JA_FONT, cursor="hand2", anchor="w")
+            if node["is_unallocated"]:
+                label_text = f"{format_market_name(child)}　配分なし"
+            else:
+                x = node["child_x"].get(child, 0.0)
+                label_text = f"{format_market_name(child)}  {x * 100:.0f}%"
+            lbl = tk.Label(row, text=label_text, bg=BG_MID, fg=FG_ACC,
+                          font=_JA_FONT, cursor="hand2", anchor="w")
             lbl.pack(fill="x")
             if self._view and self._view["mode"] == "hierarchy":
                 lbl.bind("<Button-1>", lambda _e, c=child: self._on_child_click(c))

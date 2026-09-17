@@ -239,6 +239,19 @@ def _leaf_economics(name: str, cb: CostBlock, sc: Scenario, tp: float, cap_lots:
 # 結論行・補助パネルの整形
 # ---------------------------------------------------------------------------
 
+def _format_market_share_ja(name: str, pct: float) -> str:
+    """1市場分の『{名前} {比率}』表記（Phase 8-2a・D2）。
+
+    名前と数字の間は**ノーブレークスペース**（`\\u00a0`）——通常の半角スペース
+    だと、パネル側の `wraplength` 制約で折り返すときに名前と数字の間で改行
+    されうる（実機で `US_NY` と `0` が分離して確認された。C3 で潰したはずの
+    「答えが画面から消える」の再発）。区切りの `" / "`（通常スペース）でしか
+    折れないようにする。整形は `format_market_name()` と同じくここ1箇所に置く
+    （A5/A8の教訓——フィルタ／整形を2箇所に分けない）。
+    """
+    return f"{format_market_name(name)} {round(pct * 100)}"
+
+
 def _format_allocation_summary_ja(markets: Sequence[str], x: Dict[str, float]) -> str:
     """結論行に収める配分の要約（Phase 8-2・C3）。
 
@@ -254,7 +267,7 @@ def _format_allocation_summary_ja(markets: Sequence[str], x: Dict[str, float]) -
     top = nonzero[:4]
     rest = nonzero[4:]
 
-    parts = [f"{format_market_name(m)} {round(x.get(m, 0.0) * 100)}" for m in top]
+    parts = [_format_market_share_ja(m, x.get(m, 0.0)) for m in top]
     if rest:
         rest_pct = round(sum(x.get(m, 0.0) for m in rest) * 100)
         parts.append(f"他{len(rest)}市場 計{rest_pct}")
@@ -265,7 +278,7 @@ def _format_allocation_summary_ja(markets: Sequence[str], x: Dict[str, float]) -
 def _format_full_allocation_ja(markets: Sequence[str], x: Dict[str, float]) -> str:
     """全市場の配分を省略なしで並べる（Phase 8-2・C3.3）。根拠パネルに全文で出す用。"""
     sorted_m = sorted(markets, key=lambda m: -x.get(m, 0.0))
-    return " / ".join(f"{format_market_name(m)} {round(x.get(m, 0.0) * 100)}" for m in sorted_m)
+    return " / ".join(_format_market_share_ja(m, x.get(m, 0.0)) for m in sorted_m)
 
 
 def _format_structural_gap_ja(gap_val: Optional[float]) -> str:
