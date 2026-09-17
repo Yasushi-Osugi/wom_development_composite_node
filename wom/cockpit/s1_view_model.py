@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-wom/gui/s1_view_model.py — S1 Allocate 画面が出す値を作る純関数（Phase 8-1）
+wom/cockpit/s1_view_model.py — S1 Allocate 画面が出す値を作る純関数（Phase 8-1・Phase 8-3a で wom/cockpit/ へ移設）
 ================================================================================
 **tkinter に依存しない。** `build_s1_view()` が画面に出す値をすべて作り、
-`wom/gui/allocation_panel.py` はそれを並べるだけにする（C9：計算と描画を分ける）。
+`wom/cockpit/s1_allocate.py` はそれを並べるだけにする（C9：計算と描画を分ける）。
 tkinter は自動テストが難しいので、テストできる部分（本ファイル）とできない部分
 （パネル）を先に切り分けるのが本 Phase の価値の半分である。
 
 正典: requests/Phase8-1_RequestLetter_to_CodeKun.md V1
       requests/Phase8_DesignMD_CockpitGUI.md rev.3 §4 S1
+      requests/Phase8-3a_RequestLetter_CockpitFrame_to_CodeKun.md（移設・F1）
 
 【GUI 内の matplotlib は日本語可】（Phase 8-1・C4）: `wom/gui/app.py` が
 `matplotlib.rcParams["font.family"] = ["Yu Gothic", "DejaVu Sans"]` を設定済み。
@@ -30,6 +31,7 @@ from wom.allocation.merit_order import (
     build_allocation_merit_order, compare_with_grid, true_continuous_optimum,
 )
 from wom.allocation.transmission import CostBlock, Scenario, unit_pnl_at_quantity
+from wom.cockpit.plateau_band import default_band_yen, plateau_by_band
 
 _AXIS_LABEL_JA = {"fx_usd": "USD/JPY", "material_usd": "原料価格"}
 
@@ -142,7 +144,7 @@ def _walk_hierarchy(tree: dict, surfaces: Dict[str, list], node_path: Sequence[s
                     cap_wk: float, weeks: int) -> Tuple[dict, float, List[dict]]:
     """`tree` を `node_path` に沿って降り、(現在ノード, そのノードの能力, 経路上のノード列)。
 
-    子ノードの能力は「親ノードの surfaces から best_point() で得た配分」——
+    子ノードの能力は「親ノードの surfaces から chosen_point() で得た配分」——
     scan_hierarchical() が既に計算済みの `surfaces` を読むだけで、新たな
     `scan_surface()` は一切呼ばない（V1.3）。
     """
@@ -349,12 +351,21 @@ def evaluate_allocation(model_dir: str, scenario_id: str, cap_wk: float,
 
 def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
                   uom: Optional[str] = None,
-                  node_path: Tuple[str, ...] = ()) -> dict:
+                  node_path: Tuple[str, ...] = (),
+                  band_yen: Optional[float] = None) -> dict:
     """S1 に出す値をすべて作る。tkinter に依存しない。
 
     Args:
         node_path: 階層ドリルダウンでいま見ているノードへの経路。() はルート
             （N=3・"triangle" モードでは常に () で、breadcrumb も常に []）。
+        band_yen: 台地を数え直す絶対額の帯（円、Phase 8-3a・R4）。省略（None）
+            すると `P_opt` の 0.01% あたりから既定値を作って使う——**呼び出し
+            側がモデルを読み込んだときの値を持ち回り、以降の呼び出しではその
+            値を渡すこと**。シナリオを切り替えるたびに省略して呼び直すと、
+            そのたびに帯が作り直されてしまい、R4 が解決した「シナリオ間で
+            台地サイズが比較できない」問題が形を変えて戻ってくる。
+            実際に使った値は `view["band_yen"]` として返るので、呼び出し側は
+            それを保持して次回以降に渡し戻せばよい。
 
     **`headline` と `levels` は `node_path` を変えても変わらない**（V1.1）。
     木のどこにいるかは `breadcrumb` / `node` だけが変わる——ノードを降りるたびに
@@ -381,6 +392,11 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
     mo = build_allocation_merit_order(blocks, sc, cap_wk, transfer_price_usd=tp)
     to = true_continuous_optimum(blocks, sc, cap_wk, transfer_price_usd=tp)
     reversal = compute_reversal(blocks, tp, sc)
+
+    # Phase 8-3a・R4: 台地の帯（絶対額）。省略時のみここで既定値を作る——
+    # 呼び出し側が持ち回った値を渡してくれば、それをそのまま使う（上のdocstring参照）。
+    if band_yen is None:
+        band_yen = default_band_yen(to["profit"])
 
     if n_markets == 3:
         mode = "triangle"
@@ -419,7 +435,10 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
             "is_unallocated": False, "unallocated_message": None,
             "leaf_economics": None,
         }
-        plateau_size: Optional[int] = len(plateau)
+        # Phase 8-3a・R4: 台地は plateau_tol（相対値）ではなく band_yen（絶対額）
+        # で数え直す——`grid_best`/`plateau`（best_point() の返り値）自体は
+        # P_grid の値として上で使うので無変更、数え直すのは表示用の件数だけ。
+        plateau_size: Optional[int] = len(plateau_by_band(surf, band_yen))
 
     else:
         mode = "hierarchy"
@@ -474,10 +493,11 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
         children_names = [c["name"] for c in cur["children"]]
         is_leaf = not children_names
         if cur["name"] in surfaces:
-            _b, plat = best_point(surfaces[cur["name"]])
             chosen_node = chosen_point(surfaces[cur["name"]])   # Phase 6-5・E1
             child_x = dict(zip(children_names, chosen_node["x"]))
-            plateau_size = len(plat)
+            # Phase 8-3a・R4: 台地は band_yen（絶対額）で数え直す（上の triangle
+            # 分岐と同じ理由）。
+            plateau_size = len(plateau_by_band(surfaces[cur["name"]], band_yen))
             surface_for_node = surfaces[cur["name"]]
         else:
             child_x = {}
@@ -529,6 +549,7 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
         "breadcrumb": breadcrumb,
         "node": node,
         "plateau_size": plateau_size,
+        "band_yen": band_yen,
         # robust_point は複数シナリオの集合が要る（analytics.robust_point()）。
         # build_s1_view() は単一シナリオしか受け取らないため、本 Phase では
         # 意味のある値を作れず None のまま返す（Phase 8-2 以降、シナリオ集合を

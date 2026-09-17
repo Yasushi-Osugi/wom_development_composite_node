@@ -68,7 +68,7 @@ def load_scenarios(model_dir: str) -> List[dict]:
         # Phase 6-5・E2: market == "US"（3市場固定の決め打ち）から
         # currency == "USD" に変更。oil-global-2027 のように market が
         # leaf_out ノード名（Retail_US_TX 等）になる N市場モデルでは
-        # market == "US" が一致しない（wom/gui/s1_view_model.py の
+        # market == "US" が一致しない（wom/cockpit/s1_view_model.py の
         # _load_scenario_row() が既に currency 基準で N市場対応している
         # のと同じ基準に揃える）。
         usd_rows = [r for r in rs if r["currency"] == "USD"]

@@ -133,6 +133,17 @@ def run_gui() -> None:
         sys.exit(1)
 
 
+def run_cockpit() -> None:
+    """経営コックピット（Phase 8・`wom/cockpit/`）を起動する。"""
+    try:
+        from wom.cockpit.cockpit_app import launch
+        launch()
+    except ImportError as e:
+        print(f"Cockpit could not start: {e}")
+        print("Install requirements: pip install -r requirements.txt")
+        sys.exit(1)
+
+
 # ──────────────────────────────────────────────────────────────────────
 # Argument parser
 # ──────────────────────────────────────────────────────────────────────
@@ -144,6 +155,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p.add_argument("--gui",  action="store_true", help="Launch GUI (default)")
     p.add_argument("--cli",  action="store_true", help="Run headless CLI simulation")
+    p.add_argument("--cockpit", action="store_true",
+                   help="Launch the management cockpit (wom/cockpit/, Phase 8)")
 
     # CLI-only options
     cli = p.add_argument_group("CLI options (only used with --cli)")
@@ -185,6 +198,8 @@ def main():
 
     if args.cli:
         run_cli(args)
+    elif args.cockpit:
+        run_cockpit()
     else:
         # Default: GUI
         run_gui()

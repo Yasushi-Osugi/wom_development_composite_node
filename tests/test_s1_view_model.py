@@ -4,8 +4,8 @@ tests/test_s1_view_model.py — S1 Allocate 画面の view model（Phase 8-1）
 ================================================================================
 正典: requests/Phase8-1_RequestLetter_to_CodeKun.md V4
 
-**tkinter はテストしない。** `wom/gui/s1_view_model.py` の純関数だけを検証する
-（`wom/gui/allocation_panel.py` は並べるだけなので、ここでは対象外）。
+**tkinter はテストしない。** `wom/cockpit/s1_view_model.py` の純関数だけを検証する
+（`wom/cockpit/s1_allocate.py` は並べるだけなので、ここでは対象外）。
 """
 import os
 import sys
@@ -15,8 +15,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import pytest
 
-import wom.gui.s1_view_model as s1vm
-from wom.gui.s1_view_model import build_s1_view, format_market_name
+import wom.cockpit.s1_view_model as s1vm
+from wom.cockpit.s1_view_model import build_s1_view, format_market_name
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(HERE)
@@ -200,7 +200,7 @@ def test_headline_full_allocation_ja_has_every_market():
 
 
 def markets_of_oil():
-    from wom.gui.s1_view_model import _scenario_blocks
+    from wom.cockpit.s1_view_model import _scenario_blocks
     from wom.allocation.grid import markets_of
     blocks, _tp, _sc = _scenario_blocks(OIL_DIR, "s1_base", "KL")
     return markets_of(blocks)
@@ -426,7 +426,7 @@ def test_hierarchy_unshipped_is_independent_of_material_price():
     v6 = build_s1_view(OIL_DIR, scenario_id="s1_base", cap_wk=800.0, uom="KL")
     # s1_base は既に mat=500（Phase 8-1b 適用済み）。ga_scenario_master.csv を
     # 経由せず Scenario を直接差し替えて mat=6 を再現する。
-    import wom.gui.s1_view_model as _s1vm
+    import wom.cockpit.s1_view_model as _s1vm
     from dataclasses import replace
     from wom.allocation.grid import WEEKS
     from wom.allocation.hierarchical_simplex import build_hierarchy, scan_hierarchical

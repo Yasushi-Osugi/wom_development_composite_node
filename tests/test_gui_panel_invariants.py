@@ -139,7 +139,7 @@ STATES = [
 
 
 def _build_view(state: dict) -> dict:
-    from wom.gui.s1_view_model import build_s1_view
+    from wom.cockpit.s1_view_model import build_s1_view
 
     return build_s1_view(
         state["model_dir"], scenario_id=state["scenario_id"], cap_wk=state["cap_wk"],
@@ -151,7 +151,7 @@ def _make_panel(view: dict):
 
     呼び出し側は必ず `root.destroy()` すること。
     """
-    from wom.gui.allocation_panel import AllocationPanel
+    from wom.cockpit.s1_allocate import AllocationPanel
 
     root = _new_tk_root()
     panel = AllocationPanel(root)

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-wom/gui/allocation_panel.py — S1 Allocate タブ（Phase 8-1）
+wom/cockpit/s1_allocate.py — S1 Allocate タブ（Phase 8-1・Phase 8-3a で wom/cockpit/ へ移設）
 ================================================================================
-`wom/gui/s1_view_model.py` が作った `view` dict を**並べるだけ**（C9）。
+`wom/cockpit/s1_view_model.py` が作った `view` dict を**並べるだけ**（C9）。
 このファイルの中で `scan_surface()` / `true_continuous_optimum()` /
 `scan_hierarchical()` を呼ばない——すべて view model が計算済みの値を渡す。
 
 正典: requests/Phase8-1_RequestLetter_to_CodeKun.md V2
+      requests/Phase8-3a_RequestLetter_CockpitFrame_to_CodeKun.md（移設・F1）
 
 【GUI 内の matplotlib は日本語可】（C4）: `app.py` が
 `matplotlib.rcParams["font.family"] = ["Yu Gothic", "DejaVu Sans"]` を設定済み。
@@ -23,7 +24,8 @@ from typing import Optional
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-from wom.gui.s1_view_model import build_s1_view, evaluate_allocation, format_market_name
+from wom.cockpit.plateau_band import format_band_ja
+from wom.cockpit.s1_view_model import build_s1_view, evaluate_allocation, format_market_name
 
 # app.py と同じ配色（新しい定数を増やさない）
 BG_DARK  = "#1E2A38"
@@ -39,15 +41,23 @@ _JA_FONT_BOLD = ("Yu Gothic UI", 10, "bold")
 class AllocationPanel(tk.Frame):
     """S1 Allocate タブ。`load()` でモデルを読み、`view` を並べて描くだけ。"""
 
-    def __init__(self, parent, app_ref=None, **kw):
+    def __init__(self, parent, app_ref=None, on_view_changed=None, **kw):
         super().__init__(parent, bg=BG_DARK, **kw)
         self.app_ref = app_ref
+        # Phase 8-3a: 骨格側（CockpitFrame）が②Planning Stateヘッダを更新できる
+        # ように、読み込みが成功するたびに (model_dir, scenario_id, view) を渡す。
+        # 既定 None（既存の呼び出し元・テストは無変更で動く）。
+        self.on_view_changed = on_view_changed
         self._view: Optional[dict] = None
         self._model_dir = ""
         self._scenario_id = ""
         self._cap_wk = 800.0
         self._uom: Optional[str] = None
         self._node_path: tuple = ()
+        # Phase 8-3a・R4: 台地の帯（円）。モデルを読み込んだとき1回だけ作り、
+        # シナリオ/能力/uom を変えるだけの再読み込みでは作り直さない
+        # （load() 参照）。None のままなら build_s1_view() が既定値を作る。
+        self._band_yen: Optional[float] = None
         self._build()
 
     # ------------------------------------------------------------------
@@ -128,9 +138,16 @@ class AllocationPanel(tk.Frame):
         # --- 操作行・Drill-down（先に確保）（Phase 8-2a・D3） ---
         # mid（Figure・aux）を fill="both", expand=True で先に pack すると、
         # 窓が縮んだとき一番下の操作行から真っ先に切り取られる（1280x820の
-        # 既定サイズでも ⚑ ボタンの行が半分欠ける事故が実機で確認された）。
+        # 既定サイズでも操作行が半分欠ける事故が実機で確認された）。
         # ops → drill の順に side="bottom" で先に確保し、縮むのは常に図の
         # ほうになるようにする（tkinter の定石。mid は最後に pack する）。
+        #
+        # Phase 8-3a: 「⚑ この配分で計画する」ボタン・その注記・保存ステータス
+        # 表示は、共通の操作バー⑦（wom/cockpit/ops_bar.py）へ移した——コックピット
+        # の骨格では ⚑ は画面ごとではなく共通の1個になるため（設計書§3.1）。
+        # ロジック自体（配分の選択・保存）は commit() に残っており、⑦側の
+        # ボタンが commit() を呼ぶ。ここに残るのは「何を保存するか」を決める
+        # 選択 UI（推奨配分 / 手入力）だけ。
         ops = tk.Frame(self, bg=BG_MID)
         ops.pack(side="bottom", fill="x", padx=8, pady=(0, 6))
         tk.Label(ops, text="配分:", bg=BG_MID, fg=FG_WHITE, font=_JA_FONT).pack(
@@ -150,18 +167,6 @@ class AllocationPanel(tk.Frame):
                  width=20).pack(side="left")
         tk.Label(ops, text="(例 0.10,0.45,0.45)", bg=BG_MID, fg="#78909C",
                  font=("Segoe UI", 8)).pack(side="left", padx=(2, 12))
-
-        tk.Button(ops, text="⚑ この配分で計画する", command=self._on_commit,
-                  bg="#4CAF50", fg="#0B1F14", relief="flat",
-                  font=_JA_FONT_BOLD).pack(side="left", padx=(4, 4))
-        # Phase 8-2・C1.3: ⚑ が計画するのは結論行（P_opt）であって、子パネルの
-        # 走査結果（階層格子の点）ではないことを明示する。
-        tk.Label(ops, text="（計画するのは上の推奨配分です）", bg=BG_MID, fg="#78909C",
-                 font=("Segoe UI", 8)).pack(side="left", padx=(0, 8))
-
-        self._status_var = tk.StringVar(value="")
-        tk.Label(ops, textvariable=self._status_var, bg=BG_MID, fg=FG_ACC,
-                 font=("Segoe UI", 8)).pack(side="left")
 
         # --- Drill-down（ops の直上・side="bottom" で ops より先に確保） ---
         drill = tk.Frame(self, bg=BG_DARK)
@@ -206,6 +211,23 @@ class AllocationPanel(tk.Frame):
                                          wraplength=240)
         self._node_info_label.pack(fill="x", padx=6, pady=(8, 6))
 
+        # --- 帯（台地の許容差）を手入力で上書き（Phase 8-3a 追補） ---
+        # 「帯は技術定数ではなく経営パラメータ」（Request Letter §F4-1）なら、
+        # 読むだけでなく動かせるべき、という追補での指摘に対応。モデルを
+        # 読み込んだときの既定値をそのまま出しておき、経営者が「¥1億以内なら
+        # 同じとみなす」と思えばその場で入力し直せる。上書きした帯も既定値と
+        # 同じ扱い——モデルが変わるまで固定（load() 参照）。
+        band_row = tk.Frame(aux, bg=BG_MID)
+        band_row.pack(fill="x", padx=6, pady=(0, 8))
+        tk.Label(band_row, text="帯(円):", bg=BG_MID, fg=FG_WHITE,
+                font=_JA_FONT).pack(side="left")
+        self._band_var = tk.StringVar(value="")
+        tk.Entry(band_row, textvariable=self._band_var, bg=BG_DARK, fg=FG_WHITE,
+                 insertbackground=FG_WHITE, relief="flat", font=("Segoe UI", 9),
+                 width=11).pack(side="left", padx=(4, 4))
+        tk.Button(band_row, text="適用", command=self._on_apply_band, bg=BG_LIGHT,
+                  fg=FG_WHITE, relief="flat", font=_JA_FONT).pack(side="left")
+
     # ------------------------------------------------------------------
     # データ読み込み・再描画
     # ------------------------------------------------------------------
@@ -237,6 +259,17 @@ class AllocationPanel(tk.Frame):
     def load(self, model_dir: str, scenario_id: str, cap_wk: float, *,
             uom: Optional[str] = None):
         """モデルを読み、view を作って描く（公開 API・V2）。"""
+        # Phase 8-3a・R4 + 追補: 台地の帯は「配分問題そのものが変わったとき」
+        # だけ作り直す。配分問題を決めるのは (model_dir, uom) の組——仕様書
+        # v0r5 §2.6（単位軸）により、1つの配分問題の全市場は同じ uom を共有する
+        # ため、uom が変わればモデルフォルダが同じでも別の配分問題になる
+        # （実測: oil-global-2027 は uom=KL で P_opt 125億、uom=KL100KBBL で
+        # 1.27兆——100倍違う。uom をリセット条件に入れないと、切り替え後も
+        # 旧スケールの帯が残り、台地が常に1点に潰れる）。
+        # scenario_id / cap_wk は「同じ配分問題の別の前提」なので帯を保つのが
+        # 正しい——それが帯の存在理由そのもの（Request Letter §F4-3）。
+        if (model_dir, uom) != (self._model_dir, self._uom):
+            self._band_yen = None
         self._model_dir = model_dir
         self._scenario_id = scenario_id
         self._cap_wk = cap_wk
@@ -247,12 +280,15 @@ class AllocationPanel(tk.Frame):
         try:
             view = build_s1_view(self._model_dir, scenario_id=self._scenario_id,
                                  cap_wk=self._cap_wk, uom=self._uom,
-                                 node_path=self._node_path)
+                                 node_path=self._node_path, band_yen=self._band_yen)
         except Exception as e:   # noqa: BLE001 — GUI の入力ミスをダイアログで見せる
             messagebox.showerror("S1 Allocate", f"読み込みに失敗しました:\n{e}")
             return
+        self._band_yen = view["band_yen"]
         self._view = view
         self._render(view)
+        if self.on_view_changed is not None:
+            self.on_view_changed(self._model_dir, self._scenario_id, view)
 
     def _render(self, view: dict):
         for i, line in enumerate(view["headline"]["lines_ja"][:3]):
@@ -282,7 +318,10 @@ class AllocationPanel(tk.Frame):
         self._render_levels(view["levels"])
         self._notes_label.config(text="\n".join(view["level_notes_ja"]))
         self._render_children(view["node"])
-        self._render_node_info(view["node"], view["plateau_size"])
+        self._render_node_info(view["node"], view["plateau_size"], view["band_yen"])
+        # 帯編集欄には常に「いま実際に使われている値」を出す（手入力で
+        # 上書きした直後もこの値に揃うので、勝手に丸められて見えることもない）。
+        self._band_var.set(f"{view['band_yen']:.0f}")
         self._render_plot(view["node"])
 
         # 手入力は N=3（triangle）のときだけ意味を持つ
@@ -349,7 +388,7 @@ class AllocationPanel(tk.Frame):
             if self._view and self._view["mode"] == "hierarchy":
                 lbl.bind("<Button-1>", lambda _e, c=child: self._on_child_click(c))
 
-    def _render_node_info(self, node, plateau_size):
+    def _render_node_info(self, node, plateau_size, band_yen):
         le = node["leaf_economics"]
         if le is not None:
             # Phase 8-2・C4: 葉ノード（ドリルダウンの終点）は空白ではなく単位経済を出す。
@@ -371,9 +410,12 @@ class AllocationPanel(tk.Frame):
             return
 
         lines = [f"このノードの能力: {node['cap_lots']:,.0f} lot"]
-        # Phase 8-2・C2: 配分ゼロの枝は台地サイズを出さない（意味を持たない）
+        # Phase 8-2・C2: 配分ゼロの枝は台地サイズを出さない（意味を持たない）。
+        # Phase 8-3a・R4: 件数だけでなく帯そのものも出す——「問いと答えを同時に
+        # 読める形」にする（Request Letter §F4-1）。帯は絶対額なのでシナリオを
+        # 切り替えても変わらない。
         if not node["is_unallocated"] and plateau_size is not None:
-            lines.append(f"台地サイズ: {plateau_size} 点")
+            lines.append(f"台地サイズ: 最良から{format_band_ja(band_yen)}以内に{plateau_size}点")
         self._node_info_label.config(text="\n".join(lines))
 
     def _render_plot(self, node):
@@ -457,42 +499,68 @@ class AllocationPanel(tk.Frame):
         self._node_path = self._node_path + (child,)
         self._reload_view()
 
-    def _on_commit(self):
-        if self._view is None:
-            return
+    def _on_apply_band(self):
+        """帯（台地の許容差）を手入力で上書きする（Phase 8-3a 追補）。
+
+        上書きした値も既定値と同じ扱い——次に `load()` でモデル自体が変わる
+        までは固定される（`_reload_view()` はここでの値を書き換えない）。
+        """
         try:
-            if self._alloc_choice.get() == "manual":
-                markets = self._view["node"]["children"] \
-                    if self._view["mode"] == "triangle" else None
-                if markets is None:
-                    messagebox.showerror("S1 Allocate", "手入力は N=3 のときだけ使えます")
-                    return
-                vals = [float(v) for v in self._manual_var.get().split(",")]
-                if len(vals) != len(markets):
-                    messagebox.showerror(
-                        "S1 Allocate", f"{len(markets)}個の値をカンマ区切りで入力してください")
-                    return
-                allocation = dict(zip(markets, vals))
-                source = "manual"
-            else:
-                allocation = dict(self._view["headline"]["recommended"])
-                source = "P_opt"
+            band = float(self._band_var.get())
+        except ValueError:
+            messagebox.showerror("S1 Allocate", "帯は数値（円）で入力してください")
+            return
+        if band <= 0:
+            messagebox.showerror("S1 Allocate", "帯は正の数値で入力してください")
+            return
+        self._band_yen = band
+        self._reload_view()
 
-            plan_eval = evaluate_allocation(self._model_dir, self._scenario_id,
-                                            self._cap_wk, allocation, uom=self._uom)
-            profit_levels = dict(self._view["profit_levels"])
-            profit_levels["source"] = source
+    def commit(self) -> dict:
+        """選んだ配分を保存する（公開 API・Phase 8-3a）。
 
-            import wom.planning_state as planning_state
-            case = os.path.basename(self._model_dir.rstrip("/\\"))
-            state = planning_state.new_state(
-                case, self._scenario_id, allocation, profit_levels, plan_eval,
-                reversal=self._view["reversal"])
-            path = planning_state.save(state)
-            allocation_id = os.path.splitext(os.path.basename(path))[0]
-            self._status_var.set(f"保存: {path}（{allocation_id}）")
-        except Exception as e:   # noqa: BLE001
-            messagebox.showerror("S1 Allocate", f"計画案の保存に失敗しました:\n{e}")
+        旧・ops行の「⚑ この配分で計画する」ボタンが直接呼んでいたロジックを
+        そのまま残したもの。ボタン自体は共通の操作バー⑦（`wom/cockpit/ops_bar.py`）
+        へ移ったため、呼び出し元（`CockpitFrame`）がこのメソッドを呼ぶ。
+
+        エラーダイアログの表示は呼ばない——**失敗時は例外を送出する**だけにして、
+        メッセージボックスを出すかどうかの判断は呼び出し側（骨格）に委ねる
+        （計算と描画を分ける、という本 Phase の規律に合わせた）。
+
+        Returns:
+            保存した Planning State（`allocation_id` を含む、`wom.planning_state.save()`
+            が書き出したファイル名から確定した値で補完済み）。
+        """
+        if self._view is None:
+            raise ValueError("先にモデルを読み込んでください")
+
+        if self._alloc_choice.get() == "manual":
+            markets = self._view["node"]["children"] \
+                if self._view["mode"] == "triangle" else None
+            if markets is None:
+                raise ValueError("手入力は N=3 のときだけ使えます")
+            vals = [float(v) for v in self._manual_var.get().split(",")]
+            if len(vals) != len(markets):
+                raise ValueError(f"{len(markets)}個の値をカンマ区切りで入力してください")
+            allocation = dict(zip(markets, vals))
+            source = "manual"
+        else:
+            allocation = dict(self._view["headline"]["recommended"])
+            source = "P_opt"
+
+        plan_eval = evaluate_allocation(self._model_dir, self._scenario_id,
+                                        self._cap_wk, allocation, uom=self._uom)
+        profit_levels = dict(self._view["profit_levels"])
+        profit_levels["source"] = source
+
+        import wom.planning_state as planning_state
+        case = os.path.basename(self._model_dir.rstrip("/\\"))
+        state = planning_state.new_state(
+            case, self._scenario_id, allocation, profit_levels, plan_eval,
+            reversal=self._view["reversal"])
+        path = planning_state.save(state)
+        state["allocation_id"] = os.path.splitext(os.path.basename(path))[0]
+        return state
 
     def _on_merit_order(self):
         if self._view is None:
