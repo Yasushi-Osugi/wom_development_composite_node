@@ -661,3 +661,49 @@ def test_s3_result_block_matches_view(s3_run_result, run_after):
 #     画面遷移でどこかのウィジェットが動くか」だが、これは S3 固有の内部遷移
 #     ではなく骨格（frame.py）の話であり、本 Phase では手動の smoke test
 #     （report参照）で確認済み・自動テスト化は次回以降の課題とする。
+
+
+# ---------------------------------------------------------------------------
+# 条件10: 降りられない行は、降りられるように見えない（条件4の鏡・Addendum Q2）
+# ---------------------------------------------------------------------------
+# 条件4は「子を出すなら（hierarchy かつ children がある）バインドがある」を見て
+# おり、triangle モードは対象外として skip する——だから「バインドが無いのに
+# 押せるように見える」（Q1 が見つけた欠陥）は条件4のどれにも掛からなかった。
+# 条件10 はその鏡: 「バインドが無い行は cursor が hand2 でない」を、6状態＋S3
+# の全状態に当てる。特定の画面・市場名・node_path を名指ししない汎用条件——
+# S4/S5 が増えてもそのまま効く。
+
+def _assert_no_row_looks_clickable_without_bind(container) -> None:
+    for row in container.winfo_children():
+        for w in _iter_widgets(row):
+            if not w.bind("<Button-1>"):
+                cursor = w.cget("cursor")
+                assert cursor != "hand2", (
+                    f"{w} has no Button-1 bind but cursor='hand2' "
+                    f"(looks clickable but isn't)")
+
+
+@pytest.mark.parametrize("state", STATES)
+def test_children_rows_do_not_look_descendable_without_bind(state):
+    """Q1 が直す前は triangle_n3 でこれが落ちる（fg=FG_ACC・cursor=hand2 だが
+    バインド無し）。Q1 適用後は全6状態で緑になるはず。"""
+    view = _build_view(state)
+    root, panel = _make_panel(view)
+    try:
+        _assert_no_row_looks_clickable_without_bind(panel._children_frame)
+    finally:
+        root.destroy()
+
+
+@pytest.mark.parametrize("run_after", [False, True], ids=["s3_before_run", "s3_after_run"])
+def test_s3_node_rows_do_not_look_clickable_without_bind(s3_run_result, run_after):
+    """条件10の S3 への移植。S3 の能力ノード一覧は全行が実際に選択操作を
+    持つ（クリックで図を切替）ため、この条件は構造的に自明に緑になる——
+    それでも「押せるように見えるものは押せる」という不変条件そのものは
+    画面によらず適用できることを確認しておく。"""
+    pre_plan_state, run_result = s3_run_result
+    root, panel = _make_s3_panel(pre_plan_state, run_result if run_after else None)
+    try:
+        _assert_no_row_looks_clickable_without_bind(panel._nodes_frame)
+    finally:
+        root.destroy()

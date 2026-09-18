@@ -455,10 +455,18 @@ class AllocationPanel(tk.Frame):
             else:
                 x = node["child_x"].get(child, 0.0)
                 label_text = f"{format_market_name(child)}  {x * 100:.0f}%"
-            lbl = tk.Label(row, text=label_text, bg=BG_MID, fg=FG_ACC,
-                          font=_JA_FONT, cursor="hand2", anchor="w")
+            # Addendum・Q1: 「降りられるか」と「降りられるように見えるか」を
+            # 同じ条件（1つの if）から出す——色・カーソル・バインドを別々の
+            # 条件で書くと、片方だけ直る事故が起きる（K1 と同じ理由）。
+            # triangle モード（N=3、ドリルダウンが元々無い）で青い指カーソルの
+            # ままだと「押せるのに何も起きない」ように見えてしまっていた。
+            drillable = bool(self._view and self._view["mode"] == "hierarchy")
+            lbl = tk.Label(row, text=label_text, bg=BG_MID,
+                          fg=(FG_ACC if drillable else FG_WHITE),
+                          font=_JA_FONT, cursor=("hand2" if drillable else ""),
+                          anchor="w")
             lbl.pack(fill="x")
-            if self._view and self._view["mode"] == "hierarchy":
+            if drillable:
                 lbl.bind("<Button-1>", lambda _e, c=child: self._on_child_click(c))
 
         self._reset_frame_size(self._children_frame, after=self._children_header_label)
