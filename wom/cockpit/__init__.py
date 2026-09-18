@@ -25,10 +25,16 @@ from __future__ import annotations
 
 import matplotlib
 
-# 現状 wom/cockpit/ 配下は pyplot を経由せず Figure() + FigureCanvasTkAgg を
-# 直接使っている（s1_allocate.py）ため matplotlib.use("TkAgg") 自体は必須では
-# ないが、app.py と同じ前提を揃えておく（将来 pyplot を使う画面が増えても
-# 挙動が変わらないようにするため）。フォント設定は必須——これが無いと
-# 日本語ラベルを含む図がすべて豆腐化する。
-matplotlib.use("TkAgg")
+# 【重要・実測で判明】ここで matplotlib.use("TkAgg") を呼んではいけない。
+# 一度でも呼ぶと、その後同一プロセス内で実行される他のテスト・ツール
+# （`tools/plot_allocation_map.py` 等、`matplotlib.use("Agg")` で headless 出力
+# するはずのもの）まで含めて matplotlib の**グローバル**バックエンドが TkAgg に
+# 汚染される。このマシンの Tcl 初期化は tk.Tk() を作るたびにレースを持つ
+# （tests/test_gui_panel_invariants.py の docstring 参照）ため、無関係な Agg
+# 専用テスト（`tests/test_allocation_plot.py`）が pytest フルスイートの中で
+# 間欠的に `TclError: Can't find a usable init.tcl` で落ちる事故を実際に
+# 引き起こした（2026-09-18 実測・全体テスト2回中2回とも別の Agg テストが落ちた）。
+# `wom/cockpit/` 配下は pyplot を経由せず Figure() + FigureCanvasTkAgg を
+# 直接使っている（s1_allocate.py）ため、バックエンド指定は元々不要だった。
+# フォント設定だけが必須——これが無いと日本語ラベルを含む図がすべて豆腐化する。
 matplotlib.rcParams["font.family"] = ["Yu Gothic", "DejaVu Sans"]
