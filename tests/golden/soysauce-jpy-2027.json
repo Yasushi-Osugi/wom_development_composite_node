@@ -39,7 +39,7 @@
         "I_sum": 100501,
         "P": 100501,
         "S": 100501,
-        "series_md5": "12061029e12f"
+        "series_md5": "42e03c631199"
       },
       "Brewing_Noda": {
         "CO": 0,
@@ -47,7 +47,7 @@
         "I_sum": 0,
         "P": 100501,
         "S": 100501,
-        "series_md5": "e2d8c31fcb53"
+        "series_md5": "20dfbcb469c0"
       },
       "DC_EU_RTM": {
         "CO": 0,
@@ -95,7 +95,7 @@
         "I_sum": 0,
         "P": 100501,
         "S": 100501,
-        "series_md5": "28cce22c17e9"
+        "series_md5": "c6f19adf598d"
       },
       "Rest_BE": {
         "CO": 0,
@@ -148,10 +148,10 @@
       "SP_Soy": {
         "CO": 0,
         "I_max": 1000,
-        "I_sum": 2284,
+        "I_sum": 6852,
         "P": 100501,
         "S": 100501,
-        "series_md5": "216f0b0559f0"
+        "series_md5": "67c647194ebb"
       }
     }
   }

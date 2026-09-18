@@ -35,11 +35,11 @@
     "Soy_Sauce": {
       "Bottling_Noda": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
+        "I_max": 1500,
+        "I_sum": 75575,
         "P": 85575,
         "S": 92537,
-        "series_md5": "195786421f32"
+        "series_md5": "866b7462ccd0"
       },
       "Brewing_Noda": {
         "CO": 0,
@@ -47,7 +47,7 @@
         "I_sum": 0,
         "P": 85575,
         "S": 85575,
-        "series_md5": "11a4a1314a75"
+        "series_md5": "6879c4539183"
       },
       "DC_EU_RTM": {
         "CO": 0,
@@ -95,7 +95,7 @@
         "I_sum": 0,
         "P": 85575,
         "S": 85575,
-        "series_md5": "497434e60264"
+        "series_md5": "d9422fb97d41"
       },
       "Rest_BE": {
         "CO": 0,
@@ -147,11 +147,11 @@
       },
       "SP_Soy": {
         "CO": 696086,
-        "I_max": 1000,
-        "I_sum": 85575,
+        "I_max": 1500,
+        "I_sum": 13000,
         "P": 85575,
         "S": 92537,
-        "series_md5": "589e9879c3c5"
+        "series_md5": "873d4c5e5ea6"
       }
     }
   }
