@@ -65,12 +65,16 @@ def test_levels_sorted_desc():
     assert by_name["P_opt"]["value"] >= by_name["P_greedy"]["value"]
     assert by_name["P_opt"]["value"] >= by_name["P_grid"]["value"]
 
-    # s9_fta_cliff（cap_wk=500）: P_greedy が最下段に落ち highlight == True
+    # s9_fta_cliff（cap_wk=500）: P_greedy が P_grid を下回り highlight == True
+    # （Phase 8-3b で P_bau が加わったため、「P_greedy が最下段」とは限らなく
+    # なった——P_bau が P_greedy よりさらに低いケースがあるため、位置ではなく
+    # highlight 条件そのものだけを検証する）。
     v2 = build_s1_view(ALLOC_DIR, scenario_id="s9_fta_cliff", cap_wk=500.0)
     values2 = [e["value"] for e in v2["levels"]]
     assert values2 == sorted(values2, reverse=True)
-    greedy_entry = next(e for e in v2["levels"] if e["name"] == "P_greedy")
-    assert greedy_entry is v2["levels"][-1] or greedy_entry == v2["levels"][-1]
+    by_name2 = {e["name"]: e for e in v2["levels"]}
+    greedy_entry = by_name2["P_greedy"]
+    assert greedy_entry["value"] < by_name2["P_grid"]["value"]
     assert greedy_entry["highlight"] is True
     # highlight されるのは P_greedy だけ
     assert all(not e["highlight"] for e in v2["levels"] if e["name"] != "P_greedy")
@@ -81,14 +85,28 @@ def test_levels_sorted_desc():
 # ---------------------------------------------------------------------------
 
 def test_headline_is_invariant_across_nodes():
+    """`headline` は node_path を変えても不変（V1.1 の本体・維持）。
+
+    `levels` / `level_notes_ja` は Phase 8-3b 追補・K2 で改訂——ルート（node_path
+    が空）でだけ持ち、子ノードへドリルダウンした状態では空になる。全体の値を
+    無印のまま子ノードに出し続けると「このノードの値だ」と誤読される、という
+    大杉さんの指摘が、当初（V1.1・値を変えないことで誤読を防ぐ）より強い解
+    だったための改訂（build_s1_view() の docstring 参照）。
+    """
     node_paths = [(), ("JPY",), ("JPY", "SP_Oil_Local")]
     views = [build_s1_view(OIL_DIR, scenario_id="s1_base", cap_wk=800.0, uom="KL",
                            node_path=p) for p in node_paths]
 
     headlines = [v["headline"] for v in views]
-    levels = [v["levels"] for v in views]
     assert all(h == headlines[0] for h in headlines)
-    assert all(l == levels[0] for l in levels)
+
+    # levels/level_notes_ja: ルートにだけあり、子ノードでは空（K2）
+    assert views[0]["levels"] != []
+    assert views[0]["level_notes_ja"] != []
+    assert views[1]["levels"] == []
+    assert views[1]["level_notes_ja"] == []
+    assert views[2]["levels"] == []
+    assert views[2]["level_notes_ja"] == []
 
     # breadcrumb / node は変わる（降りたことが確認できないと、このテスト自体が無意味になる）
     assert views[0]["breadcrumb"] != views[1]["breadcrumb"]

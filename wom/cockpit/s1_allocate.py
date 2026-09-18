@@ -27,7 +27,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
 from wom.cockpit.plateau_band import format_band_ja
-from wom.cockpit.s1_view_model import build_s1_view, evaluate_allocation, format_market_name
+from wom.cockpit.s1_view_model import (
+    BAU_LEGEND_LABEL_JA, build_s1_view, evaluate_allocation, format_market_name,
+)
 
 # app.py と同じ配色（新しい定数を増やさない）
 BG_DARK  = "#1E2A38"
@@ -192,8 +194,13 @@ class AllocationPanel(tk.Frame):
         aux.pack(side="left", fill="y", padx=(6, 0))
         aux.pack_propagate(False)
 
-        tk.Label(aux, text="利益水準", bg=BG_MID, fg=FG_ACC, font=_JA_FONT_BOLD,
-                 anchor="w").pack(fill="x", padx=6, pady=(6, 2))
+        # Phase 8-3b 追補・K2: 見出しは levels が空（子ノード）のとき隠す
+        # ——見出しだけ残ると中身の無いブロックになる。levels_frame 自体は
+        # 常に pack したまま（見出しを再表示するときの位置合わせに使う）。
+        self._levels_header_label = tk.Label(
+            aux, text="利益水準", bg=BG_MID, fg=FG_ACC, font=_JA_FONT_BOLD, anchor="w")
+        self._levels_header_label.pack(fill="x", padx=6, pady=(6, 2))
+        self._levels_header_visible = True
         self._levels_frame = tk.Frame(aux, bg=BG_MID)
         self._levels_frame.pack(fill="x", padx=6)
 
@@ -317,6 +324,18 @@ class AllocationPanel(tk.Frame):
                 self._breadcrumb_visible = False
             self._children_header_label.config(text="この配分の走査結果（格子 δ=0.05）")
 
+        # Phase 8-3b 追補・K2: 子ノードでは levels が空——見出しごと隠す
+        # （全体の値を無印のまま子ノードに出し続けると誤読される。
+        # s1_view_model.build_s1_view() の docstring 参照）。
+        if view["levels"]:
+            if not self._levels_header_visible:
+                self._levels_header_label.pack(fill="x", padx=6, pady=(6, 2),
+                                               before=self._levels_frame)
+                self._levels_header_visible = True
+        else:
+            if self._levels_header_visible:
+                self._levels_header_label.pack_forget()
+                self._levels_header_visible = False
         self._render_levels(view["levels"])
         self._notes_label.config(text="\n".join(view["level_notes_ja"]))
         self._render_children(view["node"])
@@ -456,7 +475,22 @@ class AllocationPanel(tk.Frame):
             ax.plot([0, 1], [1, 0], color="#90A4AE", lw=1.0)
             cx = node["child_x"].get(children[1], 0.0)
             cy = node["child_x"].get(children[2], 0.0)
-            ax.plot(cx, cy, marker="*", ms=16, mfc="#111", mec="w", mew=0.8, zorder=5)
+            ax.plot(cx, cy, marker="*", ms=16, mfc="#111", mec="w", mew=0.8, zorder=5,
+                   label="推奨配分（P_opt）")
+            # Phase 8-3b・J4: 成り行き（H_willbe = P_bau・需要比例配分）の点。
+            # 星（P_opt）とは別の形・色にし、凡例で「成り行き」と分かるようにする。
+            # ラベルの語は s1_view_model.BAU_LEGEND_LABEL_JA を参照するだけ——
+            # ここでは持たない（Phase 8-3b 追補・K1: 語は1箇所にだけ定義する）。
+            # 本 Phase では ALL ノード（このノード自身がルートのときだけ view 側が
+            # bau_x を持たせる）にのみ出る——子ノードへの射影は申し送り。
+            bau_x = node.get("bau_x")
+            if bau_x is not None:
+                bx = bau_x.get(children[1], 0.0)
+                by = bau_x.get(children[2], 0.0)
+                ax.plot(bx, by, marker="D", ms=10, mfc="#FF7043", mec="#111", mew=0.8,
+                       zorder=5, label=BAU_LEGEND_LABEL_JA)
+            ax.legend(loc="upper right", fontsize=7, facecolor=BG_MID,
+                     labelcolor=FG_WHITE, framealpha=0.85)
             ax.set_xlabel(format_market_name(children[1]))
             ax.set_ylabel(format_market_name(children[2]))
             ax.set_xlim(-0.02, 1.02); ax.set_ylim(-0.02, 1.02)

@@ -6,7 +6,8 @@ tests/test_gui_panel_invariants.py — Gate 0: GUI の Anti-Degrade 網
 
 `AllocationPanel`（S1 Allocate タブ）を headless に近い形で実体化し、代表的な
 6状態を通しながら**構造として壊れていないか**だけを検査する（条件7のみ、
-描画結果の警告を見る例外——Phase 8-3a 追補参照）。
+描画結果の警告を見る例外——Phase 8-3a 追補参照。条件8は Phase 8-3b 追補の
+追補で追加、view とパネルの描画整合を見る）。
 
 **この網は意味を判定しない。** 「この数字が経営者にどう読めるか」は対象外。
 検査するのは汎用の不変条件だけであり、特定の市場名・特定の node_path を
@@ -356,3 +357,30 @@ def test_plot_has_no_missing_glyph_warnings(state):
             root.destroy()
     tofu = [str(w.message) for w in caught if "missing from font" in str(w.message)]
     assert not tofu, f"glyph(s) missing from configured font (tofu): {tofu}"
+
+
+# ---------------------------------------------------------------------------
+# 条件8: view の levels と、描画された行数が一致する（Phase 8-3b 追補の追補）
+# ---------------------------------------------------------------------------
+# Phase 8-3b 追補・K2 で「levels はルートだけが持ち、子ノードでは空にする」
+# という分岐を入れた。これは条件1〜7のどれも見ていない盲点だった——将来
+# うっかり「根でも隠す」ように壊しても、既存条件は何も鳴らない。
+# 「view が levels を返すならパネルにその行が描かれる。返さないなら描かれない」
+# という、特定の画面を名指ししない汎用の整合性検査を足す（条件4「子を出すなら
+# バインドを持つ」と同じ形）。S3 以降で似た分岐が増えても、この条件はそのまま効く。
+
+@pytest.mark.parametrize("state", STATES)
+def test_levels_block_matches_view(state):
+    view = _build_view(state)
+    root, panel = _make_panel(view)
+    try:
+        rendered_rows = len(panel._levels_frame.winfo_children())
+        expected_rows = len(view["levels"])
+        assert rendered_rows == expected_rows, (
+            f"panel rendered {rendered_rows} levels row(s) but view provided "
+            f"{expected_rows}")
+        assert panel._levels_header_visible == bool(view["levels"]), (
+            f"levels_header_visible={panel._levels_header_visible} but "
+            f"view['levels'] has {len(view['levels'])} entries")
+    finally:
+        root.destroy()

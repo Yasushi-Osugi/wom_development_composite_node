@@ -213,7 +213,7 @@ P_ppc                 163,057,411      実現利益
 |---|---|---|
 | **H_tobe** | Management が提示する高さ。「この環境・この立ち位置で operation してみなさい」 | `P_opt`（真の連続最適） |
 | **H_canbe** | Execution が best effort で operation simulation して届く高さ | `ppc.profit`（実行制約を通した実現利益） |
-| **H_willbe** | 現状維持（Business As Usual）の高さ | **未実装** |
+| **H_willbe** | 現状維持（Business As Usual）の高さ | `P_bau`（需要比例配分の利益。Phase 8-3b で実装） |
 
 ■ なぜ3つ必要か
 

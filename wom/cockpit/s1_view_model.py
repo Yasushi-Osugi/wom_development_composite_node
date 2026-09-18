@@ -27,7 +27,9 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 from wom.allocation.analytics import switching_points
 from wom.allocation.cost_block import derive_cost_blocks
-from wom.allocation.grid import WEEKS, best_point, chosen_point, markets_of, scan_surface
+from wom.allocation.grid import (
+    WEEKS, best_point, chosen_point, evaluate_point, markets_of, scan_surface,
+)
 from wom.allocation.hierarchical_simplex import build_hierarchy, scan_hierarchical
 from wom.allocation.merit_order import (
     build_allocation_merit_order, compare_with_grid, true_continuous_optimum,
@@ -38,6 +40,17 @@ from wom.cockpit.plateau_band import default_band_yen, plateau_by_band
 _AXIS_LABEL_JA = {"fx_usd": "USD/JPY", "material_usd": "原料価格"}
 
 _UNALLOCATED_EPS = 1e-6   # cap_lots がこれ未満なら「配分ゼロ」とみなす（C2）
+
+# H_willbe（`P_bau`・需要比例配分）の画面表示名（Phase 8-3b 追補・K1）。
+# 「現状維持」は「いまのやり方を続ける」と読めてしまうが、実装は需要比例であって
+# 実際の運用（いまのやり方）ではない——「成り行き」は日本の経営で「成り行き予算」
+# 「成り行き計画」として、まさに「意思を入れず、そのまま延ばした場合」の意味で
+# 使われる語（大杉さん判断・2026-09-18）。**語はここ1箇所にだけ定義し、
+# 結論行・凡例・docstring はすべてここを参照すること**——2箇所に書くと片方だけ
+# 直る事故が起きる（Phase 8-3a のフォント設定の docstring がまさにそれだった）。
+# 実装名 `P_bau` と設計書 §2.5 の `H_willbe` の対応は変えない。画面の日本語だけが変わる。
+BAU_LABEL_JA = "成り行き"
+BAU_LEGEND_LABEL_JA = f"{BAU_LABEL_JA}（需要比例配分）"
 
 
 def format_market_name(name: str) -> str:
@@ -284,6 +297,103 @@ def _format_full_allocation_ja(markets: Sequence[str], x: Dict[str, float]) -> s
     return " / ".join(_format_market_share_ja(m, x.get(m, 0.0)) for m in sorted_m)
 
 
+def _bau_unit_spec(base: float) -> Tuple[float, int, str]:
+    """`base` の桁から、共有する単位・小数桁数・単位記号を選ぶ
+    （Phase 8-3b 追補の追補・K4）。基準額側の桁だけを見る——差がどれだけ
+    小さくても、基準額と同じ単位で表す（そうしないと単位が別々になる）。
+    """
+    if abs(base) >= 1e8:
+        return 1e8, 3, "億"
+    if abs(base) >= 1e4:
+        return 1e4, 0, "万"
+    return 1, 0, "円"
+
+
+def _format_money_pair_ja(base: float, delta: float) -> Tuple[str, str, float]:
+    """`base`（成り行きの利益）と `delta`（推奨配分との差）を**同じ単位・同じ
+    小数桁数**に丸め、その**丸めた後の値から%を計算**して3つとも返す
+    （Phase 8-3b 追補の追補・K4）。
+
+    K3 では差だけを桁落ちしない単位に直したが、基準額（`base`）は
+    `{x/1e8:.1f}億` のまま固定していたため、**基準額と差が別の単位になり、
+    画面の数字どうしで割り算をしても表示された%と合わなくなった**
+    （実測: soysauce で `1,259万 / 1.2億 = 10.5%` だが表示は `+10.2%`）。
+
+    単位を揃えるだけでは実は足りない。%を**元の生の値**（丸める前）から
+    計算すると、表示された丸め済みの数字だけで検算したときにわずかにずれる
+    ケースが残る（実測: `0.126億 / 1.229億 = 10.2523…%` は 1 桁に丸めると
+    `10.3%` だが、生の値から計算した%は `10.2%` になり、**表示された数字
+    同士の割り算とは一致しない**）。要件は「表示された数字どうしで割り算が
+    合うこと」なので、**%も丸めた後の base/delta から計算する**——これで
+    画面上のどの2つの数字を組み合わせても必ず整合する。
+    """
+    unit, decimals, suffix = _bau_unit_spec(base)
+    base_r = round(base / unit, decimals)
+    delta_r = round(delta / unit, decimals)
+    pct = (delta_r / base_r * 100.0) if base_r else float("nan")
+    if unit == 1e8:
+        base_str = f"{base_r:.{decimals}f}{suffix}"
+        delta_str = f"{delta_r:+.{decimals}f}{suffix}"
+    else:
+        base_str = f"{base_r:,.0f}{suffix}"
+        delta_str = f"{delta_r:+,.0f}{suffix}"
+    return base_str, delta_str, pct
+
+
+def _format_bau_gap_ja(p_bau: float, p_opt: float) -> str:
+    """成り行き（H_willbe = `P_bau`）と推奨配分（H_tobe = `P_opt`）の差を1行にする
+    （Phase 8-3b・J3、Phase 8-3b 追補・K1/K3、追補の追補・K4）。
+
+    文面は **W1（金額で言う）で確定**（Phase 8-3b 追補・大杉さん決定。
+    「52.7億の話をしていると分かる。予算・投資判断に直結する」）。
+    **差し替えるときはこの関数だけを直せばよい**（呼び出し側2箇所〔triangle
+    分岐・hierarchy 分岐〕は本関数を呼ぶだけで、文面を持たない）。
+
+    W1  成り行き 72.321億 -> 推奨 125.011億（+52.690億）  金額で言う   <- 確定
+    W2  推奨配分は成り行きの 1.73倍                        倍率で言う
+    W3  需要どおり配ると、最適の 58% しか稼げない          損失で言う
+
+    語（`BAU_LABEL_JA` = "成り行き"）はモジュール冒頭で1箇所にだけ定義し、
+    ここではそれを参照するだけにする（K1）。基準額・差・%は3つとも
+    `_format_money_pair_ja()` が一括で作る——同じ単位・同じ桁数に丸め、
+    %もその丸めた後の値から計算するので、画面のどの2数字を組み合わせて
+    検算しても必ず一致する（K4——K3 は差だけに適用していた）。
+
+    小数桁数を3桁に増やした関係で oil の表示は `72.3億` → `72.321億` に、
+    %の計算方法を変えた関係で soysauce の表示は `+10.2%` → `+10.3%` に
+    変わる（大杉さんが確定した「W1（金額で言う）」という**文の構造**は
+    そのまま。変わるのは精度と%の算出元——「画面の数字どうしで割り算が
+    合うこと」をどのケースでも満たすための必然の変更）。
+    """
+    diff = p_opt - p_bau
+    base_str, diff_str, pct = _format_money_pair_ja(p_bau, diff)
+    return f"{BAU_LABEL_JA}（需要どおり配る） {base_str} に対し {diff_str}（{pct:+.1f}%）"
+
+
+def _bau_shares_ja(
+    children_specs: Sequence[Tuple[str, Sequence[str]]],
+    blocks: Dict[str, CostBlock],
+) -> Dict[str, float]:
+    """需要比例の BAU 配分（`x_bau`）を、いま見ているノードの子単位に射影する
+    （Phase 8-3b・J4）。
+
+    `children_specs`: `[(子の名前, その子の配下にある実市場名の列), ...]`。
+    triangle モードでは子＝実市場そのものなので `(m, (m,))` を渡せばよく、
+    hierarchy モードのルートでは子＝通貨圏等のグループなので、そのグループの
+    配下にある実市場名の列（`build_hierarchy()` が各ノードに持たせている
+    `markets` タプル）を渡す——**同じ関数でどちらも扱える**（分母は常に
+    全市場の総需要）。
+
+    本 Phase では**ルートにだけ**呼ぶ（`build_s1_view()` 側で判定する）。
+    子ノードへ降りたときの射影は申し送り（Request Letter §J4 の scope 外）。
+    """
+    total = sum(float(b.demand_qty) for b in blocks.values())
+    if total <= 0:
+        return {name: 0.0 for name, _mkts in children_specs}
+    return {name: sum(float(blocks[m].demand_qty) for m in mkts) / total
+           for name, mkts in children_specs}
+
+
 def _format_structural_gap_ja(gap_val: Optional[float]) -> str:
     """構造由来の取りこぼしの文言（Phase 8-2・C6）。0 のとき「+0万」を出さない。"""
     if gap_val is None:
@@ -312,8 +422,12 @@ def _headline_lines(markets: Sequence[str], to: dict, line2: str, reversal: dict
 def _levels_list(profit_levels: dict) -> List[dict]:
     """`levels` を値の降順で組む。P_greedy が P_grid を下回ったら highlight する
     （設計書 rev.2「貪欲法の行が格子の最良点より下に落ちたら、そこに構造がある」）。
+
+    Phase 8-3b・J2: `P_bau`（H_willbe）を同じリストに足す。既存の並び規則
+    （値の降順）はそのまま——`P_bau` は highlight を付けない対象なので、
+    下の `highlight` 判定（`P_greedy` 限定）には手を入れていない。
     """
-    names = ("P_opt", "P_greedy", "P_grid", "P_hier")
+    names = ("P_opt", "P_greedy", "P_grid", "P_hier", "P_bau")
     entries = [{"name": n, "value": profit_levels[n]} for n in names
               if profit_levels.get(n) is not None]
     entries.sort(key=lambda e: -e["value"])
@@ -334,8 +448,6 @@ def evaluate_allocation(model_dir: str, scenario_id: str, cap_wk: float,
     （Phase 7a・A1 のスキーマ）。パネル（tkinter 側）が `evaluate_point()` を
     直接呼ばずに済むよう、ここに切り出す（C9）。
     """
-    from wom.allocation.grid import evaluate_point
-
     blocks, tp, sc = _scenario_blocks(model_dir, scenario_id, uom)
     markets = markets_of(blocks)
     x = tuple(float(allocation.get(m, 0.0)) for m in markets)
@@ -369,10 +481,21 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
             実際に使った値は `view["band_yen"]` として返るので、呼び出し側は
             それを保持して次回以降に渡し戻せばよい。
 
-    **`headline` と `levels` は `node_path` を変えても変わらない**（V1.1）。
+    **`headline` は `node_path` を変えても変わらない**（V1.1・本体は維持）。
     木のどこにいるかは `breadcrumb` / `node` だけが変わる——ノードを降りるたびに
     結論行の金額が変わると、経営者が「いま見ている数字が全体なのか一部なのか」
     を見失う。
+
+    **`levels` / `level_notes_ja` は `node_path` が空（ルート）のときだけ持ち、
+    それ以外（子ノードへドリルダウンした状態）では空リストになる**
+    （Phase 8-3b 追補・K2、V1.1 の一部改訂・大杉さん判断のほうが強い解だった）。
+    当初（V1.1）は「値を変えない」ことで誤読を防ごうとしたが、値を変えないだけ
+    では読み手が「これはこのノードの値だ」と誤読する余地が残る（実機で `P_opt
+    125.011億` が無印のまま子ノードに出ていたのが実例——Phase 8-2・C1「結論行と
+    子パネルが別々の配分を無印で並べていた」と同じ家族の欠陥だった）。**出さない
+    ほうが強い。** 全体の文脈は③結論行（`headline`）が常に持ち続けるので失われない
+    ——消えるのは⑤補助パネルの内訳（「利益水準」ブロック）だけである。パネル側は
+    `levels` が空なら見出しごと隠すこと（見出しだけ残ると中身の無いブロックになる）。
 
     N==3（"triangle"）では `scan_surface()` を1回だけ、N>=4（"hierarchy"）では
     `scan_hierarchical()` を1回だけ呼ぶ（`node_path` の深さに関係なく1回。
@@ -395,6 +518,17 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
     to = true_continuous_optimum(blocks, sc, cap_wk, transfer_price_usd=tp)
     reversal = compute_reversal(blocks, tp, sc)
 
+    # Phase 8-3b・J1: H_willbe（成り行き・需要比例配分）= P_bau。
+    # 設計書 §2.5 の経営語彙 H_willbe と実装名 P_bau は同じものを指す——
+    # H_* は経営の語彙、P_* は実装名という既存の切り分けに合わせて view/画面
+    # では P_bau を使う（H_willbe = P_bau、の対応は設計書 §2.5 側が持つ）。
+    total_demand = sum(float(blocks[m].demand_qty) for m in markets)
+    x_bau = tuple(
+        (float(blocks[m].demand_qty) / total_demand if total_demand else 0.0)
+        for m in markets)
+    bau = evaluate_point(x_bau, blocks, tp, sc, cap_wk)
+    p_bau = bau["profit"]
+
     # Phase 8-3a・R4: 台地の帯（絶対額）。省略時のみここで既定値を作る——
     # 呼び出し側が持ち回った値を渡してくれば、それをそのまま使う（上のdocstring参照）。
     if band_yen is None:
@@ -408,7 +542,7 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
 
         profit_levels = {
             "P_opt": to["profit"], "P_greedy": mo["profit"], "P_grid": grid_best,
-            "P_hier": None,
+            "P_hier": None, "P_bau": p_bau,
             "gap_amt": cmp["gap_amt"],
             "expected_gap": cmp["expected_gap_from_grid_resolution"],
             "structural_residual": cmp["structural_residual"],
@@ -420,6 +554,7 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
         level_notes_ja = [
             f"格子解像度の誤差 {cmp['expected_gap_from_grid_resolution'] / 1e4:+.0f}万",
             _format_structural_gap_ja(cmp["structural_optimality_gap"]),
+            _format_bau_gap_ja(p_bau, to["profit"]),   # Phase 8-3b・J3
         ]
         headline_line2 = (
             f"格子の最良点との差 {cmp['gap_amt'] / 1e4:+.0f}万 = "
@@ -430,12 +565,16 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
 
         chosen = chosen_point(surf)   # 格子の真の最良点（Phase 6-5・E1）
         breadcrumb: List[str] = []
+        # Phase 8-3b・J4: triangle モードは常にルート（N==3 に drill-down は
+        # 無い）なので、常に bau_x を持たせる。子＝実市場そのものなので
+        # 射影は不要（(m, (m,)) を渡すだけ）。
+        bau_x = _bau_shares_ja([(m, (m,)) for m in markets], blocks)
         node = {
             "name": "ALL", "children": list(markets),
             "child_x": dict(zip(markets, chosen["x"])),
             "cap_lots": cap_wk * WEEKS, "surface": surf, "plot_kind": "triangle",
             "is_unallocated": False, "unallocated_message": None,
-            "leaf_economics": None,
+            "leaf_economics": None, "bau_x": bau_x,
         }
         # Phase 8-3a・R4: 台地は plateau_tol（相対値）ではなく band_yen（絶対額）
         # で数え直す——`grid_best`/`plateau`（best_point() の返り値）自体は
@@ -466,7 +605,7 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
 
         profit_levels = {
             "P_opt": to["profit"], "P_greedy": mo["profit"], "P_grid": None,
-            "P_hier": hier["profit"],
+            "P_hier": hier["profit"], "P_bau": p_bau,
             "gap_amt": None, "expected_gap": None, "structural_residual": None,
             "structural_optimality_gap": None, "grid_resolution_error": None,
             "residual_coverage": None,
@@ -486,6 +625,7 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
             f"出し切れず {-hier_vol / 1e8:+.2f}億: 下位の需要上限で能力が余ったため"
             + (f"（限界市場 {format_market_name(marginal_market)}）"
                if marginal_market else ""),
+            _format_bau_gap_ja(p_bau, to["profit"]),   # Phase 8-3b・J3
         ]
         headline_line2 = summary_line
 
@@ -523,12 +663,20 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
                 cur["name"], blocks[cur["name"]], sc, tp, cap_lots,
                 ranked_markets, marginal_market)
 
+        # Phase 8-3b・J4: BAU の点は「ALL ノード」＝ドリルダウンしていない
+        # ルートにだけ打つ（子ノードへの射影は申し送り・Request Letter §J4）。
+        # ルートの children はグループ（例: 通貨圏）なので、_bau_shares_ja() へは
+        # 各グループの配下にある実市場名の列（build_hierarchy() が持たせている
+        # "markets" タプル）を渡して需要を足し上げる。
+        bau_x = (_bau_shares_ja([(c["name"], c["markets"]) for c in cur["children"]], blocks)
+                if not node_path and cur["children"] else None)
+
         node = {
             "name": cur["name"], "children": children_names, "child_x": child_x,
             "cap_lots": cap_lots, "surface": surface_for_node,
             "plot_kind": _plot_kind(len(cur["children"])),
             "is_unallocated": is_unallocated, "unallocated_message": unallocated_message,
-            "leaf_economics": leaf_economics,
+            "leaf_economics": leaf_economics, "bau_x": bau_x,
         }
 
     headline = {
@@ -540,14 +688,25 @@ def build_s1_view(model_dir: str, *, scenario_id: str, cap_wk: float,
         # （結論行は上位4市場+要約に畳むため、答えを画面外に落とさないための控え）。
         "full_allocation_ja": _format_full_allocation_ja(markets, to["x"]),
     }
-    levels = _levels_list(profit_levels)
+    # Phase 8-3b 追補・K2: 「利益水準」ブロック（levels/level_notes_ja）は
+    # ルート（node_path が空）でだけ持たせる。子ノードへドリルダウンした状態
+    # では空にする——全体の値を無印のまま子ノードに出し続けると「このノードの
+    # 値だ」と誤読される（上の docstring 参照）。triangle モードは node_path が
+    # 常に () なので影響を受けない。`profit_levels`（生データ、commit() が
+    # 参照する）はここでは触らない——変えるのは表示用の2つだけ。
+    if node_path:
+        levels: List[dict] = []
+        level_notes_ja_out: List[str] = []
+    else:
+        levels = _levels_list(profit_levels)
+        level_notes_ja_out = level_notes_ja
 
     return {
         "n_markets": n_markets,
         "mode": mode,
         "headline": headline,
         "levels": levels,
-        "level_notes_ja": level_notes_ja,
+        "level_notes_ja": level_notes_ja_out,
         "breadcrumb": breadcrumb,
         "node": node,
         "plateau_size": plateau_size,
