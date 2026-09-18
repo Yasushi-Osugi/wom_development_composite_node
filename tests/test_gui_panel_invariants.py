@@ -45,6 +45,7 @@ import os
 import sys
 import time
 import warnings
+from typing import Optional
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -382,5 +383,96 @@ def test_levels_block_matches_view(state):
         assert panel._levels_header_visible == bool(view["levels"]), (
             f"levels_header_visible={panel._levels_header_visible} but "
             f"view['levels'] has {len(view['levels'])} entries")
+    finally:
+        root.destroy()
+
+
+# ---------------------------------------------------------------------------
+# 条件9: 遷移を通す（Phase 8-3b-3・M2）
+# ---------------------------------------------------------------------------
+# 条件1〜8はすべて「新しいパネルを作って1回だけ描く」形だった。K2（Phase 8-3b
+# 追補）が入れた `_levels_header_visible` の状態機械は、根→子→根と実際に
+# 遷移して初めて両方の経路（pack_forget と pack(before=...)）を通る——
+# 条件8は「回帰で示された」と一度判断されたが、それも1回描いたときの整合しか
+# 見ておらず、実際には塞げていなかった（Request Letter §0）。
+#
+# 実機で起きたのは、条件つき（利益水準ブロック）を常時ブロック（子ノード欄）の
+# 上に置いていたため、利益水準が消えるたびにクリック対象が約200px 跳ね上がり、
+# 「ドリルダウン機能が削除された」と誤解されたことだった。本条件は
+# 「ドリルダウンしてもクリック対象(子ノード欄)は動かない」という不変条件を、
+# 実際に load() → _on_child_click() → _on_up_click() で歩かせて検査する。
+#
+# 特定の市場名・特定の node_path は名指ししない——children[0] を辿るだけに
+# する。triangle モードはドリルダウンが無いので対象外（hierarchy のみ）。
+# 期待する y の値は書かない（画面が変われば変わる値を正典にしない）——
+# 「最初の段で得た値と同じであり続ける」ことだけを見る。
+
+def _make_panel_for_navigation(model_dir: str, scenario_id: str, cap_wk: float,
+                               uom: Optional[str] = None):
+    """`load()` を使って遷移を実際に歩かせるためのパネル生成。
+
+    `_make_panel()`（view を直接注入して1回だけ描く、条件1〜8用）とは別にする
+    ——既存条件の挙動を動かさないため（Request Letter §M2「対象」）。
+    """
+    from wom.cockpit.s1_allocate import AllocationPanel
+
+    root = _new_tk_root()
+    panel = AllocationPanel(root)
+    panel.pack(fill="both", expand=True)
+    panel.load(model_dir, scenario_id, cap_wk, uom=uom)
+    root.update()
+    root.update_idletasks()
+    return root, panel
+
+
+def _children_frame_y(panel) -> int:
+    return panel._children_frame.winfo_rooty() - panel.winfo_rooty()
+
+
+def _assert_levels_block_consistent(panel, ctx: str) -> None:
+    """条件8を遷移の上で再掲する部分（Request Letter §M2 の (1)(2)）。"""
+    rendered_rows = len(panel._levels_frame.winfo_children())
+    expected_rows = len(panel._view["levels"])
+    assert rendered_rows == expected_rows, (
+        f"[{ctx}] panel rendered {rendered_rows} levels row(s) but view provided "
+        f"{expected_rows}")
+    assert panel._levels_header_visible == bool(panel._view["levels"]), (
+        f"[{ctx}] levels_header_visible={panel._levels_header_visible} but "
+        f"view['levels'] has {len(panel._view['levels'])} entries")
+
+
+def test_children_frame_position_is_stable_across_navigation():
+    root, panel = _make_panel_for_navigation(OIL_DIR, "s1_base", 800.0, uom="KL")
+    try:
+        _assert_levels_block_consistent(panel, "root")
+        y0 = _children_frame_y(panel)
+
+        # 根から、常に先頭の子を選んで葉まで降りる
+        depth = 0
+        while panel._view["node"]["children"]:
+            first_child = panel._view["node"]["children"][0]
+            panel._on_child_click(first_child)
+            root.update()
+            root.update_idletasks()
+            depth += 1
+            y = _children_frame_y(panel)
+            assert y == y0, (
+                f"[down depth={depth}] children_frame y jumped: first={y0} now={y}")
+            _assert_levels_block_consistent(panel, f"down depth={depth}")
+            if depth > 10:   # 無限降下の暴走防止（実ツリーは数段のはず）
+                raise AssertionError("descended more than 10 levels; tree may be malformed")
+        assert depth > 0, "oil model should have at least one level to descend into"
+
+        # 葉から根まで、実際に1つ上へを繰り返して戻る
+        for step in range(depth):
+            panel._on_up_click()
+            root.update()
+            root.update_idletasks()
+            y = _children_frame_y(panel)
+            assert y == y0, (
+                f"[up step={step + 1}] children_frame y jumped: first={y0} now={y}")
+            _assert_levels_block_consistent(panel, f"up step={step + 1}")
+
+        assert panel._node_path == (), "should be back at ALL after walking all the way up"
     finally:
         root.destroy()

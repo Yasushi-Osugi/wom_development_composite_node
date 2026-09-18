@@ -194,9 +194,24 @@ class AllocationPanel(tk.Frame):
         aux.pack(side="left", fill="y", padx=(6, 0))
         aux.pack_propagate(False)
 
+        # Phase 8-3b-3・M1: 「常に在るもの・操作するもの」を上に固定し、
+        # 「条件つきで現れるもの」を下に置く（大杉さん提案）。子ノード欄は
+        # 葉以外の全ノードに在り、かつクリック対象——これを、条件つきの
+        # 利益水準ブロック（K2 で子ノードでは非表示になる）より上に置くことで、
+        # 利益水準が消えるたびにクリック対象が跳ね上がる事故を構造的に防ぐ
+        # （ウィジェットの生成内容・ロジックは Phase 8-3b から無変更、順序だけ）。
+        self._children_header_label = tk.Label(
+            aux, text="子ノード", bg=BG_MID, fg=FG_ACC,
+            font=_JA_FONT_BOLD, anchor="w", justify="left", wraplength=240)
+        self._children_header_label.pack(fill="x", padx=6, pady=(6, 2))
+        self._children_frame = tk.Frame(aux, bg=BG_MID)
+        self._children_frame.pack(fill="x", padx=6)
+
         # Phase 8-3b 追補・K2: 見出しは levels が空（子ノード）のとき隠す
         # ——見出しだけ残ると中身の無いブロックになる。levels_frame 自体は
         # 常に pack したまま（見出しを再表示するときの位置合わせに使う）。
+        # `pack(..., before=self._levels_frame)` は相対指定なので、順序を
+        # 入れ替えても正しく戻る（M1 で変更不要）。
         self._levels_header_label = tk.Label(
             aux, text="利益水準", bg=BG_MID, fg=FG_ACC, font=_JA_FONT_BOLD, anchor="w")
         self._levels_header_label.pack(fill="x", padx=6, pady=(6, 2))
@@ -207,13 +222,6 @@ class AllocationPanel(tk.Frame):
         self._notes_label = tk.Label(aux, text="", bg=BG_MID, fg=FG_WHITE, font=_JA_FONT,
                                      anchor="w", justify="left", wraplength=240)
         self._notes_label.pack(fill="x", padx=6, pady=(4, 6))
-
-        self._children_header_label = tk.Label(
-            aux, text="子ノード", bg=BG_MID, fg=FG_ACC,
-            font=_JA_FONT_BOLD, anchor="w", justify="left", wraplength=240)
-        self._children_header_label.pack(fill="x", padx=6, pady=(6, 2))
-        self._children_frame = tk.Frame(aux, bg=BG_MID)
-        self._children_frame.pack(fill="x", padx=6)
 
         self._node_info_label = tk.Label(aux, text="", bg=BG_MID, fg=FG_WHITE,
                                          font=_JA_FONT, anchor="w", justify="left",
@@ -364,6 +372,34 @@ class AllocationPanel(tk.Frame):
             if not is_last:
                 btn.bind("<Button-1>", lambda _e, depth=i: self._on_breadcrumb_click(depth))
 
+    @staticmethod
+    def _reset_frame_size(frame: tk.Widget, **anchor: tk.Widget) -> None:
+        """子を空にした後もサイズが縮まない tkinter の挙動を回避する
+        （Phase 8-3b-3 追補で発見・実測）。
+
+        `pack(fill="x")` された Frame は、子を `destroy()` しただけでは
+        要求サイズ（`winfo_reqheight()`）が縮まらない——最小の再現コードで
+        確認済みで、`update()` / `update_idletasks()` を何度呼んでも変わらない
+        （タイミングの問題ではなく、pack のジオメトリ再交渉が widget 破棄だけ
+        では走らないという tkinter 側の挙動）。`pack_forget()` してから同じ
+        オプションで `pack()` し直すと、その場で正しく縮む——これを子の数が
+        変わるたびに呼ぶ。
+
+        **`anchor` に `after=<widget>` か `before=<widget>` のどちらか一方を
+        必ず指定すること。** `pack_info()` は `fill`/`padx` 等は再現するが
+        **順序（スタック内の位置）は再現しない**——単純に `pack_forget()` →
+        `pack(**pack_info())` すると、既に他の兄弟が pack 済みの状態では aux
+        スタックの**末尾**に飛んでしまい、M1 で固定した「子ノード欄が常に
+        一番上」の順序を壊す（実測で children_frame が node_info/band_row の
+        下まで落ちる事故を確認済み）。**基準にする側は「常に pack されている」
+        ウィジェットにすること**——Tk の `after=`/`before=` は現在 pack
+        されていないウィジェットを渡すと `TclError` になる（`_levels_header_label`
+        は K2 で子ノードのとき `pack_forget()` 済みなので基準にできない、と
+        いう実例で発覚）。
+        """
+        frame.pack_forget()
+        frame.pack(fill="x", padx=6, **anchor)
+
     def _render_levels(self, levels):
         for w in self._levels_frame.winfo_children():
             w.destroy()
@@ -375,6 +411,11 @@ class AllocationPanel(tk.Frame):
                     width=10, anchor="w").pack(side="left")
             tk.Label(row, text=f"{entry['value'] / 1e8:.3f} 億", bg=BG_MID, fg=color,
                     font=_JA_FONT, anchor="e").pack(side="left")
+        # 注意: after=self._levels_header_label は使えない——見出しは K2 で
+        # 子ノードのとき pack_forget() 済みであり、Tk の after= は「現在 pack
+        # されているウィジェット」しか受け付けない。_notes_label は常に
+        # pack されたままなので、その直前（before）を安定した基準にする。
+        self._reset_frame_size(self._levels_frame, before=self._notes_label)
 
     def _render_children(self, node):
         for w in self._children_frame.winfo_children():
@@ -390,10 +431,14 @@ class AllocationPanel(tk.Frame):
                     fg="#78909C", font=_JA_FONT, wraplength=240, justify="left",
                     anchor="w").pack(fill="x", anchor="w", pady=(0, 4))
         elif node["plot_kind"] == "none":
+            # 早期 return しない（Phase 8-3b-3 追補: _reset_frame_size() を
+            # 全経路で確実に呼ぶため一本化した）。葉なら下の for ループは
+            # 素通りする。子が1つのノード（build_hierarchy() は通常作らないが、
+            # 作られうる）では、for ループが降りる手段を出す——Phase 8-2a・D1
+            # 「降りられる手段まで塞がない」に沿う。
             tk.Label(self._children_frame, text="（配分が一意・下記の単位経済を参照）",
                     bg=BG_MID, fg="#78909C", font=_JA_FONT, wraplength=240,
                     justify="left").pack(anchor="w")
-            return
 
         for child in node["children"]:
             row = tk.Frame(self._children_frame, bg=BG_MID)
@@ -408,6 +453,8 @@ class AllocationPanel(tk.Frame):
             lbl.pack(fill="x")
             if self._view and self._view["mode"] == "hierarchy":
                 lbl.bind("<Button-1>", lambda _e, c=child: self._on_child_click(c))
+
+        self._reset_frame_size(self._children_frame, after=self._children_header_label)
 
     def _render_node_info(self, node, plateau_size, band_yen):
         le = node["leaf_economics"]
