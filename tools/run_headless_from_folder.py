@@ -313,14 +313,38 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
     """
     from wom.planning_state import PEAK_INVENTORY_MULTIPLE
 
+    # node_id -> (product, node_name)。cap_hard_events/cap_soft_violations は
+    # node.node_id を記録するが、capacity_series 等の他の extras はすべて
+    # node_name をキーにしている——node_id は node_name とは別物（例:
+    # "IN:mom:Bottling_Noda:Soy_Sauce" vs "Bottling_Noda"）。Phase 8-3c 追補で
+    # 発見（cap_hard "超過" vs "sealed" バグの根因）。sc_tree.iter_all_nodes()
+    # を1回先に回して対応表を作り、文字列パースには頼らない。
+    node_id_to_name: dict = {}
+    for _prod in sc_tree.products:
+        for _nd in sc_tree.iter_all_nodes(_prod):
+            node_id_to_name[_nd.node_id] = (_prod, _nd.node_name)
+
     cap_hard_weeks: set = set()
     cap_soft_weeks: set = set()
     bwd_env_weeks: set = set()
+    capacity_events: dict = {}   # {product: {node_name: {"cap_hard_weeks":[...], "cap_soft_weeks":[...]}}}
     for _fres in fres_all:
         for _node_id, wk, _cnt in getattr(_fres, "cap_hard_events", []) or []:
             cap_hard_weeks.add(wk)
+            _prod_name = node_id_to_name.get(_node_id)
+            if _prod_name:
+                _prod, _name = _prod_name
+                capacity_events.setdefault(_prod, {}).setdefault(
+                    _name, {"cap_hard_weeks": [], "cap_soft_weeks": []}
+                )["cap_hard_weeks"].append(wk)
         for _node_id, wk, _over in getattr(_fres, "cap_soft_violations", []) or []:
             cap_soft_weeks.add(wk)
+            _prod_name = node_id_to_name.get(_node_id)
+            if _prod_name:
+                _prod, _name = _prod_name
+                capacity_events.setdefault(_prod, {}).setdefault(
+                    _name, {"cap_hard_weeks": [], "cap_soft_weeks": []}
+                )["cap_soft_weeks"].append(wk)
     for _bres in bres_all:
         for _node_id, wk, _over in getattr(_bres, "cap_soft_envelope_violations", []) or []:
             bwd_env_weeks.add(wk)
@@ -329,11 +353,13 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
     leaf_out_S: dict = {}
     leaf_out_CO: dict = {}
     leaf_out_S_weekly: dict = {}     # Phase 7a・A2.4: fx_effective の出荷数量加重に使う
+    capacity_series: dict = {}       # Phase 8-3c・N4: S3 の「P vs Capacity Limits」図用
     for prod in sc_tree.products:
         peaks_prod: dict = {}
         s_prod: dict = {}
         co_prod: dict = {}
         s_weekly_prod: dict = {}
+        cap_series_prod: dict = {}
         for nd in sc_tree.iter_all_nodes(prod):
             sup = nd.psi4supply
             i_series = [len(sup[w][I]) for w in range(n_weeks)]
@@ -354,11 +380,30 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
                 s_weekly_prod[nd.node_name] = {
                     (labels[w] if labels else str(w)): s_series[w] for w in range(n_weeks)
                 }
+            # Phase 8-3c・N4: 能力を持つノードだけ（cap_hard/cap_soft が全週ゼロなら
+            # 入れない——S1 の is_unallocated と同じ規律で、意味の無い行を出さない）。
+            cap_hard_series = [nd.cap_hard(w) for w in range(n_weeks)]
+            cap_soft_series = [nd.cap_soft(w) for w in range(n_weeks)]
+            if any(v > 0 for v in cap_hard_series) or any(v > 0 for v in cap_soft_series):
+                p_series = [len(sup[w][P]) for w in range(n_weeks)]
+                cap_series_prod[nd.node_name] = {
+                    "week_labels": list(labels) if labels else [str(w) for w in range(n_weeks)],
+                    "p": p_series,
+                    "cap_hard": cap_hard_series,
+                    "cap_soft": cap_soft_series,
+                }
         if peaks_prod:
             inventory_peak_weeks[prod] = peaks_prod
         leaf_out_S[prod] = s_prod
         leaf_out_CO[prod] = co_prod
         leaf_out_S_weekly[prod] = s_weekly_prod
+        if cap_series_prod:
+            capacity_series[prod] = cap_series_prod
+
+    for _by_node in capacity_events.values():
+        for _rec in _by_node.values():
+            _rec["cap_hard_weeks"] = sorted(set(_rec["cap_hard_weeks"]))
+            _rec["cap_soft_weeks"] = sorted(set(_rec["cap_soft_weeks"]))
 
     return {
         "cap_hard_violation_weeks": sorted(cap_hard_weeks),
@@ -368,6 +413,8 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
         "leaf_out_S": leaf_out_S,
         "leaf_out_CO": leaf_out_CO,
         "leaf_out_S_weekly": leaf_out_S_weekly,
+        "capacity_series": capacity_series,   # {product: {node_name: {...}}}（Phase 8-3c・N4）
+        "capacity_events": capacity_events,   # {product: {node_name: {cap_hard_weeks, cap_soft_weeks}}}（追補）
     }
 
 

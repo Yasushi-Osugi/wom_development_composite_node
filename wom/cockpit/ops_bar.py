@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-wom/cockpit/ops_bar.py — ⑦ 操作（Phase 8-3a）
+wom/cockpit/ops_bar.py — ⑦ 操作（Phase 8-3a・Phase 8-3c で N7 拡張）
 ================================================================================
-◀ 戻る ／ ⚑ この計画案を保存 ／ ▶ 次へ：{次の画面}（設計書 §3.1）。
+◀ 戻る ／ ⚑ {画面ごとの意味} ／ ▶ 次へ：{次の画面}（設計書 §3.1）。
 
 正典: requests/Phase8_DesignMD_CockpitGUI.md rev.3 §3.1
       requests/Phase8-3a_RequestLetter_CockpitFrame_to_CodeKun.md
+      requests/Phase8-3c_RequestLetter_S3Run_to_CodeKun.md §N7
 
-本 Phase では S1 だけが実在する画面なので、◀・▶ とも常に disabled——
-**ボタンは出す**（次に何が来るかが見えていることに意味がある。Request Letter §2 F3）。
-`⚑` だけが実際に動く（`AllocationPanel.commit()` を呼ぶ）。
+`⚑` の意味は画面ごとに違う——S1 は「この配分で計画する」、S3 は「この実行結果を
+記録する」。**その語（ラベル・注記）を `ops_bar.py` は持たない**（N7・K1と同じ
+「語は1箇所にだけ定義する」原則）。持つのは画面側（`s1_allocate.COMMIT_LABEL_JA`
+等）で、`frame.py` が画面を差し替えるときに `set_commit_label()` /
+`set_commit_note()` で読み替えさせる。**このファイルには文言の初期値すら
+置かない**（空文字列で始め、`frame.py` の初期化直後に必ず設定させる）。
 """
 from __future__ import annotations
 
@@ -37,15 +41,16 @@ class OpsBar(tk.Frame):
                                    font=_JA_FONT, state="disabled")
         self._back_btn.pack(side="left", padx=(8, 4), pady=6)
 
-        self._commit_btn = tk.Button(self, text="⚑ この計画案を保存", command=on_commit,
+        # 文言は空で始める——初期値も画面側（s1_allocate.COMMIT_LABEL_JA 等）に
+        # 持たせ、frame.py の初期化直後に set_commit_label()/set_commit_note()
+        # で必ず設定させる（ここに文言を1文字も書かない）。
+        self._commit_btn = tk.Button(self, text="", command=on_commit,
                                      bg="#4CAF50", fg="#0B1F14", relief="flat",
                                      font=_JA_FONT_BOLD)
         self._commit_btn.pack(side="left", padx=4, pady=6)
 
-        # Phase 8-2・C1.3 由来の注記をそのまま踏襲——⚑ が計画するのは結論行
-        # （P_opt、または手入力を選んでいればその値）であって、ドリルダウン先の
-        # 子ノードの走査結果ではないことを明示する。
-        tk.Label(self, text="（計画するのは上の推奨配分です）", bg=BG_MID, fg=_FG_MUTED,
+        self._commit_note_var = tk.StringVar(value="")
+        tk.Label(self, textvariable=self._commit_note_var, bg=BG_MID, fg=_FG_MUTED,
                 font=("Segoe UI", 8)).pack(side="left", padx=(0, 12))
 
         self._status_var = tk.StringVar(value="")
@@ -62,3 +67,17 @@ class OpsBar(tk.Frame):
 
     def set_next_label(self, text: str) -> None:
         self._next_btn.config(text=text)
+
+    def set_commit_label(self, text: str) -> None:
+        """N7: `⚑` ボタンのラベルを画面ごとに差し替える。"""
+        self._commit_btn.config(text=text)
+
+    def set_commit_note(self, text: str) -> None:
+        """N7: `⚑` 横の注記を画面ごとに差し替える。"""
+        self._commit_note_var.set(text)
+
+    def set_back_enabled(self, enabled: bool) -> None:
+        """Phase 8-3c・N1: 画面が2枚になったので「◀ 戻る」を実際に使う画面が
+        出てきた（S3 -> S1）。S1 のように前の画面が無いときは disabled のまま。
+        """
+        self._back_btn.config(state=("normal" if enabled else "disabled"))

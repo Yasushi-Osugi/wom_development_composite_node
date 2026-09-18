@@ -38,6 +38,13 @@ BG_LIGHT = "#2E3F55"
 FG_WHITE = "#ECEFF1"
 FG_ACC   = "#64B5F6"
 
+# ⑦ ops_bar の `⚑` に渡す、この画面固有の文言（Phase 8-3c・N7）。
+# 「語は1箇所にだけ定義する」（K1 と同じ理由）——ops_bar.py はこれを持たず、
+# frame.py が画面を差し替えるときにこの定数を読んで set_commit_label()/
+# set_commit_note() に渡す。
+COMMIT_LABEL_JA = "⚑ この配分で計画する"
+COMMIT_NOTE_JA = "（計画するのは上の推奨配分です）"
+
 _JA_FONT = ("Yu Gothic UI", 9)
 _JA_FONT_BOLD = ("Yu Gothic UI", 10, "bold")
 

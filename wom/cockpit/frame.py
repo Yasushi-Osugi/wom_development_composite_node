@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-wom/cockpit/frame.py — 経営コックピットの骨格（Phase 8-3a）
+wom/cockpit/frame.py — 経営コックピットの骨格（Phase 8-3a・Phase 8-3c で N1 拡張）
 ================================================================================
-設計書 §3.1 の7ブロックを組み立てる。本 Phase では **S1 だけが中身を持ち**、
-他（S0/S2/S3/S4/S5）は Navigator 上に `○` として存在するだけ（枠だけ）。
+設計書 §3.1 の7ブロックを組み立てる。Phase 8-3c で S3 Run が入り、**画面が
+2枚**になった——8-3a の完了条件「S3 を足すとき骨格側に手を入れずに済む」を
+初めて検証できる回だった。
 
-正典: requests/Phase8_DesignMD_CockpitGUI.md rev.3 §3.1/§8.2
+正典: requests/Phase8_DesignMD_CockpitGUI.md rev.3/5 §3.1/§8.2
       requests/Phase8-3a_RequestLetter_CockpitFrame_to_CodeKun.md
+      requests/Phase8-3c_RequestLetter_S3Run_to_CodeKun.md §N1/§N7
 
-【8-3b 以降への申し送り】S3 を足すとき、骨格側（本ファイル・navigator.py・
-state_header.py・ops_bar.py）に手を入れずに済むことを狙って作った：
-- 画面の実体は `self._body` に1枚だけ pack する（`_s1` のように）。S3 を足す
-  ときは同じ形の画面クラス（`commit()` を持つ・`on_view_changed` を受け取る）を
-  作り、`_current_step` に応じて `_body` の中身を差し替える形にする
-- Navigator の `enabled` / `passed` は `_render_nav()` が1箇所で組む。S3 を
-  有効にするのはこの関数の中身を直すだけで足りるはず
-- ⑦ ops_bar の `on_commit` は「いま `_body` にある画面の `commit()` を呼ぶ」
-  という間接呼び出しにしてあるので、画面が増えてもボタンの配線は変えずに済む
+【8-3a の仮説の検証結果（正直に書く）】
+  navigator.py     無変更で足りた（想定どおり）
+  state_header.py  無変更で足りた（`pre_plan`/`feasible_plan` 両方を元々扱えた）
+  frame.py         入った（想定どおり——画面差し替え機構を実装する場所）
+  ops_bar.py       入った（想定外——`⚑` の文言を画面ごとの定数として扱う
+                   set_commit_label()/set_commit_note() API が要った。K1と
+                   同じ「語は1箇所にだけ定義する」原則をここにも適用した）
 
-手を入れる必要が実際に出たら、それは骨格の切り方が足りない合図なので報告する。
+手を入れる必要がさらに出たら、それは骨格の切り方が足りない合図なので報告する。
 """
 from __future__ import annotations
 
@@ -28,7 +28,14 @@ from typing import Optional
 
 from wom.cockpit.navigator import PlanningNavigator
 from wom.cockpit.ops_bar import OpsBar
-from wom.cockpit.s1_allocate import AllocationPanel, BG_DARK
+from wom.cockpit.s1_allocate import (
+    COMMIT_LABEL_JA as S1_COMMIT_LABEL_JA, COMMIT_NOTE_JA as S1_COMMIT_NOTE_JA,
+    AllocationPanel, BG_DARK,
+)
+from wom.cockpit.s3_run import (
+    COMMIT_LABEL_JA as S3_COMMIT_LABEL_JA, COMMIT_NOTE_JA as S3_COMMIT_NOTE_JA,
+    RunPanel,
+)
 from wom.cockpit.state_header import PlanningStateHeader
 
 NEXT_LABEL_JA = {
@@ -36,9 +43,19 @@ NEXT_LABEL_JA = {
     "S3": "▶ 次へ：S4 Evaluate", "S4": "▶ 次へ：S5 Review", "S5": "▶ 次へ",
 }
 
+# 画面ごとの ⚑ 文言（N7）。ops_bar.py はこれを持たない——frame.py が画面を
+# 差し替えるときにここを引いて set_commit_label()/set_commit_note() に渡す。
+_COMMIT_TEXT_JA = {
+    "S1": (S1_COMMIT_LABEL_JA, S1_COMMIT_NOTE_JA),
+    "S3": (S3_COMMIT_LABEL_JA, S3_COMMIT_NOTE_JA),
+}
+
 
 class CockpitFrame(tk.Frame):
-    """コックピットの骨格。現状 `_body` には S1（`AllocationPanel`）だけが載る。"""
+    """コックピットの骨格。`_body` には S1（`AllocationPanel`）と
+    S3（`RunPanel`）が両方 pack されており、`_current_step` に応じて
+    どちらか一方だけを見せる（もう一方は `pack_forget()`）。
+    """
 
     def __init__(self, parent, **kw):
         super().__init__(parent, bg=BG_DARK, **kw)
@@ -60,25 +77,55 @@ class CockpitFrame(tk.Frame):
                            on_next=self._on_next,
                            next_label=NEXT_LABEL_JA[self._current_step])
         self._ops.pack(fill="x", side="bottom")
+        label, note = _COMMIT_TEXT_JA["S1"]
+        self._ops.set_commit_label(label)
+        self._ops.set_commit_note(note)
 
-        # ③〜⑥（本 Phase では S1 の中身がそのまま入る）
+        # ③〜⑥（画面の実体。両方作っておき、pack/pack_forget で切り替える）
         self._body = tk.Frame(self, bg=BG_DARK)
         self._body.pack(fill="both", expand=True)
 
         self._s1 = AllocationPanel(self._body, on_view_changed=self._on_s1_view_changed)
         self._s1.pack(fill="both", expand=True)
 
+        self._s3 = RunPanel(self._body)
+        # S3 は最初は隠す（pack しない）——S1 だけが見えている状態で開始する。
+
         self._render_nav()
 
     # ------------------------------------------------------------------
-    # 現在の画面（本 Phase では常に S1）
+    # 現在の画面
     # ------------------------------------------------------------------
     def _current_screen(self):
-        return self._s1
+        return self._s3 if self._current_step == "S3" else self._s1
 
     def _render_nav(self) -> None:
         passed = {"S1"} if self._state is not None else set()
-        self._nav.render(current=self._current_step, enabled=("S1",), passed=passed)
+        enabled = ("S1", "S3") if self._state is not None else ("S1",)
+        self._nav.render(current=self._current_step, enabled=enabled, passed=passed)
+
+    # ------------------------------------------------------------------
+    # 画面の切り替え（N1）
+    # ------------------------------------------------------------------
+    def _switch_to(self, step: str) -> None:
+        if step == self._current_step:
+            return
+        self._current_screen().pack_forget()
+        self._current_step = step
+        if step == "S3":
+            # S3 は pre_plan（self._state）を持ち回る——S1 の読み込み文脈
+            # （model_dir/scenario_id/cap_wk/uom）は S1 自身が既に持っている
+            # ので、そこから読む（S1 -> S3 の唯一のハンドオフ経路）。
+            self._s3.load(self._s1._model_dir, self._s1._scenario_id,
+                         self._s1._cap_wk, self._state, uom=self._s1._uom)
+        self._current_screen().pack(fill="both", expand=True)
+        label, note = _COMMIT_TEXT_JA[step]
+        self._ops.set_commit_label(label)
+        self._ops.set_commit_note(note)
+        self._ops.set_next_label(NEXT_LABEL_JA[step])
+        self._ops.set_back_enabled(step != "S1")   # S1 の前に画面が無い
+        self._ops.set_status("")
+        self._render_nav()
 
     # ------------------------------------------------------------------
     # コールバック
@@ -91,7 +138,7 @@ class CockpitFrame(tk.Frame):
         try:
             state = self._current_screen().commit()
         except Exception as e:   # noqa: BLE001 — 入力ミスをダイアログで見せる
-            messagebox.showerror("S1 Allocate", f"計画案の保存に失敗しました:\n{e}")
+            messagebox.showerror("Cockpit", f"保存に失敗しました:\n{e}")
             return
         self._state = state
         self._header.render(loaded=self._loaded, state=self._state)
@@ -99,10 +146,12 @@ class CockpitFrame(tk.Frame):
         self._render_nav()
 
     def _on_back(self) -> None:
-        pass   # S1 が最初の画面なので常に disabled（押されることはない）
+        if self._current_step == "S3":
+            self._switch_to("S1")
 
     def _on_next(self) -> None:
-        pass   # 次の画面（S2）がまだ無いので常に disabled（押されることはない）
+        pass   # 次の画面（S2/S4）がまだ無いので常に disabled（押されることはない）
 
     def _on_navigate(self, step: str) -> None:
-        pass   # 本 Phase では S1 のみ enabled なので実質 no-op（同じ画面に留まる）
+        if step in ("S1", "S3"):
+            self._switch_to(step)

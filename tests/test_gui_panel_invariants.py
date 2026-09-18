@@ -476,3 +476,188 @@ def test_children_frame_position_is_stable_across_navigation():
         assert panel._node_path == (), "should be back at ALL after walking all the way up"
     finally:
         root.destroy()
+
+
+# ---------------------------------------------------------------------------
+# S3 Run（Phase 8-3c・N8）: 2枚目の画面で、条件1〜9が本当に汎用かを確かめる
+# ---------------------------------------------------------------------------
+# 条件1〜9は「特定の画面を名指ししない汎用の不変条件」として書いてきたが、
+# それが本当かどうかは2枚目の画面が出るまで分からなかった（Request Letter
+# §N8）。**効かない条件があってもそれ自体は失敗ではない**——S1 固有の前提が
+# 混じっていたという発見であり、黙って S3 だけ除外しない（下の一覧表で報告する）。
+#
+# `run_s3()` は 4〜9秒かかる（headless の Planning+PPC が大半）ため、
+# module 内で**1回だけ**計算し、複数の条件テストで使い回す（`s3_run_result`
+# フィクスチャ）。副作用ファイル（`demand_forecast_<id>.csv` が実際のサンプル
+# モデルフォルダに書かれる）は teardown で削除する。
+
+S3_ALLOC_DIR = ALLOC_DIR   # soysauce（triangle）で足りる——S3 はモデルの木の形を見ない
+S3_SCENARIO_ID = "s1_base"
+S3_CAP_WK = 800.0
+S3_TEST_ALLOCATION_ID = "GATE0S3PROBE"
+
+
+@pytest.fixture(scope="module")
+def s3_run_result():
+    from wom.cockpit.s1_view_model import build_s1_view, evaluate_allocation
+    from wom.cockpit.s3_view_model import run_s3
+    import wom.planning_state as planning_state
+
+    v = build_s1_view(S3_ALLOC_DIR, scenario_id=S3_SCENARIO_ID, cap_wk=S3_CAP_WK)
+    allocation = dict(v["headline"]["recommended"])
+    profit_levels = dict(v["profit_levels"])
+    profit_levels["source"] = "P_opt"
+    plan_eval = evaluate_allocation(S3_ALLOC_DIR, S3_SCENARIO_ID, S3_CAP_WK, allocation)
+    pre_plan_state = planning_state.new_state(
+        os.path.basename(S3_ALLOC_DIR), S3_SCENARIO_ID, allocation, profit_levels,
+        plan_eval, allocation_id=S3_TEST_ALLOCATION_ID, reversal=v["reversal"])
+
+    result = run_s3(S3_ALLOC_DIR, S3_SCENARIO_ID, S3_CAP_WK, pre_plan_state)
+    yield pre_plan_state, result
+
+    demand_csv = os.path.join(S3_ALLOC_DIR, f"demand_forecast_{S3_TEST_ALLOCATION_ID}.csv")
+    if os.path.exists(demand_csv):
+        os.remove(demand_csv)
+
+
+def _make_s3_panel(pre_plan_state: dict, run_result):
+    """`RunPanel` を作り、view を注入して描かせる（`_make_panel()` と同じ形）。"""
+    from wom.cockpit.s3_run import RunPanel
+    from wom.cockpit.s3_view_model import build_s3_view
+
+    root = _new_tk_root()
+    panel = RunPanel(root)
+    panel.pack(fill="both", expand=True)
+    panel._model_dir = S3_ALLOC_DIR
+    panel._scenario_id = S3_SCENARIO_ID
+    panel._cap_wk = S3_CAP_WK
+    panel._pre_plan_state = pre_plan_state
+    panel._run_result = run_result
+    view = build_s3_view(pre_plan_state, run_result)
+    if run_result is not None:
+        panel._selected_node_key = view["default_node_key"]
+    panel._render(view)
+    root.update()
+    root.update_idletasks()
+    return root, panel
+
+
+@pytest.mark.parametrize("run_after", [False, True], ids=["s3_before_run", "s3_after_run"])
+def test_s3_fits_within_default_window(s3_run_result, run_after):
+    """条件1: そのまま効く。"""
+    pre_plan_state, run_result = s3_run_result
+    root, panel = _make_s3_panel(pre_plan_state, run_result if run_after else None)
+    try:
+        win_w = panel.winfo_width()
+        win_h = panel.winfo_height()
+        assert win_w > 1 and win_h > 1, "panel did not receive real geometry"
+        for w in _iter_widgets(panel):
+            if w is panel or not w.winfo_ismapped():
+                continue
+            x = w.winfo_rootx() - panel.winfo_rootx()
+            y = w.winfo_rooty() - panel.winfo_rooty()
+            assert x + w.winfo_width() <= win_w + 2, f"{w} extends right of window"
+            assert y + w.winfo_height() <= win_h + 2, f"{w} extends below window"
+    finally:
+        root.destroy()
+
+
+@pytest.mark.parametrize("run_after", [False, True], ids=["s3_before_run", "s3_after_run"])
+def test_s3_headline_lines_not_too_long(s3_run_result, run_after):
+    """条件2: 一部だけ効く。結論行3行の文字数上限は S3 にも意味があるが、
+    S1 の `full_allocation_ja`（全市場控え）に相当する控えラベルが S3 には
+    無い——結論行だけ検査する。"""
+    pre_plan_state, run_result = s3_run_result
+    from wom.cockpit.s3_view_model import build_s3_view
+    view = build_s3_view(pre_plan_state, run_result if run_after else None)
+    for line in view["conclusion_lines_ja"]:
+        assert len(line) <= _HEADLINE_MAX_CHARS, f"S3 conclusion line too long: {line!r}"
+
+
+@pytest.mark.parametrize("run_after", [False, True], ids=["s3_before_run", "s3_after_run"])
+def test_s3_evidence_panel_not_empty(s3_run_result, run_after):
+    """条件3: そのまま効く（根拠パネル側のみ——補助パネルの「実行の結果」は
+    未実行のとき正しく空になるのが仕様〔K2 と同じ規律〕なので対象外）。"""
+    pre_plan_state, run_result = s3_run_result
+    root, panel = _make_s3_panel(pre_plan_state, run_result if run_after else None)
+    try:
+        axes = panel._fig.get_axes()
+        assert axes, "S3 figure has no axes after render"
+        ax = axes[0]
+        has_content = bool(ax.texts) or bool(ax.lines) or bool(ax.patches) \
+            or bool(ax.collections) or bool(ax.containers)
+        assert has_content, "S3 plot axes has no text/lines/patches/collections"
+    finally:
+        root.destroy()
+
+
+def test_s3_node_rows_are_bound(s3_run_result):
+    """条件4の類型: そのまま同じ形で効く。S3 には木のドリルダウンは無いが、
+    「クリックで切り替えられる一覧を出すなら、その行はバインドを持つ」という
+    同じ構造の不変条件は能力ノード一覧にそのまま当てはまる。"""
+    pre_plan_state, run_result = s3_run_result
+    root, panel = _make_s3_panel(pre_plan_state, run_result)
+    try:
+        rows = panel._nodes_frame.winfo_children()
+        assert rows, "S3 ran with capacity nodes but none rendered"
+        bound = any(w.bind("<Button-1>") for row in rows for w in _iter_widgets(row))
+        assert bound, "capacity node rows have no Button-1 binding"
+    finally:
+        root.destroy()
+
+
+@pytest.mark.parametrize("run_after", [False, True], ids=["s3_before_run", "s3_after_run"])
+def test_s3_renders_without_exception(s3_run_result, run_after):
+    """条件6: そのまま効く。"""
+    pre_plan_state, run_result = s3_run_result
+    root, panel = _make_s3_panel(pre_plan_state, run_result if run_after else None)
+    try:
+        assert panel._view is not None
+    finally:
+        root.destroy()
+
+
+@pytest.mark.parametrize("run_after", [False, True], ids=["s3_before_run", "s3_after_run"])
+def test_s3_plot_has_no_missing_glyph_warnings(s3_run_result, run_after):
+    """条件7: そのまま効く。"""
+    pre_plan_state, run_result = s3_run_result
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        root, panel = _make_s3_panel(pre_plan_state, run_result if run_after else None)
+        root.destroy()
+    tofu = [str(w.message) for w in caught if "missing from font" in str(w.message)]
+    assert not tofu, f"S3: glyph(s) missing from configured font (tofu): {tofu}"
+
+
+@pytest.mark.parametrize("run_after", [False, True], ids=["s3_before_run", "s3_after_run"])
+def test_s3_result_block_matches_view(s3_run_result, run_after):
+    """条件8の類型: そのまま同じ形で効く。S1 の「levels/level_notes_ja が
+    空なら見出しごと隠す」（K2）と同じ構造が S3 の「実行の結果」ブロックにも
+    ある（`view["has_run"]` が見出しの可視性と一致するはず）。"""
+    pre_plan_state, run_result = s3_run_result
+    from wom.cockpit.s3_view_model import build_s3_view
+    view = build_s3_view(pre_plan_state, run_result if run_after else None)
+    root, panel = _make_s3_panel(pre_plan_state, run_result if run_after else None)
+    try:
+        assert panel._result_header_visible == view["has_run"], (
+            f"result_header_visible={panel._result_header_visible} but "
+            f"view['has_run']={view['has_run']}")
+        info_text = panel._result_info_label.cget("text")
+        assert bool(info_text) == view["has_run"], (
+            f"result_info_label text={info_text!r} but view['has_run']={view['has_run']}")
+    finally:
+        root.destroy()
+
+
+# 条件5（リサイズに追従する・D2）と条件9（遷移を通す・M2）は S3 には移植しなかった。
+# 理由（黙って除外しないための記録）:
+#   条件5: S1 の対象は「全市場の配分」控えラベルの動的 wraplength（D2）。S3 には
+#     窓幅に応じて折返し幅を変える動的ラベルが無い——この条件が検査する具体的な
+#     機構そのものが S3 に存在しない（S1 固有の前提だったと判明した1例）。
+#   条件9: S1 で問題になったのは「条件つきブロック（利益水準）を、常時ブロック
+#     （子ノード欄）より上に置いていた」という並び順の欠陥だった。S3 は最初から
+#     M1 の原則（常に在るものを上、条件つきを下）で組んだため、同じ形の欠陥が
+#     構造的に発生しない。条件9を S3 に移植する意味があるとすれば「S1<->S3の
+#     画面遷移でどこかのウィジェットが動くか」だが、これは S3 固有の内部遷移
+#     ではなく骨格（frame.py）の話であり、本 Phase では手動の smoke test
+#     （report参照）で確認済み・自動テスト化は次回以降の課題とする。
