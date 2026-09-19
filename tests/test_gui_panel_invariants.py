@@ -707,3 +707,71 @@ def test_s3_node_rows_do_not_look_clickable_without_bind(s3_run_result, run_afte
         _assert_no_row_looks_clickable_without_bind(panel._nodes_frame)
     finally:
         root.destroy()
+
+
+# ---------------------------------------------------------------------------
+# 条件11: 図の軸ラベルが、view が宣言した系列に対応している（Phase 8-3c-4・X3）
+# ---------------------------------------------------------------------------
+# 条件1〜10 のどれも「軸ラベルと、実際に描いている系列の対応」を見ていなかった
+# ——だから「図が入庫（P）を描いているのに、処理能力と比べる図として名乗って
+# いた」欠陥が素通りした。この条件は特定の画面・ノード名を名指ししない: view の
+# 各ノードが宣言する `series_label_ja` / `title_ja` が、図に実際に出ていること、
+# そして系列の種類（series_kind）が違えば軸ラベルも違うこと、だけを見る。
+# 種類→語の対応表はテストに持たない（K1: 語は view_model の1箇所だけ）。
+
+def test_s3_axis_labels_follow_declared_series_kind(s3_run_result):
+    pre_plan_state, run_result = s3_run_result
+    from wom.cockpit.s3_view_model import build_s3_view
+    view = build_s3_view(pre_plan_state, run_result)
+    nodes = view["capacity_nodes"]
+    assert nodes, "no capacity nodes to check"
+
+    root, panel = _make_s3_panel(pre_plan_state, run_result)
+    try:
+        label_by_kind = {}
+        for n in nodes:
+            panel._on_node_click((n["product"], n["name"]))
+            root.update_idletasks()
+            ax = panel._fig.get_axes()[0]
+            assert ax.get_ylabel() == n["series_label_ja"], (
+                f"{n['label']}: series_kind={n['series_kind']!r} declares "
+                f"series_label_ja={n['series_label_ja']!r} but the figure shows "
+                f"ylabel={ax.get_ylabel()!r}")
+            assert ax.get_title() == n["title_ja"], (
+                f"{n['label']}: declared title_ja={n['title_ja']!r} but the "
+                f"figure shows title={ax.get_title()!r}")
+            label_by_kind.setdefault(n["series_kind"], set()).add(n["series_label_ja"])
+
+        kinds = list(label_by_kind)
+        assert all(len(v) == 1 for v in label_by_kind.values()), (
+            f"one series_kind maps to several axis labels: {label_by_kind}")
+        assert len({next(iter(v)) for v in label_by_kind.values()}) == len(kinds), (
+            f"different series_kind share one axis label: {label_by_kind}")
+    finally:
+        root.destroy()
+
+
+def test_s3_shortfall_line_follows_selected_node(s3_run_result):
+    """供給不足で処理量が凹んだ週は、図の上では能力で縛られた凹みと同じ形に
+    見える。だから、選択中のノードにそれがあるときだけ補助パネルに出る
+    （あれば1行増え、無ければ増えない）ことを、語を持たずに行数だけで見る。"""
+    pre_plan_state, run_result = s3_run_result
+    from wom.cockpit.s3_view_model import build_s3_view
+    nodes = build_s3_view(pre_plan_state, run_result)["capacity_nodes"]
+
+    root, panel = _make_s3_panel(pre_plan_state, run_result)
+    try:
+        seen = set()
+        for n in nodes:
+            panel._on_node_click((n["product"], n["name"]))
+            root.update_idletasks()
+            n_lines = panel._result_info_label.cget("text").count("\n") + 1
+            has = bool(n["shortfall_weeks"])
+            seen.add(has)
+            assert n_lines == 3 + (1 if has else 0), (
+                f"{n['label']}: shortfall_weeks={len(n['shortfall_weeks'])} but the "
+                f"result block has {n_lines} lines")
+        assert seen == {True, False}, (
+            f"fixture should contain nodes both with and without shortfall, got {seen}")
+    finally:
+        root.destroy()

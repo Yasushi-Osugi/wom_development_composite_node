@@ -125,9 +125,20 @@ def _capacity_nodes(snap: dict) -> List[dict]:
             hard_weeks = list(events.get("cap_hard_weeks", []) or [])
             soft_weeks = list(events.get("cap_soft_weeks", []) or [])
             label = f"{name} [{product}]" if multi_product else name
+            # 語は `series_label_ja`（データ側が宣言）にだけ置く。ここでも画面でも
+            # series_kind を語に翻訳しない——タイトルは宣言された語から単位を除く
+            # だけ（Phase 8-3c-4・X2）。
+            series_label_ja = series["series_label_ja"]
+            kind_word = series_label_ja.split("（", 1)[0]
+            labels = series["week_labels"]
+            shortfall_weeks = [labels[w] for w, v in enumerate(series["shortfall"]) if v > 0]
             nodes.append({
                 "product": product, "name": name, "label": label,
                 "series": series, "hard_weeks": hard_weeks, "soft_weeks": soft_weeks,
+                "series_kind": series["series_kind"],
+                "series_label_ja": series_label_ja,
+                "title_ja": f"{label} — {kind_word} vs Capacity Limits",
+                "shortfall_weeks": shortfall_weeks,
             })
     nodes.sort(key=lambda n: (-len(n["hard_weeks"]), -len(n["soft_weeks"]), n["label"]))
     return nodes

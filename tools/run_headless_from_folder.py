@@ -353,7 +353,7 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
     leaf_out_S: dict = {}
     leaf_out_CO: dict = {}
     leaf_out_S_weekly: dict = {}     # Phase 7a・A2.4: fx_effective の出荷数量加重に使う
-    capacity_series: dict = {}       # Phase 8-3c・N4: S3 の「P vs Capacity Limits」図用
+    capacity_series: dict = {}       # Phase 8-3c・N4: S3 の「処理能力 vs 負荷」図用
     for prod in sc_tree.products:
         peaks_prod: dict = {}
         s_prod: dict = {}
@@ -385,10 +385,36 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
             cap_hard_series = [nd.cap_hard(w) for w in range(n_weeks)]
             cap_soft_series = [nd.cap_soft(w) for w in range(n_weeks)]
             if any(v > 0 for v in cap_hard_series) or any(v > 0 for v in cap_soft_series):
-                p_series = [len(sup[w][P]) for w in range(n_weeks)]
+                # Phase 8-3c-4・X1: cap_hard と比べるべき系列を「1本だけ」出し、
+                # それが何かを series_kind で宣言する（画面に選ばせない）。
+                # push ノード（decoupling 点）の P は入庫であって生産ではない
+                # （ForwardPlanner は push ノードの P を封印しない）——処理能力と
+                # 比べるべきは処理量＝実際に出荷できた量: S から「物が無くて出せなかった
+                # 分」（_push_shortfall）を引いたもの。それ以外のノードは、封印が
+                # 実際に P を cap_hard と比べているので P（生産量）。
+                # plan_mode の判定は、系列の選択としてはここ1箇所だけ。
+                # `shortfall` は「物が無くて通せなかった量」（能力で縛られたのでは
+                # ない）。実出荷が低い週の原因を、図の上で「能力」と取り違えない
+                # ための情報（push ノードのみ。他は 0）。`nd._push_shortfall` は
+                # ForwardPlanner が push ノードに置く private 属性の直読みで、
+                # 論点3 で forward_planner.py を触るときに公開属性へ格上げする。
+                if nd.plan_mode == "push":
+                    pushed_short = getattr(nd, "_push_shortfall", None) or {}
+                    shortfall = [pushed_short.get(w, 0) for w in range(n_weeks)]
+                    series = [len(sup[w][S]) - shortfall[w] for w in range(n_weeks)]
+                    series_kind = "throughput"
+                    series_label_ja = "処理量（lot）"
+                else:
+                    shortfall = [0] * n_weeks
+                    series = [len(sup[w][P]) for w in range(n_weeks)]
+                    series_kind = "production"
+                    series_label_ja = "生産量（lot）"
                 cap_series_prod[nd.node_name] = {
                     "week_labels": list(labels) if labels else [str(w) for w in range(n_weeks)],
-                    "p": p_series,
+                    "series": series,
+                    "series_kind": series_kind,
+                    "series_label_ja": series_label_ja,   # 語はここにだけ置く（K1）
+                    "shortfall": shortfall,
                     "cap_hard": cap_hard_series,
                     "cap_soft": cap_soft_series,
                 }

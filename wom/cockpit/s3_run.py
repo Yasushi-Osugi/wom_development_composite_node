@@ -212,20 +212,21 @@ class RunPanel(tk.Frame):
 
         self._render_nodes(view["capacity_nodes"])
 
+        if self._selected_node_key is None and view["default_node_key"] is not None:
+            self._selected_node_key = view["default_node_key"]
+
         if view["has_run"]:
             if not self._result_header_visible:
                 self._result_header_label.pack(fill="x", padx=6, pady=(10, 2),
                                                before=self._result_info_label)
                 self._result_header_visible = True
-            self._render_result_info(view["state"])
+            self._render_result_info(view["state"], view["capacity_nodes"])
         else:
             if self._result_header_visible:
                 self._result_header_label.pack_forget()
                 self._result_header_visible = False
             self._result_info_label.config(text="")
 
-        if self._selected_node_key is None and view["default_node_key"] is not None:
-            self._selected_node_key = view["default_node_key"]
         self._render_plot(view["capacity_nodes"])
 
     def _render_nodes(self, nodes):
@@ -253,9 +254,11 @@ class RunPanel(tk.Frame):
     def _on_node_click(self, key: tuple):
         self._selected_node_key = key
         if self._view is not None:
+            if self._view["has_run"]:
+                self._render_result_info(self._view["state"], self._view["capacity_nodes"])
             self._render_plot(self._view["capacity_nodes"])
 
-    def _render_result_info(self, state: dict):
+    def _render_result_info(self, state: dict, nodes):
         realized = state.get("realized") or {}
         placement = state.get("placement") or {}
         unmet = realized.get("unmet_lots", 0.0) or 0.0
@@ -266,6 +269,14 @@ class RunPanel(tk.Frame):
             f"在庫ピーク {len(peak_weeks)}週",
             f"最早着手週 {earliest}",
         ]
+        # 図の「処理量」が低い週の原因は2つある——能力で通せなかった／そもそも
+        # 物が無かった。後者は図の上では同じ凹みに見えるので、選択中のノードに
+        # あるときだけ、構造として（注釈ではなく）ここに出す。
+        node = next((n for n in nodes
+                    if (n["product"], n["name"]) == self._selected_node_key), None)
+        if node is not None and node["shortfall_weeks"]:
+            lines.append(f"供給不足で処理できなかった週: {len(node['shortfall_weeks'])}週"
+                         f"（{node['name']}）")
         self._result_info_label.config(text="\n".join(lines))
 
     def _render_plot(self, nodes):
@@ -290,7 +301,7 @@ class RunPanel(tk.Frame):
 
         series = node["series"]
         labels = series["week_labels"]
-        p = series["p"]; ch = series["cap_hard"]; cs = series["cap_soft"]
+        p = series["series"]; ch = series["cap_hard"]; cs = series["cap_soft"]
         n = len(p)
         x = list(range(n))
 
@@ -322,8 +333,10 @@ class RunPanel(tk.Frame):
         ticks = list(range(0, n, step))
         ax.set_xticks(ticks)
         ax.set_xticklabels([labels[i] for i in ticks], rotation=30, ha="right", fontsize=6)
-        ax.set_ylabel("P（lot）")
-        ax.set_title(f"{node['label']} — P vs Capacity Limits", fontsize=10)
+        # 軸ラベル・タイトルは view が宣言した語をそのまま使う（画面は
+        # series_kind や plan_mode を見ない・Phase 8-3c-4・X2）。
+        ax.set_ylabel(node["series_label_ja"])
+        ax.set_title(node["title_ja"], fontsize=10)
         if any(v > 0 for v in ch) or any(v > 0 for v in cs):
             ax.legend(loc="upper right", fontsize=7, facecolor=BG_MID,
                      labelcolor=FG_WHITE, framealpha=0.85)

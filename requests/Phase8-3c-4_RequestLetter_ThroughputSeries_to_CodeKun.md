@@ -81,17 +81,34 @@ rev.6 で `cap_hard` の語を訂正したときと同じ扱いにする。
 
 ```python
 capacity_series[product][node] = {
-    "week_labels": [...],
-    "series":      [...],          # 比べるべき系列。1本だけ
-    "series_kind": "throughput" | "production",
-    "cap_hard":    [...],
-    "cap_soft":    [...],
+    "week_labels":     [...],
+    "series":          [...],      # 比べるべき系列。1本だけ
+    "series_kind":     "throughput" | "production",
+    "series_label_ja": "処理量（lot）" | "生産量（lot）",   # 語はここにだけ置く
+    "shortfall":       [...],      # 供給不足で通せなかった量（push のみ。他は 0）
+    "cap_hard":        [...],
+    "cap_soft":        [...],
 }
 ```
 
 ```
-plan_mode == "push"   series = psi4supply[w][S]（処理量）  series_kind="throughput"
-それ以外              series = psi4supply[w][P]（生産量）  series_kind="production"
+plan_mode == "push"   series = 実出荷（actual_s）   series_kind="throughput"
+それ以外              series = psi4supply[w][P]     series_kind="production"
+```
+
+**`S`（需要階段）ではなく実出荷を採る。** `S` は「通す予定だった量」、実出荷は
+「実際に通った量」である。**能力が縛ったかどうかを問う図なら、比べるべきは実際に
+通った量**——`S` を使うと、実際には出荷されていない量を「処理した」と主張してしまう。
+`-alloc`（P_opt・cap=800）の W17 で `S=686 / 実出荷=0` と両者が食い違う実例がある
+（合計でも S 78,709 / 実出荷 73,907）。
+
+実出荷は planner 内部（`self._actual_s`）にあり `_planning_state_extras()` からは
+届かないが、**ノード側に `node._push_shortfall[w]` がある**（`forward_planner.py:522`）。
+
+```
+actual_s   = available[:total_cnt]
+shortfall  = max(0, total_cnt - avail_cnt)
+→ 実出荷 = len(psi4supply[w][S]) - node._push_shortfall[w]     （厳密に成立）
 ```
 
 **`p` という鍵は残さないこと。** 残すと「どちらを使うか」の選択が画面側に戻り、
@@ -102,15 +119,28 @@ plan_mode == "push"   series = psi4supply[w][S]（処理量）  series_kind="thr
   **golden は1バイトも変わらない**（Q3 / N4 と同じ形）
 - `plan_mode` の判定は**ここで一度だけ**行う。`s3_view_model` にも `s3_run` にも
   書かないこと
-- 実出荷（`actual_s`）ではなく `S` を採る理由がある／無いなら、**測って報告すること**
-  （今回のデータでは両者一致している。一致しないケースがあるなら、そちらが正典）
+- **`shortfall` を一緒に載せる理由**——実出荷が低い週の原因は2つある。
+  「能力で通せなかった」と「そもそも物が無かった」である。**図は「能力 vs 処理量」
+  なのに、供給不足の凹みが同じ形で出る。** 注意書きでは防げない（K2 / M1 で
+  繰り返し確認したとおり、**注釈より構造**）。`shortfall` を持たせ、補助パネルに
+  「供給不足で処理できなかった週: N週」と出せば、見ただけで区別がつく。
+  論点3 でも必ず要る情報である
+- **`node._push_shortfall` は private 属性の直読みである。** 本回では公開属性に
+  変えない——「エンジン無変更」の保証を崩さないため。**論点3 で
+  `forward_planner.py` を触るので、そのときに公開属性へ格上げする**（申し送りに
+  「いつ返すか」まで書く）
 
 ## X2. S3 の図とラベルを、宣言に従わせる
 
 ```
-series_kind = "throughput"   y軸「処理量（lot）」  タイトル「<node> — 処理量 vs Capacity Limits」
-series_kind = "production"   y軸「生産量（lot）」  タイトル「<node> — 生産量 vs Capacity Limits」
+y軸        = series_label_ja（view が出した語をそのまま使う）
+タイトル   = f"{node} — {series_label_ja の単位を除いた語} vs Capacity Limits"
 ```
+
+**語は `series_label_ja` にだけ置く。** 画面側にもテスト側にも
+「`kind` → 語」の対応表を書かないこと——書けば語が2箇所以上になり、K1 に反する。
+（Claude君の当初案は条件11 のテスト側に対応表を持たせる形で、**K1 を条件に書き
+ながら自分で破っていた**。Code君の指摘で直した。）
 
 **系列が変わればラベルも変わる。** 同じ「P（lot）」の下で中身がノードによって変わる
 のは、本セッションで繰り返し直してきた欠陥そのものである（`⚑` が画面ごとに違う意味を
@@ -127,9 +157,14 @@ series_kind = "production"   y軸「生産量（lot）」  タイトル「<node>
 **条件1〜10 のどれも、軸ラベルと中身の対応を見ていない。**
 
 ```
-条件11  図の y 軸ラベルが、view が宣言した series_kind に対応していること
+条件11-a  図の y 軸ラベルが、view の series_label_ja と一致すること
+条件11-b  2つの series_kind で、ラベルが互いに異なること
 ```
 
+- テストは**語を持たない**。「宣言と一致するか」と「2つの kind で違うか」だけを見る
+- `-alloc` の S3 には `push`（Bottling）と `push_sub`（Brewing / Materials）が同居する。
+  **1つの fixture で両方の kind を検査でき、X2 前に落ちることも確認できる**
+  （現状は全ノードが「P（lot）」のため）
 - 特定の画面・ノード名を名指ししない。**S4/S5 で別の系列を描くときもそのまま効く**
 - **X2 を入れる前に条件11 を書き、その時点で落ちることを確認してから緑にすること**
   （8-1b から続けている作法）
@@ -159,12 +194,18 @@ series_kind = "production"   y軸「生産量（lot）」  タイトル「<node>
 5. **`Bottling_Noda` の図で、棒が cap_hard の線を超えない**（これが本回の目的）
 6. Gate 0 条件11 が入っており、X2 前に落ちることを確認済み
 7. **golden 13ケースが緑**（`planning_state=False` の経路に1行も足していない）
-8. 既存 503 passed / 3 skipped が維持されている（条件11 の分だけ増える）
+8. 既存 **509 passed / 3 skipped** が維持されている（条件11 の分だけ増える）
 
 ## 報告してほしいこと
 
-- `S` と `actual_s` が一致しないケースがあったか。あれば、どちらを採るべきか
 - 条件11 が X2 前に落ちたときの、落ちた状態とラベルの値
-- `series_kind` を画面が見るだけで済んだか。**`plan_mode` を画面側で見る必要が
-  出たなら、それ自体を報告すること**（切り分けが足りない合図である）
-- 型 B（`Buffer_Chip_TW`）の図が、この変更でどう見えるか
+- `series_label_ja` を画面が使うだけで済んだか。**`plan_mode` や `series_kind` を
+  画面側で分岐に使う必要が出たなら、それ自体を報告すること**（切り分けが足りない合図）
+- **`series_kind` が二値で足りるか**——golden 13ケースの `capacity_series` に載る
+  ノードの `(plan_mode, node_type)` 分布を出すこと。`push` でも `leaf_in`/`mom` でも
+  ないノードに cap があれば、「生産量」というラベルが実態（入庫）と合わない
+- 型 B（`Buffer_Chip_TW`）の図が、この変更でどう見えるか。
+  **`Buffer_Chip_TW` の cap_hard=1350 は下流 `FoundryTW` の cap と同値である**
+  （`WaferFab_TW` は 20000）。複写の疑いに根拠があるが断定はしない——手がかりとして記録
+- `-alloc` の W17 で実出荷が 0 に凹むのは**本物の事象**（論点3 の現れ）であり、
+  本変更が作った欠陥ではない。目視 QA のとき混同しないよう、報告に明記すること
