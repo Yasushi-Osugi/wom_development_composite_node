@@ -160,5 +160,32 @@ AI agent; tests are enforced by the machine.
 
 **Golden harness**: `tools/run_headless_from_folder.py` runs Load→Planning→PPC
 headlessly and emits a KPI snapshot (forward/backward capacity stats, PPC KPIs,
-per-node PSI sums + weekly-series md5). Regenerate goldens on the owner's Windows
-shell (the Linux bash mount truncates large files and must not run git or WOM).
+per-node PSI sums + weekly-series md5). Regenerate canonical goldens on the
+owner's Windows shell. Final Windows GUI validation also remains required.
+
+## 11. Experimental Linux qualification (owner-approved 2026-09-20)
+
+This exception applies only to `Yasushi-Osugi/wom_development_composite_node`.
+It must not be treated as permission for other WOM repositories.
+
+Use an independent Linux checkout, never the owner's shared Windows working
+directory. The historical Linux bash mount was reported to truncate large files;
+do not assume either that every Linux environment has this fault or that a new
+environment is already qualified.
+
+During qualification, Git clone/read-only inspection, isolated dependency setup,
+pytest and headless baseline runs are authorized. Record the full commit SHA,
+file/object integrity, Python and dependency versions, test results and comparison
+with committed golden snapshots. Keep source code, sample CSVs and canonical
+goldens unchanged during these baseline runs. Missing dependencies, skipped tests
+and discrepancies must be reported, not hidden by updating expected results.
+
+After qualification for the recorded scope, Linux Git operations, code editing,
+headless experiments and pytest are permitted within that scope. Qualification
+does not certify Windows GUI behavior or untested workflows. Material environment
+or dependency changes require the relevant checks again.
+
+Protected-core rules in section 10, owner diff review, and existing approval rules
+for commits, pushes, merges and releases remain in force. This environment
+permission is not approval for a particular core implementation or publication.
+Canonical golden updates and final GUI acceptance remain Windows responsibilities.
