@@ -79,6 +79,10 @@ class ForwardPlanResult:
     cap_hard_events: List[tuple] = field(default_factory=list)
     cap_soft_violations: List[tuple] = field(default_factory=list)
 
+    # Ready kits deferred BEFORE component consumption. Weekly counts, not
+    # unique orders; unlike sealing, this does not add another CO entry.
+    kitting_capacity_deferred: List[tuple] = field(default_factory=list)
+
     # Kitting List stage 1 (request_kitting_stage1.md §1 owner review):
     # count of lot_ids that could NOT be found in the parent's own
     # backward-planned demand (psi4demand[*][S]) when recording kitting, so
@@ -578,8 +582,11 @@ class ForwardPlanner:
              by its own leaf_in child's ordinary _propagate_to_parent call,
              earlier in this same postorder walk -- unchanged) are added to
              that yard's carried-forward inventory.
-          2. Gate: walk node's OWN demand order (node.psi4demand[w][S], the
-             order Backward fixed for this node) and, for each lot_id
+          2. For normal pull/all-yard assembly, retain uncompleted requests
+             across weeks in original order, exclude opening/produced finished
+             IDs, and apply hard capacity BEFORE any component consumption.
+             Other configurations retain the legacy current-demand gate.
+             For each eligible lot_id
              present in the Lot_ID-identity INTERSECTION of every yard's
              current inventory (not a quantity comparison -- see the
              Request Letter §2.1 for why quantity would let unrelated Lots
@@ -588,8 +595,8 @@ class ForwardPlanner:
              (kitting + _actual_s, using the exact same {child_name:
              arrival_week} shape _propagate_to_parent already used in
              Stage 1), and append it -- ONCE -- to node's own P. A lot_id
-             not in the intersection stays in every yard's inventory this
-             week (mass conserved; becomes next week's carry-forward) and,
+             not in the intersection, or waiting for capacity, retains its
+             available components in their yards this week and,
              being absent from node's P, resolves as node's own CO through
              the ordinary _process_node identity match run at the end of
              this method.
@@ -612,6 +619,12 @@ class ForwardPlanner:
         demand_week_idx = self._get_demand_week_index(node)
         yard_prev_inv: Dict[str, List[str]] = {yard.node_id: [] for yard in yard_children}
 
+        # RequestLetter_Composite_Kitting_Backlog_v1.md: scope the change to
+        # normal assembly with ALL children represented by component yards.
+        recover_kits = node.plan_mode == "pull" and len(yard_children) == len(node.children)
+        pending: Dict[str, None] = {}  # insertion order: older requirements first
+        completed = set(opening_lots)
+
         for w in range(n_weeks):
             wk_label = node.week_labels[w] if node.week_labels else str(w)
 
@@ -633,9 +646,24 @@ class ForwardPlanner:
             for yard in yard_children[1:]:
                 intersection &= set(yard.psi4supply[w][I])
 
+            if recover_kits:
+                for lot_id in list(node.psi4supply[w][CO]) + list(node.psi4demand[w][S]):
+                    if lot_id not in completed:
+                        pending.setdefault(lot_id, None)
+                candidates = list(pending)
+                ch = node.cap_hard(w)
+                remaining = int(ch) if ch > 0 else len(candidates)
+            else:
+                candidates = list(node.psi4demand[w][S])
+                remaining = len(candidates)
+
+            deferred = 0
             if intersection:
-                for lot_id in list(node.psi4demand[w][S]):
+                for lot_id in candidates:
                     if lot_id not in intersection:
+                        continue
+                    if recover_kits and remaining == 0:
+                        deferred += 1
                         continue
                     for yard in yard_children:
                         yard.psi4supply[w][I].remove(lot_id)
@@ -644,6 +672,13 @@ class ForwardPlanner:
                             yard.node_id, {}).setdefault(w, []).append(lot_id)
                     node.psi4supply[w][P].append(lot_id)
                     intersection.discard(lot_id)
+                    if recover_kits:
+                        remaining -= 1
+                        completed.add(lot_id)
+                        pending.pop(lot_id)
+
+            if deferred:
+                result.kitting_capacity_deferred.append((node.node_id, wk_label, deferred))
 
             for yard in yard_children:
                 yard_prev_inv[yard.node_id] = list(yard.psi4supply[w][I])
