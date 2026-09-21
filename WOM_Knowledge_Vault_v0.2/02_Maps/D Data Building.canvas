@@ -1,0 +1,286 @@
+{
+  "nodes": [
+    {
+      "id": "D",
+      "type": "file",
+      "file": "01_Functions/L1/D Data Building.md",
+      "x": 0,
+      "y": 550.0,
+      "width": 340,
+      "height": 150,
+      "color": "2"
+    },
+    {
+      "id": "D1",
+      "type": "file",
+      "file": "01_Functions/L2/D1 モデル構造.md",
+      "x": 410,
+      "y": 110.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "D2",
+      "type": "file",
+      "file": "01_Functions/L2/D2 需要と時間.md",
+      "x": 410,
+      "y": 550.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "D3",
+      "type": "file",
+      "file": "01_Functions/L2/D3 金額とシナリオ.md",
+      "x": 410,
+      "y": 990.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "D11",
+      "type": "file",
+      "file": "01_Functions/L3/D11 供給網と製品の定義.md",
+      "x": 820,
+      "y": 0.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "D11S",
+      "type": "file",
+      "file": "01_Functions/L4/D11S 供給網と製品の定義の設計.md",
+      "x": 1230,
+      "y": 0,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "D12",
+      "type": "file",
+      "file": "01_Functions/L3/D12 モデル入力の読込と検査.md",
+      "x": 820,
+      "y": 220.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "D12S",
+      "type": "file",
+      "file": "01_Functions/L4/D12S モデル入力の読込と検査の設計.md",
+      "x": 1230,
+      "y": 220,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "D21",
+      "type": "file",
+      "file": "01_Functions/L3/D21 週次需要とロットの生成.md",
+      "x": 820,
+      "y": 440.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "D21S",
+      "type": "file",
+      "file": "01_Functions/L4/D21S 週次需要とロットの生成の設計.md",
+      "x": 1230,
+      "y": 440,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "D22",
+      "type": "file",
+      "file": "01_Functions/L3/D22 能力とカレンダーの定義.md",
+      "x": 820,
+      "y": 660.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "D22S",
+      "type": "file",
+      "file": "01_Functions/L4/D22S 能力とカレンダーの定義の設計.md",
+      "x": 1230,
+      "y": 660,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "D31",
+      "type": "file",
+      "file": "01_Functions/L3/D31 Cost Masterと価格前提の設定.md",
+      "x": 820,
+      "y": 880.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "D31S",
+      "type": "file",
+      "file": "01_Functions/L4/D31S Cost Masterと価格前提の設定の設計.md",
+      "x": 1230,
+      "y": 880,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "D32",
+      "type": "file",
+      "file": "01_Functions/L3/D32 比較シナリオの設定.md",
+      "x": 820,
+      "y": 1100.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "D32S",
+      "type": "file",
+      "file": "01_Functions/L4/D32S 比較シナリオの設定の設計.md",
+      "x": 1230,
+      "y": 1100,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "D",
+      "fromSide": "right",
+      "toNode": "D1",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e1",
+      "fromNode": "D",
+      "fromSide": "right",
+      "toNode": "D2",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e2",
+      "fromNode": "D",
+      "fromSide": "right",
+      "toNode": "D3",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e3",
+      "fromNode": "D1",
+      "fromSide": "right",
+      "toNode": "D11",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e4",
+      "fromNode": "D11",
+      "fromSide": "right",
+      "toNode": "D11S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e5",
+      "fromNode": "D1",
+      "fromSide": "right",
+      "toNode": "D12",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e6",
+      "fromNode": "D12",
+      "fromSide": "right",
+      "toNode": "D12S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e7",
+      "fromNode": "D2",
+      "fromSide": "right",
+      "toNode": "D21",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e8",
+      "fromNode": "D21",
+      "fromSide": "right",
+      "toNode": "D21S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e9",
+      "fromNode": "D2",
+      "fromSide": "right",
+      "toNode": "D22",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e10",
+      "fromNode": "D22",
+      "fromSide": "right",
+      "toNode": "D22S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e11",
+      "fromNode": "D3",
+      "fromSide": "right",
+      "toNode": "D31",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e12",
+      "fromNode": "D31",
+      "fromSide": "right",
+      "toNode": "D31S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e13",
+      "fromNode": "D3",
+      "fromSide": "right",
+      "toNode": "D32",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e14",
+      "fromNode": "D32",
+      "fromSide": "right",
+      "toNode": "D32S",
+      "toSide": "left",
+      "label": "構成"
+    }
+  ]
+}

@@ -1,0 +1,286 @@
+{
+  "nodes": [
+    {
+      "id": "A",
+      "type": "file",
+      "file": "01_Functions/L1/A Optimization on Demand Allocation.md",
+      "x": 0,
+      "y": 550.0,
+      "width": 340,
+      "height": 150,
+      "color": "2"
+    },
+    {
+      "id": "A1",
+      "type": "file",
+      "file": "01_Functions/L2/A1 利益構造の定義.md",
+      "x": 410,
+      "y": 110.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "A2",
+      "type": "file",
+      "file": "01_Functions/L2/A2 配分候補の探索.md",
+      "x": 410,
+      "y": 550.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "A3",
+      "type": "file",
+      "file": "01_Functions/L2/A3 採用案と計画連携.md",
+      "x": 410,
+      "y": 990.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "A11",
+      "type": "file",
+      "file": "01_Functions/L3/A11 市場別の利益構造の計算.md",
+      "x": 820,
+      "y": 0.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "A11S",
+      "type": "file",
+      "file": "01_Functions/L4/A11S 市場別の利益構造の計算の設計.md",
+      "x": 1230,
+      "y": 0,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "A12",
+      "type": "file",
+      "file": "01_Functions/L3/A12 需要上限と関税閾値の反映.md",
+      "x": 820,
+      "y": 220.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "A12S",
+      "type": "file",
+      "file": "01_Functions/L4/A12S 需要上限と関税閾値の反映の設計.md",
+      "x": 1230,
+      "y": 220,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "A21",
+      "type": "file",
+      "file": "01_Functions/L3/A21 配分候補とMerit Orderの比較.md",
+      "x": 820,
+      "y": 440.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "A21S",
+      "type": "file",
+      "file": "01_Functions/L4/A21S 配分候補とMerit Orderの比較の設計.md",
+      "x": 1230,
+      "y": 440,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "A22",
+      "type": "file",
+      "file": "01_Functions/L3/A22 多市場の階層配分探索.md",
+      "x": 820,
+      "y": 660.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "A22S",
+      "type": "file",
+      "file": "01_Functions/L4/A22S 多市場の階層配分探索の設計.md",
+      "x": 1230,
+      "y": 660,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "A31",
+      "type": "file",
+      "file": "01_Functions/L3/A31 配分の感度と頑健性の分析.md",
+      "x": 820,
+      "y": 880.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "A31S",
+      "type": "file",
+      "file": "01_Functions/L4/A31S 配分の感度と頑健性の分析の設計.md",
+      "x": 1230,
+      "y": 880,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "A32",
+      "type": "file",
+      "file": "01_Functions/L3/A32 採用配分の週次需要への変換.md",
+      "x": 820,
+      "y": 1100.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "A32S",
+      "type": "file",
+      "file": "01_Functions/L4/A32S 採用配分の週次需要への変換の設計.md",
+      "x": 1230,
+      "y": 1100,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "A",
+      "fromSide": "right",
+      "toNode": "A1",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e1",
+      "fromNode": "A",
+      "fromSide": "right",
+      "toNode": "A2",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e2",
+      "fromNode": "A",
+      "fromSide": "right",
+      "toNode": "A3",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e3",
+      "fromNode": "A1",
+      "fromSide": "right",
+      "toNode": "A11",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e4",
+      "fromNode": "A11",
+      "fromSide": "right",
+      "toNode": "A11S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e5",
+      "fromNode": "A1",
+      "fromSide": "right",
+      "toNode": "A12",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e6",
+      "fromNode": "A12",
+      "fromSide": "right",
+      "toNode": "A12S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e7",
+      "fromNode": "A2",
+      "fromSide": "right",
+      "toNode": "A21",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e8",
+      "fromNode": "A21",
+      "fromSide": "right",
+      "toNode": "A21S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e9",
+      "fromNode": "A2",
+      "fromSide": "right",
+      "toNode": "A22",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e10",
+      "fromNode": "A22",
+      "fromSide": "right",
+      "toNode": "A22S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e11",
+      "fromNode": "A3",
+      "fromSide": "right",
+      "toNode": "A31",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e12",
+      "fromNode": "A31",
+      "fromSide": "right",
+      "toNode": "A31S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e13",
+      "fromNode": "A3",
+      "fromSide": "right",
+      "toNode": "A32",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e14",
+      "fromNode": "A32",
+      "fromSide": "right",
+      "toNode": "A32S",
+      "toSide": "left",
+      "label": "構成"
+    }
+  ]
+}

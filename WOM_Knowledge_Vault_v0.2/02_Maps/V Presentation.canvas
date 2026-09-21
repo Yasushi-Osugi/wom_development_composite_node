@@ -1,0 +1,286 @@
+{
+  "nodes": [
+    {
+      "id": "V",
+      "type": "file",
+      "file": "01_Functions/L1/V Presentation.md",
+      "x": 0,
+      "y": 550.0,
+      "width": 340,
+      "height": 150,
+      "color": "2"
+    },
+    {
+      "id": "V1",
+      "type": "file",
+      "file": "01_Functions/L2/V1 ネットワークと時間.md",
+      "x": 410,
+      "y": 110.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "V2",
+      "type": "file",
+      "file": "01_Functions/L2/V2 選択肢の比較.md",
+      "x": 410,
+      "y": 550.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "V3",
+      "type": "file",
+      "file": "01_Functions/L2/V3 追跡と共有.md",
+      "x": 410,
+      "y": 990.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "V11",
+      "type": "file",
+      "file": "01_Functions/L3/V11 供給網と地理的構造の表示.md",
+      "x": 820,
+      "y": 0.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "V11S",
+      "type": "file",
+      "file": "01_Functions/L4/V11S 供給網と地理的構造の表示の設計.md",
+      "x": 1230,
+      "y": 0,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "V12",
+      "type": "file",
+      "file": "01_Functions/L3/V12 週次PSIと能力の表示.md",
+      "x": 820,
+      "y": 220.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "V12S",
+      "type": "file",
+      "file": "01_Functions/L4/V12S 週次PSIと能力の表示の設計.md",
+      "x": 1230,
+      "y": 220,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "V21",
+      "type": "file",
+      "file": "01_Functions/L3/V21 配分利益地形とRegimeの表示.md",
+      "x": 820,
+      "y": 440.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "V21S",
+      "type": "file",
+      "file": "01_Functions/L4/V21S 配分利益地形とRegimeの表示の設計.md",
+      "x": 1230,
+      "y": 440,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "V22",
+      "type": "file",
+      "file": "01_Functions/L3/V22 調達の多目的比較とPareto表示.md",
+      "x": 820,
+      "y": 660.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "V22S",
+      "type": "file",
+      "file": "01_Functions/L4/V22S 調達の多目的比較とPareto表示の設計.md",
+      "x": 1230,
+      "y": 660,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "V31",
+      "type": "file",
+      "file": "01_Functions/L3/V31 Lotとイベントの追跡表示.md",
+      "x": 820,
+      "y": 880.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "V31S",
+      "type": "file",
+      "file": "01_Functions/L4/V31S Lotとイベントの追跡表示の設計.md",
+      "x": 1230,
+      "y": 880,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "V32",
+      "type": "file",
+      "file": "01_Functions/L3/V32 結果帳票と共有出力.md",
+      "x": 820,
+      "y": 1100.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "V32S",
+      "type": "file",
+      "file": "01_Functions/L4/V32S 結果帳票と共有出力の設計.md",
+      "x": 1230,
+      "y": 1100,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "V",
+      "fromSide": "right",
+      "toNode": "V1",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e1",
+      "fromNode": "V",
+      "fromSide": "right",
+      "toNode": "V2",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e2",
+      "fromNode": "V",
+      "fromSide": "right",
+      "toNode": "V3",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e3",
+      "fromNode": "V1",
+      "fromSide": "right",
+      "toNode": "V11",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e4",
+      "fromNode": "V11",
+      "fromSide": "right",
+      "toNode": "V11S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e5",
+      "fromNode": "V1",
+      "fromSide": "right",
+      "toNode": "V12",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e6",
+      "fromNode": "V12",
+      "fromSide": "right",
+      "toNode": "V12S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e7",
+      "fromNode": "V2",
+      "fromSide": "right",
+      "toNode": "V21",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e8",
+      "fromNode": "V21",
+      "fromSide": "right",
+      "toNode": "V21S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e9",
+      "fromNode": "V2",
+      "fromSide": "right",
+      "toNode": "V22",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e10",
+      "fromNode": "V22",
+      "fromSide": "right",
+      "toNode": "V22S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e11",
+      "fromNode": "V3",
+      "fromSide": "right",
+      "toNode": "V31",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e12",
+      "fromNode": "V31",
+      "fromSide": "right",
+      "toNode": "V31S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e13",
+      "fromNode": "V3",
+      "fromSide": "right",
+      "toNode": "V32",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e14",
+      "fromNode": "V32",
+      "fromSide": "right",
+      "toNode": "V32S",
+      "toSide": "left",
+      "label": "構成"
+    }
+  ]
+}

@@ -1,0 +1,286 @@
+{
+  "nodes": [
+    {
+      "id": "M",
+      "type": "file",
+      "file": "01_Functions/L1/M Management Cockpit.md",
+      "x": 0,
+      "y": 550.0,
+      "width": 340,
+      "height": 150,
+      "color": "2"
+    },
+    {
+      "id": "M1",
+      "type": "file",
+      "file": "01_Functions/L2/M1 前提と目的.md",
+      "x": 410,
+      "y": 110.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "M2",
+      "type": "file",
+      "file": "01_Functions/L2/M2 配分判断と実行.md",
+      "x": 410,
+      "y": 550.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "M3",
+      "type": "file",
+      "file": "01_Functions/L2/M3 振り返りと統制.md",
+      "x": 410,
+      "y": 990.0,
+      "width": 340,
+      "height": 150,
+      "color": "3"
+    },
+    {
+      "id": "M11",
+      "type": "file",
+      "file": "01_Functions/L3/M11 経営課題と比較視点の整理.md",
+      "x": 820,
+      "y": 0.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "M11S",
+      "type": "file",
+      "file": "01_Functions/L4/M11S 経営課題と比較視点の整理の設計.md",
+      "x": 1230,
+      "y": 0,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "M12",
+      "type": "file",
+      "file": "01_Functions/L3/M12 実行前提と状態の把握.md",
+      "x": 820,
+      "y": 220.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "M12S",
+      "type": "file",
+      "file": "01_Functions/L4/M12S 実行前提と状態の把握の設計.md",
+      "x": 1230,
+      "y": 220,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "M21",
+      "type": "file",
+      "file": "01_Functions/L3/M21 配分案の比較と採用判断.md",
+      "x": 820,
+      "y": 440.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "M21S",
+      "type": "file",
+      "file": "01_Functions/L4/M21S 配分案の比較と採用判断の設計.md",
+      "x": 1230,
+      "y": 440,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "M22",
+      "type": "file",
+      "file": "01_Functions/L3/M22 Planning実行と結果確認.md",
+      "x": 820,
+      "y": 660.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "M22S",
+      "type": "file",
+      "file": "01_Functions/L4/M22S Planning実行と結果確認の設計.md",
+      "x": 1230,
+      "y": 660,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "M31",
+      "type": "file",
+      "file": "01_Functions/L3/M31 経営差異の説明と次の判断.md",
+      "x": 820,
+      "y": 880.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "M31S",
+      "type": "file",
+      "file": "01_Functions/L4/M31S 経営差異の説明と次の判断の設計.md",
+      "x": 1230,
+      "y": 880,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    },
+    {
+      "id": "M32",
+      "type": "file",
+      "file": "01_Functions/L3/M32 判断記録と開発ガードレール.md",
+      "x": 820,
+      "y": 1100.0,
+      "width": 340,
+      "height": 150,
+      "color": "4"
+    },
+    {
+      "id": "M32S",
+      "type": "file",
+      "file": "01_Functions/L4/M32S 判断記録と開発ガードレールの設計.md",
+      "x": 1230,
+      "y": 1100,
+      "width": 340,
+      "height": 150,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "fromNode": "M",
+      "fromSide": "right",
+      "toNode": "M1",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e1",
+      "fromNode": "M",
+      "fromSide": "right",
+      "toNode": "M2",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e2",
+      "fromNode": "M",
+      "fromSide": "right",
+      "toNode": "M3",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e3",
+      "fromNode": "M1",
+      "fromSide": "right",
+      "toNode": "M11",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e4",
+      "fromNode": "M11",
+      "fromSide": "right",
+      "toNode": "M11S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e5",
+      "fromNode": "M1",
+      "fromSide": "right",
+      "toNode": "M12",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e6",
+      "fromNode": "M12",
+      "fromSide": "right",
+      "toNode": "M12S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e7",
+      "fromNode": "M2",
+      "fromSide": "right",
+      "toNode": "M21",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e8",
+      "fromNode": "M21",
+      "fromSide": "right",
+      "toNode": "M21S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e9",
+      "fromNode": "M2",
+      "fromSide": "right",
+      "toNode": "M22",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e10",
+      "fromNode": "M22",
+      "fromSide": "right",
+      "toNode": "M22S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e11",
+      "fromNode": "M3",
+      "fromSide": "right",
+      "toNode": "M31",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e12",
+      "fromNode": "M31",
+      "fromSide": "right",
+      "toNode": "M31S",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e13",
+      "fromNode": "M3",
+      "fromSide": "right",
+      "toNode": "M32",
+      "toSide": "left",
+      "label": "構成"
+    },
+    {
+      "id": "e14",
+      "fromNode": "M32",
+      "fromSide": "right",
+      "toNode": "M32S",
+      "toSide": "left",
+      "label": "構成"
+    }
+  ]
+}

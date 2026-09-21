@@ -1,0 +1,406 @@
+{
+  "stats": {
+    "functional_notes": 97,
+    "levels": {
+      "0": 1,
+      "1": 6,
+      "2": 18,
+      "3": 36,
+      "4": 36
+    },
+    "hierarchy_edges": 96,
+    "articles": 12,
+    "canvases": 7,
+    "unique_source_paths": 77,
+    "broken_wikilinks": 0,
+    "source_sha": "7d6c7d734ebdcb7b213bab3116ca59d3d4935f55",
+    "observed_head": "85a3cbe42b49b41c5c33cd4080c3695e37784372"
+  },
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "0fab98e63867ad63634018c810051dc8685ab1c2af1b646989c23235e628e313",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/AGENTS.md"
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "8d1e5393980cda00010f1cd29e36d41d48c6bb1488fdbacf529c798bff55b20a",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/CLAUDE.md"
+    },
+    {
+      "path": "docs/architecture/planning_engine.md",
+      "sha256": "80db2dfce3126d6fb5628bf21079646fd5e3587b7612a71dd96a32a27651d6f4",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/architecture/planning_engine.md"
+    },
+    {
+      "path": "docs/architecture/runtime_entrypoints.md",
+      "sha256": "9daad96a85f5ac5fffbcaf137f91940bd04890392c8893114c4782f42941a16a",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/architecture/runtime_entrypoints.md"
+    },
+    {
+      "path": "docs/design/demand_anchored_lot.md",
+      "sha256": "24edd2f163f9792b74dd79b6967b033c889e939d0c810a1ff878456a85f60998",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/design/demand_anchored_lot.md"
+    },
+    {
+      "path": "docs/design/drafts/WOM_Composite_Node_Design_Draft_v0.1.md",
+      "sha256": "22c0f4a7d0fe91b70c298aea9c5382d30768b312ea17c2277b6cda06d2e06c94",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/design/drafts/WOM_Composite_Node_Design_Draft_v0.1.md"
+    },
+    {
+      "path": "docs/design/drafts/WOM_Composite_Node_Independent_Review_bc470b2.md",
+      "sha256": "6b464485522b789bd37de47f547f2297f7385dbc52fa7c62ea9a323eddd15853",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/design/drafts/WOM_Composite_Node_Independent_Review_bc470b2.md"
+    },
+    {
+      "path": "docs/design/holiday_calendar_and_capacity_semantics.md",
+      "sha256": "c670c28caa05c1bf01e7ccee68ae6f34ce3fdb70548cab1a06cd2871d22e21d1",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/design/holiday_calendar_and_capacity_semantics.md"
+    },
+    {
+      "path": "docs/design/inbound_safety_stock.md",
+      "sha256": "bff9d39dbc0e79249b90fa394bbef0655a7747909042b7087585f695ca9c23a9",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/design/inbound_safety_stock.md"
+    },
+    {
+      "path": "docs/design/lot_id_traceability_and_coverage_views.md",
+      "sha256": "f973440c2ef7692820e435395fc967c377b4813b396d813e2922d1d69d58c20d",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/design/lot_id_traceability_and_coverage_views.md"
+    },
+    {
+      "path": "docs/design/wom_model_typology.md",
+      "sha256": "39370d3e562a19aa1ffb080bcc199de510746172cdd392cad06167c812151039",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/design/wom_model_typology.md"
+    },
+    {
+      "path": "docs/development/composite_baseline_measurement_2026-09-20.md",
+      "sha256": "2f4f5ca1043084fe0c3bbfd500c1d461a92ca6b8bd06988450a2215ebb99ad1a",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/development/composite_baseline_measurement_2026-09-20.md"
+    },
+    {
+      "path": "docs/development/composite_kitting_implementation_2026-09-20.md",
+      "sha256": "90c0ec86bf2d852c3c2f990b363d2857aa3570a6c25fc58512af69bbc8b9e660",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/docs/development/composite_kitting_implementation_2026-09-20.md"
+    },
+    {
+      "path": "requests/Phase3_DesignMD_Visualization.md",
+      "sha256": "b093796aca09eb637a826d328101b76e80e6a93a9cefb59ed9269a05b6e5b882",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase3_DesignMD_Visualization.md"
+    },
+    {
+      "path": "requests/Phase4_DesignMD_AllocationMeritRegime.md",
+      "sha256": "2f987bee76f58e229728362cb2a71b8815a3dca11365560f8edaea82b6341e12",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase4_DesignMD_AllocationMeritRegime.md"
+    },
+    {
+      "path": "requests/Phase5_DesignMD_NonConcaveTariff.md",
+      "sha256": "3bc26680e84f3e08d38188f3375c55f4a9abb1d3cadf879ed9b230f795d8f3ad",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase5_DesignMD_NonConcaveTariff.md"
+    },
+    {
+      "path": "requests/Phase6_DesignMD_NMarketHierarchy.md",
+      "sha256": "2dc7dcad8a541470bcf7bffbb48bdbebb4859685e0c89f3f152cc82f8b251290",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase6_DesignMD_NMarketHierarchy.md"
+    },
+    {
+      "path": "requests/Phase7_RequestLetter_to_CodeKun.md",
+      "sha256": "2d6cba8d4a630f4022c343d22f23d71acffe5adb9f685a6b0bb09c46394bfe18",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase7_RequestLetter_to_CodeKun.md"
+    },
+    {
+      "path": "requests/Phase7a_Addendum_to_CodeKun.md",
+      "sha256": "d12073ba4447fa22bfd16c0df2e866e3afbcc4a21bdc3d96f605f0b6005ffbcf",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase7a_Addendum_to_CodeKun.md"
+    },
+    {
+      "path": "requests/Phase8-3c-4_RequestLetter_ThroughputSeries_to_CodeKun.md",
+      "sha256": "aad9e9ea7912af2a8c35d31bb27d47ff0019e0e759aa462c597c56dbb644a141",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase8-3c-4_RequestLetter_ThroughputSeries_to_CodeKun.md"
+    },
+    {
+      "path": "requests/Phase8_DesignMD_CockpitGUI.md",
+      "sha256": "5739721e7e8fccb4023caf12762e92dd7389129ca4d69646cdd1dbdd176359a3",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase8_DesignMD_CockpitGUI.md"
+    },
+    {
+      "path": "tests/test_allocation_material_invariant.py",
+      "sha256": "77e3838d61f756e424e2d1ae0ac48cd6c370ddcac5b631ab05c6703b2e43e912",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/tests/test_allocation_material_invariant.py"
+    },
+    {
+      "path": "tests/test_composite_kitting_recovery.py",
+      "sha256": "d9187bdbd235f2ed4e5542ecca700d457ba0ca6d6fb2d8b35216b014af6700c6",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/tests/test_composite_kitting_recovery.py"
+    },
+    {
+      "path": "tests/test_planning_state.py",
+      "sha256": "4725e109385f39abf6f99e67dcd9b4b34b8419609afe98f97faf862e00d9d011",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/tests/test_planning_state.py"
+    },
+    {
+      "path": "tools/probe_composite_baseline.py",
+      "sha256": "1f98d7f0468321ac4f37e93eeee0ada794496caa5aeec11615c83d7ac201e92d",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/tools/probe_composite_baseline.py"
+    },
+    {
+      "path": "tools/run_headless_from_folder.py",
+      "sha256": "00c1347da37686bc2a3d54f4f9132c0abe8ec6cc4ebda975cd3c3b71f74781dc",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/tools/run_headless_from_folder.py"
+    },
+    {
+      "path": "tools/run_planning_loop.py",
+      "sha256": "58285605142e501223aa974c874a5799955788b1f381c94c30f1b2c388347c08",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/tools/run_planning_loop.py"
+    },
+    {
+      "path": "wom/allocation/analytics.py",
+      "sha256": "a5647ae6c2875adce88e1c0580dfc013dda51b240627400a671f417e2dae85fe",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/allocation/analytics.py"
+    },
+    {
+      "path": "wom/allocation/cost_block.py",
+      "sha256": "4328f314efd34e23c4d56528a7c68e8ff8d0cab69aaf5e237185c9d2cd7bb979",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/allocation/cost_block.py"
+    },
+    {
+      "path": "wom/allocation/grid.py",
+      "sha256": "54a3f0ac51f8e68df8b341138a4b4cb4902ca4a9ed09089aa3c6e5bcfe04ddb3",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/allocation/grid.py"
+    },
+    {
+      "path": "wom/allocation/handoff.py",
+      "sha256": "48d727192fd30dda4a0c4c70c7543b13e4bba55cdc879f0f534725300293e3b1",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/allocation/handoff.py"
+    },
+    {
+      "path": "wom/allocation/hierarchical_simplex.py",
+      "sha256": "7f35ed7bfc766d05b26f61ebd99e76f5d7522f3730ed670374b4d5fa4de47114",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/allocation/hierarchical_simplex.py"
+    },
+    {
+      "path": "wom/allocation/merit_order.py",
+      "sha256": "344ed9f815ac23528c107112f7758a636d915008fa5fdeb281f2c811bc85d294",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/allocation/merit_order.py"
+    },
+    {
+      "path": "wom/allocation/regime_map.py",
+      "sha256": "48aa38160e003264568dc1e14ada4cf8fdd2e526a98a0b22d8f6a3865ac03758",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/allocation/regime_map.py"
+    },
+    {
+      "path": "wom/allocation/transmission.py",
+      "sha256": "e5b41558a9c300b398ed2059806c2ca968680e06ba2bb3e34b16779b9dacf508",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/allocation/transmission.py"
+    },
+    {
+      "path": "wom/cockpit/cockpit_app.py",
+      "sha256": "2ab4d113c92f7387cb6f50bd175cfc7e4eba54342cedd8b0533cf862f7222502",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/cockpit/cockpit_app.py"
+    },
+    {
+      "path": "wom/cockpit/frame.py",
+      "sha256": "5d4a7ede6b6fd9869d89d9858c86db94c3fb6ede5e2b8da5648bd32ae85b4f7e",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/cockpit/frame.py"
+    },
+    {
+      "path": "wom/cockpit/plateau_band.py",
+      "sha256": "4ababd99f3fbfbb3a68a96d3da9e7e179fe29f7fcfd3b9ff393ffef76d342886",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/cockpit/plateau_band.py"
+    },
+    {
+      "path": "wom/cockpit/s1_allocate.py",
+      "sha256": "6b8c0812bc9cca8999cca67ccc61fd4445588e1b3f69368f98d95feee18f6a6e",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/cockpit/s1_allocate.py"
+    },
+    {
+      "path": "wom/cockpit/s1_view_model.py",
+      "sha256": "0eddc7abf3f79055855e89f74108c8aa6081d7af65fc6de8ed1d8ff364b7ad73",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/cockpit/s1_view_model.py"
+    },
+    {
+      "path": "wom/cockpit/s3_run.py",
+      "sha256": "2b326b63ca4c596ee970aebd328b826e0d1c3cb5a0d006fc4014a485e02c0ff0",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/cockpit/s3_run.py"
+    },
+    {
+      "path": "wom/cockpit/s3_view_model.py",
+      "sha256": "51f0aa6e0353b3a533ac4d5ef5809011697a9db31644745f5e6a71711a16644c",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/cockpit/s3_view_model.py"
+    },
+    {
+      "path": "wom/cockpit/state_header.py",
+      "sha256": "b0b16f714e621723fc657259cae84c0a9923d2d2dd4ad6bf1a8e6624c52c1cc0",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/cockpit/state_header.py"
+    },
+    {
+      "path": "wom/data/loader.py",
+      "sha256": "69df7e096af3430d3581357a8ae3e1a0d29dc315df1845f460b37f6ba78fd249",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/data/loader.py"
+    },
+    {
+      "path": "wom/data/schema.py",
+      "sha256": "a625412ddbf96ce0326e262787861968fa64d23db8aa04074efb4d6a2fc33612",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/data/schema.py"
+    },
+    {
+      "path": "wom/engine/backward_planner.py",
+      "sha256": "fc35852a33bab65586705089c730c230f76caeab7025b718884ad667b7d0ada5",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/backward_planner.py"
+    },
+    {
+      "path": "wom/engine/capacity.py",
+      "sha256": "ef6263b09bb0543043207b2b6e85cc3648c266ee06bdcb9badcfdb525eda7e30",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/capacity.py"
+    },
+    {
+      "path": "wom/engine/capacity_sealer.py",
+      "sha256": "c0b2fe710b8862550793be5b7c5470c4ca8f6e9d2ad561ff3d707f96a8562929",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/capacity_sealer.py"
+    },
+    {
+      "path": "wom/engine/event_timeline.py",
+      "sha256": "043f62732c0f0d5eefcc96918917636ace1d3c77d3644db5edbee796c670c53a",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/event_timeline.py"
+    },
+    {
+      "path": "wom/engine/forward_planner.py",
+      "sha256": "32c33435a06e8b01bff7558deec4849d20b32ff4bf36c1f12093cf4abc49c983",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/forward_planner.py"
+    },
+    {
+      "path": "wom/engine/hammock_layout.py",
+      "sha256": "ddb33fc3ecc8c442360d3de6ca40ed4b612ddbb4a57c05559a481f3b448cfd3a",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/hammock_layout.py"
+    },
+    {
+      "path": "wom/engine/holiday_calendar_plugin.py",
+      "sha256": "78789756770aeaf4e4a4cc6eed46dcc5f80bf49e9aca13ff30dc50ab0eb4f8c5",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/holiday_calendar_plugin.py"
+    },
+    {
+      "path": "wom/engine/management.py",
+      "sha256": "c3c47218ef0fd24e1f368c79c485c31c3c68c040af44ac578f3606b968c2edcd",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/management.py"
+    },
+    {
+      "path": "wom/engine/money.py",
+      "sha256": "398aaf19f714ba284b8ba6c9b7c59407ccaeb34babe29bcf7f4033709f2505f5",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/money.py"
+    },
+    {
+      "path": "wom/engine/plan_copy.py",
+      "sha256": "4feb2c56c20b99b540d84d823073378c6aa6a5a766606b108a8b3b6d042d015f",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/plan_copy.py"
+    },
+    {
+      "path": "wom/engine/planning_debugger.py",
+      "sha256": "93bbc600e61210856648c440ec08fac43ff944cded33abe25316cf6d45a02191",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/planning_debugger.py"
+    },
+    {
+      "path": "wom/engine/push_pull.py",
+      "sha256": "18a1d4706063f801e609bc4d13a5a3ac6750b3636554472948302c1fe2de0f03",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/push_pull.py"
+    },
+    {
+      "path": "wom/engine/sc_tree_builder.py",
+      "sha256": "8d8855a1e670b26ec47e6f38b55c2bc90130d7c1924c43714e42f050df644fe1",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/sc_tree_builder.py"
+    },
+    {
+      "path": "wom/engine/scenario.py",
+      "sha256": "0ff37ad5c549c53d7ff575383f4df9d31ffcad6bd4c8956e5fc183748c82b986",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/scenario.py"
+    },
+    {
+      "path": "wom/engine/strategic_kpi.py",
+      "sha256": "5048c484cf07a87db8d54e9d112fd367911c4dddc8a54624bbeb33a9bdea807e",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/engine/strategic_kpi.py"
+    },
+    {
+      "path": "wom/gui/app.py",
+      "sha256": "74014d2e65f85a18c225c1c4bbe93fe0392410b3c9f71a54bfe09dd5aaaf474e",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/gui/app.py"
+    },
+    {
+      "path": "wom/model/lot_generator.py",
+      "sha256": "f2f59f81dac662d6f967e7195b2db190d71abe2c4c0e1807c96ae32eb1254203",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/model/lot_generator.py"
+    },
+    {
+      "path": "wom/model/plan_node.py",
+      "sha256": "ba481fbfab145f37efce40389f9bd0d2c69dc642232f65f0775c6eb08a94e623",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/model/plan_node.py"
+    },
+    {
+      "path": "wom/model/sc_tree.py",
+      "sha256": "fac095b042d81d7ce86d9f1f3a769067092eb0c8c0b6127fe58192cfb1e254cc",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/model/sc_tree.py"
+    },
+    {
+      "path": "wom/planning_state/__init__.py",
+      "sha256": "a91ff391590dd58020603c7306a0da3d67cfac52cb37f7f475c6458e11ffc86e",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/planning_state/__init__.py"
+    },
+    {
+      "path": "wom/ppc/ppc_backward.py",
+      "sha256": "4aa3a6c656039cda13a16225ae798d44b99d2070324ed6633bf86d699de03e52",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/ppc/ppc_backward.py"
+    },
+    {
+      "path": "wom/ppc/ppc_export.py",
+      "sha256": "e08d374738adebf0cb72f79f0576d85f4a4b8a3e65eee615bbf98eb06b3d9e56",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/ppc/ppc_export.py"
+    },
+    {
+      "path": "wom/ppc/ppc_forward.py",
+      "sha256": "f1162a2e07bb3e828f0c725fefefe946d0121e10e4a866ef62d8ee1d25b87f46",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/ppc/ppc_forward.py"
+    },
+    {
+      "path": "wom/ppc/ppc_fx.py",
+      "sha256": "7a6e027771fbebb172720ac90f7ee36e5a5024f6b071405f15e819710c63c85e",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/ppc/ppc_fx.py"
+    },
+    {
+      "path": "wom/ppc/ppc_kpi.py",
+      "sha256": "79838c17bac94ae834b62a8bab71429a990fcfd34ab31863d051946d12896d4f",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/ppc/ppc_kpi.py"
+    },
+    {
+      "path": "wom/ppc/ppc_rules.py",
+      "sha256": "e1678154d0525e33cf6e30f4592e8d2e7caeede5869e95f57bf7756abca03323",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/ppc/ppc_rules.py"
+    },
+    {
+      "path": "wom/ppc/ppc_tariff.py",
+      "sha256": "791faba9662ad834560336f2696f84d21b0eaf7765f916181965759a0b6c4d50",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/ppc/ppc_tariff.py"
+    },
+    {
+      "path": "wom/ppc/ppc_transfer.py",
+      "sha256": "dbda03fd7b6f916890bc999a08a365d2ba50cdbcdc3f1442cbd698a765429202",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/ppc/ppc_transfer.py"
+    },
+    {
+      "path": "wom/reports/output.py",
+      "sha256": "c913fa4f8c0a0ab063cfb95715b4cdd450b9d368b68cfa5b1d98ce68f84d6ef2",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/reports/output.py"
+    },
+    {
+      "path": "wom/visualization/merit_order.py",
+      "sha256": "d6ce69606979bbdf2001907eeed8b182defbd217e6cee8c8530c3a5fd6f05bb9",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/visualization/merit_order.py"
+    },
+    {
+      "path": "wom/visualization/pareto_front.py",
+      "sha256": "73f2917118b48b3c4f2bee1f0cc3e3ff8f315b7634e84b652353d3915a648a1c",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/visualization/pareto_front.py"
+    },
+    {
+      "path": "wom/visualization/regime_map.py",
+      "sha256": "bca147b60cc3cf81dcab5a7b42e6d02998dfae897420e4ba9db24ae86eeaf21f",
+      "url": "https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/wom/visualization/regime_map.py"
+    }
+  ]
+}
