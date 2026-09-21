@@ -1,0 +1,2018 @@
+{
+  "public_sha": "426049433a69ddd29d94d7740a1f90665adddca8",
+  "experiment_sha": "7d6c7d734ebdcb7b213bab3116ca59d3d4935f55",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "0fab98e63867ad63634018c810051dc8685ab1c2af1b646989c23235e628e313",
+      "note": "80_Sources/AGENTS.md.md",
+      "classification": []
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "8d1e5393980cda00010f1cd29e36d41d48c6bb1488fdbacf529c798bff55b20a",
+      "note": "80_Sources/CLAUDE.md.md",
+      "classification": []
+    },
+    {
+      "path": "Oil_Global_SC_design_draft.md",
+      "sha256": "095307b3f626e03d0c58311ea9214045778eb39c04a126337297c58572778293",
+      "note": "80_Sources/Oil_Global_SC_design_draft.md.md",
+      "classification": []
+    },
+    {
+      "path": "README.md",
+      "sha256": "93922c269f2827849887890c400e00b472562d93f076ee4f24cbee705cf5b6fd",
+      "note": "80_Sources/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "WOM_BUSINESS_CLAUDE.md",
+      "sha256": "adb076999e1fc84f3a16251cc1c6606dc476ea34fb386f85393b18f563a9bd08",
+      "note": "80_Sources/WOM_BUSINESS_CLAUDE.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/apparel-global-2028-2029/verify/README.md",
+      "sha256": "b3cdfc776d14be66f44c0abbbf9366d75a5ff97f73dde7f27cbbe408b103e9b7",
+      "note": "80_Sources/data/sample/apparel-global-2028-2029/verify/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/apparel-us-2026/exercises/README.md",
+      "sha256": "daf1b69a20a6a8be66c95e5374ad3f0c77c3857f04cfde534adc528fd17cf2a2",
+      "note": "80_Sources/data/sample/apparel-us-2026/exercises/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/apparel-us-2026/exercises/ex1_margin_rate_sensitivity/README.md",
+      "sha256": "93ae711fa4ac7ceb1c6300e9ae1a5ec4a9c66a5067206c3e2cae38ff827c764c",
+      "note": "80_Sources/data/sample/apparel-us-2026/exercises/ex1_margin_rate_sensitivity/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/apparel-us-2026/exercises/ex2_tariff_breakeven_price/README.md",
+      "sha256": "6288ba19c9df930c2df2d30efc7c634e0905184e474d38bfbfafd0f31256bfdf",
+      "note": "80_Sources/data/sample/apparel-us-2026/exercises/ex2_tariff_breakeven_price/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/apparel-us-2026/exercises/ex3_capacity_overlap/README.md",
+      "sha256": "5600046f30d2777638062e157a1a415bfdd7a003047e4d3887468048d7a971bd",
+      "note": "80_Sources/data/sample/apparel-us-2026/exercises/ex3_capacity_overlap/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/apparel-us-2026/exercises/ex4_shared_store_design/README.md",
+      "sha256": "aefb7a2c505e5d3f717cae0617e9df2e19fa06dd5b66a7d6b4dda85df1d832d4",
+      "note": "80_Sources/data/sample/apparel-us-2026/exercises/ex4_shared_store_design/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/soysauce-eu-2027/README.md",
+      "sha256": "40b97fa809e424ae5ea2e6543a50ae3ef1d7b906ff67f392c79bc6221d3eaa59",
+      "note": "80_Sources/data/sample/soysauce-eu-2027/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/soysauce-jpy-2027/README.md",
+      "sha256": "83fd9d1529963376fdf47efad9ea6093ad675d1cfb201eb870d5c125e9ca311e",
+      "note": "80_Sources/data/sample/soysauce-jpy-2027/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/soysauce-jpy-2027-alloc/README.md",
+      "sha256": "9177b8af6339d06925017f01d209a6fa85b2f264ef0e036af052a634e4d8c5f7",
+      "note": "80_Sources/data/sample/soysauce-jpy-2027-alloc/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "data/sample/soysauce-us-2027/README.md",
+      "sha256": "f28b5339d8e31bdf510fa63fb9a94e0c380c633a2cb1abbaf4736aa1fe883b79",
+      "note": "80_Sources/data/sample/soysauce-us-2027/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "4d9557ea43e73cdf8813e312682b68f05120bbd3071b679bac734a5e79903217",
+      "note": "80_Sources/docs/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/architecture/README.md",
+      "sha256": "8a98dd389a645b5e18e0abc9bfcb479cede2d3abb44464cd1dc53547b949ade6",
+      "note": "80_Sources/docs/architecture/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/architecture/planning_engine.md",
+      "sha256": "80db2dfce3126d6fb5628bf21079646fd5e3587b7612a71dd96a32a27651d6f4",
+      "note": "80_Sources/docs/architecture/planning_engine.md.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "docs/architecture/plugin_architecture.md",
+      "sha256": "699c232b1f1678ad0b524dd6f2dda1ccea99b9c700b8e0ac6bfff38edbe38f8a",
+      "note": "80_Sources/docs/architecture/plugin_architecture.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/architecture/ppc_engine.md",
+      "sha256": "1a9af40466fc499ae1afa2e3b154251823c9e8f998cc1b4a538eb16371ccc2db",
+      "note": "80_Sources/docs/architecture/ppc_engine.md.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "docs/architecture/repository_map.md",
+      "sha256": "85f5a18c4c94d79fee3a82acee5593c097bc9d5b539ae2fbd9304abd0a35c0c9",
+      "note": "80_Sources/docs/architecture/repository_map.md.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "docs/architecture/runtime_entrypoints.md",
+      "sha256": "9daad96a85f5ac5fffbcaf137f91940bd04890392c8893114c4782f42941a16a",
+      "note": "80_Sources/docs/architecture/runtime_entrypoints.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/business/wom_market_positioning.md",
+      "sha256": "6a40c76ae3ec400135398374292f89d915f78c7a28b9f4e6ef6a1af9ee04c8a0",
+      "note": "80_Sources/docs/business/wom_market_positioning.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/codex_requests/holiday_explicit_closure_engine_request.md",
+      "sha256": "87e2f0a35468770a1bfe1ed36764f1648f780ea1c4a7411b690a5e3c42238b7f",
+      "note": "80_Sources/docs/codex_requests/holiday_explicit_closure_engine_request.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/codex_requests/planning_warmup_reporting_horizon_request.md",
+      "sha256": "755b66622f623afa12400e6f1d49eb5931d3d8200c98bab9d9191ce3e5fc5390",
+      "note": "80_Sources/docs/codex_requests/planning_warmup_reporting_horizon_request.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/README.md",
+      "sha256": "362760f25007faa54bd506e724bd28af1ec457cc870ca13c318fee13a1707b64",
+      "note": "80_Sources/docs/design/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/ask_global_allocation_spec.md",
+      "sha256": "bc7b7ebf25d17d7779d96ee88bb1f08777d61cba6e35051229df97edb951a8a1",
+      "note": "80_Sources/docs/design/ask_global_allocation_spec.md.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "docs/design/demand_anchored_lot.md",
+      "sha256": "24edd2f163f9792b74dd79b6967b033c889e939d0c810a1ff878456a85f60998",
+      "note": "80_Sources/docs/design/demand_anchored_lot.md.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "docs/design/design_memo_confluence_assembly_autotuning.md",
+      "sha256": "3d82376ad67a47259f153871c7b66af5fdb915022fd11d878c00ff86f326ef5a",
+      "note": "80_Sources/docs/design/design_memo_confluence_assembly_autotuning.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/drafts/GROK-WOM.md",
+      "sha256": "bfb03c20672bcab12e7636f6f1cfdfb3b1e83d039bafaf5fddd79b01dc0e0296",
+      "note": "80_Sources/docs/design/drafts/GROK-WOM.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/drafts/WOM_Composite_Node_Architecture.md",
+      "sha256": "372f910080ccada3222d938682c9fd6a1f96ac0ee95950a2126edec298241204",
+      "note": "80_Sources/docs/design/drafts/WOM_Composite_Node_Architecture.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/drafts/WOM_Composite_Node_Design_Draft_v0.1.md",
+      "sha256": "22c0f4a7d0fe91b70c298aea9c5382d30768b312ea17c2277b6cda06d2e06c94",
+      "note": "80_Sources/docs/design/drafts/WOM_Composite_Node_Design_Draft_v0.1.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/drafts/WOM_Composite_Node_Independent_Review_bc470b2.md",
+      "sha256": "6b464485522b789bd37de47f547f2297f7385dbc52fa7c62ea9a323eddd15853",
+      "note": "80_Sources/docs/design/drafts/WOM_Composite_Node_Independent_Review_bc470b2.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/drafts/WOM_Composite_Node_Session_Record_2026-09-20.md",
+      "sha256": "0a712ff841007c0ce6140abd3e6bb57a243ad9ce79f70abf08c609eab293194f",
+      "note": "80_Sources/docs/design/drafts/WOM_Composite_Node_Session_Record_2026-09-20.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/global_oil_model_three_steps.md",
+      "sha256": "d47c23a6b71a1e5dab1fa33cb844de8039f8f9ee2381da8baeb432fb6f38bd01",
+      "note": "80_Sources/docs/design/global_oil_model_three_steps.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/holiday_calendar_and_capacity_semantics.md",
+      "sha256": "c670c28caa05c1bf01e7ccee68ae6f34ce3fdb70548cab1a06cd2871d22e21d1",
+      "note": "80_Sources/docs/design/holiday_calendar_and_capacity_semantics.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/holiday_calendar_push_lead_time_and_planning_horizon.md",
+      "sha256": "27321785bda4907a5ba16950d00d2c2a48ee81d7ce601502c4665a1698f4cd5a",
+      "note": "80_Sources/docs/design/holiday_calendar_push_lead_time_and_planning_horizon.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/inbound_safety_stock.md",
+      "sha256": "bff9d39dbc0e79249b90fa394bbef0655a7747909042b7087585f695ca9c23a9",
+      "note": "80_Sources/docs/design/inbound_safety_stock.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/kitting_list_assembly.md",
+      "sha256": "c06c6b3f0abf475fc5a8cf414b3a0b44b90816422fd98df03d6a7958e754377a",
+      "note": "80_Sources/docs/design/kitting_list_assembly.md.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "docs/design/lot_id_traceability_and_coverage_views.md",
+      "sha256": "f973440c2ef7692820e435395fc967c377b4813b396d813e2922d1d69d58c20d",
+      "note": "80_Sources/docs/design/lot_id_traceability_and_coverage_views.md.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "docs/design/planning_warmup_and_reporting_horizon.md",
+      "sha256": "a307783c7417c839a78f6eded0a66b379085a1fa40520c763137574c3d1acbc0",
+      "note": "80_Sources/docs/design/planning_warmup_and_reporting_horizon.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/psi_ppc_separation.md",
+      "sha256": "53c811b945e057dec717a723a36552ae158326fba08b94fc0913350a37780602",
+      "note": "80_Sources/docs/design/psi_ppc_separation.md.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "docs/design/push_production_lead_time.md",
+      "sha256": "955b539bc9e46ea3ceee00757f02618f396fd1c81cfa5d437fe843eb0d2fb474",
+      "note": "80_Sources/docs/design/push_production_lead_time.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/scenario_modeling_principles.md",
+      "sha256": "f45a3aafc407bd65f6deae1dbcf80536450eee0306922452a844eea61f67d0ad",
+      "note": "80_Sources/docs/design/scenario_modeling_principles.md.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "docs/design/three_layer_production_allocation.md",
+      "sha256": "1c3a7210fdd9a8196c8a853d9bfea88ffac974f235980495a1abafe56e45daf8",
+      "note": "80_Sources/docs/design/three_layer_production_allocation.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/wom_canonical_concepts.md",
+      "sha256": "96c3ffdfe164418a21c2780ab9bbc0837f7fa9eb8bb33c810f2dd708366a8348",
+      "note": "80_Sources/docs/design/wom_canonical_concepts.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/design/wom_model_typology.md",
+      "sha256": "39370d3e562a19aa1ffb080bcc199de510746172cdd392cad06167c812151039",
+      "note": "80_Sources/docs/design/wom_model_typology.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/README.md",
+      "sha256": "8acdf9c857de4b85411e5fe43fc7ad096818f395cd1e42d5b94ddb9f799211a0",
+      "note": "80_Sources/docs/development/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/ai_vibe_coding_workflow.md",
+      "sha256": "bdc2d2eb10cfb98a152ddb1a978672dc2143426a04c897cebacf282a50f9d0ed",
+      "note": "80_Sources/docs/development/ai_vibe_coding_workflow.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/archive/README_ai_neutral_draft.md",
+      "sha256": "ae0b5e56a465780e6e1e0b08cdea955a9cad9c105d626f4367fa4f4fa91ed629",
+      "note": "80_Sources/docs/development/archive/README_ai_neutral_draft.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/archive/README_before_ai_neutral_entrypoint.md",
+      "sha256": "a7ec385f8981f0f3b5cd66460b8662b719bb63244bf38b8e05a60699b2357679",
+      "note": "80_Sources/docs/development/archive/README_before_ai_neutral_entrypoint.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/composite_baseline_measurement_2026-09-20.md",
+      "sha256": "2f4f5ca1043084fe0c3bbfd500c1d461a92ca6b8bd06988450a2215ebb99ad1a",
+      "note": "80_Sources/docs/development/composite_baseline_measurement_2026-09-20.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/composite_kitting_implementation_2026-09-20.md",
+      "sha256": "90c0ec86bf2d852c3c2f990b363d2857aa3570a6c25fc58512af69bbc8b9e660",
+      "note": "80_Sources/docs/development/composite_kitting_implementation_2026-09-20.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/current_status.md",
+      "sha256": "48bc06b18729e5d900b53d2e27162fcd3235e805cfbd8eccf92684ef1d832cd7",
+      "note": "80_Sources/docs/development/current_status.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/linux_qualification_2026-09-20.md",
+      "sha256": "4e58760758e8cb20cb2cf3e8b92c9a21df29fe06739087da876fd3b971c8de49",
+      "note": "80_Sources/docs/development/linux_qualification_2026-09-20.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/merit_order_code_review_ja.md",
+      "sha256": "6d61346a81121d191067915e3e3c37508875720b67255cdd1f554cd7ad3ad86b",
+      "note": "80_Sources/docs/development/merit_order_code_review_ja.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/open_questions.md",
+      "sha256": "d8d985806d88ca4f7da1ddb3c84c13271947cd8ccc6da5f09861f1a098f0a2de",
+      "note": "80_Sources/docs/development/open_questions.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/v1r1m5_completion_checklist.md",
+      "sha256": "81646e93a65d7bd04cddf875bd4b44479b10f498522568926dcd9c9b5f693c07",
+      "note": "80_Sources/docs/development/v1r1m5_completion_checklist.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/v1r1m5_doc_generation_plan.md",
+      "sha256": "9c3755f6ec79ac14fd76159bc020ecb14634478c6d2c7ceb153d81fe866a16a5",
+      "note": "80_Sources/docs/development/v1r1m5_doc_generation_plan.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/v1r1m5_release_notes.md",
+      "sha256": "7f2ad553f53c4d16117833ce505ceaacba6c2dd8177c25c63f729c52a6727541",
+      "note": "80_Sources/docs/development/v1r1m5_release_notes.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/wom-v1r4m0_phase1_merit_order.md",
+      "sha256": "6f660bb79fbbc9034d55d2c38f53bdda71e7e4edd5d0d2519ae260965903fe79",
+      "note": "80_Sources/docs/development/wom-v1r4m0_phase1_merit_order.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/wom-v1r4m0_phase2_regime_pareto.md",
+      "sha256": "7ada543c73a41de02d4ec3aaa3cf6e38fc22a8a7581d63c064b6035ae63bc70b",
+      "note": "80_Sources/docs/development/wom-v1r4m0_phase2_regime_pareto.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/wom-v1r4m0_phase3_visualization.md",
+      "sha256": "dbac4cead650e896d0f1786894c296a47f6b569952bf0a4b409c2a7b441f006e",
+      "note": "80_Sources/docs/development/wom-v1r4m0_phase3_visualization.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/wom-v1r4m0_phase4_allocation.md",
+      "sha256": "c9ba3fde70679cc09be3a1afa9803984f4f9cc628956f0e462a01176f7ff8b71",
+      "note": "80_Sources/docs/development/wom-v1r4m0_phase4_allocation.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/wom-v1r4m0_phase5_nonconcave.md",
+      "sha256": "d9561b4f8a40b6a11dfb8ebdefff38900a2c82a657b8ba4d7047679b8d5d197f",
+      "note": "80_Sources/docs/development/wom-v1r4m0_phase5_nonconcave.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/development/wom-v1r4m0_profit_landscape_dev_guide.md",
+      "sha256": "22092650a9392b745277c362e78bf3a18f01f97f3a6df0b5c7ce6579858a1adc",
+      "note": "80_Sources/docs/development/wom-v1r4m0_profit_landscape_dev_guide.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/note_rev5_数値訂正パッチ.md",
+      "sha256": "80e4179de1c085f3e7d7609831b8fc4a85affd240636414982496ce2e105da78",
+      "note": "80_Sources/docs/note_rev5_数値訂正パッチ.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/scenarios/README.md",
+      "sha256": "3d0d69d04166c9aff4b23d36fdc25ed7a16f00536afc43ac51166aa5ad582c54",
+      "note": "80_Sources/docs/scenarios/README.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/scenarios/cookie.md",
+      "sha256": "9ce9fda2f1891777473b2a352f09e133655a4d08c0fa81772d091fa78af69005",
+      "note": "80_Sources/docs/scenarios/cookie.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/scenarios/ev.md",
+      "sha256": "80e9b060e074ae116dd1e8d0b3747c8a6b0793e7bb71d10c1d734ceeaae16905",
+      "note": "80_Sources/docs/scenarios/ev.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/scenarios/japanese-rice.md",
+      "sha256": "b319b1de99c8572fe82619381fad931d7580fd9646637bdf7b11b1bbefb3ef7a",
+      "note": "80_Sources/docs/scenarios/japanese-rice.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/scenarios/oil-global-2027.md",
+      "sha256": "1609fd4d03b0a562da8adedc266811de64cec5d2adb9f511ddaf3dcecb991628",
+      "note": "80_Sources/docs/scenarios/oil-global-2027.md.md",
+      "classification": []
+    },
+    {
+      "path": "docs/scenarios/smartphone.md",
+      "sha256": "46a0e2dd2cec1e9762f92f74422c8c7a681c1c0c029b0d204cbcbcdb098e3850",
+      "note": "80_Sources/docs/scenarios/smartphone.md.md",
+      "classification": []
+    },
+    {
+      "path": "main.py",
+      "sha256": "5054034a5ab8f8fec3077dcbda47ff571462970af22d90347d21e6efd370500c",
+      "note": "80_Sources/main.py.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Gate0_RequestLetter_GuiSmokeTests_to_CodeKun.md",
+      "sha256": "74a562268af55762a75cc377beb4355bd72220f013d614ded42879b243d67c36",
+      "note": "80_Sources/requests/Gate0_RequestLetter_GuiSmokeTests_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase1_RequestLetter_to_CodeKun.md",
+      "sha256": "f2e527ffadeb7a626a990c61243bc3a113da44617b65e5d815e90fde36a55f99",
+      "note": "80_Sources/requests/Phase1_RequestLetter_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase2_DesignMD_RegimeMap.md",
+      "sha256": "928737869ee3cdb2916aec6bba9a578ad0a0bdd0e2eb9cf36745b88691d60c25",
+      "note": "80_Sources/requests/Phase2_DesignMD_RegimeMap.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase3_DesignMD_Visualization.md",
+      "sha256": "b093796aca09eb637a826d328101b76e80e6a93a9cefb59ed9269a05b6e5b882",
+      "note": "80_Sources/requests/Phase3_DesignMD_Visualization.md.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "requests/Phase3_RequestLetter_to_CodeKun.md",
+      "sha256": "e266954fef4c9f2f910f5005b48304e92424e4502f46a814543a92d8874610df",
+      "note": "80_Sources/requests/Phase3_RequestLetter_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase4_DesignMD_AllocationMeritRegime.md",
+      "sha256": "2f987bee76f58e229728362cb2a71b8815a3dca11365560f8edaea82b6341e12",
+      "note": "80_Sources/requests/Phase4_DesignMD_AllocationMeritRegime.md.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "requests/Phase5_DesignMD_NonConcaveTariff.md",
+      "sha256": "3bc26680e84f3e08d38188f3375c55f4a9abb1d3cadf879ed9b230f795d8f3ad",
+      "note": "80_Sources/requests/Phase5_DesignMD_NonConcaveTariff.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase6-1_RequestLetter_to_CodeKun.md",
+      "sha256": "1162b3ae6931bc1eddf623f98d772cf39d26e6a930bbd511a4b64b48272d6764",
+      "note": "80_Sources/requests/Phase6-1_RequestLetter_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase6-2_RequestLetter_to_CodeKun.md",
+      "sha256": "6606328a7e2ee84155df35ba5928fe0d60de081f72df9e6cc9b4f669c5d64e3f",
+      "note": "80_Sources/requests/Phase6-2_RequestLetter_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase6-2a_RequestLetter_to_CodeKun.md",
+      "sha256": "ffbaad76e219eab38adb360fc0bcfdf75c7e429d57614a2a10848454cb94c94a",
+      "note": "80_Sources/requests/Phase6-2a_RequestLetter_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase6-3_RequestLetter_to_CodeKun.md",
+      "sha256": "3ca4c86b7a6e0174131026e634bff31feedc233e766d0ef50ee56c444841f306",
+      "note": "80_Sources/requests/Phase6-3_RequestLetter_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase6-3b_Addendum_to_CodeKun.md",
+      "sha256": "8eb208d5e4ea6c523bd970e13cd1d8ea76790a79170400fc574f1576a323c210",
+      "note": "80_Sources/requests/Phase6-3b_Addendum_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase6-3c_Addendum_A9_to_CodeKun.md",
+      "sha256": "870ddf66fb13ef55e89201acbfcaa7ee5ffb12f4969fcc2c6f5e8f0ec9e5b6fd",
+      "note": "80_Sources/requests/Phase6-3c_Addendum_A9_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase6-5_RequestLetter_AllocationLeftovers_to_CodeKun.md",
+      "sha256": "8f46f32788875f2a2859f31de607488765c7b18acd8f8330d32bb4b10c23381e",
+      "note": "80_Sources/requests/Phase6-5_RequestLetter_AllocationLeftovers_to_CodeKun.md.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "requests/Phase6_DesignMD_NMarketHierarchy.md",
+      "sha256": "2dc7dcad8a541470bcf7bffbb48bdbebb4859685e0c89f3f152cc82f8b251290",
+      "note": "80_Sources/requests/Phase6_DesignMD_NMarketHierarchy.md.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "requests/Phase7_RequestLetter_to_CodeKun.md",
+      "sha256": "2d6cba8d4a630f4022c343d22f23d71acffe5adb9f685a6b0bb09c46394bfe18",
+      "note": "80_Sources/requests/Phase7_RequestLetter_to_CodeKun.md.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "requests/Phase7a_Addendum_to_CodeKun.md",
+      "sha256": "d12073ba4447fa22bfd16c0df2e866e3afbcc4a21bdc3d96f605f0b6005ffbcf",
+      "note": "80_Sources/requests/Phase7a_Addendum_to_CodeKun.md.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "requests/Phase8-1_RequestLetter_to_CodeKun.md",
+      "sha256": "4020cfe74e9670eed47b529f42d08c0b16a34177b81ecb486ca168f8bf607dae",
+      "note": "80_Sources/requests/Phase8-1_RequestLetter_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-1b_Addendum_MaterialPrice_to_CodeKun.md",
+      "sha256": "92e76aab0138b714d50b5f2578820723a6a6dfbcaf92f2e76bb95e776e96bdb3",
+      "note": "80_Sources/requests/Phase8-1b_Addendum_MaterialPrice_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-2_RequestLetter_to_CodeKun.md",
+      "sha256": "ab5a2d1d685ffcf014b5fb410c1c2d51c1a51c228bbb585f61bac3d8856b9b2f",
+      "note": "80_Sources/requests/Phase8-2_RequestLetter_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-2a_Addendum_to_CodeKun.md",
+      "sha256": "bf2eac373764ed2d298a48170e53f4491409e201f617fe045162cd0306de7940",
+      "note": "80_Sources/requests/Phase8-2a_Addendum_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-3a_RequestLetter_CockpitFrame_to_CodeKun.md",
+      "sha256": "c4a8a697f0cf3d167c07a8ee22e5f71fffe6df2433b96c7d01641fb814d17dda",
+      "note": "80_Sources/requests/Phase8-3a_RequestLetter_CockpitFrame_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-3b-3_RequestLetter_PanelOrder_to_CodeKun.md",
+      "sha256": "100f95dbd752c7ba099cdcb4f5b5ccabdcd56a1eccc53a60e0e5397dc592d194",
+      "note": "80_Sources/requests/Phase8-3b-3_RequestLetter_PanelOrder_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-3b_Addendum_to_CodeKun.md",
+      "sha256": "59d403eb9ff3501926875cf2c8cee98e7cc26feea8a90ba20e6f0725583a547c",
+      "note": "80_Sources/requests/Phase8-3b_Addendum_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-3b_RequestLetter_HWillbe_to_CodeKun.md",
+      "sha256": "307b824059600bed1f345e6d40acb16a89feeb018ed84898dc4b45e2739c90de",
+      "note": "80_Sources/requests/Phase8-3b_RequestLetter_HWillbe_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-3c-2_RequestLetter_CapHardSealing_to_CodeKun.md",
+      "sha256": "b5e5ba5e5f32877374450bc4fbb6420521c72e51bc77347edb5d130fdbed77b5",
+      "note": "80_Sources/requests/Phase8-3c-2_RequestLetter_CapHardSealing_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-3c-3_RequestLetter_Option4_to_CodeKun.md",
+      "sha256": "369650632c375edd5571fefb72fdda522421c9efd0609858d6dbb97ad92f079f",
+      "note": "80_Sources/requests/Phase8-3c-3_RequestLetter_Option4_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-3c-4_RequestLetter_ThroughputSeries_to_CodeKun.md",
+      "sha256": "aad9e9ea7912af2a8c35d31bb27d47ff0019e0e759aa462c597c56dbb644a141",
+      "note": "80_Sources/requests/Phase8-3c-4_RequestLetter_ThroughputSeries_to_CodeKun.md.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "requests/Phase8-3c_Addendum_to_CodeKun.md",
+      "sha256": "daf6e83dadf023aa94707b07c1414bd19cf761e389be1c4d0019540d09fe4289",
+      "note": "80_Sources/requests/Phase8-3c_Addendum_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8-3c_RequestLetter_S3Run_to_CodeKun.md",
+      "sha256": "098b7dd7a0c67826475da7aadcb5bbb9ee9a5526c530bc458f0f8fa796082bd9",
+      "note": "80_Sources/requests/Phase8-3c_RequestLetter_S3Run_to_CodeKun.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Phase8_DesignMD_CockpitGUI.md",
+      "sha256": "5739721e7e8fccb4023caf12762e92dd7389129ca4d69646cdd1dbdd176359a3",
+      "note": "80_Sources/requests/Phase8_DesignMD_CockpitGUI.md.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "requests/RequestLetter_Composite_Kitting_Backlog_v1.md",
+      "sha256": "25f363e8258d1dd2593738c2b057a3ded90994497f29ba87c03541a28bd02a5b",
+      "note": "80_Sources/requests/RequestLetter_Composite_Kitting_Backlog_v1.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/RequestLetter_WOM_Composite_Node_4_GPT-6_Astra.md",
+      "sha256": "34d463f458ab6eef4e6145b07a1fb88316b4828395909daaae4174ce7312f3c7",
+      "note": "80_Sources/requests/RequestLetter_WOM_Composite_Node_4_GPT-6_Astra.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/Roadmap_WOM_Cockpit_ThreeLayer.md",
+      "sha256": "2448930d2051b31671afd7d06f57236fbb44bd61c64b0f29b4d166bef323724c",
+      "note": "80_Sources/requests/Roadmap_WOM_Cockpit_ThreeLayer.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/apparel-global-2028-2029-request-letter.md",
+      "sha256": "dd796a4f867ec58433537c5a33a3322b862835759387a679be086f224fb73f9e",
+      "note": "80_Sources/requests/apparel-global-2028-2029-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/apparel-us-2026-hm-request-letter.md",
+      "sha256": "476370959e8781853e50d8db2cc8364fa6f5969fb77d0804774a11754b8e33f8",
+      "note": "80_Sources/requests/apparel-us-2026-hm-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/apparel-us-2026-zara-request-letter.md",
+      "sha256": "fe9ad08738cf4f5ce25563fd71818d5d4a4844b1763ce24f723568a824a56da5",
+      "note": "80_Sources/requests/apparel-us-2026-zara-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/approval_letter_a_cpu_size.md",
+      "sha256": "9bde29db22be9e4a975316b0693d52994bf28aabea85f8fbd28d5d7eb8f4d1bb",
+      "note": "80_Sources/requests/approval_letter_a_cpu_size.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/approval_letter_b_bom_qty.md",
+      "sha256": "d03b892bcc8d74caba16d6d180b9842efd168c1352a3bb1d28bbcdd4835683dc",
+      "note": "80_Sources/requests/approval_letter_b_bom_qty.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/approval_mode4_fix.md",
+      "sha256": "4b81f2aedb0aa6e272fea37170a17d6010f74d1944e5596dbe4bb5196e2954c3",
+      "note": "80_Sources/requests/approval_mode4_fix.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/global-allocation-request-letter.md",
+      "sha256": "2095c17b1429a9269f946680dcb8f1b9c0fecb50370a0e7b1448099689c90593",
+      "note": "80_Sources/requests/global-allocation-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/gui-improvements-2026-07-14-request-letter.md",
+      "sha256": "757269eba6bd9039a1bb7947e4c43473731babfab6723478508e2d410a5185a0",
+      "note": "80_Sources/requests/gui-improvements-2026-07-14-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/operating-constraint-layer-request-letter.md",
+      "sha256": "59f5756390ed7c39c33fbd2d624071be5a7c1a7f9e4216a473739e931dc9f3ab",
+      "note": "80_Sources/requests/operating-constraint-layer-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/planning-horizon-warmup-parameter-request-letter.md",
+      "sha256": "8ddf8797173410f0fff3038bddb05d356437bf09c7676db272e78c44f3e83af8",
+      "note": "80_Sources/requests/planning-horizon-warmup-parameter-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_a1_multi_child_duplication.md",
+      "sha256": "4898acea2488573a847f165d6638876552bff4579576f081b987dbbafad1dcee",
+      "note": "80_Sources/requests/request_fix_a1_multi_child_duplication.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_a1_supply_role_rev2.md",
+      "sha256": "99fd2c9b4a73db1f04ac724775e6bb725b9df46d0cdb4d044a229d910f83ad5c",
+      "note": "80_Sources/requests/request_fix_a1_supply_role_rev2.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_apparel_planning_config.md",
+      "sha256": "2a0f960c5661930e0397526ca5827d6a670b14d84abfb722a5d0543aa51e6e6a",
+      "note": "80_Sources/requests/request_fix_apparel_planning_config.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_b2_psi_chart_axis.md",
+      "sha256": "604933fee1082e13f7179f01f1b8a42bd25eb88a0c4a9ac0a148689431478164",
+      "note": "80_Sources/requests/request_fix_b2_psi_chart_axis.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_mode4_double_count.md",
+      "sha256": "a95d2e5d0bd0e532ea2947fec869c44c36a3b866d2b17c496405d727ac747c7e",
+      "note": "80_Sources/requests/request_fix_mode4_double_count.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_mode4_supply_role.md",
+      "sha256": "146f5deb75bfdfc9d8e11264e1003e96ae15c4ebdfec1e4a672afba7540d72c5",
+      "note": "80_Sources/requests/request_fix_mode4_supply_role.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_mode4_supply_role_semantics.md",
+      "sha256": "35c3f21ca274df528242866999abf55fc646644d73f7853e90d33da6391c5384",
+      "note": "80_Sources/requests/request_fix_mode4_supply_role_semantics.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_phase3_plot_readability.md",
+      "sha256": "fc2b035af66c131deaea43d9595b2fa845b5f87b174ad78d7e3bac9ed0bbb9ba",
+      "note": "80_Sources/requests/request_fix_phase3_plot_readability.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_fix_phase4_gap_attribution.md",
+      "sha256": "488f6a7d1a11cfa679ed94a7855f478e95faf74621085fdf9c1fe9507651504e",
+      "note": "80_Sources/requests/request_fix_phase4_gap_attribution.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_impl_sweep_flags_tool.md",
+      "sha256": "52683931b4c55bef715323283c6a327861371ffc30d86e39c14b561b23cadad5",
+      "note": "80_Sources/requests/request_impl_sweep_flags_tool.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_investigation_s2_inbound_decoupling.md",
+      "sha256": "f903ea7e1ea10a8e8c837d51b5b18ca25db81d22c6007580df9d2c44fe53e72d",
+      "note": "80_Sources/requests/request_investigation_s2_inbound_decoupling.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_kitting_stage1.md",
+      "sha256": "8e1771525cfcba4f1332bf975799ddb94fb9ff9b44805a3640e0ff3d4433685b",
+      "note": "80_Sources/requests/request_kitting_stage1.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_letter_a_cpu_size_to_plan.md",
+      "sha256": "5e950e220b51e89de2bbfbb4565543d8a8221d172cfe37eaa391305f10e14934",
+      "note": "80_Sources/requests/request_letter_a_cpu_size_to_plan.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_letter_b_bom_qty.md",
+      "sha256": "355063027fd47554f6ff9bd81b2d2327f3fa6663b2c1d1c0211137dfdf38a0b9",
+      "note": "80_Sources/requests/request_letter_b_bom_qty.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_stage3a1_stockyard_passthrough.md",
+      "sha256": "ee2ee51e7c9772841401af498e6742b65a321b847fae1ca71b2514d73de2dfd1",
+      "note": "80_Sources/requests/request_stage3a1_stockyard_passthrough.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/request_stage3a2_kitting_gate.md",
+      "sha256": "69a41b4d609b67ba0f7011c9124a993eb811f7b0c298b96937b3132fbff6c003",
+      "note": "80_Sources/requests/request_stage3a2_kitting_gate.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/smartx-2027-2029-fix-request-letter.md",
+      "sha256": "1a8d4d4ab5abd22777c9b8a8ffabdcba71e85f8f77664cd1360c0d11c8d258c3",
+      "note": "80_Sources/requests/smartx-2027-2029-fix-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "requests/tariff-lane-master-unification-request-letter.md",
+      "sha256": "4293adf9b8488af726fc49bf689d86b04fee5fa39de94c823ec0f8f0478e2a41",
+      "note": "80_Sources/requests/tariff-lane-master-unification-request-letter.md.md",
+      "classification": []
+    },
+    {
+      "path": "tests/test_allocation_analytics.py",
+      "sha256": "497c18d2f9358d722fdfdcd7f1bf17b12fb2b7f86227b983506819b1951271e7",
+      "note": "80_Sources/tests/test_allocation_analytics.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_cli.py",
+      "sha256": "f06d9db0d36bb0ac7267e6bb75c5cb2ed71af9b50d2fe8f548b3298c05cfb57a",
+      "note": "80_Sources/tests/test_allocation_cli.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_cost_block.py",
+      "sha256": "d30de44130f2e740c35c4db9de0446f82362bc478c51fbf774e1b4fa91d62cb3",
+      "note": "80_Sources/tests/test_allocation_cost_block.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_grid.py",
+      "sha256": "ae1d02a3a9bdaae49aa216e4722b5bdc78ace89b6e9322456d285ca86ad7e75a",
+      "note": "80_Sources/tests/test_allocation_grid.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_hierarchical.py",
+      "sha256": "b27d8ecc6a775721e2aec5a926620896ebad668504bb8e7de990599c5b3f70a0",
+      "note": "80_Sources/tests/test_allocation_hierarchical.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_material_invariant.py",
+      "sha256": "77e3838d61f756e424e2d1ae0ac48cd6c370ddcac5b631ab05c6703b2e43e912",
+      "note": "80_Sources/tests/test_allocation_material_invariant.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_merit_order.py",
+      "sha256": "1fa402d2a2a430254bd9c18d35e45da49011fdb034ab882fb2f3a2778d3dc4ae",
+      "note": "80_Sources/tests/test_allocation_merit_order.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_nmarket.py",
+      "sha256": "24580a9f88bf346b71427b67837e8b22eb7a0f05b2eed00ff8d093b9178caae1",
+      "note": "80_Sources/tests/test_allocation_nmarket.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_nonconcave.py",
+      "sha256": "68986389ef689a77d275a7e2991162104921105aa1e88865f877e0fda6d49ac1",
+      "note": "80_Sources/tests/test_allocation_nonconcave.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_plot.py",
+      "sha256": "d3d43b695c2aabae03ddefacb75a47abdf1758914c0fca7d01345543b2915ee0",
+      "note": "80_Sources/tests/test_allocation_plot.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_regime_map.py",
+      "sha256": "b65b8a354349d31cb06e20ff15504e3a99c900840d7566abc5e4e854db5a3e6a",
+      "note": "80_Sources/tests/test_allocation_regime_map.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_allocation_transmission.py",
+      "sha256": "604bad21fbd62e174fe030d23ed626ff19cb101cd7382f6e88b58d34a9acae37",
+      "note": "80_Sources/tests/test_allocation_transmission.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "tests/test_backward_holiday_carryback.py",
+      "sha256": "08154de0dc7d754f617d212e51c7f322aa799e9f7548fc8b2caf8fa6bd8fbd34",
+      "note": "80_Sources/tests/test_backward_holiday_carryback.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_backward_supply_role.py",
+      "sha256": "de51e07cfd9194f8a6fa88f6671cc5e0e6ef2ce232d496dafc04193e8c89eaaf",
+      "note": "80_Sources/tests/test_backward_supply_role.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_bom_qty.py",
+      "sha256": "4a396599dd0505faa0690b728e284f0bf66dadcde998daad56420645509e2cea",
+      "note": "80_Sources/tests/test_bom_qty.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "tests/test_buffering_stock_optimizer_plugin.py",
+      "sha256": "d1c1279c35422cfa3929cd39cbbb8f5d53bbcd38e1bd2705c372e2f19b6d5b04",
+      "note": "80_Sources/tests/test_buffering_stock_optimizer_plugin.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_capacity_soft.py",
+      "sha256": "11161e0f0bf2d2c718b40bd0745c7152f16e57a035d96c1128b76fcca44a10c8",
+      "note": "80_Sources/tests/test_capacity_soft.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_capacity_soft_backward.py",
+      "sha256": "7a56e5ddbde03ee39289b988bb16335b860be486303e98d38fe63c9c46f7dc02",
+      "note": "80_Sources/tests/test_capacity_soft_backward.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_composite_kitting_recovery.py",
+      "sha256": "d9187bdbd235f2ed4e5542ecca700d457ba0ca6d6fb2d8b35216b014af6700c6",
+      "note": "80_Sources/tests/test_composite_kitting_recovery.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_cpu_size_plan_wide.py",
+      "sha256": "c6b2e8c884cb7dc63b2d504fa977f983f15c1a25dfa3e3ee1544b55d44f5ed03",
+      "note": "80_Sources/tests/test_cpu_size_plan_wide.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_decouple_optimizer.py",
+      "sha256": "7113a0b6cf1351e1997322cb953f7d67103fdf736dc03e78e047b33961abc51f",
+      "note": "80_Sources/tests/test_decouple_optimizer.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_demand_envelope_soft.py",
+      "sha256": "6144c9c91f13438bd245ea906ca876e8df3983da6d0e35a74979366f8988d30a",
+      "note": "80_Sources/tests/test_demand_envelope_soft.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_golden.py",
+      "sha256": "1dc8a206e509656d549b08556d06aad5d3e8168d8304394b2918245fcaa74934",
+      "note": "80_Sources/tests/test_golden.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_gui_panel_invariants.py",
+      "sha256": "e9b17a366d3510a1c87918e93cb58c3bae0dc108d2451f9246db5e8f995ebb0a",
+      "note": "80_Sources/tests/test_gui_panel_invariants.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "tests/test_init_stock_days_wiring.py",
+      "sha256": "03b54c9a44544f1d9c252f1ee2bb9be8cfc5661f85e03afa0ac14aed7627ff6c",
+      "note": "80_Sources/tests/test_init_stock_days_wiring.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "tests/test_kitting_stage1.py",
+      "sha256": "1f513a0361338d98b642f5912f79b8bd449bc0ed40bbe4ded0f792874faf83d0",
+      "note": "80_Sources/tests/test_kitting_stage1.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_merit_order.py",
+      "sha256": "6c9c94ee6d1acbe546437ffaa3a2c4b57de4c6998eceaf6050b904ad2039a490",
+      "note": "80_Sources/tests/test_merit_order.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "tests/test_merit_order_plot.py",
+      "sha256": "5f1abadebd4b595f758b9e0c52e33492c6267c842d479ab39d753493c4b70eb3",
+      "note": "80_Sources/tests/test_merit_order_plot.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "tests/test_operating_calendar.py",
+      "sha256": "0a9f36358f8d439468b9faddd5b489fd1d20bd449dc4874693a1b80ef1c58130",
+      "note": "80_Sources/tests/test_operating_calendar.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_pareto_front.py",
+      "sha256": "739fc290de9c915ca884175752e8890d3d6173f9aeb1c21bf13a44af203ce5fd",
+      "note": "80_Sources/tests/test_pareto_front.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "tests/test_planning_state.py",
+      "sha256": "4725e109385f39abf6f99e67dcd9b4b34b8419609afe98f97faf862e00d9d011",
+      "note": "80_Sources/tests/test_planning_state.py.md",
+      "classification": [
+        "02_Demand_Allocation",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_ppc_bom_qty.py",
+      "sha256": "a07da71acb32e370d1ac845986ab745071aa1649da95da8fa0049b7c22e93f9c",
+      "note": "80_Sources/tests/test_ppc_bom_qty.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "tests/test_ppc_multi_supplier.py",
+      "sha256": "8bc9a0420710cc8471083e2b3ebc752bcb3c66818575c67e2260bc731c280674",
+      "note": "80_Sources/tests/test_ppc_multi_supplier.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "tests/test_ppc_vertical_slice.py",
+      "sha256": "4beb648e71ae0a623395cc1fe067224c7801c3efd6cfca37903038ea4990ebfa",
+      "note": "80_Sources/tests/test_ppc_vertical_slice.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning",
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "tests/test_push_pull_mode4_double_count.py",
+      "sha256": "93d0e38c02b576adf53196ba050757a59af52817004eafe986f7e9d2a933f9ac",
+      "note": "80_Sources/tests/test_push_pull_mode4_double_count.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "tests/test_push_pull_mode4_supply_role.py",
+      "sha256": "694873620c3f48029c62474e2a08300906d6666bfbd3b706b899909dfef26bc6",
+      "note": "80_Sources/tests/test_push_pull_mode4_supply_role.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_regime_map.py",
+      "sha256": "85c5be76cb9f373aa36ddb6fe52412f01795edd12b0e7db43ea4ff6773a37c6e",
+      "note": "80_Sources/tests/test_regime_map.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "tests/test_s1_view_model.py",
+      "sha256": "62dae791bdb57d68f6aefe8eb7d9542554b8c9be0c8412c20219eb9da9bcbea3",
+      "note": "80_Sources/tests/test_s1_view_model.py.md",
+      "classification": [
+        "02_Demand_Allocation",
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "tests/test_shift_cap_soft.py",
+      "sha256": "ea34a0f72db9b412fa711f7291d4cebb220fe0fafb66fe13c62cc055cfb309f1",
+      "note": "80_Sources/tests/test_shift_cap_soft.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_stage3a1_stockyard.py",
+      "sha256": "f5368b297bbec491800e2f4bdb1be2115461134b21ef5c8d0dd597d49dfb9134",
+      "note": "80_Sources/tests/test_stage3a1_stockyard.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_stage3a2_kitting_gate.py",
+      "sha256": "a9ee29000d9d6c6e56e600faee66edf9c6af68514f5e821882a4bc38e04b8ee0",
+      "note": "80_Sources/tests/test_stage3a2_kitting_gate.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_step10_hooks.py",
+      "sha256": "9553511b5de38ba2e437b47638b33750e099c2b830929bc6346fe4993d3dcfe2",
+      "note": "80_Sources/tests/test_step10_hooks.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_step7_capacity.py",
+      "sha256": "0817cf88b1cd667565d5b3a27a65b14ef870810c1a113a1c55d030382ffb2b1d",
+      "note": "80_Sources/tests/test_step7_capacity.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_step8_push_pull.py",
+      "sha256": "de162fc5b090b66b3805739aaf19abafa669b52ae44e95d92ae43a580be5c84a",
+      "note": "80_Sources/tests/test_step8_push_pull.py.md",
+      "classification": [
+        "01_Data_Building",
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tests/test_warmup_materialize.py",
+      "sha256": "28d334d955989a9b9cbd637d853d8e8e34ce5c5f523aa64b874d5f3cbf045734",
+      "note": "80_Sources/tests/test_warmup_materialize.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "tools/demo_allocation_nonconcave.py",
+      "sha256": "fe3c754b404345589d141285e104731aca658f91ee8c45bf93755ecc286e0059",
+      "note": "80_Sources/tools/demo_allocation_nonconcave.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/download_worldmap_tiles.py",
+      "sha256": "07262db0ae43c34e3a24bfb01b2589a0bd7201ddef552b09cd511d6a0d000942",
+      "note": "80_Sources/tools/download_worldmap_tiles.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/fix_smartx_price_scale.py",
+      "sha256": "9a4b713458d1ec5357b696fff26bdc0a9c3024f468e0f867d618495daccfa5c1",
+      "note": "80_Sources/tools/fix_smartx_price_scale.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/gen_apparel_global_model.py",
+      "sha256": "4622d7789374f4ac954842c67fb332ecc0a2ff870df11ab41e0e4a55b895b0ec",
+      "note": "80_Sources/tools/gen_apparel_global_model.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/gen_apparel_model.py",
+      "sha256": "20ef6de3193e15b1db719f1a9ef28ae4da258c5cc01f05cdc3df065320030399",
+      "note": "80_Sources/tools/gen_apparel_model.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/gen_oil_ga_aggregation.py",
+      "sha256": "ca9292017f3c84182ea8d437d879932cde1f510cd2f39dde6da245132cf68466",
+      "note": "80_Sources/tools/gen_oil_ga_aggregation.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/gen_tariff_edges.py",
+      "sha256": "f153d0c338a72552a6a2a37ba6e42143beb7b912406c1a0b5c2ae6859078ecf9",
+      "note": "80_Sources/tools/gen_tariff_edges.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/gen_warmup_rows.py",
+      "sha256": "2890bb461ed60549239b423cde0e81083bc094e07d800b60042896b6bc0a76f4",
+      "note": "80_Sources/tools/gen_warmup_rows.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/plot_allocation_map.py",
+      "sha256": "0403d56d38ba4372d77863b62dc32479976d1a6fe2bcbd86cc08dae8fc98e905",
+      "note": "80_Sources/tools/plot_allocation_map.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/plot_allocation_merit_regime.py",
+      "sha256": "ddc3141f7e356457857fab48ee1b8caf365cb428b24c002e31107f69c6a24426",
+      "note": "80_Sources/tools/plot_allocation_merit_regime.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/plot_merit_order_suite.py",
+      "sha256": "d96e6ae2ccdde9a17a8982ab2aba5efe6651e2535e5bc5bf350115d24a5e372b",
+      "note": "80_Sources/tools/plot_merit_order_suite.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/probe_composite_baseline.py",
+      "sha256": "1f98d7f0468321ac4f37e93eeee0ada794496caa5aeec11615c83d7ac201e92d",
+      "note": "80_Sources/tools/probe_composite_baseline.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/proto_terrain2.py",
+      "sha256": "5ce5035e24d587ae3a1b34aab0ce6f06f587a91d775dc7da840edc9fac3401b3",
+      "note": "80_Sources/tools/proto_terrain2.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/run_allocation_map.py",
+      "sha256": "6725144c68397d6f859fe29e210d672783c9790646f593291ca417fb1aa28454",
+      "note": "80_Sources/tools/run_allocation_map.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/run_headless_from_folder.py",
+      "sha256": "00c1347da37686bc2a3d54f4f9132c0abe8ec6cc4ebda975cd3c3b71f74781dc",
+      "note": "80_Sources/tools/run_headless_from_folder.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/run_planning_loop.py",
+      "sha256": "58285605142e501223aa974c874a5799955788b1f381c94c30f1b2c388347c08",
+      "note": "80_Sources/tools/run_planning_loop.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/split_smartx_sku.py",
+      "sha256": "89ba06adfd5f84503be09fbdd45697a9506aa0807a6634356ebb89a485a9f40c",
+      "note": "80_Sources/tools/split_smartx_sku.py.md",
+      "classification": []
+    },
+    {
+      "path": "tools/sweep_flags.py",
+      "sha256": "c806ba55e6a4ba12cdc3a6290296003a77e15b9cba836d9e91f747da24ae4a16",
+      "note": "80_Sources/tools/sweep_flags.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/__init__.py",
+      "sha256": "7d3b749aa78a4a870b3dd3f6dc8899b7ab0c9e2c62e530e10addcc366588cd7f",
+      "note": "80_Sources/wom/__init__.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/allocation/__init__.py",
+      "sha256": "c604a4d5746032adafb50557c9ee1f8a915f6cf1aec90b2a0d8796ce67b41447",
+      "note": "80_Sources/wom/allocation/__init__.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/allocation/analytics.py",
+      "sha256": "a5647ae6c2875adce88e1c0580dfc013dda51b240627400a671f417e2dae85fe",
+      "note": "80_Sources/wom/allocation/analytics.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/allocation/cost_block.py",
+      "sha256": "4328f314efd34e23c4d56528a7c68e8ff8d0cab69aaf5e237185c9d2cd7bb979",
+      "note": "80_Sources/wom/allocation/cost_block.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/allocation/grid.py",
+      "sha256": "54a3f0ac51f8e68df8b341138a4b4cb4902ca4a9ed09089aa3c6e5bcfe04ddb3",
+      "note": "80_Sources/wom/allocation/grid.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/allocation/handoff.py",
+      "sha256": "48d727192fd30dda4a0c4c70c7543b13e4bba55cdc879f0f534725300293e3b1",
+      "note": "80_Sources/wom/allocation/handoff.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/allocation/hierarchical_simplex.py",
+      "sha256": "7f35ed7bfc766d05b26f61ebd99e76f5d7522f3730ed670374b4d5fa4de47114",
+      "note": "80_Sources/wom/allocation/hierarchical_simplex.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/allocation/merit_order.py",
+      "sha256": "344ed9f815ac23528c107112f7758a636d915008fa5fdeb281f2c811bc85d294",
+      "note": "80_Sources/wom/allocation/merit_order.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/allocation/regime_map.py",
+      "sha256": "48aa38160e003264568dc1e14ada4cf8fdd2e526a98a0b22d8f6a3865ac03758",
+      "note": "80_Sources/wom/allocation/regime_map.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/allocation/transmission.py",
+      "sha256": "e5b41558a9c300b398ed2059806c2ca968680e06ba2bb3e34b16779b9dacf508",
+      "note": "80_Sources/wom/allocation/transmission.py.md",
+      "classification": [
+        "02_Demand_Allocation"
+      ]
+    },
+    {
+      "path": "wom/cockpit/__init__.py",
+      "sha256": "4544aae20bcd0fec2b332e36913a1f2a3c90e66b3d971cd1ad7f57aad8d2b0b4",
+      "note": "80_Sources/wom/cockpit/__init__.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/cockpit_app.py",
+      "sha256": "2ab4d113c92f7387cb6f50bd175cfc7e4eba54342cedd8b0533cf862f7222502",
+      "note": "80_Sources/wom/cockpit/cockpit_app.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/frame.py",
+      "sha256": "5d4a7ede6b6fd9869d89d9858c86db94c3fb6ede5e2b8da5648bd32ae85b4f7e",
+      "note": "80_Sources/wom/cockpit/frame.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/navigator.py",
+      "sha256": "6c6dd1e2c43c8f8a6a9f5ac262504bef3274aa81796c4444768785dc87df3c11",
+      "note": "80_Sources/wom/cockpit/navigator.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/ops_bar.py",
+      "sha256": "b9a8207d7c9c04e1dd6ee2602eda84d336d3c7b4305b3743665d6a975742cc17",
+      "note": "80_Sources/wom/cockpit/ops_bar.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/plateau_band.py",
+      "sha256": "4ababd99f3fbfbb3a68a96d3da9e7e179fe29f7fcfd3b9ff393ffef76d342886",
+      "note": "80_Sources/wom/cockpit/plateau_band.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/s1_allocate.py",
+      "sha256": "6b8c0812bc9cca8999cca67ccc61fd4445588e1b3f69368f98d95feee18f6a6e",
+      "note": "80_Sources/wom/cockpit/s1_allocate.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/s1_view_model.py",
+      "sha256": "0eddc7abf3f79055855e89f74108c8aa6081d7af65fc6de8ed1d8ff364b7ad73",
+      "note": "80_Sources/wom/cockpit/s1_view_model.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/s3_run.py",
+      "sha256": "2b326b63ca4c596ee970aebd328b826e0d1c3cb5a0d006fc4014a485e02c0ff0",
+      "note": "80_Sources/wom/cockpit/s3_run.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/s3_view_model.py",
+      "sha256": "51f0aa6e0353b3a533ac4d5ef5809011697a9db31644745f5e6a71711a16644c",
+      "note": "80_Sources/wom/cockpit/s3_view_model.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/cockpit/state_header.py",
+      "sha256": "b0b16f714e621723fc657259cae84c0a9923d2d2dd4ad6bf1a8e6624c52c1cc0",
+      "note": "80_Sources/wom/cockpit/state_header.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/config.py",
+      "sha256": "db8935b3258a64a49bd530b63aba40e4ad01d426381dfc9e6952207df01d7b41",
+      "note": "80_Sources/wom/config.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/data/__init__.py",
+      "sha256": "87695bac385bcea0690859f231a5b9563c5c9546c8b519c689f42a72a473ef6b",
+      "note": "80_Sources/wom/data/__init__.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "wom/data/loader.py",
+      "sha256": "69df7e096af3430d3581357a8ae3e1a0d29dc315df1845f460b37f6ba78fd249",
+      "note": "80_Sources/wom/data/loader.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "wom/data/schema.py",
+      "sha256": "a625412ddbf96ce0326e262787861968fa64d23db8aa04074efb4d6a2fc33612",
+      "note": "80_Sources/wom/data/schema.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "wom/engine/__init__.py",
+      "sha256": "d962d24213cbe49d2ffeaa03e1c3ff9df421d4dd6fd1108897d93d4289d6a7e0",
+      "note": "80_Sources/wom/engine/__init__.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/backward_planner.py",
+      "sha256": "fc35852a33bab65586705089c730c230f76caeab7025b718884ad667b7d0ada5",
+      "note": "80_Sources/wom/engine/backward_planner.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/engine/capacity.py",
+      "sha256": "ef6263b09bb0543043207b2b6e85cc3648c266ee06bdcb9badcfdb525eda7e30",
+      "note": "80_Sources/wom/engine/capacity.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/capacity_sealer.py",
+      "sha256": "c0b2fe710b8862550793be5b7c5470c4ca8f6e9d2ad561ff3d707f96a8562929",
+      "note": "80_Sources/wom/engine/capacity_sealer.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/engine/decouple_optimizer.py",
+      "sha256": "80296eac3b6e8da0b46bdd1c0c6c0d19dee1718276b2e2033f5e9bd51a3d423d",
+      "note": "80_Sources/wom/engine/decouple_optimizer.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/demand.py",
+      "sha256": "078130a755e7c1b6bdd5887eb31d33c29537dc96853cfbd7494750eb66eed1bb",
+      "note": "80_Sources/wom/engine/demand.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/event_timeline.py",
+      "sha256": "043f62732c0f0d5eefcc96918917636ace1d3c77d3644db5edbee796c670c53a",
+      "note": "80_Sources/wom/engine/event_timeline.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "wom/engine/forward_planner.py",
+      "sha256": "32c33435a06e8b01bff7558deec4849d20b32ff4bf36c1f12093cf4abc49c983",
+      "note": "80_Sources/wom/engine/forward_planner.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/engine/hammock_layout.py",
+      "sha256": "ddb33fc3ecc8c442360d3de6ca40ed4b612ddbb4a57c05559a481f3b448cfd3a",
+      "note": "80_Sources/wom/engine/hammock_layout.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "wom/engine/harvest_batch_plugin.py",
+      "sha256": "b0fd3ef44bd6f4dd778fa0feee58114e8b7abed812e623020157ac64c4f24fba",
+      "note": "80_Sources/wom/engine/harvest_batch_plugin.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/holiday_calendar_plugin.py",
+      "sha256": "78789756770aeaf4e4a4cc6eed46dcc5f80bf49e9aca13ff30dc50ab0eb4f8c5",
+      "note": "80_Sources/wom/engine/holiday_calendar_plugin.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/hook_bus.py",
+      "sha256": "4f96d2b38d02a1f94155a134253aaf4c81aec6d4ca33dcfcd2a77c3e473fa054",
+      "note": "80_Sources/wom/engine/hook_bus.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/inventory.py",
+      "sha256": "1e77334fc7541a113508acaf604ccfb049572318460fe2ac3cb5fc920554dca9",
+      "note": "80_Sources/wom/engine/inventory.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/engine/landed_cost.py",
+      "sha256": "50f86e8bc4047dcdb34be0b573c54f1fe25c791ae5140f7f175345388b984e89",
+      "note": "80_Sources/wom/engine/landed_cost.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/engine/lane_assignment.py",
+      "sha256": "396f05c086be2ff87cabbf0dd91108cf4db1c6dd1c39a196d20558eba0aa9db8",
+      "note": "80_Sources/wom/engine/lane_assignment.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/management.py",
+      "sha256": "c3c47218ef0fd24e1f368c79c485c31c3c68c040af44ac578f3606b968c2edcd",
+      "note": "80_Sources/wom/engine/management.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/engine/money.py",
+      "sha256": "398aaf19f714ba284b8ba6c9b7c59407ccaeb34babe29bcf7f4033709f2505f5",
+      "note": "80_Sources/wom/engine/money.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/engine/plan_copy.py",
+      "sha256": "4feb2c56c20b99b540d84d823073378c6aa6a5a766606b108a8b3b6d042d015f",
+      "note": "80_Sources/wom/engine/plan_copy.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/engine/planning_debugger.py",
+      "sha256": "93bbc600e61210856648c440ec08fac43ff944cded33abe25316cf6d45a02191",
+      "note": "80_Sources/wom/engine/planning_debugger.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/plugin_base.py",
+      "sha256": "7a95fdbbb05c3af1ace03bc04b2b80cdaba52cc4893aa1b08c7e3ec05ec4a565",
+      "note": "80_Sources/wom/engine/plugin_base.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/push_pull.py",
+      "sha256": "18a1d4706063f801e609bc4d13a5a3ac6750b3636554472948302c1fe2de0f03",
+      "note": "80_Sources/wom/engine/push_pull.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/engine/sc_tree_builder.py",
+      "sha256": "8d8855a1e670b26ec47e6f38b55c2bc90130d7c1924c43714e42f050df644fe1",
+      "note": "80_Sources/wom/engine/sc_tree_builder.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "wom/engine/sc_tree_to_df.py",
+      "sha256": "826a1274d3ed29e1f01921282b23ec1ca5591ee6473a0ed8d5d21c393a782488",
+      "note": "80_Sources/wom/engine/sc_tree_to_df.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/scenario.py",
+      "sha256": "0ff37ad5c549c53d7ff575383f4df9d31ffcad6bd4c8956e5fc183748c82b986",
+      "note": "80_Sources/wom/engine/scenario.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/engine/simulator.py",
+      "sha256": "791bc79d51351785e3ce1eef21c9b9fdea8e53a0f725fb092c14a0dda74a8fc2",
+      "note": "80_Sources/wom/engine/simulator.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/engine/strategic_kpi.py",
+      "sha256": "5048c484cf07a87db8d54e9d112fd367911c4dddc8a54624bbeb33a9bdea807e",
+      "note": "80_Sources/wom/engine/strategic_kpi.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/engine/warmup.py",
+      "sha256": "c4cf220653f5c57221e37a51b904a69879998a453cf55e5e16e68fc4c6087540",
+      "note": "80_Sources/wom/engine/warmup.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/gui/__init__.py",
+      "sha256": "7b0ba70643f187aadb1ac0ccaf054f032d06992a63ef5e554d7bb81316133998",
+      "note": "80_Sources/wom/gui/__init__.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "wom/gui/app.py",
+      "sha256": "74014d2e65f85a18c225c1c4bbe93fe0392410b3c9f71a54bfe09dd5aaaf474e",
+      "note": "80_Sources/wom/gui/app.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "wom/model/__init__.py",
+      "sha256": "f2bdb5c97f625c2caeb80e0a43e90322a040c6866d413a25e70139d3b5bc1751",
+      "note": "80_Sources/wom/model/__init__.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "wom/model/lot_generator.py",
+      "sha256": "f2f59f81dac662d6f967e7195b2db190d71abe2c4c0e1807c96ae32eb1254203",
+      "note": "80_Sources/wom/model/lot_generator.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "wom/model/plan_node.py",
+      "sha256": "ba481fbfab145f37efce40389f9bd0d2c69dc642232f65f0775c6eb08a94e623",
+      "note": "80_Sources/wom/model/plan_node.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "wom/model/sc_tree.py",
+      "sha256": "fac095b042d81d7ce86d9f1f3a769067092eb0c8c0b6127fe58192cfb1e254cc",
+      "note": "80_Sources/wom/model/sc_tree.py.md",
+      "classification": [
+        "01_Data_Building"
+      ]
+    },
+    {
+      "path": "wom/planning_state/__init__.py",
+      "sha256": "a91ff391590dd58020603c7306a0da3d67cfac52cb37f7f475c6458e11ffc86e",
+      "note": "80_Sources/wom/planning_state/__init__.py.md",
+      "classification": [
+        "06_Management_Cockpit"
+      ]
+    },
+    {
+      "path": "wom/plugins/__init__.py",
+      "sha256": "8e9ae3d86ab401ba2975b0235aaf925e19c9749b3ca5569bc288ec8577adf459",
+      "note": "80_Sources/wom/plugins/__init__.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/plugins/buffering_stock_optimizer.py",
+      "sha256": "abdeb4786f5d2efd168b6a06117c005ce7edc535f2678c5a6ad87ed3b835fb05",
+      "note": "80_Sources/wom/plugins/buffering_stock_optimizer.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/plugins/capacity_override.py",
+      "sha256": "56dca77d546dd8027376929dde1588aa4c29eb43f3c3f12d2ad55610595d4575",
+      "note": "80_Sources/wom/plugins/capacity_override.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/plugins/demand_smoothing.py",
+      "sha256": "bd99bb7c06ee87c6cb06dae61fc2c4461667416b2808e88f6e74620c2fd5a39c",
+      "note": "80_Sources/wom/plugins/demand_smoothing.py.md",
+      "classification": [
+        "03_Planning"
+      ]
+    },
+    {
+      "path": "wom/ppc/__init__.py",
+      "sha256": "1d8b29d80b68b6a618fa2d6669221009c1d59365a437f6b8b550892e2d86d77d",
+      "note": "80_Sources/wom/ppc/__init__.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/__main__.py",
+      "sha256": "e84a30f0fb7b5aac3edc1c92db9c9af9ad7f56fe2fbccb236697730c5bc37fe5",
+      "note": "80_Sources/wom/ppc/__main__.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_backward.py",
+      "sha256": "4aa3a6c656039cda13a16225ae798d44b99d2070324ed6633bf86d699de03e52",
+      "note": "80_Sources/wom/ppc/ppc_backward.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_cockpit.py",
+      "sha256": "127fffa2973f4c3e3d8edf7104a146b4c7970bb5168d2b3b72a56b60f18c832e",
+      "note": "80_Sources/wom/ppc/ppc_cockpit.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_cockpit_app.py",
+      "sha256": "75d4fb5f04b13f06771d243292fa0f3a24764bb6b948d7b1526efead65921b2a",
+      "note": "80_Sources/wom/ppc/ppc_cockpit_app.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_engine.py",
+      "sha256": "eb5822844f998ebd697c5e057016485c3cc46e35d918830d96abf936162a0810",
+      "note": "80_Sources/wom/ppc/ppc_engine.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_export.py",
+      "sha256": "e08d374738adebf0cb72f79f0576d85f4a4b8a3e65eee615bbf98eb06b3d9e56",
+      "note": "80_Sources/wom/ppc/ppc_export.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_forward.py",
+      "sha256": "f1162a2e07bb3e828f0c725fefefe946d0121e10e4a866ef62d8ee1d25b87f46",
+      "note": "80_Sources/wom/ppc/ppc_forward.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_fx.py",
+      "sha256": "7a6e027771fbebb172720ac90f7ee36e5a5024f6b071405f15e819710c63c85e",
+      "note": "80_Sources/wom/ppc/ppc_fx.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_kpi.py",
+      "sha256": "79838c17bac94ae834b62a8bab71429a990fcfd34ab31863d051946d12896d4f",
+      "note": "80_Sources/wom/ppc/ppc_kpi.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_models.py",
+      "sha256": "d5574d2f7f5d0434c99517b3b49f035f0cfbe2d1a196c52957ee3270003e0e06",
+      "note": "80_Sources/wom/ppc/ppc_models.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_profit_zone.py",
+      "sha256": "51721fdab96abf9d4b460deef1dbcc0f0c659b2b59804e36721ab16b4d4eab87",
+      "note": "80_Sources/wom/ppc/ppc_profit_zone.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_psi_bridge.py",
+      "sha256": "5a971e6d430178d83be77f38b6db9830e1d0c445b7e1be9fef3928ce59b7d6ce",
+      "note": "80_Sources/wom/ppc/ppc_psi_bridge.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_reconcile.py",
+      "sha256": "4f65e5afaa5523d4bb6912db4dd00b6beb55844c83bdc0bb09a6dce020f5f0ec",
+      "note": "80_Sources/wom/ppc/ppc_reconcile.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_rules.py",
+      "sha256": "e1678154d0525e33cf6e30f4592e8d2e7caeede5869e95f57bf7756abca03323",
+      "note": "80_Sources/wom/ppc/ppc_rules.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_runner.py",
+      "sha256": "ec1c84f83e5d96f9496842d5afbfc132bc13b6e5cb89d1ce2918cec0af0170e2",
+      "note": "80_Sources/wom/ppc/ppc_runner.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_tariff.py",
+      "sha256": "791faba9662ad834560336f2696f84d21b0eaf7765f916181965759a0b6c4d50",
+      "note": "80_Sources/wom/ppc/ppc_tariff.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/ppc/ppc_transfer.py",
+      "sha256": "dbda03fd7b6f916890bc999a08a365d2ba50cdbcdc3f1442cbd698a765429202",
+      "note": "80_Sources/wom/ppc/ppc_transfer.py.md",
+      "classification": [
+        "04_Evaluation"
+      ]
+    },
+    {
+      "path": "wom/reports/__init__.py",
+      "sha256": "5d2004a3878fabb4cd3a5bcca62be41ddfc210fea6c7509a2eb2c08f5af05abb",
+      "note": "80_Sources/wom/reports/__init__.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/reports/output.py",
+      "sha256": "c913fa4f8c0a0ab063cfb95715b4cdd450b9d368b68cfa5b1d98ce68f84d6ef2",
+      "note": "80_Sources/wom/reports/output.py.md",
+      "classification": []
+    },
+    {
+      "path": "wom/visualization/__init__.py",
+      "sha256": "704f73f994429e37860f894d6f77801d8e1b7423f34b567301141b1bdfa403b3",
+      "note": "80_Sources/wom/visualization/__init__.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "wom/visualization/merit_order.py",
+      "sha256": "d6ce69606979bbdf2001907eeed8b182defbd217e6cee8c8530c3a5fd6f05bb9",
+      "note": "80_Sources/wom/visualization/merit_order.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "wom/visualization/pareto_front.py",
+      "sha256": "73f2917118b48b3c4f2bee1f0cc3e3ff8f315b7634e84b652353d3915a648a1c",
+      "note": "80_Sources/wom/visualization/pareto_front.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "wom/visualization/regime_map.py",
+      "sha256": "bca147b60cc3cf81dcab5a7b42e6d02998dfae897420e4ba9db24ae86eeaf21f",
+      "note": "80_Sources/wom/visualization/regime_map.py.md",
+      "classification": [
+        "05_Presentation"
+      ]
+    },
+    {
+      "path": "wom_rl_framework.py",
+      "sha256": "5d58ed5bd2b31f5f4ae4282848a0d3fa0ea7993f61c6a3df6d9438c89404ec73",
+      "note": "80_Sources/wom_rl_framework.py.md",
+      "classification": []
+    }
+  ],
+  "symbols": 1669,
+  "parse_errors": []
+}

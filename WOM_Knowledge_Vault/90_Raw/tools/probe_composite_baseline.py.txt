@@ -1,0 +1,123 @@
+"""Read-only baseline probes; outputs go outside the repository by default.
+
+Run from repo root: python -m tools.probe_composite_baseline --out /tmp/wom-probe.json
+Synthetic fixtures reuse the existing kitting test builder. No expected-result
+assertions redefine current behavior; this records observations for design review.
+"""
+import argparse
+import json
+import runpy
+import subprocess
+from pathlib import Path
+
+from wom.engine.forward_planner import ForwardPlanner
+from wom.engine.backward_planner import BackwardPlanner
+from wom.engine.plan_copy import copy_demand_to_supply
+from wom.model.plan_node import P, S, I, CO
+
+ROOT = Path(__file__).resolve().parents[1]
+BASELINE = "ceef9ee0e357a556fb5959fdb1e49d8b0e670347"
+
+
+class Observer(ForwardPlanner):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.before_processing = {}
+
+    def _process_node(self, node, n_weeks, result, opening_lots):
+        self.before_processing[node.node_id] = [list(b[P]) for b in node.psi4supply]
+        return super()._process_node(node, n_weeks, result, opening_lots)
+
+
+def measure(name, helpers, late=False, capacity=False, opening=False, no_parts=False, backlog=False):
+    tree, mom, yards, leaves = helpers["_build_tree"]()
+    prod = helpers["PROD"]
+    helpers["_seed_demand"](mom, [5], 2 if capacity else 1)
+    BackwardPlanner(tree).run(prod)
+    copy_demand_to_supply(tree, prod)
+    lot = mom.psi4demand[5][S][0]
+    interventions = []
+    if late:
+        leaf = leaves[-1]
+        for w in reversed(range(len(leaf.psi4supply) - 2)):
+            if lot in leaf.psi4supply[w][P]:
+                leaf.psi4supply[w][P].remove(lot)
+                leaf.psi4supply[w + 2][P].append(lot)
+                interventions.append({"leaf": leaf.node_id, "P_from_index": w, "P_to_index": w + 2})
+    if no_parts:
+        for leaf in leaves:
+            for b in leaf.psi4supply:
+                b[P] = []
+        interventions.append({"external_supply_P": "removed; demands retained"})
+    if capacity:
+        mom.set_capacity(5, cap_hard=1)
+        interventions.append({"assembly_cap_hard": 1, "week_index": 5, "timing": "after backward/copy"})
+    if backlog:
+        for demand_b, supply_b in zip(mom.psi4demand, mom.psi4supply):
+            demand_b[S] = []
+            supply_b[S] = []
+        mom.psi4supply[0][CO] = [lot]
+        interventions.append({"assembly_order": "pre-horizon carry-in CO[0], no new assembly S"})
+    opening_inv = {mom.node_id: [lot]} if opening else {}
+    planner = Observer(tree, opening_inv=opening_inv)
+    result = planner.run(prod)
+    rows = []
+    for node in [*leaves, *yards, mom]:
+        prev = list(opening_inv.get(node.node_id, []))
+        for w, b in enumerate(node.psi4supply):
+            actual = list(planner._actual_s.get(node.node_id, {}).get(w, []))
+            rows.append({"node": node.node_id, "product": prod, "layer": "supply",
+                         "week_index": w, "week": node.week_labels[w],
+                         "demand_S": list(node.psi4demand[w][S]),
+                         "P": list(b[P]), "S": list(b[S]), "I": list(b[I]), "CO": list(b[CO]),
+                         "actual_s": actual, "opening_I": prev,
+                         "inventory_balance_residual": len(prev) + len(b[P]) - len(actual) - len(b[I]),
+                         "P_before_process_node": planner.before_processing.get(node.node_id, [None]*len(node.psi4supply))[w]})
+            prev = list(b[I])
+    mr = [r for r in rows if r["node"] == mom.node_id]
+    summary = {"assembly_P": sum(len(r["P"]) for r in mr),
+               "assembly_actual": sum(len(r["actual_s"]) for r in mr),
+               "assembly_final_I": mr[-1]["I"], "assembly_final_CO": mr[-1]["CO"],
+               "assembly_CO_lot_weeks": sum(len(r["CO"]) for r in mr),
+               "sealed": result.cap_hard_sealed,
+               "yard_final_I": {y.node_id: list(y.psi4supply[-1][I]) for y in yards},
+               "yard_issues": {y.node_id: sum(len(b[S]) for b in y.psi4supply) for y in yards},
+               "assembly_balance_residuals": [{"week": r["week"], "value": r["inventory_balance_residual"]} for r in mr if r["inventory_balance_residual"]]}
+    return {"name": name, "interventions": interventions, "opening_inv": opening_inv,
+            "summary": summary, "rows": rows,
+            "kitting": mom.kitting, "capacity_events": result.cap_hard_events}
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--allow-modified-engine", action="store_true",
+                    help="Explicitly label results as a working-tree implementation run")
+    args = ap.parse_args()
+    actual_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    if actual_sha != BASELINE:
+        raise SystemExit(f"Expected baseline {BASELINE}, got {actual_sha}; review before probing")
+    modified = subprocess.run(["git", "diff", "--quiet", "HEAD", "--", "wom"], cwd=ROOT).returncode
+    if modified not in (0, 1):
+        raise SystemExit("Could not verify engine worktree")
+    if modified and not args.allow_modified_engine:
+        raise SystemExit("Engine differs from baseline; use --allow-modified-engine for implementation measurements")
+    engine_blob = subprocess.check_output(
+        ["git", "hash-object", "wom/engine/forward_planner.py"], cwd=ROOT, text=True).strip()
+    helpers = runpy.run_path(str(ROOT / "tests/test_stage3a2_kitting_gate.py"))
+    cases = [measure("T01_normal", helpers), measure("T02_late_ECU_2weeks", helpers, late=True),
+             measure("T03a_opening_FG_no_parts", helpers, opening=True, no_parts=True),
+             measure("T03b_opening_FG_and_parts", helpers, opening=True),
+             measure("T03c_opening_FG_and_carry_in_CO", helpers, opening=True, no_parts=True, backlog=True),
+             measure("T04_assembly_capacity_1_for_2", helpers, capacity=True)]
+    out = Path(args.out)
+    out.write_text(json.dumps({"baseline": BASELINE,
+                              "implementation_worktree": bool(modified),
+                              "forward_planner_blob": engine_blob,
+                              "cases": cases}, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps([{ "case": c["name"], **c["summary"]} for c in cases], ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()
+

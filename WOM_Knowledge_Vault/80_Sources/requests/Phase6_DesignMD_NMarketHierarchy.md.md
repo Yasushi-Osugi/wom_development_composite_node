@@ -1,0 +1,850 @@
+---
+tags: [wom, source]
+---
+# requests/Phase6_DesignMD_NMarketHierarchy.md
+
+原文資料（記載時点の状態を含む）。
+
+[GitHub原本・固定SHA](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/7d6c7d734ebdcb7b213bab3116ca59d3d4935f55/requests/Phase6_DesignMD_NMarketHierarchy.md) · [原文テキスト](../../90_Raw/requests/Phase6_DesignMD_NMarketHierarchy.md.txt)
+
+基準: `7d6c7d734ebdcb7b213bab3116ca59d3d4935f55`。[[00_Start/Source_Policy|出典と読み方]]
+
+関連機能: [[10_Functions/02_Demand_Allocation|Optimization on Demand Allocation]]
+
+## 原文の見出し
+
+- Phase 6 実装設計 — N市場化：真の最適の実計算、次元の一般化、階層化単体格子
+- 1. Phase 6 全体像
+- 1.1 目的
+- 1.2 なぜ「N市場化」を1つの Phase にまとめるか（**設計判断の記録**）
+- 1.3 本 Phase のスコープ（3ステップ、この順序）
+- 1.4 スコープ外（Phase 7 以降へ送る）
+- 2. 用語の整理（**先に潰しておく落とし穴**）
+- 3. ステップ 6-1 — `true_optimum` の実計算化
+- 3.1 現状
+- tools/demo_allocation_nonconcave.py
+- 3.2 方式（CLAUDE.md L1798-1816 で大杉さんと確定済み）
+- 3.3 閾値の扱い（**この設計の要**・rev.2 で全面改訂）
+- 3.4 実装位置と返却フィールド
+- 3.5 回帰値（**実装で確定・rev.2 で更新**）
+- 4. ステップ 6-2 — 次元の一般化
+- 4.1 何が3次元に固定されているか
+- wom/allocation/grid.py:24
+- 4.2 依存箇所の全数（`grep -rn "MARKETS"` 実測）
+- 4.3 改修方針
+- 廃止しない。後方互換のため既定値として残す。
+- 超過時は計算に入る前に例外を投げ、階層化（6-3）の使用を促す
+- 4.4 禁足ルールとの関係
+- 5. ステップ 6-3 — 階層化単体格子（`hierarchical_simplex`）
+- 5.1 考え方
+- 5.2 削減効果（**rev.4 で実データから再計算**）
+- 5.3 方式の選択（**R3・rev.4 で決定**）
+- 5.4 グルーピングの原則（**R1・rev.4 で決定**）
+- 5.5 検証方法（**この Phase の中核**）
+- 5.6 実装位置
+- 6. 共通仕様
+- 6.1 技術制約（Phase 3/4/5 を継承）
+- 6.2 ファイル配置
+- 6.3 後方互換の絶対条件
+- 7. テスト計画
+- 7.1 ステップ 6-1（真の最適、7件）
+- 7.2 ステップ 6-2（次元の一般化、8件）
+- 7.3 ステップ 6-3（階層化、実装済み・14件）
+- 7.2a ステップ 6-2a（N市場経路の End-to-End、4件・実装済み）
+- 7.4 合計
+- 8. 成功基準
+- 9. レビュー事項（大杉さんへ）
+- 9.1 決定済み（2026-09-11）
+- 9.2 未決
+- 10. Phase 7 への引き継ぎ
+- 改版履歴
+
+## 関連する知識源
+
+- [[80_Sources/wom/allocation/grid.py|wom/allocation/grid.py]]
+- [[80_Sources/tools/demo_allocation_nonconcave.py|tools/demo_allocation_nonconcave.py]]
+- [[80_Sources/wom/allocation/analytics.py|wom/allocation/analytics.py]]
+- [[80_Sources/docs/development/wom-v1r4m0_profit_landscape_dev_guide.md|docs/development/wom-v1r4m0_profit_landscape_dev_guide.md]]
+- [[80_Sources/requests/Phase3_DesignMD_Visualization.md|requests/Phase3_DesignMD_Visualization.md]]
+- [[80_Sources/requests/Phase6-1_RequestLetter_to_CodeKun.md|requests/Phase6-1_RequestLetter_to_CodeKun.md]]
+- [[80_Sources/wom/allocation/merit_order.py|wom/allocation/merit_order.py]]
+- [[80_Sources/tools/gen_apparel_global_model.py|tools/gen_apparel_global_model.py]]
+- [[80_Sources/tools/proto_terrain2.py|tools/proto_terrain2.py]]
+- [[80_Sources/wom/allocation/hierarchical_simplex.py|wom/allocation/hierarchical_simplex.py]]
+- [[80_Sources/tests/test_allocation_hierarchical.py|tests/test_allocation_hierarchical.py]]
+- [[80_Sources/requests/Phase6-3_RequestLetter_to_CodeKun.md|requests/Phase6-3_RequestLetter_to_CodeKun.md]]
+- [[80_Sources/tests/test_allocation_nmarket.py|tests/test_allocation_nmarket.py]]
+- [[80_Sources/requests/Phase6-2a_RequestLetter_to_CodeKun.md|requests/Phase6-2a_RequestLetter_to_CodeKun.md]]
+- [[80_Sources/tools/plot_allocation_map.py|tools/plot_allocation_map.py]]
+- [[80_Sources/docs/design/ask_global_allocation_spec.md|docs/design/ask_global_allocation_spec.md]]
+- [[80_Sources/requests/Phase6-2_RequestLetter_to_CodeKun.md|requests/Phase6-2_RequestLetter_to_CodeKun.md]]
+
+## 全文（コメント・原文を省略せず収録）
+
+````markdown
+# Phase 6 実装設計 — N市場化：真の最適の実計算、次元の一般化、階層化単体格子
+
+**作成日**: 2026年9月9日
+**設計責任**: Claude君
+**対象**: 大杉さんレビュー → Code君実装
+**優先度**: HIGH（Phase 5 完了により前提が揃ったため）
+**ブランチ**: `wom-v1r4m0`
+**前提**: Phase 5 完了（commit `a7011be` / `40736a8` / `5f46ffc` / `d9c3d25`、370件全PASS）
+
+---
+
+## 1. Phase 6 全体像
+
+### 1.1 目的
+
+**A系統（`ask_global_allocation`）を、3市場固定から N 市場へ解放する。**
+
+Phase 4 / 5 で、配分問題を「メリットオーダー（貪欲）」「231点格子」「真の最適」の3水準で読み解く枠組みが完成した。ただしこの枠組みは、**すべて3市場固定の上に載っている**。
+
+- `wom/allocation/grid.py:24` — `MARKETS: Tuple[str, str, str] = ("JP", "US", "EU")`
+- `simplex_grid()` — 二重ループで3次元単体を生成（次元がコードに埋まっている）
+- `tools/demo_allocation_nonconcave.py` — `true_optimum = 103_881_758.0`（手計算値のハードコード）**→ 6-1 で撤去済み**
+
+Phase 6 は、この3つを順に外す。
+
+### 1.2 なぜ「N市場化」を1つの Phase にまとめるか（**設計判断の記録**）
+
+当初は Phase 6 のバックログを独立した5項目として並べていた（`MARKETS` ハードコード除去 / `true_optimum` 実計算化 / ev-thailand の `ga_*.csv` 作成 / パレート＋平行座標の配分版 / 階層的三角測量）。
+
+大杉さんからの問い「**直角三角図のN階層化の優先度は低いのか**」を受けて再検討した結果、**この整理は誤りである**と判断した。理由は2つある。
+
+**(1) 階層化は「4番目の可視化手法」ではなく、N市場化そのものの実現手段である。**
+
+δ=0.05 の単体格子の点数は、市場数 N に対して `C(20+N−1, N−1)` で増える。
+
+| N | 格子点数 | 備考 |
+|---:|---:|---|
+| 3 | **231** | 現行（soysauce-jpy-2027-alloc） |
+| 4 | 1,771 | |
+| 5 | 10,626 | |
+| 6 | 53,130 | **全数評価が現実的な上限** |
+| 8 | 888,030 | |
+| 10 | 10,015,005 | |
+| 12 | 84,672,315 | |
+| **21** | **137,846,528,820** | **`oil-global-2027`（marketing ノード21件）** |
+
+`oil-global-2027` は約 **1,378億点**。grid scan という方式そのものが N=10 前後で破綻し、実在ケースには到底届かない。
+
+さらに重要なのは、**台地検出とロバスト点がこの `surface` の上に載っている**ことである。
+
+```
+wom/allocation/grid.py:85      best_point()   → 台地（最大値の plateau_tol 以内の点群）
+wom/allocation/analytics.py:83  robust_point() → 台地上のミニマックス点
+```
+
+つまり N が増えると、**図が描けなくなるより先に、`plateau_size` も `robust_point` も計算できなくなる。** 階層化はこの爆発を回避する唯一の現実的手段であり、描画手法ではなく**探索手法**である。
+
+**(2) 4枚の地図のうち、地形（台地・尾根・ロバストネス）を担うのは第1の地図だけである。**
+
+Merit Order（Phase 4）は N 非依存で「どの順に積むか」を答える。Regime Map（Phase 4）は常に2次元平面なので N 非依存で「どこで判断が反転するか」を答える。この2つが N の問題を解いているように見えたのが、当初の誤った優先度づけの原因である。
+
+しかし、この2枚は**「最適点の周りがどれだけ平らか」を答えない**。「最適解はどこか」ではなく「どこまで動かしても安全か」——WOM の中心的な主張を担っているのは地形だけであり、それが N=3 でしか出せないなら、主張自体が N=3 に限定される。
+
+### 1.3 本 Phase のスコープ（3ステップ、この順序）
+
+| ステップ | 内容 | なぜこの順序か |
+|---|---|---|
+| **6-1** | `true_optimum` の実計算化（`structural_optimality_gap`） | **誤差の物差しを先に作る。** 6-3 の階層化はそれ自体が近似なので、誤差を測れないまま導入してはならない |
+| **6-2** | 次元の一般化（`MARKETS` / `simplex_grid()`） | N≥4 のケースが作れるようにする。6-3 の前提 |
+| **6-3** | 階層化単体格子（`hierarchical_simplex`） | 爆発の回避。6-1 の物差しで誤差を測りながら導入する |
+
+6-1 と 6-2 は互いに独立なので**並行実装可能**。6-3 は両方の完了後。
+
+### 1.4 スコープ外（Phase 7 以降へ送る）
+
+- パレート＋平行座標の**配分版**（B系統には Phase 3 で実装済み。A系統版は N市場化の後）
+- `ev-thailand-2026` の `ga_*.csv` 作成と適用（Phase 5 で soysauce 合成シナリオによる検証は完了済みのため、急がない）
+- GUI（Management Cockpit）への階層ドリルダウンの配線
+- 週次 PSI（Planning Engine）との接続。**本 Phase は Management 層の分析に閉じる**
+
+---
+
+## 2. 用語の整理（**先に潰しておく落とし穴**）
+
+現行文書には、**同じ英語名で違うものを指す記述が2つある**。
+
+| 現行の記述 | 実際に指しているもの | 空間 |
+|---|---|---|
+| `docs/development/wom-v1r4m0_profit_landscape_dev_guide.md` §2.4<br>「Hierarchical Triangulation」 | 4つの目的関数（Cost / Lead Time / Quality / Flexibility）を層別に2D射影する | **目的空間** |
+| `requests/Phase3_DesignMD_Visualization.md` §1.3<br>「階層化三角図（Hierarchical Triangulation）」 | 3市場の直角三角図を N 市場へ階層化する | **配分空間** |
+
+`gap_abs` と同じ構造の落とし穴である。実装に入る前に名前を分ける。
+
+**確定案:**
+
+| 対象 | 日本語 | 英語 / 識別子 |
+|---|---|---|
+| **配分空間**の階層化（本 Phase 6-3） | **階層化単体格子** | `hierarchical_simplex` |
+| **目的空間**の階層化（Phase 7 以降） | 階層化三角分割 | `hierarchical_triangulation`（現行名を維持） |
+
+`Phase3_DesignMD_Visualization.md` §1.3 および `Phase3_RequestLetter_to_CodeKun.md` の該当行は、`hierarchical_simplex` へ表記を改める（**スコープ外項目の名称変更のみ。内容の変更なし**）。
+
+---
+
+## 3. ステップ 6-1 — `true_optimum` の実計算化
+
+### 3.1 現状
+
+```python
+# tools/demo_allocation_nonconcave.py
+true_optimum = 103_881_758.0   # 設計書 §2.3 の手計算値。実行時には計算していない
+```
+
+この値がハードコードである限り、`structural_optimality_gap`（= `P_opt − P_greedy`）は soysauce の `s9_fta_cliff` でしか出せない。他ケースへは1件ずつ手計算が要る。
+
+### 3.2 方式（CLAUDE.md L1798-1816 で大杉さんと確定済み）
+
+利益関数は、cliff の on/off を固定すれば**区間ごとに線形**になる。したがって：
+
+1. cliff を持つ市場の集合を K とする（`preferential_threshold_lot` が非 None の市場）
+2. **2^|K| 通り**の「どの市場が特恵関税を発動しているか」の場合分けを列挙する
+3. 各ケースで関税率を固定 ⇒ 利益関数は線形・分離可能 ⇒ **メリットオーダー（連続版）が厳密解を与える**
+4. **整合性チェック**（後述）を通ったケースだけを候補に残す
+5. `true_optimum = max(候補ケースの利益)`
+
+計算量は `2^|K| × O(N log N)`。実務ケースで |K| は高々2〜3なので、実質コストはゼロに近い。
+
+### 3.3 閾値の扱い（**この設計の要**・rev.2 で全面改訂）
+
+**rev.1 の記述は誤りだったため、全面的に差し替える。** rev.1 では「税率を固定して解いてから、結果が仮定と矛盾していないか検査する」としていたが、この方式は**閾値が binding になる解を取り逃す**。
+
+「US が特恵を発動している」ケースの真の最適は、しばしば「**US をちょうど閾値まで積む**」点にある。税率だけ固定して素直に貪欲に解くと、US の順位によっては閾値未満で止まり、そのケースを「仮定と矛盾」として棄却してしまう。本来そのケースで最適だった解が候補から消える。
+
+**正しい方式は、閾値を配分量の上下界として先に制約に持たせることである。**
+
+```
+ケース S（S に属する市場が特恵を発動していると仮定）について：
+
+  m ∈ S       : rate  = 特恵税率
+                lower = preferential_threshold_lot     ← 下界制約
+                upper = demand_qty
+  m ∈ K \ S   : rate  = 基本税率
+                lower = 0
+                upper = min(demand_qty, threshold)     ← 上界制約
+  m ∉ K       : rate  = 基本税率, lower = 0, upper = demand_qty
+```
+
+こうすると、解いた結果は**構造的に仮定と矛盾し得ない**（`m ∈ S` なら `q[m] ≥ threshold`、`m ∈ K\S` なら `q[m] ≤ threshold` が制約により保証される）。事後の整合性チェックそのものが不要になる。棄却するのは `Σ lower > cap` で実行不可能なケースのみ。
+
+**境界（`q == threshold`）の扱い**: 発動していないケースの上界に閉区間 `threshold` を使ってよい。ちょうど閾値の点は本来「発動する」側に属するが、その点は発動ケースでも評価され、特恵税率のほうが利益が高いため、最大値を取る段階で正しい側が選ばれる。取りこぼしは生じない。
+
+実装仕様は `requests/Phase6-1_RequestLetter_to_CodeKun.md` V1.2 に、この方式で記述してある（Code君はそちらに従って実装済み）。
+
+### 3.4 実装位置と返却フィールド
+
+`wom/allocation/merit_order.py` に新規関数を追加し、`compare_with_grid()` から呼ぶ。
+
+```python
+def true_continuous_optimum(blocks, sc, cap, transfer_price_usd) -> dict:
+    """cliff の on/off を全列挙し、各ケースを線形問題として厳密に解く。
+    整合性チェックを通ったケースの最大値を返す。
+
+    returns:
+        {"profit": float,
+         "x": {market: ratio},
+         "q": {market: qty},
+         "active_cliffs": [market, ...],   # 発動している特恵の一覧
+         "cases_evaluated": int,
+         "cases_feasible": int}
+    """
+```
+
+`compare_with_grid()` の返却に以下を追加する（**既存フィールドは削除・改名しない**）。
+
+| フィールド | 定義 | 備考 |
+|---|---|---|
+| `true_optimum` | `true_continuous_optimum()["profit"]` = `P_opt` | 新規 |
+| `structural_optimality_gap` | `P_opt − P_greedy` | 新規。**構造由来の取りこぼし** |
+| `grid_resolution_error` | `P_opt − P_grid` | 新規。**格子解像度の誤差** |
+| `residual_coverage` | `abs(structural_residual) / structural_optimality_gap` | 新規。下界が本体を何%覆っているか |
+
+### 3.5 回帰値（**実装で確定・rev.2 で更新**）
+
+soysauce `s9_fta_cliff` の実測値。**2026-09-11 の実装（Code君）で確定した。**
+
+```
+true_optimum              = 103,891,296.0    配分 JP=0 / US=35,176 / EU=16,824
+structural_optimality_gap =  10,066,596.0
+grid_resolution_error      =     338,496.0
+|structural_residual|      =   9,728,100.0   （実装済み・変更なし）
+residual_coverage          =       0.966
+恒等式: 9,728,100 + 338,496 = 10,066,596
+```
+
+**設計書 rev.1 が記載していた手計算値 103,881,758 は誤りだった（記録）。**
+
+rev.1 は真の最適配分を `JP=7 / US=35,168 / EU=16,825` としていたが、これは最適点ではない。単位マージン 2,077.5 の US の需要を 8 lot 残したまま、最もマージンの低い JP（750）に 7 lot 配っており、厳密に劣る。差は1円まで分解できる。
+
+```
+US  +8 lot × 2,077.5 = +16,620.0
+EU  −1 lot × 1,831.5 =  −1,831.5
+JP  −7 lot ×   750.0 =  −5,250.0
+                       ──────────
+                        +9,538.5     ← 103,891,296.0 − 103,881,757.5
+```
+
+**丸め誤差ではなく、手計算側の最適化の誤りである。** 実装がそれを検出した。Request Letter の「手計算値に実装を合わせない」という指示が機能した事例として記録しておく。
+
+ケースA（特恵 未発動）の `35,175 × 1,831.5 + 16,825 × 1,747.5 = 93,824,700.0` は正しく、①メリットオーダーの実測値と厳密一致する（V4.2 で厳密テスト済み）。
+
+`s1_base`（線形）では `structural_optimality_gap = 0`、`residual_coverage` は 0/0 となるため **None を返す**（ゼロ除算を起こさない）。また cliff が無いため `true_optimum == P_greedy == 135,529,822.5` が厳密に成立する。
+
+## 4. ステップ 6-2 — 次元の一般化
+
+### 4.1 何が3次元に固定されているか
+
+**(a) 市場名の定数**
+
+```python
+# wom/allocation/grid.py:24
+MARKETS: Tuple[str, str, str] = ("JP", "US", "EU")
+```
+
+**(b) 単体格子の生成ロジック**（こちらが本丸）
+
+```python
+def simplex_grid(delta: float = 0.05) -> List[Tuple[float, float, float]]:
+    n = int(round(1.0 / delta))
+    pts = []
+    for i in range(n + 1):
+        for j in range(n + 1 - i):       # ← 二重ループ。次元がコードの形に埋まっている
+            pts.append(((n - i - j) / n, i / n, j / n))
+    return pts
+```
+
+### 4.2 依存箇所の全数（`grep -rn "MARKETS"` 実測）
+
+| 区分 | ファイル | 件数 |
+|---|---|---|
+| **A系統コア** | `grid.py` / `analytics.py` / `merit_order.py` / `regime_map.py` | 4ファイル |
+| **描画・CLI** | `plot_allocation_map.py` / `plot_allocation_merit_regime.py` / `run_allocation_map.py` | 3ファイル |
+| **テスト** | `test_allocation_grid.py` / `test_allocation_merit_order.py` / `test_allocation_nonconcave.py` | 3ファイル |
+| **無関係（別定義）** | `tools/gen_apparel_global_model.py`（独自の `MARKETS` dict）<br>`tools/proto_terrain2.py`（プロトタイプ、独自定義） | 触らない |
+
+`tools/gen_apparel_global_model.py` と `tools/proto_terrain2.py` は**同名の別変数**を持っているだけで `grid.py` を import していない。**改修対象外**とする（誤って巻き込まないこと）。
+
+### 4.3 改修方針
+
+**(a) `MARKETS` はデータから導出する**
+
+```python
+# 廃止しない。後方互換のため既定値として残す。
+DEFAULT_MARKETS: Tuple[str, ...] = ("JP", "US", "EU")
+
+def markets_of(blocks: Dict[str, CostBlock]) -> Tuple[str, ...]:
+    """CostBlock の辞書から市場の並びを決める。
+    順序は決定的でなければならない（格子点の並びが変わると回帰値が壊れる）。
+    """
+```
+
+**順序の決定則**は明示する。既定は `ga_market_aggregation.csv` の記載順、無い場合は辞書のキー順（Python 3.7+ の挿入順）。**アルファベット順にはしない**——現行の `("JP","US","EU")` がアルファベット順ではないため、既存の回帰値が壊れる。
+
+**実装上の注記（rev.3・実測で確認）**: 上の2つ——「CSV の記載順」と「辞書のキー順」——は**元から同じもの**になる。`derive_cost_blocks()` が `by_market` を `defaultdict` に CSV の行順で積み、その `items()` 順で `result` を組んでいるため、返る dict のキー順が `ga_market_aggregation.csv` の `market_group` 初出順と一致する。
+
+```
+CSV 行順             : JP, US/US_W, US/US_E, EU/FR, EU/BE, EU/NL
+market_group の初出順 : JP, US, EU
+derive_cost_blocks() : list(blocks.keys()) == ['JP', 'US', 'EU']   ← MARKETS と完全一致
+```
+
+**したがって `markets_of()` は `tuple(blocks.keys())` の1行でよく、`grid.py` に CSV のファイル I/O を持ち込む必要はない。**
+
+**副作用（rev.3 で追記）**: `markets_of()` 化により、**単位マージンが同値のときの並び順**が「`("JP","US","EU")` 固定」から「`blocks` のキー順」に変わる。影響するのは `analytics.py:33`（`market_ranking()`）・`merit_order.py:85,291`（Merit Order で積む順）・`regime_map.py:119`（レジームのラベル文字列）の3箇所である。soysauce では両者が一致するため**既存の回帰値は1つも変わらない**が、新しいケースで同値が起きたときに「CSV の記載順に従う」ことになる点を、**仕様として docstring に明記する**こと。暗黙にしない。
+
+**(b) `simplex_grid()` を N 次元へ**（**rev.3 で実装方式を確定**）
+
+```python
+def simplex_grid(delta: float = 0.05, n_dim: int = 3) -> List[Tuple[float, ...]]:
+    """n_dim 次元の単体格子。点数は C(n + n_dim − 1, n_dim − 1)。
+
+    **後方互換の絶対条件**: n_dim=3 のとき、返る 231 点の順序が現行実装と
+    1点も違わないこと。地形図の描画順・回帰値がこれに依存している。
+    """
+```
+
+**実装は再帰で書く。`itertools.combinations_with_replacement` は使えない。**
+
+rev.2 までは「再帰または `itertools.combinations_with_replacement` で実装する」としていたが、231点を実際に照合したところ、**後者は集合は同じで順序が異なる**ことが分かった。上の絶対条件を満たすのは再帰版だけである。
+
+```
+現行の二重ループ                          : 231点
+itertools.combinations_with_replacement : 231点（集合は同じ、**順序が異なる**）
+再帰版                                    : 231点（**値も順序も完全一致**）
+```
+
+確定した実装方式:
+
+```python
+def simplex_grid(delta: float = 0.05, n_dim: int = 3) -> List[Tuple[float, ...]]:
+    if n_dim < 2:
+        raise ValueError(f"n_dim must be >= 2, got {n_dim}")
+    n = int(round(1.0 / delta))
+    pts: List[Tuple[float, ...]] = []
+    idx = [0] * (n_dim - 1)
+
+    def rec(k: int, remaining: int) -> None:
+        if k == n_dim - 1:
+            # 第0成分は残余（現行実装で x_JP が残余であるのと同じ）
+            pts.append(tuple([remaining / n] + [v / n for v in idx]))
+            return
+        for v in range(remaining + 1):
+            idx[k] = v
+            rec(k + 1, remaining - v)
+
+    rec(0, n)
+    return pts
+```
+
+`n_dim=3` のとき `idx = [i, j]` で外側ループが `i` 昇順・内側が `j` 昇順、第0成分が `(n − i − j)/n` となり、現行の二重ループと同じ走査になる。**全231点での完全一致を確認済み。**
+
+**座標系の規約**: 現行は `x_JP` が残余（`1 − x_US − x_EU`）で、地図の軸は `X = x_US`, `Y = x_EU` である。N次元化してもこの規約を維持し、**`markets_of(blocks)` の先頭の市場が残余**になる。
+
+**再帰深さ**は `n_dim − 1`（N=21 でも20）なので Python の再帰上限には当たらない。**点数のほうが先に破綻する**（→ (c)）。
+
+いずれにせよ **n_dim=3 での点列一致がテストで担保**されること（§7.2 のテスト8）。
+
+**(c) 爆発の防止（必須）**
+
+`scan_surface()` に上限ガードを入れる。
+
+```python
+MAX_GRID_POINTS = 100_000   # N=6（53,130点）は通り、N=7（230,230点）は止まる
+
+# 超過時は計算に入る前に例外を投げ、階層化（6-3）の使用を促す
+raise ValueError(
+    f"simplex grid would have {n_points:,} points for N={n_dim} at delta={delta}. "
+    f"Use hierarchical_simplex() instead (see Phase 6-3)."
+)
+```
+
+**「走らせたら帰ってこない」を絶対に作らない。** 上限は引数で上書き可能とするが、既定では止める。
+
+**(d) 三角図（`plot_allocation_map.py`）は N=3 専用のまま**
+
+直角三角図は2次元平面への射影なので、N≥4 では原理的に描けない。**N≥4 で呼ばれたら明示的なエラーを返す**（黙って3市場だけ描く、といった挙動は禁止）。N≥4 の地形は 6-3 の階層ドリルダウン経由で見る。
+
+### 4.4 禁足ルールとの関係
+
+`grid.py` は A系統4モジュールの1つであり、Phase 5 で既に1度、明示的なスコープインとして改修している（`evaluate_point()` の数量計算順の入替、Phase 5 設計書 §3.4）。
+
+**本 Phase でも `grid.py` は明示的スコープイン**とする。ただし：
+
+- Planning Engine（`backward_planner.py` / `forward_planner.py` 等の禁足コア6ファイル）には**一切触れない**
+- golden 13ケースは**不変**であること（A系統は週次 PSI に接続していないので、そもそも影響し得ない。テストで確認する）
+
+---
+
+## 5. ステップ 6-3 — 階層化単体格子（`hierarchical_simplex`）
+
+### 5.1 考え方
+
+N 市場を木構造にまとめ、**各ノードで3つ以下の子に配分する**。各ノードは3市場以下の単体なので、現行の 231点スキャンがそのまま使える。
+
+```
+                 [全社]  ← 231点の三角図（3地域への配分）
+                /   |   \
+          [地域A] [地域B] [地域C]   ← 各231点（地域内の市場への配分）
+           / | \
+        m1  m2  m3
+```
+
+経営者から見ると、**上位の三角図をクリックすると下位の三角図に降りる**というドリルダウンになる。地域統括ごとの P&L という、実際の企業の意思決定構造とそのまま重なる。
+
+### 5.2 削減効果（**rev.4 で実データから再計算**）
+
+**rev.3 までの「3分木・13枚 × 231点 = 3,003点」は理想形の概算だった。** 実際の木は3分木ではなく、子が2つのノードが混じる（2市場なら 231点ではなく21点）。`oil-global-2027` の `sc_tree_master.csv` / `node_master.csv` から実際の木を組んで数え直した。
+
+**ノード1つあたりの点数**は子の数 k に対して `C(20 + k − 1, k − 1)`。k=3 で 231点、**k=2 なら 21点**、k=1 は走査不要（配分が一意）。
+
+`oil-global-2027`（21市場）の実測:
+
+```
+ALL                子3     231点     ← 地域（JP / EU / US）
+  JP               子2      21点     ← 国産 / 輸入
+    JP_国産         子3     231点     ← Local / Local_H / Local_R
+      Local        子3     231点     ← KANTO / KANSAI / CHUBU
+      Local_H      子3     231点
+      Local_R      子3     231点
+      Import       子2      21点     ← KANTO_I / KANSAI_I
+  EU               子2      21点
+    EU_Local       子3     231点     ← DE / FR / NL
+    EU_Import      子2      21点     ← DE_I / FR_I
+  US               子2      21点
+    US_Local       子3     231点     ← TX / CA / NY
+    US_Import      子2      21点     ← MW_I / NE_I
+                        ──────────
+  走査ノード 13枚         1,743点
+```
+
+| ケース | 市場数 | 走査ノード | 階層化 | 平坦全数 | 削減比 |
+|---|---:|---:|---:|---:|---:|
+| soysauce（地域6件） | 6 | 3 | **483** | 53,130 | 110× |
+| `oil-global-2027` | 21 | 13 | **1,743** | 137,846,528,820 | **7,909万×** |
+
+**枚数は概算どおり13枚で、点数は概算の 3,003 より少ない 1,743点だった。** 子が2つのノードが8つあり、そこが 231点ではなく21点で済むためである。
+
+**訂正対象**: `3,003` は README と rev.1 の改版履歴にも書いてある。README は次の機会に直す。Request Letter（Phase 6-2）は当時の記録なので書き換えない。
+
+### 5.3 方式の選択（**R3・rev.4 で決定**）
+
+階層化には2つの方式がある。
+
+**案A：完全評価型** — 上位の各点について、下位を毎回解き直す。
+
+- 訪問した格子点の上では**厳密**
+- コストは乗算的。深さ2・N=9 で `231 × (3 × 231) = 160,083` 点。深さ3では再び破綻する
+
+**案B：逐次確定型** — 上位を先に確定し、その配分のもとで下位へ降りる。
+
+- コストは加算的（上表のとおり）
+- ただし**これ自体が貪欲法である**。上位の判断が下位の事情を見ずに決まるため、真の最適を外しうる
+
+**決定（2026-09-11・大杉さん）: 案B ＋ 誤差測定を採る。** 理由：
+
+1. 案Aは結局スケールしない。実在ケース（N=21）に届かない方式を採る意味がない
+2. 案Bの誤差は、**ステップ 6-1 で作る `structural_optimality_gap` でそのまま測れる**。階層化は貪欲法の一種なので、Phase 5 で用意した道具がそのまま当たる
+3. 誤差が金額で出せるなら、階層化は「近似だから信用できない」ではなく **「誤差を保証した近似」**になる
+
+**Phase 5 は寄り道ではなく、この布石だったことになる。**
+
+### 5.4 グルーピングの原則（**R1・rev.4 で決定**）
+
+グループ分けが恣意的だと誤差が大きくなる。原則を先に決める。
+
+**非分離性の源は「能力の取り合い」である。** 同じ Mother Plant の能力を奪い合う市場どうしは分離できないが、別工場から供給される市場どうしはほぼ分離できる。したがって：
+
+> **第一原則：市場を「供給元の Mother Plant」でグループ化する。**（**決定済み**・2026-09-11 大杉さん）
+
+**ただし第一原則だけでは木にならない（rev.4 で判明）。** `oil-global-2027` は `mother_plant` 8件・`marketing` 21件なので、第一原則で割ると**トップが8分岐**になる。8分岐のノードは C(27,7) = **888,030点**で、階層化した意味がなくなるうえ、三角図としても描けない。
+
+**したがって「各ノードの子は3つ以下」を構造上の制約として明示する。** 第一原則で作ったグループが3つを超えたら、その**上に**もう一段まとめる。まとめ方が第二原則である。
+
+> **第二原則：Mother Plant のグループが3つを超えたら、通貨圏（＝地域）でまとめる。**
+
+Regime Map の軸が `fx_usd` である以上、為替で一緒に動く市場は同じ枝にあるべきである。`oil-global-2027` の実データで確認すると、8つの供給ラインは JP 4 / EU 2 / US 2 に分かれる（`sc_tree_master.csv` の `leaf_out` から `supply_point` まで遡って実測）。JP だけは4つあってまだ3を超えるので、そこに第三原則が要る。
+
+> **第三原則：それでも3つを超えたら、供給モード（国産／輸入）で割る。**
+
+JP の4ラインは 国産3（`Local` / `Local_H` / `Local_R`）と 輸入1（`Import`）に割れ、これで全ノードが3以下に収まる。結果が §5.2 の13ノード・1,743点である。
+
+**3つの原則はいずれも「能力の取り合いが強い市場どうしを同じ枝に置く」という同じ理屈から出ている。** 同じ工場 → 同じ通貨圏 → 同じ供給モード、の順に結びつきが弱くなる。恣意的なグループ分けを避けるために、**この順序を固定**し、実装は上から順に適用する。
+
+**木は `sc_tree_master.csv` + `node_master.csv` から機械的に組める。** 人手でグループ表を書かない（書くと、どのケースでも人手が要るものになってしまう）。
+
+### 5.5 検証方法（**この Phase の中核**）
+
+階層化の誤差を、**測れる規模で実測する**。
+
+N=6 は平坦全数（53,130点）が現実的に計算でき、かつ階層化（§5.2 の実測で 483点）も走る。**両方が計算できる唯一の帯域**である。
+
+したがって検証は次の2段構えとする。
+
+**(1) 分割不変性テスト（安価・強力）**
+
+soysauce の3市場を、**需要と単価が完全に同一な双子**へ分割して6市場ケースを合成する（JP → JP-a / JP-b、以下同様。需要は半分ずつ）。
+
+このとき、**6市場の最適利益は3市場の最適利益と一致しなければならない**。分割は情報を増やしていないからである。
+
+```
+3市場 s1_base の最適利益  ==  6市場（双子分割）の最適利益     （許容差 ±1 JPY）
+3市場 s1_base の最適利益  ==  6市場を階層化した最適利益        （同上）
+```
+
+Phase 4 で `switching_points()` の 117円/119円 を Regime Map が再現することを最重要テストに置いたのと同じ考え方——**新機能が既存の検証済み結果を再現する**ことで、新しい数学を持ち込んでいないことを示す。
+
+**(2) 誤差の実測（非対称な6市場）**（**R2・rev.4 で決定**）
+
+**決定（2026-09-11・大杉さん）: soysauce の地域6件をそのまま非対称6市場として使う。合成ケースは新規に作らない。**
+
+`data/sample/soysauce-jpy-2027-alloc/ga_market_aggregation.csv` は、もともと**2階層で書かれている**。
+
+```
+market_group,region,internal_ratio,base_qty_lot
+JP,JP,      1.0000,30150
+US,US_W,    0.5000,17588
+US,US_E,    0.5000,17588
+EU,FR,      0.4286,15075
+EU,BE,      0.2857,10050
+EU,NL,      0.2857,10050
+```
+
+**`region` 列の6件が、そのまま非対称6市場である。** 需要は 30,150 / 17,588 / 17,588 / 15,075 / 10,050 / 10,050 と非対称で、原価も `region_block()` が地域ごとに別々に積んでいる（同じ市場グループでも経由するエッジが違う）。そして **`market_group` 列が、そのまま検証用の正解グルーピングになる**（JP 1件 / US 2件 / EU 3件）。
+
+新しいケースを作るより、この方が優れている点が3つある。
+
+1. **データを1行も作らない。** 既存の回帰値と同じ素材の上で測れる
+2. **グルーピングの正解が最初から書いてある。** `market_group` と、§5.4 の原則で組んだ木が一致するかを直接テストできる
+3. **内部比率（`internal_ratio`）の意味が変わることが可視化される**（下記）
+
+**重要な区別**: 現行の3市場スキャンは `internal_ratio` を**固定**して地域を集約している（仕様書 §2.4「最適化対象外」）。6地域の階層スキャンは、**その内部比率そのものを最適化する**。したがって
+
+```
+3市場スキャンの最良点  ≠  6地域を階層化した最良点
+```
+
+であり、**後者のほうが良い（または同じ）**はずである。これは不具合ではなく、階層化が新たに獲得した自由度である。**「一致すること」をテストに書いてはいけない。** 測るのは次の3つである。
+
+**誤差の基準は `P_flat` ではなく `P_opt` である（rev.6 で訂正）。**
+
+```
+P_opt   = true_continuous_optimum()      ← 格子を経由しない。基準はこれ
+P_flat  = 平坦全数（53,130点）の最良点
+P_hier  = 階層化（483点）の最良点
+
+階層化の誤差 = P_opt − P_hier      ← 常に 0 以上
+参考値       = P_hier − P_flat     ← **符号が定まらない**
+```
+
+rev.5 までは「階層化の誤差 = `P_flat − P_hier`、0 以上」としていた。**実測の結果、これは誤りだった。** soysauce の地域6件でシナリオ×能力を15通り測ると、階層化が平坦格子に**勝ち6・分け3・負け6**である。
+
+理由は、階層化が単なる間引きではなく**多重解像度**だからである。誤差の源が2つあり、向きが逆を向く。
+
+| 誤差の源 | 向き |
+|---|---|
+| 上位で確定した配分が下位の事情を見ていない（案B の近似） | 悪くなる |
+| グループ内は `cap_g` に対する5%刻み＝**絶対量では細かい** | 良くなる |
+
+**これは Phase 4/5 の `gap_amt = P_greedy − P_grid` と同じ落とし穴である。** あのときも貪欲法と格子のどちらが上かに決まった順序はなく、その反転自体が指標だった。**次元でも同じことが起きる。** 実装でもテストでも `P_hier − P_flat` に符号の仮定を置いてはいけない。
+
+実測（`fx=150 / mat=6.0`）:
+
+| `cap_wk` | `P_opt` | `P_flat` | `P_hier` | `P_opt−P_flat` | **`P_opt−P_hier`** |
+|---:|---:|---:|---:|---:|---:|
+| 400 | 75,891,637.5 | 75,706,800 | 75,803,520 | 184,837.5 | **88,117.5** |
+| 500 | 94,455,637.5 | 93,564,900 | 93,993,780 | 890,737.5 | **461,857.5** |
+| 650 | 121,188,862.5 | 120,640,530 | 120,640,530 | 548,332.5 | 548,332.5 |
+| 800 | 135,529,822.5 | 128,819,812.5 | 130,292,415 | 6,710,010 | **5,237,407.5** |
+| 1200 | 148,505,572.5 | 148,505,572.5 | 146,664,915 | 0 | 1,840,657.5 |
+
+`cap_wk=1200`（能力が需要を上回る）では平坦格子が `P_opt` にちょうど届き、階層化が負ける。**能力が拘束していないときは階層化の旨味がない。**
+
+**(3) 内部比率を解放して得られる利益は「能力の切れ目がグループの内側に落ちたとき」だけ生じる（rev.6 で追加）**
+
+v0r4 §2.4 で「階層モードでは内部配分が各ノードの決定変数になる」と定めた。その値打ちを貪欲法ベース（格子を経由しない厳密値）で実測した。
+
+| `cap_wk` | 3市場（比率固定） | 6地域（比率も自由） | 差 | 限界市場 |
+|---:|---:|---:|---:|---|
+| 300 | 57,142,800.0 | 57,142,800.0 | **0** | EU / NL |
+| 400 | 75,650,700.0 | 75,891,637.5 | +240,937.5 | US / US_W |
+| 500 | 93,824,700.0 | 94,455,637.5 | **+630,937.5** | US / US_W |
+| 650 | 121,085,700.0 | 121,188,862.5 | +103,162.5 | US / US_E |
+| **800（既定）** | 135,529,822.5 | 135,529,822.5 | **0** | JP / JP |
+| 1000 | 148,505,572.5 | 148,505,572.5 | **0** | なし |
+
+**`cap_wk=400〜650` の帯域でだけ正になる。** 限界市場がグループの内側（US_W / US_E）に落ちている帯域である。既定の `cap_wk=800` では限界市場が JP（単独グループ）なので、内部比率を解放しても1円も増えない。
+
+**帰結: 階層化のテストは `cap_wk=500` で書く。** `cap_wk=800` では効果が 0 に退化し、「通っているが何も検証していない」テストになる。既存の回帰値が `cap_wk=800` なのは、この意味では運が悪い。
+
+**これらの数字が、N=21 で平坦全数が計算できないぶんを補う。** 外挿ではなく、「N=6 では誤差がこれだけだった」という実測で語れる。
+
+### 5.6 実装位置
+
+```
+wom/allocation/hierarchical_simplex.py   ← 新規
+    build_hierarchy()      市場をグループ木に組む（5.4 の3原則を順に適用）
+    scan_hierarchical()    木を降りながらスキャン（案B）
+    hierarchy_gap()        平坦全数との差を測る（N が小さいときのみ）
+```
+
+**実装上の制約（rev.6・実測）**: `simplex_grid()` は `n_dim >= 2` しか作れない。**子が1つのノードは走査せず、`evaluate_point((1.0,), ...)` で直接評価する**（点数にもノード数にも数えない。§5.2 の 483点・1,743点はこの前提）。
+
+**`oil-global-2027` は 21市場ではなく 15市場で接続する（rev.7・決定）**: 1 lot の物理単位が市場ごとに違うため。`Gasoline_Local_Hormuz` / `_RedSea` の6市場は 1 lot = 100,000 bbl（≈15,900 kL）で、他15市場の kL 相当と 15,882 倍違う（小売価格 2,700,000,000 JPY vs 170,000 JPY）。A系統は「1つの能力プールを lot 単位で奪い合う」モデルなので、単位が違う市場を同じ問題に入れられない。**これはモデルの誤りではなく**（CLAUDE.md L528 が意図的設計と明記）、A系統だけが単位の同一性を必要とする。仕様書 v0r5 §2.6 に**単位軸の粒度束縛**として明文化した。実測（Code君の実装 `hierarchical_simplex.py` に価格平均の修正を当てたもの）:
+
+```
+oil-global-2027（uom="KL" の15市場）
+  ALL(子3) → JPY/EUR/USD(各子2) → 供給ライン6(子3または子2) → 市場15
+  10ノード・1,050点で完走     平坦全数 N=15 は C(34,14) = 1,391,975,640点（走らない）
+  削減比 1,325,691 倍
+
+  cap_wk=400   P_hier 12,025,728,000.0   P_opt 12,087,579,600.0   誤差 0.51%
+  cap_wk=800   P_hier 20,885,805,337.0   P_opt 21,444,164,700.0   誤差 2.60%
+  cap_wk=1500  P_hier 31,911,826,137.0   P_opt 32,836,576,700.0   誤差 2.82%
+```
+
+**グループ内の販売価格は同一とは限らない（rev.7・訂正）**: Phase 6-3 Request Letter V2 は `price_local` を「子で同一」と要求していたが誤りだった。soysauce では FR/BE/NL が同価（6,156）でたまたま成立していたにすぎない。oil は KANTO 170,000 / KANSAI 168,000 / CHUBU 172,000 と普通に違う。**`price_local` は原価と同じく需要加重平均**とし、同一を要求するのは `ccy` と `material_usd_base` だけにする。soysauce の回帰値は不変（実測確認済み）。同じ落とし穴が `cost_block.py` にもあり、`price, ccy = pr, pc` はグループ内の**最後の region の価格**を黙って採っている。
+
+**`cost_block.py` のサイレントなデータ欠落（rev.6・実測）**: `leaf_of_region = {r["region"]: r["node_name"] ...}` は `region` が一意であることを暗黙に仮定している。`oil-global-2027` は **21の `leaf_out` に対して `region` が15種類しかなく**（`KANTO`/`KANSAI`/`CHUBU` が3本の供給ラインで重複）、**後の行が前の行を黙って上書きする**。6-3b はここから直す（`market_node` 列の追加と重複検出）。
+
+`grid.py` の `scan_surface()` は**置き換えない**。N≤6 では従来どおり平坦全数を使う（誤差ゼロ）。階層化は N≥7 の手段であり、かつ N=6 では**校正用に両方走らせる**。
+
+---
+
+## 6. 共通仕様
+
+### 6.1 技術制約（Phase 3/4/5 を継承）
+
+- matplotlib のみ（plotly / bokeh / dash / streamlit / seaborn は不採用。スタンドアロン Windows PC 運用のため）
+- 新規依存パッケージなし（`itertools` / `math` は標準ライブラリ）
+- `matplotlib.use("Agg")` は `pyplot` import より前
+- 図中のテキストは**すべて英語**（日本語フォント未導入環境での豆腐化防止）
+- 各描画関数は生成した出力パスを返す。`plt.close(fig)` を必ず呼ぶ
+- **乱数を使わない**。すべて決定的
+- 禁足コア（`backward_planner.py` 等6ファイル）には一切触れない
+
+### 6.2 ファイル配置
+
+| 区分 | パス | 扱い |
+|---|---|---|
+| 新規 | `wom/allocation/hierarchical_simplex.py` | 6-3 |
+| 改修（明示スコープイン） | `wom/allocation/grid.py` | 6-2 |
+| 改修（追加のみ） | `wom/allocation/merit_order.py` | 6-1（`true_continuous_optimum()` 追加、`compare_with_grid()` にフィールド追加） |
+| 改修（`MARKETS` 参照の差し替え） | `analytics.py` / `regime_map.py` / 描画3ツール | 6-2 |
+| 新規データ | `data/sample/soysauce-jpy-2027-alloc/` の6市場合成 | 5.5 |
+| 無変更 | B系統（`wom/visualization/*`）・禁足コア・`transmission.py` / `cost_block.py` | — |
+
+### 6.3 後方互換の絶対条件
+
+以下が1つでも崩れたら実装は不合格とする。
+
+1. `simplex_grid(delta=0.05)` を引数なしで呼んだとき、**231点が現行と同一順序**で返る
+2. soysauce `s1_base` の回帰値（最大利益・尾根・台地・切替点 117円/119円・FXB）が**すべて不変**
+3. Phase 4 の `s1_base` 分解（`gap_amt = 3,396,750` / `expected_gap = 3,396,750` / `structural_residual = 0`）が**不変**
+4. Phase 5 の `s9_fta_cliff` 分解が**不変**
+5. golden 13ケースが**不変**
+6. 既存370件が**全PASS**
+
+---
+
+## 7. テスト計画
+
+### 7.1 ステップ 6-1（真の最適、7件）
+
+1. `test_true_optimum_s9_matches_design_value` — `s9_fta_cliff` で `103,891,296.0`（±1 JPY・実装で確定した回帰値）
+2. `test_true_optimum_case_a_matches_greedy` — 特恵未発動ケースが `93,824,700.0` と厳密一致
+3. `test_true_optimum_rejects_infeasible_case` — 閾値を満たさない仮定のケースが棄却されること（**最重要**）
+4. `test_structural_optimality_gap_identity` — `|structural_residual| + grid_resolution_error == structural_optimality_gap`
+5. `test_residual_coverage_s9` — `0.967`（±0.001）
+6. `test_linear_case_gap_is_zero` — `s1_base` で `structural_optimality_gap == 0`
+7. `test_residual_coverage_none_when_gap_zero` — 線形ケースで `residual_coverage is None`（ゼロ除算しない）
+
+### 7.2 ステップ 6-2（次元の一般化、8件）
+
+8. `test_simplex_grid_3d_order_unchanged` — 231点の**順序まで**現行と一致（**最重要**）
+9. `test_simplex_grid_point_counts` — N=2/3/4/5/6 で `C(20+N−1, N−1)` と一致（21 / 231 / 1,771 / 10,626 / 53,130）
+10. `test_simplex_grid_sums_to_one` — 全点で成分和が 1.0（浮動小数の許容差込み）
+11. `test_markets_order_is_deterministic` — 同じ入力から同じ並びが返る
+12. `test_markets_order_not_alphabetical` — 既定が `("JP","US","EU")` のままであること
+13. `test_scan_surface_guard_raises` — N=7 で `MAX_GRID_POINTS` 超過の例外が**計算に入る前に**投がること
+14. `test_plot_allocation_map_rejects_n4` — 三角図が N≥4 で明示エラー
+15. `test_regression_s1_base_unchanged` — soysauce の全回帰値が不変
+
+### 7.3 ステップ 6-3（階層化、実装済み・14件）
+
+**（rev.8 で実態に同期）** 当初計画の6件（16〜21）は、実装に落とす過程でより詳細な14件に分解された。実装順に列挙する（`tests/test_allocation_hierarchical.py`、`requests/Phase6-3_RequestLetter_to_CodeKun.md` V7 / `Phase6-3b_Addendum_to_CodeKun.md` A7 / `Phase6-3c_Addendum_A9_to_CodeKun.md`）。
+
+**6-3a（8件、`Phase6-3_RequestLetter` V7）**:
+16. `test_aggregate_block_reproduces_market_blocks` — `aggregate_block()` が既存3市場ブロックを全フィールド再現（最重要）
+17. `test_build_hierarchy_reproduces_market_group` — soysauce で `market_group`（JP / US 2件 / EU 3件）を再現、3ノード
+18. `test_hierarchy_split_invariance` — 双子分割した6市場の最適利益が3市場と一致（階層経由・最重要）
+19. `test_hierarchy_gap_is_nonnegative` — `hierarchy_gap >= 0` が全シナリオで成立
+20. `test_hierarchy_gap_regression_cap500` — `cap_wk=500` の回帰値固定（483点/53,130点）
+21. `test_hier_minus_flat_has_no_fixed_sign` — `hier_minus_flat` の符号が固定されないことの固定
+22. `test_internal_ratio_freedom_only_when_cut_is_inside_group` — 内部比率解放の効果は限界市場の位置で決まる
+23. `test_hierarchy_errors` — 通貨混在・cliff混在・`max_children`超過・子1ノードの4エラー系
+
+**6-3b（2件、Addendum A7）**:
+24. `test_aggregate_block_averages_price` — `price_local` は需要加重平均、通貨混在は拒否（A1）
+25. `test_oil_uom_split_and_hierarchy` → **6-3c で `test_oil_uom_split_and_hierarchy` / `test_oil_structure_only` に分割**（下記）
+
+**6-3c（4件、Addendum A9・原価経路の再構成）**:
+26. `test_path_supplement_does_not_change_soysauce` — 経路補完後も soysauce が全フィールド完全一致（最重要）
+27. `test_tariff_found_on_path_not_only_final_edge` — 経路上探索でも soysauce の関税率が不変
+28. `test_unreachable_leaf_raises` — 経路が無い `leaf_out` は既定で `ValueError`、`require_full_path=False` なら `incomplete_paths` に記録
+29. `test_oil_uom_split_and_hierarchy` / `test_oil_structure_only` — `oil-global-2027` が15市場・10ノード・1,050点で完走（`uom="KL"`）。`uom="KL100KBBL"` は構造のみ（6市場・3ノード、profit は assert しない）
+
+### 7.2a ステップ 6-2a（N市場経路の End-to-End、4件・実装済み）
+
+`tests/test_allocation_nmarket.py`（`requests/Phase6-2a_RequestLetter_to_CodeKun.md`）。
+
+- `test_markets_of_after_twin_split` / `test_four_market_twin_split_invariance`（最重要）
+- `test_four_market_grid_degrades_with_dimension`（格子の劣化 −350,692.5 JPY を固定）
+- `test_four_market_pipeline_runs`
+
+### 7.4 合計
+
+| ステップ | 新規テスト | 状態 |
+|---|---:|---|
+| 6-1 真の最適 | 7 | ✅ 実装済み（`64e7757` / `8a8eb1f`） |
+| 6-2 次元の一般化 | 7 | ✅ 実装済み（`32b2544`） |
+| 6-2a End-to-End | 4 | ✅ 実装済み（`b41581a`） |
+| 6-3a 階層化コア | 8 | ✅ 実装済み |
+| 6-3b `price_local` 平均化・uom分離 | 2 | ✅ 実装済み |
+| 6-3c 原価経路の再構成 | 4 | ✅ 実装済み（A9） |
+
+既存370件 ＋ 32件（6-1/6-2/6-2a/6-3a/6-3b/6-3c）＝ **402件全PASS（rev.8 時点）**。
+
+---
+
+## 8. 成功基準
+
+- [x] `true_optimum` が実行時に計算され、`s9_fta_cliff` で `103,891,296.0`（±1 JPY）を返す
+- [x] 整合性チェックが機能し、実現不可能なケースを棄却する
+- [x] `simplex_grid(0.05)` の 231点が**順序まで**不変
+- [x] N=6（53,130点）が現実的な時間で走り、N=7 は**計算前に**止まる
+- [x] N市場経路が端から端まで動く（双子分割の不変性・6-2a で N=4 にて確認）
+- [x] 双子分割した6市場の最適利益が3市場と一致する（**平坦・階層の両方で**）
+- [x] soysauce の地域6件（非対称）で、階層化の誤差 `P_opt − P_hier` が**金額で**出る（基準を `P_flat` から `P_opt` へ rev.6 で訂正済み）
+- [x] `build_hierarchy()` が soysauce で `market_group`（JP / US 2件 / EU 3件）を再現する
+- [x] `oil-global-2027`（`uom="KL"` の15市場）で階層化スキャンが **10ノード・1,050点**で完走する（6-3b/6-3c。`ga_market_aggregation.csv` の作成・`uom` の是正・原価経路の再構成〔A9〕を含む）
+- [x] soysauce の全回帰値・Phase 4/5 の全分解値・golden 13ケースが不変
+- [x] 402件全PASS
+
+---
+
+## 9. レビュー事項（大杉さんへ）
+
+### 9.1 決定済み（2026-09-11）
+
+**R1. グルーピングの第一原則 → 「供給元 Mother Plant」で決定。**
+非分離性の源が能力の取り合いである以上これが理屈に合う、という理由による。ただし rev.4 の実測で、**第一原則だけでは木にならない**（`oil-global-2027` はトップが8分岐）ことが判明したため、第二原則（通貨圏＝地域）・第三原則（供給モード）を §5.4 で追加し、適用順序を固定した。
+
+**R2. 非対称6市場の作り方 → soysauce の地域6件をそのまま使う。**
+既存の回帰値との連続性を優先。rev.4 の調査で、`ga_market_aggregation.csv` の `region` 列6件が最初から非対称であり、`market_group` 列がグルーピングの正解表として使えることが分かった（§5.5(2)）。**合成ケースの新規作成は不要になった。**
+
+**R3. 階層化の方式 → 案B（逐次確定型）＋ 誤差測定で決定。**
+案Aは深さ3で再び破綻し、実在ケース（N=21）に届かないため。誤差は 6-1 の `structural_optimality_gap` で金額として測る。
+
+**R4. N≥4 で三角図が描けないときの振る舞い → 明示エラー（6-2 で実装済み）。**
+`tools/plot_allocation_map.py` の `_require_three_markets()`。N≥4 は 6-3 の階層ドリルダウン経由で見る。
+
+**R5. `oil-global-2027` の `ga_market_aggregation.csv` → 6-3 のスコープに含める（6-3b）。**
+不足は9本中この1本だけであり、内容は `sc_tree_master.csv` の `leaf_out` 21件から機械的に書ける。21市場で実際に走って初めて「1,378億点 → 1,743点」が主張になるため、6-3 の最後の小ステップとして実施する。
+
+**R6. 階層化が内部比率を最適化することを認め、仕様書側を是正する。**
+調査の結果、**`internal_ratio` はコード上「原価集約の重み」としてしか使われていなかった**（`cost_block.py` の `w = ratio / tot_ratio` の1箇所のみ）。「グループ内配分を固定する」という意味は**実装されたことがなく**、3市場モデルにその決定変数が無かっただけである。したがって階層化がグループ内配分を最適化しても、CSV も列の意味も変わらない。
+
+変更が必要だったのは仕様書側であり、**`docs/design/ask_global_allocation_spec.md` を v0r4 に更新した**（§2.4 の束縛を「1ノードあたり3市場」へ、§2.5 の「4市場以上は拒否」を撤回、§4.2 の `market_group` 3種以下を撤廃）。**この3点は Phase 6-2 の時点で既に実装と食い違っており、6-3 を待たずに是正すべきものだった。**
+
+### 9.2 未決
+
+現時点で未決のレビュー事項はない。
+
+---
+
+## 10. Phase 7 への引き継ぎ
+
+- パレート＋平行座標の**配分版**（N市場化の完了後に着手すべき。B系統版は Phase 3 で実装済み）
+- `ev-thailand-2026` の `ga_*.csv` 作成と、実ケースでの `structural_optimality_gap` 測定
+- 目的空間の階層化（`hierarchical_triangulation`、dev guide §2.4）
+- Management Cockpit GUI への階層ドリルダウンの配線
+- `oil-global-2027` の Regime Map（21市場でも軸は2次元のままなので、N市場化の恩恵をそのまま受ける）
+
+---
+
+## 改版履歴
+
+- 2026-09-11 rev.8 — **Phase 6-3c（A9・原価経路の再構成）完了を受けた更新。** `oil-global-2027`（`uom="KL"`）を接続した際、全15市場が `jpy=0/eur=0/tariff_rate=0` という「原価ゼロ」を返していることが発覚（Code君の報告）。原因は `cost_block.py` が `ppc_edge_cost_rule.csv` の "A->B" だけを遡る設計で、`Tank_*→Retail_*` という最終区間のコスト行を持たないモデルでは遡及が始まらなかったこと——**データの不備ではなく**、PPC（B系統）は同じ CSV をツリーから組んだ経路で正しく読んでいた（golden の `tariff_base` で確認済み）。修正は「コスト表を主、`side="outbound"` の `sc_tree` で `pred` に無い区間だけを補う」方式（soysauce では0本補い、回帰値は1円も動かない。実測確認済み）。関税照合も「leaf 直前の1エッジ」から「経路上の全エッジ＋`supply_point` を1つ飛ばした畳みエッジ」の探索に変更（soysauce は従来と同じ1件ヒットで不変。oil は `Gasoline_Import`=3%／`Gasoline_EU_Import`=2%を正しく拾えることを確認）。**A6/A8 で固定していた oil の利益・誤差の回帰値（`profit=20,885,805,337.0` 等）は原価ゼロの上の数字だったため破棄し、修正後の実測値（`profit=18,166,679,186.0`／`hierarchy_gap=499,524,694.0` @ cap_wk=800）を新しい正典とした。**木の形（15市場・10ノード・1,050点）は原価に依存しないため不変。** 合わせて、`ga_market_aggregation.csv` の絞り込みを「生成時」と「読み取り時」の2箇所に分けていた設計ミス（A5）を訂正し、絞り込みは `derive_cost_blocks(uom=...)` の1箇所に一本化（A8。生成器は既定で21行すべてを書く）。`transfer_price_usd`/`mat_usd` の導出も絞り込み後の SKU 集合に限定（A9-2。soysauce・oil の `uom="KL"` 側とも回帰値は不変、`uom="KL100KBBL"` 側は初めて自分自身の経済規模を持つ値になった）。**`region` の黙った上書き・価格の最後勝ち・経路の未到達——3件とも「例外を出さずに静かに間違った値を返す」という同じ家族の欠陥だった。** §7.3/§7.4/§8 を実装済みの14件・402件PASSに同期し、README の古い「三角図13枚×231点=3,003点」（rev.7 で21市場→15市場になった後も未更新だった二重に古い記述）を「10ノード・1,050点」に修正した。仕様書は `docs/design/ask_global_allocation_spec.md` を v0r6 に更新（§2.6 にシナリオ軸の単位束縛・経路到達可能性を追加、§5 Step 0.5/2/3 に経路再構成・関税探索・単一SKU前提の限界を明記）
+- 2026-09-11 rev.7 — **Phase 6-3 の実装で顕在化した単位の問題**を受けた更新。`oil-global-2027` は 1 lot の物理単位が市場ごとに違い（`Gasoline_Local_Hormuz` / `_RedSea` は 1 lot = 100,000 bbl ≈ 15,900 kL、他は kL 相当。価格比 15,882）、**A系統の「1つの能力プールを lot 単位で奪い合う」という前提が成立しない**。単位変換ではなく**単位ごとに別の配分問題として扱う**方針を決定し（大杉さん判断）、`uom="KL"` の**15市場**で接続する。木は **10ノード・1,050点**（平坦 N=15 は約13.9億点、削減 132万倍）、誤差は `cap_wk` により 0.51〜2.82%。これを仕様書 **v0r5 §2.6「単位軸の粒度束縛」**として明文化した——粒度束縛は 時間・製品・フロー・市場 の4軸を宣言していたが、**lot の物理単位の同一性という前提が明文化されていなかった**。あわせて §5.6 に2つの訂正を記録: (a) Request Letter V2 の「`price_local` は子で同一」は誤りで、**需要加重平均**にする（soysauce で同価だったため気づかなかった）、(b) `cost_block.py` の `price, ccy = pr, pc` はグループ内の最後の region の価格を黙って採っている（`region` 重複と同じ家族のバグ）
+- 2026-09-11 rev.6 — **Phase 6-3 の Request Letter 執筆時の実測**を反映。§5.5(2) の誤差の基準を訂正: rev.5 までの「階層化の誤差 = `P_flat − P_hier`、0 以上」は**誤り**で、15通りの実測で階層化は平坦格子に**勝ち6・分け3・負け6**だった。階層化は単なる間引きではなく**多重解像度**であり、誤差の源が2つ（枝刈りの取りこぼし／グループ内の解像度向上）逆を向くためである。**`gap_amt = P_greedy − P_grid` と同じ落とし穴が次元でも起きる。** 基準を格子非依存の `P_opt − P_hier`（常に 0 以上）に変更した。§5.5 に新たに実測を2つ追加: (a) **内部比率を解放して得られる利益は「能力の切れ目がグループの内側に落ちたとき」だけ生じ**、`cap_wk=400〜650` の帯域でのみ正（最大 +630,937.5 @ 500）、既定の `cap_wk=800` では 0 —— したがって**階層化のテストは `cap_wk=500` で書く**、(b) `simplex_grid()` は `n_dim>=2` しか作れないので**子1のノードは走査しない**。§5.6 に `cost_block.py` の **`region` 重複によるサイレントなデータ欠落**（`oil-global-2027` は 21 leaf に対し region 15種）を記録し、6-3b の起点とした
+- 2026-09-11 rev.5 — **R5 / R6 を決定**し、§9.2 を空にした。R5: `oil-global-2027` の `ga_market_aggregation.csv` を **6-3b** として 6-3 のスコープに含める。R6: 階層化が内部比率を最適化することを認め、**仕様書側を是正する**方針に決定——調査の結果 `internal_ratio` はコード上「原価集約の重み」としてしか使われておらず（`cost_block.py` の1箇所のみ）、「グループ内配分を固定する」という意味は実装されたことがなかった。したがって CSV も列の意味も変更不要で、直すべきは仕様書だった。**`docs/design/ask_global_allocation_spec.md` を v0r4 に更新**（§2.4 の束縛を「モデル全体で3市場」→「1ノードあたり3市場」、§2.5 の「4市場以上は拒否」を撤回して拒否条件を格子点数と三角図の描画可能性に置き換え、§4.2 の `market_group` 3種以下を撤廃）。**この3点は Phase 6-2（`32b2544`）の時点で既に実装と食い違っており、6-3 を待たずに是正すべきものだった**
+- 2026-09-11 rev.4 — **レビュー事項 R1/R2/R3 を大杉さんが決定**（R1: Mother Plant 第一原則 / R2: soysauce の地域6件を使う / R3: 案B ＋ 誤差測定）したことを受け、§5 を実データから全面的に書き直した。実測で分かったこと3点: (1) **§5.2 の「13枚 × 231点 = 3,003点」は概算で、実際は 13ノード・1,743点**だった（子が2つのノードは 231点ではなく21点）。soysauce 6地域は 3ノード・483点。(2) **第一原則（Mother Plant）だけでは木にならない**——`oil-global-2027` はトップが8分岐（888,030点）になるため、「各ノードの子は3つ以下」を構造制約として明示し、第二原則（通貨圏＝地域）・第三原則（供給モード）を追加して適用順序を固定した。木は `sc_tree_master.csv` + `node_master.csv` から機械的に組める。(3) **非対称6市場は新規作成が不要**——`ga_market_aggregation.csv` の `region` 列6件が最初から非対称で、`market_group` 列がグルーピングの正解表になる。あわせて、**3市場スキャン（`internal_ratio` 固定）と6地域の階層スキャン（同比率を最適化）は一致しない**ことを §5.5(2) に明記（「一致すること」をテストに書かない）。§7 に 6-2a の4件を追加し合計を 394件に、§8 を実装済み4項目のチェック済みに更新。新規レビュー事項 R5（`oil-global-2027` の `ga_market_aggregation.csv` を 6-3 に含めるか。**不足は9本中この1本だけ**）と R6（階層化が内部比率を最適化してよいか）を §9.2 に追加
+- 2026-09-11 rev.3 — **ステップ 6-2 の Request Letter 執筆時の実測**（`requests/Phase6-2_RequestLetter_to_CodeKun.md`、commit `1ecf769`）を受けた更新。§4.3(b) の実装方式を**再帰に確定**：rev.2 までの「再帰または `itertools.combinations_with_replacement`」という記述は誤りで、**後者は231点の集合は同じだが順序が異なる**ため、後方互換の絶対条件（231点の順序不変）を満たさない。確定した再帰実装を全文で記載し、現行の二重ループと全231点で一致することを確認した。§4.3(a) に2点追記：(1) 「CSV の記載順」と「辞書のキー順」は `derive_cost_blocks()` の構造上**元から同じもの**であり、`markets_of()` は `tuple(blocks.keys())` の1行でよい（`grid.py` に CSV の I/O を持ち込まない）、(2) `markets_of()` 化の**副作用として単位マージン同値時の tie-break が変わる**（soysauce では回帰値不変だが、仕様として docstring に明記する）
+- 2026-09-11 rev.2 — **ステップ 6-1 実装完了**（377件全PASS）を受けた更新。§3.3 を全面改訂：rev.1 の「解いてから整合性チェック」方式は**閾値が binding な解を取り逃す**ため誤りで、閾値を**上下界の制約として先に持たせる**方式に差し替えた（実装仕様は Request Letter V1.2）。§3.5 の回帰値を実測値に更新：`true_optimum = 103,891,296.0`（配分 JP=0/US=35,176/EU=16,824）、`structural_optimality_gap = 10,066,596`、`grid_resolution_error = 338,496`、`residual_coverage = 0.966`。**rev.1 の手計算値 103,881,758 は丸め誤差ではなく最適化の誤りだった**ことを、差 +9,538.5 の1円までの分解とともに記録
+- 2026-09-09 rev.1 — 初版。大杉さんからの問い「直角三角図のN階層化の優先度は低いのか」を受けて、Phase 6 バックログ5項目の整理を見直した。**階層化は4番目の可視化手法ではなく N市場化そのものの実現手段である**（`oil-global-2027` の21市場は平坦格子で1,378億点、階層化で3,003点）、および**4枚の地図のうち地形＝ロバストネスを担うのは第1の地図だけである**という2点から、優先度を HIGH に引き上げ、`true_optimum` 実計算・次元の一般化・階層化単体格子を「N市場化」という1つの Phase の3ステップとして再構成した。`true_optimum` の方式は CLAUDE.md L1798-1816 で確定済みのものを踏襲し、**整合性チェック**を設計の要として明記。用語の落とし穴（`hierarchical_triangulation` が配分空間と目的空間の両方を指している）を §2 で解消し、配分空間側を `hierarchical_simplex` に確定。
+
+````

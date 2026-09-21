@@ -1,0 +1,190 @@
+"""Acceptance cases for RequestLetter_Composite_Kitting_Backlog_v1.md."""
+import copy
+import runpy
+from pathlib import Path
+
+import pandas as pd
+import pytest
+
+from wom.engine.backward_planner import BackwardPlanner
+from wom.engine.capacity_sealer import load_capacity_dataframe
+from wom.engine.forward_planner import ForwardPlanner
+from wom.engine.plan_copy import copy_demand_to_supply
+from wom.model.plan_node import S, CO, I, P
+
+H = runpy.run_path(str(Path(__file__).with_name("test_stage3a2_kitting_gate.py")))
+
+
+def _build_planned_case(qty=1, week=5):
+    tree, mom, yards, leaves = H["_build_tree"]()
+    H["_seed_demand"](mom, [week], qty)
+    BackwardPlanner(tree).run(H["PROD"])
+    copy_demand_to_supply(tree, H["PROD"])
+    return tree, mom, yards, leaves
+
+
+def run(tree, mom, opening=None):
+    demand = copy.deepcopy(mom.psi4demand)
+    planned_s = [list(b[S]) for b in mom.psi4supply]
+    fp = ForwardPlanner(tree, opening_inv=opening)
+    result = fp.run(H["PROD"])
+    assert mom.psi4demand == demand
+    assert [b[S] for b in mom.psi4supply] == planned_s
+    return fp, result
+
+
+def check_balance(fp, nodes, opening=None):
+    for node in nodes:
+        prev = (opening or {}).get(node.node_id, [])
+        for w, b in enumerate(node.psi4supply):
+            actual = fp._actual_s.get(node.node_id, {}).get(w, [])
+            assert len(prev) + len(b[P]) == len(actual) + len(b[I])
+            prev = b[I]
+
+
+def test_late_component_recovers_same_id():
+    tree, mom, yards, leaves = _build_planned_case()
+    lot = mom.psi4demand[5][S][0]
+    leaves[-1].psi4supply[2][P].remove(lot)
+    leaves[-1].psi4supply[4][P].append(lot)
+    fp, result = run(tree, mom)
+    assert mom.psi4supply[6][CO] == [lot]
+    assert mom.psi4supply[7][P] == [lot]
+    assert fp._actual_s[mom.node_id][7] == [lot]
+    assert mom.psi4supply[8][CO] == []
+    assert sum(len(b[P]) for b in mom.psi4supply) == 1
+    for yard in yards:
+        assert yard.psi4supply[7][S] == [lot]
+        assert yard.psi4supply[-1][I] == []
+    assert mom.kitting[5][lot][yards[-1].node_name] == 7
+    check_balance(fp, [mom, *yards])
+
+
+def test_capacity_defers_components_and_co_only_once():
+    tree, mom, yards, _ = _build_planned_case(2)
+    a, b = mom.psi4demand[5][S]
+    mom.set_capacity(5, cap_hard=1)
+    fp, result = run(tree, mom)
+    assert mom.psi4supply[5][P] == [a]
+    assert mom.psi4supply[6][P] == [b]
+    assert mom.psi4supply[6][CO] == [b]
+    assert mom.psi4supply[7][CO] == []
+    assert fp._actual_s[mom.node_id][6] == [b]
+    assert result.cap_hard_sealed == 0
+    assert result.kitting_capacity_deferred == [(mom.node_id, H["WEEKS"][5], 1)]
+    for yard in yards:
+        assert yard.psi4supply[5][I] == [b]
+        assert yard.psi4supply[6][S] == [b]
+    check_balance(fp, [mom, *yards])
+
+
+def test_opening_finished_goods_prevent_component_consumption():
+    tree, mom, yards, _ = _build_planned_case()
+    lot = mom.psi4demand[5][S][0]
+    opening = {mom.node_id: [lot]}
+    fp, _ = run(tree, mom, opening)
+    assert sum(len(b[P]) for b in mom.psi4supply) == 0
+    assert fp._actual_s[mom.node_id][5] == [lot]
+    for yard in yards:
+        assert sum(len(b[S]) for b in yard.psi4supply) == 0
+        assert yard.psi4supply[-1][I] == [lot]
+    check_balance(fp, [mom, *yards], opening)
+
+
+def test_carry_in_order_matches_opening_finished_goods():
+    tree, mom, yards, leaves = _build_planned_case()
+    lot = mom.psi4demand[5][S][0]
+    for b in mom.psi4demand:
+        b[S] = []
+    for b in mom.psi4supply:
+        b[S] = []
+    for leaf in leaves:
+        for b in leaf.psi4supply:
+            b[P] = []
+    mom.psi4supply[0][CO] = [lot]
+    fp, _ = run(tree, mom, {mom.node_id: [lot]})
+    assert fp._actual_s[mom.node_id][0] == [lot]
+    assert mom.psi4supply[1][CO] == []
+    assert sum(len(b[P]) for b in mom.psi4supply) == 0
+
+
+@pytest.mark.parametrize("hard,expected", [(0, 2), (0.1, 0), (1, 1)])
+def test_hard_capacity_csv_loader_to_gate(tmp_path, hard, expected):
+    tree, mom, yards, _ = _build_planned_case(2)
+    csv = tmp_path / "capacity.csv"
+    csv.write_text(f"sku_id,node_name,week,max_supply\nSKU-A,MOM,2024-W06,{hard}\n", encoding="utf-8")
+    load_capacity_dataframe(tree, pd.read_csv(csv), H["WEEKS"])
+    assert mom.cap_hard(5) == hard
+    fp, _ = run(tree, mom)
+    assert len(mom.psi4supply[5][P]) == expected
+    assert sum(len(b[P]) for b in mom.psi4supply) == 2
+    assert mom.psi4supply[7][CO] == []
+    for yard in yards:
+        assert len(yard.psi4supply[5][I]) == 2 - expected
+    check_balance(fp, [mom, *yards])
+
+
+def test_soft_capacity_still_flags_completed_production():
+    tree, mom, _, _ = _build_planned_case(2)
+    mom.set_capacity(5, cap_hard=2, cap_soft=1)
+    _, result = run(tree, mom)
+    assert len(mom.psi4supply[5][P]) == 2
+    assert result.cap_soft_violations == [(mom.node_id, H["WEEKS"][5], 1)]
+
+
+def test_older_ready_kit_precedes_new_request():
+    tree, mom, yards, leaves = H["_build_tree"]()
+    H["_seed_demand"](mom, [5, 6], 1)
+    BackwardPlanner(tree).run(H["PROD"])
+    copy_demand_to_supply(tree, H["PROD"])
+    old, new = mom.psi4demand[5][S][0], mom.psi4demand[6][S][0]
+    mom.set_capacity(5, cap_hard=0.1)
+    mom.set_capacity(6, cap_hard=1)
+    fp, _ = run(tree, mom)
+    assert mom.psi4supply[6][P] == [old]
+    assert mom.psi4supply[7][P] == [new]
+    assert mom.psi4supply[8][CO] == []
+    check_balance(fp, [mom, *yards])
+
+
+def test_horizon_end_does_not_consume_blocked_kit():
+    tree, mom, yards, _ = _build_planned_case(2, week=39)
+    mom.set_capacity(39, cap_hard=1)
+    fp, result = run(tree, mom)
+    a, b = mom.psi4demand[39][S]
+    assert mom.psi4supply[39][P] == [a]
+    for yard in yards:
+        assert yard.psi4supply[39][I] == [b]
+    assert (mom.node_id, H["WEEKS"][39], 1) in result.shortfall_weeks
+    check_balance(fp, [mom, *yards])
+
+
+def test_missing_older_component_does_not_block_ready_new_kit():
+    tree, mom, yards, leaves = H["_build_tree"]()
+    H["_seed_demand"](mom, [5, 6], 1)
+    BackwardPlanner(tree).run(H["PROD"])
+    copy_demand_to_supply(tree, H["PROD"])
+    old, new = mom.psi4demand[5][S][0], mom.psi4demand[6][S][0]
+    leaves[-1].psi4supply[2][P].remove(old)
+    leaves[-1].psi4supply[4][P].append(old)
+    fp, _ = run(tree, mom)
+    assert mom.psi4supply[6][P] == [new]
+    assert mom.psi4supply[7][P] == [old]
+    assert mom.psi4supply[8][CO] == []
+    check_balance(fp, [mom, *yards])
+
+
+def test_completed_kit_waits_in_inventory_until_shipment_required():
+    tree, mom, yards, _ = _build_planned_case()
+    lot = mom.psi4demand[5][S][0]
+    # Isolate production requirement from later shipment requirement.
+    mom.psi4supply[5][S] = []
+    mom.psi4supply[7][S] = [lot]
+    fp, _ = run(tree, mom)
+    assert mom.psi4supply[5][P] == [lot]
+    assert mom.psi4supply[5][I] == [lot]
+    assert mom.psi4supply[6][I] == [lot]
+    assert fp._actual_s[mom.node_id][7] == [lot]
+    assert sum(len(b[P]) for b in mom.psi4supply) == 1
+    check_balance(fp, [mom, *yards])
+
