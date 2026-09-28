@@ -1,0 +1,251 @@
+﻿
+######## Cookie-jp-2026
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Cookie_Import': 11656, 'Cookie_Local': 2516} after={'Cookie_Import': 11656, 'Cookie_Local': 2516}
+  ppc revenue/GP: before=4259700000.0/686229000.0 after=4259700000.0/686229000.0
+
+######## apparel-global-2028-2029
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Apparel_Offshore': 5174, 'Apparel_Vertical': 2070} after={'Apparel_Offshore': 5174, 'Apparel_Vertical': 2070}
+  ppc revenue/GP: before=10387986.16/3994720.41 after=10387986.16/3994720.41
+
+######## apparel-us-2026
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Apparel_Outsourced_S1': 0, 'Apparel_Outsourced_S2': 0, 'Apparel_Outsourced_S3': 0, 'Apparel_Outsourced_S4': 0, 'Apparel_Outsourced_S5': 0, 'Apparel_Outsourced_S6': 0, 'Apparel_Outsourced_S7': 0, 'Apparel_Outsourced_S8': 0, 'Apparel_Integrated_S1': 0, 'Apparel_Integrated_S2': 0, 'Apparel_Integrated_S3': 0, 'Apparel_Integrated_S4': 0, 'Apparel_Integrated_S5': 0, 'Apparel_Integrated_S6': 0, 'Apparel_Integrated_S7': 0, 'Apparel_Integrated_S8': 0} after={'Apparel_Outsourced_S1': 0, 'Apparel_Outsourced_S2': 0, 'Apparel_Outsourced_S3': 0, 'Apparel_Outsourced_S4': 0, 'Apparel_Outsourced_S5': 0, 'Apparel_Outsourced_S6': 0, 'Apparel_Outsourced_S7': 0, 'Apparel_Outsourced_S8': 0, 'Apparel_Integrated_S1': 0, 'Apparel_Integrated_S2': 0, 'Apparel_Integrated_S3': 0, 'Apparel_Integrated_S4': 0, 'Apparel_Integrated_S5': 0, 'Apparel_Integrated_S6': 0, 'Apparel_Integrated_S7': 0, 'Apparel_Integrated_S8': 0}
+  ppc revenue/GP: before=12209428.0/5182154.67 after=12209428.0/5182154.67
+
+######## bom-test-2026
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'EV_Model_A': 0} after={'EV_Model_A': 0}
+  ppc revenue/GP: before=3200000.0/2393000.0 after=3200000.0/2393000.0
+
+######## ev-europe-2026
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'EVmaker_Local': 3850, 'EVmaker_Import': 1170} after={'EVmaker_Local': 3850, 'EVmaker_Import': 1170}
+  ppc revenue/GP: before=366508230000.0/192334774500.0 after=366508230000.0/192334774500.0
+
+######## ev-thailand-2026
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'EVmaker_Local': 3850, 'EVmaker_Import': 970} after={'EVmaker_Local': 3850, 'EVmaker_Import': 970}
+  ppc revenue/GP: before=319119580000.0/180288676250.0 after=319119580000.0/180288676250.0
+
+######## ev-thailand-2026_update
+  psi-signature nodes changed: 3
+  diagnostics: none
+  backward past_due: before={'EVmaker_Local': 0, 'EVmaker_Import': 0} after={'EVmaker_Local': 0, 'EVmaker_Import': 0}
+  ppc revenue/GP: before=319119580000.0/180288676250.0 after=319119580000.0/180288676250.0
+  strategic_kpi changed: {'fixed_cost_coverage': (0.19708887848592255, 0.1968106307848697), 'production_leveling': (0.7284843325153069, 0.7287516560515754), 'avg_cap_utilization': (0.374058800531707, 0.3686715220653515)}
+   * EVmaker_Import|Components_CN (leaf_in/push_sub) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=14 [2025-W42..2027-W39]
+   * EVmaker_Import|Factory_Import_CN (mom/push) series=['I', 'P', 'S', 'actual', 'cap_hard', 'dP', 'dS', 'is_open'] weeks=15 [2025-W44..2027-W41]
+   * EVmaker_Import|SP_EV_Import (supply_point/pull) series=['I', 'P'] weeks=101 [2025-W46..2027-W41]
+       totals(before,after): {'I': (12310, 13253)}
+
+######## iphone_global
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'iPhone16': 59787, 'iPhone15': 38047, 'iPhone17': 0} after={'iPhone16': 59787, 'iPhone15': 38047, 'iPhone17': 0}
+  ppc revenue/GP: before=713310634579400.0/296225445796167.4 after=713310634579400.0/296225445796167.4
+  strategic_kpi changed: {'fixed_cost_coverage': (0.8913743425867522, 0.8913802197802198), 'avg_cap_utilization': (0.8849376320722661, 0.8917448446266681), 'n_constrained_nodes': (4, 3)}
+   * iPhone16|BoschSensor_IN (leaf_in/pull) series=['cap_hard', 'is_open'] weeks=3 [2027-W42..2029-W41]
+       2027-W42 cap_hard:0.5->0.0 is_open:True->False
+       2028-W40 cap_hard:0.5->0.0 is_open:True->False
+       2029-W41 cap_hard:0.5->0.0 is_open:True->False
+
+######## oil-global-2027
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Gasoline_Local': 1617, 'Gasoline_Import': 895, 'Gasoline_Local_Hormuz': 43, 'Gasoline_Local_RedSea': 159, 'Gasoline_EU_Local': 6718, 'Gasoline_EU_Import': 773, 'Gasoline_US_Local': 3545, 'Gasoline_US_Import': 292} after={'Gasoline_Local': 1617, 'Gasoline_Import': 895, 'Gasoline_Local_Hormuz': 43, 'Gasoline_Local_RedSea': 159, 'Gasoline_EU_Local': 6718, 'Gasoline_EU_Import': 773, 'Gasoline_US_Local': 3545, 'Gasoline_US_Import': 292}
+  ppc revenue/GP: before=1649727940180.0/579538174893.0 after=1649727940180.0/579538174893.0
+  strategic_kpi changed: {'fixed_cost_coverage': (0.1349145104208228, 0.1349178009471593), 'avg_cap_utilization': (0.3973367294119698, 0.4188143904612655)}
+   * Gasoline_Local_Hormuz|Refinery_Local_H (mom/pull) series=['cap_hard', 'is_open'] weeks=64 [2027-W15..2028-W26]
+
+######## rice-japan-2027-2028
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Koshihikari': 7114, 'Yumepirika': 2943} after={'Koshihikari': 7114, 'Yumepirika': 2943}
+  ppc revenue/GP: before=1829200000.0/705096313.0 after=1829200000.0/705096313.0
+  strategic_kpi changed: {'fixed_cost_coverage': (0.7608694452771483, 0.7608985518867775), 'avg_cap_utilization': (0.40214940626313583, 0.4266280657748049), 'n_constrained_nodes': (10, 6)}
+   * Koshihikari|DC_Higashi (dad/pull) series=['cap_hard', 'is_open'] weeks=10 [2027-W18..2028-W34]
+       2027-W18 cap_hard:0.3->0.0 is_open:True->False
+       2027-W19 cap_hard:0.3->0.0 is_open:True->False
+       2027-W33 cap_hard:0.4->0.0 is_open:True->False
+       2027-W34 cap_hard:0.4->0.0 is_open:True->False
+       2027-W52 cap_hard:0.2->0.0 is_open:True->False
+       2028-W01 cap_hard:0.2->0.0 is_open:True->False
+       2028-W18 cap_hard:0.3->0.0 is_open:True->False
+       2028-W19 cap_hard:0.3->0.0 is_open:True->False
+       2028-W33 cap_hard:0.4->0.0 is_open:True->False
+       2028-W34 cap_hard:0.4->0.0 is_open:True->False
+   * Koshihikari|DC_Nishi (dad/pull) series=['cap_hard', 'is_open'] weeks=10 [2027-W18..2028-W34]
+       2027-W18 cap_hard:0.3->0.0 is_open:True->False
+       2027-W19 cap_hard:0.3->0.0 is_open:True->False
+       2027-W33 cap_hard:0.4->0.0 is_open:True->False
+       2027-W34 cap_hard:0.4->0.0 is_open:True->False
+       2027-W52 cap_hard:0.2->0.0 is_open:True->False
+       2028-W01 cap_hard:0.2->0.0 is_open:True->False
+       2028-W18 cap_hard:0.3->0.0 is_open:True->False
+       2028-W19 cap_hard:0.3->0.0 is_open:True->False
+       2028-W33 cap_hard:0.4->0.0 is_open:True->False
+       2028-W34 cap_hard:0.4->0.0 is_open:True->False
+   * Koshihikari|Seihaku_E (dad/pull) series=['cap_hard', 'is_open'] weeks=4 [2027-W18..2028-W19]
+       2027-W18 cap_hard:0.5->900.0 is_open:True->False
+       2027-W19 cap_hard:0.5->900.0 is_open:True->False
+       2028-W18 cap_hard:0.5->900.0 is_open:True->False
+       2028-W19 cap_hard:0.5->900.0 is_open:True->False
+   * Koshihikari|Seihaku_W (dad/pull) series=['cap_hard', 'is_open'] weeks=4 [2027-W18..2028-W19]
+       2027-W18 cap_hard:0.5->700.0 is_open:True->False
+       2027-W19 cap_hard:0.5->700.0 is_open:True->False
+       2028-W18 cap_hard:0.5->700.0 is_open:True->False
+       2028-W19 cap_hard:0.5->700.0 is_open:True->False
+   * Yumepirika|DC_Higashi (dad/pull) series=['cap_hard', 'is_open'] weeks=10 [2027-W18..2028-W34]
+       2027-W18 cap_hard:0.3->0.0 is_open:True->False
+       2027-W19 cap_hard:0.3->0.0 is_open:True->False
+       2027-W33 cap_hard:0.4->0.0 is_open:True->False
+       2027-W34 cap_hard:0.4->0.0 is_open:True->False
+       2027-W52 cap_hard:0.2->0.0 is_open:True->False
+       2028-W01 cap_hard:0.2->0.0 is_open:True->False
+       2028-W18 cap_hard:0.3->0.0 is_open:True->False
+       2028-W19 cap_hard:0.3->0.0 is_open:True->False
+       2028-W33 cap_hard:0.4->0.0 is_open:True->False
+       2028-W34 cap_hard:0.4->0.0 is_open:True->False
+   * Yumepirika|DC_Nishi (dad/pull) series=['cap_hard', 'is_open'] weeks=10 [2027-W18..2028-W34]
+       2027-W18 cap_hard:0.3->0.0 is_open:True->False
+       2027-W19 cap_hard:0.3->0.0 is_open:True->False
+       2027-W33 cap_hard:0.4->0.0 is_open:True->False
+       2027-W34 cap_hard:0.4->0.0 is_open:True->False
+       2027-W52 cap_hard:0.2->0.0 is_open:True->False
+       2028-W01 cap_hard:0.2->0.0 is_open:True->False
+       2028-W18 cap_hard:0.3->0.0 is_open:True->False
+       2028-W19 cap_hard:0.3->0.0 is_open:True->False
+       2028-W33 cap_hard:0.4->0.0 is_open:True->False
+       2028-W34 cap_hard:0.4->0.0 is_open:True->False
+   * Yumepirika|Seihaku_E (dad/pull) series=['cap_hard', 'is_open'] weeks=4 [2027-W18..2028-W19]
+       2027-W18 cap_hard:0.5->400.0 is_open:True->False
+       2027-W19 cap_hard:0.5->400.0 is_open:True->False
+       2028-W18 cap_hard:0.5->400.0 is_open:True->False
+       2028-W19 cap_hard:0.5->400.0 is_open:True->False
+   * Yumepirika|Seihaku_W (dad/pull) series=['cap_hard', 'is_open'] weeks=4 [2027-W18..2028-W19]
+       2027-W18 cap_hard:0.5->300.0 is_open:True->False
+       2027-W19 cap_hard:0.5->300.0 is_open:True->False
+       2028-W18 cap_hard:0.5->300.0 is_open:True->False
+       2028-W19 cap_hard:0.5->300.0 is_open:True->False
+
+######## rice-japan-2027-2028_BK260613_1515
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Koshihikari': 7114, 'Yumepirika': 2201} after={'Koshihikari': 7114, 'Yumepirika': 2201}
+  ppc revenue/GP: before=1829200000.0/705096313.0 after=1829200000.0/705096313.0
+  strategic_kpi changed: {'fixed_cost_coverage': (0.7622340454879073, 0.7622632042995087), 'avg_cap_utilization': (0.4024418085329971, 0.42693826644370125), 'n_constrained_nodes': (10, 6)}
+   * Koshihikari|DC_Higashi (dad/pull) series=['cap_hard', 'is_open'] weeks=10 [2027-W18..2028-W34]
+       2027-W18 cap_hard:0.3->0.0 is_open:True->False
+       2027-W19 cap_hard:0.3->0.0 is_open:True->False
+       2027-W33 cap_hard:0.4->0.0 is_open:True->False
+       2027-W34 cap_hard:0.4->0.0 is_open:True->False
+       2027-W52 cap_hard:0.2->0.0 is_open:True->False
+       2028-W01 cap_hard:0.2->0.0 is_open:True->False
+       2028-W18 cap_hard:0.3->0.0 is_open:True->False
+       2028-W19 cap_hard:0.3->0.0 is_open:True->False
+       2028-W33 cap_hard:0.4->0.0 is_open:True->False
+       2028-W34 cap_hard:0.4->0.0 is_open:True->False
+   * Koshihikari|DC_Nishi (dad/pull) series=['cap_hard', 'is_open'] weeks=10 [2027-W18..2028-W34]
+       2027-W18 cap_hard:0.3->0.0 is_open:True->False
+       2027-W19 cap_hard:0.3->0.0 is_open:True->False
+       2027-W33 cap_hard:0.4->0.0 is_open:True->False
+       2027-W34 cap_hard:0.4->0.0 is_open:True->False
+       2027-W52 cap_hard:0.2->0.0 is_open:True->False
+       2028-W01 cap_hard:0.2->0.0 is_open:True->False
+       2028-W18 cap_hard:0.3->0.0 is_open:True->False
+       2028-W19 cap_hard:0.3->0.0 is_open:True->False
+       2028-W33 cap_hard:0.4->0.0 is_open:True->False
+       2028-W34 cap_hard:0.4->0.0 is_open:True->False
+   * Koshihikari|Seihaku_E (dad/pull) series=['cap_hard', 'is_open'] weeks=4 [2027-W18..2028-W19]
+       2027-W18 cap_hard:0.5->900.0 is_open:True->False
+       2027-W19 cap_hard:0.5->900.0 is_open:True->False
+       2028-W18 cap_hard:0.5->900.0 is_open:True->False
+       2028-W19 cap_hard:0.5->900.0 is_open:True->False
+   * Koshihikari|Seihaku_W (dad/pull) series=['cap_hard', 'is_open'] weeks=4 [2027-W18..2028-W19]
+       2027-W18 cap_hard:0.5->700.0 is_open:True->False
+       2027-W19 cap_hard:0.5->700.0 is_open:True->False
+       2028-W18 cap_hard:0.5->700.0 is_open:True->False
+       2028-W19 cap_hard:0.5->700.0 is_open:True->False
+   * Yumepirika|DC_Higashi (dad/pull) series=['cap_hard', 'is_open'] weeks=10 [2027-W18..2028-W34]
+       2027-W18 cap_hard:0.3->0.0 is_open:True->False
+       2027-W19 cap_hard:0.3->0.0 is_open:True->False
+       2027-W33 cap_hard:0.4->0.0 is_open:True->False
+       2027-W34 cap_hard:0.4->0.0 is_open:True->False
+       2027-W52 cap_hard:0.2->0.0 is_open:True->False
+       2028-W01 cap_hard:0.2->0.0 is_open:True->False
+       2028-W18 cap_hard:0.3->0.0 is_open:True->False
+       2028-W19 cap_hard:0.3->0.0 is_open:True->False
+       2028-W33 cap_hard:0.4->0.0 is_open:True->False
+       2028-W34 cap_hard:0.4->0.0 is_open:True->False
+   * Yumepirika|DC_Nishi (dad/pull) series=['cap_hard', 'is_open'] weeks=10 [2027-W18..2028-W34]
+       2027-W18 cap_hard:0.3->0.0 is_open:True->False
+       2027-W19 cap_hard:0.3->0.0 is_open:True->False
+       2027-W33 cap_hard:0.4->0.0 is_open:True->False
+       2027-W34 cap_hard:0.4->0.0 is_open:True->False
+       2027-W52 cap_hard:0.2->0.0 is_open:True->False
+       2028-W01 cap_hard:0.2->0.0 is_open:True->False
+       2028-W18 cap_hard:0.3->0.0 is_open:True->False
+       2028-W19 cap_hard:0.3->0.0 is_open:True->False
+       2028-W33 cap_hard:0.4->0.0 is_open:True->False
+       2028-W34 cap_hard:0.4->0.0 is_open:True->False
+   * Yumepirika|Seihaku_E (dad/pull) series=['cap_hard', 'is_open'] weeks=4 [2027-W18..2028-W19]
+       2027-W18 cap_hard:0.5->400.0 is_open:True->False
+       2027-W19 cap_hard:0.5->400.0 is_open:True->False
+       2028-W18 cap_hard:0.5->400.0 is_open:True->False
+       2028-W19 cap_hard:0.5->400.0 is_open:True->False
+   * Yumepirika|Seihaku_W (dad/pull) series=['cap_hard', 'is_open'] weeks=4 [2027-W18..2028-W19]
+       2027-W18 cap_hard:0.5->300.0 is_open:True->False
+       2027-W19 cap_hard:0.5->300.0 is_open:True->False
+       2028-W18 cap_hard:0.5->300.0 is_open:True->False
+       2028-W19 cap_hard:0.5->300.0 is_open:True->False
+
+######## smartx-2027-2029
+  psi-signature nodes changed: 0
+  diagnostics: ['SmartXPro_CN:mode4_closure_shifted=8']
+  backward past_due: before={'SmartX': 16888, 'SmartXNext': 0, 'SmartXPro_CN': 0, 'SmartXPro_IN': 0} after={'SmartX': 16888, 'SmartXNext': 0, 'SmartXPro_CN': 0, 'SmartXPro_IN': 0}
+  ppc revenue/GP: before=702250439.0/634628759.84 after=702250439.0/634628759.84
+  strategic_kpi changed: {'fixed_cost_coverage': (0.13459580638726473, 0.134595859892817), 'avg_cap_utilization': (0.4937979230366595, 0.49543085267633097)}
+   * SmartXPro_IN|SensorIN (leaf_in/pull) series=['cap_hard', 'is_open'] weeks=5 [2026-W43..2030-W41]
+       2026-W43 cap_hard:0.5->995.0 is_open:True->False
+       2027-W42 cap_hard:0.5->879.0 is_open:True->False
+       2028-W40 cap_hard:0.5->648.0 is_open:True->False
+       2029-W41 cap_hard:0.5->367.0 is_open:True->False
+       2030-W41 cap_hard:0.5->148.0 is_open:True->False
+
+######## soysauce-eu-2027
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Soy_Sauce': 13926} after={'Soy_Sauce': 13926}
+  ppc revenue/GP: before=3622500.59/985297.12 after=3622500.59/985297.12
+
+######## soysauce-jpy-2027
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Soy_Sauce': 0} after={'Soy_Sauce': 0}
+  ppc revenue/GP: before=614988400.0/172459615.81 after=614988400.0/172459615.81
+
+######## soysauce-jpy-2027-alloc
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Soy_Sauce': 24524} after={'Soy_Sauce': 24524}
+  ppc revenue/GP: before=614988400.0/172459615.81 after=614988400.0/172459615.81
+
+######## soysauce-jpy-2027-alloc__P_opt800
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Soy_Sauce': 8607} after={'Soy_Sauce': 8607}
+  ppc revenue/GP: before=548550508.0/165007343.19 after=548550508.0/165007343.19
+
+######## soysauce-us-2027
+  psi-signature nodes changed: 0
+  diagnostics: none
+  backward past_due: before={'Soy_Sauce': 13750} after={'Soy_Sauce': 13750}
+  ppc revenue/GP: before=3585878.59/963594.9 after=3585878.59/963594.9

@@ -1,6 +1,6 @@
 holiday_id,holiday_name,start_week,end_week,node_name,effect,value
 Refinery_Local_Maint_2027,Refinery Local Scheduled Maintenance 2027,2027-W40,2027-W41,Refinery_Local,partial_capacity,30.0
-Hormuz_Strait_Closure_2027,Hormuz Strait Closure - Permanent Route Diversion,2027-W15,2028-W26,Refinery_Local_H,partial_capacity,1.0
+Hormuz_Strait_Closure_2027,Hormuz Strait Closure - Permanent Route Diversion,2027-W15,2028-W26,Refinery_Local_H,supply_closure,0
 Refinery_EU_Strike_2027,Refinery EU Labor Strike 2027,2027-W25,2027-W27,Refinery_EU,partial_capacity,25.0
 Refinery_USGulf_Hurricane_2027,Gulf Coast Hurricane Shutdown 2027,2027-W35,2027-W36,Refinery_USGulf,partial_capacity,45.0
 OPEC_Plus_Cut_2027_Local,OPEC+ Coordinated Production Cut (Local crude feed),2027-W45,2027-W50,Refinery_Local,partial_capacity,500.0
