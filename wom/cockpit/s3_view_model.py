@@ -139,6 +139,9 @@ def _capacity_nodes(snap: dict) -> List[dict]:
                 "series_label_ja": series_label_ja,
                 "title_ja": f"{label} — {kind_word} vs Capacity Limits",
                 "shortfall_weeks": shortfall_weeks,
+                # Explicit Closure v1r5m0 §4.7: closed weeks (op_shifts==0).
+                # The plot only greys their background.
+                "closed_weeks": list(series.get("closed_weeks", []) or []),
             })
     nodes.sort(key=lambda n: (-len(n["hard_weeks"]), -len(n["soft_weeks"]), n["label"]))
     return nodes

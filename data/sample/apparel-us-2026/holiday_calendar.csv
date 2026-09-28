@@ -1,5 +1,5 @@
 holiday_id,holiday_name,start_week,end_week,node_name,effect,value
-CN_NEWYEAR_2026,Chinese New Year 2026,2026-W07,2026-W08,Factory_Import_CN,supply_closure,1500.0
-CN_NEWYEAR_2027,Chinese New Year 2027,2027-W06,2027-W07,Factory_Import_CN,supply_closure,1500.0
-ES_AGOSTO_2026,Spain August Factory Holiday (agosto) 2026,2026-W32,2026-W33,Factory_Local_ES,supply_closure,1500.0
-ES_AGOSTO_2027,Spain August Factory Holiday (agosto) 2027,2027-W32,2027-W33,Factory_Local_ES,supply_closure,1500.0
+CN_NEWYEAR_2026,Chinese New Year 2026,2026-W07,2026-W08,Factory_Import_CN,partial_capacity,1500.0
+CN_NEWYEAR_2027,Chinese New Year 2027,2027-W06,2027-W07,Factory_Import_CN,partial_capacity,1500.0
+ES_AGOSTO_2026,Spain August Factory Holiday (agosto) 2026,2026-W32,2026-W33,Factory_Local_ES,partial_capacity,1500.0
+ES_AGOSTO_2027,Spain August Factory Holiday (agosto) 2027,2027-W32,2027-W33,Factory_Local_ES,partial_capacity,1500.0

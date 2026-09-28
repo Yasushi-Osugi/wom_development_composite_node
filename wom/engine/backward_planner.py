@@ -518,8 +518,9 @@ class BackwardPlanner:
 
         for w in range(n_weeks - 1, -1, -1):
             cap_w = node.cap_hard(w)
-            ops = getattr(node, "op_shifts", None)
-            is_closed = bool(ops) and ops[w] == 0   # Phase 2 Slice 2-3b: closed week
+            # Closed week = week state op_shifts==0 (Phase 2 Slice 2-3b). Since
+            # Explicit Closure v1r5m0, holiday supply_closure also lands here.
+            is_closed = not node.is_open(w)
             if cap_w <= 0.0 and not is_closed:
                 continue  # unconstrained week (cap not set)
 

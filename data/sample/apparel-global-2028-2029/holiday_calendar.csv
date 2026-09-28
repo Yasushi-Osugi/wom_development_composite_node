@@ -1,5 +1,5 @@
 holiday_id,holiday_name,start_week,end_week,node_name,effect,value
-BD_LABOR_2028,Bangladesh Garment Sector Labor Shortage (seasonal) 2028,2028-W22,2028-W23,Garment_BD,supply_closure,700.0
-BD_LABOR_2029,Bangladesh Garment Sector Labor Shortage (seasonal) 2029,2029-W22,2029-W23,Garment_BD,supply_closure,700.0
-PT_AGOSTO_2028,Iberian August Factory Holiday (agosto) 2028,2028-W32,2028-W33,Garment_PT,supply_closure,400.0
-PT_AGOSTO_2029,Iberian August Factory Holiday (agosto) 2029,2029-W32,2029-W33,Garment_PT,supply_closure,400.0
+BD_LABOR_2028,Bangladesh Garment Sector Labor Shortage (seasonal) 2028,2028-W22,2028-W23,Garment_BD,partial_capacity,700.0
+BD_LABOR_2029,Bangladesh Garment Sector Labor Shortage (seasonal) 2029,2029-W22,2029-W23,Garment_BD,partial_capacity,700.0
+PT_AGOSTO_2028,Iberian August Factory Holiday (agosto) 2028,2028-W32,2028-W33,Garment_PT,partial_capacity,400.0
+PT_AGOSTO_2029,Iberian August Factory Holiday (agosto) 2029,2029-W32,2029-W33,Garment_PT,partial_capacity,400.0

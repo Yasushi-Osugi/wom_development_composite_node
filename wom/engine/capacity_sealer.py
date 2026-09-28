@@ -244,30 +244,30 @@ def build_capacity_load_report(
         if not node.week_labels:
             continue
         for w in range(n_weeks):
-            ch = node.cap_hard(w)
-            cs = node.cap_soft(w)
-            if ch == 0.0 and cs == 0.0:
-                continue   # no capacity set for this week
+            # Closure-aware limits (Explicit Closure v1r5m0 §4.6):
+            # closed week -> 0.0, unset -> None. The raw values are still
+            # reported in cap_hard / cap_soft (cap_hard = physical ceiling).
+            lim = node.processing_limit(w)
+            pc = node.planned_capacity(w)
+            if lim is None and pc is None:
+                continue   # no capacity set for this (open) week
 
-            p_qty = node.qty_supply(w, 1)   # index 1 = P (bucket P=3, but qty_supply uses bucket idx)
-
-            # Recompute using correct bucket index
             from wom.model.plan_node import P as P_IDX
             p_qty = len(node.psi4supply[w][P_IDX])
 
-            hard_util = (p_qty / ch) if ch > 0 else 0.0
-            soft_util = (p_qty / cs) if cs > 0 else 0.0
+            hard_util = (p_qty / lim) if lim else 0.0
+            soft_util = (p_qty / pc) if pc else 0.0
 
             report.append(CapacityLoadSummary(
                 node_id   = node.node_id,
                 week      = node.week_labels[w],
                 p_qty     = p_qty,
-                cap_hard  = ch,
-                cap_soft  = cs,
+                cap_hard  = node.cap_hard(w),
+                cap_soft  = node.cap_soft(w),
                 hard_util = hard_util,
                 soft_util = soft_util,
-                over_hard = (ch > 0 and p_qty > ch),
-                over_soft = (cs > 0 and p_qty > cs),
+                over_hard = (lim is not None and p_qty > lim),
+                over_soft = (pc is not None and p_qty > pc),
             ))
 
     return report

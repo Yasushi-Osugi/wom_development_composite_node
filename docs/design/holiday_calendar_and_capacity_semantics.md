@@ -370,3 +370,36 @@ capacity_override
 ```
 
 完全休業はCapacity数値の特殊値としてではなく、Planning Engineが明示的に解釈する供給状態として扱う。
+
+---
+
+## 13. 実装状況（2026-09-27）
+
+依頼書：`requests/RequestLetter_ExplicitClosure_v1r5m0_to_CodeKun.md`（ブランチ `wom-v1r5m0`、基準 `4ed2f14`）。
+事実の正本：`docs/development/WOM_Capacity_Trial02_Report.md`。
+
+### 13.1 実装したこと
+
+| 箇所 | 内容 |
+|---|---|
+| 休業の表現（E1） | `supply_closure` は対象ノード・週の `op_shifts[w] = 0` をセットするだけ。`value` は読まず、能力値も書き換えない（cap_hard＝物理天井のまま）。value が 0／0.1／空以外なら警告 |
+| `PlanNode` | `processing_limit(w)`（休業=0.0／未設定=None／それ以外=cap_hard）と `planned_capacity(w)`（休業=0.0／未設定=None／それ以外=cap_soft）を追加。`set_capacity` は渡さなかった側を変更しない（既定引数 None） |
+| Backward | `_apply_mom_cap_backward` の休業判定を `not node.is_open(w)` に統一。holiday の休業もここで充填目標 0 になる |
+| Mode 4（E3） | leaf の生産週が休業なら、直前の開いている週（無ければ直後）の P に追加。診断 `mode4_closure_shifted` |
+| Forward（E2） | 非 push ノードの休業週に届いた P は消さずに次の開いている週の P 末尾へ繰り延べ（`closure_p_deferred`、期間内に無ければ `closure_p_unplaced`） |
+| Forward（E4／D4） | push ノードの休業週は P（入庫）を受け入れ、実出荷 0、全量を I に残す（S 計画が 0 でなければ `closure_s_planned`） |
+| Step 0b | 非 push は P と `planned_capacity` を比較。push は実出荷と比較 |
+| Kitting | 払出予算を `processing_limit` から取る（休業週は 0） |
+| その他の読み手 | harvest（休業週は収穫週から除外）、strategic_kpi（休業・未設定の週を稼働率から除外）、`build_capacity_load_report` |
+| 表示 | PSI List：CapHard は生値、CapSoft は `planned_capacity`（未設定「—」／休業「0」）。「P vs Capacity Limits」と S3：push は処理量、休業週は灰色背景 |
+| データ | soysauce 4モデルの value 0.1→0。0 でも 0.1 でもない supply_closure 行（61行）は effect を `partial_capacity` へ |
+
+### 13.2 `partial_capacity` は移行中（D6）
+
+`partial_capacity` は旧 `supply_closure` と同じ結果を再現する互換 effect である（cap_hard := value、cap_soft 保持、explicit_closures と leaf_in の P シフトの対象）。
+部分操業が動かすべきなのは cap_soft であり、LT スキップと P シフトからも外すのが正しい。これは次の依頼で移行する（コード上は `# TRANSITIONAL (D6)`）。
+
+### 13.3 未着手
+
+- 能力値の None／Enum 化（§11-1、D7）：内部の約束「cap = 0 は未設定」は変えていない。新しいコードは `processing_limit` / `planned_capacity` を使う。
+- Mode 1〜3 の push スケジュールは休業週を考慮しない（Mode 4 のみ E3 を実装）。

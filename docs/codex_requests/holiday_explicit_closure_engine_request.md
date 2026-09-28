@@ -1,5 +1,7 @@
 # Codex Request: Explicit Holiday Closure Engine
 
+> **2026-09-27 注記**：本依頼は wom-v1r5m0 向けに改訂され、`requests/RequestLetter_ExplicitClosure_v1r5m0_to_CodeKun.md` に置き換えられた。本書は経緯として保持する。基準 `2169bf6` 時点の記述であり、§3 の現行挙動・§4 Decision D（push ノード）・§5.5 のデータ変更は現行と一致しない。
+
 - **Request file**: `docs/codex_requests/holiday_explicit_closure_engine_request.md`
 - **Target repository**: `Yasushi-Osugi/wom_v1r0m0`
 - **Target branch**: `wom-v1r2m0`

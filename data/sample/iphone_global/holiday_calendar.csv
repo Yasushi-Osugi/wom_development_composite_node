@@ -8,9 +8,9 @@ CNY_2028,春節2028（TSMC工場閉鎖）,2028-W05,2028-W06,SiliconWafer_TW_i17,
 CNY_2029,春節2029（TSMC工場閉鎖）,2029-W04,2029-W05,SiliconWafer_TW,supply_closure,0.0
 CNY_2029,春節2029（TSMC工場閉鎖）,2029-W04,2029-W05,SiliconWafer_TW_i15,supply_closure,0.0
 CNY_2029,春節2029（TSMC工場閉鎖）,2029-W04,2029-W05,SiliconWafer_TW_i17,supply_closure,0.0
-DIWALI_2027,ディワリ2027（インド工場閉鎖）,2027-W42,2027-W42,BoschSensor_IN,supply_closure,0.5
-DIWALI_2028,ディワリ2028（インド工場閉鎖）,2028-W40,2028-W40,BoschSensor_IN,supply_closure,0.5
-DIWALI_2029,ディワリ2029（インド工場閉鎖）,2029-W41,2029-W41,BoschSensor_IN,supply_closure,0.5
+DIWALI_2027,ディワリ2027（インド工場閉鎖）,2027-W42,2027-W42,BoschSensor_IN,partial_capacity,0.5
+DIWALI_2028,ディワリ2028（インド工場閉鎖）,2028-W40,2028-W40,BoschSensor_IN,partial_capacity,0.5
+DIWALI_2029,ディワリ2029（インド工場閉鎖）,2029-W41,2029-W41,BoschSensor_IN,partial_capacity,0.5
 XMAS_PRE_2027,クリスマス前需要増2027,2027-W47,2027-W49,Retail_AMER,demand_multiplier,1.25
 XMAS_PRE_2027,クリスマス前需要増2027,2027-W47,2027-W49,Retail_EMEA,demand_multiplier,1.20
 XMAS_PRE_2028,クリスマス前需要増2028,2028-W47,2028-W49,Retail_AMER,demand_multiplier,1.25

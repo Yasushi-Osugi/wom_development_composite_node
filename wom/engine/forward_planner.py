@@ -22,8 +22,10 @@ Preparation
     Source P kept: leaf_in (push or pull), supply_point (filled by bridge).
 
 Phase 1 -- InBound POST-ORDER (leaf_in -> tier-1 -> MOM)
+    Step 0-closure: closed week (op_shifts==0) -- non-push P deferred to the
+             next open week; push node accepts P but ships nothing
     Step 0a: CapHard seal P[w]; excess -> CO[w+1]
-    Step 0b: CapSoft check (flag only)
+    Step 0b: CapSoft check (flag only; push nodes: on actual shipment)
     PSI:
         push_sub: s_plan = available (ship everything upward)
         others  : normal CO+S demand calculation
@@ -92,6 +94,18 @@ class ForwardPlanResult:
     # is a signal worth investigating (e.g. opening_inv-seeded lots that never
     # passed through BackwardPlanner demand propagation), not a silent no-op.
     kitting_fallback_events: List[tuple] = field(default_factory=list)
+
+    # Explicit Closure v1r5m0 §4.5 -- closed-week (op_shifts==0) diagnostics.
+    #   closure_p_deferred (node_id, week_label, count): non-push P that arrived
+    #       in a closed week, moved (not dropped) to the next open week's P (E2).
+    #   closure_p_unplaced (node_id, week_label, [lot_id, ...]): same, but no
+    #       open week remained in the horizon -- removed from P (known limit).
+    #   closure_s_planned  (node_id, week_label, count): a push node had a
+    #       non-zero S plan in its closed week (inconsistent with Backward);
+    #       nothing is shipped (D4/E4).
+    closure_p_deferred: List[tuple] = field(default_factory=list)
+    closure_p_unplaced: List[tuple] = field(default_factory=list)
+    closure_s_planned:  List[tuple] = field(default_factory=list)
 
     def record_kitting_fallback(self, node_id, week_label, lot_id):
         self.kitting_fallback_events.append((node_id, week_label, lot_id))
@@ -439,8 +453,12 @@ class ForwardPlanner:
         Compute psi4supply[I]/[CO] and the "actual shipped" set for one node
         across all weeks.
 
+        Step 0-closure  closed week (not node.is_open(w)): non-push P is moved
+                 (identity intact) to the next open week's P (closure_p_deferred);
+                 a push node accepts P, ships nothing, keeps it all in I.
         Step 0a  CapHard sealing: P[w] truncated to cap_hard; excess -> CO[w+1]
-        Step 0b  CapSoft check: flag if P[w] > cap_soft (no movement)
+        Step 0b  CapSoft check: flag if P[w] > planned_capacity (no movement);
+                 push nodes compare the actual shipment instead of P.
 
         PSI formula (normal / PULL) -- Lot_ID IDENTITY matching:
             available   = I[w-1] + P[w]
@@ -467,6 +485,23 @@ class ForwardPlanner:
 
         for w in range(n_weeks):
             wk_label = node.week_labels[w] if node.week_labels else str(w)
+            is_closed = not node.is_open(w)
+
+            # Step 0-closure (Explicit Closure v1r5m0 §4.5, E2): a non-push node
+            # does not produce in a closed week. P that arrived anyway is NOT
+            # sealed into CO[w+1] (Step 0a would drop the lots from the supply
+            # side); the lots are deferred, identity intact, to the END of the
+            # next open week's P. Push nodes accept P in a closed week (their P
+            # is receipt, not production -- D4); see the push branch below.
+            if is_closed and not is_push_mode and node.psi4supply[w][P]:
+                moved = node.psi4supply[w][P]
+                node.psi4supply[w][P] = []
+                nxt = next((ww for ww in range(w + 1, n_weeks) if node.is_open(ww)), None)
+                if nxt is not None:
+                    node.psi4supply[nxt][P].extend(moved)
+                    result.closure_p_deferred.append((node.node_id, wk_label, len(moved)))
+                else:
+                    result.closure_p_unplaced.append((node.node_id, wk_label, list(moved)))
 
             # Step 0a: CapHard sealing
             # PUSH decoupling nodes (e.g. Buffer_Wafer_TW) skip sealing:
@@ -480,12 +515,17 @@ class ForwardPlanner:
                     node.psi4supply[w + 1][CO].extend(excess)
                 result.record_cap_hard_sealed(node.node_id, wk_label, len(excess))
 
-            # Step 0b: CapSoft check
-            cs = node.cap_soft(w)
-            if cs > 0 and len(node.psi4supply[w][P]) > int(cs):
+            # Step 0b: CapSoft check (flag only) -- planned_capacity folds in the
+            # week state (closed = 0.0, unset = None). Only a positive planned
+            # capacity is compared. Push nodes are compared on what they actually
+            # PROCESSED (shipped), not on P (= receipt): that check runs in the
+            # push branch below, after the shipment is known (§4.5).
+            pc = node.planned_capacity(w)
+            if (not is_push_mode and pc is not None and pc > 0
+                    and len(node.psi4supply[w][P]) > int(pc)):
                 result.record_cap_soft_violation(
                     node.node_id, wk_label,
-                    len(node.psi4supply[w][P]) - int(cs),
+                    len(node.psi4supply[w][P]) - int(pc),
                 )
 
             # Supply side
@@ -504,26 +544,46 @@ class ForwardPlanner:
                 node.psi4supply[w][CO] = []               # no CO carry-forward
                 avail_cnt = len(available)
                 total_cnt = len(s_plan)
-                actual_s  = available[:total_cnt]         # lots physically shipped
 
-                if avail_cnt >= total_cnt:
-                    node.psi4supply[w][I] = available[total_cnt:]  # surplus -> buffer
+                if not hasattr(node, '_push_shortfall'):
+                    node._push_shortfall = {}
+
+                if is_closed:
+                    # Closed push node (D4/E4): receipt (P) is accepted, nothing is
+                    # processed/shipped, the whole availability stays in I.
+                    # A non-zero S plan here contradicts Backward (which fills 0 in
+                    # a closed week) -- recorded, never shipped. Its count is
+                    # booked as this week's unshipped quantity so that the
+                    # throughput view (S - _push_shortfall) shows 0.
+                    actual_s = []
+                    node.psi4supply[w][I] = list(available)
+                    if total_cnt:
+                        result.closure_s_planned.append((node.node_id, wk_label, total_cnt))
+                    node._push_shortfall[w] = total_cnt
                 else:
-                    node.psi4supply[w][I] = []
-                    shortfall_cnt = total_cnt - avail_cnt
-                    if shortfall_cnt:
-                        result.record_shortfall(node.node_id, wk_label, shortfall_cnt)
+                    actual_s  = available[:total_cnt]     # lots physically shipped
+
+                    if avail_cnt >= total_cnt:
+                        node.psi4supply[w][I] = available[total_cnt:]  # surplus -> buffer
+                    else:
+                        node.psi4supply[w][I] = []
+                        shortfall_cnt = total_cnt - avail_cnt
+                        if shortfall_cnt:
+                            result.record_shortfall(node.node_id, wk_label, shortfall_cnt)
+
+                    # Record shortage count on node for Debugger visualization
+                    node._push_shortfall[w] = max(0, total_cnt - avail_cnt)
+
+                # Step 0b for push nodes: planned capacity vs actual processing.
+                if pc is not None and pc > 0 and len(actual_s) > int(pc):
+                    result.record_cap_soft_violation(
+                        node.node_id, wk_label, len(actual_s) - int(pc))
 
                 # Store actual_s for parent propagation (separate from display S)
                 nid = node.node_id
                 if nid not in self._actual_s:
                     self._actual_s[nid] = {}
                 self._actual_s[nid][w] = actual_s
-
-                # Record shortage count on node for Debugger visualization
-                if not hasattr(node, '_push_shortfall'):
-                    node._push_shortfall = {}
-                node._push_shortfall[w] = max(0, total_cnt - avail_cnt)
 
                 prev_inv_lots = node.psi4supply[w][I]
                 continue
@@ -651,8 +711,10 @@ class ForwardPlanner:
                     if lot_id not in completed:
                         pending.setdefault(lot_id, None)
                 candidates = list(pending)
-                ch = node.cap_hard(w)
-                remaining = int(ch) if ch > 0 else len(candidates)
+                # processing_limit: closed week = 0 (kits wait, components kept
+                # in their yards by the recovery logic), unset = no limit.
+                lim = node.processing_limit(w)
+                remaining = int(lim) if lim is not None else len(candidates)
             else:
                 candidates = list(node.psi4demand[w][S])
                 remaining = len(candidates)

@@ -1,7 +1,13 @@
 """
 wom/engine/holiday_calendar_plugin.py
-HolidayCalendarPlugin: supply_closure / demand_multiplier / pre-holiday buffer build.
+HolidayCalendarPlugin: supply_closure / partial_capacity / demand_multiplier /
+pre-holiday buffer build.
 CSV schema: holiday_id, holiday_name, start_week, end_week, node_name, effect, value
+
+effect (Explicit Closure v1r5m0):
+  supply_closure    full stop; sets the week state op_shifts=0. value is not read.
+  partial_capacity  cap_hard := value (pre-v1r5m0 supply_closure behaviour; transitional)
+  demand_multiplier leaf_out demand x value
 """
 
 from __future__ import annotations
@@ -12,6 +18,11 @@ from typing import Dict, List, Tuple
 
 from wom.engine.plugin_base import WOMPlugin
 from wom.model.plan_node import S, P as P_IDX, NODE_TYPE_LEAF_IN
+
+# Effects that register explicit_closures (LT skip in BackwardPlanner) and the
+# on_post_backward leaf_in P shift. partial_capacity is included only for
+# pre-v1r5m0 compatibility -- TRANSITIONAL (D6), see _apply_partial_capacity.
+CLOSURE_EFFECTS = frozenset({"supply_closure", "partial_capacity"})
 
 
 class HolidayCalendarPlugin(WOMPlugin):
@@ -54,6 +65,10 @@ class HolidayCalendarPlugin(WOMPlugin):
             if rule["effect"] == "supply_closure":
                 self._apply_supply_closure(
                     nodes, rule["week_idxs"], rule["week_labels"],
+                    rule["value"], rule["holiday_name"], rule["holiday_id"])
+            elif rule["effect"] == "partial_capacity":
+                self._apply_partial_capacity(
+                    nodes, rule["week_idxs"], rule["week_labels"],
                     rule["value"], rule["holiday_name"])
             elif rule["effect"] == "demand_multiplier":
                 self._apply_demand_multiplier(
@@ -67,19 +82,50 @@ class HolidayCalendarPlugin(WOMPlugin):
         # Structure: {node_name: set(week_idx)}
         explicit_closures: Dict[str, set] = {}
         for rule in rules:
-            if rule["effect"] == "supply_closure":
+            if rule["effect"] in CLOSURE_EFFECTS:
                 explicit_closures.setdefault(
                     rule["node_name"], set()).update(rule["week_idxs"])
         config["explicit_closures"] = explicit_closures
         print(f"[HolidayCalendar] explicit_closures written to config: "
               f"{len(explicit_closures)} nodes")
 
-    def _apply_supply_closure(self, nodes, w_idxs, w_lbls, cap_val, name):
+    def _apply_supply_closure(self, nodes, w_idxs, w_lbls, value, name, holiday_id=""):
+        """C2-a (Explicit Closure v1r5m0 §4.2): a closure is a WEEK STATE.
+
+        Sets op_shifts[w] = 0 on every target node/week. Capacity values are
+        NOT touched (cap_hard = physical ceiling, D1) and `value` is not read
+        (D3: supply_closure is always a full stop). Every planner reads the
+        state through PlanNode.is_open / processing_limit / planned_capacity.
+        """
+        if value not in (0.0, 0.1):
+            print(
+                f"[HolidayCalendar] WARNING {holiday_id or name!r} "
+                f"({nodes[0].node_name}): value={value} ignored -- "
+                f"supply_closure は value を使わない。部分操業は partial_capacity を使うこと"
+            )
+        for node in nodes:
+            for w in w_idxs:
+                node.set_operating_shifts(w, 0)
+        print(
+            f"[HolidayCalendar] Supply closure {name!r}: "
+            f"{nodes[0].node_name} closed (op_shifts=0) "
+            f"{w_lbls[0]}..{w_lbls[-1]} ({len(w_idxs)} weeks)"
+        )
+
+    def _apply_partial_capacity(self, nodes, w_idxs, w_lbls, cap_val, name):
+        """C2-b partial_capacity: reproduces the pre-v1r5m0 supply_closure result.
+
+        cap_hard is overwritten with `value`; cap_soft is preserved (set_capacity
+        no longer resets the argument it is not given). The rule is also kept in
+        explicit_closures (LT skip) and in the on_post_backward leaf_in P shift,
+        exactly as before.
+        """
+        # TRANSITIONAL (D6): 部分操業は cap_soft を動かすのが正。LT スキップと P シフトからも外す。次の依頼で移行
         for node in nodes:
             for w in w_idxs:
                 node.set_capacity(w, cap_hard=cap_val)
         print(
-            f"[HolidayCalendar] Supply closure {name!r}: "
+            f"[HolidayCalendar] Partial capacity {name!r}: "
             f"{nodes[0].node_name} cap_hard={cap_val} "
             f"{w_lbls[0]}..{w_lbls[-1]} ({len(w_idxs)} weeks)"
         )
@@ -134,7 +180,7 @@ class HolidayCalendarPlugin(WOMPlugin):
         # Build node -> set of explicitly-closed week indices from loaded rules
         explicit_closures: Dict[str, set] = {}
         for rule in self._rules:
-            if rule["effect"] == "supply_closure":
+            if rule["effect"] in CLOSURE_EFFECTS:
                 explicit_closures.setdefault(
                     rule["node_name"], set()).update(rule["week_idxs"])
 

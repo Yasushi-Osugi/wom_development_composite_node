@@ -246,7 +246,9 @@ def compute_strategic_kpi(
             for w in range(nw):
                 p_count = len(node.psi4supply[w][P])
                 i_count = len(node.psi4supply[w][I])
-                ch = node.cap_hard(w)
+                # processing_limit: closed week -> 0.0, unset -> None. Both are
+                # excluded from utilisation (Explicit Closure v1r5m0 §4.6).
+                ch = node.processing_limit(w)
 
                 # Buffer retention: every (node, week)
                 total_node_weeks += 1
@@ -254,7 +256,7 @@ def compute_strategic_kpi(
                     buffer_node_weeks += 1
 
                 # Capacity-constrained nodes
-                if ch > 0.0:
+                if ch:
                     total_p_lots += p_count
                     total_cap_hard += ch
                     util = min(float(p_count) / ch, 1.5)  # cap at 150%

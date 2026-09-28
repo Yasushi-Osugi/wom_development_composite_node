@@ -162,6 +162,11 @@ class PushSetupResult:
     mode:            str  = "fixed"
     push_lots_total: int  = 0
     push_events:     List[Tuple[str, str, int]] = field(default_factory=list)
+    # Explicit Closure v1r5m0 §4.4 (E3): Mode 4 lots whose production week was
+    # a closed week for the leaf_in, re-timed to the nearest open week.
+    # (leaf node_id, original week label, destination week label, count);
+    # destination "" = no open week in the horizon (lots left in place).
+    mode4_closure_shifted: List[Tuple[str, str, str, int]] = field(default_factory=list)
 
     def record(self, node_id: str, week_label: str, qty: int) -> None:
         self.push_events.append((node_id, week_label, qty))
@@ -351,7 +356,24 @@ class PushProductionPlanner:
                     leaf_lots = [lot_id for lot_id in future_lots if lot_id in membership]
                     if not leaf_lots:
                         continue
-                    leaf_node.psi4supply[w][P] = list(leaf_lots)
+                    # Explicit Closure v1r5m0 §4.4 (E3): a closure is resolved at
+                    # planning time. If this production week is closed for the
+                    # leaf, re-time the lots to the nearest EARLIER open week
+                    # (else the nearest later one) -- same rule as
+                    # HolidayCalendarPlugin.on_post_backward. APPEND (never
+                    # overwrite): the target week may already hold its own lots.
+                    # Every week was cleared above, so extend() == the former
+                    # assignment when nothing is shifted.
+                    dst_w = w
+                    if not leaf_node.is_open(w):
+                        dst_w = self._nearest_open_week(leaf_node, w, n_weeks)
+                        dst_lbl = (self.sc_tree.week_labels[dst_w]
+                                   if dst_w is not None else "")
+                        result.mode4_closure_shifted.append(
+                            (leaf_node.node_id, wk_label, dst_lbl, len(leaf_lots)))
+                        if dst_w is None:
+                            dst_w = w   # every week closed: nowhere to go (reported)
+                    leaf_node.psi4supply[dst_w][P].extend(leaf_lots)
                     result.record(leaf_node.node_id, wk_label, len(leaf_lots))
             return result
 
@@ -401,6 +423,17 @@ class PushProductionPlanner:
             prod_nm: self.setup(prod_nm, cfg)
             for prod_nm, cfg in push_configs.items()
         }
+
+    @staticmethod
+    def _nearest_open_week(node: PlanNode, w: int, n_weeks: int) -> Optional[int]:
+        """Nearest open week strictly before w; else strictly after; else None."""
+        for ww in range(w - 1, -1, -1):
+            if node.is_open(ww):
+                return ww
+        for ww in range(w + 1, n_weeks):
+            if node.is_open(ww):
+                return ww
+        return None
 
     # ------------------------------------------------------------------
     # Push quantity calculation

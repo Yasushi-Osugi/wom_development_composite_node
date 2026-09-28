@@ -1,8 +1,8 @@
 holiday_id,holiday_name,start_week,end_week,node_name,effect,value
-GW_2027_supply,GW2027（物流停滞）,2027-W18,2027-W19,DC_Higashi,supply_closure,0.3
-GW_2027_supply,GW2027（物流停滞）,2027-W18,2027-W19,DC_Nishi,supply_closure,0.3
-GW_2027_supply,GW2027（物流停滞）,2027-W18,2027-W19,Seihaku_E,supply_closure,0.5
-GW_2027_supply,GW2027（物流停滞）,2027-W18,2027-W19,Seihaku_W,supply_closure,0.5
+GW_2027_supply,GW2027（物流停滞）,2027-W18,2027-W19,DC_Higashi,partial_capacity,0.3
+GW_2027_supply,GW2027（物流停滞）,2027-W18,2027-W19,DC_Nishi,partial_capacity,0.3
+GW_2027_supply,GW2027（物流停滞）,2027-W18,2027-W19,Seihaku_E,partial_capacity,0.5
+GW_2027_supply,GW2027（物流停滞）,2027-W18,2027-W19,Seihaku_W,partial_capacity,0.5
 GW_2027_pre,GW2027前 需要増,2027-W16,2027-W17,Retail_KANTO,demand_multiplier,1.2
 GW_2027_pre,GW2027前 需要増,2027-W16,2027-W17,Retail_TOHOKU,demand_multiplier,1.2
 GW_2027_pre,GW2027前 需要増,2027-W16,2027-W17,Retail_KANSAI,demand_multiplier,1.2
@@ -11,22 +11,22 @@ GW_2027_post,GW2027後 反動減,2027-W20,2027-W21,Retail_KANTO,demand_multiplie
 GW_2027_post,GW2027後 反動減,2027-W20,2027-W21,Retail_TOHOKU,demand_multiplier,0.85
 GW_2027_post,GW2027後 反動減,2027-W20,2027-W21,Retail_KANSAI,demand_multiplier,0.85
 GW_2027_post,GW2027後 反動減,2027-W20,2027-W21,Retail_KYUSHU,demand_multiplier,0.85
-OBON_2027_supply,お盆2027（物流停滞）,2027-W33,2027-W34,DC_Higashi,supply_closure,0.4
-OBON_2027_supply,お盆2027（物流停滞）,2027-W33,2027-W34,DC_Nishi,supply_closure,0.4
+OBON_2027_supply,お盆2027（物流停滞）,2027-W33,2027-W34,DC_Higashi,partial_capacity,0.4
+OBON_2027_supply,お盆2027（物流停滞）,2027-W33,2027-W34,DC_Nishi,partial_capacity,0.4
 OBON_2027_pre,お盆2027前 需要増,2027-W31,2027-W32,Retail_KANTO,demand_multiplier,1.15
 OBON_2027_pre,お盆2027前 需要増,2027-W31,2027-W32,Retail_TOHOKU,demand_multiplier,1.15
 OBON_2027_pre,お盆2027前 需要増,2027-W31,2027-W32,Retail_KANSAI,demand_multiplier,1.15
 OBON_2027_pre,お盆2027前 需要増,2027-W31,2027-W32,Retail_KYUSHU,demand_multiplier,1.15
-NEWYEAR_2027_supply,年末年始2027（停滞）,2027-W52,2028-W01,DC_Higashi,supply_closure,0.2
-NEWYEAR_2027_supply,年末年始2027（停滞）,2027-W52,2028-W01,DC_Nishi,supply_closure,0.2
+NEWYEAR_2027_supply,年末年始2027（停滞）,2027-W52,2028-W01,DC_Higashi,partial_capacity,0.2
+NEWYEAR_2027_supply,年末年始2027（停滞）,2027-W52,2028-W01,DC_Nishi,partial_capacity,0.2
 NEWYEAR_2027_pre,年末2027 需要急増,2027-W50,2027-W51,Retail_KANTO,demand_multiplier,1.35
 NEWYEAR_2027_pre,年末2027 需要急増,2027-W50,2027-W51,Retail_TOHOKU,demand_multiplier,1.35
 NEWYEAR_2027_pre,年末2027 需要急増,2027-W50,2027-W51,Retail_KANSAI,demand_multiplier,1.35
 NEWYEAR_2027_pre,年末2027 需要急増,2027-W50,2027-W51,Retail_KYUSHU,demand_multiplier,1.35
-GW_2028_supply,GW2028（物流停滞）,2028-W18,2028-W19,DC_Higashi,supply_closure,0.3
-GW_2028_supply,GW2028（物流停滞）,2028-W18,2028-W19,DC_Nishi,supply_closure,0.3
-GW_2028_supply,GW2028（物流停滞）,2028-W18,2028-W19,Seihaku_E,supply_closure,0.5
-GW_2028_supply,GW2028（物流停滞）,2028-W18,2028-W19,Seihaku_W,supply_closure,0.5
+GW_2028_supply,GW2028（物流停滞）,2028-W18,2028-W19,DC_Higashi,partial_capacity,0.3
+GW_2028_supply,GW2028（物流停滞）,2028-W18,2028-W19,DC_Nishi,partial_capacity,0.3
+GW_2028_supply,GW2028（物流停滞）,2028-W18,2028-W19,Seihaku_E,partial_capacity,0.5
+GW_2028_supply,GW2028（物流停滞）,2028-W18,2028-W19,Seihaku_W,partial_capacity,0.5
 GW_2028_pre,GW2028前 需要増,2028-W16,2028-W17,Retail_KANTO,demand_multiplier,1.2
 GW_2028_pre,GW2028前 需要増,2028-W16,2028-W17,Retail_TOHOKU,demand_multiplier,1.2
 GW_2028_pre,GW2028前 需要増,2028-W16,2028-W17,Retail_KANSAI,demand_multiplier,1.2
@@ -35,14 +35,14 @@ GW_2028_post,GW2028後 反動減,2028-W20,2028-W21,Retail_KANTO,demand_multiplie
 GW_2028_post,GW2028後 反動減,2028-W20,2028-W21,Retail_TOHOKU,demand_multiplier,0.85
 GW_2028_post,GW2028後 反動減,2028-W20,2028-W21,Retail_KANSAI,demand_multiplier,0.85
 GW_2028_post,GW2028後 反動減,2028-W20,2028-W21,Retail_KYUSHU,demand_multiplier,0.85
-OBON_2028_supply,お盆2028（物流停滞）,2028-W33,2028-W34,DC_Higashi,supply_closure,0.4
-OBON_2028_supply,お盆2028（物流停滞）,2028-W33,2028-W34,DC_Nishi,supply_closure,0.4
+OBON_2028_supply,お盆2028（物流停滞）,2028-W33,2028-W34,DC_Higashi,partial_capacity,0.4
+OBON_2028_supply,お盆2028（物流停滞）,2028-W33,2028-W34,DC_Nishi,partial_capacity,0.4
 OBON_2028_pre,お盆2028前 需要増,2028-W31,2028-W32,Retail_KANTO,demand_multiplier,1.15
 OBON_2028_pre,お盆2028前 需要増,2028-W31,2028-W32,Retail_TOHOKU,demand_multiplier,1.15
 OBON_2028_pre,お盆2028前 需要増,2028-W31,2028-W32,Retail_KANSAI,demand_multiplier,1.15
 OBON_2028_pre,お盆2028前 需要増,2028-W31,2028-W32,Retail_KYUSHU,demand_multiplier,1.15
-NEWYEAR_2028_supply,年末年始2028（停滞）,2028-W52,2028-W53,DC_Higashi,supply_closure,0.2
-NEWYEAR_2028_supply,年末年始2028（停滞）,2028-W52,2028-W53,DC_Nishi,supply_closure,0.2
+NEWYEAR_2028_supply,年末年始2028（停滞）,2028-W52,2028-W53,DC_Higashi,partial_capacity,0.2
+NEWYEAR_2028_supply,年末年始2028（停滞）,2028-W52,2028-W53,DC_Nishi,partial_capacity,0.2
 NEWYEAR_2028_pre,年末2028 需要急増,2028-W50,2028-W51,Retail_KANTO,demand_multiplier,1.35
 NEWYEAR_2028_pre,年末2028 需要急増,2028-W50,2028-W51,Retail_TOHOKU,demand_multiplier,1.35
 NEWYEAR_2028_pre,年末2028 需要急増,2028-W50,2028-W51,Retail_KANSAI,demand_multiplier,1.35

@@ -1,5 +1,5 @@
 holiday_id,holiday_name,start_week,end_week,node_name,effect,value
-RAYONG_MAINT_2026,Rayong Factory Maintenance 2026,2026-W32,2026-W32,Factory_Local_TH,supply_closure,150
-RAYONG_MAINT_2027,Rayong Factory Maintenance 2027,2027-W32,2027-W32,Factory_Local_TH,supply_closure,150
-GOLDEN_WEEK_2026,Shanghai Golden Week 2026,2026-W40,2026-W41,Factory_Import_CN,supply_closure,5
-GOLDEN_WEEK_2027,Shanghai Golden Week 2027,2027-W40,2027-W41,Factory_Import_CN,supply_closure,5
+RAYONG_MAINT_2026,Rayong Factory Maintenance 2026,2026-W32,2026-W32,Factory_Local_TH,partial_capacity,150
+RAYONG_MAINT_2027,Rayong Factory Maintenance 2027,2027-W32,2027-W32,Factory_Local_TH,partial_capacity,150
+GOLDEN_WEEK_2026,Shanghai Golden Week 2026,2026-W40,2026-W41,Factory_Import_CN,partial_capacity,5
+GOLDEN_WEEK_2027,Shanghai Golden Week 2027,2027-W40,2027-W41,Factory_Import_CN,partial_capacity,5

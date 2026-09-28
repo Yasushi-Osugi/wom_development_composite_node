@@ -1,0 +1,243 @@
+﻿
+######## Cookie-jp-2026
+  psi-signature nodes changed: 4
+  diagnostics: none
+  strategic_kpi changed: {'fixed_cost_coverage': (0.31636686714051393, 0.3154702022963368), 'production_leveling': (0.8333559352522067, 0.8001401213510511), 'buffer_retention': (0.12371794871794872, 0.15128205128205127), 'avg_cap_utilization': (0.5985041063755152, 0.5986199750065773)}
+   * Cookie_Import|DC_Import_Buffer (dad/pull) series=['CO', 'I', 'P', 'actual'] weeks=96 [2026-W10..2027-W52]
+       totals(before,after): {'P': (68724, 67274), 'actual': (68724, 67274), 'I': (206172, 201822), 'CO': (772608, 905258)}
+   * Cookie_Import|Factory_GP_CN (mom/pull) series=['CO', 'P', 'S', 'actual', 'cap_hard', 'dP', 'dS', 'is_open'] weeks=104 [2026-W02..2027-W52]
+       totals(before,after): {'P': (68724, 67274), 'actual': (68724, 67274), 'CO': (157664, 164000)}
+   * Cookie_Import|Ingredients_CN (leaf_in/pull) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=46 [2026-W02..2027-W01]
+       totals(before,after): {'P': (68724, 67274), 'actual': (68724, 67274)}
+   * Cookie_Import|SP_Cookie_Import (supply_point/pull) series=['CO', 'I', 'P', 'actual'] weeks=102 [2026-W04..2027-W52]
+       totals(before,after): {'P': (68724, 67274), 'actual': (68724, 67274), 'I': (0, 47878), 'CO': (157664, 301914)}
+
+######## apparel-global-2028-2029
+  psi-signature nodes changed: 0
+  diagnostics: none
+
+######## apparel-us-2026
+  psi-signature nodes changed: 0
+  diagnostics: none
+
+######## bom-test-2026
+  psi-signature nodes changed: 0
+  diagnostics: none
+
+######## ev-europe-2026
+  psi-signature nodes changed: 16
+  diagnostics: none
+  strategic_kpi changed: {'fixed_cost_coverage': (0.16968509350935093, 0.1705858085808581), 'production_leveling': (0.9175718505520298, 0.8681263047844344), 'buffer_retention': (0.2746212121212121, 0.27509469696969696), 'avg_cap_utilization': (0.25355105342065815, 0.2563102001630764)}
+   * EVmaker_Import|Battery_HU (leaf_in/push_sub) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=15 [2026-W23..2027-W30]
+   * EVmaker_Import|Battery_HU_Yard (stockyard/push_sub) series=['I', 'P', 'S', 'actual', 'dP', 'dS'] weeks=15 [2026-W25..2027-W32]
+   * EVmaker_Import|ECU_HU (leaf_in/push_sub) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=13 [2026-W23..2027-W29]
+   * EVmaker_Import|ECU_HU_Yard (stockyard/push_sub) series=['I', 'P', 'S', 'actual', 'dP', 'dS'] weeks=13 [2026-W26..2027-W32]
+   * EVmaker_Import|Factory_Import_HU (mom/push) series=['P', 'S', 'actual', 'cap_hard', 'dP', 'dS', 'is_open'] weeks=11 [2026-W27..2027-W32]
+       2026-W27 P:100->150 S:100->150 actual:100->150 dS:100->150
+       2026-W28 P:100->150 S:100->150 actual:100->150 dS:100->150 dP:0->150
+       2026-W29 P:100->150 S:100->150 actual:100->150 dS:100->150 dP:0->150
+       2026-W30 P:100->150 S:100->150 actual:100->150 dS:100->150 dP:0->150
+       2026-W31 P:100->0 S:100->0 actual:100->0 dS:100->0 cap_hard:0.0->150.0 is_open:True->False
+       2026-W32 P:100->0 S:100->0 actual:100->0 dS:100->0 cap_hard:0.0->150.0 is_open:True->False
+       2027-W28 P:100->110 S:100->110 actual:100->110 dS:100->110
+       2027-W29 P:100->150 S:100->150 actual:100->150 dS:100->150 dP:0->150
+       2027-W30 P:100->150 S:100->150 actual:100->150 dS:100->150 dP:0->150
+       2027-W31 P:60->0 S:60->0 actual:60->0 dS:60->0 cap_hard:0.0->150.0 is_open:True->False
+       2027-W32 P:50->0 S:50->0 actual:50->0 dS:50->0 cap_hard:0.0->150.0 is_open:True->False
+   * EVmaker_Import|Motor_HU (leaf_in/push_sub) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=15 [2026-W23..2027-W30]
+   * EVmaker_Import|Motor_HU_Yard (stockyard/push_sub) series=['I', 'P', 'S', 'actual', 'dP', 'dS'] weeks=15 [2026-W25..2027-W32]
+   * EVmaker_Import|SP_EV_Import (supply_point/pull) series=['I', 'P'] weeks=11 [2026-W27..2027-W32]
+       2026-W27 P:100->150 I:0->50
+       2026-W28 P:100->150 I:0->100
+       2026-W29 P:100->150 I:0->150
+       2026-W30 P:100->150 I:0->200
+       2026-W31 P:100->0 I:0->100
+       2026-W32 P:100->0
+       2027-W28 P:100->110 I:0->10
+       2027-W29 P:100->150 I:0->60
+       2027-W30 P:100->150 I:0->110
+       2027-W31 P:60->0 I:0->50
+       2027-W32 P:50->0
+       totals(before,after): {'I': (0, 830)}
+   * EVmaker_Local|Battery_DE (leaf_in/pull) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=4 [2026-W30..2027-W31]
+       2026-W30 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2026-W31 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+       2027-W30 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2027-W31 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+   * EVmaker_Local|Battery_DE_Yard (stockyard/pull) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=4 [2026-W31..2027-W32]
+       2026-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2026-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+       2027-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2027-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+   * EVmaker_Local|ECU_DE (leaf_in/pull) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=4 [2026-W29..2027-W30]
+       2026-W29 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2026-W30 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+       2027-W29 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2027-W30 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+   * EVmaker_Local|ECU_DE_Yard (stockyard/pull) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=4 [2026-W31..2027-W32]
+       2026-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2026-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+       2027-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2027-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+   * EVmaker_Local|Factory_Local_DE (mom/pull) series=['P', 'S', 'actual', 'cap_hard', 'dS', 'is_open'] weeks=4 [2026-W31..2027-W32]
+       2026-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000
+       2026-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 cap_hard:0.0->2900.0 is_open:True->False
+       2027-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000
+       2027-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 cap_hard:0.0->2900.0 is_open:True->False
+   * EVmaker_Local|Motor_DE (leaf_in/pull) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=4 [2026-W30..2027-W31]
+       2026-W30 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2026-W31 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+       2027-W30 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2027-W31 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+   * EVmaker_Local|Motor_DE_Yard (stockyard/pull) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=4 [2026-W31..2027-W32]
+       2026-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2026-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+       2027-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2027-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+   * EVmaker_Local|SP_EV_Local (supply_point/pull) series=['I', 'P'] weeks=4 [2026-W31..2027-W32]
+       2026-W31 P:500->1000 I:0->500
+       2026-W32 P:500->0
+       2027-W31 P:500->1000 I:0->500
+       2027-W32 P:500->0
+       totals(before,after): {'I': (0, 1000)}
+
+######## ev-thailand-2026
+  psi-signature nodes changed: 6
+  diagnostics: none
+  strategic_kpi changed: {'fixed_cost_coverage': (0.17459677419354838, 0.1756048387096774), 'production_leveling': (0.8610426925965982, 0.7757694450810427), 'buffer_retention': (0.25686813186813184, 0.22252747252747251), 'avg_cap_utilization': (0.307823345608749, 0.30838131904921323)}
+   * EVmaker_Import|Components_CN (leaf_in/push_sub) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=18 [2026-W31..2027-W39]
+   * EVmaker_Import|Factory_Import_CN (mom/push) series=['I', 'P', 'S', 'actual', 'cap_hard', 'dP', 'dS', 'is_open'] weeks=66 [2026-W33..2027-W45]
+       totals(before,after): {'I': (3119, 12950)}
+   * EVmaker_Import|SP_EV_Import (supply_point/pull) series=['I', 'P'] weeks=64 [2026-W35..2027-W45]
+       totals(before,after): {'I': (15621, 7230)}
+   * EVmaker_Local|Battery_CN (leaf_in/pull) series=['P', 'S', 'actual', 'dP', 'dS'] weeks=4 [2026-W27..2027-W28]
+       2026-W27 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2026-W28 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+       2027-W27 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000 dP:500->1000
+       2027-W28 P:500->0 S:500->0 actual:500->0 dS:500->0 dP:500->0
+   * EVmaker_Local|Factory_Local_TH (mom/pull) series=['P', 'S', 'actual', 'cap_hard', 'dS', 'is_open'] weeks=4 [2026-W31..2027-W32]
+       2026-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000
+       2026-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 cap_hard:0.0->2900.0 is_open:True->False
+       2027-W31 P:500->1000 S:500->1000 actual:500->1000 dS:500->1000
+       2027-W32 P:500->0 S:500->0 actual:500->0 dS:500->0 cap_hard:0.0->2900.0 is_open:True->False
+   * EVmaker_Local|SP_EV_Local (supply_point/pull) series=['I', 'P'] weeks=4 [2026-W31..2027-W32]
+       2026-W31 P:500->1000 I:0->500
+       2026-W32 P:500->0
+       2027-W31 P:500->1000 I:0->500
+       2027-W32 P:500->0
+       totals(before,after): {'I': (0, 1000)}
+
+######## iphone_global
+  psi-signature nodes changed: 0
+  diagnostics: none
+   * iPhone15|SiliconWafer_TW_i15 (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
+       2027-W06 is_open:True->False
+       2027-W07 is_open:True->False
+       2028-W05 is_open:True->False
+       2028-W06 is_open:True->False
+       2029-W04 is_open:True->False
+       2029-W05 is_open:True->False
+   * iPhone16|SiliconWafer_TW (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
+       2027-W06 is_open:True->False
+       2027-W07 is_open:True->False
+       2028-W05 is_open:True->False
+       2028-W06 is_open:True->False
+       2029-W04 is_open:True->False
+       2029-W05 is_open:True->False
+   * iPhone17|SiliconWafer_TW_i17 (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
+       2027-W06 is_open:True->False
+       2027-W07 is_open:True->False
+       2028-W05 is_open:True->False
+       2028-W06 is_open:True->False
+       2029-W04 is_open:True->False
+       2029-W05 is_open:True->False
+
+######## oil-global-2027
+  psi-signature nodes changed: 0
+  diagnostics: none
+
+######## rice-japan-2027-2028
+  psi-signature nodes changed: 0
+  diagnostics: none
+
+######## smartx-2027-2029
+  psi-signature nodes changed: 2
+  diagnostics: ['SmartXPro_CN:mode4_closure_shifted=8']
+  strategic_kpi changed: {'fixed_cost_coverage': (0.1333944783592801, 0.13459580638726473), 'production_leveling': (0.7296626037973823, 0.7225258429769089), 'avg_cap_utilization': (0.49556800409332585, 0.4937979230366595)}
+   * SmartXNext|WaferFab_TW_g3 (leaf_in/pull) series=['is_open'] weeks=10 [2026-W08..2030-W06]
+       2026-W08 is_open:True->False
+       2026-W09 is_open:True->False
+       2027-W06 is_open:True->False
+       2027-W07 is_open:True->False
+       2028-W05 is_open:True->False
+       2028-W06 is_open:True->False
+       2029-W04 is_open:True->False
+       2029-W05 is_open:True->False
+       2030-W05 is_open:True->False
+       2030-W06 is_open:True->False
+   * SmartXPro_CN|Buffer_Chip_TW (mom/push) series=['I', 'P'] weeks=12 [2026-W08..2029-W06]
+       2026-W08 P:1350->4050 I:3330->6030
+       2026-W09 P:1350->0 I:4680->6030
+       2026-W10 P:1350->0
+       2027-W06 P:1159->3457 I:48681->50979
+       2027-W07 P:1152->0 I:48483->49629
+       2027-W08 P:1146->0
+       2028-W05 P:901->2703 I:35136->36938
+       2028-W06 P:901->0 I:34687->35588
+       2028-W07 P:901->0
+       2029-W04 P:388->1143 I:18215->18970
+       2029-W05 P:381->0 I:17695->18069
+       2029-W06 P:374->0
+       totals(before,after): {'I': (6085548, 6096874)}
+   * SmartXPro_CN|WaferFab_TW (leaf_in/push_sub) series=['P', 'S', 'actual', 'cap_hard', 'is_open'] weeks=14 [2026-W07..2030-W06]
+   * SmartX|WaferFab_TW_g1 (leaf_in/pull) series=['is_open'] weeks=10 [2026-W08..2030-W06]
+       2026-W08 is_open:True->False
+       2026-W09 is_open:True->False
+       2027-W06 is_open:True->False
+       2027-W07 is_open:True->False
+       2028-W05 is_open:True->False
+       2028-W06 is_open:True->False
+       2029-W04 is_open:True->False
+       2029-W05 is_open:True->False
+       2030-W05 is_open:True->False
+       2030-W06 is_open:True->False
+
+######## soysauce-eu-2027
+  psi-signature nodes changed: 0
+  diagnostics: none
+  strategic_kpi changed: {'fixed_cost_coverage': (0.046601014826610464, 0.04623797422399709), 'avg_cap_utilization': (0.37653258547008545, 0.36928440860215056)}
+   * Soy_Sauce|Bottling_Noda (mom/push) series=['cap_hard', 'is_open'] weeks=2 [2027-W18..2028-W18]
+       2027-W18 cap_hard:0.1->1500.0 is_open:True->False
+       2028-W18 cap_hard:0.1->1500.0 is_open:True->False
+
+######## soysauce-jpy-2027
+  psi-signature nodes changed: 0
+  diagnostics: none
+  strategic_kpi changed: {'fixed_cost_coverage': (0.04377856704577996, 0.04335240723259023), 'avg_cap_utilization': (0.3530205641025641, 0.3462825667527993)}
+   * Soy_Sauce|Bottling_Noda (mom/push) series=['cap_hard', 'cap_soft', 'is_open'] weeks=2 [2027-W18..2028-W18]
+       2027-W18 cap_hard:0.1->1500.0 cap_soft:0.0->1286.0 is_open:True->False
+       2028-W18 cap_hard:0.1->1500.0 cap_soft:0.0->1286.0 is_open:True->False
+
+######## soysauce-jpy-2027-alloc
+  psi-signature nodes changed: 0
+  diagnostics: none
+  strategic_kpi changed: {'fixed_cost_coverage': (0.033680214908737474, 0.03337732641374374), 'avg_cap_utilization': (0.48979056410256416, 0.4836196899224807)}
+   * Soy_Sauce|Bottling_Noda (mom/push) series=['cap_hard', 'cap_soft', 'is_open'] weeks=2 [2027-W18..2028-W18]
+       2027-W18 cap_hard:0.1->800.0 cap_soft:0.0->686.0 is_open:True->False
+       2028-W18 cap_hard:0.1->800.0 cap_soft:0.0->686.0 is_open:True->False
+
+######## soysauce-jpy-2027-alloc__P_opt800
+  psi-signature nodes changed: 0
+  diagnostics: none
+  strategic_kpi changed: {'fixed_cost_coverage': (0.03306110482341928, 0.03275814244810308), 'avg_cap_utilization': (0.48084779487179496, 0.47460759689922477)}
+   * Soy_Sauce|Bottling_Noda (mom/push) series=['cap_hard', 'cap_soft', 'is_open'] weeks=2 [2027-W18..2028-W18]
+       2027-W18 cap_hard:0.1->800.0 cap_soft:0.0->686.0 is_open:True->False
+       2028-W18 cap_hard:0.1->800.0 cap_soft:0.0->686.0 is_open:True->False
+
+######## soysauce-us-2027
+  psi-signature nodes changed: 0
+  diagnostics: none
+  strategic_kpi changed: {'fixed_cost_coverage': (0.04669631342543788, 0.046333272826284265), 'avg_cap_utilization': (0.3772916666666667, 0.3700483870967742)}
+   * Soy_Sauce|Bottling_Noda (mom/push) series=['cap_hard', 'is_open'] weeks=2 [2027-W18..2028-W18]
+       2027-W18 cap_hard:0.1->1500.0 is_open:True->False
+       2028-W18 cap_hard:0.1->1500.0 is_open:True->False

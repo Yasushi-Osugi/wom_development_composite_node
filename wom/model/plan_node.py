@@ -313,11 +313,20 @@ class PlanNode:
     def set_capacity(
         self,
         week: int,
-        cap_hard: float = 0.0,
-        cap_soft: float = 0.0,
+        cap_hard: Optional[float] = None,
+        cap_soft: Optional[float] = None,
     ) -> None:
-        self.capacity[week][CAP_HARD] = cap_hard
-        self.capacity[week][CAP_SOFT] = cap_soft
+        """Set one or both capacity values for the week.
+
+        An argument left as None is NOT changed (Explicit Closure v1r5m0 §4.1).
+        The former defaults (0.0) silently reset the value that was not passed
+        -- e.g. set_capacity(w, cap_hard=0.1) wiped a cap_soft of 686, which is
+        what made soysauce W18 depend on an accidental chain (Trial-02 §3).
+        """
+        if cap_hard is not None:
+            self.capacity[week][CAP_HARD] = cap_hard
+        if cap_soft is not None:
+            self.capacity[week][CAP_SOFT] = cap_soft
 
     # ======================================================================
     # Operating calendar (per-week shift count; Phase 2)
@@ -338,6 +347,31 @@ class PlanNode:
         0 shifts => closed; N>0 => open."""
         s = self.op_shifts[week]
         return s is None or s > 0
+
+    # ----------------------------------------------------------------------
+    # Closure-aware capacity readers (Explicit Closure v1r5m0 §4.1)
+    #
+    # A closure (holiday / maintenance stop) is a WEEK STATE (op_shifts == 0),
+    # never a special capacity value. cap_hard stays the physical ceiling of
+    # the equipment and is not rewritten by a closure. These two readers fold
+    # the week state in and return None for "not set", so that new code never
+    # confuses 0 ("closed") with 0 ("unset", the D7 legacy convention that
+    # cap_hard()/cap_soft() still follow).
+    # ----------------------------------------------------------------------
+
+    def processing_limit(self, week: int) -> Optional[float]:
+        """Processing ceiling: closed week = 0.0, unset = None, else cap_hard."""
+        if not self.is_open(week):
+            return 0.0
+        ch = self.cap_hard(week)
+        return ch if ch > 0 else None
+
+    def planned_capacity(self, week: int) -> Optional[float]:
+        """Planned operating capacity: closed week = 0.0, unset = None, else cap_soft."""
+        if not self.is_open(week):
+            return 0.0
+        cs = self.cap_soft(week)
+        return cs if cs > 0 else None
 
     # ======================================================================
     # Kitting List (stage 1, request_kitting_stage1.md) -- judgement helpers
@@ -455,6 +489,7 @@ class PlanNode:
             "P":  self.qty_demand(week, P),
             "cap_hard": self.cap_hard(week),
             "cap_soft": self.cap_soft(week),
+            "is_open":  self.is_open(week),
         }
 
     def __repr__(self) -> str:

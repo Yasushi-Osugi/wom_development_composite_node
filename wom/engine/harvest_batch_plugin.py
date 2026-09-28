@@ -72,10 +72,11 @@ class HarvestBatchPlugin(WOMPlugin):
             if node.node_type != "leaf_in":
                 continue
 
-            # 1a. Identify harvest weeks (cap_hard integer part > 0)
+            # 1a. Identify harvest weeks (cap_hard integer part > 0, and the
+            #     node is not closed that week -- Explicit Closure v1r5m0 §4.6)
             harvest_wks = [
                 w for w in range(n_weeks)
-                if int(node.cap_hard(w)) > 0
+                if int(node.cap_hard(w)) > 0 and node.is_open(w)
             ]
             if not harvest_wks:
                 continue

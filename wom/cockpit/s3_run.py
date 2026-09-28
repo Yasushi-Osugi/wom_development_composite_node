@@ -309,6 +309,12 @@ class RunPanel(tk.Frame):
         # （node_id で記録された実イベントを node_name に解決したもの）で行う
         # ——cap_hard は ForwardPlanner が P を封じる天井のため p > cap_hard は
         # 設計上ほぼ成立せず、系列比較では赤棒が出なかった（terminology 修正）。
+        # Closed weeks (Explicit Closure v1r5m0 §4.7): grey background only.
+        closed_set = set(node.get("closed_weeks", []) or [])
+        for w, label in enumerate(labels):
+            if label in closed_set:
+                ax.axvspan(w - 0.5, w + 0.5, color="#9E9E9E", alpha=0.35, lw=0, zorder=0)
+
         hard_set = set(node["hard_weeks"])
         soft_set = set(node["soft_weeks"])
         bar_colors = []

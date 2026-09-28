@@ -382,8 +382,12 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
                 }
             # Phase 8-3c・N4: 能力を持つノードだけ（cap_hard/cap_soft が全週ゼロなら
             # 入れない——S1 の is_unallocated と同じ規律で、意味の無い行を出さない）。
+            # Explicit Closure v1r5m0 §4.7: cap_hard stays the raw physical
+            # ceiling (a closure does not rewrite it); cap_soft is the planned
+            # operating capacity (closed week = 0, unset -> 0 as before).
             cap_hard_series = [nd.cap_hard(w) for w in range(n_weeks)]
-            cap_soft_series = [nd.cap_soft(w) for w in range(n_weeks)]
+            cap_soft_series = [(nd.planned_capacity(w) or 0.0) for w in range(n_weeks)]
+            closed_idx = [w for w in range(n_weeks) if not nd.is_open(w)]
             if any(v > 0 for v in cap_hard_series) or any(v > 0 for v in cap_soft_series):
                 # Phase 8-3c-4・X1: cap_hard と比べるべき系列を「1本だけ」出し、
                 # それが何かを series_kind で宣言する（画面に選ばせない）。
@@ -417,6 +421,9 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
                     "shortfall": shortfall,
                     "cap_hard": cap_hard_series,
                     "cap_soft": cap_soft_series,
+                    # closed weeks (op_shifts==0) as week labels; drawn as a
+                    # grey background only (§4.7).
+                    "closed_weeks": [(labels[w] if labels else str(w)) for w in closed_idx],
                 }
         if peaks_prod:
             inventory_peak_weeks[prod] = peaks_prod

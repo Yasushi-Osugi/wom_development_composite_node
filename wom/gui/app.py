@@ -1509,6 +1509,47 @@ class PPCTabPanel(tk.Frame):
         self._try_load()
 
 
+# ── Capacity display helpers (Explicit Closure v1r5m0 §4.7) ─────────
+#   Pure functions (no tkinter state) shared by the PSI List table and the
+#   "P vs Capacity Limits" chart, so that the display rule lives in one place.
+
+def _fmt_cap_value(v: float) -> str:
+    """Raw capacity value as text: integers without decimals, others as-is
+    (0.3 stays "0.3" -- the old "{:.0f}" showed 0.1 as a misleading "0")."""
+    return f"{v:.0f}" if float(v).is_integer() else f"{v:g}"
+
+
+def psi_list_capacity_cells(node, w: int):
+    """(CapHard text, CapSoft text) for one PSI List row.
+
+    CapHard = the raw physical ceiling (a closure does not rewrite it);
+    "—" only when unset (0). CapSoft = planned_capacity: "—" when unset,
+    "0" in a closed week, the value otherwise.
+    """
+    ch = node.cap_hard(w)
+    hard_txt = _fmt_cap_value(ch) if ch > 0 else "—"
+    pc = node.planned_capacity(w)
+    if pc is None:
+        soft_txt = "—"
+    elif pc == 0:
+        soft_txt = "0"
+    else:
+        soft_txt = _fmt_cap_value(pc)
+    return hard_txt, soft_txt
+
+
+def capacity_view_series(node, psi):
+    """Series compared with capacity: a push node's supply layer shows what it
+    PROCESSED (S − _push_shortfall, same as S3 / Phase 8-3c-4 案5) -- its P is
+    receipt, not production. Every other case shows P."""
+    from wom.model.plan_node import S as S_, P as P_
+    n = len(node.week_labels)
+    if node.plan_mode == "push" and psi is node.psi4supply:
+        sf = getattr(node, "_push_shortfall", None) or {}
+        return [len(psi[w][S_]) - sf.get(w, 0) for w in range(n)]
+    return [len(psi[w][P_]) for w in range(n)]
+
+
 # PSI List Panel  (lot-ID based PSI, Steps 3-8)
 # ──────────────────────────────────────────────────────────────────────
 
@@ -1681,6 +1722,9 @@ class PSIListPanel(tk.Frame):
 
         tot_s = tot_co = tot_i = tot_p = 0
         has_cap = False
+        # Compared with capacity: push supply layer = processed (S − shortfall),
+        # otherwise P (Explicit Closure v1r5m0 §4.7).
+        proc = capacity_view_series(node, psi)
 
         for w, wk_label in enumerate(node.week_labels):
             sq  = len(psi[w][S_])
@@ -1688,19 +1732,23 @@ class PSIListPanel(tk.Frame):
             iq  = len(psi[w][I_])
             pq  = len(psi[w][P_])
             ch  = node.cap_hard(w)
-            cs  = node.cap_soft(w)
+            pc  = node.planned_capacity(w)
+            hard_txt, soft_txt = psi_list_capacity_cells(node, w)
 
             tot_s  += sq
             tot_co += coq
             tot_i  += iq
             tot_p  += pq
-            if ch > 0 or cs > 0:
+            if ch > 0 or pc is not None:
                 has_cap = True
 
-            # Row colour: capacity violation takes priority
-            if ch > 0 and pq > ch:
+            # Row colour: a closed week is shown as closed (never as a
+            # capacity violation); otherwise capacity violation takes priority.
+            if not node.is_open(w):
+                tag = "closed"
+            elif ch > 0 and proc[w] > ch:
                 tag = "over_hard"
-            elif cs > 0 and pq > cs:
+            elif pc and proc[w] > pc:
                 tag = "over_soft"
             elif any([sq, coq, iq, pq]):
                 tag = "active"
@@ -1714,8 +1762,8 @@ class PSIListPanel(tk.Frame):
                         coq if coq else "—",
                         iq  if iq  else "—",
                         pq  if pq  else "—",
-                        f"{ch:.0f}" if ch > 0 else "—",
-                        f"{cs:.0f}" if cs > 0 else "—"),
+                        hard_txt,
+                        soft_txt),
                 tags=(tag,),
             )
 
@@ -1727,6 +1775,8 @@ class PSIListPanel(tk.Frame):
                                  foreground=FG_WHITE,  background=BG_MID)
         self._tree.tag_configure("zero",
                                  foreground="#546E7A", background=BG_DARK)
+        self._tree.tag_configure("closed",
+                                 foreground="#CFD8DC", background="#455A64")
 
         # Capacity chart: always draw (shows "no cap" placeholder if unset)
         self._draw_capacity_chart(node, psi)
@@ -1774,12 +1824,16 @@ class PSIListPanel(tk.Frame):
         Draw P-quantity bars with CapHard (red dashed) and CapSoft (orange
         dotted) reference lines.  Always called; shows placeholder if no cap.
         """
-        from wom.model.plan_node import P as P_
-
         n     = len(node.week_labels)
-        p_qty = [len(psi[w][P_]) for w in range(n)]
+        # Explicit Closure v1r5m0 §4.7: push supply layer = processed
+        # (S − _push_shortfall), else P. cap_hard raw; cap_soft = planned
+        # capacity (closed week 0). Closed weeks: grey background, never
+        # coloured as a violation.
+        is_throughput = (node.plan_mode == "push" and psi is node.psi4supply)
+        p_qty = capacity_view_series(node, psi)
         ch_v  = [node.cap_hard(w) for w in range(n)]
-        cs_v  = [node.cap_soft(w) for w in range(n)]
+        cs_v  = [(node.planned_capacity(w) or 0.0) for w in range(n)]
+        closed_v = [not node.is_open(w) for w in range(n)]
 
         max_ch = max(ch_v) if ch_v else 0
         max_cs = max(cs_v) if cs_v else 0
@@ -1800,10 +1854,13 @@ class PSIListPanel(tk.Frame):
             return
 
         # Bar colours: red = over CapHard, orange = over CapSoft, green = OK
+        # (closed weeks are never coloured as a violation)
         bar_colors = []
         for w in range(n):
             ch = ch_v[w]; cs = cs_v[w]; p = p_qty[w]
-            if ch > 0 and p > ch:
+            if closed_v[w]:
+                bar_colors.append("#4CAF50")
+            elif ch > 0 and p > ch:
                 bar_colors.append("#F44336")
             elif cs > 0 and p > cs:
                 bar_colors.append("#FF9800")
@@ -1811,6 +1868,10 @@ class PSIListPanel(tk.Frame):
                 bar_colors.append("#4CAF50")
 
         x = list(range(n))
+        for w in range(n):
+            if closed_v[w]:
+                ax.axvspan(w - 0.5, w + 0.5, color="#9E9E9E", alpha=0.35,
+                           lw=0, zorder=0)
         ax.bar(x, p_qty, color=bar_colors, alpha=0.85, width=0.8)
 
         # Sealing lines
@@ -1833,7 +1894,8 @@ class PSIListPanel(tk.Frame):
             ax.set_xticklabels([node.week_labels[i] for i in ticks],
                                rotation=28, ha="right", fontsize=5)
 
-        ax.set_ylabel("P (lots)", color=FG_ACC, fontsize=7)
+        _q = "Processed" if is_throughput else "P"
+        ax.set_ylabel(f"{_q} (lots)", color=FG_ACC, fontsize=7)
         ax.set_title("P vs Capacity Limits", color=FG_WHITE, fontsize=8, pad=3)
         ax.tick_params(colors=FG_WHITE, labelsize=5)
         for spine in ax.spines.values():
@@ -1841,11 +1903,13 @@ class PSIListPanel(tk.Frame):
 
         handles = []
         from matplotlib.patches import Patch
-        handles.append(Patch(facecolor="#4CAF50", label="P (OK)"))
+        handles.append(Patch(facecolor="#4CAF50", label=f"{_q} (OK)"))
         if max_cs > 0:
-            handles.append(Patch(facecolor="#FF9800", label=f"P > CapSoft"))
+            handles.append(Patch(facecolor="#FF9800", label=f"{_q} > CapSoft"))
         if max_ch > 0:
-            handles.append(Patch(facecolor="#F44336", label=f"P > CapHard"))
+            handles.append(Patch(facecolor="#F44336", label=f"{_q} > CapHard"))
+        if any(closed_v):
+            handles.append(Patch(facecolor="#9E9E9E", alpha=0.35, label="Closed week"))
 
         import matplotlib.lines as mlines
         if max_ch > 0:

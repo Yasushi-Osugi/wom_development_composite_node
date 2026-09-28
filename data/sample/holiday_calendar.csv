@@ -3,13 +3,13 @@ CNY_2027,春節2027（工場閉鎖）,2027-W05,2027-W07,MOM_China,supply_closure
 CNY_2027,春節2027（工場閉鎖）,2027-W05,2027-W07,Supplier_CN,supply_closure,0.0
 CNY_2027_pre_JP,春節前JP需要増（買い溜め）,2027-W02,2027-W04,JP_Channel,demand_multiplier,1.3
 CNY_2027_pre_US,春節前US需要増（買い溜め）,2027-W02,2027-W04,US_Channel,demand_multiplier,1.2
-GW_2027,GW2027（物流停滞）,2027-W18,2027-W19,DAD_Japan,supply_closure,0.3
+GW_2027,GW2027（物流停滞）,2027-W18,2027-W19,DAD_Japan,partial_capacity,0.3
 GW_2027_pre,GW前JP需要増,2027-W16,2027-W17,JP_Channel,demand_multiplier,1.2
 GW_2027_post,GW後JP反動減,2027-W20,2027-W21,JP_Channel,demand_multiplier,0.8
 CNY_2028,春節2028（工場閉鎖）,2028-W06,2028-W08,MOM_China,supply_closure,0.0
 CNY_2028,春節2028（工場閉鎖）,2028-W06,2028-W08,Supplier_CN,supply_closure,0.0
 CNY_2028_pre_JP,春節前JP需要増,2028-W03,2028-W05,JP_Channel,demand_multiplier,1.3
 CNY_2028_pre_US,春節前US需要増,2028-W03,2028-W05,US_Channel,demand_multiplier,1.2
-GW_2028,GW2028（物流停滞）,2028-W18,2028-W19,DAD_Japan,supply_closure,0.3
+GW_2028,GW2028（物流停滞）,2028-W18,2028-W19,DAD_Japan,partial_capacity,0.3
 GW_2028_pre,GW前JP需要増,2028-W16,2028-W17,JP_Channel,demand_multiplier,1.2
 GW_2028_post,GW後JP反動減,2028-W20,2028-W21,JP_Channel,demand_multiplier,0.8
