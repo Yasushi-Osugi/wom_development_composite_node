@@ -9,7 +9,9 @@
 - 改訂根拠：大杉さんが提示したClaude君の3提案（Windowsローカル描画・区間保存・EV Thailand先行）。v0.1を保存した上での改訂版。
 - 状態：基本設計ドラフト。会話で合意した目的・業務原則と、今回提示する実装可能な設計案を区別する。
 - 想定配置：`docs/design/drafts/LOVEM_on_WOM_Observation_Visualization_Design_v0.2.md`
-- 対象ブランチ案：`wom-v1r5m1_cap_trial`。作成・push・現在SHAは本書では確認していない。
+- 対象：`Yasushi-Osugi/wom_development_composite_node` / `wom-v1r5m1_cap_trial`。
+- PPC入口の静的確認基準：`1b1f426792dff4fa8ddee1cbdfc78dc7154b7728`（2026-09-28取得時の同ブランチ先頭）。以降の実行は実際のSHAと差分を別途manifestへ記録する。
+- 追補：2026-09-28、`requests/Feedback_LOVEM_v0.2_PPCEntry_to_Astra.md`を受けて段階Dの前提を追加。版名はv0.2を維持。A〜Cの対象・完了条件は変更しない。
 
 ## 0. v0.2の改訂判断
 
@@ -40,7 +42,7 @@ LOVEM on WOMは、Business Ownerの意思決定を、数量と金額の両面か
 | 合意済み業務原則 | 全nodeを対象とする価値・利益算定、全IDの可視化、node×週のLOVEM配置、Demand/Supplyの区別、Business Ownerへの帰着 |
 | 設計案 | データ項目、表示記号、照合規則、構成、実装順序、受入条件。今回新たに定義する |
 | 過去の観測・報告 | Trial-02およびExplicit Closure実装報告。各基準・状態を保持し、新ブランチの事実と混ぜない |
-| 要確認 | 現行イベント記録の網羅性、PPCのnode別計上基準、API接続先、新ブランチSHA、描画性能 |
+| 要確認 | 現行イベント記録の網羅性、PPCのnode別計上基準、API接続先、実行時SHA・差分、描画性能 |
 
 本書は観測・可視化の設計であり、PlanningやPPCの業務挙動変更、golden更新、commit/pushを実施した記録ではない。実装時には対象リポジトリのAGENTS.mdと既存承認範囲に従う。
 
@@ -325,7 +327,7 @@ Code君（Claude Code）は観測adapter・区間encoder・viewerを担当し、
 |---|---|
 | plan | 予定出荷数量と採用した価格・原価規則に基づく計画額 |
 | supplied | シミュレーション実出荷数量に対応する額。同一規則で再計算可能な範囲 |
-| existing_ppc | 現行PPCが実際に計上した額と、その入力数量 |
+| existing_ppc | 現行PPCが計上した額とその入力数量。確認基準のPSI bridgeはleaf_outのSupply S件数×cpu_sizeを入力とし、実出荷イベントを参照しない。製品・channel・週を名前に持つ集約レコードへ変換し、元Lot_ID明細を引き継がない。runnerのフィルタ・fallbackを含む実際の入力経路も併記する（§10.4） |
 
 suppliedは観測用の照合計算であり、現行PPCを自動的に修正しない。規則・node別価格が取得できない部分は「計算不能」とする。plan/supplied/existing_ppcを加算しない。
 
@@ -338,6 +340,71 @@ PPCに上流nodeの費用が存在するだけでは、そのnodeの出荷売上
 node別売上と利益を可視化した上で、ゾーン所属・重複集計の扱いを定義する。同じ物の中間売上と最終売上を全体売上として無条件に足さない。
 
 v0.2は「node別」「Profit Zone別」「現行PPC全体」の範囲を明示する。内部取引消去や連結範囲が未定なら、node売上の合計を「連結売上」と呼ばない。これは中間nodeの売上を算定しないという意味ではない。
+
+### 10.4 現行PPC入口の静的確認（段階Dの前提追補）
+
+根拠はClaude君のRequest Letterと、Astraによる上記固定SHAのコード読解。今回Headless・PPCの再実行はしていない。静的な入口の確認と、個別モデルの金額差の原因確定を分ける。
+
+| 項目 | 固定SHAで確認した処理 | 段階Dで残す観測 |
+|---|---|---|
+| 起点node | `psi_to_sales_records()`は`NODE_TYPE_LEAF_OUT`以外を除外（bridge 134–139行） | source_node_id、product、channelへの対応、除外nodeの範囲 |
+| 数量基準 | `node.qty_supply(w_idx, S_BUCKET)`。`PlanNode.qty_supply()`は`len(psi4supply[week][bucket])`。`_actual_s`を参照しない（bridge 150–160行、plan_node 264–266行） | 呼出時のSと実出荷を別採取。Sが実出荷と一致するかはnode・runごとに照合 |
+| 単位換算 | `qty = lot_count * sc_tree.cpu_size`。leaf販売数量にBOM倍率を直接掛けていない | Lot数、cpu_size、unit数量、単価単位 |
+| 行生成 | 実際のループは製品→leaf_out→週で、非ゼロSに対して1行を追加。合成IDは`PSI-{product}-{channel}-{week}`（bridge 161–169行） | 入力行番号とsource_nodeを保存。異なるleafが同一channelへ写像される場合のID衝突を確認 |
+| 元ID | PPC出力用の入力行には元のLot_ID一覧がなく、合成IDのみ。元PSIから消去する処理ではない | 集約直前の元ID多重集合と集約行への対応を観測側で保全 |
+| 入力選別 | runnerは既知product/channelで絞り込む。互換レコードがなければsample salesへfallback（runner 64–98行） | 呼出経路、採用・除外行数と数量、psi_mode、sample使用の有無 |
+
+「channel×週で1行」は設計意図の要約であり、コードは複数leafを横断したgroupbyをしていない。対応表が一対一かを測定し、合成lot_idだけを観測用の一意キーにしない。
+
+本書で「予定S」と呼ぶのは実出荷とは区別したSupply Sの系列である。このbridgeを読むだけで、全leaf・全runのSが常に未充足を含むとは断定しない。実際の呼出時点でどの値が入っているかを確認する。また、PPC全体のあらゆる入口がこのbridgeだけだとは断定せず、対象GUI/Headlessの呼出経路を記録する。
+
+固定SHAの参照：
+
+- [ppc_psi_bridge.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/1b1f426792dff4fa8ddee1cbdfc78dc7154b7728/wom/ppc/ppc_psi_bridge.py)
+- [plan_node.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/1b1f426792dff4fa8ddee1cbdfc78dc7154b7728/wom/model/plan_node.py)
+- [ppc_runner.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/1b1f426792dff4fa8ddee1cbdfc78dc7154b7728/wom/ppc/ppc_runner.py)
+
+### 10.5 ancestryと中間node金額の接続調査（段階D）
+
+runnerのGENERIC分岐は、leaf_outからDAD祖先列、leaf_inからMOM祖先列を作り、`dad_nodes_chain`、`mom_nodes_chain`、`bom_qty_map`等としてPPC engineへ渡している。一方Cookie等には別のシナリオ分岐がある（runner 118–154、195–243、291–304行）。
+
+**祖先経路を選ぶ処理の存在と、「各中間nodeの金額がleaf数量を配ったもの」という結論は別である。** 現時点では後者の実行時対応を未確認とする。段階Dで以下を調べる。
+
+1. 対象モデルで実際に選ばれるscenario分岐と経路解決結果を採取する。CookieへGENERICの説明をそのまま適用しない。
+2. PPC engine以下で、入力qty、BOM倍率、単価伝播、原価、移転価格、node別集計がどのレコードを使うかを追跡する。
+3. 各中間nodeについて、計算数量が「自node実出荷」「leaf販売数量からの導出」「その他」「未確認」のどれかを根拠付きで示す。
+4. node名が計算結果に出ることだけで、自nodeのSを読んでいると判断しない。集約の認識週と、当該nodeの実出荷週も照合する。
+5. この調査で不足するnode別価格・原価規則は未設定として残す。差を埋めるための単価・引当・取引を発明しない。
+
+### 10.6 suppliedとexisting_ppcの差の分類
+
+まず同じrun・製品・node/取引範囲・週・通貨・単位・価格原価規則へ比較条件を揃える。全nodeのsupplied合計と市場起点のexisting_ppc全体を、そのまま差し引いて「供給差」と呼ばない。
+
+| 分類 | 確かめること | 記録上の注意 |
+|---|---|---|
+| 起点・対象nodeの差 | 全node各自の出荷数量と、leaf起点から導出する数量の相違 | 比較できないnodeは対象範囲差／計算不能として残す |
+| 数量・時点の差 | 同じ取引・規則で予定S基準と実出荷基準を比較 | 早出し・遅配による週差と、全期間未達を分ける |
+| 集約・ID追跡の差 | 元Lot_IDとPPC集約行の対応がどこまで残るか | ID喪失だけでは金額誤差を証明しない。追跡不能件数・数量を報告 |
+| その他・未説明 | 単価/原価、単位、為替、丸め、対象期間、フィルタ、fallback等 | 3分類へ無理に押し込まず残差と根拠を示す |
+
+集約自体は、同一規則で線形に計算するなら金額を変えない場合がある。単価や適用条件の違いを集約で失っている場合には、その有無を実測する。Lotへの単純按分額はderivedであり、元Lotに対する実際の計上記録とは区別する。
+
+各分類は関連し得るため、独立した加算可能な原因額とは仮定しない。金額分解を行う場合は固定条件・置換順序・中間結果を保存し、相互作用と未説明残差を示す。測れない分類に0円を入れない。
+
+### 10.7 段階Dの追加証拠と終了条件
+
+段階Dでのみ、以下を§8.2の観測契約へ追加する。A〜Cの保存・実装・受入条件に新しい必須項目を増やさない。
+
+- `ppc_entry_records.jsonl`：run_id、entry_record_id、入口/呼出経路、入力行番号、source_node、product、channel、週、合成lot_id、S件数、cpu_size、qty/unit、採用/除外、fallback、evidence_ref。
+- `ppc_entry_links.jsonl`：entry_record_idから集約直前の元PSI区間内の週・Lot_ID・多重度へ接続。後から合成IDを文字分割しただけの対応をobservedにしない。
+- `ppc_node_basis.csv`：node別の数量起点、実行分岐、経路、倍率、価格原価規則、認識週と根拠。
+- `ppc_basis_differences.csv`：比較scope、plan/supplied/existing_ppcの数量・金額、差の分類、確認状態、残差、evidence_ref。Q10で入口・数量対応、Q11でnode/Profit Zone集計を照合。
+
+再実行で元ID一覧をbridge直前から採取できれば対応を保全する。過去の集約結果しか残っていない場合、そこから元IDを一意に復元できるとはしない。
+
+Trial-02の9,293 lotとExplicit Closure SE1のCookie供給1,450 lot減・PPC不変は、この入口を原因候補とする。過去結果の基準と今回の実行を区別し、未出荷ID→leaf S→bridge行→採用入力→PPC明細・集計の経路を確認してから原因を確定する。上流の未出荷だけを理由に、末端初期在庫等による供給可能性を調べず全販売を未成立と扱わない。
+
+段階Dの完了証拠は、対象nodeごとの数量起点と計上の対応、比較可能な範囲の金額差、ID追跡の可否、未設定・未説明の一覧である。PPCの修正方針は、この実測結果を大杉さんが確認してから決める。本追補はPPC修正、段階Dの測定開始、golden更新の依頼ではない。
 
 ## 11. Capacityに関する観測契約
 
