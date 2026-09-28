@@ -35,12 +35,12 @@
   "psi": {
     "Cookie_Import": {
       "DC_Import_Buffer": {
-        "CO": 772608,
+        "CO": 905258,
         "I_max": 2364,
-        "I_sum": 206172,
-        "P": 68724,
+        "I_sum": 201822,
+        "P": 67274,
         "S": 76566,
-        "series_md5": "af0f747d3a52"
+        "series_md5": "2b4604e16540"
       },
       "DC_Import_Main": {
         "CO": 0,
@@ -51,20 +51,20 @@
         "series_md5": "d4d0872dee1f"
       },
       "Factory_GP_CN": {
-        "CO": 157664,
+        "CO": 164000,
         "I_max": 0,
         "I_sum": 0,
-        "P": 68724,
-        "S": 70262,
-        "series_md5": "79536618db85"
+        "P": 67274,
+        "S": 68874,
+        "series_md5": "9163ee8eb9d9"
       },
       "Ingredients_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 68724,
-        "S": 68724,
-        "series_md5": "2484b994dc2d"
+        "P": 67274,
+        "S": 67274,
+        "series_md5": "b08a2f536008"
       },
       "Retail_JP_CVS": {
         "CO": 0,
@@ -91,12 +91,12 @@
         "series_md5": "dedefdf14c58"
       },
       "SP_Cookie_Import": {
-        "CO": 157664,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 68724,
+        "CO": 301914,
+        "I_max": 1538,
+        "I_sum": 47878,
+        "P": 67274,
         "S": 70262,
-        "series_md5": "79536618db85"
+        "series_md5": "1aa733316b9b"
       }
     },
     "Cookie_Local": {

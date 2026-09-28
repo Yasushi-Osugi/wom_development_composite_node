@@ -210,11 +210,11 @@
       },
       "Buffer_Chip_TW": {
         "CO": 0,
-        "I_max": 50741,
-        "I_sum": 6085548,
+        "I_max": 50979,
+        "I_sum": 6096874,
         "P": 160146,
         "S": 160146,
-        "series_md5": "236ff044756c"
+        "series_md5": "1e92ce7f3a26"
       },
       "DC_APAC": {
         "CO": 0,
@@ -270,7 +270,7 @@
         "I_sum": 0,
         "P": 160146,
         "S": 160146,
-        "series_md5": "962d65c092dd"
+        "series_md5": "f002471e5be5"
       }
     },
     "SmartXPro_IN": {
