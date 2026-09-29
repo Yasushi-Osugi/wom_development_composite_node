@@ -723,8 +723,11 @@ def _coverage(obs: Observer, has_yard: bool, lot_flow_mode: str = "legacy") -> d
          if lot_flow_mode == "legacy" else
          {"item": "pull_mode_receipts", "status": "no_physical_relation (InBound only)",
           "note": "lot_flow_mode=identity: every OutBound child receives its parent's actual shipment (arrival events exist). Remaining: InBound non-push decoupling / in_pull_mode nodes still get P = psi4demand P copy (Decision Record §6)."}),
-        {"item": "cap_hard_sealed_lot_ids", "status": "unknown",
-         "note": "ForwardPlanResult.cap_hard_events holds counts only; the sealed Lot_IDs are not recorded (they go to CO[w+1])."},
+        ({"item": "cap_hard_sealed_lot_ids", "status": "unknown",
+          "note": "ForwardPlanResult.cap_hard_events holds counts only; the sealed Lot_IDs are not recorded (legacy: they go to CO[w+1])."}
+         if lot_flow_mode == "legacy" else
+         {"item": "cap_hard_deferred_lot_ids", "status": "unknown",
+          "note": "lot_flow_mode=identity (Decision Record D4): lots over cap_hard are deferred, identity kept, to the front of P[w+1], not to CO. ForwardPlanResult.cap_hard_events holds counts only; the deferred Lot_IDs are not recorded individually."}),
         ({"item": "push_shortfall_lot_ids", "status": "unknown",
           "note": "_push_shortfall holds counts only; which planned-S IDs were not shipped is not recorded."}
          if lot_flow_mode == "legacy" else

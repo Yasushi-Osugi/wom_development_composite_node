@@ -1,0 +1,13 @@
+check_id,status,rule,scope,counts,quantities,evidence_refs,checker_version,classification
+Q01,PASS,all snapshot multiset restoration + source/reference audit,legacy,"{""violations"": 0}",lot unless stated,"raw PSI intervals, events, nodes, capacity, sources",stagec-1.0,
+Q02,PASS,market anchor identity conservation,legacy,"{""violations"": 0}",lot unless stated,"raw PSI intervals, events, nodes, capacity, sources",stagec-1.0,
+Q03,PASS,weekly local physical balance; opening=0 conditional,legacy,"{""violations"": 0}",lot unless stated,"raw PSI intervals, events, nodes, capacity, sources",stagec-1.0,
+Q04,FAIL,independent route/LT/ID/multiplicity vs actual P and events,legacy,"{""violations"": 68260}",lot unless stated,"raw PSI intervals, events, nodes, capacity, sources",stagec-1.0,WOM inconsistency: legacy exception 2
+Q05,FAIL,local availability plus upstream provenance; unbacked same-week receipt is not physical evidence,legacy,"{""violations"": 5020, ""local_balance_violations"": 0}",lot unless stated,"raw PSI intervals, events, nodes, capacity, sources",stagec-1.0,WOM inconsistency: legacy exception 2
+Q06,FAIL,own-node required week vs actual ID shipment,legacy,"{""violations"": 3981}",lot unless stated,"raw PSI intervals, events, nodes, capacity, sources",stagec-1.0,WOM inconsistency: legacy exception 1
+Q07,FAIL,incoming CO recurrence; closing derived,legacy,"{""violations"": 3981}",lot unless stated,"raw PSI intervals, events, nodes, capacity, sources",stagec-1.0,WOM inconsistency: legacy exception 1
+Q08,NOT_APPLICABLE,no kitting,legacy,{},lot unless stated,scope,stagec-1.0,
+Q09,PASS,closure and operation-specific hard limit,legacy,"{""violations"": 0}",lot unless stated,"raw PSI intervals, events, nodes, capacity, sources",stagec-1.0,
+Q10,NOT_APPLICABLE,Stage D excluded,legacy,{},lot unless stated,scope,stagec-1.0,
+Q11,NOT_APPLICABLE,Stage D excluded,legacy,{},lot unless stated,scope,stagec-1.0,
+Q12,PASS,provided OFF/ON evidence only; not independently rerun,legacy,"{""off_on_equal"": true}",lot unless stated,q12.json,stagec-1.0,provided evidence only; independent rerun NOT_PERFORMED

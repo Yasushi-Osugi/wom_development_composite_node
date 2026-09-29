@@ -1,0 +1,290 @@
+{
+  "input_checks": [
+    {
+      "mode": "legacy",
+      "zip_sha256": "52ee394db57d6f6b935bd8b7277e51668a6b2b0005b2041f410ef16233abafd7",
+      "code_sha": "3481fc5b30ba88f8bb445d1ced888212b3221591",
+      "dirty": false,
+      "dirty_scope": [
+        "wom",
+        "tools",
+        "data"
+      ],
+      "checked": [
+        {
+          "file": "DATA_DICTIONARY.md",
+          "sha256": "1e8ed09453ca683b008d8467cb1c1e8c353677d9321d92926f53016a458a4cc5"
+        },
+        {
+          "file": "REPRODUCE.md",
+          "sha256": "59347337f598e724c18f4c2f48bfbb647ab2f2274ec41e7283471811a0abf748"
+        },
+        {
+          "file": "run/capacity.csv",
+          "sha256": "80064414416e2350e4ece7871da9d6d84fc8a848d5e6758c4f918ae7b7325c35"
+        },
+        {
+          "file": "run/demand_anchors.jsonl.gz",
+          "sha256": "9b1c9e5e265a78dd222c0ffc9a8db38ad816b5a59980f25f6400b1a78bb22141"
+        },
+        {
+          "file": "run/events.jsonl.gz",
+          "sha256": "5c5de893dff797474c9d14947571e4b1537570155d36997b5ace406e6536583d"
+        },
+        {
+          "file": "run/headless_snapshot.json",
+          "sha256": "18ada6bda1ce93411ed93377f2195c2469b5a12671afdb25408c40dc0ad1fd0e"
+        },
+        {
+          "file": "run/manifest.json",
+          "sha256": "dfba003d7a635b195ac0b4b862d3b2ca6348f379f9b99d235ab939d7735df0d4"
+        },
+        {
+          "file": "run/nodes.csv",
+          "sha256": "71632e1234b9b6fa93f2721991c76460e4e20634a22109ff3412e772c647d9e2"
+        },
+        {
+          "file": "run/ppc/ppc_event_ledger.csv",
+          "sha256": "8596663a2458266b26fc7eeddac4051e4086ec86aca93aa200e973683c97aea0"
+        },
+        {
+          "file": "run/ppc/ppc_kpi_summary.json",
+          "sha256": "f4139955c24794de75769a169cc6f6475ce85af3db1d40be6ce7178599cbd61e"
+        },
+        {
+          "file": "run/ppc/ppc_lot_reconciliation.csv",
+          "sha256": "2e2c1ee95b6ccdd5fde3c306c609bd599024d94e7bcd85431f6031686b6bca6f"
+        },
+        {
+          "file": "run/ppc/ppc_node_pl_summary.csv",
+          "sha256": "8a80159298e9b81d0f1f347fb7ea54caebec88a75c4e76f88ccf8114ce67c8fe"
+        },
+        {
+          "file": "run/ppc/ppc_node_week_summary.csv",
+          "sha256": "603d074421f338707b7e5be123bf55ee0328fc534a3b70c68aa84fb9e78344a1"
+        },
+        {
+          "file": "run/ppc/ppc_profit_zone_summary.csv",
+          "sha256": "8adc382d277000755f7510f948df829e8ccae2ee795b65e546c1b9d4922bf5f1"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__final.jsonl.gz",
+          "sha256": "7890c0e6811aeaafdf7dee068f14b41ece662918b327fb45f89178ef8ddcfbdb"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__post_backward.jsonl.gz",
+          "sha256": "5177c72a54c0336da9dd60f39f850f170795b535e286ca2bc7cc7c214c58145a"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__post_backward_hooks.jsonl.gz",
+          "sha256": "be294658a897cd259e1f1eef7df6c7ee54402088b1796865d79f5123c563efd5"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__post_copy.jsonl.gz",
+          "sha256": "e5968cc87b5cd9fc06a3873fab95a4fcf3cd9acbb32baebd4d01bcde6bf957b4"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__post_push_setup.jsonl.gz",
+          "sha256": "3c34818c698f0386647c79bae817c337ea3acc4bf274d26d5f69d18b0a6cd0fa"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__pre_backward.jsonl.gz",
+          "sha256": "07be84ed5e21d34822e34f1b4a11d2d25097f1772c9147a503d11dcc5bb7c3dd"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__final.jsonl.gz",
+          "sha256": "5687e2840b75601c17f3c63b9cf22af262362819d6ab58f43e27597e02920edd"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__post_backward.jsonl.gz",
+          "sha256": "19a7196c6a2ffc57ab6989b6148ad8c635ec3679b906b5a13f42f25f52c360b8"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__post_backward_hooks.jsonl.gz",
+          "sha256": "bcdfec89e4ec24f2fd857fc3aecc4b43f9ec6a1b4422c7da93f648442d5c5392"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__post_copy.jsonl.gz",
+          "sha256": "59dc467f6ee171a18b884e3405eafa82b7a6813d1c3e6b68e4b997099a8f6569"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__pre_backward.jsonl.gz",
+          "sha256": "2c0c394365386d00af0d6995f5053a205eac6c798fdcad7af25a32db2f1d6f97"
+        },
+        {
+          "file": "run/q12.json",
+          "sha256": "e95c211c92dc394090fb3101ffd61ac1c4e07b711ba7b8dae948678ca0ab04c3"
+        },
+        {
+          "file": "run/relations.jsonl.gz",
+          "sha256": "1345a7bc881d5df492bbc3758d79eb6cb56e0bc0146d96dbf24ec335f4bc919a"
+        },
+        {
+          "file": "run/se2_case.json",
+          "sha256": "59c3b09762c60b0af91628078bea4c89e4279d77eb2eefb058c7f896a6d55fdb"
+        },
+        {
+          "file": "run/source_evidence.jsonl.gz",
+          "sha256": "96728c3cb05b9c87cfe2ac2dbe75b13a718fa67c1bebe44a743f8dc729961797"
+        },
+        {
+          "file": "run/state_digests.jsonl",
+          "sha256": "8c1645e297854fb5dfb2e042255a77f873f1602aea3dceae903271c2b5fb0c6a"
+        },
+        {
+          "file": "run/verify.json",
+          "sha256": "a70f1a689ef8b8f33eda8ad706b85e97798af383ac54d3014b703affe61c90e5"
+        },
+        {
+          "file": "run/weeks.csv",
+          "sha256": "ece3c97585105ac207911ec48434146767e4a1eb999e96614797e6bc06d6554a"
+        }
+      ]
+    },
+    {
+      "mode": "identity",
+      "zip_sha256": "b8058ea3f6d467b4cda20b7c86629b5752281d15973069487411314370f8554b",
+      "code_sha": "3481fc5b30ba88f8bb445d1ced888212b3221591",
+      "dirty": false,
+      "dirty_scope": [
+        "wom",
+        "tools",
+        "data"
+      ],
+      "checked": [
+        {
+          "file": "DATA_DICTIONARY.md",
+          "sha256": "1e8ed09453ca683b008d8467cb1c1e8c353677d9321d92926f53016a458a4cc5"
+        },
+        {
+          "file": "REPRODUCE.md",
+          "sha256": "59347337f598e724c18f4c2f48bfbb647ab2f2274ec41e7283471811a0abf748"
+        },
+        {
+          "file": "run/capacity.csv",
+          "sha256": "80064414416e2350e4ece7871da9d6d84fc8a848d5e6758c4f918ae7b7325c35"
+        },
+        {
+          "file": "run/demand_anchors.jsonl.gz",
+          "sha256": "9b1c9e5e265a78dd222c0ffc9a8db38ad816b5a59980f25f6400b1a78bb22141"
+        },
+        {
+          "file": "run/events.jsonl.gz",
+          "sha256": "4374ab2f94f50de8718ca454f3154d0d5dcf862ef457e1d86d10fa7ac383c2d8"
+        },
+        {
+          "file": "run/headless_snapshot.json",
+          "sha256": "ad0a4c5c2e5ae9f6c63d17782708821202ce989f3a94d46acbde30d27639237d"
+        },
+        {
+          "file": "run/manifest.json",
+          "sha256": "b44eb238b9a564bda1074c0104a3a0754218345e1c1a2050e5b99fd1548fa830"
+        },
+        {
+          "file": "run/nodes.csv",
+          "sha256": "71632e1234b9b6fa93f2721991c76460e4e20634a22109ff3412e772c647d9e2"
+        },
+        {
+          "file": "run/ppc/ppc_event_ledger.csv",
+          "sha256": "496b4d1ed50440cf167ad0caa8fa75016c68cf925fe5d955799967a6d59c02ed"
+        },
+        {
+          "file": "run/ppc/ppc_kpi_summary.json",
+          "sha256": "a843632d7966064df61f8e20ef7dc330053debb53cb5334f33065c5391c7b5dd"
+        },
+        {
+          "file": "run/ppc/ppc_lot_reconciliation.csv",
+          "sha256": "d6c03046c45ba24c8ada7c7ac5d69899a5227e971ab28ff7f043f3ae0392aa5f"
+        },
+        {
+          "file": "run/ppc/ppc_node_pl_summary.csv",
+          "sha256": "3c53ca965a530118ec1ddf353ef2743025a3b5ddb1c3267a193f5382d2c8ccbe"
+        },
+        {
+          "file": "run/ppc/ppc_node_week_summary.csv",
+          "sha256": "0dd6de224e49367e0dd33957258014176e2953ad5fbff2109fdbf240816978d5"
+        },
+        {
+          "file": "run/ppc/ppc_profit_zone_summary.csv",
+          "sha256": "9ab3be904bcbb7dee947dd08fb7bbb5e688b52a37732508d73bcd5f3b420d718"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__final.jsonl.gz",
+          "sha256": "02263c618fa1e5eed7fd92ba46f6b1e47e4af43baca39ca5c82d5543bad4f774"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__post_backward.jsonl.gz",
+          "sha256": "5177c72a54c0336da9dd60f39f850f170795b535e286ca2bc7cc7c214c58145a"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__post_backward_hooks.jsonl.gz",
+          "sha256": "be294658a897cd259e1f1eef7df6c7ee54402088b1796865d79f5123c563efd5"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__post_copy.jsonl.gz",
+          "sha256": "e5968cc87b5cd9fc06a3873fab95a4fcf3cd9acbb32baebd4d01bcde6bf957b4"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__post_push_setup.jsonl.gz",
+          "sha256": "3c34818c698f0386647c79bae817c337ea3acc4bf274d26d5f69d18b0a6cd0fa"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Import__pre_backward.jsonl.gz",
+          "sha256": "07be84ed5e21d34822e34f1b4a11d2d25097f1772c9147a503d11dcc5bb7c3dd"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__final.jsonl.gz",
+          "sha256": "50b07fad47d1b53031b6a07c3b56a4bbc590d9ec5df5f0a75a838bf55271f418"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__post_backward.jsonl.gz",
+          "sha256": "19a7196c6a2ffc57ab6989b6148ad8c635ec3679b906b5a13f42f25f52c360b8"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__post_backward_hooks.jsonl.gz",
+          "sha256": "bcdfec89e4ec24f2fd857fc3aecc4b43f9ec6a1b4422c7da93f648442d5c5392"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__post_copy.jsonl.gz",
+          "sha256": "59dc467f6ee171a18b884e3405eafa82b7a6813d1c3e6b68e4b997099a8f6569"
+        },
+        {
+          "file": "run/psi_intervals/EVmaker_Local__pre_backward.jsonl.gz",
+          "sha256": "2c0c394365386d00af0d6995f5053a205eac6c798fdcad7af25a32db2f1d6f97"
+        },
+        {
+          "file": "run/q12.json",
+          "sha256": "95f5190ddf835027f54d38fe1ee181908036d32219827e2a4ae682afb8eb3cd3"
+        },
+        {
+          "file": "run/relations.jsonl.gz",
+          "sha256": "b63739ed8fbe3d258323fd032687cdc0168146da0f8a956ddaab4c2a2c012b23"
+        },
+        {
+          "file": "run/se2_case.json",
+          "sha256": "c5dc22b1b204cd8b8fd7f197fcfafb81ecf0bc43358dbf6f3d91c79d405c9275"
+        },
+        {
+          "file": "run/source_evidence.jsonl.gz",
+          "sha256": "25a31f98e896b4a323e07f7ca92d8f6871f009fc31cf4afc245bf90715d41d6b"
+        },
+        {
+          "file": "run/state_digests.jsonl",
+          "sha256": "cf3a050e4b47f352abc7815b117802faaa9df47bfa09e6f58cab5fed0a3e8882"
+        },
+        {
+          "file": "run/verify.json",
+          "sha256": "245b6bd4bda3280aed7e4294485fef76a12749d63fcc2e503cb2d7c69e485115"
+        },
+        {
+          "file": "run/weeks.csv",
+          "sha256": "ece3c97585105ac207911ec48434146767e4a1eb999e96614797e6bc06d6554a"
+        }
+      ]
+    }
+  ],
+  "baseline_to_run_commit_changed_files": [
+    "requests/RequestLetter_LOVEM_StageC_to_Astra.md"
+  ],
+  "source_worktree_status": ""
+}

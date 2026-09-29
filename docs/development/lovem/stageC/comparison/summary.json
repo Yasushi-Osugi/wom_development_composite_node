@@ -1,0 +1,159 @@
+{
+  "anchor_file_equal": true,
+  "anchor_canonical_equal": true,
+  "anchor_file_sha256": "25457b988522438e40256d69b80d0dec8a5aed2c92646e03cc67de836ca58f6a",
+  "transitions": {
+    "('on_time', 'backlog')": 5020,
+    "('on_time', 'on_time')": 58220
+  },
+  "changed_node_ID_pairs": 12182,
+  "changed_unique_IDs": 8601,
+  "changed_by_node": {
+    "IN:mom:Factory_Import_CN:EVmaker_Import": 3581,
+    "OUT:leaf_out:BKK:EVmaker_Import": 565,
+    "OUT:leaf_out:BKK:EVmaker_Local": 1825,
+    "OUT:leaf_out:ONL:EVmaker_Import": 113,
+    "OUT:leaf_out:ONL:EVmaker_Local": 365,
+    "OUT:leaf_out:PRO:EVmaker_Import": 492,
+    "OUT:leaf_out:PRO:EVmaker_Local": 1660,
+    "OUT:supply_point:SP_EV_Import:EVmaker_Import": 3581
+  },
+  "backlog_evidence": {
+    "past_due_with_LT_implied_before_start": 4090,
+    "past_due_with_LT_SS_implied_before_start": 730,
+    "in_horizon_component_dispatch_needed_but_no_supply": 200
+  },
+  "backlog_by_product": {
+    "EVmaker_Import": 1170,
+    "EVmaker_Local": 3850
+  },
+  "backlog_all_no_observed_supply_P": true,
+  "factory_count": 400,
+  "factory_LT_needed_before_start": 200,
+  "factory_LT_needed_in_horizon": 200,
+  "factory_CO_start_counts": {
+    "1": 100,
+    "2": 100,
+    "3": 100,
+    "4": 100
+  },
+  "examples": [
+    {
+      "lot_id": "EVmaker_Import:BKK:2026-W11:00001",
+      "product_id": "EVmaker_Import",
+      "market_node_id": "OUT:leaf_out:BKK:EVmaker_Import",
+      "market_required_week": "9",
+      "evidence_class": "in_horizon_component_dispatch_needed_but_no_supply",
+      "past_due_records": "[]",
+      "past_due_needed_upstream_week_LT_only": "[]",
+      "past_due_needed_upstream_week_LT_SS": "[]",
+      "observed_supply_P_occurrences": 0,
+      "factory_required_weeks": "[2]",
+      "component_dispatch_needed_LT_only": "[0]"
+    },
+    {
+      "lot_id": "EVmaker_Import:BKK:2026-W07:00001",
+      "product_id": "EVmaker_Import",
+      "market_node_id": "OUT:leaf_out:BKK:EVmaker_Import",
+      "market_required_week": "5",
+      "evidence_class": "past_due_with_LT_SS_implied_before_start",
+      "past_due_records": "[[\"OUT:dad:DC_EV_Import:EVmaker_Import\", [4]]]",
+      "past_due_needed_upstream_week_LT_only": "[[\"OUT:dad:DC_EV_Import:EVmaker_Import\", [0]]]",
+      "past_due_needed_upstream_week_LT_SS": "[[\"OUT:dad:DC_EV_Import:EVmaker_Import\", [-2]]]",
+      "observed_supply_P_occurrences": 0,
+      "factory_required_weeks": "[]",
+      "component_dispatch_needed_LT_only": "[]"
+    },
+    {
+      "lot_id": "EVmaker_Local:BKK:2026-W04:00001",
+      "product_id": "EVmaker_Local",
+      "market_node_id": "OUT:leaf_out:BKK:EVmaker_Local",
+      "market_required_week": "2",
+      "evidence_class": "past_due_with_LT_SS_implied_before_start",
+      "past_due_records": "[[\"OUT:dad:DC_EV_Local:EVmaker_Local\", [1]]]",
+      "past_due_needed_upstream_week_LT_only": "[[\"OUT:dad:DC_EV_Local:EVmaker_Local\", [0]]]",
+      "past_due_needed_upstream_week_LT_SS": "[[\"OUT:dad:DC_EV_Local:EVmaker_Local\", [-1]]]",
+      "observed_supply_P_occurrences": 0,
+      "factory_required_weeks": "[]",
+      "component_dispatch_needed_LT_only": "[]"
+    },
+    {
+      "lot_id": "EVmaker_Import:BKK:2026-W02:00001",
+      "product_id": "EVmaker_Import",
+      "market_node_id": "OUT:leaf_out:BKK:EVmaker_Import",
+      "market_required_week": "0",
+      "evidence_class": "past_due_with_LT_implied_before_start",
+      "past_due_records": "[[\"OUT:leaf_out:BKK:EVmaker_Import\", [0]]]",
+      "past_due_needed_upstream_week_LT_only": "[[\"OUT:leaf_out:BKK:EVmaker_Import\", [-1]]]",
+      "past_due_needed_upstream_week_LT_SS": "[[\"OUT:leaf_out:BKK:EVmaker_Import\", [-1]]]",
+      "observed_supply_P_occurrences": 0,
+      "factory_required_weeks": "[]",
+      "component_dispatch_needed_LT_only": "[]"
+    },
+    {
+      "lot_id": "EVmaker_Local:BKK:2026-W02:00001",
+      "product_id": "EVmaker_Local",
+      "market_node_id": "OUT:leaf_out:BKK:EVmaker_Local",
+      "market_required_week": "0",
+      "evidence_class": "past_due_with_LT_implied_before_start",
+      "past_due_records": "[[\"OUT:leaf_out:BKK:EVmaker_Local\", [0]]]",
+      "past_due_needed_upstream_week_LT_only": "[[\"OUT:leaf_out:BKK:EVmaker_Local\", [-1]]]",
+      "past_due_needed_upstream_week_LT_SS": "[[\"OUT:leaf_out:BKK:EVmaker_Local\", [-1]]]",
+      "observed_supply_P_occurrences": 0,
+      "factory_required_weeks": "[]",
+      "component_dispatch_needed_LT_only": "[]"
+    }
+  ],
+  "earliest_difference_examples": [
+    {
+      "node_id": "OUT:leaf_out:BKK:EVmaker_Import",
+      "lot_id": "EVmaker_Import:BKK:2026-W02:00001",
+      "first_difference_week": 0,
+      "legacy_P": "[0]",
+      "identity_P": "[]",
+      "legacy_ship": "[0]",
+      "identity_ship": "[]",
+      "market_transition": "on_time -> backlog"
+    },
+    {
+      "node_id": "OUT:leaf_out:BKK:EVmaker_Import",
+      "lot_id": "EVmaker_Import:BKK:2026-W02:00002",
+      "first_difference_week": 0,
+      "legacy_P": "[0]",
+      "identity_P": "[]",
+      "legacy_ship": "[0]",
+      "identity_ship": "[]",
+      "market_transition": "on_time -> backlog"
+    },
+    {
+      "node_id": "OUT:leaf_out:BKK:EVmaker_Import",
+      "lot_id": "EVmaker_Import:BKK:2026-W02:00003",
+      "first_difference_week": 0,
+      "legacy_P": "[0]",
+      "identity_P": "[]",
+      "legacy_ship": "[0]",
+      "identity_ship": "[]",
+      "market_transition": "on_time -> backlog"
+    },
+    {
+      "node_id": "OUT:leaf_out:BKK:EVmaker_Import",
+      "lot_id": "EVmaker_Import:BKK:2026-W02:00004",
+      "first_difference_week": 0,
+      "legacy_P": "[0]",
+      "identity_P": "[]",
+      "legacy_ship": "[0]",
+      "identity_ship": "[]",
+      "market_transition": "on_time -> backlog"
+    },
+    {
+      "node_id": "OUT:leaf_out:BKK:EVmaker_Import",
+      "lot_id": "EVmaker_Import:BKK:2026-W02:00005",
+      "first_difference_week": 0,
+      "legacy_P": "[0]",
+      "identity_P": "[]",
+      "legacy_ship": "[0]",
+      "identity_ship": "[]",
+      "market_transition": "on_time -> backlog"
+    }
+  ]
+}

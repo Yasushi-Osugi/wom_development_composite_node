@@ -1,0 +1,18 @@
+{
+  "planned_P": {
+    "1": [
+      "A",
+      "X"
+    ]
+  },
+  "completed_P": {
+    "1": [
+      "A"
+    ],
+    "2": [
+      "X"
+    ]
+  },
+  "cap": 1,
+  "X_required_week": 2
+}

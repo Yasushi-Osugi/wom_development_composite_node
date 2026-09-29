@@ -1,0 +1,151 @@
+{
+  "mode": "legacy",
+  "manifest_sha": "a7806e9522e08ad7bd9db1c50bc6c4781b646559e913a47dcf939d1abf198008",
+  "code_sha": "3481fc5b30ba88f8bb445d1ced888212b3221591",
+  "dirty": false,
+  "anchor_canonical_sha256": "7142fd29fbe795c3888f9ad090a0a6b9ac79281558e0c1749aee68786ed6da9a",
+  "anchor_file_sha256": "25457b988522438e40256d69b80d0dec8a5aed2c92646e03cc67de836ca58f6a",
+  "digest_rows": 37856,
+  "digest_matches": 37856,
+  "physical_cells": 1456,
+  "anchors": 63240,
+  "event_counts": {
+    "backward_past_due": 4820,
+    "actual_ship": 296120,
+    "arrival": 116440,
+    "bridge_arrival": 58220,
+    "forward_shortfall_weeks": 527,
+    "push_shortfall": 7
+  },
+  "source_payloads": 1938,
+  "raw_ship_count": 296120,
+  "relations": 174660,
+  "market_states": {
+    "on_time": 63240
+  },
+  "node_states": {
+    "on_time": 283169,
+    "backlog": 8496,
+    "unshipped_without_CO": 400,
+    "early": 3581
+  },
+  "factory_states": {
+    "unshipped_without_CO": 400,
+    "early": 3581,
+    "on_time": 5789
+  },
+  "factory_closing_backlog": 0,
+  "se2": [
+    {
+      "run_id": "ev-thailand-2026@3481fc5:obs",
+      "product_id": "EVmaker_Import",
+      "node_id": "IN:mom:Factory_Import_CN:EVmaker_Import",
+      "week_index": 36,
+      "week_label": "2026-W38",
+      "planned_s": 150,
+      "actual_s": 132,
+      "signed_gap": 18,
+      "shortfall": 18,
+      "excess": 0,
+      "same_ID_same_week": 0,
+      "required_ID_absent_this_week": 150,
+      "other_ID_shipped": 132,
+      "requirement_classification": "{\"early\": 150}",
+      "evidence_refs": "psi_intervals/final supply S; events actual_ship"
+    },
+    {
+      "run_id": "ev-thailand-2026@3481fc5:obs",
+      "product_id": "EVmaker_Import",
+      "node_id": "IN:mom:Factory_Import_CN:EVmaker_Import",
+      "week_index": 37,
+      "week_label": "2026-W39",
+      "planned_s": 150,
+      "actual_s": 0,
+      "signed_gap": 150,
+      "shortfall": 150,
+      "excess": 0,
+      "same_ID_same_week": 0,
+      "required_ID_absent_this_week": 150,
+      "other_ID_shipped": 0,
+      "requirement_classification": "{\"early\": 150}",
+      "evidence_refs": "psi_intervals/final supply S; events actual_ship"
+    }
+  ],
+  "transit": 0,
+  "coverage": {
+    "stages": {
+      "1_anchor": "captured (demand_anchors.jsonl; leaf_out psi4demand S right after lot generation, before HOOK_PRE_PLAN)",
+      "2_backward": "captured (pre_backward / post_backward / post_backward_hooks, demand layer)",
+      "3_copy": "captured (post_copy, supply layer)",
+      "4_push_setup": "captured (post_push_setup, supply layer) for products with push_config rows: EVmaker_Import",
+      "5_forward_events": "captured (actual_ship, arrival, bridge_arrival, result records, push_shortfall)",
+      "6_final": "captured (final, demand + supply)",
+      "7_ppc": "not_captured (stage D)"
+    },
+    "kitting": "not_applicable (no stockyard node)",
+    "known_gaps": [
+      {
+        "item": "demand_fulfilment_link",
+        "status": "unknown",
+        "note": "The engine does not record which shipment satisfied which request (CO/S). No such relation is written."
+      },
+      {
+        "item": "pull_mode_receipts",
+        "status": "no_physical_relation",
+        "note": "Nodes below a decouple point (and InBound pull/decoupling copy) get P = psi4demand P copy, not a propagated shipment. No arrival event exists for these receipts."
+      },
+      {
+        "item": "cap_hard_sealed_lot_ids",
+        "status": "unknown",
+        "note": "ForwardPlanResult.cap_hard_events holds counts only; the sealed Lot_IDs are not recorded (they go to CO[w+1])."
+      },
+      {
+        "item": "push_shortfall_lot_ids",
+        "status": "unknown",
+        "note": "_push_shortfall holds counts only; which planned-S IDs were not shipped is not recorded."
+      },
+      {
+        "item": "inline_push_decoupling_propagation",
+        "status": "not_observed",
+        "note": "ForwardPlanner.run propagates a push decoupling node with a parent inline (not via _propagate_to_parent). Not wrapped; affects only models where such a node has a parent."
+      },
+      {
+        "item": "within_week_order",
+        "status": "partial",
+        "note": "sequence = list position in the engine list (observed); cross-node processing order within a week is not an event sequence."
+      }
+    ],
+    "arrival_unlinked": 0,
+    "missing_weeks": [],
+    "period_edges": {
+      "before_horizon": "backward_past_due events (demand that could not be placed before week 0)",
+      "after_horizon": "arrival_beyond_horizon events (shipments whose arrival week >= n_weeks)"
+    }
+  },
+  "q12_keys": [
+    "identical",
+    "top_level_diffs",
+    "cell_diffs",
+    "n_cells",
+    "ppc_files",
+    "off",
+    "on"
+  ],
+  "q12_off_on_equal": true,
+  "problem_counts": {
+    "Q04|P_without_parent_shipment_at_LT": 5020,
+    "Q04|P_without_arrival_record": 63240,
+    "Q07|missing_next_CO": 3981,
+    "Q06|unshipped_without_CO": 400,
+    "Q06|early": 3581,
+    "Q05|shipment_with_unbacked_same_week_receipt": 5020
+  },
+  "problem_quantities": {
+    "Q04|P_without_parent_shipment_at_LT": 5020,
+    "Q04|P_without_arrival_record": 63240,
+    "Q07|missing_next_CO": 3981,
+    "Q06|unshipped_without_CO": 400,
+    "Q06|early": 3581,
+    "Q05|shipment_with_unbacked_same_week_receipt": 5020
+  }
+}

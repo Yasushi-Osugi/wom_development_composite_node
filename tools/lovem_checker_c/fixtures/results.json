@@ -1,0 +1,46 @@
+[
+  {
+    "fixture": "F1",
+    "status": "PASS",
+    "classification": "on_time"
+  },
+  {
+    "fixture": "F2",
+    "status": "PASS",
+    "classification": "late"
+  },
+  {
+    "fixture": "F3",
+    "status": "PASS",
+    "classification": "unshipped"
+  },
+  {
+    "fixture": "F4",
+    "status": "PASS",
+    "classification": "early"
+  },
+  {
+    "fixture": "F5",
+    "status": "PASS",
+    "classification": "unshipped",
+    "quantity_gap": 0,
+    "wrong_id": 1
+  },
+  {
+    "fixture": "F6",
+    "status": "PASS",
+    "classification": "on_time",
+    "unbacked_receipt": 1
+  },
+  {
+    "fixture": "F7",
+    "status": "PASS",
+    "classification": "late",
+    "same_week_I_and_incoming_CO_not_prohibited": true
+  },
+  {
+    "fixture": "F8",
+    "status": "PASS",
+    "classification": "on_time"
+  }
+]

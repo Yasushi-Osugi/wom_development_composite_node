@@ -1,0 +1,3 @@
+run_id,product_id,node_id,week_index,week_label,planned_s,actual_s,signed_gap,shortfall,excess,same_ID_same_week,required_ID_absent_this_week,other_ID_shipped,requirement_classification,evidence_refs
+ev-thailand-2026@3481fc5:obs,EVmaker_Import,IN:mom:Factory_Import_CN:EVmaker_Import,36,2026-W38,150,150,0,0,0,150,0,0,"{""on_time"": 150}",psi_intervals/final supply S; events actual_ship
+ev-thailand-2026@3481fc5:obs,EVmaker_Import,IN:mom:Factory_Import_CN:EVmaker_Import,37,2026-W39,150,150,0,0,0,150,0,0,"{""on_time"": 150}",psi_intervals/final supply S; events actual_ship
