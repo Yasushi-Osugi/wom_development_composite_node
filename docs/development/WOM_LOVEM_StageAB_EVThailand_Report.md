@@ -1,9 +1,9 @@
-# LOVEM on WOM 段階 A・B 報告（ev-thailand-2026）— 段階 A 中間報告
+# LOVEM on WOM 段階 A・B 報告（ev-thailand-2026）
 
 - 依頼書：`requests/RequestLetter_LOVEM_StageAB_EVThailand_to_CodeKun.md`
 - 設計の正本：`docs/design/drafts/LOVEM_on_WOM_Observation_Visualization_Design_v0.2.md`
 - 実装：Code君（Claude Code, Windows）、2026-09-28
-- 状態：**段階 A 完了（中間報告）**。段階 B（viewer）は、大杉さんの commit の後に着手する。
+- 状態：**段階 A・B 完了**（段階 A は commit `81dc234`。段階 B は未 commit、§8 以降）
 - commit・push はしていない。golden は変えていない。
 
 ---
@@ -192,4 +192,152 @@ python -m pytest tests/test_lovem_intervals.py tests/test_lovem_observer.py -v
 
 ---
 
-（段階 B の結果は、この報告書に追記する）
+# 段階 B（描画）— 2026-09-29
+
+## 8. 要約
+
+1. Windows 単体の viewer（`python -m wom.lovem.viewer <run フォルダ>`）を、Tkinter と matplotlib（FigureCanvasTkAgg）だけで作った。Web 系は使っていない。`wom/gui/app.py` には組み込んでいない。
+2. **B4 の受入条件 1〜5 はすべて満たした。**
+   - ev-thailand-2026 の **全 63,240 ID・全 1,703,049 本の線分を描画**した。保存データの件数と一致する。
+   - ID を選ぶと全ノードで強調され、元の記録へ移動でき、元の記録から図の位置へ戻れる。
+   - 休業週は灰色で表示される。
+   - 性能とメモリを測った。
+   - スクリーンショットと起動手順を用意した。
+3. viewer は保存データを読むだけ。再計画もファイルの書き込みもしない（テストで run フォルダのハッシュが前後で同じことを確認）。
+4. テスト：**566 passed / 3 skipped / 0 failed**（段階 A の 562 件＋ viewer の 4 件）。golden・core・サンプル CSV は変わっていない。
+   - その後、final 以外の段階の表示だけを直した（§17-3）。この変更の後は、viewer の4件だけを再実行して緑。
+5. 引き渡し一式：`output/lovem/handoff_ev-thailand-2026.zip`（5.2MB、32 ファイル）。SHA-256 は `00badb50f6506823a13e2d8a3ca2e7507b0bc61fb9a5868c98a16a76b206689d`。
+
+## 9. 作ったもの
+
+| ファイル | 役割 |
+|---|---|
+| `wom/lovem/viewdata.py` | 描画モデル（Tk なし）：run フォルダを読み、区間・イベント・関係を描画区分ごとの線分配列（numpy）にする。表示範囲の切り出し、候補の検索、ID の履歴、SE2 の ID 一覧 |
+| `wom/lovem/viewer.py` | Tk viewer 本体と、計測・スクリーンショット用の `--bench` モード |
+| `tools/lovem_handoff.py` | Astra君への引き渡し一式（run フォルダ、辞書、再実行手順、SHA256SUMS、ZIP） |
+| `tests/test_lovem_viewer.py` | 描画件数の一致、候補の検索、選択と履歴、Tk での全件描画・選択・元の記録・図へ戻る・拡大時の切り出し・run フォルダ不変（4件） |
+
+段階 A のコードに入れた変更は1点だけで、観測の結果には影響しない。
+
+- `observer.py` の manifest の文言：Stockyard がある場合の Kitting の記述を、実態（`node.kitting` は採取していない）に合わせた。ev-thailand は Stockyard が無いので、出力は変わらない。
+- データ辞書の該当行も直した。
+
+## 10. 画面の構成（設計書 §5・§6）
+
+| 要素 | 実装 |
+|---|---|
+| 縦軸 | 最上部に Business Owner レーン（空欄、「段階 E で接続」と表示）。製品ごとにブロックを分け、nodes.csv の `display_order`（Outbound は post-order、続いて Inbound は pre-order）で並べる |
+| ノードの帯 | 3 レーン：Demand／Supply・物（入庫・I・実出荷）／Supply・要求（予定 S・CO）。数量→金額のレーンは作っていない（段階 D） |
+| 横軸 | 週（`YYYY-Www`、拡大に合わせてラベルを間引く）。左右の余白に、ノードごとの期間前・期間後の件数を表示し、クリックすると ID の一覧が出る |
+| 記号 | Demand は破線・点線、Supply は実線、I は物レーンの水平線、CO は要求レーンの水平線、入庫と実出荷は縦の短い線（入庫は週の 1/4、実出荷は 3/4 の位置）、予定 S は要求レーンの一点鎖線の短い棒、出荷→到着の関係は細い灰色の実線、休業週は灰色の背景 |
+| 未確認 | 入庫のうち、伝播の記録が無いもの（需要のコピー）は灰色の点線で描き、凡例と詳細欄で「出所の記録なし＝未確認」と表示する。記録の無い関係線は引かない |
+| 誤読を防ぐ契約（§6.2） | P・I・CO・S を1本の線にしない（入庫と実出荷は縦線、I と CO はレーンを分けた水平線）。予定 S は要求レーンの棒で、実出荷の線としては描かない |
+| 1 ID の位置 | 各レーンの中で、ID ごとに決まった高さ（Lot_ID の CRC32 から決める）に置く。ノードをまたいでも同じ高さになるので、選んだ ID を追いやすい。高さは数量・金額を意味しない |
+| 線の描き方 | 描画区分ごとに1つの LineCollection（12個）。1 Lot ごとに Line2D や widget は作らない。表示範囲は numpy のマスクで切り出す |
+| 上部の表示 | 総 ID・描画済み ID・未描画 ID（表示範囲外）・フィルタで除外した ID・線分数（描画中／全体）・状態（「全件描画 完了」は、全区分を全範囲で描いたときだけ出る） |
+
+## 11. 操作（B2・B3）
+
+| 操作 | 実装 |
+|---|---|
+| 拡大・スクロール | matplotlib のツールバー（拡大・移動・戻る）。マウスホイールで上下に移動。「全体表示」ボタン |
+| ID の選択 | 図の線をクリックする。4px 以内の線を**全部**候補の一覧に出し、ID が1つだけならそのまま選ぶ（ダブルクリックで選び直せる）。Lot_ID を入力して選ぶこともできる |
+| 選択の表示 | その ID の全ノードの線を黄色で強調する。詳細欄に、ノードごとの履歴（Demand・入庫・I・実出荷・予定 S・CO・関係、期間前・期間後）と、元の記録（events → `source_evidence`）の一覧を出す |
+| 元の記録 ⇄ 図 | 元の記録の行をクリックすると、下の欄に `source_evidence` の中身（種類・場所・ハッシュ・payload）が出る。「この記録の図の位置へ戻る」で、そのノード・週へ拡大する |
+| 区分のフィルタ | 12 区分それぞれのチェック。除外した ID の数を上部に出す |
+| 読み込み | 別スレッドで読み、進捗バーと「中止」ボタンがある。Tk の更新は UI スレッドだけで行う（キュー経由） |
+| SE2 | 「SE2 へ移動」で Factory_Import_CN の 2026-W34〜W44 へ拡大する。詳細欄に、対象週の予定 S・実出荷・入庫・I・CO の Lot_ID をそのまま並べる（分類はしない） |
+| checks.csv | 「checks.csv を読む」で、段階 C の checker の出力を一覧表示する（読み込む口だけ） |
+
+## 12. B4 受入結果
+
+| # | 条件 | 結果 |
+|---|---|---|
+| 1 | 全 ID を描画し、描画件数が保存データと一致 | **一致**。線分 1,703,049 本（final の区間 1,232,269＋実出荷 296,120＋関係 174,660）をすべて描画。ID 63,240（anchors の数と同じ）をすべて描画。入庫 296,120＝伝播の記録あり 174,660＋未確認 63,240＋leaf_in の外部供給 58,220 |
+| 2 | ID 選択で全ノード強調、元の記録へ移動、元の記録から図へ戻る | **動作**。スクリプト化した操作と Tk のテストで確認（§13・テスト）。手でのクリック操作は、大杉さんの実機確認をお願いしたい |
+| 3 | 休業週が灰色 | **表示**。Factory_Local_TH の 2026-W32・2027-W32、Factory_Import_CN の 2026-W40・W41・2027-W40・W41（capacity.csv の is_open=0 の6週） |
+| 4 | 性能 | §13 |
+| 5 | スクリーンショットと起動手順 | §14・§15 |
+
+## 13. 性能（ev-thailand-2026、Windows 実機）
+
+| 項目 | 値 |
+|---|---|
+| 区間数 | final 1,232,269（全 snapshot では 3,042,731） |
+| イベント数 | 476,134（うち描画する実出荷 296,120） |
+| 関係数 | 174,660 |
+| ユニーク ID | 63,240 |
+| 展開出現件数（final） | 2,099,810（全 snapshot では 3,912,268） |
+| lot-週（final の supply） | I 88,770、CO 856,452 |
+| 保存容量 | run フォルダ 46.8MB、引き渡し ZIP 5.2MB |
+| 読み込み（viewer 内、別スレッド） | 41.8 秒（events 9.7、relations 3.3、区間 27.3、配列化 1.0）。Tk を動かさずに読むと 23.4 秒 |
+| 線分の生成（LineCollection の用意） | 0.13 秒 |
+| 全体描画（全 170万本） | 8.5 秒 |
+| SE2 への拡大（切り出し＋描画） | 1.25 秒（描画する線分 8,905 本） |
+| ID の選択（強調＋詳細） | 0.46 秒 |
+| 元の記録から図へ戻る | 0.52 秒 |
+| メモリ | 起動時 113MB → 読み込み・描画後 1,250MB、ピーク（working set）1,341MB |
+| 画面の条件 | 1920×1080、Tk scaling 1.67（Windows の表示倍率による）、ウィンドウ 1600×960、matplotlib 3.9.2（TkAgg）、Tk 8.6.14、Python 3.12.3 |
+
+目標値は置いていない。計測は `python -m wom.lovem.viewer <run> --bench <json> --shots <dir>` で再現できる（`docs/development/lovem/stageB_bench.json` に同じ値）。
+
+## 14. スクリーンショット（`docs/development/lovem/stageB_shots/`）
+
+Win32 の PrintWindow で、viewer のウィンドウ自身を描き出したもの（他のウィンドウは写らない）。
+
+| ファイル | 内容 |
+|---|---|
+| `01_overall.png` | 全体図。「総 ID 63,240｜描画済み ID 63,240｜未描画 0｜フィルタ 0｜線分 1,703,049 / 1,703,049｜全件描画 完了」 |
+| `02_se2_zoom.png` | SE2 の拡大（Factory_Import_CN、2026-W34〜W44）。W40・W41 の灰色背景、右に対象週の ID 一覧 |
+| `03_id_selected.png` | SE2 の拡大の上で ID（`EVmaker_Import:BKK:2026-W46:00001`）を選んだところ。全ノードの履歴と元の記録 |
+| `05_evidence_back.png` | 元の記録（Components_CN の実出荷）から、図の位置へ戻ったところ |
+| `04_id_selected_overall.png` | 全体図で同じ ID を選んだところ（Sales → DC → SP → Factory → Components が黄色） |
+
+## 15. 大杉さんが起動する手順
+
+```powershell
+cd C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r5m1_cap_trial
+# run フォルダが無ければ作る（約 2.5 分。Q12 と比較 run を含む）
+python -m tools.lovem_observe --model-dir data/sample/ev-thailand-2026 --out output/lovem/ev-thailand-2026/run_A --q12 --se2-compare-sha 4ed2f14
+# viewer（読み込みに約 40 秒。進捗バーが出る）
+python -m wom.lovem.viewer output/lovem/ev-thailand-2026/run_A
+```
+
+確認していただきたい操作：
+
+1. 上部の件数表示（全件描画 完了）
+2. 「SE2 へ移動」
+3. 図の線のクリック（候補の一覧・ダブルクリックでの選択）
+4. 詳細欄の元の記録をクリック →「この記録の図の位置へ戻る」
+5. ツールバーでの拡大・移動
+6. 区分のチェックを外したときの件数
+
+## 16. Astra君への引き渡し（§6）
+
+`output/lovem/handoff_ev-thailand-2026/` と同じ中身の ZIP：
+
+| 中身 | 内容 |
+|---|---|
+| `run/` | run フォルダ一式（A1 の全ファイル、`q12.json`＝Q12 の証拠、`se2_case.json`、`verify.json`、PPC 出力） |
+| `DATA_DICTIONARY.md` | データ辞書 |
+| `REPRODUCE.md` | 再実行の手順（コマンド・SHA・条件） |
+| `SHA256SUMS.txt` | 全ファイルの SHA-256 |
+
+run フォルダは、段階 B のコードが未 commit の状態（HEAD `17915af` ＋ dirty）で作り直したもの。
+
+- `manifest.json` の `code_sha`・`dirty_diff_hash` はその状態を記録している。
+- 段階 A の出力（区間・digests・events・relations・anchors・SE2）は、段階 A 報告時と同じ件数・同じ検査結果。
+- 段階 B の commit の後に作り直すと、manifest の `code_sha`・`dirty` 系の値だけが変わる見込み（コード上、他の出力には影響しない）。
+
+## 17. 設計書と変えた点・残った未確認
+
+1. **期間外の欄**：左右の余白に件数を出し、クリックで ID の一覧を出す。期間外の lot を線としては描いていない（位置が無いため）。
+2. **「未確認」の表し方**：記録の無い入庫は、灰色の点線と「未確認」の文言で示した。線を途中で切る記号（破断マーク）は作っていない。関係の線そのものが無いので、切る対象が無い。
+3. **採取段階の切り替え**：`--snapshot` で final 以外の段階も表示できる（例 `--snapshot post_copy`）。
+   - 実出荷・到着・関係は Forward の記録なので、final 以外の段階では描かない。上部にもその旨を出す。
+   - 最初の実装では Forward 前の図にも重ねて描いていたので、報告前に直した。
+   - 2つの段階を同じ図で比べる機能は作っていない。
+4. **手での操作**：クリック・ダブルクリック・ツールバーの操作は、関数を呼ぶテストとスクリプト化した操作では確認したが、人がマウスで操作しての確認はしていない。
+5. **HiDPI**：Windows の表示倍率が 100% でないと、matplotlib が図の大きさを倍率の分だけ大きく取り、下端が切れる。viewer 側で、キャンバスの実寸に図を合わせ直している。
+6. **読み込み時間**：viewer 内では、Tk のイベント処理と GIL を分け合うため 42 秒かかる（単独なら 23 秒）。全件を保存どおりに読む方針のまま、間引きはしていない。
+7. **SE2 の対象週の ID 一覧**：予定 S と実出荷に異なる Lot_ID が並んでいることは画面から読み取れる。しかし、それが早出し・遅配などのどれに当たるかは判定していない（段階 C）。

@@ -82,7 +82,7 @@
 | `snapshots[]` | 採取した snapshot の一覧：`snapshot_id`、`phase`、`product_id`、`layers`、`weeks`（[最初, 最後]の index）、`complete`、`intervals_file`、`n_intervals` |
 | `counts` | anchors・digests・intervals・events・relations の件数。`expanded_occurrences_by_snapshot` は `"<snapshot_id>|<layer>|<bucket>"` ごとの Σ((end−start+1)×multiplicity) |
 | `timing_s` | 実行時間（非業務項目。比較対象外） |
-| `coverage` | 採取段階ごとの状態（`stages`）、Kitting の有無、`known_gaps`（取得できない対応の一覧）、`arrival_unlinked`（出荷と結べなかった到着の件数）、期間端の扱い |
+| `coverage` | 採取段階ごとの状態（`stages`）、Kitting（`not_applicable` ＝ Stockyard が無い／`present` ＝ Stockyard の PSI は区間として採取済みだが、`node.kitting` の記録は lovem-a1 では採取していない）、`known_gaps`（取得できない対応の一覧）、`arrival_unlinked`（出荷と結べなかった到着の件数）、期間端の扱い |
 
 ### 2.2 `nodes.csv`
 

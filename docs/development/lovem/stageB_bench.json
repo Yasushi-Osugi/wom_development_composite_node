@@ -1,0 +1,55 @@
+{
+  "rss_before_mb": 113.078272,
+  "full_draw_fitted_s": 8.269568199990317,
+  "load_s": 41.816124900011346,
+  "load_detail_s": {
+    "load_events_s": 9.714198800036684,
+    "load_relations_s": 3.323825199971907,
+    "load_intervals_s": 27.29074570001103,
+    "build_arrays_s": 1.0393426999798976,
+    "load_total_s": 41.39651920000324
+  },
+  "build_collections_s": 0.13004729995736852,
+  "full_draw_s": 8.468947899993509,
+  "segments_total": 1703049,
+  "segments_drawn_full": 1703049,
+  "ids_total": 63240,
+  "ids_drawn_full": 63240,
+  "counts_label_full": "総 ID 63,240  |  描画済み ID 63,240  |  未描画 ID 0（表示範囲外）  |  フィルタで除外 0  |  線分 1,703,049 / 1,703,049  |  全件描画 完了",
+  "canvas_widget_px": [
+    820,
+    797
+  ],
+  "figure_px": [
+    820.0,
+    797.0
+  ],
+  "figure_dpi": 125.0,
+  "device_pixel_ratio": 1.25,
+  "zoom_se2_s": 1.2477698999573477,
+  "counts_label_se2": "総 ID 63,240  |  描画済み ID 1,599  |  未描画 ID 61,641（表示範囲外）  |  フィルタで除外 0  |  線分 8,905 / 1,703,049  |  全件を描画対象とし、表示範囲外・フィルタ分を除いて描画",
+  "select_s": 0.4603400999912992,
+  "selected_lot": "EVmaker_Import:BKK:2026-W46:00001",
+  "evidence_back_s": 0.5244920999975875,
+  "evidence_back_pos": [
+    13,
+    33
+  ],
+  "rss_after_mb": 1250.14016,
+  "peak_wset_mb": 1340.624896,
+  "screen": {
+    "w": 1920,
+    "h": 1080,
+    "tk_scaling": 1.6683087027914612,
+    "window": [
+      1600,
+      960
+    ]
+  },
+  "versions": {
+    "python": "3.12.3",
+    "matplotlib": "3.9.2",
+    "backend": "TkAgg",
+    "tk": "8.6.14"
+  }
+}

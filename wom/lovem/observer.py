@@ -713,7 +713,9 @@ def _coverage(obs: Observer, has_yard: bool) -> dict:
          "note": "sequence = list position in the engine list (observed); cross-node processing order within a week is not an event sequence."},
     ]
     return {"stages": stages,
-            "kitting": "captured_if_present" if has_yard else "not_applicable (no stockyard node)",
+            "kitting": ("present: stockyard PSI (P/S/I/CO) is captured as intervals; "
+                        "node.kitting records are NOT captured in schema lovem-a1"
+                        if has_yard else "not_applicable (no stockyard node)"),
             "known_gaps": known_gaps,
             "arrival_unlinked": obs.counts.get("arrival_unlinked", 0),
             "missing_weeks": [], "period_edges": {
