@@ -75,13 +75,20 @@ def _format_conclusion_ja(state: dict, snap: dict) -> List[str]:
     pct = (ok_weeks / total_weeks * 100.0) if total_weeks else 0.0
     line1 = f"{total_weeks} 週中 {ok_weeks} 週は能力内（{pct:.0f}%）"
 
-    # cap_hard は Forward Planner が P を封じる物理天井——「張り付き」（sealed）で
+    # cap_hard は Forward Planner が P を封じる物理天井（legacy は封印、identity は
+    # 翌週へ繰り延べ）——「張り付き」で
     # あって「超過」ではない（超過は定義上起こり得ない）。cap_soft は残業帯で
     # 実際に超えうる——こちらが「超過」。両者を「能力超過」に一括りにしない
     # （Claude君の検証で発見・訂正済み、正典 requests/Phase8-3c_RequestLetter_S3Run_to_CodeKun.md）。
+    # RequestLetter_FlowCheck Part 2: in lot_flow_mode="identity" the lots over
+    # cap_hard are not sealed but deferred to the next week's P (Decision
+    # Record D4) -- say so, instead of "溢れた" (lost). The snapshot config
+    # carries lot_flow_mode only when it is not legacy.
+    identity = (snap.get("config", {}) or {}).get("lot_flow_mode") == "identity"
+    hard_note = "翌週へ繰り延べ" if identity else "需要が溢れた"
     unmet = realized.get("unmet_lots", 0.0) or 0.0
     if cap_hard_weeks or cap_soft_weeks:
-        line2 = (f"cap_hard {len(cap_hard_weeks)}週で上限に張り付き（需要が溢れた） / "
+        line2 = (f"cap_hard {len(cap_hard_weeks)}週で上限に張り付き（{hard_note}） / "
                 f"cap_soft {len(cap_soft_weeks)}週で超過（残業帯）、未充足 {unmet:.0f} lot")
     else:
         line2 = f"能力超過なし（cap_hard 0週 / cap_soft 0週）、未充足 {unmet:.0f} lot"

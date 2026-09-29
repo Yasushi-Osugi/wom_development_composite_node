@@ -240,7 +240,8 @@ class RunPanel(tk.Frame):
         for n in nodes:
             row = tk.Frame(self._nodes_frame, bg=BG_MID)
             row.pack(fill="x", pady=1)
-            # cap_hard=張り付き（sealed・需要が溢れた）／cap_soft=超過（残業帯）を
+            # cap_hard=張り付き（legacy は封印・需要が溢れた、identity は翌週へ
+            # 繰り延べ：RequestLetter_FlowCheck Part 2）／cap_soft=超過（残業帯）を
             # 別々に数える——両方を「超過」に一括りにしない（terminology 修正）。
             hard_n = len(n["hard_weeks"]); soft_n = len(n["soft_weeks"])
             text = f"{n['label']}  張り付き{hard_n}週 / 超過{soft_n}週"

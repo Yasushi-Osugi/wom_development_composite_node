@@ -58,10 +58,12 @@ PSI means:
 
 ```text
 P  = Production, Purchase, or planned arrival
-S  = Sales or Shipment
+S  = Request (Demand Position) -- not the actual shipment
 I  = Inventory
 CO = Carry Over
 ```
+
+The actual shipment is a separate record (`node._actual_ship`). PPC's sales quantity at the market leaf is the actual shipment, not S (Decision Record `WOM_Forward_LotID_Decision_Record_2026-09-29.md` §1.4).
 
 In WOM, PSI is the operational state of each node by product and week.
 

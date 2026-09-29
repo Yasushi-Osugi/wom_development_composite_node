@@ -253,10 +253,13 @@ def test_build_mom_capacity_profile():
     result = fp.run(sku_id)
     print(result)
 
-    # With CapHard=3 and demand=4, 1 lot sealed
-    assert result.cap_hard_sealed == 1, (
-        f"Expected 1 lot hard-sealed, got {result.cap_hard_sealed}"
+    # With CapHard=3 and demand=4, 1 lot over the cap. Default lot_flow_mode
+    # "identity" defers it (Decision Record D4); cap_hard_sealed is the legacy
+    # record only (RequestLetter_FlowCheck Part 2).
+    assert result.cap_hard_deferred_lots == 1, (
+        f"Expected 1 lot deferred, got {result.cap_hard_deferred_lots}"
     )
+    assert result.cap_hard_sealed == 0
 
     print("PASS: test_build_mom_capacity_profile")
 

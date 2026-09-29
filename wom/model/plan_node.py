@@ -4,7 +4,12 @@ wom/model/plan_node.py
 WOM Planning Layer -- PlanNode dataclass
 
 PSI Bucket index convention (confirmed):
-    S  = 0   Sales / Fulfilled shipment
+    S  = 0   Request (Demand Position): the Lot_IDs requested from this node
+             in week w. NOT the actual shipment -- the Lot_IDs actually
+             shipped are node._actual_ship[w] (set by ForwardPlanner.run).
+             In lot_flow_mode="legacy" the market leaf's S and actual
+             shipment coincide; in "identity" they need not
+             (Decision Record 2026-09-29 §1.1, RequestLetter_FlowCheck V1).
     CO = 1   Carry Over (受注残) -- unfulfilled demand rolled forward
     I  = 2   Inventory
     P  = 3   Purchase / Production plan (replenishment)
@@ -36,7 +41,9 @@ Tier numbering:
 
 lt_wks usage:
     Backward Planning:  child.S[w]  ->  parent.P[w + lt_wks]   (demand propagation)
-    Forward  Planning:  parent.P[w] ->  child.S[w + lt_wks]    (supply propagation)
+    Forward  Planning:  supplier's actual shipment[w] -> receiver's P[w + LT]
+                        (supply propagation; S is never written by Forward --
+                        it stays the request copied from the Demand layer)
 
 ss_days usage:
     Safety stock days; backward planner adds ceil(ss_days/7) extra weeks
@@ -53,7 +60,7 @@ from typing import Dict, List, Optional
 # ---------------------------------------------------------------------------
 # PSI bucket index constants
 # ---------------------------------------------------------------------------
-S  = 0   # Sales / Fulfilled shipment
+S  = 0   # Request (Demand Position) -- NOT the actual shipment (node._actual_ship)
 CO = 1   # Carry Over (受注残)
 I  = 2   # Inventory
 P  = 3   # Purchase / Production plan

@@ -25,7 +25,7 @@ from typing import Dict, List
 class NodeActivity:
     """Lot-count activity on one GUI node for one week."""
     gui_label: str          # e.g. "Mother\nPlant", "SKU:SKU-A001", "Region:AMER"
-    s_count:   int = 0      # fulfilled lots (S bucket)
+    s_count:   int = 0      # requested lots (S bucket = Demand Position, not the actual shipment)
     co_count:  int = 0      # carry-over lots (CO bucket)
     i_count:   int = 0      # inventory lots  (I bucket)
     p_count:   int = 0      # production/purchase lots (P bucket)

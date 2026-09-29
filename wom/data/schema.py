@@ -96,7 +96,12 @@ class Cols:
     SUPPLY_RECEIPT  = "supply_receipt"
     GROSS_AVAIL     = "gross_avail"
     DEMAND_FCST     = "demand_fcst"
+    # NOTE (RequestLetter_FlowCheck V1): in the Planning DataFrame
+    # (sc_tree_to_planning_df) demand_fulfilled is len(supply S) x cpu, i.e.
+    # the REQUEST (Demand Position), not the actual shipment. The actual
+    # shipment is SHIP_QTY. Kept unchanged (money / KPI read it).
     DEMAND_FULFILLED= "demand_fulfilled"
+    SHIP_QTY        = "ship_qty"         # actual shipment (node._actual_ship) x cpu
     STOCKOUT_QTY    = "stockout_qty"
     CLOSING_INV     = "closing_inv"
     SAFETY_STOCK_QTY= "safety_stock_qty"

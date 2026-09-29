@@ -20,6 +20,15 @@ Output columns (match inventory.py rows exactly):
     demand_fcst, demand_fulfilled, stockout_qty,
     closing_inv, safety_stock_qty, reorder_qty,
     fill_rate, inv_cover_wks, inv_value (0.0 — filled by simulator later)
+Extra Planning columns: co_qty, ship_qty.
+
+NOTE (RequestLetter_FlowCheck V1/V2): demand_fulfilled here is the supply S
+count, i.e. the REQUEST placed at the node (Demand Position) -- NOT the actual
+shipment. In lot_flow_mode="legacy" the market leaf's S and actual shipment
+coincide; in "identity" they do not. The actual shipment is the separate
+column ship_qty (len(node._actual_ship[w]) x cpu). demand_fulfilled, fill_rate
+and stockout_qty are left unchanged (money / KPI read them) -- see
+docs/development/WOM_FlowCheck_WarmupTrial_Report.md.
 
 Usage
 -----
@@ -35,6 +44,13 @@ from wom.model.plan_node import S, CO, I, P as P_, NODE_TYPE_DAD
 
 
 SCENARIO_PLANNING = "Planning"
+
+
+def _ship_count(node, w: int) -> int:
+    """Actual shipment lots of the week (node._actual_ship, set by
+    ForwardPlanner.run); 0 when the node carries no such record."""
+    actual = getattr(node, "_actual_ship", None) or {}
+    return len(actual.get(w, []))
 
 
 def sc_tree_to_planning_df(
@@ -121,6 +137,7 @@ def sc_tree_to_planning_df(
                     Cols.INV_VALUE:        0.0,   # filled by caller with unit_cost
                     # Extra Planning-specific columns
                     "co_qty":              round(co_qty, 4),
+                    Cols.SHIP_QTY:         round(_ship_count(leaf, w) * cpu, 4),
                 })
 
                 prev_closing = closing_inv
@@ -180,6 +197,7 @@ def sc_tree_to_planning_df(
                     Cols.INV_COVER_WKS:    round(inv_cover,    2),
                     Cols.INV_VALUE:        0.0,
                     "co_qty":              round(co_qty, 4),
+                    Cols.SHIP_QTY:         round(_ship_count(dad, w) * cpu, 4),
                 })
 
                 prev_closing = closing_inv

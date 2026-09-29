@@ -227,7 +227,8 @@ def _co_duplicates(t):
 def test_a1_identity_cap_hard_does_not_duplicate_co_and_loses_no_lot():
     t, fp, res = _plan("identity", mom_cap=2)
     mom = _node(t, "Mother Plant")
-    assert res.cap_hard_sealed > 0, "the cap binds in this setup"
+    assert res.cap_hard_deferred_lots > 0, "the cap binds in this setup"
+    assert res.cap_hard_sealed == 0, "identity defers, never seals (FlowCheck Part 2)"
     assert _co_duplicates(t) == 0, "K4: CO holds each request once"
     assert all(len(mom.psi4supply[w][P]) <= 2 for w in range(N))
     # deferred, not dropped: every requested lot is eventually produced (horizon allows)

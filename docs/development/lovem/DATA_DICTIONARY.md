@@ -200,7 +200,7 @@ PSI リストの状態を区間に圧縮したもの（設計書 §8.5）。
 | `backward_past_due` | Backward が期間の前へ置こうとして置けなかった需要（`BackwardPlanResult.past_due_lots`） | あり | observed |
 | `push_shortfall` | push ノードで予定 S に対して物が無く出荷できなかった件数（`PlanNode._push_shortfall`） | null（件数） | observed |
 | `forward_shortfall_weeks` | Forward の不足件数（`ForwardPlanResult.shortfall_weeks`） | null（件数） | observed |
-| `forward_cap_hard_events` / `forward_cap_soft_violations` / `forward_closure_p_deferred` / `forward_closure_s_planned` / `forward_kitting_capacity_deferred` | 同名の `ForwardPlanResult` の記録（件数） | null | observed |
+| `forward_cap_hard_events` / `forward_cap_soft_violations` / `forward_closure_p_deferred` / `forward_closure_s_planned` / `forward_kitting_capacity_deferred` | 同名の `ForwardPlanResult` の記録（件数）。`forward_cap_hard_events` は「cap_hard が効いた週」で、件数の意味は方式で違う：legacy は封印（CO へ）した件数、identity は翌週の P へ繰り延べた件数（決定記録 D4） | null | observed |
 | `forward_closure_p_unplaced` | 休業で期間内に置けなかった P（lot ごと） | あり | observed |
 | `mode4_closure_shifted` | Mode 4 が休業週から移した件数。`detail.to_week_index` | null | observed |
 
@@ -317,7 +317,7 @@ SE2 の**定義と週別の件数**。lot の分類（早出し・当週・後�
 |---|---|---|
 | 需要の充足対応 | unknown | どの出荷がどの要求（S／CO）を満たしたかは、エンジンに記録が無い |
 | pull モードの入庫 | 物の関係なし | デカップリング点より下流（と InBound の pull／decoupling コピー）は、P＝psi4demand の P のコピーで、伝播した出荷ではない。これらの入庫に `arrival` は無い |
-| cap_hard の封印 lot | unknown | 件数だけで、封印された lot_id は記録されない |
+| cap_hard の封印（legacy）／繰り延べ（identity）の lot | unknown | 件数だけで、封印・繰り延べされた lot_id は記録されない。forward_result の記録は、legacy が `cap_hard_sealed`、identity が `cap_hard_deferred_lots`（重複なし）・`cap_hard_deferred_lot_weeks`（のべ lot 週） |
 | push_shortfall の lot | unknown | 件数だけで、出荷できなかった予定 S の lot_id は記録されない |
 | push デカップリングの inline 伝播 | 観測なし | 親を持つ push デカップリング点は `ForwardPlanner.run` 内で直接伝播する。ev-thailand-2026 には該当なし（Factory_Import_CN は root） |
 | 週内の順序 | 一部 | `sequence` はエンジンのリスト内の位置。ノードをまたいだ週内の処理順は記録していない |

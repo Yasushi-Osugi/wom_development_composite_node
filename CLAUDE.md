@@ -82,7 +82,7 @@ psi4supply\[week\_idx\]\[bucket\]  \# ForwardPlannerが書く
 
 \# bucket定数
 
-S  \= 0  \# Sales / 出荷
+S  \= 0  \# Request（要求＝Demand Position）。実出荷ではない。実出荷は node.\_actual\_ship（決定記録 2026-09-29 §1.1）
 
 CO \= 1  \# Carry Over（繰越需要）
 
@@ -947,9 +947,11 @@ WOM の KPI フレームワークは根本的に異なる 3 次元構造を持�
 | WOM 指標 | PSI バケット | 上位 KPI への接続 |
 | :---- | :---- | :---- |
 | 需要予測精度 | demand_forecast vs 実績差 | 販売予測精度 → 変化対応率 |
-| Fill Rate (充足率) | S 実績 / S 計画 | 販売機会損失率 → 売上高成長率 |
-| Sell-through サイクル (週) | S バケット連続性 | デイリー在庫日数 → 販社在庫日数 |
-| 販売チャネル Revenue | ppc_market_price × S | 売上高 → 事業損益 |
+| Fill Rate (充足率) | 実出荷（`_actual_ship`）/ S（要求） | 販売機会損失率 → 売上高成長率 |
+| Sell-through サイクル (週) | 実出荷の連続性（S は要求） | デイリー在庫日数 → 販社在庫日数 |
+| 販売チャネル Revenue | ppc_market_price × 実出荷（PPC は実出荷を使う。S は要求） | 売上高 → 事業損益 |
+
+\* 上の Fill Rate・Sell-through は、あるべき定義。**2026-09-30 時点の実装（`sc_tree_to_df.py` の `demand_fulfilled`・`fill_rate`、`money.py` の Revenue・COGS、Management・KPI の画面）は、まだ S（要求）ベースのまま**で、identity では実出荷より多く出る（`docs/development/WOM_FlowCheck_WarmupTrial_Report.md` §6 S2、未対応）。PPC の販売数量だけが実出荷ベース。
 | Gross Profit / Profit Zone | PPC engine 出力 | 事業利益 → ROE |
 
 ---

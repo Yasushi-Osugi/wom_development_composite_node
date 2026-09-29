@@ -480,7 +480,9 @@ class ChartPanel(tk.Frame):
                 if node.node_type != NODE_TYPE_LEAF_IN:
                     continue
                 cpu = sc.cpu_size * node.bom_qty
-                # S = sales/dispatched from farm = harvest output
+                # Demand-layer S = the lots REQUESTED from the farm in the week
+                # (Demand Position), used here as the harvest plan. It is not
+                # the actual shipment (node._actual_ship) -- RequestLetter_FlowCheck V1.
                 supply_vals = [len(node.psi4demand[w][S_IDX]) * cpu for w in range(n)]
                 if all(v == 0 for v in supply_vals):
                     continue
@@ -1557,6 +1559,39 @@ def capacity_view_series(node, psi):
     return [len(psi[w][P_]) for w in range(n)]
 
 
+def psi_list_table(node, layer: str = "supply"):
+    """Rows of the PSI List for one node (RequestLetter_FlowCheck V2), pure.
+
+    Returns (rows, total): rows = [{"week", "S", "Ship", "CO", "I", "P"}, ...]
+    lot counts per week; total = the Σ row: S / Ship / P summed over the
+    horizon, I / CO = the LAST week's value (a sum of stocks is meaningless).
+    Ship = len(node._actual_ship[w]) on the Supply layer; None (shown "—") on
+    the Demand layer or when the node has no _actual_ship (older callers).
+    """
+    from wom.model.plan_node import S as S_, CO as CO_, I as I_, P as P_
+    psi = node.psi4demand if layer == "demand" else node.psi4supply
+    actual = getattr(node, "_actual_ship", None) if layer != "demand" else None
+    rows = []
+    for w, wk in enumerate(node.week_labels or []):
+        rows.append({
+            "week": wk,
+            "S": len(psi[w][S_]),
+            "Ship": (len(actual.get(w, [])) if actual is not None else None),
+            "CO": len(psi[w][CO_]),
+            "I": len(psi[w][I_]),
+            "P": len(psi[w][P_]),
+        })
+    total = {
+        "week": "Σ（I・CO は期末）",
+        "S": sum(r["S"] for r in rows),
+        "Ship": (sum(r["Ship"] for r in rows) if actual is not None else None),
+        "CO": rows[-1]["CO"] if rows else 0,
+        "I": rows[-1]["I"] if rows else 0,
+        "P": sum(r["P"] for r in rows),
+    }
+    return rows, total
+
+
 # PSI List Panel  (lot-ID based PSI, Steps 3-8)
 # ──────────────────────────────────────────────────────────────────────
 
@@ -1566,7 +1601,10 @@ class PSIListPanel(tk.Frame):
 
     Layout:
       ┌─ node header (node_id, plan_mode, lt, type) ── [Demand] [Supply] ─┐
-      │  Treeview: Week | S | CO | I | P  (lot counts)                     │
+      │  Treeview: Week | S | Ship | CO | I | P  (lot counts)              │
+      │    S    = request placed at this node in the week (Demand Position)│
+      │    Ship = actual shipment (node._actual_ship; Supply layer only)   │
+      │    last row Σ: S / Ship / P = horizon totals, I / CO = last week   │
       │  ──────────────────────────────────────────────────────────────    │
       │  Lot IDs text box  (shows lot strings for selected row)            │
       │  Summary: totals                                                   │
@@ -1606,19 +1644,23 @@ class PSIListPanel(tk.Frame):
         tree_frame = tk.Frame(self, bg=BG_DARK)
         tree_frame.pack(fill="both", expand=True, padx=2, pady=2)
 
-        cols = ("week", "S", "CO", "I", "P", "CapH", "CapS")
+        # RequestLetter_FlowCheck V1/V2: S is the request (Demand Position),
+        # Ship the actual shipment -- shown side by side so they are not confused.
+        cols = ("week", "S", "Ship", "CO", "I", "P", "CapH", "CapS")
         self._tree = ttk.Treeview(
             tree_frame, columns=cols, show="headings",
             height=12, selectmode="browse",
         )
         col_cfg = {"week": (90, "w",      True),
-                   "S":    (50, "center", False),
+                   "S":    (82, "center", False),
+                   "Ship": (88, "center", False),
                    "CO":   (50, "center", False),
                    "I":    (50, "center", False),
                    "P":    (50, "center", False),
                    "CapH": (52, "center", False),
                    "CapS": (52, "center", False)}
-        cap_heads = {"CapH": "CapHard", "CapS": "CapSoft"}
+        cap_heads = {"CapH": "CapHard", "CapS": "CapSoft",
+                     "S": "S (Request)", "Ship": "Ship (actual)"}
         for col in cols:
             w, anchor, stretch = col_cfg[col]
             self._tree.heading(col, text=cap_heads.get(col, col))
@@ -1725,27 +1767,27 @@ class PSIListPanel(tk.Frame):
             self._summary_var.set("(no PSI data)")
             return
 
-        from wom.model.plan_node import S as S_, CO as CO_, I as I_, P as P_
-
-        tot_s = tot_co = tot_i = tot_p = 0
         has_cap = False
         # Compared with capacity: push supply layer = processed (S − shortfall),
         # otherwise P (Explicit Closure v1r5m0 §4.7).
         proc = capacity_view_series(node, psi)
+        # RequestLetter_FlowCheck V2: the Ship column exists only on the Supply
+        # layer (the actual shipment is a supply-side record).
+        self._tree["displaycolumns"] = (
+            ("week", "S", "CO", "I", "P", "CapH", "CapS") if layer == "demand"
+            else ("week", "S", "Ship", "CO", "I", "P", "CapH", "CapS"))
+        rows, total = psi_list_table(node, layer)
 
-        for w, wk_label in enumerate(node.week_labels):
-            sq  = len(psi[w][S_])
-            coq = len(psi[w][CO_])
-            iq  = len(psi[w][I_])
-            pq  = len(psi[w][P_])
+        def _cell(v):
+            return "—" if (v is None or v == 0) else v
+
+        for w, r in enumerate(rows):
+            wk_label = r["week"]
+            sq, coq, iq, pq = r["S"], r["CO"], r["I"], r["P"]
             ch  = node.cap_hard(w)
             pc  = node.planned_capacity(w)
             hard_txt, soft_txt = psi_list_capacity_cells(node, w)
 
-            tot_s  += sq
-            tot_co += coq
-            tot_i  += iq
-            tot_p  += pq
             if ch > 0 or pc is not None:
                 has_cap = True
 
@@ -1757,7 +1799,7 @@ class PSIListPanel(tk.Frame):
                 tag = "over_hard"
             elif pc and proc[w] > pc:
                 tag = "over_soft"
-            elif any([sq, coq, iq, pq]):
+            elif any([sq, coq, iq, pq, r["Ship"] or 0]):
                 tag = "active"
             else:
                 tag = "zero"
@@ -1765,14 +1807,29 @@ class PSIListPanel(tk.Frame):
             self._tree.insert(
                 "", "end", iid=str(w),
                 values=(wk_label,
-                        sq  if sq  else "—",
-                        coq if coq else "—",
-                        iq  if iq  else "—",
-                        pq  if pq  else "—",
+                        _cell(sq),
+                        _cell(r["Ship"]),
+                        _cell(coq),
+                        _cell(iq),
+                        _cell(pq),
                         hard_txt,
                         soft_txt),
                 tags=(tag,),
             )
+
+        # Σ row: S / Ship / P = horizon totals, I / CO = last week (期末)
+        self._tree.insert(
+            "", "end", iid="sum",
+            values=(total["week"],
+                    total["S"],
+                    "—" if total["Ship"] is None else total["Ship"],
+                    total["CO"],
+                    total["I"],
+                    total["P"],
+                    "", ""),
+            tags=("total",),
+        )
+        self._tree.tag_configure("total", foreground=FG_ACC, background=BG_LIGHT)
 
         self._tree.tag_configure("over_hard",
                                  foreground="#FFCDD2", background="#7B1212")
@@ -1789,9 +1846,12 @@ class PSIListPanel(tk.Frame):
         self._draw_capacity_chart(node, psi)
 
         layer_str = "Demand" if layer == "demand" else "Supply"
+        ship_txt = ("" if total["Ship"] is None
+                    else f"  Ship(実出荷)Σ={total['Ship']}")
         self._summary_var.set(
-            f"Total {layer_str}:  "
-            f"S={tot_s}  CO={tot_co}  I={tot_i}  P={tot_p}"
+            f"{layer_str}:  S(要求)Σ={total['S']}{ship_txt}  P Σ={total['P']}"
+            f"  期末 I={total['I']}  期末 CO={total['CO']}"
+            "   ※ S はそのノードへの要求（Demand Position）。実出荷は Ship 列"
         )
 
         # Scroll to first active week
@@ -1803,8 +1863,8 @@ class PSIListPanel(tk.Frame):
     def _on_select(self, event):
         """Show lot IDs for the selected week row."""
         sel = self._tree.selection()
-        if not sel or self._node is None:
-            return
+        if not sel or self._node is None or not sel[0].isdigit():
+            return   # the Σ row has no lot list
         w     = int(sel[0])
         node  = self._node
         layer = self._layer_var.get()
@@ -1813,8 +1873,12 @@ class PSIListPanel(tk.Frame):
         from wom.model.plan_node import S as S_, CO as CO_, I as I_, P as P_
 
         lines = []
-        for bidx, bname in [(S_, "S"), (CO_, "CO"), (I_, "I"), (P_, "P")]:
-            lots = psi[w][bidx]
+        actual = getattr(node, "_actual_ship", None) if layer != "demand" else None
+        buckets = [(psi[w][S_], "S (request)")]
+        if actual is not None:
+            buckets.append((actual.get(w, []), "Ship (actual shipment)"))
+        buckets += [(psi[w][CO_], "CO"), (psi[w][I_], "I"), (psi[w][P_], "P")]
+        for lots, bname in buckets:
             if lots:
                 lines.append(f"── {bname} ({len(lots)} lots) ──")
                 lines.extend(f"  {lot}" for lot in lots)
@@ -1930,6 +1994,158 @@ class PSIListPanel(tk.Frame):
                   fontsize=6, loc="upper right", ncol=2)
 
         self._cap_canvas.draw()
+
+# Flow Check Panel  (RequestLetter_FlowCheck V3)
+# ──────────────────────────────────────────────────────────────────────
+
+class FlowCheckPanel(tk.Frame):
+    """
+    Network-wide flow integrity of the last plan, computed by
+    wom.engine.flow_check.compute_flow_check (read-only, no Tk logic there).
+
+      Table 1 (per node): conservation (opening I + Σ receipt − Σ actual
+               shipment − closing I) and arrival (what the supplier shipped
+               towards the node vs what it received).
+      Table 2 (market leaf_out): demand = on time + early + late + backlog.
+    NG rows are red; 対象外 rows are grey with the reason.
+    """
+
+    _NODE_COLS = [
+        ("product", "製品", 110), ("node", "ノード", 150), ("node_type", "種別", 70),
+        ("plan_mode", "モード", 60), ("opening_I", "期首 I", 60), ("receipt_sum", "入庫 Σ", 70),
+        ("ship_sum", "実出荷 Σ", 70), ("closing_I", "期末 I", 60),
+        ("conservation_diff", "保存差", 55), ("upstream_ship_sum", "上流からの出荷 Σ", 115),
+        ("in_transit_end", "期末の輸送中", 90), ("unplaced_end", "期間外へ繰延", 95),
+        ("sealed_legacy", "封印(legacy)", 90), ("arrival_diff", "到着差", 60),
+        ("recorded_arrivals", "記録された到着", 105), ("closing_CO", "期末 CO", 60),
+        ("status", "判定", 55), ("reason", "理由", 260),
+    ]
+    _MARKET_COLS = [
+        ("product", "製品", 130), ("leaf", "市場（leaf_out）", 160), ("demand", "需要", 70),
+        ("on_time", "当週出荷", 70), ("early", "早出し", 60), ("late", "遅配", 60),
+        ("backlog_end", "期末注文残", 80), ("check", "検算", 55),
+    ]
+    _QTY_COLS = {"opening_I", "receipt_sum", "ship_sum", "closing_I", "upstream_ship_sum",
+                 "in_transit_end", "closing_CO", "demand", "on_time", "early", "late",
+                 "backlog_end"}
+
+    def __init__(self, parent, **kw):
+        super().__init__(parent, bg=BG_DARK, **kw)
+        self._fc = None
+        self._model_dir = ""
+        self._qty_var = tk.BooleanVar(value=False)
+        self._build()
+
+    def _build(self):
+        hdr = tk.Frame(self, bg=BG_MID, pady=3)
+        hdr.pack(fill="x")
+        self._summary_var = tk.StringVar(value="Flow Check：Planning Engine を実行すると表示されます")
+        tk.Label(hdr, textvariable=self._summary_var, bg=BG_MID, fg=FG_ACC,
+                 font=("Segoe UI", 8, "bold"), anchor="w").pack(side="left", padx=8,
+                                                              fill="x", expand=True)
+        tk.Button(hdr, text="CSV 書き出し", command=self._export_csv,
+                  bg=BG_LIGHT, fg=FG_WHITE, relief="flat",
+                  font=("Segoe UI", 8)).pack(side="right", padx=4)
+        tk.Checkbutton(hdr, text="数量（× cpu_size）で表示", variable=self._qty_var,
+                       command=self._fill, bg=BG_MID, fg=FG_WHITE, selectcolor=BG_LIGHT,
+                       activebackground=BG_MID, font=("Segoe UI", 8)).pack(side="right", padx=4)
+
+        paned = tk.PanedWindow(self, orient="vertical", bg=BG_DARK, sashwidth=4)
+        paned.pack(fill="both", expand=True)
+        self._node_tree = self._make_tree(paned, self._NODE_COLS, "表 1：ノードごとの保存と到着",
+                                          height=18)
+        self._market_tree = self._make_tree(paned, self._MARKET_COLS, "表 2：市場の需要の行き先",
+                                            height=10)
+
+        self._note_var = tk.StringVar(value=(
+            "保存差 = 期首 I + 入庫 Σ − 実出荷 Σ − 期末 I（0 が正）　"
+            "到着差 = 上流からの出荷 Σ − 期末の輸送中 − 入庫 Σ − 期間外へ繰延 − 封印(legacy)（0 が正）　"
+            "検算 = 需要 −（当週出荷 + 早出し + 遅配 + 期末注文残）"))
+        tk.Label(self, textvariable=self._note_var, bg=BG_DARK, fg="#90A4AE",
+                 font=("Segoe UI", 7), anchor="w", justify="left",
+                 wraplength=1100).pack(fill="x", padx=6, pady=(0, 2))
+
+    def _make_tree(self, paned, cols, title, height=10):
+        lf = tk.LabelFrame(paned, text=f"  {title}  ", bg=BG_MID, fg=FG_ACC,
+                           font=("Segoe UI", 8, "bold"), relief="groove", bd=1)
+        paned.add(lf, minsize=120, height=height * 20 + 50)
+        frame = tk.Frame(lf, bg=BG_DARK)
+        frame.pack(fill="both", expand=True, padx=2, pady=2)
+        tree = ttk.Treeview(frame, columns=[c for c, _h, _w in cols], show="headings",
+                            height=height, style="PSI.Treeview")
+        for c, h, w in cols:
+            tree.heading(c, text=h)
+            tree.column(c, width=w, anchor="w" if c in ("product", "node", "leaf", "reason")
+                        else "center", stretch=(c == "reason"))
+        vsb = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
+        hsb = ttk.Scrollbar(lf, orient="horizontal", command=tree.xview)
+        tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        tree.pack(side="left", fill="both", expand=True)
+        vsb.pack(side="right", fill="y")
+        hsb.pack(fill="x")
+        tree.tag_configure("ng", foreground="#FFCDD2", background="#7B1212")
+        tree.tag_configure("na", foreground="#90A4AE", background=BG_DARK)
+        tree.tag_configure("ok", foreground=FG_WHITE, background=BG_MID)
+        tree.tag_configure("total", foreground=FG_ACC, background=BG_LIGHT)
+        return tree
+
+    def load(self, sc_tree, forward_results=None, model_dir: str = "") -> None:
+        from wom.engine.flow_check import compute_flow_check
+        self._model_dir = model_dir or ""
+        try:
+            self._fc = compute_flow_check(sc_tree, forward_results or {})
+        except Exception as exc:
+            import traceback
+            traceback.print_exc()
+            self._fc = None
+            self._summary_var.set(f"Flow Check の計算に失敗しました：{exc}")
+            return
+        self._fill()
+
+    def _val(self, row, col):
+        v = row.get(col)
+        if self._qty_var.get() and col in self._QTY_COLS and (col + "_qty") in row:
+            v = row[col + "_qty"]
+        return "—" if v is None else v
+
+    def _fill(self):
+        for tree in (self._node_tree, self._market_tree):
+            for iid in tree.get_children():
+                tree.delete(iid)
+        if not self._fc:
+            return
+        for r in self._fc["nodes"]:
+            tag = {"NG": "ng", "対象外": "na"}.get(r["status"], "ok")
+            self._node_tree.insert("", "end", values=[self._val(r, c) for c, _h, _w in self._NODE_COLS],
+                                   tags=(tag,))
+        for r in self._fc["market"]:
+            tag = "total" if str(r["leaf"]).startswith("Σ") or str(r["product"]).startswith("Σ") else (
+                "ng" if r["check"] != 0 else "ok")
+            self._market_tree.insert("", "end",
+                                     values=[self._val(r, c) for c, _h, _w in self._MARKET_COLS],
+                                     tags=(tag,))
+        s = self._fc["summary"]
+        tot = self._fc["market"][-1]
+        unit = "数量" if self._qty_var.get() else "lot"
+        self._summary_var.set(
+            f"表 1：ノード {s['nodes']}（NG {s['ng']}・対象外 {s['not_applicable']}）　"
+            f"表 2（モデル全体、{unit}）：需要 {self._val(tot, 'demand')} ＝ 当週出荷 {self._val(tot, 'on_time')}"
+            f" ＋ 早出し {self._val(tot, 'early')} ＋ 遅配 {self._val(tot, 'late')}"
+            f" ＋ 期末注文残 {self._val(tot, 'backlog_end')}（検算の不一致 {s['market_check_nonzero']} 行）"
+            f"　cpu_size={s['cpu_size']}")
+
+    def _export_csv(self):
+        if not self._fc:
+            return
+        from wom.engine.flow_check import write_flow_check_csv
+        name = os.path.basename(self._model_dir.rstrip("/\\")) or "model"
+        out_dir = os.path.join("output", "flow_check", name)
+        try:
+            paths = write_flow_check_csv(self._fc, out_dir)
+            self._note_var.set("書き出しました：" + " / ".join(paths))
+        except Exception as exc:
+            self._note_var.set(f"書き出しに失敗しました：{exc}")
+
 
 # SC Network Cockpit Panel  (PySI-style hammock model)
 # ──────────────────────────────────────────────────────────────────────
@@ -2105,6 +2321,11 @@ class SCNetworkPanel(tk.Frame):
 
         self._psi_list_panel = PSIListPanel(psi_list_outer)
         self._psi_list_panel.pack(fill="both", expand=True)
+
+        # Tab 3 – Flow Check (RequestLetter_FlowCheck V3): network-wide
+        # conservation / arrival / market-demand outcome of the last plan.
+        self._flow_check_panel = FlowCheckPanel(right_nb)
+        right_nb.add(self._flow_check_panel, text="  ✔ Flow Check  ")
 
     # ── Data load ────────────────────────────────────────────────────
 
@@ -2352,11 +2573,16 @@ class SCNetworkPanel(tk.Frame):
             self._psi_canvas.draw()
             return
 
-        wk = (df.groupby(Cols.WEEK)
-              .agg(receipt=(Cols.SUPPLY_RECEIPT,   "sum"),
-                   sales  =(Cols.DEMAND_FULFILLED, "sum"),
-                   inv    =(Cols.CLOSING_INV,      "sum"))
-              .reset_index())
+        # NOTE (RequestLetter_FlowCheck V1): Cols.DEMAND_FULFILLED is built by
+        # sc_tree_to_planning_df from the leaf's supply S, i.e. the REQUEST
+        # (Demand Position) -- not the actual shipment. The actual shipment is
+        # Cols.SHIP_QTY (node._actual_ship), drawn as a thin line.
+        _agg = dict(receipt=(Cols.SUPPLY_RECEIPT,   "sum"),
+                    sales  =(Cols.DEMAND_FULFILLED, "sum"),
+                    inv    =(Cols.CLOSING_INV,      "sum"))
+        if Cols.SHIP_QTY in df.columns:
+            _agg["ship"] = (Cols.SHIP_QTY, "sum")
+        wk = df.groupby(Cols.WEEK).agg(**_agg).reset_index()
 
         weeks = wk[Cols.WEEK].tolist()
         x = list(range(len(weeks)))
@@ -2365,7 +2591,10 @@ class SCNetworkPanel(tk.Frame):
         ax.bar([xi - w / 2 for xi in x], wk["receipt"], width=w,
                label="P: Supply Receipt", color="#4CAF50", alpha=0.85)
         ax.bar([xi + w / 2 for xi in x], wk["sales"],   width=w,
-               label="S: Sales/Fulfilled", color="#2196F3", alpha=0.85)
+               label="S: Request (Demand Position)", color="#2196F3", alpha=0.85)
+        if "ship" in wk:
+            ax.plot(x, wk["ship"], color="#E040FB", linewidth=1.0,
+                    label="Ship: actual shipment")
 
         ax2 = ax.twinx()
         ax2.fill_between(x, wk["inv"], alpha=0.18, color="#FF9800")
@@ -2407,8 +2636,11 @@ class SCNetworkPanel(tk.Frame):
     def _draw_psi_from_plan_node(self, node_obj, scen: str):
         """
         Draw PSI chart directly from node_obj.psi4supply (lot-level data).
-        Shows P (Supply Receipt), S (Sales/Fulfilled), CO (Carry-Over),
-        and I (Inventory) for the selected PlanNode.
+        Shows P (Supply Receipt), S (Request = Demand Position: the lots
+        requested from this node in the week -- NOT the actual shipment),
+        CO (Carry-Over), I (Inventory) and, as a thin line, Ship (the actual
+        shipment, node_obj._actual_ship) for the selected PlanNode.
+        (RequestLetter_FlowCheck V1/V2)
         """
         from wom.model.plan_node import S as S_, CO as CO_, I as I_, P as P_
 
@@ -2436,9 +2668,14 @@ class SCNetworkPanel(tk.Frame):
         w = 0.28
 
         ax.bar([xi - w     for xi in x], p_vals,  width=w, label="P: Supply Receipt",  color="#4CAF50", alpha=0.85)
-        ax.bar([xi         for xi in x], s_vals,  width=w, label="S: Sales/Fulfilled", color="#2196F3", alpha=0.85)
+        ax.bar([xi         for xi in x], s_vals,  width=w, label="S: Request (Demand Position)", color="#2196F3", alpha=0.85)
         if any(v > 0 for v in co_vals):
             ax.bar([xi + w for xi in x], co_vals, width=w, label="CO: Carry-Over",     color="#F44336", alpha=0.85)
+        _actual = getattr(node_obj, "_actual_ship", None)
+        if _actual is not None:
+            ship_vals = [len(_actual.get(wi, [])) for wi in range(n_weeks)]
+            ax.plot(x, ship_vals, color="#E040FB", linewidth=1.0,
+                    label="Ship: actual shipment")
 
         ax2 = ax.twinx()
         ax2.fill_between(x, i_vals, alpha=0.18, color="#FF9800")
@@ -2483,6 +2720,12 @@ class SCNetworkPanel(tk.Frame):
         Revenue      = len(psi4supply[w][S]) x selling_price_per_lot
         COGS         = len(psi4supply[w][S]) x unit_cost_per_lot
         Gross Profit = Revenue - COGS
+
+        NOTE (RequestLetter_FlowCheck V1): S is the REQUEST (Demand Position),
+        not the actual shipment (node._actual_ship). This chart therefore shows
+        the value of what was requested; in lot_flow_mode="identity" it can
+        exceed what was actually shipped. Unchanged here (display of the
+        request); the PPC tabs use the actual shipment at the market leaf.
 
         Price lookup order:
           1. node_cost_master.csv  (product x node_name, per-node price chain)
@@ -2851,16 +3094,20 @@ class SCNetworkPanel(tk.Frame):
 
         self._net_canvas.draw()
 
-    def load_planning_tree(self, sc_tree, model_dir: str = "") -> None:
+    def load_planning_tree(self, sc_tree, model_dir: str = "",
+                           forward_results=None) -> None:
         """
         Load a post-planning SCTree.
         • Populates PSI List node selector
         • Replaces the network graph with E2E hammock layout (Phase B)
+        • Fills the Flow Check tab (forward_results: {product: ForwardPlanResult})
         """
         if not hasattr(self, "_psi_list_panel"):
             return   # HAS_NX=False: panel was never built
         self._sc_tree   = sc_tree
         self._model_dir = model_dir   # store for lane_assignment lookup
+        if hasattr(self, "_flow_check_panel"):
+            self._flow_check_panel.load(sc_tree, forward_results, model_dir)
 
         # ── Populate PSI List node selector ───────────────────────────
         node_ids = []
@@ -4355,8 +4602,11 @@ class DebugPanel(tk.Frame):
 
         ax.bar([xi - bw for xi in x], p_vals,  width=bw,
                label="P: Production/Receipt",  color="#4CAF50", alpha=0.85)
+        # S = request (Demand Position), not the actual shipment
+        # (RequestLetter_FlowCheck V1). The step snapshots of the debugger do
+        # not hold actual shipments, so no Ship line is drawn here.
         ax.bar([xi       for xi in x], s_vals,  width=bw,
-               label="S: Sales/Shipment",      color="#2196F3", alpha=0.85)
+               label="S: Request (Demand Position)", color="#2196F3", alpha=0.85)
         if any(v > 0 for v in co_vals):
             ax.bar([xi + bw for xi in x], co_vals, width=bw,
                    label="CO: Carry-Over",     color="#F44336", alpha=0.85)
@@ -5324,6 +5574,8 @@ class WOMApp(tk.Tk):
             # ── Run planning pipeline ─────────────────────────────
             _bus.fire(HOOK_PRE_PLAN, sc_tree=sc_tree,
                       weeks=weeks, config=_cfg)
+            _fwd_results = {}
+            self._fwd_results = _fwd_results
             for prod_nm in sc_tree.products:
                 BackwardPlanner(sc_tree, lane_table=_lane_table, config=_cfg).run(prod_nm)
                 _bus.fire(HOOK_POST_BACKWARD, sc_tree=sc_tree,
@@ -5370,8 +5622,11 @@ class WOMApp(tk.Tk):
                         __import__('tkinter').BooleanVar(value=False)).get()
                     else {}
                 )
-                ForwardPlanner(sc_tree, opening_inv=_opening_inv,
-                               lot_flow_mode=_cfg.get("lot_flow_mode")).run(prod_nm)
+                # RequestLetter_FlowCheck V3: keep each product's result for the
+                # Flow Check tab (read-only afterwards).
+                _fwd_results[prod_nm] = ForwardPlanner(
+                    sc_tree, opening_inv=_opening_inv,
+                    lot_flow_mode=_cfg.get("lot_flow_mode")).run(prod_nm)
                 _bus.fire(HOOK_POST_FORWARD, sc_tree=sc_tree,
                           prod_nm=prod_nm, weeks=weeks, config=_cfg)
 
@@ -5391,7 +5646,8 @@ class WOMApp(tk.Tk):
                       for _ in sc_tree.iter_all_nodes(p))
 
         self._network_panel.load_planning_tree(
-            sc_tree, model_dir=getattr(self, "_model_dir", ""))
+            sc_tree, model_dir=getattr(self, "_model_dir", ""),
+            forward_results=getattr(self, "_fwd_results", None))
 
         # -- Build EventTimeline for animation
         try:

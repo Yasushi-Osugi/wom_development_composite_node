@@ -140,11 +140,14 @@ def test_cap_soft_from_csv_drives_forward_violation_no_movement():
     copy_demand_to_supply(sc_tree, sku_id)
     result = ForwardPlanner(sc_tree).run(sku_id)
 
-    # 物理上限 cap_hard=4：6-4=2 lot が seal される
-    assert result.cap_hard_sealed == 2, (
-        f"cap_hard=4, demand=6 -> 2 sealed, got {result.cap_hard_sealed}"
+    # 物理上限 cap_hard=4：6-4=2 lot が超過。既定の lot_flow_mode="identity" では
+    # 封印せず翌週の P へ繰り延べる（決定記録 D4、RequestLetter_FlowCheck Part 2：
+    # cap_hard_sealed は legacy だけの記録で、identity では 0）。
+    assert result.cap_hard_deferred_lots == 2, (
+        f"cap_hard=4, demand=6 -> 2 deferred, got {result.cap_hard_deferred_lots}"
     )
-    # ソフト能力 cap_soft=2：seal 後 P=4 > 2 なので over_by=2 の違反が1件
+    assert result.cap_hard_sealed == 0
+    # ソフト能力 cap_soft=2：超過分を除いた P=4 > 2 なので over_by=2 の違反が1件
     assert any(over == 2 for (_nid, _wk, over) in result.cap_soft_violations), (
         f"cap_soft=2 の帯超過(4>2, over_by=2)が flag される事; "
         f"violations={result.cap_soft_violations}"

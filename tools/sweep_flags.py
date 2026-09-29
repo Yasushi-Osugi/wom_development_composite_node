@@ -399,7 +399,10 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
         result["holiday_calendar"] = {"active": bool(hol_rules), "reason": None,
                                        "rules_loaded": len(hol_rules)}
 
-    cap_hard_sealed = 0
+    cap_hard_sealed = 0          # legacy: lots sealed into CO
+    cap_def_lots = 0             # identity: lots deferred by cap_hard (distinct)
+    cap_def_weeks = 0            # identity: lot-weeks of deferral
+    fwd_mode = None
     cap_soft_viol = 0
     bwd_soft_env = 0
     push_pull_status = {"status": "not_run", "detail": None}
@@ -446,13 +449,24 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
         opening_inv = getattr(harvest_plugin, "opening_inv", {}) if harvest_plugin else {}
         fres = ForwardPlanner(sc_tree, opening_inv=opening_inv,
                               lot_flow_mode=lot_flow_mode).run(prod_nm)
+        fwd_mode = getattr(fres, "lot_flow_mode", None)
         cap_hard_sealed += int(getattr(fres, "cap_hard_sealed", 0) or 0)
+        cap_def_lots += int(getattr(fres, "cap_hard_deferred_lots", 0) or 0)
+        cap_def_weeks += int(getattr(fres, "cap_hard_deferred_lot_weeks", 0) or 0)
         cap_soft_viol += len(getattr(fres, "cap_soft_violations", []) or [])
         bus.fire(HOOK_POST_FORWARD, sc_tree=sc_tree, prod_nm=prod_nm, weeks=weeks, config=cfg)
     bus.fire(HOOK_POST_PLAN, sc_tree=sc_tree, weeks=weeks, config=cfg)
 
-    result["forward"] = {"cap_hard_sealed": cap_hard_sealed,
-                          "cap_soft_violation_count": cap_soft_viol}
+    # RequestLetter_FlowCheck Part 2: same split as run_headless_from_folder --
+    # legacy "sealed", identity "deferred" (lots over cap_hard are moved to the
+    # next week's P, not sealed).
+    if fwd_mode == "identity":
+        result["forward"] = {"cap_hard_deferred_lots": cap_def_lots,
+                              "cap_hard_deferred_lot_weeks": cap_def_weeks,
+                              "cap_soft_violation_count": cap_soft_viol}
+    else:
+        result["forward"] = {"cap_hard_sealed": cap_hard_sealed,
+                              "cap_soft_violation_count": cap_soft_viol}
     result["backward"] = {"cap_soft_envelope_count": bwd_soft_env}
     result["push_pull"] = push_pull_status
     result["config"] = {"plugins": sorted(type(p).__name__ for p in active_plugins)}

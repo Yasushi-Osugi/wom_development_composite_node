@@ -79,7 +79,11 @@ def measure(name, helpers, late=False, capacity=False, opening=False, no_parts=F
                "assembly_actual": sum(len(r["actual_s"]) for r in mr),
                "assembly_final_I": mr[-1]["I"], "assembly_final_CO": mr[-1]["CO"],
                "assembly_CO_lot_weeks": sum(len(r["CO"]) for r in mr),
+               # RequestLetter_FlowCheck Part 2: legacy seals, identity defers
+               "lot_flow_mode": getattr(result, "lot_flow_mode", None),
                "sealed": result.cap_hard_sealed,
+               "cap_hard_deferred_lots": getattr(result, "cap_hard_deferred_lots", 0),
+               "cap_hard_deferred_lot_weeks": getattr(result, "cap_hard_deferred_lot_weeks", 0),
                "yard_final_I": {y.node_id: list(y.psi4supply[-1][I]) for y in yards},
                "yard_issues": {y.node_id: sum(len(b[S]) for b in y.psi4supply) for y in yards},
                "assembly_balance_residuals": [{"week": r["week"], "value": r["inventory_balance_residual"]} for r in mr if r["inventory_balance_residual"]]}

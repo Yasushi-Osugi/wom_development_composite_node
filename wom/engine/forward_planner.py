@@ -155,8 +155,10 @@ class ForwardPlanResult:
     # is already in S/CO -- sealing them into CO duplicated the request and the
     # duplicate never cleared). The excess is deferred, identity intact, to the
     # HEAD of P[w+1] (a closed w+1 then hands it on via E2). Events still go to
-    # cap_hard_events / cap_hard_sealed (lots over capacity in that week, so a
-    # lot deferred twice is counted twice) but NOT to co_generated.
+    # cap_hard_events (lots over capacity in that week) but NOT to
+    # co_generated. (Until RequestLetter_FlowCheck Part 2 they were also added
+    # to cap_hard_sealed as lot-weeks; now cap_hard_deferred_lots /
+    # cap_hard_deferred_lot_weeks, below.)
     #   cap_hard_unplaced (node_id, week_label, [lot_id, ...]): excess of the
     #       last week -- no week left in the horizon (same shape as
     #       closure_p_unplaced; never dropped silently).
@@ -165,6 +167,38 @@ class ForwardPlanResult:
     # Addendum1 A2 / Decision Record D5: which lot_flow_mode produced this
     # result ("identity" / "legacy"; set by ForwardPlanner.run).
     lot_flow_mode: Optional[str] = None
+
+    # RequestLetter_FlowCheck_CapNaming_WarmupTrial Part 2 -- identity only.
+    # cap_hard_sealed keeps its legacy meaning (lots sealed into CO) and stays 0
+    # in identity; the deferral of Decision Record D4 is counted separately:
+    #   cap_hard_deferred_lots      distinct Lot_IDs deferred at least once
+    #   cap_hard_deferred_lot_weeks lot-weeks of deferral (total waiting)
+    # cap_hard_events keeps one entry per (node, week) in BOTH modes: "the
+    # week cap_hard bound" (legacy: sealed count, identity: deferred count).
+    cap_hard_deferred_lots:      int = 0
+    cap_hard_deferred_lot_weeks: int = 0
+    _cap_hard_deferred_ids: set = field(default_factory=set, repr=False)
+
+    # RequestLetter_FlowCheck V3 -- recorded in BOTH modes, the plan is not
+    # changed by recording them (read by wom/engine/flow_check.py):
+    #   edge_flows (from_node_id, to_node_id, ship_week_index, arrive_week_index,
+    #       count): every delivery made by _propagate_to_parent /
+    #       _propagate_to_child / the inline push-decoupling hand-off / the
+    #       MOM->supply_point bridge, one entry per (edge, ship week). Week
+    #       INDICES (an arrival beyond the horizon has no label); arrive >= n
+    #       means "in transit at the end" (the lots were not placed).
+    #   p_copied_node_ids: nodes whose supply P was overwritten with demand P
+    #       (InBound non-push decoupling / in_pull_mode, Decision Record §6;
+    #       legacy only: OutBound nodes below the decouple point). Their P has
+    #       no physical source.
+    #   opening_inv_counts {node_id: n}: opening lots given to the node.
+    edge_flows:         List[tuple] = field(default_factory=list)
+    p_copied_node_ids:  List[str]   = field(default_factory=list)
+    opening_inv_counts: Dict[str, int] = field(default_factory=dict)
+
+    def record_edge_flow(self, from_id, to_id, ship_w, arrive_w, count):
+        if count:
+            self.edge_flows.append((from_id, to_id, ship_w, arrive_w, count))
 
     def record_kitting_fallback(self, node_id, week_label, lot_id):
         self.kitting_fallback_events.append((node_id, week_label, lot_id))
@@ -178,11 +212,19 @@ class ForwardPlanResult:
         self.cap_hard_sealed += count
         self.co_generated    += count
 
-    def record_cap_hard_deferred(self, node_id, week_label, count):
+    def record_cap_hard_deferred(self, node_id, week_label, lots):
         # identity (Addendum1 A1): over-capacity lots deferred to the next
         # week's P -- not a new request, so co_generated is not increased.
+        # RequestLetter_FlowCheck Part 2: nor cap_hard_sealed (legacy meaning
+        # only); counted as deferred lots / lot-weeks instead.
+        count = len(lots)
         self.cap_hard_events.append((node_id, week_label, count))
-        self.cap_hard_sealed += count
+        self.cap_hard_deferred_lot_weeks += count
+        for lot in lots:
+            key = (node_id, lot)
+            if key not in self._cap_hard_deferred_ids:
+                self._cap_hard_deferred_ids.add(key)
+                self.cap_hard_deferred_lots += 1
 
     def record_cap_soft_violation(self, node_id, week_label, over_by):
         self.cap_soft_violations.append((node_id, week_label, over_by))
@@ -192,8 +234,11 @@ class ForwardPlanResult:
             f"ForwardPlanResult[{self.prod_nm}]  "
             f"IN={self.in_processed}  OT={self.ot_processed}  "
             f"bridge={self.bridge_lots}  CO={self.co_generated}  "
-            f"cap_hard_sealed={self.cap_hard_sealed}  "
-            f"cap_soft_violations={len(self.cap_soft_violations)}  "
+            + (f"cap_hard_sealed={self.cap_hard_sealed}  "
+               if self.lot_flow_mode != LOT_FLOW_IDENTITY else
+               f"cap_hard_deferred={self.cap_hard_deferred_lots} lots/"
+               f"{self.cap_hard_deferred_lot_weeks} lot-weeks  ")
+            + f"cap_soft_violations={len(self.cap_soft_violations)}  "
             f"kitting_fallback={len(self.kitting_fallback_events)}"
         )
 
@@ -254,6 +299,12 @@ class ForwardPlanner:
         # a stale index from a previous product/run is never reused.
         self._kitting_week_index: Dict[str, Dict[str, int]] = {}
 
+        # RequestLetter_FlowCheck V3 (record only): opening lots per node.
+        for node in self.sc_tree.iter_all_nodes(prod_nm):
+            n_open = len(self.opening_inv.get(node.node_id, []) or [])
+            if n_open:
+                result.opening_inv_counts[node.node_id] = n_open
+
         # Phase 1: InBound POST-ORDER (all MOM roots)
         #
         # InBound PUSH/PULL decouple design (v1r0m2):
@@ -290,6 +341,7 @@ class ForwardPlanner:
                         and node.plan_mode != "push"):
                     for w in range(n_weeks):
                         node.psi4supply[w][P] = list(node.psi4demand[w][P])
+                    result.p_copied_node_ids.append(node.node_id)   # FlowCheck V3 (record only)
 
                 opening = list(self.opening_inv.get(node.node_id, []))
                 if stockyard_children:
@@ -321,6 +373,9 @@ class ForwardPlanner:
                                 target_w = w + node.lt_wks
                                 if 0 <= target_w < n_weeks:
                                     node.parent.psi4supply[target_w][P].extend(actual_s)
+                                # FlowCheck V3 (record only; beyond the horizon too)
+                                result.record_edge_flow(node.node_id, node.parent.node_id,
+                                                        w, target_w, len(actual_s))
                 elif node.is_decoupling:
                     # Non-PUSH decoupling: upstream nodes become demand-anchored PULL
                     in_pull_mode = True
@@ -335,7 +390,10 @@ class ForwardPlanner:
         for w in range(n_weeks):
             all_lots: list = []
             for mom_root in in_roots.values():
-                all_lots.extend(self._actual_s.get(mom_root.node_id, {}).get(w, []))
+                mom_ship = self._actual_s.get(mom_root.node_id, {}).get(w, [])
+                all_lots.extend(mom_ship)
+                # FlowCheck V3 (record only): the bridge is a same-week hand-off
+                result.record_edge_flow(mom_root.node_id, ot_root.node_id, w, w, len(mom_ship))
             ot_root.psi4supply[w][P] = all_lots
             result.bridge_lots += len(all_lots)
 
@@ -438,6 +496,7 @@ class ForwardPlanner:
             # supply.S is already demand-anchored from copy_demand_to_supply().
             for w in range(n_weeks):
                 node.psi4supply[w][P] = list(node.psi4demand[w][P])
+            result.p_copied_node_ids.append(node.node_id)   # FlowCheck V3 (record only)
 
         opening = list(self.opening_inv.get(node.node_id, []))
         self._process_node(node, n_weeks, result, opening_lots=opening)
@@ -631,7 +690,7 @@ class ForwardPlanner:
                         node.psi4supply[w + 1][P] = excess + node.psi4supply[w + 1][P]
                     else:
                         result.cap_hard_unplaced.append((node.node_id, wk_label, list(excess)))
-                    result.record_cap_hard_deferred(node.node_id, wk_label, len(excess))
+                    result.record_cap_hard_deferred(node.node_id, wk_label, excess)
                 else:
                     # legacy (unchanged): excess sealed into CO[w+1]. Known defect
                     # (Addendum1 A1): the same Lot_ID's request is already in S,
@@ -891,6 +950,7 @@ class ForwardPlanner:
                 remaining = len(candidates)
 
             deferred = 0
+            paid_out = 0     # FlowCheck V3 (record only): kits paid out this week
             if intersection:
                 for lot_id in candidates:
                     if lot_id not in intersection:
@@ -904,11 +964,14 @@ class ForwardPlanner:
                         self._actual_s.setdefault(
                             yard.node_id, {}).setdefault(w, []).append(lot_id)
                     node.psi4supply[w][P].append(lot_id)
+                    paid_out += 1
                     intersection.discard(lot_id)
                     if recover_kits:
                         remaining -= 1
                         completed.add(lot_id)
                         pending.pop(lot_id)
+            for yard in yard_children:   # every yard hands one component per kit
+                result.record_edge_flow(yard.node_id, node.node_id, w, w, paid_out)
 
             if deferred:
                 result.kitting_capacity_deferred.append((node.node_id, wk_label, deferred))
@@ -982,6 +1045,9 @@ class ForwardPlanner:
                 continue
             tlt = node.transit_lt_wks if node.transit_lt_wks > 0 else node.lt_wks
             target_w = w + tlt
+            if result is not None:   # FlowCheck V3 (record only; beyond the horizon too)
+                result.record_edge_flow(node.node_id, parent.node_id, w, target_w,
+                                        len(confirmed_s))
             if 0 <= target_w < n_weeks:
                 parent.psi4supply[target_w][P].extend(confirmed_s)
                 if record_kitting:
@@ -1034,6 +1100,9 @@ class ForwardPlanner:
                 if not confirmed_s:
                     continue
                 target_w = w + child.lt_wks
+                if result is not None:   # FlowCheck V3 (record only)
+                    result.record_edge_flow(parent.node_id, child.node_id, w, target_w,
+                                            len(confirmed_s))
                 if 0 <= target_w < n_weeks:
                     child.psi4supply[target_w][P].extend(confirmed_s)
                 elif result is not None and target_w >= n_weeks:
@@ -1068,6 +1137,9 @@ class ForwardPlanner:
             if not matched:
                 continue
             target_w = w + child.lt_wks
+            if result is not None:   # FlowCheck V3 (record only)
+                result.record_edge_flow(parent.node_id, child.node_id, w, target_w,
+                                        len(matched))
             if 0 <= target_w < n_weeks:
                 child.psi4supply[target_w][P].extend(matched)
             elif result is not None and target_w >= n_weeks:

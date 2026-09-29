@@ -336,7 +336,14 @@ class Observer:
                                        "kitting_capacity_deferred", "kitting_fallback_events",
                                        "closure_p_deferred", "closure_p_unplaced",
                                        "closure_s_planned")}
-        payload["cap_hard_sealed"] = getattr(res, "cap_hard_sealed", None)
+        # RequestLetter_FlowCheck Part 2: legacy seals the lots over cap_hard
+        # (into CO); identity defers them to the next week's P (Decision Record
+        # D4) -- recorded under their own names, never as "sealed".
+        if getattr(res, "lot_flow_mode", None) == "identity":
+            payload["cap_hard_deferred_lots"] = getattr(res, "cap_hard_deferred_lots", None)
+            payload["cap_hard_deferred_lot_weeks"] = getattr(res, "cap_hard_deferred_lot_weeks", None)
+        else:
+            payload["cap_hard_sealed"] = getattr(res, "cap_hard_sealed", None)
         payload["co_generated"] = getattr(res, "co_generated", None)
         # RequestLetter_LotIdentityFlow C3 / Addendum1 A1・A2 (D4/D5): the mode that
         # produced the plan, and the lots recorded instead of being dropped.

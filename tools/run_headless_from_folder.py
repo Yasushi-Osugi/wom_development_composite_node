@@ -97,13 +97,19 @@ def _select_plugins(spec: str):
 # ──────────────────────────────────────────────────────────────────────
 def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "output/ppc",
         verbose: bool = True, demand_file: str = "demand_forecast.csv",
-        planning_state: bool = False, lot_flow_mode: str = None) -> dict:
+        planning_state: bool = False, lot_flow_mode: str = None,
+        flow_check_dir: str = None) -> dict:
     """GUI の planning + PPC を再現し、KPI スナップショット dict を返す。
 
     lot_flow_mode（RequestLetter_LotIdentityFlow C1）："identity"／"legacy"。
         優先順：この引数 → モデルの planning_config.csv の lot_flow_mode →
         既定 "identity"。snapshot の config には、legacy 以外のときだけ
         "lot_flow_mode" を記録する（既存 golden＝legacy の config と一致させるため）。
+    flow_check_dir（RequestLetter_FlowCheck V3）：指定したときだけ、Flow Check の
+        表1・表2（wom/engine/flow_check.py）を CSV で書き出す。snapshot には入れない。
+    forward（RequestLetter_FlowCheck Part 2）：legacy は従来どおり cap_hard_sealed。
+        identity は cap_hard_deferred_lots／cap_hard_deferred_lot_weeks を書き、
+        cap_hard_sealed は書かない（identity では封印せず繰り延べるため）。
 
     Args:
         demand_file: 需要 CSV のファイル名（既定 "demand_forecast.csv"）。
@@ -215,7 +221,10 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
 
     # ── Planning pipeline（app.py _planning_thread と同順序）───────
     bus.fire(HOOK_PRE_PLAN, sc_tree=sc_tree, weeks=weeks, config=cfg)
-    _cap_hard_sealed = 0      # Forward が cap_hard で seal した lot 総数
+    _cap_hard_sealed = 0      # Forward が cap_hard で seal した lot 総数（legacy）
+    _cap_def_lots    = 0      # identity：cap_hard で繰り延べた lot（重複なし）
+    _cap_def_weeks   = 0      # identity：繰り延べの のべ lot 週
+    _fres_by_prod: dict = {}  # Flow Check 用
     _cap_soft_viol   = 0      # Forward の cap_soft 違反（残業要）件数
     _bwd_soft_env    = 0      # Backward の cap_soft envelope 違反（計画段階の残業帯）件数
     _bres_all: list = []      # Phase 7: planning_state=True のときだけ使う（週リスト用）
@@ -252,23 +261,38 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
         _fres = ForwardPlanner(sc_tree, opening_inv=opening_inv,
                                lot_flow_mode=lot_flow_mode).run(prod_nm)
         _fres_all.append(_fres)
+        _fres_by_prod[prod_nm] = _fres
         _cap_hard_sealed += int(getattr(_fres, "cap_hard_sealed", 0) or 0)
+        _cap_def_lots    += int(getattr(_fres, "cap_hard_deferred_lots", 0) or 0)
+        _cap_def_weeks   += int(getattr(_fres, "cap_hard_deferred_lot_weeks", 0) or 0)
         _cap_soft_viol   += len(getattr(_fres, "cap_soft_violations", []) or [])
         bus.fire(HOOK_POST_FORWARD, sc_tree=sc_tree, prod_nm=prod_nm, weeks=weeks, config=cfg)
     bus.fire(HOOK_POST_PLAN, sc_tree=sc_tree, weeks=weeks, config=cfg)
+
+    # ── Flow Check（RequestLetter_FlowCheck V3、指定時のみ）──────────
+    if flow_check_dir:
+        from wom.engine.flow_check import compute_flow_check, write_flow_check_csv
+        write_flow_check_csv(compute_flow_check(sc_tree, _fres_by_prod), flow_check_dir)
 
     # ── PPC（app.py _run_ppc_from_planning と同じ）─────────────────
     ppc_kpi = _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose)
 
     # ── スナップショット組み立て ───────────────────────────────────
+    if lot_flow_mode == LOT_FLOW_LEGACY:
+        _forward = {"cap_hard_sealed": _cap_hard_sealed,
+                    "cap_soft_violation_count": _cap_soft_viol}
+    else:
+        # RequestLetter_FlowCheck Part 2：identity は封印ではなく繰り延べ
+        _forward = {"cap_hard_deferred_lots": _cap_def_lots,
+                    "cap_hard_deferred_lot_weeks": _cap_def_weeks,
+                    "cap_soft_violation_count": _cap_soft_viol}
     snap = {
         "case": os.path.basename(model_dir.rstrip("/\\")),
         "config": {"plugins": sorted(type(p).__name__ for p in active_plugins),
                    **({} if lot_flow_mode == LOT_FLOW_LEGACY else {"lot_flow_mode": lot_flow_mode})},
         "period": {"start": start, "weeks": n_weeks},
         "products": list(sc_tree.products),
-        "forward": {"cap_hard_sealed": _cap_hard_sealed,
-                    "cap_soft_violation_count": _cap_soft_viol},
+        "forward": _forward,
         "backward": {"cap_soft_envelope_count": _bwd_soft_env},
         "ppc": ppc_kpi,
         "psi": _psi_signature(sc_tree, n_weeks),
@@ -406,10 +430,11 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
                 # Phase 8-3c-4・X1: cap_hard と比べるべき系列を「1本だけ」出し、
                 # それが何かを series_kind で宣言する（画面に選ばせない）。
                 # push ノード（decoupling 点）の P は入庫であって生産ではない
-                # （ForwardPlanner は push ノードの P を封印しない）——処理能力と
+                # （ForwardPlanner は push ノードの P を能力で制限しない）——処理能力と
                 # 比べるべきは処理量＝実際に出荷できた量: S から「物が無くて出せなかった
-                # 分」（_push_shortfall）を引いたもの。それ以外のノードは、封印が
-                # 実際に P を cap_hard と比べているので P（生産量）。
+                # 分」（_push_shortfall）を引いたもの。それ以外のノードは、Step 0a が
+                # 実際に P を cap_hard と比べているので P（生産量）。超過分は legacy
+                # では封印（CO へ）、identity では翌週の P へ繰り延べ（決定記録 D4）。
                 # plan_mode の判定は、系列の選択としてはここ1箇所だけ。
                 # `shortfall` は「物が無くて通せなかった量」（能力で縛られたのでは
                 # ない）。実出荷が低い週の原因を、図の上で「能力」と取り違えない
@@ -506,19 +531,28 @@ def main(argv=None) -> int:
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--lot-flow-mode", default=None, choices=["identity", "legacy"],
                     help="Forward の方式（省略時：planning_config.csv の lot_flow_mode、無ければ identity）")
+    ap.add_argument("--flow-check-out", default="output/flow_check",
+                    help="Flow Check の表1・表2 の CSV の出力先の親フォルダ（<これ>/<モデル名>/ に書く）。"
+                         "空文字で書き出さない")
     a = ap.parse_args(argv)
 
+    fc_dir = (os.path.join(a.flow_check_out, os.path.basename(a.model_dir.rstrip("/\\")))
+              if a.flow_check_out else None)
     snap = run(a.model_dir, plugins_spec=a.plugins,
                output_ppc_dir=a.ppc_out, verbose=not a.quiet,
-               lot_flow_mode=a.lot_flow_mode)
+               lot_flow_mode=a.lot_flow_mode, flow_check_dir=fc_dir)
     text = json.dumps(snap, ensure_ascii=False, indent=2, sort_keys=True)
+    fw = snap["forward"]
+    cap_txt = (f"cap_hard_sealed={fw['cap_hard_sealed']} " if "cap_hard_sealed" in fw else
+               f"cap_hard_deferred={fw['cap_hard_deferred_lots']} lots/"
+               f"{fw['cap_hard_deferred_lot_weeks']} lot-weeks ")
     if a.out:
         os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
         with open(a.out, "w", encoding="utf-8") as f:
             f.write(text + "\n")
         print(f"[Headless] snapshot -> {a.out}  (GM={snap['ppc']['gross_margin_pct']*100:.1f}% "
               f"trust={snap['ppc']['trust_event_count']} "
-              f"cap_hard_sealed={snap['forward']['cap_hard_sealed']} "
+              + cap_txt +
               f"cap_soft_viol={snap['forward']['cap_soft_violation_count']} "
               f"bwd_env={snap['backward']['cap_soft_envelope_count']})")
     else:

@@ -83,11 +83,13 @@ If a model requires daily or hourly behavior, that behavior should be aggregated
 WOM represents operational state using PSI buckets.
 
 ```text
-S  = Sales / Shipment
+S  = Request (Demand Position): the lots requested from the node in the week
 CO = Carry Over
 I  = Inventory
 P  = Purchase / Production / Planned arrival
 ```
+
+S is not the actual shipment. The lots actually shipped are recorded separately (`node._actual_ship`, set by the Forward Planner). They coincide at the market leaf only in `lot_flow_mode=legacy` (Decision Record `WOM_Forward_LotID_Decision_Record_2026-09-29.md` §1.1).
 
 In implementation terms, each PlanNode holds PSI buckets for both demand-side planning and supply-side planning.
 

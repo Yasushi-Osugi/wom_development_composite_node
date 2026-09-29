@@ -76,7 +76,8 @@ Demand Anchored Lots are the objects that populate PSI buckets.
 A simplified interpretation is:
 
 ```text
-S  = lots requested or shipped
+S  = lots requested from the node in the week (Demand Position)
+     -- the lots actually shipped are a separate record (node._actual_ship)
 CO = lots not yet fulfilled
 I  = lots physically available but not consumed
 P  = lots planned to arrive, be produced, or be purchased
