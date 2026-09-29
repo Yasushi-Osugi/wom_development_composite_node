@@ -1,0 +1,105 @@
+# 決定記録：Lot_ID 中心の Forward Planning — 基本ルールと例外（2026-09-29）
+
+- 決定者：大杉（WOM Project Owner）
+- 記録：Claude君
+- 位置づけ：大杉さんとの検討で**合意した内容の記録**。詳細設計書ではない。実装は、本書を前提にした Request Letter で行う。
+- ブランチ：`wom-v1r5m1_cap_trial`（記録時の先頭 `17915af`）
+- 根拠となった測定：
+  - `docs/development/WOM_Bottling_Capacity_Trial_Report.md`（Trial-01、GPT-6 Astra君）
+  - `docs/development/WOM_Capacity_Trial02_Report.md`（Trial-02、同）
+  - `docs/development/WOM_ExplicitClosure_v1r5m0_Report.md`（Code君）
+  - `docs/development/WOM_PPC_Entry_Measurement_Report.md`（Astra君）
+  - `docs/development/WOM_LOVEM_StageAB_EVThailand_Report.md`（Code君、段階 A）
+
+---
+
+## 1. 基本ルール（正典）
+
+### 1.1 Lot_ID の同一性
+
+**Lot_ID の同一性を維持することを、Forward Planning の基本ルールとする。要求 X は、同じ ID の lot X が出荷された週に満たされる。**
+
+前提：Forward の前処理で、Demand Layer で配分・配置された各週 [W] の S の Lot_ID は、そのまま Supply Layer にコピーされている。Supply Layer の S は「市場要求の位置（Demand Position）」を表す。
+
+### 1.2 基本の動き（大杉さんの記述を正典とする）
+
+> とある Lot_ID の立場に、自分の身をおいて考えると、あるplan_nodeの、ある週 [W] に配置（Demand Allocate）された Lot_ID：X は、
+>
+> 1. Demand Side の [S] の中にいて、まずは Supply Side の [P] と [I] を見て、ID match する X があれば、Supply Side の [I] を、次 node の [W+LT_offset] 週の [P] に copy 移動する。
+> 2. Demand Side の [S] の中にいて、まずは Supply Side の [P] と [I] を見て、ID match する X がなければ、Demand Side の [S] を、自 node の次週 [W+1] の [CO] に copy 移動する。そして、Supply Side の次週以降での [P] 着荷を待っている。
+> 3. 次週 [W+1] 以降の状態で、Lot_ID：X は、Demand Side の [CO] の中にいて、前述の 1 と 2 の動きと同様の考え方で、Supply Side の [P] と [I] を動かす。
+
+この動きは、pull ノードの照合処理（`forward_planner._match_by_identity`）がすでに実装しているものと一致する。
+
+### 1.3 状態の呼び方
+
+| 状態 | 意味 |
+|---|---|
+| 当週出荷 | 要求週に同じ ID の lot が出荷された |
+| 遅配 | 要求が CO に回り、後の週に同じ ID の lot が届いて出荷された |
+| 期末注文残 | 計画期間の終わりに、要求が CO に残っている。「未達」とは呼ばない（計画期間の後に出荷される遅配。人気車種の「1年待ち」のように、経営上は想定内の場合がある） |
+| 早出し | 基本ルールの下では起きない。要求週より前に届いた lot は、その要求が来るまで I で待つ |
+
+### 1.4 帰結：売上の数量
+
+金額編（PPC）の販売数量は、**実際に出荷された lot の数**とする。予定の S（Demand Position）の数ではない。これは「出荷した Lot_ID の数 × Lot 単価」という原則と、1.1 の帰結である。
+
+## 2. 例外1・例外2の扱い
+
+2026-09-28〜29 の測定で、基本ルールに反する実装が2か所見つかった。
+
+| | 場所 | 今の動き | 起きていたこと |
+|---|---|---|---|
+| 例外1 | push のバッファノード（Bottling_Noda、Factory_Import_CN など、`plan_mode=push` の MOM） | 届いた順に出荷し（`available[:total_cnt]`）、CO を持たない | 別の ID が出荷される（Trial-01：Bottling で早出し 24,696 ID）。遅配を ID で追えない |
+| 例外2 | Outbound のデカップリング点より下流のノード（`_push_pull_node` の `pull_mode`） | 供給 P ＝ 需要 P のコピー | 上流で出荷されていない lot が下流に現れる（soysauce 9,293 ID、Cookie 10,868 ID）。上流の不足が市場と金額に届かない |
+
+### D1　例外1：バッファも基本ルールで出荷する
+
+push のバッファノードも、要求（S・CO）と供給（P・I）を Lot_ID で照合して出荷し、照合できない要求は CO に回す。push に固有の扱いとして残すのは、入荷（P）を能力で封印しないこと、休業週は入荷を受け入れて処理を止めること（Explicit Closure の D4）だけである。
+
+### D2　例外2：下流は S だけをコピーし、P は親の実出荷とする
+
+Outbound のデカップリング点より下流のノードでは、Demand Layer から Supply Layer へのコピーは **S だけ**とし、P のコピーを廃止する。P は、親ノードの実出荷が LT 後に届いたものとする。
+
+**理由**：D1 と D2 により、バッファから Outbound の末端 leaf までは、Lot_ID の連鎖が途切れない閉じた系になる。Mode 4 の先行生産は需要の Lot_ID を保ったまま時期だけを動かすので、バッファでは ID で照合でき、下流の各ノードの S にも Backward が同じ ID を置いている。上流の不足は、下流の CO と市場の期末注文残として現れ、金額にも届く。
+
+### D3　2つのソルバー
+
+- **既定（新）**：D1・D2 による、Lot_ID の同一性に基づく計画。
+- **旧方式（残す）**：「バッファは必ず足りる」前提の計画（例外1・2のまま）。バッファの必要量を見積もる用途など、業務上の意味がある場合があるため、設定で切り替えられるようにして残す。
+
+## 3. Composite Node モデルと基本ルール
+
+| モデル | 判断 |
+|---|---|
+| 1 Outbound Buffering Stock | **検討中。** なお、「先行生産の lot が、要求なしでバッファまで無条件に先送りされる」という例外は、すでに `plan_mode=push_sub`（例：smartx の WaferFab_TW）として実装されている。バッファでは D1 により基本ルールで出荷する |
+| 2 DBR | **WOM の例外ではない。** 週の中で、かんばん（pull）で作るか MRP（push）で作るかは、週次バケットの中に含まれる処理方式の違いである。WOM が扱うのは「前週末に部材がそろっているか」であり、部材在庫の持ち方は 3 の Kitting モデルで表す |
+| 3 Assembly Kitting | **基本ルールと整合している。** 同じ Lot_ID の部材が全品目そろうまで組み立てない（実装済みの Kitting Gate）。変更不要 |
+| 4 Inbound のボトルネック | **PSI Planning エンジンより上位で扱う。** エンジンが動く時点では、ボトルネックの能力を考慮した需要量と Demand Lots が設定済みであるようにする。生産配分・優先市場の最適化と同じ層の処理とし、Inbound のスループット最大化の線形計画として定式化する案がある（ボトルネックの能力を 1 とし、他のノードを 0〜1 に正規化する考え方）。定式化の際は、制約を「ノード×週ごとの能力」として持ち、正規化は結果の稼働率を読むために使う方が、複数製品・BOM 比率・週ごとの能力変化（休業）に対して安全である |
+
+## 4. 期首在庫
+
+- 事実（2026-09-29 確認）：PSI Planning エンジンは `inventory_master.csv` を読んでいない。`on_hand_qty` を使うのは、数量ベースの旧 Simulation の経路（`wom/engine/inventory.py`）だけである。Forward の期首在庫（`opening_inv`）に lot を入れているのは、rice の収穫プラグイン（`harvest_batch_plugin`、合成した ID）だけである。
+- **決定**：期首在庫を PSI で表す場合は、先行生産分を需要 Lot から計画して流し、期首に Lot_ID 付きの在庫として置く。受け皿は既存の warmup（計画準備期間。`docs/design/planning_warmup_and_reporting_horizon.md`）とする。需要に紐づかない匿名の期首在庫 lot は作らない。
+
+## 5. push の Mode 1〜3
+
+- 事実（2026-09-29 確認）：全モデルの `push_config.csv` のうち設定のある9行（apparel-global 2、ev-europe、ev-thailand、ev-thailand_update、smartx、soysauce 4モデル）は、すべて Mode 4（`push_lead_time_weeks` のみ設定）である。
+- **決定**：Mode 1〜3（固定量・補充・時期別の push。需要に紐づかない匿名の Lot_ID を作る）は**非推奨**とし、使わない。設定された場合は警告を出す。コードの削除は急がない。
+
+## 6. 未決・申し送り
+
+| 項目 | 内容 |
+|---|---|
+| Inbound のデカップリング（push 以外）での P のコピー | `forward_planner` Phase 1 の「is_decoupling または in_pull_mode のノードで `psi4supply[w][P] = psi4demand[w][P]`」は、例外2と同じ形をしている。今回の決定の対象外。該当するモデルと影響の有無を先に測る |
+| Buffering Stock（モデル1）の詳細 | rice の収穫プラグインが作る合成 ID の期首在庫も、ここで扱う（収穫期に作って在庫で持つという点で、同じ構造） |
+| Backward の前倒しの上限 | 休業分を約1年前まで前倒しする（SE-A）、前倒しできずに past_due になる（SE1）。モデル4（ボトルネックを上位で解く）によって起きにくくなる見込み。上限の要否は後で判断 |
+| partial_capacity を cap_soft へ | Explicit Closure の D6。部分操業は cap_soft を動かすのが正 |
+| 中間ノードの金額 | PPC の中間ノードの数量は、自ノードの実出荷ではなく leaf の販売数量から導出されている（PPC 入口の実測 P4）。LOVEM 段階 D で扱う |
+| rice の合成 ID の重複 | PPC の入口で、4地域が同じ channel に写像され、合成 ID が各4回重複する（PPC 入口の実測 P1） |
+
+---
+
+| 版 | 日付 | 内容 |
+|---|---|---|
+| 1.0 | 2026-09-29 | 初版 |
