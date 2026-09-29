@@ -55,7 +55,8 @@ def _measure(store: dict):
         fpm.ForwardPlanner.run, bp.BackwardPlanner.run, rh._psi_signature = o_f, o_b, o_s
 
 
-def fingerprint_run(model_dir: str, plugins: str, observe_out: str = None) -> dict:
+def fingerprint_run(model_dir: str, plugins: str, observe_out: str = None,
+                    lot_flow_mode: str = None) -> dict:
     """Run once (observer ON when observe_out is given) and fingerprint it."""
     from tools.run_headless_from_folder import run as run_headless
     from wom.lovem.observer import observe_run
@@ -69,11 +70,13 @@ def fingerprint_run(model_dir: str, plugins: str, observe_out: str = None) -> di
         with _measure(store):
             if observe_out:
                 # exactly the production observation path (observe_run)
-                snap = observe_run(model_dir, observe_out, plugins=plugins, label="q12")
+                snap = observe_run(model_dir, observe_out, plugins=plugins, label="q12",
+                                   lot_flow_mode=lot_flow_mode)
                 ppc_dir = os.path.join(observe_out, "ppc")
             else:
                 snap = run_headless(work, plugins_spec=plugins,
-                                    output_ppc_dir=ppc_dir, verbose=False)
+                                    output_ppc_dir=ppc_dir, verbose=False,
+                                    lot_flow_mode=lot_flow_mode)
         tree = store["tree"]
         cells = {}
         for prod in tree.products:
@@ -101,9 +104,10 @@ def fingerprint_run(model_dir: str, plugins: str, observe_out: str = None) -> di
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-def compare_on_off(model_dir: str, plugins: str, observe_out: str) -> dict:
-    off = fingerprint_run(model_dir, plugins)
-    on = fingerprint_run(model_dir, plugins, observe_out=observe_out)
+def compare_on_off(model_dir: str, plugins: str, observe_out: str,
+                   lot_flow_mode: str = None) -> dict:
+    off = fingerprint_run(model_dir, plugins, lot_flow_mode=lot_flow_mode)
+    on = fingerprint_run(model_dir, plugins, observe_out=observe_out, lot_flow_mode=lot_flow_mode)
     diffs = []
     for key in ("snapshot", "actual_s", "forward_results", "backward_results", "ppc_files"):
         if off[key] != on[key]:

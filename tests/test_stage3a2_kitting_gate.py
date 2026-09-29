@@ -73,7 +73,7 @@ def _build_tree(leaf_lt=(2, 2, 3)):
     return tree, mom, yards, leaves
 
 
-def _run_pipeline(tree, cap_hard_by_leaf=None):
+def _run_pipeline(tree, cap_hard_by_leaf=None, lot_flow_mode=None):
     """cap_hard_by_leaf: [(PlanNode, cap), ...] -- a list, not a dict, since
     PlanNode (a plain @dataclass) is unhashable. Capacity is applied BEFORE
     BackwardPlanner runs (MOM cap-backward reads it too), matching how a
@@ -85,7 +85,7 @@ def _run_pipeline(tree, cap_hard_by_leaf=None):
     for prod in [PROD]:
         BackwardPlanner(tree).run(prod)
         copy_demand_to_supply(tree, prod)
-        result = ForwardPlanner(tree).run(prod)
+        result = ForwardPlanner(tree, lot_flow_mode=lot_flow_mode).run(prod)
     return result
 
 
@@ -117,7 +117,11 @@ def test_partial_kit_stays_in_every_yards_inventory():
     ECU_Yard's, and must NOT enter MOM's P."""
     tree, mom, (battery_yard, motor_yard, ecu_yard), (battery, motor, ecu) = _build_tree()
     _seed_demand(mom, range(5, 10), 3)   # 15 lots total, weeks 5-9
-    _run_pipeline(tree, cap_hard_by_leaf=[(ecu, 1)])   # ECU can only supply 1/week
+    # legacy: the ECU lots over cap_hard are sealed (lost), so partners stay
+    # missing. In lot_flow_mode="identity" they are deferred to later weeks
+    # and every kit completes within the horizon (Addendum1 A1 / D4).
+    _run_pipeline(tree, cap_hard_by_leaf=[(ecu, 1)],    # ECU can only supply 1/week
+                  lot_flow_mode="legacy")
 
     all_demand_lots = set()
     for w in range(len(WEEKS)):
@@ -192,7 +196,10 @@ def test_bom_qty_does_not_affect_gate_judgment():
 def test_kitting_missing_still_reports_correctly_under_gate():
     tree, mom, (battery_yard, motor_yard, ecu_yard), (battery, motor, ecu) = _build_tree()
     _seed_demand(mom, range(5, 8), 3)
-    _run_pipeline(tree, cap_hard_by_leaf=[(ecu, 1)])
+    # legacy: sealed ECU lots never arrive, so kitting keeps missing={'ECU_Yard'}.
+    # identity defers them; all 9 kits complete by 2024-W14 and the Kitting
+    # List (final state per lot) then holds no missing entry (Addendum1 A1 / D4).
+    _run_pipeline(tree, cap_hard_by_leaf=[(ecu, 1)], lot_flow_mode="legacy")
 
     found_missing_ecu_only = False
     for w, wk in enumerate(mom.kitting):

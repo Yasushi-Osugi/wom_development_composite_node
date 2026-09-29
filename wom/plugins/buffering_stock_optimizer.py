@@ -107,6 +107,11 @@ class BufferingStockOptimizerPlugin(WOMPlugin):
             sc_tree, prod_nm,
             node_cost_master_path=node_cost_master_path,
             max_shortfall_ratio=max_shortfall_ratio,
+            # Addendum1 A3: candidates are ALWAYS evaluated in legacy (in identity
+            # the placement does not change the plan, so candidates could not be
+            # told apart). The real plan with the chosen placement is then run in
+            # the planning run's own lot_flow_mode (config["lot_flow_mode"]).
+            lot_flow_mode="legacy",
         )
         best = result.get("best")
         if best is None:
@@ -127,6 +132,29 @@ class BufferingStockOptimizerPlugin(WOMPlugin):
 
         _apply(ot_root)
 
+        # Addendum1 A3 / Decision Record D6: the legacy value only selects a
+        # REFERENCE candidate. Re-evaluate the chosen placement in the run's own
+        # lot_flow_mode; the legacy figures are not an identity outcome nor a
+        # proof of optimality.
+        from wom.engine.forward_planner import resolve_lot_flow_mode
+        from wom.engine.decouple_optimizer import (
+            evaluate_decouple_placement, load_unit_cost_lookup,
+        )
+        run_mode = resolve_lot_flow_mode(config.get("lot_flow_mode"))
+        re_eval = None
+        if run_mode != "legacy":
+            lookup = (load_unit_cost_lookup(node_cost_master_path, prod_nm)
+                      if node_cost_master_path else None)
+            re_eval = evaluate_decouple_placement(
+                sc_tree, prod_nm, list(winner_ids), lookup, lot_flow_mode=run_mode)
+        if not hasattr(self, "last_results"):
+            self.last_results = {}
+        self.last_results[prod_nm] = {
+            "run_lot_flow_mode": run_mode,
+            "legacy_reference": best,          # legacy による参考値
+            "re_evaluated": re_eval,           # the run's own mode (None if legacy)
+        }
+
         # Leave the supply layer clean -- the pipeline's official
         # copy_demand_to_supply (step 6, runs right after this hook)
         # rebuilds psi4supply for the real Forward Planning pass.
@@ -138,7 +166,13 @@ class BufferingStockOptimizerPlugin(WOMPlugin):
               f"shortfall={best.total_shortfall_lots} "
               f"(candidates={result['candidates_evaluated']}, "
               f"min_shortfall={result['min_shortfall']}, "
-              f"ratio={max_shortfall_ratio})")
+              f"ratio={max_shortfall_ratio})"
+              + (" [legacy による参考値]" if run_mode != "legacy" else ""))
+        if re_eval is not None:
+            print(f"[BufferingStockOptimizerPlugin] {prod_nm}: re-evaluated in "
+                  f"lot_flow_mode={run_mode}: inv_cost={re_eval.total_inventory_cost:,.0f} "
+                  f"inv_lots={re_eval.total_inventory_lots} "
+                  f"shortfall={re_eval.total_shortfall_lots}")
         if touched:
             print(f"[BufferingStockOptimizerPlugin] {prod_nm}: flag changes -> {touched}")
 

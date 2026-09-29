@@ -91,7 +91,9 @@ def test_plugin_applies_best_placement_when_enabled(tmp_path):
     sc_tree, sku_id, weeks, dad, leaf = _build_single_lane()
     _write_config_csv(tmp_path, sku_id, enabled=1, max_shortfall_ratio=1.10)
     _write_node_cost_csv(tmp_path, sku_id, dad, leaf)
-    config = {"cap_path": _fake_cap_path(tmp_path)}
+    # the placement search is meaningful in lot_flow_mode="legacy" only
+    # (RequestLetter_LotIdentityFlow C3); the plugin reads it from the run config
+    config = {"cap_path": _fake_cap_path(tmp_path), "lot_flow_mode": "legacy"}
 
     BufferingStockOptimizerPlugin().on_post_backward(sc_tree, sku_id, weeks, config)
 

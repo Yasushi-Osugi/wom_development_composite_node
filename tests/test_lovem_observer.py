@@ -31,7 +31,8 @@ def q12(tmp_path_factory):
     cwd = os.getcwd()
     os.chdir(REPO)
     try:
-        res = compare_on_off(MODEL, PLUGINS, observe_out=out)
+        # stage A expectations (SE2 = 168 etc.) are those of the legacy solver
+        res = compare_on_off(MODEL, PLUGINS, observe_out=out, lot_flow_mode="legacy")
     finally:
         os.chdir(cwd)
     return res, out

@@ -84,8 +84,12 @@ def test_evaluate_decouple_placement_ss_days_only_visible_when_not_pulled():
 
     cost_lookup = {dad.node_name: 5.0, leaf.node_name: 5.0}
 
-    dad_result  = evaluate_decouple_placement(sc_tree, sku_id, [dad.node_id],  cost_lookup)
-    leaf_result = evaluate_decouple_placement(sc_tree, sku_id, [leaf.node_id], cost_lookup)
+    # decouple placement only changes the Forward result in lot_flow_mode="legacy"
+    # (identity propagates actual shipments below the decouple point too).
+    dad_result  = evaluate_decouple_placement(sc_tree, sku_id, [dad.node_id],  cost_lookup,
+                                              lot_flow_mode="legacy")
+    leaf_result = evaluate_decouple_placement(sc_tree, sku_id, [leaf.node_id], cost_lookup,
+                                              lot_flow_mode="legacy")
 
     assert dad_result.total_inventory_lots == 0
     assert dad_result.total_inventory_cost == 0
@@ -132,6 +136,7 @@ def test_find_optimal_decouple_placement_cookie_import():
     result = find_optimal_decouple_placement(
         sc_tree, "Cookie_Import",
         node_cost_master_path=os.path.join(_COOKIE_MODEL_DIR, "node_cost_master.csv"),
+        lot_flow_mode="legacy",
     )
 
     # supply_point never a candidate.
@@ -152,6 +157,7 @@ def test_find_optimal_decouple_placement_cookie_local():
     result = find_optimal_decouple_placement(
         sc_tree, "Cookie_Local",
         node_cost_master_path=os.path.join(_COOKIE_MODEL_DIR, "node_cost_master.csv"),
+        lot_flow_mode="legacy",
     )
 
     assert result["best"] is not None

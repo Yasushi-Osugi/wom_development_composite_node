@@ -94,7 +94,11 @@ def test_cap_hard_sealing():
         cap_hard=2.0, cap_soft=0.0, demand_qty=4
     )
 
-    fp     = ForwardPlanner(sc_tree)
+    # legacy sealing semantics (excess lost -> CO). In lot_flow_mode="identity"
+    # the excess is deferred to the next week's P and crosses the bridge later
+    # (RequestLetter_LotIdentityFlow Addendum1 A1 / Decision Record D4; see
+    # tests/test_lot_identity_flow.py::test_a1_*).
+    fp     = ForwardPlanner(sc_tree, lot_flow_mode="legacy")
     result = fp.run(sku_id)
 
     print(result)
@@ -167,7 +171,8 @@ def test_combined_cap_hard_soft():
         cap_hard=3.0, cap_soft=2.0, demand_qty=5
     )
 
-    fp     = ForwardPlanner(sc_tree)
+    # legacy sealing semantics (identity defers the excess: Addendum1 A1 / D4)
+    fp     = ForwardPlanner(sc_tree, lot_flow_mode="legacy")
     result = fp.run(sku_id)
 
     print(result)
@@ -283,7 +288,10 @@ def test_e2e_cap_hard_causes_leaf_shortfall():
         cap_hard=2.0, cap_soft=0.0, demand_qty=4
     )
 
-    fp     = ForwardPlanner(sc_tree)
+    # legacy sealing semantics: the 2 sealed lots are lost, so the DAD ships 2.
+    # In lot_flow_mode="identity" they are deferred and shipped later (late,
+    # not lost): Addendum1 A1 / Decision Record D4.
+    fp     = ForwardPlanner(sc_tree, lot_flow_mode="legacy")
     result = fp.run(sku_id)
 
     # Find leaf_out and DAD nodes

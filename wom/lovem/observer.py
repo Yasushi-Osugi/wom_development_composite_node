@@ -338,6 +338,11 @@ class Observer:
                                        "closure_s_planned")}
         payload["cap_hard_sealed"] = getattr(res, "cap_hard_sealed", None)
         payload["co_generated"] = getattr(res, "co_generated", None)
+        # RequestLetter_LotIdentityFlow C3 / Addendum1 A1・A2 (D4/D5): the mode that
+        # produced the plan, and the lots recorded instead of being dropped.
+        payload["lot_flow_mode"] = getattr(res, "lot_flow_mode", None)
+        for k in ("ot_in_transit_at_end", "ot_unrouted", "cap_hard_unplaced"):
+            payload[k] = lst(k)
         rref = self.evidence("forward_result", prod, payload)
         for kind in ("shortfall_weeks", "cap_hard_events", "cap_soft_violations",
                      "closure_p_deferred", "closure_s_planned", "kitting_capacity_deferred"):
@@ -476,9 +481,11 @@ def installed(obs: Observer):
 
     o_child = fpm.ForwardPlanner._propagate_to_child
 
-    def to_child(self, parent, child, n_weeks):
+    def to_child(self, parent, child, n_weeks, *args, **kwargs):
+        # *args/**kwargs: ForwardPlanner._propagate_to_child gained an optional
+        # `result` argument (RequestLetter_LotIdentityFlow C3); pass it through.
         before = [len(child.psi4supply[w][3]) for w in range(n_weeks)]
-        r = o_child(self, parent, child, n_weeks)
+        r = o_child(self, parent, child, n_weeks, *args, **kwargs)
         obs.on_propagate(self, "ForwardPlanner._propagate_to_child", parent, child, before,
                          child.lt_wks, n_weeks)
         return r
@@ -620,10 +627,18 @@ def _first_nonzero_demand_week(model_dir, demand_file="demand_forecast.csv"):
 
 
 def observe_run(model_dir: str, out_dir: str, *, plugins: str = GOLDEN_PLUGINS,
-                repo: Optional[str] = None, label: str = "obs", copy_model: bool = True) -> dict:
+                repo: Optional[str] = None, label: str = "obs", copy_model: bool = True,
+                lot_flow_mode: Optional[str] = None) -> dict:
     """Run the headless pipeline on `model_dir` with observation ON and write
-    the run folder `out_dir`. Returns the headless snapshot (unchanged)."""
+    the run folder `out_dir`. Returns the headless snapshot (unchanged).
+
+    lot_flow_mode: passed to the headless runner (None -> planning_config.csv,
+    else the ForwardPlanner default "identity"); the resolved value is recorded
+    in manifest.json."""
     from tools.run_headless_from_folder import run as run_headless
+    from wom.engine.forward_planner import resolve_lot_flow_mode
+    from wom.engine.warmup import read_lot_flow_mode
+    lot_flow_mode = resolve_lot_flow_mode(lot_flow_mode or read_lot_flow_mode(model_dir))
     repo = repo or os.getcwd()
     case = os.path.basename(os.path.abspath(model_dir).rstrip("/\\"))
     gs = git_state(repo)
@@ -643,7 +658,8 @@ def observe_run(model_dir: str, out_dir: str, *, plugins: str = GOLDEN_PLUGINS,
     try:
         with installed(obs):
             snap = run_headless(work, plugins_spec=plugins,
-                                output_ppc_dir=os.path.join(out_dir, "ppc"), verbose=False)
+                                output_ppc_dir=os.path.join(out_dir, "ppc"), verbose=False,
+                                lot_flow_mode=lot_flow_mode)
     finally:
         obs.close()
     t_run = time.perf_counter() - t0
@@ -665,6 +681,7 @@ def observe_run(model_dir: str, out_dir: str, *, plugins: str = GOLDEN_PLUGINS,
         "model_hashes": src_hashes, "model_unchanged_by_run": src_hashes == after_hashes,
         "environment": _environment(),
         "plugins": sorted(p for p in plugins.split(",") if p),
+        "lot_flow_mode": lot_flow_mode,
         "products": list(obs.sc_tree.products),
         "weeks": wk,
         "snapshots": obs.phases,
@@ -672,7 +689,7 @@ def observe_run(model_dir: str, out_dir: str, *, plugins: str = GOLDEN_PLUGINS,
                    "expanded_occurrences_by_snapshot": dict(obs.expanded)},
         "timing_s": {"run_total": round(t_run, 3),
                      **{k: round(v, 3) for k, v in obs.timing.items()}},
-        "coverage": _coverage(obs, has_yard),
+        "coverage": _coverage(obs, has_yard, lot_flow_mode),
     }
     with open(os.path.join(out_dir, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
@@ -686,7 +703,7 @@ def _environment():
             "matplotlib": matplotlib.__version__}
 
 
-def _coverage(obs: Observer, has_yard: bool) -> dict:
+def _coverage(obs: Observer, has_yard: bool, lot_flow_mode: str = "legacy") -> dict:
     stages = {
         "1_anchor": "captured (demand_anchors.jsonl; leaf_out psi4demand S right after lot generation, before HOOK_PRE_PLAN)",
         "2_backward": "captured (pre_backward / post_backward / post_backward_hooks, demand layer)",
@@ -701,12 +718,18 @@ def _coverage(obs: Observer, has_yard: bool) -> dict:
     known_gaps = [
         {"item": "demand_fulfilment_link", "status": "unknown",
          "note": "The engine does not record which shipment satisfied which request (CO/S). No such relation is written."},
-        {"item": "pull_mode_receipts", "status": "no_physical_relation",
-         "note": "Nodes below a decouple point (and InBound pull/decoupling copy) get P = psi4demand P copy, not a propagated shipment. No arrival event exists for these receipts."},
+        ({"item": "pull_mode_receipts", "status": "no_physical_relation",
+          "note": "Nodes below a decouple point (and InBound pull/decoupling copy) get P = psi4demand P copy, not a propagated shipment. No arrival event exists for these receipts."}
+         if lot_flow_mode == "legacy" else
+         {"item": "pull_mode_receipts", "status": "no_physical_relation (InBound only)",
+          "note": "lot_flow_mode=identity: every OutBound child receives its parent's actual shipment (arrival events exist). Remaining: InBound non-push decoupling / in_pull_mode nodes still get P = psi4demand P copy (Decision Record §6)."}),
         {"item": "cap_hard_sealed_lot_ids", "status": "unknown",
          "note": "ForwardPlanResult.cap_hard_events holds counts only; the sealed Lot_IDs are not recorded (they go to CO[w+1])."},
-        {"item": "push_shortfall_lot_ids", "status": "unknown",
-         "note": "_push_shortfall holds counts only; which planned-S IDs were not shipped is not recorded."},
+        ({"item": "push_shortfall_lot_ids", "status": "unknown",
+          "note": "_push_shortfall holds counts only; which planned-S IDs were not shipped is not recorded."}
+         if lot_flow_mode == "legacy" else
+         {"item": "push_shortfall_lot_ids", "status": "observed_via_CO",
+          "note": "lot_flow_mode=identity: _push_shortfall = count of requests not matched in the week; those Lot_IDs are in the push node's supply CO of the next week (psi_intervals bucket CO)."}),
         {"item": "inline_push_decoupling_propagation", "status": "not_observed",
          "note": "ForwardPlanner.run propagates a push decoupling node with a parent inline (not via _propagate_to_parent). Not wrapped; affects only models where such a node has a parent."},
         {"item": "within_week_order", "status": "partial",

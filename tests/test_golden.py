@@ -46,8 +46,12 @@ def test_golden_matches(case, tmp_path):
     model_dir = os.path.join(SAMPLE_DIR, case)
     assert os.path.isdir(model_dir), f"model dir not found: {model_dir}"
 
+    # Forward の方式は golden の config に記録された値で比較する
+    # （RequestLetter_LotIdentityFlow C1）。記録の無い既存 golden は legacy。
+    lot_flow_mode = golden.get("config", {}).get("lot_flow_mode", "legacy")
     snap = run(model_dir, plugins_spec=plugins,
-               output_ppc_dir=str(tmp_path / "ppc"), verbose=False)
+               output_ppc_dir=str(tmp_path / "ppc"), verbose=False,
+               lot_flow_mode=lot_flow_mode)
 
     # 期間・製品・プラグインの前提が一致している事（データ改変も検知）
     assert snap["period"] == golden["period"], f"{case}: planning period drift"

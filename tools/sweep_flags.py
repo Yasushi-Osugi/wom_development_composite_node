@@ -280,7 +280,9 @@ def _op_remove_file(model_dir: str, op: dict) -> None:
 #   期間検出・プラグイン選択・PPC呼び出しヘルパーはそのまま import して再利用）
 # ══════════════════════════════════════════════════════════════════════
 def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
-                       target_sku: str, target_node_names) -> tuple:
+                       target_sku: str, target_node_names, lot_flow_mode: str = None) -> tuple:
+    """lot_flow_mode (RequestLetter_LotIdentityFlow C1): argument -> the model's
+    planning_config.csv -> ForwardPlanner default ("identity")."""
     from wom.model.lot_generator import assign_demand_lots_from_dict
     from wom.engine.lane_assignment import LaneTable
     from wom.engine.hook_bus import (
@@ -306,6 +308,8 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
 
     # ── warm-up materialize（Phase 2, opt-in; run_headless_from_folder と同じ呼び出し）
     wsum = materialize_warmup(model_dir)
+    from wom.engine.warmup import read_lot_flow_mode
+    lot_flow_mode = lot_flow_mode or read_lot_flow_mode(model_dir)
     print(format_summary(wsum))
     result["warmup"] = {
         "warmup_lt":        wsum.get("warmup_lt"),
@@ -440,7 +444,8 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
                 push_pull_status = {"status": "file_not_found", "detail": None}
 
         opening_inv = getattr(harvest_plugin, "opening_inv", {}) if harvest_plugin else {}
-        fres = ForwardPlanner(sc_tree, opening_inv=opening_inv).run(prod_nm)
+        fres = ForwardPlanner(sc_tree, opening_inv=opening_inv,
+                              lot_flow_mode=lot_flow_mode).run(prod_nm)
         cap_hard_sealed += int(getattr(fres, "cap_hard_sealed", 0) or 0)
         cap_soft_viol += len(getattr(fres, "cap_soft_violations", []) or [])
         bus.fire(HOOK_POST_FORWARD, sc_tree=sc_tree, prod_nm=prod_nm, weeks=weeks, config=cfg)

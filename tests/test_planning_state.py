@@ -55,7 +55,8 @@ def test_golden_unchanged_by_default(case, tmp_path):
     plugins = ",".join(golden.get("config", {}).get("plugins", [])) or "none"
     model_dir = os.path.join(SAMPLE_DIR, case)
     snap = run_headless(model_dir, plugins_spec=plugins,
-                        output_ppc_dir=str(tmp_path / "ppc"), verbose=False)
+                        output_ppc_dir=str(tmp_path / "ppc"), verbose=False,
+                        lot_flow_mode=golden.get("config", {}).get("lot_flow_mode", "legacy"))
 
     assert "planning_state_extras" not in snap
     assert snap["forward"] == golden["forward"]

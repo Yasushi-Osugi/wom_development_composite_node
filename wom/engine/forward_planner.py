@@ -36,6 +36,21 @@ Phase 2 -- Bridge MOM -> supply_point
 Phase 3 -- OutBound PRE-ORDER (supply_point -> DAD -> leaf_out)
     Same capacity + PSI logic as Phase 1 (all OT nodes are "pull").
 
+lot_flow_mode (Decision Record 2026-09-29, RequestLetter_LotIdentityFlow)
+--------------------------------------------------------------------------
+"identity" (default) -- Lot_ID identity end to end:
+    push buffer : Lot_ID match of CO+S against I+P, CO kept (D1)
+    OutBound    : every child's P = parent's actual shipment, also below
+                  the decouple point (D2); S stays the demand position
+    Step 0a     : excess P deferred (identity intact) to the HEAD of next
+                  week's P instead of CO[w+1]; E2 closure deferral also goes to
+                  the HEAD (Addendum1 A1)
+"legacy"         -- the behaviour described above, unchanged
+                  (push buffer ships in arrival order without CO; below the
+                  OutBound decouple point P := demand P)
+Not changed by either mode: the InBound demand-P copy at non-push
+decoupling / in_pull_mode nodes (Phase 1; Decision Record §6, observed only).
+
 Lot routing (OutBound)
 ----------------------
 Each lot is Demand Anchored: its destination leaf_out is fixed at lot-generation
@@ -65,6 +80,22 @@ from wom.model.lot_generator import LotIDGenerator
 # that selects _process_assembly_with_yards is `stockyard_children`, which
 # is empty for every model that predates Stage 3a).
 KITTING_GATE_ENABLED = True
+
+# Lot flow solver (Decision Record WOM_Forward_LotID_Decision_Record_2026-09-29 D3).
+LOT_FLOW_IDENTITY = "identity"
+LOT_FLOW_LEGACY = "legacy"
+LOT_FLOW_MODES = (LOT_FLOW_IDENTITY, LOT_FLOW_LEGACY)
+DEFAULT_LOT_FLOW_MODE = LOT_FLOW_IDENTITY
+
+
+def resolve_lot_flow_mode(value: Optional[str]) -> str:
+    """None / "" -> the default ("identity"); otherwise one of LOT_FLOW_MODES."""
+    if value is None or str(value).strip() == "":
+        return DEFAULT_LOT_FLOW_MODE
+    v = str(value).strip().lower()
+    if v not in LOT_FLOW_MODES:
+        raise ValueError(f"lot_flow_mode must be one of {LOT_FLOW_MODES}, got {value!r}")
+    return v
 
 
 @dataclass
@@ -107,6 +138,34 @@ class ForwardPlanResult:
     closure_p_unplaced: List[tuple] = field(default_factory=list)
     closure_s_planned:  List[tuple] = field(default_factory=list)
 
+    # RequestLetter_LotIdentityFlow C3 -- recorded in BOTH modes, the plan is
+    # not changed by recording them:
+    #   ot_in_transit_at_end (parent_id, child_id, ship_week_label, count):
+    #       OutBound shipments whose arrival week (ship week + child LT) is
+    #       beyond the horizon -- "in transit at the end of the plan". Formerly
+    #       dropped silently.
+    #   ot_unrouted (parent_id, ship_week_label, count): shipped Lot_IDs of a
+    #       multi-child parent that no child's subtree owns (no leaf_out in the
+    #       lot->leaf index). Formerly dropped silently.
+    ot_in_transit_at_end: List[tuple] = field(default_factory=list)
+    ot_unrouted:          List[tuple] = field(default_factory=list)
+
+    # RequestLetter_LotIdentityFlow Addendum1 A1 -- lot_flow_mode="identity"
+    # only. Step 0a does not put the excess P lots into CO[w+1] (their request
+    # is already in S/CO -- sealing them into CO duplicated the request and the
+    # duplicate never cleared). The excess is deferred, identity intact, to the
+    # HEAD of P[w+1] (a closed w+1 then hands it on via E2). Events still go to
+    # cap_hard_events / cap_hard_sealed (lots over capacity in that week, so a
+    # lot deferred twice is counted twice) but NOT to co_generated.
+    #   cap_hard_unplaced (node_id, week_label, [lot_id, ...]): excess of the
+    #       last week -- no week left in the horizon (same shape as
+    #       closure_p_unplaced; never dropped silently).
+    cap_hard_unplaced: List[tuple] = field(default_factory=list)
+
+    # Addendum1 A2 / Decision Record D5: which lot_flow_mode produced this
+    # result ("identity" / "legacy"; set by ForwardPlanner.run).
+    lot_flow_mode: Optional[str] = None
+
     def record_kitting_fallback(self, node_id, week_label, lot_id):
         self.kitting_fallback_events.append((node_id, week_label, lot_id))
 
@@ -118,6 +177,12 @@ class ForwardPlanResult:
         self.cap_hard_events.append((node_id, week_label, count))
         self.cap_hard_sealed += count
         self.co_generated    += count
+
+    def record_cap_hard_deferred(self, node_id, week_label, count):
+        # identity (Addendum1 A1): over-capacity lots deferred to the next
+        # week's P -- not a new request, so co_generated is not increased.
+        self.cap_hard_events.append((node_id, week_label, count))
+        self.cap_hard_sealed += count
 
     def record_cap_soft_violation(self, node_id, week_label, over_by):
         self.cap_soft_violations.append((node_id, week_label, over_by))
@@ -150,14 +215,25 @@ class ForwardPlanner:
         sc_tree:              SCTree,
         opening_inv:          Optional[Dict[str, List[str]]] = None,
         decouple_node_ids:    Optional[set]                  = None,
+        lot_flow_mode:        Optional[str]                  = None,
     ) -> None:
         self.sc_tree             = sc_tree
         self.opening_inv         = opening_inv or {}
         self.decouple_node_ids   = decouple_node_ids  # None = auto-detect
         self._lot_leaf_index: Dict[str, PlanNode] = {}
+        # Decision Record 2026-09-29 D3 (RequestLetter_LotIdentityFlow C1):
+        #   "identity" (default) -- Lot_ID identity end to end: push buffers match
+        #                           by Lot_ID and keep CO (D1); every OutBound child
+        #                           receives its parent's ACTUAL shipment (D2).
+        #   "legacy"             -- the former behaviour, bit for bit (push buffers
+        #                           ship in arrival order without CO; below the
+        #                           OutBound decouple point P := demand P).
+        self.lot_flow_mode       = resolve_lot_flow_mode(lot_flow_mode)
+        self._identity           = (self.lot_flow_mode == LOT_FLOW_IDENTITY)
 
     def run(self, prod_nm: str) -> ForwardPlanResult:
         result  = ForwardPlanResult(prod_nm=prod_nm)
+        result.lot_flow_mode = self.lot_flow_mode    # Addendum1 A2 / D5: record the mode
         n_weeks = self.sc_tree.num_weeks()
 
         ot_root  = self.sc_tree.get_ot_root(prod_nm)
@@ -285,6 +361,14 @@ class ForwardPlanner:
 
         self._run_ot_push_pull(ot_root, decouple_ids, n_weeks, result)
 
+        # RequestLetter_LotIdentityFlow C4: expose each node's ACTUAL shipment
+        # (Lot_IDs per week) after the run, so that consumers outside the
+        # planner (PPC bridge, S3 / capacity views) can read what was really
+        # shipped rather than the planned S. Same attribute style as
+        # _push_shortfall; written in both modes, read-only afterwards.
+        for node in self.sc_tree.iter_all_nodes(prod_nm):
+            node._actual_ship = self._actual_s.get(node.node_id, {})
+
         return result
 
     def run_all(self) -> Dict[str, ForwardPlanResult]:
@@ -338,8 +422,17 @@ class ForwardPlanner:
         is in decouple_ids becomes the buffer/decouple point: it is processed
         with PUSH (real supply), while all its descendants switch to PULL.
         The node_type (DAD etc.) has no bearing on this decision.
+
+        lot_flow_mode="identity" (Decision Record D2, RequestLetter_LotIdentityFlow
+        C3): the PULL override above is NOT applied. Every child -- also below the
+        decouple point -- receives its parent's ACTUAL shipment via
+        _propagate_to_child (Lot_ID routed, arrival = ship week + child LT); only
+        S stays the demand position copied by copy_demand_to_supply(). Upstream
+        shortages therefore reach the downstream CO and the market instead of
+        being hidden by a demand-P copy (legacy "exception 2": soysauce 9,293 /
+        Cookie 10,868 Lot_IDs that were never shipped upstream).
         """
-        if pull_mode:
+        if pull_mode and not self._identity:
             # Original PySI Step 4 (apply_pull_process equivalent):
             # Demand-anchor this node's P so _process_node sees full demand supply.
             # supply.S is already demand-anchored from copy_demand_to_supply().
@@ -357,10 +450,11 @@ class ForwardPlanner:
         is_decouple = (node.node_id in decouple_ids)
 
         for child in node.children:
-            if not pull_mode and not is_decouple:
+            if self._identity or (not pull_mode and not is_decouple):
                 # PUSH: propagate actual supply (S[w]) to child's P[w + lt_wks]
-                self._propagate_to_child(node, child, n_weeks)
-            # In pull_mode or is_decouple: do NOT call _propagate_to_child.
+                # (identity: always -- below the decouple point too)
+                self._propagate_to_child(node, child, n_weeks, result)
+            # legacy, in pull_mode or is_decouple: do NOT call _propagate_to_child.
             # Child's P will be overwritten with demand.P at the top of the next
             # recursive call (pull_mode=True branch above).
             self._push_pull_node(child, decouple_ids, n_weeks, result,
@@ -368,6 +462,11 @@ class ForwardPlanner:
 
     def _pull_subtree(self, node, n_weeks, result):
         """
+        NOTE (RequestLetter_LotIdentityFlow C3, 2026-09-29): no caller in the
+        repository (checked with a full-text search); left unchanged and not
+        removed. It implements the legacy demand-P copy and is not used by
+        either lot_flow_mode.
+
         PULL mode: overwrite psi4supply[w][P] with psi4demand[w][P]
         (the backward-planned demand lots, P=S at each node from _ot_propagate),
         then calcPS2I.  For leaf_out: P = demand = S -> I = 0, flat demand PSI.
@@ -457,6 +556,8 @@ class ForwardPlanner:
                  (identity intact) to the next open week's P (closure_p_deferred);
                  a push node accepts P, ships nothing, keeps it all in I.
         Step 0a  CapHard sealing: P[w] truncated to cap_hard; excess -> CO[w+1]
+                 (legacy). identity (Addendum1 A1): excess -> HEAD of P[w+1],
+                 identity intact; last week -> result.cap_hard_unplaced.
         Step 0b  CapSoft check: flag if P[w] > planned_capacity (no movement);
                  push nodes compare the actual shipment instead of P.
 
@@ -498,7 +599,15 @@ class ForwardPlanner:
                 node.psi4supply[w][P] = []
                 nxt = next((ww for ww in range(w + 1, n_weeks) if node.is_open(ww)), None)
                 if nxt is not None:
-                    node.psi4supply[nxt][P].extend(moved)
+                    if self._identity:
+                        # identity (Addendum1 A1-3): the deferred lots are OLDER
+                        # than the lots already in the next open week's P, so
+                        # they go to the HEAD (Step 0a keeps P[:cap_hard] --
+                        # the older lots are produced first). Legacy keeps the
+                        # tail (unchanged).
+                        node.psi4supply[nxt][P] = moved + node.psi4supply[nxt][P]
+                    else:
+                        node.psi4supply[nxt][P].extend(moved)
                     result.closure_p_deferred.append((node.node_id, wk_label, len(moved)))
                 else:
                     result.closure_p_unplaced.append((node.node_id, wk_label, list(moved)))
@@ -511,9 +620,25 @@ class ForwardPlanner:
             if not is_push_mode and ch > 0 and len(node.psi4supply[w][P]) > int(ch):
                 excess = node.psi4supply[w][P][int(ch):]
                 node.psi4supply[w][P] = node.psi4supply[w][P][:int(ch)]
-                if w + 1 < n_weeks:
-                    node.psi4supply[w + 1][CO].extend(excess)
-                result.record_cap_hard_sealed(node.node_id, wk_label, len(excess))
+                if self._identity:
+                    # identity (Addendum1 A1): the excess is production that could
+                    # not be done this week. Its request is already in S/CO, so
+                    # it must NOT be put into CO (that duplicated the request and
+                    # the duplicate never cleared -- K4). Defer it, identity
+                    # intact, to the HEAD of next week's P (older lots first); a
+                    # closed w+1 hands it on to the next open week via E2 above.
+                    if w + 1 < n_weeks:
+                        node.psi4supply[w + 1][P] = excess + node.psi4supply[w + 1][P]
+                    else:
+                        result.cap_hard_unplaced.append((node.node_id, wk_label, list(excess)))
+                    result.record_cap_hard_deferred(node.node_id, wk_label, len(excess))
+                else:
+                    # legacy (unchanged): excess sealed into CO[w+1]. Known defect
+                    # (Addendum1 A1): the same Lot_ID's request is already in S,
+                    # so CO holds it twice and one copy never clears.
+                    if w + 1 < n_weeks:
+                        node.psi4supply[w + 1][CO].extend(excess)
+                    result.record_cap_hard_sealed(node.node_id, wk_label, len(excess))
 
             # Step 0b: CapSoft check (flag only) -- planned_capacity folds in the
             # week state (closed = 0.0, unset = None). Only a positive planned
@@ -533,7 +658,53 @@ class ForwardPlanner:
             available = prev_inv_lots + p_lots
 
             # Demand side
+            if is_push_mode and self._identity:
+                # lot_flow_mode="identity" (Decision Record D1,
+                # RequestLetter_LotIdentityFlow C2): a push buffer matches
+                # demand (CO[w] + S[w]) against supply (I[w-1] + P[w]) by
+                # Lot_ID, exactly like a normal node -- unmatched demand goes to
+                # CO[w+1], unmatched supply stays in I. What stays push-specific:
+                #   * Step 0a sealing is skipped (receipt is not sealed, above);
+                #   * closed week (D4/E4): receipt is accepted, nothing ships;
+                #     all availability stays in I and all demand (CO + S) moves
+                #     to CO[w+1] -- the same Lot_ID can then be in I (thing)
+                #     and CO (request) at once; both leave in the week it ships;
+                #   * open week: every matched Lot_ID ships (no throughput cap);
+                #   * Step 0b compares the actual shipment (below).
+                # The legacy comment "CO cascade caused exponential snowball"
+                # referred to quantity-based CO; a Lot_ID CO holds each request
+                # once and is cleared when that Lot_ID arrives.
+                co_lots     = list(node.psi4supply[w][CO])
+                s_plan      = list(node.psi4supply[w][S])
+                demand_lots = co_lots + s_plan
+                if not hasattr(node, '_push_shortfall'):
+                    node._push_shortfall = {}
+                if is_closed:
+                    actual_s, unmatched_demand, unmatched_supply = [], demand_lots, list(available)
+                    if s_plan:
+                        result.closure_s_planned.append((node.node_id, wk_label, len(s_plan)))
+                else:
+                    actual_s, unmatched_demand, unmatched_supply = self._match_by_identity(
+                        demand_lots, available)
+                node.psi4supply[w][I] = unmatched_supply
+                # _push_shortfall[w] = requests not matched this week (-> CO[w+1])
+                node._push_shortfall[w] = len(unmatched_demand)
+                if unmatched_demand:
+                    if (w + 1) < n_weeks:
+                        node.psi4supply[w + 1][CO].extend(unmatched_demand)
+                    result.record_shortfall(node.node_id, wk_label, len(unmatched_demand))
+                if pc is not None and pc > 0 and len(actual_s) > int(pc):
+                    result.record_cap_soft_violation(
+                        node.node_id, wk_label, len(actual_s) - int(pc))
+                nid = node.node_id
+                if nid not in self._actual_s:
+                    self._actual_s[nid] = {}
+                self._actual_s[nid][w] = actual_s
+                prev_inv_lots = node.psi4supply[w][I]
+                continue
+
             if is_push_mode:
+                # lot_flow_mode="legacy" (unchanged below).
                 # PUSH decoupling node (e.g. Buffer_Wafer_TW):
                 #   S = demand_staircase (display signal -- NOT reduced on shortage)
                 #   Each week is INDEPENDENT: no CO cascade.
@@ -825,9 +996,15 @@ class ForwardPlanner:
                         parent.kitting[assembly_w].setdefault(
                             lot_id, {})[node.node_name] = target_w
 
-    def _propagate_to_child(self, parent, child, n_weeks):
+    def _propagate_to_child(self, parent, child, n_weeks, result=None):
         """
         OutBound: parent S[w] -> child P[w + child.lt_wks].
+
+        `result` (optional, RequestLetter_LotIdentityFlow C3): when given, lots
+        whose arrival week falls beyond the horizon are recorded as
+        ot_in_transit_at_end, and lots a multi-child parent cannot route to
+        any child as ot_unrouted (recorded once, on the first child). Recording
+        only -- the propagation itself is unchanged.
 
         Each lot is Demand Anchored - its destination leaf_out is fixed at
         lot-generation time.  Routing uses parent pointers:
@@ -847,6 +1024,9 @@ class ForwardPlanner:
         """
         actual_by_w = self._actual_s.get(parent.node_id, {})
 
+        def _wl(w):
+            return parent.week_labels[w] if parent.week_labels else str(w)
+
         if len(parent.children) == 1:
             # Single child: all lots belong here -- no routing needed
             for w in range(n_weeks):
@@ -856,30 +1036,43 @@ class ForwardPlanner:
                 target_w = w + child.lt_wks
                 if 0 <= target_w < n_weeks:
                     child.psi4supply[target_w][P].extend(confirmed_s)
+                elif result is not None and target_w >= n_weeks:
+                    result.ot_in_transit_at_end.append(
+                        (parent.node_id, child.node_id, _wl(w), len(confirmed_s)))
             return
 
         # Multiple children: route by walking parent pointers from each lot's leaf_out
+        record_unrouted = result is not None and child is parent.children[0]
         for w in range(n_weeks):
             confirmed_s = actual_by_w.get(w, [])
             if not confirmed_s:
                 continue
 
             matched = []
+            unrouted = 0
             for lot in confirmed_s:
                 leaf = self._lot_leaf_index.get(lot)
                 if leaf is None:
+                    unrouted += 1
                     continue
                 node = leaf
                 while node is not None and node.parent is not parent:
                     node = node.parent
                 if node is child:
                     matched.append(lot)
+                elif node is None:
+                    unrouted += 1
+            if record_unrouted and unrouted:
+                result.ot_unrouted.append((parent.node_id, _wl(w), unrouted))
 
             if not matched:
                 continue
             target_w = w + child.lt_wks
             if 0 <= target_w < n_weeks:
                 child.psi4supply[target_w][P].extend(matched)
+            elif result is not None and target_w >= n_weeks:
+                result.ot_in_transit_at_end.append(
+                    (parent.node_id, child.node_id, _wl(w), len(matched)))
 
     # ------------------------------------------------------------------
     # Lot-leaf index (built once per product before Phase 3)

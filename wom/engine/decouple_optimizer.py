@@ -203,16 +203,32 @@ def evaluate_decouple_placement(
     prod_nm: str,
     decouple_node_ids: List[str],
     unit_cost_lookup: Optional[Dict[str, float]] = None,
+    lot_flow_mode: Optional[str] = "legacy",
 ) -> DecoupleEvalResult:
     """
     Run one clean Forward Planning pass with `decouple_node_ids` forced as
     the OutBound decouple set, and measure total inventory (lots and, if
     unit_cost_lookup given, currency-equivalent cost) plus total shortfall.
+
+    lot_flow_mode (RequestLetter_LotIdentityFlow C1): passed to ForwardPlanner.
+    Default "legacy" (Addendum1 A3): candidates are ALWAYS evaluated in legacy,
+    whatever mode the planning run uses. In "identity" the OutBound decouple
+    set no longer switches the nodes below it to demand-P copy (D2), so the
+    placement does not change the Forward result except through each node's
+    own lead time / ss_days; candidates are then indistinguishable -- in the
+    current implementation the placement's effect depended only on exception 2
+    (P below the decouple point := demand P). What a decouple point means in
+    identity (replenishment signal, stock target, release timing) is to be
+    designed separately (Decision Record §6). Decision Record D6: legacy only
+    selects a REFERENCE candidate; the chosen placement is re-evaluated in the
+    run's own mode (BufferingStockOptimizerPlugin) and the legacy figures are
+    not treated as an identity outcome or a proof of optimality.
     """
     n_weeks = sc_tree.num_weeks()
     _reset_supply_layer(sc_tree, prod_nm, n_weeks)
 
-    fp     = ForwardPlanner(sc_tree, decouple_node_ids=set(decouple_node_ids))
+    fp     = ForwardPlanner(sc_tree, decouple_node_ids=set(decouple_node_ids),
+                            lot_flow_mode=lot_flow_mode)
     result = fp.run(prod_nm)
 
     per_node_inventory: Dict[str, int] = {}
@@ -245,6 +261,7 @@ def find_optimal_decouple_placement(
     prod_nm: str,
     node_cost_master_path: Optional[str] = None,
     max_shortfall_ratio: float = 1.10,
+    lot_flow_mode: Optional[str] = "legacy",   # Addendum1 A3: evaluate in legacy
 ) -> Dict[str, object]:
     """
     Enumerate all candidate OutBound decouple placements for one SKU
@@ -283,7 +300,8 @@ def find_optimal_decouple_placement(
         unit_cost_lookup = load_unit_cost_lookup(node_cost_master_path, prod_nm)
 
     evaluations = [
-        evaluate_decouple_placement(sc_tree, prod_nm, cand, unit_cost_lookup)
+        evaluate_decouple_placement(sc_tree, prod_nm, cand, unit_cost_lookup,
+                                    lot_flow_mode=lot_flow_mode)
         for cand in candidates
     ]
 

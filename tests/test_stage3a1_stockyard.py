@@ -311,9 +311,13 @@ def test_ev_europe_2026_import_chain_matches_post_gate_baseline(tmp_path):
     did not exist yet. Stage 3a-2 (request_stage3a2_kitting_gate.md) is the
     fix for exactly that non-physical duplication; the current, correct
     values are asserted here instead. PPC revenue/GM% must stay unchanged
-    either way -- that invariant carries over verbatim."""
+    either way -- that invariant carries over verbatim.
+
+    Asserted values are those of lot_flow_mode="legacy" (RequestLetter_LotIdentityFlow:
+    identity makes upstream shortages reach the market, so revenue differs)."""
     result, sc_tree = _execute_pipeline(
-        EV_EUROPE_DIR, "safe", str(tmp_path / "ppc"), "EVmaker_Import", [])
+        EV_EUROPE_DIR, "safe", str(tmp_path / "ppc"), "EVmaker_Import", [],
+        lot_flow_mode="legacy")
     mom = sc_tree.get_in_root("EVmaker_Import")
 
     def total(node, bucket):
@@ -366,9 +370,12 @@ def test_bom_test_2026_three_cases_gate_deduplicates_vehicle_assy_p():
         guard_set = guard_files_for_case(ops)
         with guarded_files(MODEL_DIR, guard_set):
             apply_ops(MODEL_DIR, ops)
+            # legacy sealing semantics: Battery_Supply lots over cap_hard are lost.
+            # lot_flow_mode="identity" defers them (Addendum1 A1 / D4), so more
+            # kits complete (battery_short: 46 instead of 40).
             result, sc_tree = _execute_pipeline(
                 MODEL_DIR, "safe", os.path.join(REPO_ROOT, "output", f"_test_stage3a1_{name}"),
-                TARGET_SKU, [])
+                TARGET_SKU, [], lot_flow_mode="legacy")
             mom = sc_tree.get_in_root(TARGET_SKU)
             complete, tot = _kitting_complete_total(mom)
             assert tot == 100, f"{name}: total kitting entries changed"

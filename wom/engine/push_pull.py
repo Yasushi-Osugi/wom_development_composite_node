@@ -167,6 +167,8 @@ class PushSetupResult:
     # (leaf node_id, original week label, destination week label, count);
     # destination "" = no open week in the horizon (lots left in place).
     mode4_closure_shifted: List[Tuple[str, str, str, int]] = field(default_factory=list)
+    # RequestLetter_LotIdentityFlow C5: deprecation warnings issued for this config.
+    deprecation_warnings: List[str] = field(default_factory=list)
 
     def record(self, node_id: str, week_label: str, qty: int) -> None:
         self.push_events.append((node_id, week_label, qty))
@@ -206,6 +208,17 @@ class PushProductionPlanner:
                 "replenishment"
             ),
         )
+
+        # RequestLetter_LotIdentityFlow C5 / Decision Record §5: Modes 1-3 mint
+        # Lot_IDs that belong to no demand. Deprecated -- warn, behaviour unchanged.
+        if (config.push_qty_per_week or config.buffer_lots
+                or config.pre_build_qty_per_week or config.pre_build_end_week):
+            msg = ("push の Mode 1〜3 は非推奨です（需要に紐づかない Lot_ID を作るため）。"
+                   "Mode 4（push_lead_time_weeks）を使ってください")
+            result.deprecation_warnings.append(msg)
+            print(f"[PushPull] WARNING {prod_nm}/{config.node_id}: {msg}")
+            import warnings
+            warnings.warn(msg, UserWarning, stacklevel=2)
 
         # 1. Locate decoupling node
         decoupling_node = self._find_node(prod_nm, config.node_id)

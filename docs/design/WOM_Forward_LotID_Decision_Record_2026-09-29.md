@@ -100,6 +100,16 @@ Outbound のデカップリング点より下流のノードでは、Demand Laye
 | partial_capacity を cap_soft へ | Explicit Closure の D6。部分操業は cap_soft を動かすのが正 |
 | 中間ノードの金額 | PPC の中間ノードの数量は、自ノードの実出荷ではなく leaf の販売数量から導出されている（PPC 入口の実測 P4）。LOVEM 段階 D で扱う |
 | rice の合成 ID の重複 | PPC の入口で、4地域が同じ channel に写像され、合成 ID が各4回重複する（PPC 入口の実測 P1） |
+| identity でのデカップリング点の意味 | identity では、Outbound のデカップリング点の位置を変えても計画が変わらない（LotIdentityFlow の中間報告）。今の実装では、配置の効果が例外2（P のコピー）だけに依存していた。補充の指示・在庫の目標・投入の時期など、デカップリング点が本来変えるべきものを、identity でどう表すかを設計する |
+| legacy の Step 0a の CO の重複 | legacy では、cap_hard を超えた生産の lot を CO に入れるため、同じ ID の要求が二重になり、CO に残り続ける（iphone、smartx、ev_update、rice）。legacy は変えないので、既知の欠陥として残す |
+
+## 7. 追加の決定（2026-09-29、LotIdentityFlow の中間報告を受けて）
+
+| # | 決定 |
+|---|---|
+| D4 | identity では、cap_hard を超えて作れなかった生産の lot を CO に入れない。ID を保ったまま翌週の生産の先頭に回す（休業週の E2 と同じ考え方）。そのノードの要求週に間に合えば遅配ではない |
+| D5 | rice は、収穫在庫に需要の Lot_ID を付ける設計（§6 Buffering Stock）が決まるまで、legacy で動かす。暫定措置であり、rice の整合性を確かめたものではない。方式は計画の結果と LOVEM の manifest に記録する |
+| D6 | decouple の配置最適化は、legacy で参考候補を選び、選んだ配置を identity で評価し直して本計画を行う。legacy の評価値を identity の成果や最適性の証明として扱わない |
 
 ---
 
@@ -107,3 +117,4 @@ Outbound のデカップリング点より下流のノードでは、Demand Laye
 |---|---|---|
 | 1.0 | 2026-09-29 | 初版 |
 | 1.1 | 2026-09-29 | Astra君のレビューを反映：Lot_ID は需要の単位（§1.1）、早出しの判定週と I・CO の併存（§1.3）、モデル4のボトルネックの判定（最大能力を 1 とする正規化）、Forward の能力検査を残すこと（§3） |
+| 1.2 | 2026-09-29 | §6 に 2 項目、§7（D4〜D6、大杉さん同意済み）を追加。Astra君のレビューを反映 |

@@ -97,8 +97,13 @@ def _select_plugins(spec: str):
 # ──────────────────────────────────────────────────────────────────────
 def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "output/ppc",
         verbose: bool = True, demand_file: str = "demand_forecast.csv",
-        planning_state: bool = False) -> dict:
+        planning_state: bool = False, lot_flow_mode: str = None) -> dict:
     """GUI の planning + PPC を再現し、KPI スナップショット dict を返す。
+
+    lot_flow_mode（RequestLetter_LotIdentityFlow C1）："identity"／"legacy"。
+        優先順：この引数 → モデルの planning_config.csv の lot_flow_mode →
+        既定 "identity"。snapshot の config には、legacy 以外のときだけ
+        "lot_flow_mode" を記録する（既存 golden＝legacy の config と一致させるため）。
 
     Args:
         demand_file: 需要 CSV のファイル名（既定 "demand_forecast.csv"）。
@@ -126,10 +131,15 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     # ── Planning warm-up（Phase 2, opt-in）─────────────────────────
     #   planning_config.csv があれば助走行を materialize（demand=0 / cap・opcal コピー）。
     #   period 検出より前に走らせる（＝早い start 週を含める）。config 無し→no-op。
-    from wom.engine.warmup import materialize_warmup, format_summary, read_cpu_size
+    from wom.engine.warmup import (materialize_warmup, format_summary, read_cpu_size,
+                                   read_lot_flow_mode)
+    from wom.engine.forward_planner import resolve_lot_flow_mode, LOT_FLOW_LEGACY
     _wsum = materialize_warmup(model_dir, demand_file=demand_file)
     if verbose:
         print("[Headless]", format_summary(_wsum))
+    lot_flow_mode = resolve_lot_flow_mode(lot_flow_mode or read_lot_flow_mode(model_dir))
+    if verbose:
+        print(f"[Headless] lot_flow_mode={lot_flow_mode}")
 
     # ── 期間の自動検出 ─────────────────────────────────────────────
     dem_path = _p(demand_file)
@@ -158,7 +168,9 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     bus = HookBus()
     cfg = {"n_weeks": n_weeks, "start_week": start,
            "cap_path": _p("capacity_plan.csv"),
-           "holiday_cal_path": _p("holiday_calendar.csv")}
+           "holiday_cal_path": _p("holiday_calendar.csv"),
+           # read by plugins that trial-run ForwardPlanner (BufferingStockOptimizer)
+           "lot_flow_mode": lot_flow_mode}
     active_plugins, harvest_plugin = _select_plugins(plugins_spec)
     for pl in active_plugins:
         pl.register(bus)
@@ -237,7 +249,8 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
             if cfgs:
                 PushProductionPlanner(sc_tree).setup_all(cfgs)
         opening_inv = getattr(harvest_plugin, "opening_inv", {}) if harvest_plugin else {}
-        _fres = ForwardPlanner(sc_tree, opening_inv=opening_inv).run(prod_nm)
+        _fres = ForwardPlanner(sc_tree, opening_inv=opening_inv,
+                               lot_flow_mode=lot_flow_mode).run(prod_nm)
         _fres_all.append(_fres)
         _cap_hard_sealed += int(getattr(_fres, "cap_hard_sealed", 0) or 0)
         _cap_soft_viol   += len(getattr(_fres, "cap_soft_violations", []) or [])
@@ -250,7 +263,8 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     # ── スナップショット組み立て ───────────────────────────────────
     snap = {
         "case": os.path.basename(model_dir.rstrip("/\\")),
-        "config": {"plugins": sorted(type(p).__name__ for p in active_plugins)},
+        "config": {"plugins": sorted(type(p).__name__ for p in active_plugins),
+                   **({} if lot_flow_mode == LOT_FLOW_LEGACY else {"lot_flow_mode": lot_flow_mode})},
         "period": {"start": start, "weeks": n_weeks},
         "products": list(sc_tree.products),
         "forward": {"cap_hard_sealed": _cap_hard_sealed,
@@ -405,7 +419,15 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
                 if nd.plan_mode == "push":
                     pushed_short = getattr(nd, "_push_shortfall", None) or {}
                     shortfall = [pushed_short.get(w, 0) for w in range(n_weeks)]
-                    series = [len(sup[w][S]) - shortfall[w] for w in range(n_weeks)]
+                    # RequestLetter_LotIdentityFlow C2: the processed quantity is
+                    # the ACTUAL shipment count (ForwardPlanner exposes it as
+                    # nd._actual_ship). In legacy it equals len(S) - shortfall;
+                    # in identity S - shortfall is not the shipment (CO also ships).
+                    actual_ship = getattr(nd, "_actual_ship", None)
+                    if actual_ship is not None:
+                        series = [len(actual_ship.get(w, [])) for w in range(n_weeks)]
+                    else:
+                        series = [len(sup[w][S]) - shortfall[w] for w in range(n_weeks)]
                     series_kind = "throughput"
                     series_label_ja = "処理量（lot）"
                 else:
@@ -482,10 +504,13 @@ def main(argv=None) -> int:
     ap.add_argument("--out", default="", help="スナップショット JSON 出力先（省略時 stdout）")
     ap.add_argument("--ppc-out", default="output/ppc", help="PPC 出力先")
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--lot-flow-mode", default=None, choices=["identity", "legacy"],
+                    help="Forward の方式（省略時：planning_config.csv の lot_flow_mode、無ければ identity）")
     a = ap.parse_args(argv)
 
     snap = run(a.model_dir, plugins_spec=a.plugins,
-               output_ppc_dir=a.ppc_out, verbose=not a.quiet)
+               output_ppc_dir=a.ppc_out, verbose=not a.quiet,
+               lot_flow_mode=a.lot_flow_mode)
     text = json.dumps(snap, ensure_ascii=False, indent=2, sort_keys=True)
     if a.out:
         os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)

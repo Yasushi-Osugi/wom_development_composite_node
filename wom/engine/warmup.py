@@ -157,6 +157,25 @@ def read_cpu_size(model_dir: str) -> int:
     return 1
 
 
+def read_lot_flow_mode(model_dir: str) -> Optional[str]:
+    """
+    planning_config.csv（key,value）の lot_flow_mode キー（"identity"／"legacy"）を読む
+    （RequestLetter_LotIdentityFlow C1）。ファイル・キーが無い、または値が空なら None
+    （＝呼び出し側の既定、ForwardPlanner では "identity"）。値の検証は ForwardPlanner
+    （forward_planner.resolve_lot_flow_mode）が行う。
+    """
+    path = os.path.join(model_dir, _CONFIG)
+    if not model_dir or not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            k = (row.get("key") or "").strip()
+            v = (row.get("value") or "").strip()
+            if k == "lot_flow_mode":
+                return v or None
+    return None
+
+
 def first_nonzero_demand_week(demand_path: str) -> Optional[str]:
     """demand_forecast.csv の「最初の“非ゼロ”需要週」（＝real_start）。全ゼロ/空なら None。"""
     lines = _read_lines(demand_path)

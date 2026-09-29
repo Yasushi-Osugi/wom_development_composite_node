@@ -684,6 +684,10 @@ def run_bench(run_dir, out_json, shots_dir, select_lot=None):
         app.select_lot(lot, zoom=False)
         app.canvas.draw()
         _grab(app, os.path.join(shots_dir, "04_id_selected_overall.png"))
+        # the selected lot, zoomed to all its records (all nodes)
+        app.select_lot(lot, zoom=True)
+        app.canvas.draw()
+        _grab(app, os.path.join(shots_dir, "06_id_selected_zoom.png"))
         mi = proc.memory_info()
         res["rss_after_mb"] = mi.rss / 1e6
         res["peak_wset_mb"] = getattr(mi, "peak_wset", 0) / 1e6
@@ -706,9 +710,12 @@ def main(argv=None):
     ap.add_argument("--snapshot", default="final")
     ap.add_argument("--bench", default=None, help="scripted steps; write timings JSON here")
     ap.add_argument("--shots", default=None, help="screenshot folder for --bench")
+    ap.add_argument("--select", default=None,
+                    help="--bench: Lot_ID to select (default: the first planned-S ID of SE2)")
     a = ap.parse_args(argv)
     if a.bench:
-        run_bench(a.run_dir, a.bench, a.shots or os.path.dirname(os.path.abspath(a.bench)))
+        run_bench(a.run_dir, a.bench, a.shots or os.path.dirname(os.path.abspath(a.bench)),
+                  select_lot=a.select)
         return 0
     try:
         import ctypes

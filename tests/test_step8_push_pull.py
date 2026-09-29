@@ -273,7 +273,9 @@ def test_dad_inventory_cap_hard_shortfall():
     for w in range(len(weeks)):
         mom.set_capacity(w, cap_hard=2.0)
 
-    fp = ForwardPlanner(sc_tree)
+    # legacy sealing semantics (the sealed lots are lost). In lot_flow_mode=
+    # "identity" they are deferred and shipped later: Addendum1 A1 / D4.
+    fp = ForwardPlanner(sc_tree, lot_flow_mode="legacy")
     fp.run(sku_id)
 
     from wom.model.plan_node import NODE_TYPE_DAD

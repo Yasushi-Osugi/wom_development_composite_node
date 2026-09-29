@@ -106,6 +106,8 @@ def main(argv=None) -> int:
     ap.add_argument("--label", default="obs")
     ap.add_argument("--q12", action="store_true")
     ap.add_argument("--se2-compare-sha", default=None)
+    ap.add_argument("--lot-flow-mode", default=None, choices=["identity", "legacy"],
+                    help="Forward の方式（省略時：planning_config.csv、無ければ identity）")
     a = ap.parse_args(argv)
     repo = os.getcwd()
 
@@ -113,7 +115,8 @@ def main(argv=None) -> int:
         print(f"[lovem] output folder not empty: {a.out}", file=sys.stderr)
         return 2
     t0 = time.perf_counter()
-    observe_run(a.model_dir, a.out, plugins=a.plugins, repo=repo, label=a.label)
+    observe_run(a.model_dir, a.out, plugins=a.plugins, repo=repo, label=a.label,
+                lot_flow_mode=a.lot_flow_mode)
     t_obs = time.perf_counter() - t0
     t0 = time.perf_counter()
     v = verify_run(a.out)
@@ -126,7 +129,8 @@ def main(argv=None) -> int:
         from wom.lovem.q12 import compare_on_off
         tmp = tempfile.mkdtemp(prefix="lovem_q12obs_")
         try:
-            r = compare_on_off(a.model_dir, a.plugins, observe_out=tmp)
+            r = compare_on_off(a.model_dir, a.plugins, observe_out=tmp,
+                               lot_flow_mode=a.lot_flow_mode)
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
         json.dump(r, open(os.path.join(a.out, "q12.json"), "w", encoding="utf-8"), indent=2)

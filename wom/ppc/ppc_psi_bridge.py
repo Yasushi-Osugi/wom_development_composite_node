@@ -3,8 +3,10 @@ wom/ppc/ppc_psi_bridge.py
 ==========================
 Bridge: WOM Planning Engine PSI output → PPC sales_records input.
 
-Converts leaf_out node supply quantities (psi4supply[w][S]) from
-the SCTree into the lot-level DataFrame expected by PPCSimulationEngine.
+Converts leaf_out node ACTUAL shipments (ForwardPlanner._actual_s, exposed
+as node._actual_ship -- RequestLetter_LotIdentityFlow C4; formerly the
+planned psi4supply[w][S]) from the SCTree into the lot-level DataFrame
+expected by PPCSimulationEngine.
 
 Channel mapping logic
 ---------------------
@@ -147,8 +149,18 @@ def psi_to_sales_records(
                 region = parts[2] if len(parts) >= 3 else "UNKNOWN"
                 channel_node = _region_to_channel(region, merged_map)
 
+            # RequestLetter_LotIdentityFlow C4 / Decision Record §1.4: the sales
+            # quantity is the number of Lot_IDs ACTUALLY shipped in the week
+            # (ForwardPlanner exposes them as node._actual_ship), not the planned
+            # S (the demand position). Same code for both lot_flow_modes. Only
+            # when no Forward result is attached (planner not run through
+            # ForwardPlanner.run) does it fall back to the planned S count.
+            actual_ship = getattr(node, "_actual_ship", None)
             for w_idx, week_label in enumerate(weeks):
-                lot_count = node.qty_supply(w_idx, S_BUCKET)
+                if actual_ship is not None:
+                    lot_count = len(actual_ship.get(w_idx, []))
+                else:
+                    lot_count = node.qty_supply(w_idx, S_BUCKET)
                 if lot_count == 0:
                     continue
                 # Letter A (request_letter_a_cpu_size_to_plan.md): cpu_size is

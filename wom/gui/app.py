@@ -1541,10 +1541,17 @@ def psi_list_capacity_cells(node, w: int):
 def capacity_view_series(node, psi):
     """Series compared with capacity: a push node's supply layer shows what it
     PROCESSED (S − _push_shortfall, same as S3 / Phase 8-3c-4 案5) -- its P is
-    receipt, not production. Every other case shows P."""
+    receipt, not production. Every other case shows P.
+
+    RequestLetter_LotIdentityFlow C2: the processed quantity is the ACTUAL
+    shipment count (node._actual_ship, set by ForwardPlanner.run). In legacy it
+    equals S − _push_shortfall; in identity it does not (CO lots ship too)."""
     from wom.model.plan_node import S as S_, P as P_
     n = len(node.week_labels)
     if node.plan_mode == "push" and psi is node.psi4supply:
+        actual_ship = getattr(node, "_actual_ship", None)
+        if actual_ship is not None:
+            return [len(actual_ship.get(w, [])) for w in range(n)]
         sf = getattr(node, "_push_shortfall", None) or {}
         return [len(psi[w][S_]) - sf.get(w, 0) for w in range(n)]
     return [len(psi[w][P_]) for w in range(n)]
@@ -4059,7 +4066,8 @@ class DebugPanel(tk.Frame):
                 f"ForwardPlanner [{pn}]", "forward_planner",
                 "Apply capacity constraints, generate CO, PULL/PUSH supply"))
             calls.append(lambda p=pn:
-                ForwardPlanner(sc_tree, opening_inv=opening_inv).run(p))
+                ForwardPlanner(sc_tree, opening_inv=opening_inv,
+                               lot_flow_mode=cfg.get("lot_flow_mode")).run(p))
 
             # HOOK_POST_FORWARD
             steps.append(OperatorStep(
@@ -5248,6 +5256,15 @@ class WOMApp(tk.Tk):
             else {}
         )
 
+        # ── Forward lot flow solver (RequestLetter_LotIdentityFlow C1) ─
+        #   planning_config.csv の lot_flow_mode（無ければ既定 "identity"）。
+        #   切り替えの画面部品は作らない。プラグインも同じ値を読む（cfg 経由）。
+        from wom.engine.warmup import read_lot_flow_mode
+        from wom.engine.forward_planner import resolve_lot_flow_mode
+        _cfg["lot_flow_mode"] = resolve_lot_flow_mode(
+            read_lot_flow_mode(getattr(self, "_model_dir", "") or ""))
+        print(f"[Planning] lot_flow_mode={_cfg['lot_flow_mode']}")
+
         return {
             "sc_tree":     sc_tree,
             "weeks":       weeks,
@@ -5353,7 +5370,8 @@ class WOMApp(tk.Tk):
                         __import__('tkinter').BooleanVar(value=False)).get()
                     else {}
                 )
-                ForwardPlanner(sc_tree, opening_inv=_opening_inv).run(prod_nm)
+                ForwardPlanner(sc_tree, opening_inv=_opening_inv,
+                               lot_flow_mode=_cfg.get("lot_flow_mode")).run(prod_nm)
                 _bus.fire(HOOK_POST_FORWARD, sc_tree=sc_tree,
                           prod_nm=prod_nm, weeks=weeks, config=_cfg)
 
