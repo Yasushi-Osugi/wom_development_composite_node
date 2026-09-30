@@ -1,0 +1,10 @@
+﻿condition,product,assembly,row,node,receipt_sum,payout_sum,closing_I,component_diff,payout_not_in_kits,kits,kits_dup,incomplete,premature,waiting_components_end,status,reason
+after_identity,EVmaker_Local,Factory_Local_TH,完成品（組立）,Factory_Local_TH,52700,,,,,52700,0,0,0,0,OK,
+after_identity,EVmaker_Local,Factory_Local_TH,部材（置場）,Platform_Unit_Assy_Yard,52700,52700,0,0,0,,,,,0,OK,
+after_identity,EVmaker_Local,Factory_Local_TH,部材（置場）,Motor_Unit_Assy_Yard,52700,52700,0,0,0,,,,,0,OK,
+after_legacy,EVmaker_Local,Factory_Local_TH,完成品（組立）,Factory_Local_TH,52700,,,,,52700,0,0,0,0,OK,
+after_legacy,EVmaker_Local,Factory_Local_TH,部材（置場）,Platform_Unit_Assy_Yard,52700,52700,0,0,0,,,,,0,OK,
+after_legacy,EVmaker_Local,Factory_Local_TH,部材（置場）,Motor_Unit_Assy_Yard,52700,52700,0,0,0,,,,,0,OK,
+delay_identity,EVmaker_Local,Factory_Local_TH,完成品（組立）,Factory_Local_TH,52700,,,,,52700,0,0,0,0,OK,
+delay_identity,EVmaker_Local,Factory_Local_TH,部材（置場）,Platform_Unit_Assy_Yard,52700,52700,0,0,0,,,,,0,OK,
+delay_identity,EVmaker_Local,Factory_Local_TH,部材（置場）,Motor_Unit_Assy_Yard,52700,52700,0,0,0,,,,,0,OK,

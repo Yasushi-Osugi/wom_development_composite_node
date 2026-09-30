@@ -90,6 +90,7 @@ def psi_to_sales_records(
     channel_map: Optional[Dict[str, str]] = None,
     product_id_map: Optional[Dict[str, str]] = None,
     use_node_name: bool = False,
+    lot_flow_mode: Optional[str] = None,
 ) -> pd.DataFrame:
     """
     Extract leaf_out supply quantities from sc_tree and build sales_records.
@@ -116,6 +117,13 @@ def psi_to_sales_records(
         mapping from the region field.  Use this when ppc_market_price.csv
         keys on actual leaf_out node names (e.g. "Retail_AMER", "Retail_AMER_i15").
         Default: False (backward-compatible region-based mapping).
+    lot_flow_mode : str, optional
+        "identity" / "legacy" / None (then ``sc_tree.lot_flow_mode``, set by
+        the planning pipeline). Only decides what happens when a leaf_out has
+        NO actual-shipment record (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2
+        C3-3): legacy / not given -> the planned S count is used (the old
+        behaviour, unchanged); identity -> the node gets no sales record and a
+        warning is printed (unknown is not replaced by the request).
 
     Returns
     -------
@@ -131,6 +139,10 @@ def psi_to_sales_records(
 
     if product_id_map is None:
         product_id_map = {}
+
+    _mode = lot_flow_mode if lot_flow_mode not in (None, "") else getattr(sc_tree, "lot_flow_mode", None)
+    identity = str(_mode).strip().lower() == "identity" if _mode not in (None, "") else False
+    unknown_nodes: List[str] = []
 
     rows = []
     for prod_nm in sc_tree.products:
@@ -156,6 +168,12 @@ def psi_to_sales_records(
             # when no Forward result is attached (planner not run through
             # ForwardPlanner.run) does it fall back to the planned S count.
             actual_ship = getattr(node, "_actual_ship", None)
+            if actual_ship is None and identity:
+                # identity without a shipment record: unknown. Do NOT fall back
+                # to the request S (that would book revenue for lots that may
+                # never have shipped).
+                unknown_nodes.append(node.node_id)
+                continue
             for w_idx, week_label in enumerate(weeks):
                 if actual_ship is not None:
                     lot_count = len(actual_ship.get(w_idx, []))
@@ -179,6 +197,14 @@ def psi_to_sales_records(
                     "product_id":   ppc_product,
                     "qty":          qty,
                 })
+
+    if unknown_nodes:
+        import warnings
+        msg = (f"psi_to_sales_records: lot_flow_mode=identity but {len(unknown_nodes)} leaf_out "
+               f"node(s) have no actual-shipment record (e.g. {unknown_nodes[0]}). No sales "
+               f"records were made for them; the request S is NOT used instead.")
+        warnings.warn(msg, RuntimeWarning, stacklevel=2)
+        print(f"[PPC bridge] WARNING {msg}")
 
     if not rows:
         return pd.DataFrame(

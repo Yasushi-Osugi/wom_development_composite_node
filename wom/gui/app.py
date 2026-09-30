@@ -507,8 +507,9 @@ class ChartPanel(tk.Frame):
             ax.set_xticks(x[::tick_step])
             ax.set_xticklabels(weeks[::tick_step], rotation=45, ha="right", fontsize=7)
         self._ax_style(ax,
-                       "Harvest Input by Week — 稲作田 週次収穫・出荷量 (leaf_in → 産地集荷センター)",
-                       "Lots dispatched")
+                       "Harvest Input by Week — 稲作田 週次の収穫要求量（需要：Demand レイヤーの S。"
+                       "実出荷ではない） (leaf_in → 産地集荷センター)",
+                       "Lots requested (demand)")
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -715,7 +716,7 @@ class ManagementCockpitPanel(tk.Frame):
             ("fixed_cost_coverage", "固定費吸収率",    "≥ 75%",    "生産量 / CapHard"),
             ("production_leveling", "生産平準化指数",  "≥ 80%",    "1 - 変動係数"),
             ("buffer_retention",    "在庫滞留率",      "20–50%",   "バッファ保有率"),
-            ("fill_rate",           "需要充足率",      "≥ 95%",    "出荷 / 需要"),
+            ("fill_rate",           "需要充足率",      "≥ 95%",    "当週出荷 / 要求（市場）"),
             ("avg_cap_utilization", "設備稼働率",      "70–90%",   "P / CapHard"),
         ]
         for key, label_ja, target, formula in card_defs:
@@ -997,7 +998,8 @@ class ManagementCockpitPanel(tk.Frame):
 
         def _apply(key, value: float, status_fn):
             card = self._skpi_cards[key]
-            card["val_var"].set(f"{value:.1%}")
+            # NaN = unknown (identity plan without a shipment record): "—", not 0%
+            card["val_var"].set("—" if value != value else f"{value:.1%}")
             st = status_fn()
             icon = self._STATUS_ICON.get(st, "")
             card["status_var"].set(f"{icon} {st}")
@@ -2018,6 +2020,7 @@ class FlowCheckPanel(tk.Frame):
         ("in_transit_end", "期末の輸送中", 90), ("unplaced_end", "期間外へ繰延", 95),
         ("sealed_legacy", "封印(legacy)", 90), ("arrival_diff", "到着差", 60),
         ("recorded_arrivals", "記録された到着", 105), ("closing_CO", "期末 CO", 60),
+        ("dup_supply_ids", "同一ID重複", 80),
         ("status", "判定", 55), ("reason", "理由", 260),
     ]
     _MARKET_COLS = [
@@ -2128,7 +2131,11 @@ class FlowCheckPanel(tk.Frame):
         tot = self._fc["market"][-1]
         unit = "数量" if self._qty_var.get() else "lot"
         self._summary_var.set(
-            f"表 1：ノード {s['nodes']}（NG {s['ng']}・対象外 {s['not_applicable']}）　"
+            f"表 1：ノード {s['nodes']}（NG {s['ng']}・対象外 {s['not_applicable']}"
+            f"・同一ID重複 {s.get('dup_supply_ids', 0)}"
+            + (f"・Kitting の照合 {s['kitting_assemblies']} 組立（NG {s.get('kitting_ng', 0)}）"
+               if s.get("kitting_assemblies") else "")
+            + "）　"
             f"表 2（モデル全体、{unit}）：需要 {self._val(tot, 'demand')} ＝ 当週出荷 {self._val(tot, 'on_time')}"
             f" ＋ 早出し {self._val(tot, 'early')} ＋ 遅配 {self._val(tot, 'late')}"
             f" ＋ 期末注文残 {self._val(tot, 'backlog_end')}（検算の不一致 {s['market_check_nonzero']} 行）"
@@ -2577,8 +2584,14 @@ class SCNetworkPanel(tk.Frame):
         # sc_tree_to_planning_df from the leaf's supply S, i.e. the REQUEST
         # (Demand Position) -- not the actual shipment. The actual shipment is
         # Cols.SHIP_QTY (node._actual_ship), drawn as a thin line.
+        # S2 C2: in an identity plan demand_fulfilled is the actual shipment;
+        # the blue "S: Request" bar reads request_qty where the row has it.
+        if Cols.REQUEST_QTY in df.columns:
+            df = df.assign(_req=df[Cols.REQUEST_QTY].fillna(df[Cols.DEMAND_FULFILLED]))
+        else:
+            df = df.assign(_req=df[Cols.DEMAND_FULFILLED])
         _agg = dict(receipt=(Cols.SUPPLY_RECEIPT,   "sum"),
-                    sales  =(Cols.DEMAND_FULFILLED, "sum"),
+                    sales  =("_req",                "sum"),
                     inv    =(Cols.CLOSING_INV,      "sum"))
         if Cols.SHIP_QTY in df.columns:
             _agg["ship"] = (Cols.SHIP_QTY, "sum")
@@ -2716,16 +2729,19 @@ class SCNetworkPanel(tk.Frame):
 
     def _draw_cost_from_plan_node(self, node_obj, scen: str):
         """
-        Cost/Revenue chart from psi4supply S counts x per-node lot price.
-        Revenue      = len(psi4supply[w][S]) x selling_price_per_lot
-        COGS         = len(psi4supply[w][S]) x unit_cost_per_lot
+        Cost/Revenue chart: weekly quantity of the node x per-node lot price.
+        Revenue      = quantity x selling_price_per_lot
+        COGS         = quantity x unit_cost_per_lot
         Gross Profit = Revenue - COGS
 
-        NOTE (RequestLetter_FlowCheck V1): S is the REQUEST (Demand Position),
-        not the actual shipment (node._actual_ship). This chart therefore shows
-        the value of what was requested; in lot_flow_mode="identity" it can
-        exceed what was actually shipped. Unchanged here (display of the
-        request); the PPC tabs use the actual shipment at the market leaf.
+        Quantity (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2):
+          identity plan  the node's ACTUAL shipment, len(node._actual_ship[w])
+                         (any node, not only the market leaf). Without a
+                         shipment record nothing is drawn ("unknown") -- the
+                         request S is not used instead.
+          legacy plan    len(psi4supply[w][S]), the REQUEST (Demand Position)
+                         -- the old, request-based chart, unchanged.
+        The title says which basis is shown.
 
         Price lookup order:
           1. node_cost_master.csv  (product x node_name, per-node price chain)
@@ -2809,7 +2825,21 @@ class SCNetworkPanel(tk.Frame):
                         unit_cost     = float(rows["unit_cost"].mean())
 
         week_labels = node_obj.week_labels or [str(w) for w in range(n_weeks)]
-        s_qty       = [len(psi[w][S_]) for w in range(n_weeks)]
+        _identity = str(getattr(getattr(self, "_sc_tree", None), "lot_flow_mode", "") or "").lower() == "identity"
+        if _identity:
+            _actual = getattr(node_obj, "_actual_ship", None)
+            if _actual is None:
+                ax.text(0.5, 0.5, "実出荷の記録がありません（不明）\n要求 S では代用しません",
+                        color=FG_WHITE, ha="center", va="center", transform=ax.transAxes)
+                ax.set_title(f"Cost / Revenue  ─  {node_obj.node_id}  [{scen}]",
+                             color=FG_WHITE, fontsize=9, pad=6)
+                self._cost_canvas.draw()
+                return
+            s_qty = [len(_actual.get(w, [])) for w in range(n_weeks)]
+            basis_note = "実出荷ベース"
+        else:
+            s_qty = [len(psi[w][S_]) for w in range(n_weeks)]
+            basis_note = "要求 S ベース（legacy）"
 
         rev_vals  = [q * selling_price for q in s_qty]
         cogs_vals = [q * unit_cost     for q in s_qty]
@@ -2842,7 +2872,7 @@ class SCNetworkPanel(tk.Frame):
         if selling_price == 0:
             price_note = "  (price=0: check sku_master)"
         ax.set_title(
-            f"Cost / Revenue  ─  {node_obj.node_id}  [{scen}]{price_note}",
+            f"Cost / Revenue（{basis_note}）  ─  {node_obj.node_id}  [{scen}]{price_note}",
             color=FG_WHITE, fontsize=9, pad=6,
         )
         ax.legend(facecolor=BG_LIGHT, labelcolor=FG_WHITE, fontsize=7)
@@ -5514,6 +5544,9 @@ class WOMApp(tk.Tk):
         _cfg["lot_flow_mode"] = resolve_lot_flow_mode(
             read_lot_flow_mode(getattr(self, "_model_dir", "") or ""))
         print(f"[Planning] lot_flow_mode={_cfg['lot_flow_mode']}")
+        # The evaluation (planning DataFrame, Strategic KPI, PPC bridge, node
+        # Cost/Revenue chart) reads the mode from the tree -- S2 C2.
+        sc_tree.lot_flow_mode = _cfg["lot_flow_mode"]
 
         return {
             "sc_tree":     sc_tree,
@@ -5692,8 +5725,12 @@ class WOMApp(tk.Tk):
             self._sku_master = sku_master
 
             # Convert SCTree lots -> quantity DataFrame
+            # S2 C2: the evaluation follows the plan's lot flow mode (identity
+            # -> actual shipment; legacy -> the old request-based evaluation).
+            _mode = getattr(sc_tree, "lot_flow_mode", None)
             plan_df = sc_tree_to_planning_df(sc_tree,
-                                             scenario_name=SCENARIO_PLANNING)
+                                             scenario_name=SCENARIO_PLANNING,
+                                             lot_flow_mode=_mode)
             apply_inv_value(plan_df, sku_master)
 
             # Merge into existing ScenarioManager (or create one)
@@ -5783,8 +5820,10 @@ class WOMApp(tk.Tk):
             p_rows = plan_df
             avg_fr = p_rows[Cols.FILL_RATE].mean() if not p_rows.empty else 0
             total_so = p_rows[Cols.STOCKOUT_QTY].sum() if not p_rows.empty else 0
+            _basis = ("実出荷ベース" if str(_mode or "").lower() == "identity"
+                      else "要求 S ベース（legacy）")
             planning_status = (f"  |  Planning: fill {avg_fr:.1%}, "
-                               f"stockout {total_so:,.0f}")
+                               f"stockout {total_so:,.0f}（{_basis}）")
 
         except Exception as exc:
             import traceback

@@ -1,0 +1,83 @@
+﻿warmup_lt,kind,key,lots
+0,stuck_node,capacity: SP_iPhone16 [iPhone16] supply_point/pull,38007
+0,stuck_node,capacity: SP_iPhone15 [iPhone15] supply_point/pull,27267
+0,stuck_node,horizon_edge(start): Foxconn_CN [iPhone16] mom/pull,5600
+0,stuck_node,horizon_edge(start): Foxconn_CN_i15 [iPhone15] mom/pull,4500
+0,stuck_node,horizon_edge(start): DC_AMER [iPhone16] dad/pull,2700
+0,stuck_node,horizon_edge(start): Foxconn_IN [iPhone16] mom/pull,2700
+0,stuck_node,horizon_edge(start): DC_EMEA [iPhone16] dad/pull,2520
+0,stuck_node,horizon_edge(start): DC_APAC [iPhone16] dad/pull,2160
+0,stuck_node,horizon_edge(start): Retail_AMER [iPhone16] leaf_out/pull,1800
+0,stuck_node,horizon_edge(start): TSMC_TW [iPhone16] mom/pull,1600
+0,stuck_node,horizon_edge(start): Retail_APAC [iPhone16] leaf_out/pull,1440
+0,stuck_node,horizon_edge(start): Retail_EMEA [iPhone16] leaf_out/pull,1260
+0,first_fail_node,cap: Foxconn_CN [iPhone16],38007
+0,first_fail_node,cap: Foxconn_CN_i15 [iPhone15],27267
+0,first_fail_node,lt: TSMC_TW [iPhone16],5600
+0,first_fail_node,lt: TSMC_TW_i15 [iPhone15],4500
+0,first_fail_node,lt: DC_AMER [iPhone16],2700
+0,first_fail_node,lt: BoschSensor_IN [iPhone16],2700
+0,first_fail_node,lt: DC_EMEA [iPhone16],2520
+0,first_fail_node,lt: DC_APAC [iPhone16],2160
+0,first_fail_node,lt: Retail_AMER [iPhone16],1800
+0,first_fail_node,lt: SiliconWafer_TW [iPhone16],1600
+0,first_fail_node,lt: Retail_APAC [iPhone16],1440
+0,first_fail_node,lt: Retail_EMEA [iPhone16],1260
+0,flag_combination,past_due_cap,58124
+0,flag_combination,past_due_lt|before_first_supply,32560
+0,flag_combination,past_due_cap|before_first_supply,7150
+0,min_missing_weeks,1,10000
+0,min_missing_weeks,2,10000
+0,min_missing_weeks,3,5450
+0,min_missing_weeks,4,2210
+0,min_missing_weeks,5,1300
+0,min_missing_weeks,6,1300
+0,min_missing_weeks,7,1300
+0,min_missing_weeks,8,500
+0,min_missing_weeks,9,500
+17,stuck_node,capacity: SP_iPhone16 [iPhone16] supply_point/pull,31787
+17,stuck_node,capacity: SP_iPhone15 [iPhone15] supply_point/pull,24047
+17,stuck_node,horizon_edge(start): Foxconn_CN [iPhone16] mom/pull,5600
+17,stuck_node,horizon_edge(start): Foxconn_CN_i15 [iPhone15] mom/pull,4500
+17,stuck_node,horizon_edge(start): TSMC_TW [iPhone16] mom/pull,1600
+17,stuck_node,horizon_edge(start): TSMC_TW_i15 [iPhone15] mom/pull,1000
+17,first_fail_node,cap: Foxconn_CN [iPhone16],31787
+17,first_fail_node,cap: Foxconn_CN_i15 [iPhone15],24047
+17,first_fail_node,lt: TSMC_TW [iPhone16],5600
+17,first_fail_node,lt: TSMC_TW_i15 [iPhone15],4500
+17,first_fail_node,lt: SiliconWafer_TW [iPhone16],1600
+17,first_fail_node,lt: SiliconWafer_TW_i15 [iPhone15],1000
+17,flag_combination,past_due_cap,55834
+17,flag_combination,past_due_lt|mom_cap_pushback|before_first_supply,12700
+17,min_missing_weeks,1,2600
+17,min_missing_weeks,2,2600
+17,min_missing_weeks,3,1300
+17,min_missing_weeks,4,1300
+17,min_missing_weeks,5,1300
+17,min_missing_weeks,6,1300
+17,min_missing_weeks,7,1300
+17,min_missing_weeks,8,500
+17,min_missing_weeks,9,500
+26,stuck_node,capacity: SP_iPhone16 [iPhone16] supply_point/pull,24587
+26,stuck_node,capacity: SP_iPhone15 [iPhone15] supply_point/pull,19547
+26,stuck_node,horizon_edge(start): Foxconn_CN [iPhone16] mom/pull,5600
+26,stuck_node,horizon_edge(start): Foxconn_CN_i15 [iPhone15] mom/pull,4500
+26,stuck_node,horizon_edge(start): TSMC_TW [iPhone16] mom/pull,1600
+26,stuck_node,horizon_edge(start): TSMC_TW_i15 [iPhone15] mom/pull,1000
+26,first_fail_node,cap: Foxconn_CN [iPhone16],24587
+26,first_fail_node,cap: Foxconn_CN_i15 [iPhone15],19547
+26,first_fail_node,lt: TSMC_TW [iPhone16],5600
+26,first_fail_node,lt: TSMC_TW_i15 [iPhone15],4500
+26,first_fail_node,lt: SiliconWafer_TW [iPhone16],1600
+26,first_fail_node,lt: SiliconWafer_TW_i15 [iPhone15],1000
+26,flag_combination,past_due_cap,44134
+26,flag_combination,past_due_lt|mom_cap_pushback|before_first_supply,12700
+26,min_missing_weeks,1,2600
+26,min_missing_weeks,2,2600
+26,min_missing_weeks,3,1300
+26,min_missing_weeks,4,1300
+26,min_missing_weeks,5,1300
+26,min_missing_weeks,6,1300
+26,min_missing_weeks,7,1300
+26,min_missing_weeks,8,500
+26,min_missing_weeks,9,500

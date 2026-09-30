@@ -158,6 +158,9 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     # ── SCTree 構築 ────────────────────────────────────────────────
     sc_tree_df = pd.read_csv(_p("sc_tree_master.csv"))
     sc_tree = build_sc_tree_from_master(sc_tree_df, weeks)
+    # 評価（sc_tree_to_planning_df・Strategic KPI・PPC ブリッジ）が、どの方式の計画かを
+    # 知るための印（RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2）。計画は変えない。
+    sc_tree.lot_flow_mode = lot_flow_mode
     # Request Letter A (request_letter_a_cpu_size_to_plan.md) discrepancy,
     # resolved here and flagged for owner review: sc_tree.cpu_size is read
     # from planning_config.csv and used by the KPI/display conversion layer
@@ -266,6 +269,15 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
         _cap_def_lots    += int(getattr(_fres, "cap_hard_deferred_lots", 0) or 0)
         _cap_def_weeks   += int(getattr(_fres, "cap_hard_deferred_lot_weeks", 0) or 0)
         _cap_soft_viol   += len(getattr(_fres, "cap_soft_violations", []) or [])
+        # B4（RequestLetter_iPhoneWarmup_EVUpdateKitting_S2、記録だけ）：供給側に同じ
+        # Lot_ID が 2 件以上あった（ノード・週・ID）。照合で 1 件だけが出荷され、残りは
+        # 在庫にも残らない。--quiet でも警告を 1 行出す。snapshot には入れない。
+        _dups = list(getattr(_fres, "supply_duplicate_ids", []) or [])
+        if _dups:
+            _d0 = _dups[0]
+            print(f"[Headless] WARNING {prod_nm}: 供給側に同じ Lot_ID が 2 件以上 "
+                  f"{len(_dups)} 件（ノード・週・ID）。例 {_d0[0]} {_d0[1]} {_d0[2]} ×{_d0[3]}"
+                  f"（Flow Check 表 1 の「同一ID重複」）")
         bus.fire(HOOK_POST_FORWARD, sc_tree=sc_tree, prod_nm=prod_nm, weeks=weeks, config=cfg)
     bus.fire(HOOK_POST_PLAN, sc_tree=sc_tree, weeks=weeks, config=cfg)
 

@@ -403,6 +403,7 @@ identity の値（例）：iphone は `cap_hard_deferred_lots` 55,413・lot 週 
 - 期待との差：依頼書 V1 は名前と説明の修正で、計算は変えないとした。
   - 今回は、実出荷を別の列（`ship_qty`）として加え、`demand_fulfilled` を使う箇所に注記を入れるにとどめた。
   - 計算を実出荷に切り替えると legacy の DAD 行の値が変わるので、別の依頼で判断してほしい。
+- **追記（2026-09-30）**：`RequestLetter_iPhoneWarmup_EVUpdateKitting_S2` の C で対応した。identity の計画では、充足・売上の計算が実出荷ベースになった（legacy は要求ベースのまま、値は変えていない）。Harvest Input は需要（要求）のまま、図に「需要」と書いた。詳しくは `docs/development/WOM_iPhoneWarmup_EVUpdateKitting_S2_Report.md` §4。
 
 ### S3　identity の `cap_hard_sealed` が 0 になる
 

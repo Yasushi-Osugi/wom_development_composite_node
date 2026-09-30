@@ -4,6 +4,18 @@ WOM Money PSI Evaluator  –  Management Layer (financial view)
 Converts quantity PSI simulation output into money PSI:
   Revenue        = demand_fulfilled × selling_price
   COGS           = demand_fulfilled × unit_cost
+
+  What demand_fulfilled is (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2)
+  is told by the row's Cols.QTY_BASIS, written by sc_tree_to_planning_df:
+    "actual_ship"  identity plan: the ACTUAL shipment of the week (late
+                   shipments included) -- Revenue / COGS of what was shipped.
+    "request"      legacy plan: the request S (Demand Position) -- the old,
+                   request-based evaluation, kept unchanged for comparison.
+    "unknown"      identity plan without a shipment record: the quantity is
+                   NaN, so Revenue / COGS are NaN (never the request instead).
+    (no column)    simulator scenarios (inventory.py): "simulated".
+  The basis is carried into weekly_df / summary_df as Cols.QTY_BASIS. Prices,
+  costs, currency and the lot / cpu_size conversion are not changed here.
   Gross Profit   = Revenue - COGS
   Gross Margin%  = Gross Profit / Revenue
   Inventory Value= closing_inv × unit_cost
@@ -73,12 +85,18 @@ def evaluate_money(
     )
     merged[Cols.INV_VALUE_COST] = merged[Cols.CLOSING_INV] * merged[Cols.UNIT_COST]
 
+    # Quantity basis of each row (identification only -- no value depends on it).
+    if Cols.QTY_BASIS in merged.columns:
+        merged[Cols.QTY_BASIS] = merged[Cols.QTY_BASIS].fillna("simulated")
+    else:
+        merged[Cols.QTY_BASIS] = "simulated"
+
     weekly_df = merged[[
         Cols.SCENARIO, Cols.SKU_ID, Cols.REGION, Cols.WEEK,
         Cols.DEMAND_FULFILLED, Cols.CLOSING_INV,
         Cols.SELLING_PRICE, Cols.UNIT_COST,
         Cols.REVENUE, Cols.COGS, Cols.GROSS_PROFIT, Cols.GROSS_MARGIN,
-        Cols.INV_VALUE_COST, Cols.DSO_WKS, Cols.DPO_WKS,
+        Cols.INV_VALUE_COST, Cols.DSO_WKS, Cols.DPO_WKS, Cols.QTY_BASIS,
     ]].copy()
 
     # ── Per-SKU×Region×Scenario summary + CCC ─────────────────────
@@ -105,6 +123,16 @@ def evaluate_money(
         )
         .reset_index()
     )
+
+    # Quantity basis per group; a group whose shipment is unknown has unknown
+    # (NaN) totals -- pandas would otherwise sum the NaN rows to 0.
+    basis = (weekly_df.groupby(group_keys)[Cols.QTY_BASIS]
+             .agg(lambda s: "unknown" if (s == "unknown").any() else s.iloc[0])
+             .reset_index())
+    agg = agg.merge(basis, on=group_keys, how="left")
+    _unk = agg[Cols.QTY_BASIS] == "unknown"
+    if _unk.any():
+        agg.loc[_unk, ["total_revenue", "total_cogs", "total_gp", "avg_margin", "total_units"]] = np.nan
 
     # Merge DSO/DPO from price_df (already in agg via "first")
     agg = agg.merge(horizon_wks, on=group_keys, how="left")

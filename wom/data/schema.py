@@ -96,12 +96,21 @@ class Cols:
     SUPPLY_RECEIPT  = "supply_receipt"
     GROSS_AVAIL     = "gross_avail"
     DEMAND_FCST     = "demand_fcst"
-    # NOTE (RequestLetter_FlowCheck V1): in the Planning DataFrame
-    # (sc_tree_to_planning_df) demand_fulfilled is len(supply S) x cpu, i.e.
-    # the REQUEST (Demand Position), not the actual shipment. The actual
-    # shipment is SHIP_QTY. Kept unchanged (money / KPI read it).
+    # Planning DataFrame (sc_tree_to_planning_df) -- the meaning of
+    # demand_fulfilled depends on QTY_BASIS
+    # (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2):
+    #   "request"      legacy / mode not given: len(supply S) x cpu, i.e. the
+    #                  REQUEST (Demand Position). The old evaluation, unchanged.
+    #   "actual_ship"  identity: the actual shipment of the week (= SHIP_QTY,
+    #                  late shipments included). Revenue / COGS use this.
+    #   "unknown"      identity, but the node has no shipment record: NaN
+    #                  (never replaced by the request).
     DEMAND_FULFILLED= "demand_fulfilled"
     SHIP_QTY        = "ship_qty"         # actual shipment (node._actual_ship) x cpu
+    QTY_BASIS       = "qty_basis"        # "request" / "actual_ship" / "unknown"
+    REQUEST_QTY     = "request_qty"      # this week's request: len(supply S) x cpu
+    ON_TIME_QTY     = "on_time_qty"      # this week's request IDs shipped this week
+    CO_END_QTY      = "co_end_qty"       # requests still open at the END of the week
     STOCKOUT_QTY    = "stockout_qty"
     CLOSING_INV     = "closing_inv"
     SAFETY_STOCK_QTY= "safety_stock_qty"

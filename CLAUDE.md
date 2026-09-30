@@ -947,11 +947,16 @@ WOM の KPI フレームワークは根本的に異なる 3 次元構造を持�
 | WOM 指標 | PSI バケット | 上位 KPI への接続 |
 | :---- | :---- | :---- |
 | 需要予測精度 | demand_forecast vs 実績差 | 販売予測精度 → 変化対応率 |
-| Fill Rate (充足率) | 実出荷（`_actual_ship`）/ S（要求） | 販売機会損失率 → 売上高成長率 |
-| Sell-through サイクル (週) | 実出荷の連続性（S は要求） | デイリー在庫日数 → 販社在庫日数 |
-| 販売チャネル Revenue | ppc_market_price × 実出荷（PPC は実出荷を使う。S は要求） | 売上高 → 事業損益 |
+| Fill Rate (充足率) | 当週充足 ÷ 当週要求。当週充足＝その週の要求（S）の Lot_ID のうち、同じ週に実出荷（`_actual_ship`）されたもの。前の週から繰り越した要求（CO）を今週出荷しても、今週の充足には数えない（100% を超えない） | 販売機会損失率 → 売上高成長率 |
+| Sell-through サイクル (週) | 実出荷（`ship_qty`）の連続性（S は要求） | デイリー在庫日数 → 販社在庫日数 |
+| 販売チャネル Revenue | 価格 × 実出荷（`ship_qty`。遅配分の出荷を含む）。PPC も money も実出荷を使う。S は要求 | 売上高 → 事業損益 |
 
-\* 上の Fill Rate・Sell-through は、あるべき定義。**2026-09-30 時点の実装（`sc_tree_to_df.py` の `demand_fulfilled`・`fill_rate`、`money.py` の Revenue・COGS、Management・KPI の画面）は、まだ S（要求）ベースのまま**で、identity では実出荷より多く出る（`docs/development/WOM_FlowCheck_WarmupTrial_Report.md` §6 S2、未対応）。PPC の販売数量だけが実出荷ベース。
+\* 上の定義は、**identity の計画**について、2026-09-30 に実装した（`RequestLetter_iPhoneWarmup_EVUpdateKitting_S2` C、報告書 `docs/development/WOM_iPhoneWarmup_EVUpdateKitting_S2_Report.md`）。
+- 実装した範囲：`sc_tree_to_df.py`（`demand_fulfilled`＝実出荷、`fill_rate`、`stockout_qty`＝当週未充足、新しい列 `qty_basis`・`request_qty`・`on_time_qty`・`co_end_qty`）、それを読む `money.py` の Revenue・COGS、`strategic_kpi.py` の充足率、KPI・Charts・Management の画面、ノードの Cost/Revenue チャート（任意のノードの実出荷）。方式は `sc_tree.lot_flow_mode`（GUI・headless が付ける印）か、引数 `lot_flow_mode` で渡す。
+- **legacy の計画は、これまでどおり S（要求）ベース**（比較用。行の `qty_basis` が `request`）。legacy の値は 1 つも変えていない。
+- 実出荷の記録が無い identity のノードは「不明」（NaN、`qty_basis=unknown`）で、要求 S では代用しない。実出荷 0 の記録は 0。
+- Charts の Harvest Input は、Demand レイヤーの S（要求）のまま。図の題と軸に「需要」と書いてある。
+- 残っている未対応：(1) money の `units`（Landed Cost の運賃の計算に使う lot 数）は、DAD の行も合計するので、市場の lot 数の 2〜3 倍になる（今回の変更の前から。値は変えていない）。(2) money（`sku_master` の価格）と PPC（`ppc_market_price`×為替）の売上は、もともと別の台帳で、一致しないモデルがある（Management の P&L は PPC の台帳で上書きする）。
 | Gross Profit / Profit Zone | PPC engine 出力 | 事業利益 → ROE |
 
 ---

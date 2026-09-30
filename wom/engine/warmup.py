@@ -15,6 +15,10 @@ wom/engine/warmup.py — Planning Warm-up 行の materialize（案B-safe）
        effective_start = planning_start 指定あり: min(planning_start, real_start)
                          warmup_lt>0          : real_start − warmup_lt
                          それ以外              : real_start（助走なし）
+       capacity_plan の書式は2つ（実ローダ capacity_sealer.load_capacity_dataframe と同じ）:
+         新書式（node_name 列あり）: (sku_id, node_name) ごとに、最初の実週の max_supply をコピー。
+         旧書式（node_name 列なし）: 最初の実週の各行を、week だけ替えてそのままコピー
+                                     （(sku_id, week) の合計＝MOM の能力、が保たれる）。
   - D3 materialize：CSV に書く。生成物と原本の区別は「最初の“非ゼロ”需要週(real_start)より前の週の行」。
        idempotent（strip→再生成）、byte-stable（同 warmup_lt→同バイト列）、write-if-needed（整合なら書かない）。
 
@@ -107,6 +111,13 @@ def _parse(line: str) -> List[str]:
 
 def _col(header_fields: List[str], name: str) -> int:
     return header_fields.index(name)
+
+
+def _fmt(fields: List[str]) -> str:
+    """_parse の逆（1 行）。カンマや引用符を含む欄は CSV の規則で引用する。"""
+    buf = io.StringIO()
+    csv.writer(buf, lineterminator="").writerow(fields)
+    return buf.getvalue()
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -241,6 +252,34 @@ def _build_warm_lines(kind: str, hf: List[str], first_week_rows: List[List[str]]
         return out
 
     if kind == "capacity":
+        missing = [c for c in ("sku_id", "week", "max_supply") if c not in hf]
+        if missing:
+            raise ValueError(
+                f"{_CAPACITY}: required column(s) missing for warm-up: {missing} "
+                f"(header: {hf})")
+        if "node_name" not in hf:
+            # 旧書式（node_name 列なし。例 iphone_global:
+            #   sku_id,region,week,max_supply,cap_pieces,source）
+            # RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 A1。
+            # 実ローダ（capacity_sealer.load_capacity_dataframe の "sku-aggregate" 経路）は、
+            # この書式を「(sku_id, week) ごとに max_supply を合計し、その製品の InBound root
+            # （MOM）の能力とする」と読む。能力の帰属は「行」そのもの（sku_id と、region・
+            # source 等の補助列）なので、最初の実週の各行を、week だけ差し替えて**そのまま**
+            # コピーする。こうすると
+            #   - (sku_id, week) の合計＝ローダが見る能力が、最初の実週と同じになる
+            #   - region・source・cap_pieces 等の列（能力の帰属の記録）が保たれる
+            #   - 同じ sku_id の行が複数あっても（地域別・拠点別）、混ざらず、合計も変わらない
+            # node_name を補ったり、region を node 名に読み替えたりはしない。
+            # 最初の実週に行が無い sku_id（後から発売される製品）には、助走行を作らない
+            # （新書式と同じ規則）。生成行の見分け方は D3 のとおり「week < real_start」。
+            wi = _col(hf, "week")
+            out = []
+            for wk in warm_weeks:
+                for r in first_week_rows:
+                    row = list(r)
+                    row[wi] = wk
+                    out.append(_fmt(row))
+            return out
         wi = _col(hf, "week")
         si, ni, mi = _col(hf, "sku_id"), _col(hf, "node_name"), _col(hf, "max_supply")
         srci = hf.index("source") if "source" in hf else None

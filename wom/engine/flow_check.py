@@ -39,7 +39,29 @@ Table 1
   recorded_arrivals  deliveries recorded by the planner into this node within
                    the horizon (ForwardPlanResult.edge_flows) -- cross-check
   closing_CO       supply CO of the last week
+  dup_supply_ids   (node, week, Lot_ID) cases where the supply side (previous I
+                   + P) held the same Lot_ID twice or more
+                   (ForwardPlanResult.supply_duplicate_ids). The identity match
+                   ships one copy and drops the others, so 1 or more is NG.
   status / reason  OK / NG / 対象外 (see _judge)
+
+Table 3 (Kitting; one row per assembly node and per component yard --
+         RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 B3)
+  An assembly node whose children are all stockyards is 対象外 for the arrival
+  check of table 1 (N components become 1 product, so "shipped towards" and
+  "received" are different things by design). Table 3 checks that boundary
+  itself, separately for the components and for the finished product:
+  yard row      receipt_sum (component arrivals) = payout_sum (paid out to the
+                gate) + closing_I                      -> component_diff (0 = OK)
+                payout_not_in_kits  paid-out Lot_IDs that are not a finished kit
+  assembly row  kits       Lot_IDs in the assembly's P (finished products)
+                kits_dup   Lot_IDs produced twice or more            (0 = OK)
+                incomplete kits whose Lot_ID was not paid out by EVERY yard
+                                                                     (0 = OK)
+                premature  kits made before the last component arrived
+                                                                     (0 = OK)
+                waiting_components_end  components left in the yards at the end
+                           (the early part of an incomplete set -- not an error)
 
 Table 2 (leaf_out; per leaf, product total, model total)
   demand           distinct Lot_IDs in the leaf's supply S (its requests)
@@ -63,10 +85,16 @@ NODE_COLUMNS = [
     "product", "node", "node_id", "node_type", "plan_mode",
     "opening_I", "receipt_sum", "ship_sum", "closing_I", "conservation_diff",
     "upstream_ship_sum", "in_transit_end", "unplaced_end", "sealed_legacy",
-    "arrival_diff", "recorded_arrivals", "closing_CO", "status", "reason",
+    "arrival_diff", "recorded_arrivals", "closing_CO", "dup_supply_ids",
+    "status", "reason",
 ]
 MARKET_COLUMNS = [
     "product", "leaf", "demand", "on_time", "early", "late", "backlog_end", "check",
+]
+KITTING_COLUMNS = [
+    "product", "assembly", "row", "node", "receipt_sum", "payout_sum", "closing_I",
+    "component_diff", "payout_not_in_kits", "kits", "kits_dup", "incomplete",
+    "premature", "waiting_components_end", "status", "reason",
 ]
 QTY_SUFFIX = "_qty"
 _NODE_QTY_COLS = ["opening_I", "receipt_sum", "ship_sum", "closing_I",
@@ -191,6 +219,79 @@ def _judge(row, node, flags) -> None:
         row["status"], row["reason"] = STATUS_OK, ""
 
 
+def compute_kitting_check(sc_tree) -> List[dict]:
+    """Table 3: component consumption and finished-product creation at every
+    Kitting assembly (children all stockyards). Read-only."""
+    n = sc_tree.num_weeks()
+    rows: List[dict] = []
+    for prod in sc_tree.products:
+        for asm in sc_tree.iter_all_nodes(prod):
+            if not _is_kitting_assembly(asm):
+                continue
+            kit_week: Dict[str, int] = {}
+            kit_count: Dict[str, int] = defaultdict(int)
+            for w in range(n):
+                for lot in asm.psi4supply[w][P]:
+                    kit_week.setdefault(lot, w)
+                    kit_count[lot] += 1
+            kits_dup = sum(1 for c in kit_count.values() if c > 1)
+            paid_by_all = None
+            last_arrival: Dict[str, int] = {}
+            waiting = 0
+            yard_rows = []
+            for yard in asm.children:
+                arr_week: Dict[str, int] = {}
+                receipt = 0
+                for w in range(n):
+                    receipt += len(yard.psi4supply[w][P])
+                    for lot in yard.psi4supply[w][P]:
+                        arr_week.setdefault(lot, w)
+                paid: Dict[str, int] = {}
+                payout = 0
+                for w, lots in sorted((_actual(yard) or {}).items()):
+                    payout += len(lots)
+                    for lot in lots:
+                        paid.setdefault(lot, w)
+                closing = len(yard.psi4supply[n - 1][I]) if n else 0
+                waiting += closing
+                for lot in kit_week:
+                    if lot in arr_week:
+                        last_arrival[lot] = max(last_arrival.get(lot, -1), arr_week[lot])
+                paid_by_all = set(paid) if paid_by_all is None else (paid_by_all & set(paid))
+                diff = receipt - payout - closing
+                not_kit = sum(1 for lot in paid if lot not in kit_week)
+                ok = diff == 0 and not_kit == 0
+                yard_rows.append({
+                    "product": prod, "assembly": asm.node_name, "row": "部材（置場）",
+                    "node": yard.node_name, "receipt_sum": receipt, "payout_sum": payout,
+                    "closing_I": closing, "component_diff": diff, "payout_not_in_kits": not_kit,
+                    "kits": None, "kits_dup": None, "incomplete": None, "premature": None,
+                    "waiting_components_end": closing,
+                    "status": STATUS_OK if ok else STATUS_NG,
+                    "reason": "" if ok else ("部材の保存差" if diff else "払い出したが完成していない ID"),
+                })
+            paid_by_all = paid_by_all or set()
+            incomplete = sum(1 for lot in kit_week if lot not in paid_by_all)
+            premature = sum(1 for lot, w in kit_week.items() if w < last_arrival.get(lot, -1))
+            ok = (kits_dup == 0 and incomplete == 0 and premature == 0
+                  and all(r["status"] == STATUS_OK for r in yard_rows))
+            why = [t for t, v in (("完成品の二重生成", kits_dup), ("部材がそろっていない完成", incomplete),
+                                  ("部材の到着より前の完成", premature)) if v]
+            if not why and not ok:
+                why = ["置場の行に NG"]
+            rows.append({
+                "product": prod, "assembly": asm.node_name, "row": "完成品（組立）",
+                "node": asm.node_name, "receipt_sum": sum(kit_count.values()),
+                "payout_sum": None, "closing_I": None, "component_diff": None,
+                "payout_not_in_kits": None, "kits": len(kit_week), "kits_dup": kits_dup,
+                "incomplete": incomplete, "premature": premature,
+                "waiting_components_end": waiting,
+                "status": STATUS_OK if ok else STATUS_NG, "reason": "／".join(why),
+            })
+            rows.extend(yard_rows)
+    return rows
+
+
 def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> dict:
     """Build Flow Check tables 1 and 2.
 
@@ -213,7 +314,10 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
         unplaced = defaultdict(int)
         sealed = defaultdict(int)
         recorded = defaultdict(int)
+        dups = defaultdict(list)       # node_id -> [(week_label, lot_id, count)]
         if res is not None:
+            for nid, wl_, lot, cnt in getattr(res, "supply_duplicate_ids", []) or []:
+                dups[nid].append((wl_, lot, cnt))
             for nid, _wl, lots in (list(getattr(res, "closure_p_unplaced", []) or [])
                                    + list(getattr(res, "cap_hard_unplaced", []) or [])):
                 unplaced[nid] += len(lots)
@@ -248,6 +352,7 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
                                  - unplaced.get(nd.node_id, 0) - sealed.get(nd.node_id, 0)),
                 "recorded_arrivals": recorded.get(nd.node_id, 0),
                 "closing_CO": closing_co,
+                "dup_supply_ids": len(dups.get(nd.node_id, ())),
             }
             # supply built with Lot_IDs that no market demand owns (e.g. rice
             # HarvestBatch OI_ lots, given as opening inventory: they may stay
@@ -267,6 +372,12 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
             if flags["no_record"]:
                 row["conservation_diff"] = 0 if ship_map is None else row["conservation_diff"]
             _judge(row, nd, flags)
+            if row["dup_supply_ids"]:
+                wl_, lot, cnt = dups[nd.node_id][0]
+                msg = (f"同じ ID が供給側に 2 件以上（{row['dup_supply_ids']} 件。"
+                       f"例 {wl_} {lot} ×{cnt}）")
+                row["reason"] = (row["reason"] + "／" + msg) if row["status"] == STATUS_NG else msg
+                row["status"] = STATUS_NG
             for c in _NODE_QTY_COLS:
                 row[c + QTY_SUFFIX] = row[c] * cpu
             node_rows.append(row)
@@ -305,6 +416,24 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
         pt["check"] = pt["demand"] - (pt["on_time"] + pt["early"] + pt["late"] + pt["backlog_end"])
         market_rows.append(pt)
 
+    # Table 3: the Kitting boundary (component consumption / product creation).
+    # Its verdict is written into the assembly's table-1 row: the row stays
+    # 対象外 for the generic arrival check, but an inconsistency is NG.
+    kitting_rows = compute_kitting_check(sc_tree)
+    kit_verdict = {(r["product"], r["assembly"]): r for r in kitting_rows if r["row"] == "完成品（組立）"}
+    kit_yard_ng = {(r["product"], r["assembly"]) for r in kitting_rows if r["status"] == STATUS_NG}
+    for row in node_rows:
+        key = (row["product"], row["node"])
+        kv = kit_verdict.get(key)
+        if kv is None or row["status"] == STATUS_NG:
+            continue
+        if key in kit_yard_ng:
+            row["status"] = STATUS_NG
+            row["reason"] = "Kitting の照合（表 3）で不一致：" + (kv["reason"] or "置場の行に NG")
+        elif row["status"] == STATUS_NA and row["reason"] == "対象外（Kitting）":
+            row["reason"] = (f"対象外（Kitting）。表 3 の照合は一致（完成 {kv['kits']}、"
+                             f"期末に置場で待つ部材 {kv['waiting_components_end']}）")
+
     model = {k: sum(r[k] for r in market_rows if r["leaf"] == "Σ（製品）")
              for k in ("demand", "on_time", "early", "late", "backlog_end")}
     mt = {"product": "Σ（モデル全体）", "leaf": "", **model}
@@ -319,20 +448,31 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
         "ng": sum(1 for r in node_rows if r["status"] == STATUS_NG),
         "not_applicable": sum(1 for r in node_rows if r["status"] == STATUS_NA),
         "market_check_nonzero": sum(1 for r in market_rows if r["check"] != 0),
+        "dup_supply_ids": sum(r["dup_supply_ids"] for r in node_rows),
+        "kitting_assemblies": len(kit_verdict),
+        "kitting_ng": sum(1 for r in kitting_rows if r["status"] == STATUS_NG),
         "cpu_size": cpu,
     }
-    return {"nodes": node_rows, "market": market_rows, "summary": summary}
+    return {"nodes": node_rows, "market": market_rows, "kitting": kitting_rows,
+            "summary": summary}
 
 
 def write_flow_check_csv(fc: dict, out_dir: str) -> List[str]:
-    """Write flow_check_nodes.csv / flow_check_market.csv (utf-8-sig for Excel)."""
+    """Write flow_check_nodes.csv / flow_check_market.csv, and flow_check_kitting.csv
+    when the plan has a Kitting assembly (utf-8-sig for Excel)."""
     os.makedirs(out_dir, exist_ok=True)
     paths = []
     for name, cols, rows in (
             ("flow_check_nodes.csv",
              NODE_COLUMNS + [c + QTY_SUFFIX for c in _NODE_QTY_COLS], fc["nodes"]),
             ("flow_check_market.csv",
-             MARKET_COLUMNS + [c + QTY_SUFFIX for c in _MARKET_QTY_COLS], fc["market"])):
+             MARKET_COLUMNS + [c + QTY_SUFFIX for c in _MARKET_QTY_COLS], fc["market"]),
+            ("flow_check_kitting.csv", KITTING_COLUMNS, fc.get("kitting") or [])):
+        if name == "flow_check_kitting.csv" and not rows:
+            stale = os.path.join(out_dir, name)
+            if os.path.exists(stale):
+                os.remove(stale)          # no Kitting assembly in this plan
+            continue
         path = os.path.join(out_dir, name)
         with open(path, "w", newline="", encoding="utf-8-sig") as f:
             wr = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")

@@ -97,6 +97,8 @@ class StrategicKPI:
 
     def status_fill_rate(self) -> str:
         v = self.fill_rate
+        if v != v:            # NaN: identity plan without a shipment record
+            return "N/A"
         if v >= 0.95:
             return "OK"
         if v >= 0.85:
@@ -186,6 +188,7 @@ class StrategicKPI:
 def compute_strategic_kpi(
     sc_tree,
     product_filter: Optional[str] = None,
+    lot_flow_mode: Optional[str] = None,
 ) -> StrategicKPI:
     """
     Compute Strategic KPIs from a post-planning SCTree.
@@ -198,6 +201,14 @@ def compute_strategic_kpi(
     product_filter : if given (and not "All"), only this product's nodes
         are included — lets the Management tab show per-SKU Strategic KPI
         instead of the all-products blend.
+    lot_flow_mode : "identity" / "legacy" / None (then sc_tree.lot_flow_mode,
+        set by the planning pipeline). Decides the Fill Rate only
+        (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2):
+          legacy / not given: supply S (request) / demand S -- the old value.
+          identity: market requests shipped in their own request week /
+                    market requests (by Lot_ID; a late shipment does not count
+                    as filling this week's request). NaN when a market leaf
+                    has no actual-shipment record (never the request instead).
 
     Returns
     -------
@@ -228,6 +239,9 @@ def compute_strategic_kpi(
     # 4. Fill rate (leaf_out nodes only)
     total_demand_lots = 0
     total_fulfilled_lots = 0
+    from wom.engine.sc_tree_to_df import resolve_eval_mode
+    identity = resolve_eval_mode(sc_tree, lot_flow_mode) == "identity"
+    ship_unknown = False
 
     for prod_nm in products:
         for node in sc_tree.iter_all_nodes(prod_nm):
@@ -269,7 +283,17 @@ def compute_strategic_kpi(
                         weekly_prod[w] += p_count
 
             # Fill rate: leaf_out only
-            if node.node_type == NODE_TYPE_LEAF_OUT:
+            if node.node_type == NODE_TYPE_LEAF_OUT and identity:
+                actual = getattr(node, "_actual_ship", None)
+                if actual is None:
+                    ship_unknown = True
+                for w in range(nw):
+                    req = node.psi4supply[w][S]
+                    total_demand_lots += len(req)
+                    if actual is not None:
+                        shipped = set(actual.get(w, ()))
+                        total_fulfilled_lots += sum(1 for lot in req if lot in shipped)
+            elif node.node_type == NODE_TYPE_LEAF_OUT:
                 for w in range(nw):
                     total_demand_lots    += len(node.psi4demand[w][S])
                     total_fulfilled_lots += len(node.psi4supply[w][S])
@@ -309,6 +333,8 @@ def compute_strategic_kpi(
         if total_demand_lots > 0 else 0.0
     )
     fill_rate = min(fill_rate, 1.0)
+    if ship_unknown:
+        fill_rate = float("nan")      # unknown -- not replaced by the request
 
     # 5. Avg Cap Utilization
     avg_cap_utilization = (

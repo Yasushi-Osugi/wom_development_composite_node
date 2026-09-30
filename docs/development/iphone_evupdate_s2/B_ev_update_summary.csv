@@ -1,0 +1,6 @@
+﻿condition,demand,on_time,late,backlog_end,flow_check_ng,flow_check_na,ng_reason,supply_duplicate_ids,ppc_revenue_base,ppc_cost_base,ppc_gross_margin_pct
+after_identity,63240,63240,0,0,0,1,,0,319119580000.0,138830903750.0,0.564956
+after_legacy,63240,63240,0,0,0,7,,0,319119580000.0,138830903750.0,0.564956
+before_identity,63240,63240,0,0,1,0,保存差／同じ ID が供給側に 2 件以上（52400 件。例 2025-W50 EVmaker_Local:PRO:2026-W02:00001 ×2）,52400,319119580000.0,138830903750.0,0.564956
+before_legacy,63240,63240,0,0,1,6,保存差／同じ ID が供給側に 2 件以上（52400 件。例 2025-W50 EVmaker_Local:PRO:2026-W02:00001 ×2）,52400,319119580000.0,138830903750.0,0.564956
+delay_identity,63240,62440,800,0,0,1,,0,319119580000.0,138830903750.0,0.564956

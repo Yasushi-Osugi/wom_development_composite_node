@@ -196,9 +196,31 @@ class ForwardPlanResult:
     p_copied_node_ids:  List[str]   = field(default_factory=list)
     opening_inv_counts: Dict[str, int] = field(default_factory=dict)
 
+    # RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 B4 -- recorded in BOTH modes,
+    # the plan is not changed by recording them:
+    #   supply_duplicate_ids (node_id, week_label, lot_id, count): the supply
+    #       side of a node-week (previous I + this week's P, after Step 0) holds
+    #       the same Lot_ID `count` (>= 2) times. _match_by_identity treats the
+    #       supply as a set: it ships one copy and keeps NONE of the others in I
+    #       (they vanish -- a conservation difference). Typical cause: several
+    #       assembly parts deliver the same demand Lot_ID straight into an
+    #       assembly node that has no stockyards (no Kitting Gate).
+    #       One entry per (node, week, Lot_ID); a copy that stays in I is
+    #       reported again in the following weeks.
+    supply_duplicate_ids: List[tuple] = field(default_factory=list)
+
     def record_edge_flow(self, from_id, to_id, ship_w, arrive_w, count):
         if count:
             self.edge_flows.append((from_id, to_id, ship_w, arrive_w, count))
+
+    def record_supply_duplicates(self, node_id, week_label, lots):
+        # B4 (record only): called when `lots` has repeated Lot_IDs.
+        counts: Dict[str, int] = {}
+        for lot in lots:
+            counts[lot] = counts.get(lot, 0) + 1
+        for lot, c in counts.items():
+            if c > 1:
+                self.supply_duplicate_ids.append((node_id, week_label, lot, c))
 
     def record_kitting_fallback(self, node_id, week_label, lot_id):
         self.kitting_fallback_events.append((node_id, week_label, lot_id))
@@ -715,6 +737,11 @@ class ForwardPlanner:
             # Supply side
             p_lots    = list(node.psi4supply[w][P])
             available = prev_inv_lots + p_lots
+
+            # B4 (record only, both modes): the same Lot_ID twice or more on the
+            # supply side. Nothing is changed here -- see supply_duplicate_ids.
+            if len(available) > 1 and len(set(available)) != len(available):
+                result.record_supply_duplicates(node.node_id, wk_label, available)
 
             # Demand side
             if is_push_mode and self._identity:
