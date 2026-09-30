@@ -5,7 +5,8 @@
 - 起草：Claude君
 - 着手の時期：`RequestLetter_SimMgmt_WorldMapTrial` を終えた後
 - 種別：**読み取り・計測だけ**。コード・データ・golden を変えない。commit しない。
-- 前提：`docs/design/drafts/WOM_ValueChain_Model_StageD_Design_v0.2.md`（以下「設計草案」）
+- 前提：`docs/design/drafts/WOM_ValueChain_Model_StageD_Design_v0.3.md`（以下「設計草案」）
+- **測定の条件を固定する**：着手時の SHA、入力（モデルのフォルダ）、計画の方式（lot_flow_mode）、プラグインの組を報告書の最初に記録し、途中でブランチが進んでも混ぜない。
 
 ## 1. 目的
 
@@ -39,18 +40,29 @@
 実出荷 lot 数 × 物量／lot（cpu_size など） × 物量当たり単価 × 通貨換算
 ```
 
-- 各マスター（`sku_master`、`ppc_market_price`、`ppc_supplier_cost`、`ppc_node_cost_rule`、`ppc_edge_cost_rule`、`ppc_transfer_price_rule`）の価格・原価が、「lot 当たり」か「物量当たり」かを、列名・コメント・値の大きさから判断し、判断の根拠を書く。
+- 各マスター（`sku_master`、`ppc_market_price`、`ppc_supplier_cost`、`ppc_node_cost_rule`、`ppc_edge_cost_rule`、`ppc_transfer_price_rule`）の価格・原価の単位を、次の 3 つに**分けて**書く。**価格の桁だけで単位を決めない。**
+  - コードが使っている単位（コードの読み）
+  - マスターやコメント・設計文書に明記された単位
+  - 値の大きさからの推測（推測であると明記する）
 - 今の PPC の約束（マスターの単価は物量当たり、集計で qty を掛ける）と合っているかを示す。
 - iphone_global の売上 641 兆円が、どの掛け算から来ているかを示す。money の 4.16 億円との違いの理由も示す。
 
 ### S4　設計草案の割当での今の価格の位置づけ
 
-設計草案 §7 の法人の割当（案）で、今の移転価格が「法人間の価格」「法人内の管理価格」のどちらに当たるかを、Cookie と soysauce-jpy-alloc で確かめる。法人間の取引が起きる区間で、価格の設定が無いものを一覧にする。
+設計草案 §7 の法人と 3 種類のチャネルの割当（案）で、Cookie と soysauce-jpy-alloc について次を確かめる。
+
+- 今の移転価格が「法人間の価格」「法人内の管理価格」のどちらに当たるか。
+- 法人間の取引が起きる区間で、価格の設定が無いもの。
+- 外部の販売チャネル（②）への**卸価格**と、その先の**最終市場の価格**のうち、設定が無いもの。
+
+### S5　Kitting の「部材がそろった」と「組立の完了」
+
+設計草案 §2.4 のため、今の WOM の Kitting Gate で、「必要な部材がそろった週」と「完成品が組立ノードの P に入った週（組立の完了）」が、いつも同じ週かを確かめる。能力待ちで組立が後の週になる場合がどう記録されるかを、ev-thailand-2026_update と bom-test-2026 で調べる。
 
 ## 3. 成果物
 
 報告書 `docs/development/WOM_StageD_Survey_Report.md`
 
-- S1〜S4 の表
+- S1〜S5 の表
 - 設計草案と食い違う点、設計草案が見落としている点
 - 未確認の点
