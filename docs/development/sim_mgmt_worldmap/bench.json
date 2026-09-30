@@ -1,0 +1,999 @@
+{
+ "screen": {
+  "physical_px": [
+   1920,
+   1080
+  ],
+  "logical_px_seen_by_wom": [
+   1536,
+   864
+  ],
+  "scaling_percent": 125,
+  "dpi_awareness": "unaware (same as python -m main)",
+  "window": "1400x860+20+20"
+ },
+ "python": "3.12.3",
+ "matplotlib": "3.9.2",
+ "numpy": "1.26.4",
+ "data_files_bytes": {
+  "ne_10m.npz": 2949541,
+  "ne_110m.npz": 104005,
+  "ne_50m.npz": 952031
+ },
+ "startup": [
+  {
+   "model": "ev-thailand-2026",
+   "lod": "110m",
+   "python_start_to_script_s": 1.265,
+   "import_s": 0.659,
+   "data_load_s": 0.006,
+   "model_load_s": 0.023,
+   "window_and_first_draw_s": 0.156,
+   "to_map_shown_s": 1.05,
+   "to_map_shown_incl_python_s": 2.315,
+   "first_view": {
+    "lod": "110m",
+    "segments": 603,
+    "view_width_deg": 360.0,
+    "cull_ms": 4.5,
+    "draw_ms": 53.6
+   },
+   "world_draw": {
+    "median_ms": 52.8,
+    "p95_ms": 53.3,
+    "min_ms": 50.3,
+    "max_ms": 53.3,
+    "n": 5
+   },
+   "world_lod": "110m",
+   "rss_mb": {
+    "process_start": 88.0,
+    "after_import": 114.8,
+    "after_first_draw": 144.5
+   },
+   "points_loaded": {
+    "110m/border": 3108,
+    "110m/coast": 5136,
+    "110m/land": 5143
+   },
+   "wall_incl_process_start_and_exit_s": 2.858
+  },
+  {
+   "model": "ev-thailand-2026",
+   "lod": "50m",
+   "python_start_to_script_s": 1.25,
+   "import_s": 0.646,
+   "data_load_s": 0.023,
+   "model_load_s": 0.021,
+   "window_and_first_draw_s": 0.211,
+   "to_map_shown_s": 1.09,
+   "to_map_shown_incl_python_s": 2.34,
+   "first_view": {
+    "lod": "50m",
+    "segments": 3373,
+    "view_width_deg": 360.0,
+    "cull_ms": 25.4,
+    "draw_ms": 88.4
+   },
+   "world_draw": {
+    "median_ms": 77.5,
+    "p95_ms": 90.5,
+    "min_ms": 75.9,
+    "max_ms": 90.5,
+    "n": 5
+   },
+   "world_lod": "50m",
+   "rss_mb": {
+    "process_start": 88.2,
+    "after_import": 115.2,
+    "after_first_draw": 149.5
+   },
+   "points_loaded": {
+    "50m/border": 19866,
+    "50m/coast": 60538,
+    "50m/land": 60669
+   },
+   "wall_incl_process_start_and_exit_s": 3.106
+  },
+  {
+   "model": "ev-thailand-2026",
+   "lod": "10m",
+   "python_start_to_script_s": 1.267,
+   "import_s": 0.622,
+   "data_load_s": 0.074,
+   "model_load_s": 0.023,
+   "window_and_first_draw_s": 0.375,
+   "to_map_shown_s": 1.274,
+   "to_map_shown_incl_python_s": 2.541,
+   "first_view": {
+    "lod": "10m",
+    "segments": 13189,
+    "view_width_deg": 360.0,
+    "cull_ms": 55.3,
+    "draw_ms": 228.9
+   },
+   "world_draw": {
+    "median_ms": 384.8,
+    "p95_ms": 386.0,
+    "min_ms": 232.3,
+    "max_ms": 386.0,
+    "n": 5
+   },
+   "world_lod": "10m",
+   "rss_mb": {
+    "process_start": 88.3,
+    "after_import": 114.7,
+    "after_first_draw": 157.4
+   },
+   "points_loaded": {
+    "10m/border": 77305,
+    "10m/coast": 412023
+   },
+   "wall_incl_process_start_and_exit_s": 4.937
+  },
+  {
+   "model": "ev-thailand-2026",
+   "lod": "auto",
+   "python_start_to_script_s": 1.284,
+   "import_s": 0.618,
+   "data_load_s": 0.101,
+   "model_load_s": 0.024,
+   "window_and_first_draw_s": 0.145,
+   "to_map_shown_s": 1.09,
+   "to_map_shown_incl_python_s": 2.374,
+   "first_view": {
+    "lod": "110m",
+    "segments": 603,
+    "view_width_deg": 360.0,
+    "cull_ms": 4.1,
+    "draw_ms": 47.2
+   },
+   "world_draw": {
+    "median_ms": 48.2,
+    "p95_ms": 51.0,
+    "min_ms": 46.2,
+    "max_ms": 51.0,
+    "n": 5
+   },
+   "world_lod": "110m",
+   "rss_mb": {
+    "process_start": 88.1,
+    "after_import": 115.0,
+    "after_first_draw": 158.1
+   },
+   "points_loaded": {
+    "110m/border": 3108,
+    "110m/coast": 5136,
+    "110m/land": 5143,
+    "50m/border": 19866,
+    "50m/coast": 60538,
+    "50m/land": 60669,
+    "10m/border": 77305,
+    "10m/coast": 412023
+   },
+   "wall_incl_process_start_and_exit_s": 2.889
+  },
+  {
+   "model": "iphone_global",
+   "lod": "110m",
+   "python_start_to_script_s": 1.233,
+   "import_s": 0.631,
+   "data_load_s": 0.006,
+   "model_load_s": 0.027,
+   "window_and_first_draw_s": 0.148,
+   "to_map_shown_s": 0.995,
+   "to_map_shown_incl_python_s": 2.228,
+   "first_view": {
+    "lod": "110m",
+    "segments": 603,
+    "view_width_deg": 360.0,
+    "cull_ms": 4.1,
+    "draw_ms": 48.7
+   },
+   "world_draw": {
+    "median_ms": 49.4,
+    "p95_ms": 59.5,
+    "min_ms": 44.6,
+    "max_ms": 59.5,
+    "n": 5
+   },
+   "world_lod": "110m",
+   "rss_mb": {
+    "process_start": 88.4,
+    "after_import": 115.3,
+    "after_first_draw": 144.9
+   },
+   "points_loaded": {
+    "110m/border": 3108,
+    "110m/coast": 5136,
+    "110m/land": 5143
+   },
+   "wall_incl_process_start_and_exit_s": 2.742
+  },
+  {
+   "model": "iphone_global",
+   "lod": "50m",
+   "python_start_to_script_s": 1.25,
+   "import_s": 0.62,
+   "data_load_s": 0.022,
+   "model_load_s": 0.028,
+   "window_and_first_draw_s": 0.193,
+   "to_map_shown_s": 1.049,
+   "to_map_shown_incl_python_s": 2.299,
+   "first_view": {
+    "lod": "50m",
+    "segments": 3373,
+    "view_width_deg": 360.0,
+    "cull_ms": 23.6,
+    "draw_ms": 80.4
+   },
+   "world_draw": {
+    "median_ms": 77.6,
+    "p95_ms": 88.1,
+    "min_ms": 77.1,
+    "max_ms": 88.1,
+    "n": 5
+   },
+   "world_lod": "50m",
+   "rss_mb": {
+    "process_start": 88.2,
+    "after_import": 114.8,
+    "after_first_draw": 149.4
+   },
+   "points_loaded": {
+    "50m/border": 19866,
+    "50m/coast": 60538,
+    "50m/land": 60669
+   },
+   "wall_incl_process_start_and_exit_s": 3.052
+  },
+  {
+   "model": "iphone_global",
+   "lod": "10m",
+   "python_start_to_script_s": 1.254,
+   "import_s": 0.622,
+   "data_load_s": 0.073,
+   "model_load_s": 0.027,
+   "window_and_first_draw_s": 0.385,
+   "to_map_shown_s": 1.294,
+   "to_map_shown_incl_python_s": 2.548,
+   "first_view": {
+    "lod": "10m",
+    "segments": 13189,
+    "view_width_deg": 360.0,
+    "cull_ms": 61.3,
+    "draw_ms": 234.0
+   },
+   "world_draw": {
+    "median_ms": 382.6,
+    "p95_ms": 392.9,
+    "min_ms": 241.8,
+    "max_ms": 392.9,
+    "n": 5
+   },
+   "world_lod": "10m",
+   "rss_mb": {
+    "process_start": 88.2,
+    "after_import": 115.2,
+    "after_first_draw": 157.6
+   },
+   "points_loaded": {
+    "10m/border": 77305,
+    "10m/coast": 412023
+   },
+   "wall_incl_process_start_and_exit_s": 5.005
+  },
+  {
+   "model": "iphone_global",
+   "lod": "auto",
+   "python_start_to_script_s": 1.249,
+   "import_s": 0.622,
+   "data_load_s": 0.117,
+   "model_load_s": 0.028,
+   "window_and_first_draw_s": 0.144,
+   "to_map_shown_s": 1.094,
+   "to_map_shown_incl_python_s": 2.344,
+   "first_view": {
+    "lod": "110m",
+    "segments": 603,
+    "view_width_deg": 360.0,
+    "cull_ms": 3.9,
+    "draw_ms": 48.8
+   },
+   "world_draw": {
+    "median_ms": 45.5,
+    "p95_ms": 51.7,
+    "min_ms": 44.5,
+    "max_ms": 51.7,
+    "n": 5
+   },
+   "world_lod": "110m",
+   "rss_mb": {
+    "process_start": 88.3,
+    "after_import": 114.9,
+    "after_first_draw": 158.4
+   },
+   "points_loaded": {
+    "110m/border": 3108,
+    "110m/coast": 5136,
+    "110m/land": 5143,
+    "50m/border": 19866,
+    "50m/coast": 60538,
+    "50m/land": 60669,
+    "10m/border": 77305,
+    "10m/coast": 412023
+   },
+   "wall_incl_process_start_and_exit_s": 2.835
+  },
+  {
+   "model": "oil-global-2027",
+   "lod": "110m",
+   "python_start_to_script_s": 1.226,
+   "import_s": 0.611,
+   "data_load_s": 0.005,
+   "model_load_s": 0.031,
+   "window_and_first_draw_s": 0.148,
+   "to_map_shown_s": 1.007,
+   "to_map_shown_incl_python_s": 2.233,
+   "first_view": {
+    "lod": "110m",
+    "segments": 603,
+    "view_width_deg": 360.0,
+    "cull_ms": 4.1,
+    "draw_ms": 49.0
+   },
+   "world_draw": {
+    "median_ms": 49.2,
+    "p95_ms": 57.6,
+    "min_ms": 46.7,
+    "max_ms": 57.6,
+    "n": 5
+   },
+   "world_lod": "110m",
+   "rss_mb": {
+    "process_start": 88.3,
+    "after_import": 115.0,
+    "after_first_draw": 145.1
+   },
+   "points_loaded": {
+    "110m/border": 3108,
+    "110m/coast": 5136,
+    "110m/land": 5143
+   },
+   "wall_incl_process_start_and_exit_s": 2.763
+  },
+  {
+   "model": "oil-global-2027",
+   "lod": "50m",
+   "python_start_to_script_s": 1.275,
+   "import_s": 0.635,
+   "data_load_s": 0.022,
+   "model_load_s": 0.031,
+   "window_and_first_draw_s": 0.202,
+   "to_map_shown_s": 1.072,
+   "to_map_shown_incl_python_s": 2.347,
+   "first_view": {
+    "lod": "50m",
+    "segments": 3373,
+    "view_width_deg": 360.0,
+    "cull_ms": 23.6,
+    "draw_ms": 82.6
+   },
+   "world_draw": {
+    "median_ms": 81.2,
+    "p95_ms": 88.3,
+    "min_ms": 78.8,
+    "max_ms": 88.3,
+    "n": 5
+   },
+   "world_lod": "50m",
+   "rss_mb": {
+    "process_start": 88.3,
+    "after_import": 115.0,
+    "after_first_draw": 149.1
+   },
+   "points_loaded": {
+    "50m/border": 19866,
+    "50m/coast": 60538,
+    "50m/land": 60669
+   },
+   "wall_incl_process_start_and_exit_s": 3.114
+  },
+  {
+   "model": "oil-global-2027",
+   "lod": "10m",
+   "python_start_to_script_s": 1.293,
+   "import_s": 0.637,
+   "data_load_s": 0.091,
+   "model_load_s": 0.035,
+   "window_and_first_draw_s": 0.395,
+   "to_map_shown_s": 1.343,
+   "to_map_shown_incl_python_s": 2.636,
+   "first_view": {
+    "lod": "10m",
+    "segments": 13189,
+    "view_width_deg": 360.0,
+    "cull_ms": 60.0,
+    "draw_ms": 238.2
+   },
+   "world_draw": {
+    "median_ms": 371.3,
+    "p95_ms": 388.9,
+    "min_ms": 219.0,
+    "max_ms": 388.9,
+    "n": 5
+   },
+   "world_lod": "10m",
+   "rss_mb": {
+    "process_start": 88.1,
+    "after_import": 114.9,
+    "after_first_draw": 158.0
+   },
+   "points_loaded": {
+    "10m/border": 77305,
+    "10m/coast": 412023
+   },
+   "wall_incl_process_start_and_exit_s": 4.973
+  },
+  {
+   "model": "oil-global-2027",
+   "lod": "auto",
+   "python_start_to_script_s": 1.258,
+   "import_s": 0.63,
+   "data_load_s": 0.106,
+   "model_load_s": 0.033,
+   "window_and_first_draw_s": 0.173,
+   "to_map_shown_s": 1.125,
+   "to_map_shown_incl_python_s": 2.383,
+   "first_view": {
+    "lod": "110m",
+    "segments": 603,
+    "view_width_deg": 360.0,
+    "cull_ms": 5.3,
+    "draw_ms": 51.7
+   },
+   "world_draw": {
+    "median_ms": 47.8,
+    "p95_ms": 48.7,
+    "min_ms": 45.9,
+    "max_ms": 48.7,
+    "n": 5
+   },
+   "world_lod": "110m",
+   "rss_mb": {
+    "process_start": 88.5,
+    "after_import": 114.9,
+    "after_first_draw": 158.4
+   },
+   "points_loaded": {
+    "110m/border": 3108,
+    "110m/coast": 5136,
+    "110m/land": 5143,
+    "50m/border": 19866,
+    "50m/coast": 60538,
+    "50m/land": 60669,
+    "10m/border": 77305,
+    "10m/coast": 412023
+   },
+   "wall_incl_process_start_and_exit_s": 2.89
+  }
+ ],
+ "interactive": {
+  "data_load_all_s": 0.102,
+  "models": {
+   "ev-thailand-2026": {
+    "nodes": 14,
+    "edges": 12,
+    "weeks": 104,
+    "views": {
+     "World": {
+      "lod": "110m",
+      "parts_drawn": 603,
+      "zoom_into_view_ms": 81.5,
+      "pan": {
+       "median_ms": 79.2,
+       "p95_ms": 86.5,
+       "min_ms": 75.5,
+       "max_ms": 86.5,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 79.2,
+       "p95_ms": 81.5,
+       "min_ms": 74.7,
+       "max_ms": 81.5,
+       "n": 4
+      },
+      "lods_used": [
+       "110m"
+      ]
+     },
+     "Asia": {
+      "lod": "50m",
+      "parts_drawn": 1887,
+      "zoom_into_view_ms": 108.3,
+      "pan": {
+       "median_ms": 105.4,
+       "p95_ms": 109.2,
+       "min_ms": 100.9,
+       "max_ms": 109.2,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 99.7,
+       "p95_ms": 111.6,
+       "min_ms": 94.0,
+       "max_ms": 111.6,
+       "n": 4
+      },
+      "lods_used": [
+       "50m"
+      ]
+     },
+     "Thailand": {
+      "lod": "50m",
+      "parts_drawn": 427,
+      "zoom_into_view_ms": 64.2,
+      "pan": {
+       "median_ms": 70.5,
+       "p95_ms": 79.4,
+       "min_ms": 69.1,
+       "max_ms": 79.4,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 74.3,
+       "p95_ms": 81.8,
+       "min_ms": 69.6,
+       "max_ms": 81.8,
+       "n": 4
+      },
+      "lods_used": [
+       "10m",
+       "50m"
+      ]
+     },
+     "Bangkok": {
+      "lod": "10m",
+      "parts_drawn": 3,
+      "zoom_into_view_ms": 58.5,
+      "pan": {
+       "median_ms": 67.1,
+       "p95_ms": 84.4,
+       "min_ms": 60.2,
+       "max_ms": 84.4,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 62.2,
+       "p95_ms": 64.4,
+       "min_ms": 59.5,
+       "max_ms": 64.4,
+       "n": 4
+      },
+      "lods_used": [
+       "10m"
+      ]
+     }
+    },
+    "fixed_10m": {
+     "World": {
+      "parts_drawn": 14611,
+      "draw": {
+       "median_ms": 536.2,
+       "p95_ms": 574.5,
+       "min_ms": 528.0,
+       "max_ms": 574.5,
+       "n": 3
+      }
+     },
+     "Asia": {
+      "parts_drawn": 10084,
+      "draw": {
+       "median_ms": 256.2,
+       "p95_ms": 260.1,
+       "min_ms": 249.9,
+       "max_ms": 260.1,
+       "n": 3
+      }
+     }
+    },
+    "weekly_playback": {
+     "nodes__blit": {
+      "median_ms": 32.7,
+      "p95_ms": 34.1,
+      "min_ms": 26.0,
+      "max_ms": 37.1,
+      "n": 40
+     },
+     "nodes__no_blit": {
+      "median_ms": 46.8,
+      "p95_ms": 50.6,
+      "min_ms": 44.2,
+      "max_ms": 54.4,
+      "n": 40
+     },
+     "World__blit": {
+      "median_ms": 30.8,
+      "p95_ms": 33.0,
+      "min_ms": 26.9,
+      "max_ms": 33.3,
+      "n": 40
+     },
+     "World__no_blit": {
+      "median_ms": 51.6,
+      "p95_ms": 55.8,
+      "min_ms": 49.3,
+      "max_ms": 67.2,
+      "n": 40
+     }
+    }
+   },
+   "iphone_global": {
+    "nodes": 15,
+    "edges": 10,
+    "weeks": 156,
+    "views": {
+     "World": {
+      "lod": "110m",
+      "parts_drawn": 603,
+      "zoom_into_view_ms": 78.4,
+      "pan": {
+       "median_ms": 78.5,
+       "p95_ms": 82.9,
+       "min_ms": 65.2,
+       "max_ms": 82.9,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 78.0,
+       "p95_ms": 81.4,
+       "min_ms": 76.5,
+       "max_ms": 81.4,
+       "n": 4
+      },
+      "lods_used": [
+       "110m"
+      ]
+     },
+     "Asia": {
+      "lod": "50m",
+      "parts_drawn": 1887,
+      "zoom_into_view_ms": 115.0,
+      "pan": {
+       "median_ms": 108.6,
+       "p95_ms": 114.2,
+       "min_ms": 102.8,
+       "max_ms": 114.2,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 100.4,
+       "p95_ms": 111.6,
+       "min_ms": 93.5,
+       "max_ms": 111.6,
+       "n": 4
+      },
+      "lods_used": [
+       "50m"
+      ]
+     },
+     "Thailand": {
+      "lod": "50m",
+      "parts_drawn": 427,
+      "zoom_into_view_ms": 66.6,
+      "pan": {
+       "median_ms": 69.2,
+       "p95_ms": 73.3,
+       "min_ms": 68.0,
+       "max_ms": 73.3,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 74.7,
+       "p95_ms": 77.6,
+       "min_ms": 68.9,
+       "max_ms": 77.6,
+       "n": 4
+      },
+      "lods_used": [
+       "10m",
+       "50m"
+      ]
+     },
+     "Bangkok": {
+      "lod": "10m",
+      "parts_drawn": 3,
+      "zoom_into_view_ms": 56.7,
+      "pan": {
+       "median_ms": 57.0,
+       "p95_ms": 58.3,
+       "min_ms": 55.5,
+       "max_ms": 58.3,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 57.3,
+       "p95_ms": 62.4,
+       "min_ms": 55.3,
+       "max_ms": 62.4,
+       "n": 4
+      },
+      "lods_used": [
+       "10m"
+      ]
+     }
+    },
+    "fixed_10m": {
+     "World": {
+      "parts_drawn": 14611,
+      "draw": {
+       "median_ms": 542.3,
+       "p95_ms": 577.2,
+       "min_ms": 528.7,
+       "max_ms": 577.2,
+       "n": 3
+      }
+     },
+     "Asia": {
+      "parts_drawn": 10084,
+      "draw": {
+       "median_ms": 265.3,
+       "p95_ms": 266.2,
+       "min_ms": 255.9,
+       "max_ms": 266.2,
+       "n": 3
+      }
+     }
+    },
+    "weekly_playback": {
+     "nodes__blit": {
+      "median_ms": 32.9,
+      "p95_ms": 38.1,
+      "min_ms": 29.4,
+      "max_ms": 40.3,
+      "n": 40
+     },
+     "nodes__no_blit": {
+      "median_ms": 51.9,
+      "p95_ms": 55.7,
+      "min_ms": 49.6,
+      "max_ms": 62.8,
+      "n": 40
+     },
+     "World__blit": {
+      "median_ms": 30.7,
+      "p95_ms": 32.5,
+      "min_ms": 27.5,
+      "max_ms": 34.7,
+      "n": 40
+     },
+     "World__no_blit": {
+      "median_ms": 52.1,
+      "p95_ms": 54.2,
+      "min_ms": 48.9,
+      "max_ms": 56.1,
+      "n": 40
+     }
+    }
+   },
+   "oil-global-2027": {
+    "nodes": 53,
+    "edges": 45,
+    "weeks": 78,
+    "views": {
+     "World": {
+      "lod": "110m",
+      "parts_drawn": 603,
+      "zoom_into_view_ms": 84.0,
+      "pan": {
+       "median_ms": 82.7,
+       "p95_ms": 85.5,
+       "min_ms": 77.2,
+       "max_ms": 85.5,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 81.5,
+       "p95_ms": 82.1,
+       "min_ms": 80.3,
+       "max_ms": 82.1,
+       "n": 4
+      },
+      "lods_used": [
+       "110m"
+      ]
+     },
+     "Asia": {
+      "lod": "50m",
+      "parts_drawn": 1887,
+      "zoom_into_view_ms": 113.9,
+      "pan": {
+       "median_ms": 108.9,
+       "p95_ms": 114.6,
+       "min_ms": 105.7,
+       "max_ms": 114.6,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 103.3,
+       "p95_ms": 113.9,
+       "min_ms": 95.1,
+       "max_ms": 113.9,
+       "n": 4
+      },
+      "lods_used": [
+       "50m"
+      ]
+     },
+     "Thailand": {
+      "lod": "50m",
+      "parts_drawn": 427,
+      "zoom_into_view_ms": 72.4,
+      "pan": {
+       "median_ms": 70.1,
+       "p95_ms": 72.7,
+       "min_ms": 69.5,
+       "max_ms": 72.7,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 71.5,
+       "p95_ms": 79.9,
+       "min_ms": 67.4,
+       "max_ms": 79.9,
+       "n": 4
+      },
+      "lods_used": [
+       "10m",
+       "50m"
+      ]
+     },
+     "Bangkok": {
+      "lod": "10m",
+      "parts_drawn": 3,
+      "zoom_into_view_ms": 58.1,
+      "pan": {
+       "median_ms": 58.6,
+       "p95_ms": 60.9,
+       "min_ms": 57.2,
+       "max_ms": 60.9,
+       "n": 6
+      },
+      "zoom_x1_5": {
+       "median_ms": 56.9,
+       "p95_ms": 58.6,
+       "min_ms": 55.5,
+       "max_ms": 58.6,
+       "n": 4
+      },
+      "lods_used": [
+       "10m"
+      ]
+     }
+    },
+    "fixed_10m": {
+     "World": {
+      "parts_drawn": 14611,
+      "draw": {
+       "median_ms": 537.3,
+       "p95_ms": 586.4,
+       "min_ms": 535.9,
+       "max_ms": 586.4,
+       "n": 3
+      }
+     },
+     "Asia": {
+      "parts_drawn": 10084,
+      "draw": {
+       "median_ms": 263.2,
+       "p95_ms": 267.6,
+       "min_ms": 248.7,
+       "max_ms": 267.6,
+       "n": 3
+      }
+     }
+    },
+    "weekly_playback": {
+     "nodes__blit": {
+      "median_ms": 34.2,
+      "p95_ms": 38.7,
+      "min_ms": 31.7,
+      "max_ms": 42.0,
+      "n": 40
+     },
+     "nodes__no_blit": {
+      "median_ms": 54.7,
+      "p95_ms": 56.8,
+      "min_ms": 51.4,
+      "max_ms": 57.3,
+      "n": 40
+     },
+     "World__blit": {
+      "median_ms": 32.4,
+      "p95_ms": 34.8,
+      "min_ms": 30.4,
+      "max_ms": 37.2,
+      "n": 40
+     },
+     "World__no_blit": {
+      "median_ms": 54.4,
+      "p95_ms": 57.6,
+      "min_ms": 51.9,
+      "max_ms": 65.3,
+      "n": 40
+     }
+    }
+   }
+  },
+  "rss_mb": {
+   "after_import": 116.0,
+   "after_loading_110m_50m_10m": 131.2,
+   "after_all_operations": 166.9
+  }
+ },
+ "plan_b": {
+  "tkintermapview_version": "1.29",
+  "db_bytes": 2367488,
+  "coverage_by_zoom": {
+   "1": {
+    "tiles_in_db": 4,
+    "tiles_of_whole_world": 4
+   },
+   "2": {
+    "tiles_in_db": 12,
+    "tiles_of_whole_world": 16
+   },
+   "3": {
+    "tiles_in_db": 40,
+    "tiles_of_whole_world": 64
+   },
+   "4": {
+    "tiles_in_db": 160,
+    "tiles_of_whole_world": 256
+   },
+   "5": {
+    "tiles_in_db": 28,
+    "tiles_of_whole_world": 1024
+   },
+   "6": {
+    "tiles_in_db": 69,
+    "tiles_of_whole_world": 4096
+   }
+  },
+  "startup_to_tiles_shown_s": 0.597,
+  "views": {
+   "World": {
+    "requested_zoom": 2,
+    "zoom_used": 3,
+    "tiles_needed": 30,
+    "tiles_missing_in_db": 0,
+    "zoom_and_settle_ms": 161.5
+   },
+   "Asia": {
+    "requested_zoom": 3,
+    "zoom_used": 3,
+    "tiles_needed": 30,
+    "tiles_missing_in_db": 0,
+    "zoom_and_settle_ms": 164.5
+   },
+   "Thailand": {
+    "requested_zoom": 4,
+    "zoom_used": 4,
+    "tiles_needed": 35,
+    "tiles_missing_in_db": 0,
+    "zoom_and_settle_ms": 218.5
+   },
+   "Bangkok": {
+    "requested_zoom": 6,
+    "zoom_used": 4,
+    "tiles_needed": 35,
+    "tiles_missing_in_db": 0,
+    "zoom_and_settle_ms": 175.3
+   }
+  },
+  "network_attempts": 0,
+  "network_attempt_urls_sample": [],
+  "zoom_is_capped_at_4": true
+ }
+}

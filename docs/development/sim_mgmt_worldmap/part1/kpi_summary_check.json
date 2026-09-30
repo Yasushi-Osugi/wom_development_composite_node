@@ -1,0 +1,1714 @@
+{
+ "sizes": [
+  [
+   1536,
+   824
+  ],
+  [
+   1280,
+   720
+  ],
+  [
+   1100,
+   640
+  ]
+ ],
+ "models": {
+  "ev-thailand-2026": {
+   "channels_per_sku": {
+    "EVmaker_Import": 3,
+    "EVmaker_Local": 3
+   },
+   "channels_all": 6,
+   "after__1536x824__All": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 15,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.8,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 6,
+    "hidden_channels": 0
+   },
+   "after__1536x824__EVmaker_Import": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.8,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 3,
+    "hidden_channels": 0
+   },
+   "after__1280x720__All": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 15,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 6,
+    "hidden_channels": 0
+   },
+   "after__1280x720__EVmaker_Import": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 3,
+    "hidden_channels": 0
+   },
+   "after__1100x640__All": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 8,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 1,
+    "mode": "compact (clipped)",
+    "shown_channels": 0,
+    "hidden_channels": 6
+   },
+   "after__1100x640__EVmaker_Import": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 8,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 1,
+    "mode": "compact (clipped)",
+    "shown_channels": 0,
+    "hidden_channels": 3
+   },
+   "before__1536x824__All": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      4.2
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 624",
+      0.6
+     ],
+     [
+      "Revenue     319.12B JPY",
+      "Total Cost  138.83B JPY",
+      2.2
+     ],
+     [
+      "Total Cost  138.83B JPY",
+      "Gross Prft  180.29B JPY",
+      2.2
+     ],
+     [
+      "Gross Prft  180.29B JPY",
+      "Gross Marg  56.5%",
+      2.2
+     ],
+     [
+      "Sales_TH_BKK 123.10B JPY",
+      "Sales_TH_PRO 98.46B JPY",
+      4.2
+     ],
+     [
+      "Sales_TH_PRO 98.46B JPY",
+      "Sales_TH_BKK_i 37.12B JPY",
+      4.2
+     ]
+    ],
+    "below_panel": [
+     "Sales_TH_BKK_i 37.12B JPY",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1536x824__EVmaker_Import": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      4.2
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 312",
+      0.6
+     ],
+     [
+      "Revenue     74.09B JPY",
+      "Total Cost  38.04B JPY",
+      2.2
+     ],
+     [
+      "Total Cost  38.04B JPY",
+      "Gross Prft  36.05B JPY",
+      2.2
+     ],
+     [
+      "Gross Prft  36.05B JPY",
+      "Gross Marg  48.7%",
+      2.2
+     ],
+     [
+      "Sales_TH_BKK_i 37.12B JPY",
+      "Sales_TH_PRO_i 29.73B JPY",
+      4.2
+     ],
+     [
+      "Sales_TH_PRO_i 29.73B JPY",
+      "Sales_TH_ONL_i 7.24B JPY",
+      4.2
+     ]
+    ],
+    "below_panel": [
+     "Sales_TH_ONL_i 7.24B JPY",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1280x720__All": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      5.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 624",
+      1.8
+     ],
+     [
+      "Revenue     319.12B JPY",
+      "Total Cost  138.83B JPY",
+      3.6
+     ],
+     [
+      "Total Cost  138.83B JPY",
+      "Gross Prft  180.29B JPY",
+      3.6
+     ],
+     [
+      "Gross Prft  180.29B JPY",
+      "Gross Marg  56.5%",
+      3.6
+     ],
+     [
+      "Sales_TH_BKK 123.10B JPY",
+      "Sales_TH_PRO 98.46B JPY",
+      5.0
+     ],
+     [
+      "Sales_TH_PRO 98.46B JPY",
+      "Sales_TH_BKK_i 37.12B JPY",
+      5.0
+     ],
+     [
+      "Sales_TH_BKK_i 37.12B JPY",
+      "OK  No trust events",
+      2.2
+     ]
+    ],
+    "below_panel": [
+     "Sales_TH_BKK_i 37.12B JPY",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1280x720__EVmaker_Import": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      5.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 312",
+      1.8
+     ],
+     [
+      "Revenue     74.09B JPY",
+      "Total Cost  38.04B JPY",
+      3.6
+     ],
+     [
+      "Total Cost  38.04B JPY",
+      "Gross Prft  36.05B JPY",
+      3.6
+     ],
+     [
+      "Gross Prft  36.05B JPY",
+      "Gross Marg  48.7%",
+      3.6
+     ],
+     [
+      "Sales_TH_BKK_i 37.12B JPY",
+      "Sales_TH_PRO_i 29.73B JPY",
+      5.0
+     ],
+     [
+      "Sales_TH_PRO_i 29.73B JPY",
+      "Sales_TH_ONL_i 7.24B JPY",
+      5.0
+     ],
+     [
+      "Sales_TH_ONL_i 7.24B JPY",
+      "OK  No trust events",
+      2.2
+     ]
+    ],
+    "below_panel": [
+     "Sales_TH_ONL_i 7.24B JPY",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1100x640__All": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      6.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 624",
+      2.7
+     ],
+     [
+      "Revenue     319.12B JPY",
+      "Total Cost  138.83B JPY",
+      4.6
+     ],
+     [
+      "Total Cost  138.83B JPY",
+      "Gross Prft  180.29B JPY",
+      4.6
+     ],
+     [
+      "Gross Prft  180.29B JPY",
+      "Gross Marg  56.5%",
+      4.6
+     ],
+     [
+      "Sales_TH_BKK 123.10B JPY",
+      "Sales_TH_PRO 98.46B JPY",
+      5.7
+     ],
+     [
+      "Sales_TH_PRO 98.46B JPY",
+      "Sales_TH_BKK_i 37.12B JPY",
+      5.7
+     ],
+     [
+      "Sales_TH_BKK_i 37.12B JPY",
+      "OK  No trust events",
+      4.7
+     ]
+    ],
+    "below_panel": [
+     "Sales_TH_BKK_i 37.12B JPY",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1100x640__EVmaker_Import": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      6.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 312",
+      2.7
+     ],
+     [
+      "Revenue     74.09B JPY",
+      "Total Cost  38.04B JPY",
+      4.6
+     ],
+     [
+      "Total Cost  38.04B JPY",
+      "Gross Prft  36.05B JPY",
+      4.6
+     ],
+     [
+      "Gross Prft  36.05B JPY",
+      "Gross Marg  48.7%",
+      4.6
+     ],
+     [
+      "Sales_TH_BKK_i 37.12B JPY",
+      "Sales_TH_PRO_i 29.73B JPY",
+      5.7
+     ],
+     [
+      "Sales_TH_PRO_i 29.73B JPY",
+      "Sales_TH_ONL_i 7.24B JPY",
+      5.7
+     ],
+     [
+      "Sales_TH_ONL_i 7.24B JPY",
+      "OK  No trust events",
+      4.7
+     ]
+    ],
+    "below_panel": [
+     "Sales_TH_ONL_i 7.24B JPY",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   }
+  },
+  "iphone_global": {
+   "channels_per_sku": {
+    "iPhone15": 3,
+    "iPhone16": 3,
+    "iPhone17": 3
+   },
+   "channels_all": 9,
+   "after__1536x824__All": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 15,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.8,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 5,
+    "hidden_channels": 4
+   },
+   "after__1536x824__iPhone15": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.8,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 3,
+    "hidden_channels": 0
+   },
+   "after__1280x720__All": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 9,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.7,
+    "columns": 1,
+    "mode": "compact",
+    "shown_channels": 0,
+    "hidden_channels": 9
+   },
+   "after__1280x720__iPhone15": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 3,
+    "hidden_channels": 0
+   },
+   "after__1100x640__All": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 8,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 1,
+    "mode": "compact (clipped)",
+    "shown_channels": 0,
+    "hidden_channels": 9
+   },
+   "after__1100x640__iPhone15": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 8,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 1,
+    "mode": "compact (clipped)",
+    "shown_channels": 0,
+    "hidden_channels": 3
+   },
+   "before__1536x824__All": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      4.2
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 1127",
+      0.6
+     ],
+     [
+      "Revenue     641.01T JPY",
+      "Total Cost  376.95T JPY",
+      2.2
+     ],
+     [
+      "Total Cost  376.95T JPY",
+      "Gross Prft  264.06T JPY",
+      2.2
+     ],
+     [
+      "Gross Prft  264.06T JPY",
+      "Gross Marg  41.2%",
+      2.2
+     ],
+     [
+      "AMER    153.90T JPY",
+      "EMEA    119.40T JPY",
+      3.3
+     ],
+     [
+      "EMEA    119.40T JPY",
+      "AMER_i17 90.55T JPY",
+      3.3
+     ]
+    ],
+    "below_panel": [
+     "AMER_i17 90.55T JPY",
+     "! 390 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1536x824__iPhone15": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      4.2
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 425",
+      0.6
+     ],
+     [
+      "Revenue     68.19T JPY",
+      "Total Cost  42.18T JPY",
+      2.2
+     ],
+     [
+      "Total Cost  42.18T JPY",
+      "Gross Prft  26.01T JPY",
+      2.2
+     ],
+     [
+      "Gross Prft  26.01T JPY",
+      "Gross Marg  38.1%",
+      2.2
+     ],
+     [
+      "AMER_i15 37.08T JPY",
+      "EMEA_i15 23.23T JPY",
+      4.2
+     ],
+     [
+      "EMEA_i15 23.23T JPY",
+      "APAC_i15 7.88T JPY",
+      4.2
+     ]
+    ],
+    "below_panel": [
+     "APAC_i15 7.88T JPY",
+     "! 156 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1280x720__All": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      5.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 1127",
+      1.8
+     ],
+     [
+      "Revenue     641.01T JPY",
+      "Total Cost  376.95T JPY",
+      3.6
+     ],
+     [
+      "Total Cost  376.95T JPY",
+      "Gross Prft  264.06T JPY",
+      3.6
+     ],
+     [
+      "Gross Prft  264.06T JPY",
+      "Gross Marg  41.2%",
+      3.6
+     ],
+     [
+      "AMER    153.90T JPY",
+      "EMEA    119.40T JPY",
+      4.1
+     ],
+     [
+      "EMEA    119.40T JPY",
+      "AMER_i17 90.55T JPY",
+      4.1
+     ],
+     [
+      "AMER_i17 90.55T JPY",
+      "! 390 trust event(s)",
+      2.8
+     ]
+    ],
+    "below_panel": [
+     "AMER_i17 90.55T JPY",
+     "! 390 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1280x720__iPhone15": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      5.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 425",
+      1.8
+     ],
+     [
+      "Revenue     68.19T JPY",
+      "Total Cost  42.18T JPY",
+      3.6
+     ],
+     [
+      "Total Cost  42.18T JPY",
+      "Gross Prft  26.01T JPY",
+      3.6
+     ],
+     [
+      "Gross Prft  26.01T JPY",
+      "Gross Marg  38.1%",
+      3.6
+     ],
+     [
+      "AMER_i15 37.08T JPY",
+      "EMEA_i15 23.23T JPY",
+      5.0
+     ],
+     [
+      "EMEA_i15 23.23T JPY",
+      "APAC_i15 7.88T JPY",
+      5.0
+     ],
+     [
+      "APAC_i15 7.88T JPY",
+      "! 156 trust event(s)",
+      2.8
+     ]
+    ],
+    "below_panel": [
+     "APAC_i15 7.88T JPY",
+     "! 156 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1100x640__All": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      6.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 1127",
+      2.7
+     ],
+     [
+      "Revenue     641.01T JPY",
+      "Total Cost  376.95T JPY",
+      4.6
+     ],
+     [
+      "Total Cost  376.95T JPY",
+      "Gross Prft  264.06T JPY",
+      4.6
+     ],
+     [
+      "Gross Prft  264.06T JPY",
+      "Gross Marg  41.2%",
+      4.6
+     ],
+     [
+      "AMER    153.90T JPY",
+      "EMEA    119.40T JPY",
+      4.8
+     ],
+     [
+      "EMEA    119.40T JPY",
+      "AMER_i17 90.55T JPY",
+      4.8
+     ],
+     [
+      "AMER_i17 90.55T JPY",
+      "! 390 trust event(s)",
+      5.3
+     ]
+    ],
+    "below_panel": [
+     "AMER_i17 90.55T JPY",
+     "! 390 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1100x640__iPhone15": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      6.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 425",
+      2.7
+     ],
+     [
+      "Revenue     68.19T JPY",
+      "Total Cost  42.18T JPY",
+      4.6
+     ],
+     [
+      "Total Cost  42.18T JPY",
+      "Gross Prft  26.01T JPY",
+      4.6
+     ],
+     [
+      "Gross Prft  26.01T JPY",
+      "Gross Marg  38.1%",
+      4.6
+     ],
+     [
+      "AMER_i15 37.08T JPY",
+      "EMEA_i15 23.23T JPY",
+      5.7
+     ],
+     [
+      "EMEA_i15 23.23T JPY",
+      "APAC_i15 7.88T JPY",
+      5.7
+     ],
+     [
+      "APAC_i15 7.88T JPY",
+      "! 156 trust event(s)",
+      5.3
+     ]
+    ],
+    "below_panel": [
+     "APAC_i15 7.88T JPY",
+     "! 156 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   }
+  },
+  "apparel-global-2028-2029": {
+   "channels_per_sku": {
+    "Apparel_Offshore": 2,
+    "Apparel_Vertical": 2
+   },
+   "channels_all": 4,
+   "after__1536x824__All": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 13,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.8,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 4,
+    "hidden_channels": 0
+   },
+   "after__1536x824__Apparel_Offshore": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 11,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.8,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 2,
+    "hidden_channels": 0
+   },
+   "after__1280x720__All": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 13,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 4,
+    "hidden_channels": 0
+   },
+   "after__1280x720__Apparel_Offshore": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 11,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 2,
+    "hidden_channels": 0
+   },
+   "after__1100x640__All": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 8,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 1,
+    "mode": "compact (clipped)",
+    "shown_channels": 0,
+    "hidden_channels": 4
+   },
+   "after__1100x640__Apparel_Offshore": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 8,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 1,
+    "mode": "compact (clipped)",
+    "shown_channels": 0,
+    "hidden_channels": 2
+   },
+   "before__1536x824__All": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: USD",
+      4.2
+     ],
+     [
+      "Base currency: USD",
+      "Lots: 394",
+      0.6
+     ],
+     [
+      "Revenue     10.39M USD",
+      "Total Cost  6.39M USD",
+      2.2
+     ],
+     [
+      "Total Cost  6.39M USD",
+      "Gross Prft  3.99M USD",
+      2.2
+     ],
+     [
+      "Gross Prft  3.99M USD",
+      "Gross Marg  38.5%",
+      2.2
+     ],
+     [
+      "US_Vertical 3.75M USD",
+      "US_Offshore 2.99M USD",
+      4.2
+     ],
+     [
+      "US_Offshore 2.99M USD",
+      "JP_Vertical 2.00M USD",
+      4.2
+     ]
+    ],
+    "below_panel": [
+     "JP_Vertical 2.00M USD",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1536x824__Apparel_Offshore": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 11,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: USD",
+      4.2
+     ],
+     [
+      "Base currency: USD",
+      "Lots: 194",
+      0.6
+     ],
+     [
+      "Revenue     4.64M USD",
+      "Total Cost  2.72M USD",
+      2.2
+     ],
+     [
+      "Total Cost  2.72M USD",
+      "Gross Prft  1.91M USD",
+      2.2
+     ],
+     [
+      "Gross Prft  1.91M USD",
+      "Gross Marg  41.3%",
+      2.2
+     ],
+     [
+      "US_Offshore 2.99M USD",
+      "JP_Offshore 1.64M USD",
+      4.2
+     ]
+    ],
+    "below_panel": [
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1280x720__All": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: USD",
+      5.6
+     ],
+     [
+      "Base currency: USD",
+      "Lots: 394",
+      1.8
+     ],
+     [
+      "Revenue     10.39M USD",
+      "Total Cost  6.39M USD",
+      3.6
+     ],
+     [
+      "Total Cost  6.39M USD",
+      "Gross Prft  3.99M USD",
+      3.6
+     ],
+     [
+      "Gross Prft  3.99M USD",
+      "Gross Marg  38.5%",
+      3.6
+     ],
+     [
+      "US_Vertical 3.75M USD",
+      "US_Offshore 2.99M USD",
+      5.0
+     ],
+     [
+      "US_Offshore 2.99M USD",
+      "JP_Vertical 2.00M USD",
+      5.0
+     ],
+     [
+      "JP_Vertical 2.00M USD",
+      "OK  No trust events",
+      2.2
+     ]
+    ],
+    "below_panel": [
+     "JP_Vertical 2.00M USD",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1280x720__Apparel_Offshore": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 11,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: USD",
+      5.6
+     ],
+     [
+      "Base currency: USD",
+      "Lots: 194",
+      1.8
+     ],
+     [
+      "Revenue     4.64M USD",
+      "Total Cost  2.72M USD",
+      3.6
+     ],
+     [
+      "Total Cost  2.72M USD",
+      "Gross Prft  1.91M USD",
+      3.6
+     ],
+     [
+      "Gross Prft  1.91M USD",
+      "Gross Marg  41.3%",
+      3.6
+     ],
+     [
+      "US_Offshore 2.99M USD",
+      "JP_Offshore 1.64M USD",
+      5.0
+     ]
+    ],
+    "below_panel": [
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1100x640__All": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: USD",
+      6.6
+     ],
+     [
+      "Base currency: USD",
+      "Lots: 394",
+      2.7
+     ],
+     [
+      "Revenue     10.39M USD",
+      "Total Cost  6.39M USD",
+      4.6
+     ],
+     [
+      "Total Cost  6.39M USD",
+      "Gross Prft  3.99M USD",
+      4.6
+     ],
+     [
+      "Gross Prft  3.99M USD",
+      "Gross Marg  38.5%",
+      4.6
+     ],
+     [
+      "US_Vertical 3.75M USD",
+      "US_Offshore 2.99M USD",
+      5.7
+     ],
+     [
+      "US_Offshore 2.99M USD",
+      "JP_Vertical 2.00M USD",
+      5.7
+     ],
+     [
+      "JP_Vertical 2.00M USD",
+      "OK  No trust events",
+      4.7
+     ]
+    ],
+    "below_panel": [
+     "JP_Vertical 2.00M USD",
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1100x640__Apparel_Offshore": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 11,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: USD",
+      6.6
+     ],
+     [
+      "Base currency: USD",
+      "Lots: 194",
+      2.7
+     ],
+     [
+      "Revenue     4.64M USD",
+      "Total Cost  2.72M USD",
+      4.6
+     ],
+     [
+      "Total Cost  2.72M USD",
+      "Gross Prft  1.91M USD",
+      4.6
+     ],
+     [
+      "Gross Prft  1.91M USD",
+      "Gross Marg  41.3%",
+      4.6
+     ],
+     [
+      "US_Offshore 2.99M USD",
+      "JP_Offshore 1.64M USD",
+      5.7
+     ]
+    ],
+    "below_panel": [
+     "OK  No trust events"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   }
+  },
+  "oil-global-2027": {
+   "channels_per_sku": {
+    "Gasoline_EU_Local": 3,
+    "Gasoline_Local": 3,
+    "Gasoline_Local_Hormuz": 3,
+    "Gasoline_Local_RedSea": 3,
+    "Gasoline_US_Local": 3,
+    "Gasoline_EU_Import": 2,
+    "Gasoline_Import": 2,
+    "Gasoline_US_Import": 2
+   },
+   "channels_all": 21,
+   "after__1536x824__All": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 15,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.8,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 5,
+    "hidden_channels": 16
+   },
+   "after__1536x824__Gasoline_EU_Local": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.8,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 3,
+    "hidden_channels": 0
+   },
+   "after__1280x720__All": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 9,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.7,
+    "columns": 1,
+    "mode": "compact",
+    "shown_channels": 0,
+    "hidden_channels": 21
+   },
+   "after__1280x720__Gasoline_EU_Local": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 2,
+    "mode": "two columns",
+    "shown_channels": 3,
+    "hidden_channels": 0
+   },
+   "after__1100x640__All": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 8,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 1,
+    "mode": "compact (clipped)",
+    "shown_channels": 0,
+    "hidden_channels": 21
+   },
+   "after__1100x640__Gasoline_EU_Local": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 8,
+    "overlapping_pairs": [],
+    "below_panel": [],
+    "font_scale": 0.65,
+    "columns": 1,
+    "mode": "compact (clipped)",
+    "shown_channels": 0,
+    "hidden_channels": 3
+   },
+   "before__1536x824__All": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      4.2
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 1399",
+      0.6
+     ],
+     [
+      "Revenue     1.57T JPY",
+      "Total Cost  1.02T JPY",
+      2.2
+     ],
+     [
+      "Total Cost  1.02T JPY",
+      "Gross Prft  552.34B JPY",
+      2.2
+     ],
+     [
+      "Gross Prft  552.34B JPY",
+      "Gross Marg  35.2%",
+      2.2
+     ],
+     [
+      "Local_R_KANTO 664.20B JPY",
+      "Local_R_KANSAI 307.05B JPY",
+      4.2
+     ],
+     [
+      "Local_R_KANSAI 307.05B JPY",
+      "Local_R_CHUBU 283.92B JPY",
+      4.2
+     ]
+    ],
+    "below_panel": [
+     "Local_R_CHUBU 283.92B JPY",
+     "! 733 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1536x824__Gasoline_EU_Local": {
+    "panel_px": [
+     270,
+     135
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      4.2
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 234",
+      0.6
+     ],
+     [
+      "Revenue     14.76B JPY",
+      "Total Cost  5.76B JPY",
+      2.2
+     ],
+     [
+      "Total Cost  5.76B JPY",
+      "Gross Prft  9.01B JPY",
+      2.2
+     ],
+     [
+      "Gross Prft  9.01B JPY",
+      "Gross Marg  61.0%",
+      2.2
+     ],
+     [
+      "EU_DE   7.43B JPY",
+      "EU_FR   4.80B JPY",
+      4.2
+     ],
+     [
+      "EU_FR   4.80B JPY",
+      "EU_NL   2.53B JPY",
+      4.2
+     ]
+    ],
+    "below_panel": [
+     "EU_NL   2.53B JPY",
+     "! 24 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1280x720__All": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      5.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 1399",
+      1.8
+     ],
+     [
+      "Revenue     1.57T JPY",
+      "Total Cost  1.02T JPY",
+      3.6
+     ],
+     [
+      "Total Cost  1.02T JPY",
+      "Gross Prft  552.34B JPY",
+      3.6
+     ],
+     [
+      "Gross Prft  552.34B JPY",
+      "Gross Marg  35.2%",
+      3.6
+     ],
+     [
+      "Local_R_KANTO 664.20B JPY",
+      "Local_R_KANSAI 307.05B JPY",
+      5.0
+     ],
+     [
+      "Local_R_KANSAI 307.05B JPY",
+      "Local_R_CHUBU 283.92B JPY",
+      5.0
+     ],
+     [
+      "Local_R_CHUBU 283.92B JPY",
+      "! 733 trust event(s)",
+      2.8
+     ]
+    ],
+    "below_panel": [
+     "Local_R_CHUBU 283.92B JPY",
+     "! 733 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1280x720__Gasoline_EU_Local": {
+    "panel_px": [
+     218,
+     118
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      5.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 234",
+      1.8
+     ],
+     [
+      "Revenue     14.76B JPY",
+      "Total Cost  5.76B JPY",
+      3.6
+     ],
+     [
+      "Total Cost  5.76B JPY",
+      "Gross Prft  9.01B JPY",
+      3.6
+     ],
+     [
+      "Gross Prft  9.01B JPY",
+      "Gross Marg  61.0%",
+      3.6
+     ],
+     [
+      "EU_DE   7.43B JPY",
+      "EU_FR   4.80B JPY",
+      5.0
+     ],
+     [
+      "EU_FR   4.80B JPY",
+      "EU_NL   2.53B JPY",
+      5.0
+     ],
+     [
+      "EU_NL   2.53B JPY",
+      "! 24 trust event(s)",
+      2.8
+     ]
+    ],
+    "below_panel": [
+     "EU_NL   2.53B JPY",
+     "! 24 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1100x640__All": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      6.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 1399",
+      2.7
+     ],
+     [
+      "Revenue     1.57T JPY",
+      "Total Cost  1.02T JPY",
+      4.6
+     ],
+     [
+      "Total Cost  1.02T JPY",
+      "Gross Prft  552.34B JPY",
+      4.6
+     ],
+     [
+      "Gross Prft  552.34B JPY",
+      "Gross Marg  35.2%",
+      4.6
+     ],
+     [
+      "Local_R_KANTO 664.20B JPY",
+      "Local_R_KANSAI 307.05B JPY",
+      5.7
+     ],
+     [
+      "Local_R_KANSAI 307.05B JPY",
+      "Local_R_CHUBU 283.92B JPY",
+      5.7
+     ],
+     [
+      "Local_R_CHUBU 283.92B JPY",
+      "! 733 trust event(s)",
+      5.3
+     ]
+    ],
+    "below_panel": [
+     "Local_R_CHUBU 283.92B JPY",
+     "! 733 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   },
+   "before__1100x640__Gasoline_EU_Local": {
+    "panel_px": [
+     181,
+     105
+    ],
+    "n_text": 12,
+    "overlapping_pairs": [
+     [
+      "PPC KPI Summary",
+      "Base currency: JPY",
+      6.6
+     ],
+     [
+      "Base currency: JPY",
+      "Lots: 234",
+      2.7
+     ],
+     [
+      "Revenue     14.76B JPY",
+      "Total Cost  5.76B JPY",
+      4.6
+     ],
+     [
+      "Total Cost  5.76B JPY",
+      "Gross Prft  9.01B JPY",
+      4.6
+     ],
+     [
+      "Gross Prft  9.01B JPY",
+      "Gross Marg  61.0%",
+      4.6
+     ],
+     [
+      "EU_DE   7.43B JPY",
+      "EU_FR   4.80B JPY",
+      5.7
+     ],
+     [
+      "EU_FR   4.80B JPY",
+      "EU_NL   2.53B JPY",
+      5.7
+     ],
+     [
+      "EU_NL   2.53B JPY",
+      "! 24 trust event(s)",
+      5.3
+     ]
+    ],
+    "below_panel": [
+     "EU_NL   2.53B JPY",
+     "! 24 trust event(s)"
+    ],
+    "font_scale": null,
+    "columns": null,
+    "mode": null,
+    "shown_channels": null,
+    "hidden_channels": null
+   }
+  }
+ },
+ "errors": []
+}

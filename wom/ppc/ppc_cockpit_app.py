@@ -174,73 +174,206 @@ def _draw_kpi_text(ax, kpi: dict, rec_filtered: pd.DataFrame, cur: str) -> None:
     # compact K/M/B/T suffix so the panel stays readable even for cases
     # with very large absolute currency values (see Open Question 6 in
     # requests/smartx-2027-2029-fix-request-letter.md).
-    lines = [
-        ("PPC KPI Summary", 0.95, 11, C_HEADER, "bold"),
-        (f"Base currency: {cur}", 0.87, 7.5, "#607D8B", "normal"),
-        (f"Lots: {n_lots}", 0.80, 7.5, "#607D8B", "normal"),
-        ("", 0.74, 8, "black", "normal"),
-        (f"Revenue     {_fmt(total_rev)} {cur}", 0.68, 8.5, C_REVENUE, "bold"),
-        (f"Total Cost  {_fmt(total_cost)} {cur}", 0.60, 8.5, C_COST, "bold"),
-        (f"Gross Prft  {_fmt(gross_profit)} {cur}", 0.52, 8.5, C_PROFIT, "bold"),
-        (f"Gross Marg  {gross_margin:.1%}", 0.44, 8.5, C_PROFIT, "bold"),
-        ("", 0.37, 8, "black", "normal"),
-        (f"Tariff Cost {_fmt(tariff)} {cur}", 0.31, 8, C_TARIFF, "normal"),
-    ]
-
-    # Dynamic channel revenue breakdown (top 3 channels -- capped at 3, not
-    # 4, so the block always clears the trust-event badge below it; SKU=All
-    # views with many channels were previously overlapping the badge).
-    MAX_CHANNELS = 3
-    if "channel_node" in rec_filtered.columns:
-        _rev_totaled = rec_filtered["market_revenue_base"] * _qty
-        ch_rev = (
-            _rev_totaled.groupby(rec_filtered["channel_node"])
-            .sum().sort_values(ascending=False)
-        )
-        y_pos = 0.17
-        lines += [("", 0.22, 8, "black", "normal")]
-        for i, (ch_name, ch_val) in enumerate(ch_rev.head(MAX_CHANNELS).items()):
-            color = CHANNEL_COLORS[i % len(CHANNEL_COLORS)]
-            label = _channel_short(ch_name)
-            lines += [(f"{label:<7} {_fmt(ch_val)} {cur}", y_pos, 7, color, "normal")]
-            y_pos -= 0.05
-
-    # clip_on=True: text is confined to this subplot's own bounding box, so
-    # unusually long value strings are clipped rather than bleeding
-    # visually into the neighboring "Profit Zone Breakdown" panel.
-    for text, y, fs, color, weight in lines:
-        ax.text(0.04, y, text, transform=ax.transAxes,
-                fontsize=fs, color=color, fontweight=weight,
-                va="top", fontfamily="monospace", clip_on=True)
-
-    # Badge sits well below the (fixed-length, MAX_CHANNELS-capped) text
-    # block above -- with MAX_CHANNELS=3 the lowest text line is at
-    # y=0.17-2*0.05=0.07, so y=-0.12 leaves a clear gap for the badge's
-    # own font+padding box, regardless of how many channels are shown.
     #
-    # NOTE (2026-07-11 fix): previously this badge always showed
-    # kpi["trust_event_count"] -- a single number pre-computed over the
-    # FULL dataset (all weeks/SKUs/channels) at engine-run time, ignoring
-    # the sidebar's Start/End Week, SKU and Channel filters. That was
-    # inconsistent with every other figure in this same panel (Revenue,
-    # Total Cost, Gross Profit, Gross Margin, and the channel breakdown
-    # below), which are all computed from rec_filtered and DO respect the
-    # sidebar filters -- and inconsistent with the new Trust Event Type
-    # Breakdown panel (_draw_trust_breakdown), which also uses
-    # rec_filtered. Recomputing from rec_filtered here makes all three
-    # (badge / breakdown panel / underlying filtered data) agree.
+    # RequestLetter_SimMgmt 1.2: the lines used to be placed at FIXED axes
+    # fractions (0.95, 0.87, 0.80, ...). The panel's height in pixels follows
+    # the window (the figure is resized to the Tk canvas), while the font size
+    # is in points -- in a short panel the lines ran into each other ("Base
+    # currency" over "Lots", channel rows over each other). Now every line is
+    # placed a number of POINTS below the previous one (its own font height),
+    # so the spacing never depends on the panel's height. What does not fit is
+    # shrunk (fonts down to 65 %), the channel rows move to a second column, and
+    # what still does not fit is collapsed into one "+N more" row. Recomputed
+    # when the window is resized (PPCCockpitApp._on_fig_resize).
     if "trust_events_fired" in rec_filtered.columns:
         trust = sum(_count_trust_events(rec_filtered).values())
     else:
         # Backward-compat fallback for older output/ppc/ dirs generated
         # before trust_events_fired was added to ppc_lot_reconciliation.csv.
         trust = kpi.get("trust_event_count", 0)
+    # (2026-07-11 fix kept: the badge counts rec_filtered, i.e. it respects the
+    # sidebar filters like every other figure of this panel.)
+
+    # (text, fontsize, color, weight, gap_before_pt)
+    fixed = [
+        ("PPC KPI Summary",                        11,  C_HEADER,  "bold",   0),
+        (f"Base currency: {cur}",                  7.5, "#607D8B", "normal", 2),
+        (f"Lots: {n_lots:,}",                      7.5, "#607D8B", "normal", 0),
+        (f"Revenue     {_fmt(total_rev)} {cur}",   8.5, C_REVENUE, "bold",   5),
+        (f"Total Cost  {_fmt(total_cost)} {cur}",  8.5, C_COST,    "bold",   0),
+        (f"Gross Prft  {_fmt(gross_profit)} {cur}", 8.5, C_PROFIT, "bold",   0),
+        (f"Gross Marg  {gross_margin:.1%}",        8.5, C_PROFIT,  "bold",   0),
+        (f"Tariff Cost {_fmt(tariff)} {cur}",      8,   C_TARIFF,  "normal", 5),
+    ]
+    channels = []
+    if "channel_node" in rec_filtered.columns:
+        _rev_totaled = rec_filtered["market_revenue_base"] * _qty
+        ch_rev = (_rev_totaled.groupby(rec_filtered["channel_node"])
+                  .sum().sort_values(ascending=False))
+        channels = [(i, _channel_short(n), v) for i, (n, v) in enumerate(ch_rev.items())]
     badge_color = "#F44336" if trust > 0 else "#4CAF50"
-    badge_text  = f"! {trust} trust event(s)" if trust > 0 else "OK  No trust events"
-    ax.text(0.5, -0.12, badge_text, transform=ax.transAxes,
-            fontsize=7.5, color="white", fontweight="bold", ha="center", va="bottom",
+    badge_text = f"! {trust} trust event(s)" if trust > 0 else "OK  No trust events"
+
+    layout = _kpi_text_layout(ax, fixed, channels, cur, badge_text=badge_text)
+    tr = ax.transAxes
+    fig = ax.figure
+    from matplotlib.transforms import offset_copy
+    for text, fs, color, weight, x, y_pt in layout["lines"]:
+        ax.text(x, 1.0, text, fontsize=fs, color=color, fontweight=weight,
+                va="top", fontfamily="monospace", clip_on=True,
+                transform=offset_copy(tr, fig=fig, x=0, y=-y_pt, units="points"))
+    fs_b = layout["badge_fs"]
+    ax.text(layout["badge_x"], 1.0, badge_text, fontsize=fs_b, color="white", fontweight="bold",
+            ha="left", va="top", clip_on=True,     # never over the neighbouring panel
             bbox=dict(boxstyle="round,pad=0.35", fc=badge_color, ec="none"),
-            clip_on=False)
+            transform=offset_copy(tr, fig=fig, x=3, y=-(layout["badge_y"] + 3), units="points"))
+    ax._wom_kpi_layout = layout      # read by tests / the GUI check (overlap check)
+
+
+LINE_SPACING = 1.30          # line height = font size (pt) x this
+MIN_FONT_SCALE = 0.65        # fonts are not shrunk below 65 %
+
+
+def _kpi_text_layout(ax, fixed, channels, cur, height_pt: Optional[float] = None,
+                     width_pt: Optional[float] = None, badge_text: str = "") -> dict:
+    """Place the KPI Summary lines top-down in points (1.2).
+
+    `fixed` = [header, currency, lots, revenue, cost, profit, margin, tariff]
+    as (text, fontsize, color, weight, gap_before_pt); `channels` =
+    [(i, label, value)] by revenue, largest first.
+
+    Returns {"lines": [(text, fs, color, weight, x_axes, y_top_pt)], "badge_x",
+    "badge_y", "badge_fs", "scale", "columns", "mode", "shown_channels",
+    "hidden_channels", "height_pt", "width_pt"}; y is measured from the top.
+
+    Modes, first that fits:
+      1 "one column"  all lines, channel rows, badge under each other (fonts >= 80 %)
+      2 "two columns" left: the 8 fixed lines; right (from the Revenue line):
+                      channel rows, badge (fonts 80 % -> MIN_FONT_SCALE)
+      3 "compact"     one column, fonts down to MIN_FONT_SCALE: header,
+                      "currency  lots" on one line, the 4 values, tariff, as many
+                      channel rows as fit (the rest -> "+N more"), badge.
+                      "compact (clipped)" = even that does not fit (the panel is
+                      tiny); the lines are cut at the panel's edge, never drawn
+                      over each other or over the neighbouring panel
+    The value lines are never shortened. Channel rows that do not fit are
+    collapsed into one row "+N more channel(s)"; a channel NAME that is too
+    long for its column is shortened with "~" (its value is kept)."""
+    fig = ax.figure
+    if height_pt is None:
+        height_pt = ax.bbox.height * 72.0 / fig.dpi
+    if width_pt is None:
+        width_pt = ax.bbox.width * 72.0 / fig.dpi
+    height_pt = max(float(height_pt), 1.0)
+    width_pt = max(float(width_pt), 1.0)
+    top_pad, ch_fs, badge_fs, ch_gap = 4.0, 7.0, 7.5, 5.0
+    CW = 0.60                                    # monospace: character width ~0.6 em
+    x_left = 0.04
+    n_all = len(channels)
+
+    def badge_h(sc):
+        return 4 * sc + badge_fs * sc * 1.9      # gap + box (pad 0.35 x 2)
+
+    def badge_w(sc):
+        return len(badge_text) * 0.62 * badge_fs * sc + 8 * sc
+
+    def text_w(text, fs):
+        return len(text) * CW * fs
+
+    def column(items, sc, x, y0=top_pad):
+        """items (text, fs, color, weight, gap) -> lines, y_end, max_width"""
+        out, y, w = [], y0, 0.0
+        for text, fs, color, weight, gap in items:
+            y += gap * sc
+            out.append((text, fs * sc, color, weight, x, y))
+            w = max(w, text_w(text, fs * sc))
+            y += fs * sc * LINE_SPACING
+        return out, y, w
+
+    def channel_rows(sc, y0, avail_h, x, col_w):
+        row_h = ch_fs * sc * LINE_SPACING
+        n_fit = int(max(avail_h, 0.0) // row_h)
+        shown = n_all if n_fit >= n_all else max(n_fit - 1, 0)   # one row says "+N more"
+        hidden = n_all - shown
+        out, y = [], y0
+        for i, label, val in channels[:shown]:
+            tail = f" {_fmt(val)} {cur}"
+            n_lab = max(int(col_w / (CW * ch_fs * sc)) - len(tail), 3)
+            lab = f"{label:<7}"
+            if len(lab) > n_lab:            # keep the END of the name: it tells
+                lab = "~" + label[-(n_lab - 1):]   # channels apart (..._BKK_i / ..._PRO_i)
+            out.append((lab + tail, ch_fs * sc, CHANNEL_COLORS[i % len(CHANNEL_COLORS)],
+                        "normal", x, y))
+            y += row_h
+        if hidden and n_fit >= 1:
+            out.append((f"+{hidden} more channel(s)", ch_fs * sc, "#607D8B", "normal", x, y))
+            y += row_h
+        return out, y, shown, hidden
+
+    def result(lines, badge_x, badge_y, sc, columns, mode, shown, hidden):
+        return {"lines": lines, "badge_x": badge_x, "badge_y": badge_y,
+                "badge_fs": badge_fs * sc, "scale": sc, "columns": columns, "mode": mode,
+                "shown_channels": shown, "hidden_channels": hidden,
+                "height_pt": height_pt, "width_pt": width_pt}
+
+    full_w = width_pt * (1.0 - x_left) - 2
+
+    # 1) one column
+    for sc in (1.0, 0.95, 0.9, 0.85, 0.8):
+        lines, y, w = column(fixed, sc, x_left)
+        ch_h = (ch_gap * sc + n_all * ch_fs * sc * LINE_SPACING) if n_all else 0.0
+        if y + ch_h + badge_h(sc) <= height_pt and w <= full_w:
+            shown = hidden = 0
+            if n_all:
+                ch, y, shown, hidden = channel_rows(sc, y + ch_gap * sc, 1e9, x_left, full_w)
+                lines += ch
+            return result(lines, x_left, y + 4 * sc, sc, 1, "one column", shown, hidden)
+
+    def two(sc, left_items, right_first, y_from_index):
+        lines, y_left, w_left = column(left_items, sc, x_left)
+        x_need = x_left + (w_left + 8) / width_pt
+        x_right = max(x_need, 0.45)
+        right_w = width_pt * (1.0 - x_right) - 2
+        # the right column needs room for a shortened name + value (~16 chars)
+        # and for the badge
+        wide_enough = right_w >= max(16 * CW * ch_fs * sc, badge_w(sc))
+        y0 = lines[y_from_index][5]
+        if right_first is not None:
+            t, fs, color, weight, _gap = right_first
+            lines.append((t, fs * sc, color, weight, x_right, y0))
+            y0 += fs * sc * LINE_SPACING
+        ch, y, shown, hidden = channel_rows(sc, y0, height_pt - y0 - badge_h(sc), x_right, right_w)
+        lines += ch
+        fits = (wide_enough and y_left <= height_pt
+                and y + badge_h(sc) <= height_pt + 0.5)
+        return lines, x_right, y + 4 * sc, shown, hidden, fits
+
+    scales = [round(0.8 - 0.05 * k, 2) for k in range(int(round((0.8 - MIN_FONT_SCALE) / 0.05)) + 1)]
+    # 2) two columns: the 8 fixed lines on the left
+    for sc in scales:
+        lines, bx, by, shown, hidden, fits = two(sc, fixed, None, 3)
+        if fits:
+            return result(lines, bx, by, sc, 2, "two columns", shown, hidden)
+    # 3) compact, one column: currency + lots on one line, smaller gaps, the
+    #    channel rows fill what is left (the rest -> "+N more channel(s)")
+    head, cur_l, lots_l, *vals, tariff = fixed
+    meta = (f"{cur_l[0]}  {lots_l[0]}", cur_l[1], cur_l[2], cur_l[3], 1)
+    items = ([head, meta] + [(t, fs, c, w, (2 if k == 0 else g)) for k, (t, fs, c, w, g) in enumerate(vals)]
+             + [(tariff[0], tariff[1], tariff[2], tariff[3], 2)])
+    for sc in scales:
+        lines, y, w = column(items, sc, x_left)
+        # keep room for at least one channel row ("+N more channel(s)")
+        one_row = (2 * sc + ch_fs * sc * LINE_SPACING) if n_all else 0.0
+        fits = (w <= full_w and y + one_row + badge_h(sc) <= height_pt + 0.5
+                and badge_w(sc) <= full_w)
+        if fits or sc == scales[-1]:
+            shown = hidden = 0
+            if n_all:
+                ch, y, shown, hidden = channel_rows(sc, y + 2 * sc, height_pt - y - 2 * sc - badge_h(sc),
+                                                    x_left, full_w)
+                lines += ch
+            return result(lines, x_left, y + 4 * sc, sc, 1,
+                          "compact" if fits else "compact (clipped)", shown, hidden)
 
 
 def _draw_profit_zone(ax, ev_filtered: pd.DataFrame, cur: str) -> None:
@@ -799,6 +932,10 @@ class PPCCockpitApp(tk.Frame):
         # once here; _on_canvas_click() hit-tests against self._trust_bar_info
         # (rebuilt on every _redraw()) to find which bar/event-type was clicked.
         self._canvas.mpl_connect("button_press_event", self._on_canvas_click)
+        # 1.2: the KPI Summary lines are laid out for the panel's height in
+        # points; re-lay them out when the window (and so the figure) is resized.
+        self._kpi_draw_args = None
+        self._canvas.mpl_connect("resize_event", self._on_fig_resize)
 
         toolbar_frame = tk.Frame(chart_frame, bg="white")
         toolbar_frame.pack(side=tk.BOTTOM, fill=tk.X)
@@ -875,6 +1012,7 @@ class PPCCockpitApp(tk.Frame):
 
         cur = self._cur
         _draw_kpi_text(ax1, self._kpi, rec_raw, cur)
+        self._kpi_draw_args = (ax1, rec_raw, cur)
         _draw_profit_zone(ax2, ev_raw, cur)
         _draw_weekly_revenue(ax3, nw, periods, cur)
         _draw_waterfall(ax_wf, ev_raw, cur)          # ← Phase 2
@@ -900,6 +1038,16 @@ class PPCCockpitApp(tk.Frame):
             fontsize=11, fontweight="bold", color=C_HEADER, y=0.99,
         )
         self._canvas.draw()
+
+    def _on_fig_resize(self, _event=None) -> None:
+        """1.2: redo the KPI Summary text for the new panel height."""
+        args = getattr(self, "_kpi_draw_args", None)
+        if not args or args[0].figure is not self._fig or args[0] not in self._fig.axes:
+            return
+        ax, rec_raw, cur = args
+        ax.cla()
+        _draw_kpi_text(ax, self._kpi, rec_raw, cur)
+        self._canvas.draw_idle()
 
     # ── Trust Event drill-down ───────────────────────────────────────────
     def _on_canvas_click(self, event) -> None:

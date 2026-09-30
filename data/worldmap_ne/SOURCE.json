@@ -1,0 +1,105 @@
+{
+ "title": "Natural Earth (public domain) -- converted for the WOM World Map trial",
+ "license": "Public domain (https://www.naturalearthdata.com/about/terms-of-use/)",
+ "landing_page": "https://www.naturalearthdata.com/downloads/",
+ "download_url_template": "https://naturalearth.s3.amazonaws.com/{scale}_{category}/ne_{scale}_{name}.zip",
+ "source_dir": "C:\\Users\\ohsug\\.local\\share\\cartopy\\shapefiles\\natural_earth",
+ "acquired_via": "cartopy's download cache (cartopy fetched the zips from the URL template above; this tool did not access the network)",
+ "version_note": "The cached files carry no version record (cartopy keeps only .shp/.shx/.dbf/.prj/.cpg, not the VERSION.txt/README of the zip); the version is the Natural Earth release that was current on the acquisition date below.",
+ "converted_at": "2026-10-01T05:42:25",
+ "chunk_points": 256,
+ "coordinates": "lon/lat degrees, float32 (projection is done at run time with numpy)",
+ "files": {
+  "ne_110m_coastline": {
+   "shp": "~\\.local\\share\\cartopy\\shapefiles\\natural_earth\\physical\\ne_110m_coastline.shp",
+   "acquired": "2025-08-24T15:57:51",
+   "sha256_shp": "a1f8285d0e0a4858392cd78fc74fa3ee4cd9088947cf6e3693729dc852d70b60",
+   "shp_bytes": 89652,
+   "features": 134,
+   "source_parts": 134,
+   "points": 5136,
+   "stored_parts": 142
+  },
+  "ne_110m_admin_0_boundary_lines_land": {
+   "shp": "~\\.local\\share\\cartopy\\shapefiles\\natural_earth\\cultural\\ne_110m_admin_0_boundary_lines_land.shp",
+   "acquired": "2025-08-24T15:57:51",
+   "sha256_shp": "d19f784f92626816c064f878571f61bc43ec7bfc407666ce6a450d6e757afff0",
+   "shp_bytes": 68372,
+   "features": 331,
+   "source_parts": 333,
+   "points": 3108,
+   "stored_parts": 333
+  },
+  "ne_110m_land": {
+   "shp": "~\\.local\\share\\cartopy\\shapefiles\\natural_earth\\physical\\ne_110m_land.shp",
+   "acquired": "2025-08-24T15:57:48",
+   "sha256_shp": "8689e6932b8e370e2ca4587cf3ba21e460b1235db37b6ed3c172c35b4a6088de",
+   "shp_bytes": 89504,
+   "features": 127,
+   "source_parts": 128,
+   "points": 5143,
+   "stored_parts": 128
+  },
+  "ne_50m_coastline": {
+   "shp": "~\\.local\\share\\cartopy\\shapefiles\\natural_earth\\physical\\ne_50m_coastline.shp",
+   "acquired": "2025-08-27T14:36:50",
+   "sha256_shp": "797d675af9613f80b51ab6049fa32e589974d7a97c6497ca56772965f179ed26",
+   "shp_bytes": 1046728,
+   "features": 1428,
+   "source_parts": 1429,
+   "points": 60538,
+   "stored_parts": 1551
+  },
+  "ne_50m_admin_0_boundary_lines_land": {
+   "shp": "~\\.local\\share\\cartopy\\shapefiles\\natural_earth\\cultural\\ne_50m_admin_0_boundary_lines_land.shp",
+   "acquired": "2025-08-27T14:36:52",
+   "sha256_shp": "16950c1695e39b2721f0c19ecd3b4be6a13565c6c8cbe61b2b834694984a9c40",
+   "shp_bytes": 339696,
+   "features": 390,
+   "source_parts": 393,
+   "points": 19866,
+   "stored_parts": 400
+  },
+  "ne_50m_land": {
+   "shp": "~\\.local\\share\\cartopy\\shapefiles\\natural_earth\\physical\\ne_50m_land.shp",
+   "acquired": "2025-08-27T14:36:46",
+   "sha256_shp": "140d1419f7ace66bf0ea8ceb068cab544d413170f4e8c48e0a11bde6c978b319",
+   "shp_bytes": 1050332,
+   "features": 1420,
+   "source_parts": 1422,
+   "points": 60669,
+   "stored_parts": 1422
+  },
+  "ne_10m_coastline": {
+   "shp": "~\\.local\\share\\cartopy\\shapefiles\\natural_earth\\physical\\ne_10m_coastline.shp",
+   "acquired": "2025-08-27T14:38:13",
+   "sha256_shp": "459a4a97c09db19aadf5244026612de9d43748be27f83a360242b99f7fabb3c1",
+   "shp_bytes": 6806860,
+   "features": 4133,
+   "source_parts": 4133,
+   "points": 412023,
+   "stored_parts": 5199
+  },
+  "ne_10m_admin_0_boundary_lines_land": {
+   "shp": "~\\.local\\share\\cartopy\\shapefiles\\natural_earth\\cultural\\ne_10m_admin_0_boundary_lines_land.shp",
+   "acquired": "2025-08-27T14:38:16",
+   "sha256_shp": "b6811b9e2f6ed40b31622e6d261210c5e6afded9b7ad71977d3658293f56373f",
+   "shp_bytes": 1295520,
+   "features": 515,
+   "source_parts": 7980,
+   "points": 77305,
+   "stored_parts": 7990
+  }
+ },
+ "outputs": {
+  "ne_110m.npz": {
+   "bytes": 104005
+  },
+  "ne_50m.npz": {
+   "bytes": 952031
+  },
+  "ne_10m.npz": {
+   "bytes": 2949541
+  }
+ }
+}

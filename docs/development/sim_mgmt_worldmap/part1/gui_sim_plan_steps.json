@@ -1,0 +1,909 @@
+{
+ "errors": [],
+ "steps": {
+  "1_simulation_done": {
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
+   "status_line": "✔ Simulation complete.  Scenarios: 3  |  Avg fill rate: 97.7%  |  Total stockout: 68,857 units  |  Revenue: $452,663,505  |  Margin: 55.5%  |  CCC: -6.2w",
+   "shown_result": "sim",
+   "display_source": "sim",
+   "ppc_ctx": {
+    "state": "none",
+    "run_id": "",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "pl_summary": [
+    [
+     "Base",
+     "452,663,505",
+     "201,308,440",
+     "251,355,065",
+     "55.5%",
+     "1,079,370",
+     "-6.2",
+     "111,922,295",
+     "66,365,420",
+     "money によるシナリオ比較（PPC ではない）"
+    ],
+    [
+     "Downside",
+     "369,928,534",
+     "164,433,344",
+     "205,495,190",
+     "55.5%",
+     "1,241,247",
+     "-2.6",
+     "91,465,846",
+     "54,208,795",
+     "money によるシナリオ比較（PPC ではない）"
+    ],
+    [
+     "Upside",
+     "499,937,882",
+     "222,392,328",
+     "277,545,554",
+     "55.5%",
+     "986,033",
+     "-7.7",
+     "123,611,015",
+     "73,316,152",
+     "money によるシナリオ比較（PPC ではない）"
+    ]
+   ],
+   "node_pl": [
+    [
+     "（Simulation：なし）",
+     "PPC の台帳から作る表",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "landed_cost": [
+    [
+     "Base",
+     "Base",
+     "452,663,505",
+     "0",
+     "17,070,682",
+     "51.8%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Downside",
+     "Base",
+     "369,928,534",
+     "0",
+     "13,972,991",
+     "51.8%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Upside",
+     "Base",
+     "499,937,882",
+     "0",
+     "18,854,850",
+     "51.7%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Base",
+     "TrumpTariff",
+     "452,663,505",
+     "16,775,703",
+     "17,070,682",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Downside",
+     "TrumpTariff",
+     "369,928,534",
+     "13,702,779",
+     "13,972,991",
+     "48.1%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Upside",
+     "TrumpTariff",
+     "499,937,882",
+     "18,532,694",
+     "18,854,850",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Base",
+     "KD_Parts",
+     "452,663,505",
+     "1,677,570",
+     "21,523,904",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Downside",
+     "KD_Parts",
+     "369,928,534",
+     "1,370,278",
+     "17,618,119",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Upside",
+     "KD_Parts",
+     "499,937,882",
+     "1,853,269",
+     "23,773,507",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Base",
+     "CNtoAPAC",
+     "452,663,505",
+     "16,775,703",
+     "17,070,682",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Downside",
+     "CNtoAPAC",
+     "369,928,534",
+     "13,702,779",
+     "13,972,991",
+     "48.1%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Upside",
+     "CNtoAPAC",
+     "499,937,882",
+     "18,532,694",
+     "18,854,850",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ]
+   ],
+   "lc_narrative_head": "出所：money によるシナリオ比較（PPC ではない）。金額は sku_master の価格の通貨（PPC の基準通貨への換算なし）\n【Landed Cost シナリオ分析サマリー】",
+   "ccc_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [
+     "Base",
+     "Downside",
+     "Upside"
+    ],
+    "texts": [
+     "-6.2w",
+     "-2.6w",
+     "-7.7w",
+     "出所：money によるシナリオ比較（PPC ではない）"
+    ]
+   },
+   "gp_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [
+     "Base",
+     "Downside",
+     "Upside"
+    ],
+    "texts": [
+     "55.5%",
+     "55.5%",
+     "55.5%",
+     "出所：money によるシナリオ比較（PPC ではない）"
+    ]
+   },
+   "ppc_tab_status": "PPC 未実行",
+   "ppc_tab_shows_cockpit": false,
+   "mgr_scenarios": [
+    "Base",
+    "Upside",
+    "Downside"
+   ]
+  },
+  "2_planning_done_ppc_running": {
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-061825.991-6772a5__iphone_global",
+   "status_line": "Planning Engine complete. Products: 3  |  Nodes: 32  |  Planning: fill 90.2%, stockout 112,516（実出荷ベース）  |  Check Charts/KPI/Management tabs for 'Planning' scenario  |  💰 Running PPC …",
+   "shown_result": "plan",
+   "display_source": "plan",
+   "ppc_ctx": {
+    "state": "running",
+    "run_id": "20261001-061825.991-6772a5__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "mgmt_banner": "PPC：PPC 計算中　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "pl_summary": [
+    [
+     "Planning",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "PPC 計算中"
+    ]
+   ],
+   "node_pl": [
+    [
+     "（PPC 計算中）",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "landed_cost": [],
+   "lc_narrative_head": "PPC 計算中\n（今の計画の PPC の結果が出るまで、Landed Cost は表示しません）",
+   "ccc_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [],
+    "texts": [
+     "PPC 計算中"
+    ]
+   },
+   "gp_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [],
+    "texts": [
+     "PPC 計算中"
+    ]
+   },
+   "ppc_tab_status": "PPC 計算中",
+   "ppc_tab_shows_cockpit": false,
+   "mgr_scenarios": [
+    "Base",
+    "Upside",
+    "Downside",
+    "Planning"
+   ]
+  },
+  "3_planning_ppc_done": {
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-061825.991-6772a5__iphone_global",
+   "status_line": "💰 PPC complete (PSI-linked) — Lots: 1,127  Margin: 41.2%  | PPC・Management tabs refreshed",
+   "shown_result": "plan",
+   "display_source": "plan",
+   "ppc_ctx": {
+    "state": "done",
+    "run_id": "20261001-061825.991-6772a5__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-061825.991-6772a5__iphone_global",
+   "pl_summary": [
+    [
+     "Planning",
+     "640,773,326,445,600",
+     "376,837,953,923,594",
+     "263,935,372,522,006",
+     "41.2%",
+     "56,060",
+     "-14.0",
+     "102,898,900",
+     "60,545,331",
+     "PPC 台帳（今の計画）"
+    ]
+   ],
+   "node_pl": [
+    [
+     "Foxconn_CN_i15",
+     "iPhone15",
+     "0",
+     "34,361,288,955,900",
+     "-34,361,288,955,900",
+     "--",
+     "0"
+    ],
+    [
+     "Retail_AMER_i15",
+     "iPhone15",
+     "37,079,557,882,200",
+     "6,171,306,244,808",
+     "30,908,251,637,392",
+     "83.4%",
+     "5,317,256,342,228"
+    ],
+    [
+     "Retail_APAC_i15",
+     "iPhone15",
+     "7,883,443,887,000",
+     "161,555,937,900",
+     "7,721,887,949,100",
+     "98.0%",
+     "0"
+    ]
+   ],
+   "landed_cost": [
+    [
+     "Planning",
+     "Base",
+     "¥640,773,326,445,600",
+     "¥47,153,338,992,334",
+     "¥15,394,421",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "TrumpTariff",
+     "¥640,773,326,445,600",
+     "¥47,153,338,992,334",
+     "¥15,394,421",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "KD_Parts",
+     "¥640,773,326,445,600",
+     "¥47,153,338,992,334",
+     "¥19,410,356",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "CNtoAPAC",
+     "¥640,773,326,445,600",
+     "¥47,153,338,992,334",
+     "¥15,394,421",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ]
+   ],
+   "lc_narrative_head": "【Landed Cost シナリオ分析サマリー】",
+   "ccc_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [
+     "Planning"
+    ],
+    "texts": [
+     "-14.0w"
+    ]
+   },
+   "gp_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [
+     "Planning"
+    ],
+    "texts": [
+     "41.2%"
+    ]
+   },
+   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-061825.991-6772a5__iphone_global",
+   "ppc_tab_shows_cockpit": true,
+   "mgr_scenarios": [
+    "Base",
+    "Upside",
+    "Downside",
+    "Planning"
+   ]
+  },
+  "4_simulation_after_planning": {
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
+   "status_line": "✔ Simulation complete.  Scenarios: 3  |  Avg fill rate: 97.7%  |  Total stockout: 68,857 units  |  Revenue: $452,663,505  |  Margin: 55.5%  |  CCC: -6.2w",
+   "shown_result": "sim",
+   "display_source": "sim",
+   "ppc_ctx": {
+    "state": "none",
+    "run_id": "",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "pl_summary": [
+    [
+     "Base",
+     "452,663,505",
+     "201,308,440",
+     "251,355,065",
+     "55.5%",
+     "1,079,370",
+     "-6.2",
+     "111,922,295",
+     "66,365,420",
+     "money によるシナリオ比較（PPC ではない）"
+    ],
+    [
+     "Downside",
+     "369,928,534",
+     "164,433,344",
+     "205,495,190",
+     "55.5%",
+     "1,241,247",
+     "-2.6",
+     "91,465,846",
+     "54,208,795",
+     "money によるシナリオ比較（PPC ではない）"
+    ],
+    [
+     "Upside",
+     "499,937,882",
+     "222,392,328",
+     "277,545,554",
+     "55.5%",
+     "986,033",
+     "-7.7",
+     "123,611,015",
+     "73,316,152",
+     "money によるシナリオ比較（PPC ではない）"
+    ]
+   ],
+   "node_pl": [
+    [
+     "（Simulation：なし）",
+     "PPC の台帳から作る表",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "landed_cost": [
+    [
+     "Base",
+     "Base",
+     "452,663,505",
+     "0",
+     "17,070,682",
+     "51.8%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Downside",
+     "Base",
+     "369,928,534",
+     "0",
+     "13,972,991",
+     "51.8%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Upside",
+     "Base",
+     "499,937,882",
+     "0",
+     "18,854,850",
+     "51.7%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Base",
+     "TrumpTariff",
+     "452,663,505",
+     "16,775,703",
+     "17,070,682",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Downside",
+     "TrumpTariff",
+     "369,928,534",
+     "13,702,779",
+     "13,972,991",
+     "48.1%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Upside",
+     "TrumpTariff",
+     "499,937,882",
+     "18,532,694",
+     "18,854,850",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Base",
+     "KD_Parts",
+     "452,663,505",
+     "1,677,570",
+     "21,523,904",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Downside",
+     "KD_Parts",
+     "369,928,534",
+     "1,370,278",
+     "17,618,119",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Upside",
+     "KD_Parts",
+     "499,937,882",
+     "1,853,269",
+     "23,773,507",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Base",
+     "CNtoAPAC",
+     "452,663,505",
+     "16,775,703",
+     "17,070,682",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Downside",
+     "CNtoAPAC",
+     "369,928,534",
+     "13,702,779",
+     "13,972,991",
+     "48.1%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Upside",
+     "CNtoAPAC",
+     "499,937,882",
+     "18,532,694",
+     "18,854,850",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ]
+   ],
+   "lc_narrative_head": "出所：money によるシナリオ比較（PPC ではない）。金額は sku_master の価格の通貨（PPC の基準通貨への換算なし）\n【Landed Cost シナリオ分析サマリー】",
+   "ccc_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [
+     "Base",
+     "Downside",
+     "Upside"
+    ],
+    "texts": [
+     "-6.2w",
+     "-2.6w",
+     "-7.7w",
+     "出所：money によるシナリオ比較（PPC ではない）"
+    ]
+   },
+   "gp_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [
+     "Base",
+     "Downside",
+     "Upside"
+    ],
+    "texts": [
+     "55.5%",
+     "55.5%",
+     "55.5%",
+     "出所：money によるシナリオ比較（PPC ではない）"
+    ]
+   },
+   "ppc_tab_status": "PPC 未実行",
+   "ppc_tab_shows_cockpit": false,
+   "mgr_scenarios": [
+    "Base",
+    "Upside",
+    "Downside"
+   ]
+  },
+  "5_simulation_while_ppc_running__ppc_finished_late": {
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
+   "status_line": "✔ Simulation complete.  Scenarios: 3  |  Avg fill rate: 97.7%  |  Total stockout: 68,857 units  |  Revenue: $452,663,505  |  Margin: 55.5%  |  CCC: -6.2w",
+   "shown_result": "sim",
+   "display_source": "sim",
+   "ppc_ctx": {
+    "state": "none",
+    "run_id": "",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "pl_summary": [
+    [
+     "Base",
+     "452,663,505",
+     "201,308,440",
+     "251,355,065",
+     "55.5%",
+     "1,079,370",
+     "-6.2",
+     "111,922,295",
+     "66,365,420",
+     "money によるシナリオ比較（PPC ではない）"
+    ],
+    [
+     "Downside",
+     "369,928,534",
+     "164,433,344",
+     "205,495,190",
+     "55.5%",
+     "1,241,247",
+     "-2.6",
+     "91,465,846",
+     "54,208,795",
+     "money によるシナリオ比較（PPC ではない）"
+    ],
+    [
+     "Upside",
+     "499,937,882",
+     "222,392,328",
+     "277,545,554",
+     "55.5%",
+     "986,033",
+     "-7.7",
+     "123,611,015",
+     "73,316,152",
+     "money によるシナリオ比較（PPC ではない）"
+    ]
+   ],
+   "node_pl": [
+    [
+     "（Simulation：なし）",
+     "PPC の台帳から作る表",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "landed_cost": [
+    [
+     "Base",
+     "Base",
+     "452,663,505",
+     "0",
+     "17,070,682",
+     "51.8%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Downside",
+     "Base",
+     "369,928,534",
+     "0",
+     "13,972,991",
+     "51.8%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Upside",
+     "Base",
+     "499,937,882",
+     "0",
+     "18,854,850",
+     "51.7%",
+     "-3.8pp",
+     "0.0%"
+    ],
+    [
+     "Base",
+     "TrumpTariff",
+     "452,663,505",
+     "16,775,703",
+     "17,070,682",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Downside",
+     "TrumpTariff",
+     "369,928,534",
+     "13,702,779",
+     "13,972,991",
+     "48.1%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Upside",
+     "TrumpTariff",
+     "499,937,882",
+     "18,532,694",
+     "18,854,850",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Base",
+     "KD_Parts",
+     "452,663,505",
+     "1,677,570",
+     "21,523,904",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Downside",
+     "KD_Parts",
+     "369,928,534",
+     "1,370,278",
+     "17,618,119",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Upside",
+     "KD_Parts",
+     "499,937,882",
+     "1,853,269",
+     "23,773,507",
+     "50.4%",
+     "-5.1pp",
+     "0.4%"
+    ],
+    [
+     "Base",
+     "CNtoAPAC",
+     "452,663,505",
+     "16,775,703",
+     "17,070,682",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Downside",
+     "CNtoAPAC",
+     "369,928,534",
+     "13,702,779",
+     "13,972,991",
+     "48.1%",
+     "-7.5pp",
+     "3.7%"
+    ],
+    [
+     "Upside",
+     "CNtoAPAC",
+     "499,937,882",
+     "18,532,694",
+     "18,854,850",
+     "48.0%",
+     "-7.5pp",
+     "3.7%"
+    ]
+   ],
+   "lc_narrative_head": "出所：money によるシナリオ比較（PPC ではない）。金額は sku_master の価格の通貨（PPC の基準通貨への換算なし）\n【Landed Cost シナリオ分析サマリー】",
+   "ccc_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [
+     "Base",
+     "Downside",
+     "Upside"
+    ],
+    "texts": [
+     "-6.2w",
+     "-2.6w",
+     "-7.7w",
+     "出所：money によるシナリオ比較（PPC ではない）"
+    ]
+   },
+   "gp_chart": {
+    "title": [
+     ""
+    ],
+    "xticks": [
+     "Base",
+     "Downside",
+     "Upside"
+    ],
+    "texts": [
+     "55.5%",
+     "55.5%",
+     "55.5%",
+     "出所：money によるシナリオ比較（PPC ではない）"
+    ]
+   },
+   "ppc_tab_status": "PPC 未実行",
+   "ppc_tab_shows_cockpit": false,
+   "mgr_scenarios": [
+    "Base",
+    "Upside",
+    "Downside"
+   ],
+   "ppc_callbacks": [
+    {
+     "run_id": "20261001-061912.078-f85d13__iphone_global",
+     "accepted": false,
+     "revenue": 640773326445600.0
+    }
+   ],
+   "screen_history": [
+    [
+     0.9,
+     "sim",
+     [
+      "452,663,505",
+      "369,928,534",
+      "499,937,882"
+     ],
+     "表示中：Run Simulation の結果　｜　出所：mo"
+    ],
+    [
+     25.7,
+     "plan",
+     [
+      ""
+     ],
+     "PPC：PPC 計算中　→　P&L Summary・Node"
+    ],
+    [
+     29.9,
+     "sim",
+     [
+      "452,663,505",
+      "369,928,534",
+      "499,937,882"
+     ],
+     "表示中：Run Simulation の結果　｜　出所：mo"
+    ]
+   ]
+  }
+ }
+}

@@ -719,10 +719,35 @@ class ManagementCockpitPanel(tk.Frame):
         # ({"state", "run_id", "model_dir"} -- wom/ppc/ppc_run_info.py). None =
         # no plan yet: the PPC files are NOT read.
         self._ppc_ctx: Optional[dict] = None
+        # RequestLetter_SimMgmt 1.1: which result the tab shows.
+        #   "plan" -- the Planning Engine's result: Revenue〜GM only from the
+        #             current plan's PPC ledger (empty without it), Planning row only.
+        #   "sim"  -- Run Simulation's result: no PPC exists on this path, so the
+        #             money values of the scenario comparison are shown, labelled.
+        # The two sources never share a table: the mode is switched by
+        # show_simulation() / set_ppc_context() / on_model_loaded().
+        self._display_source = self.SOURCE_PLAN
+        self._sim_model_dir = ""
         self._build()
+
+    SOURCE_PLAN = "plan"
+    SOURCE_SIM = "sim"
+    SIM_SOURCE_LABEL = "money によるシナリオ比較（PPC ではない）"
+
+    def _is_sim(self) -> bool:
+        return self._display_source == self.SOURCE_SIM
+
+    def show_simulation(self, mgr: ScenarioManager, model_dir: str = "") -> None:
+        """1.1: show Run Simulation's result (money scenario comparison)."""
+        self._display_source = self.SOURCE_SIM
+        self._sim_model_dir = model_dir or ""
+        self._ppc_ctx = None
+        self.load(mgr)
 
     # ── P1: is output/ppc the result of the plan shown here? ─────────
     def set_ppc_context(self, ctx: Optional[dict]) -> None:
+        # A plan's PPC context means the Planning Engine's result is shown.
+        self._display_source = self.SOURCE_PLAN
         self._ppc_ctx = dict(ctx) if ctx else None
         self._refresh_ppc_banner()
 
@@ -736,6 +761,13 @@ class ManagementCockpitPanel(tk.Frame):
 
     def _refresh_ppc_banner(self):
         if not hasattr(self, "_ppc_banner_var"):
+            return
+        if self._is_sim():
+            model = describe_model_dir(self._sim_model_dir) if self._sim_model_dir else "—"
+            self._ppc_banner_var.set(
+                f"表示中：Run Simulation の結果　｜　出所：{self.SIM_SOURCE_LABEL}"
+                f"（Planning Engine・PPC は実行していません）　｜　モデル：{model}")
+            self._ppc_banner_lbl.configure(fg="#81D4FA")
             return
         ok, label = self._ppc_check()
         ctx = self._ppc_ctx or {}
@@ -755,6 +787,7 @@ class ManagementCockpitPanel(tk.Frame):
         removed, so that no number of another model stays on the screen."""
         self._mgr = None
         self._ppc_ctx = None
+        self._display_source = self.SOURCE_PLAN
         for tree in (self._pl_tree, self._node_pl_tree, self._lc_tree):
             tree.delete(*tree.get_children())
         self._lc_narrative.configure(state="normal")
@@ -1042,6 +1075,12 @@ class ManagementCockpitPanel(tk.Frame):
         build_node_pl_summary()). Filtered by the SKU dropdown above.
         """
         self._node_pl_tree.delete(*self._node_pl_tree.get_children())
+        if self._is_sim():
+            # 1.1: Node P&L comes only from the PPC ledger; Run Simulation has none.
+            self._node_pl_tree.insert("", "end", values=[
+                "（Simulation：なし）", "PPC の台帳から作る表",
+                "", "", "", "", ""])
+            return
         # P1: the file in output/ppc is shown only when it is the result of the
         # current plan. Otherwise one line says why (never another plan's nodes).
         _ok, _label = self._ppc_check()
@@ -1131,6 +1170,20 @@ class ManagementCockpitPanel(tk.Frame):
         from wom.engine.money import build_scenario_money_kpi
         return build_scenario_money_kpi(filtered)
 
+    def _shown_kpi(self):
+        """The scenario rows the tables/charts show (1.1).
+
+        Planning result: only the Planning scenario. When Run Simulation was
+        executed first, the Planning Engine MERGES its scenario into the same
+        ScenarioManager, so Base/Upside/Downside (money of the simulation)
+        would otherwise sit next to the PPC-sourced Planning row.
+        Simulation result: every scenario of the simulation (money)."""
+        kpi = self._get_filtered_kpi()
+        if kpi is None or self._is_sim() or Cols.SCENARIO not in kpi.columns:
+            return kpi
+        from wom.engine.sc_tree_to_df import SCENARIO_PLANNING
+        return kpi[kpi[Cols.SCENARIO] == SCENARIO_PLANNING]
+
     # ── Strategic KPI colours ────────────────────────────────────────
     _STATUS_FG = {"OK": "#69F0AE", "WARN": "#FFD740", "ISSUE": "#FF5252"}
     _STATUS_ICON = {"OK": "✅", "WARN": "⚠️", "ISSUE": "🔴"}
@@ -1190,9 +1243,17 @@ class ManagementCockpitPanel(tk.Frame):
         self._lc_narrative.configure(state="normal")
         self._lc_narrative.delete("1.0", "end")
 
+        # 1.1: only the scenarios of the result shown (Planning result -> the
+        # Planning row; a preceding simulation's Base/Upside/Downside are dropped).
+        if lc_df is not None and not lc_df.empty and not self._is_sim() \
+                and "wom_scenario" in lc_df.columns:
+            from wom.engine.sc_tree_to_df import SCENARIO_PLANNING
+            lc_df = lc_df[lc_df["wom_scenario"] == SCENARIO_PLANNING]
+
         # Owner decision (2026-09-30): no table without the current plan's PPC
         # result -- only the state (no money values instead).
-        _ppc_ok, _ppc_label = self._ppc_check()
+        # 1.1: Run Simulation has no PPC -- its money values are shown, labelled.
+        _ppc_ok, _ppc_label = (True, self.SIM_SOURCE_LABEL) if self._is_sim() else self._ppc_check()
         if not _ppc_ok:
             self._lc_narrative.insert(
                 "end", f"{_ppc_label}\n（今の計画の PPC の結果が出るまで、Landed Cost は表示しません）")
@@ -1244,6 +1305,9 @@ class ManagementCockpitPanel(tk.Frame):
             narrative = build_lc_narrative(lc_df, currency_symbol=_sym)
         except Exception:
             narrative = "（Landed Cost 分析完了）"
+        if self._is_sim():
+            narrative = (f"出所：{self.SIM_SOURCE_LABEL}。金額は sku_master の価格の通貨"
+                         "（PPC の基準通貨への換算なし）\n" + narrative)
         self._lc_narrative.insert("end", narrative)
         self._lc_narrative.configure(state="disabled")
 
@@ -1254,7 +1318,8 @@ class ManagementCockpitPanel(tk.Frame):
         Falls back to ("USD","$") when unavailable."""
         import json
         base = getattr(self, "_node_pl_output_dir", "output/ppc")
-        if not self._ppc_check()[0]:
+        if self._is_sim() or not self._ppc_check()[0]:
+            # 1.1: a simulation's money values are in the sku_master currency.
             # P1: the PPC files are not the current plan's -- their currency must
             # not be used either. money values are in the sku_master currency,
             # which is not recorded, so no symbol is shown.
@@ -1291,7 +1356,7 @@ class ManagementCockpitPanel(tk.Frame):
         landed_gross_margin, margin_impact_pp, tariff_burden_pct}} or None
         (caller then keeps the money-engine values).
         """
-        if not self._ppc_check()[0]:
+        if self._is_sim() or not self._ppc_check()[0]:
             return None      # P1: not the current plan's PPC result -> money values
         base_dir  = getattr(self, "_node_pl_output_dir", "output/ppc")
         pl_path   = os.path.join(base_dir, "ppc_node_pl_summary.csv")
@@ -1385,7 +1450,7 @@ class ManagementCockpitPanel(tk.Frame):
         """
         import json
         base = getattr(self, "_node_pl_output_dir", "output/ppc")
-        if not self._ppc_check()[0]:
+        if self._is_sim() or not self._ppc_check()[0]:
             return None      # P1: not the current plan's PPC result -> money values
         try:
             if not sku or sku == "All":
@@ -1419,8 +1484,26 @@ class ManagementCockpitPanel(tk.Frame):
     def _refresh_pl_table(self):
         if self._mgr is None:
             return
-        kpi = self._get_filtered_kpi()
+        kpi = self._shown_kpi()
         if kpi is None:
+            return
+        if self._is_sim():
+            # 1.1: Run Simulation -- PPC does not run on this path, so the money
+            # values of the scenario comparison are shown, and said to be so.
+            self._pl_tree.delete(*self._pl_tree.get_children())
+            for _, row in kpi.iterrows():
+                self._pl_tree.insert("", "end", values=[
+                    row.get(Cols.SCENARIO, ""),
+                    f"{float(row.get(Cols.REVENUE, 0) or 0):,.0f}",
+                    f"{float(row.get(Cols.COGS, 0) or 0):,.0f}",
+                    f"{float(row.get(Cols.GROSS_PROFIT, 0) or 0):,.0f}",
+                    f"{float(row.get(Cols.GROSS_MARGIN, 0) or 0)*100:.1f}%",
+                    f"{float(row.get(Cols.INV_VALUE_COST, 0) or 0):,.0f}",
+                    f"{float(row.get(Cols.CCC_WKS, 0) or 0):.1f}",
+                    f"{float(row.get(Cols.AR_VALUE, 0) or 0):,.0f}",
+                    f"{float(row.get(Cols.AP_VALUE, 0) or 0):,.0f}",
+                    self.SIM_SOURCE_LABEL,
+                ])
             return
         # Phase 2: P&L top-line (Revenue/COGS/GP/GM) is sourced from the single
         # PPC event ledger; working capital stays from the money engine. PPC
@@ -1468,7 +1551,7 @@ class ManagementCockpitPanel(tk.Frame):
     def _refresh_charts(self):
         if self._mgr is None:
             return
-        kpi = self._get_filtered_kpi()
+        kpi = self._shown_kpi()
         if kpi is None:
             return
         scenarios = kpi[Cols.SCENARIO].tolist()
@@ -1477,7 +1560,8 @@ class ManagementCockpitPanel(tk.Frame):
 
         # Owner decision (2026-09-30): without the current plan's PPC result the
         # charts are left empty and only say why (no money values instead).
-        _ppc_ok, _ppc_label = self._ppc_check()
+        # 1.1: Run Simulation -> the money values, with the source in the title.
+        _ppc_ok, _ppc_label = (True, self.SIM_SOURCE_LABEL) if self._is_sim() else self._ppc_check()
         if not _ppc_ok:
             for _fig, _canvas in ((self._ccc_fig, self._ccc_canvas), (self._gp_fig, self._gp_canvas)):
                 _fig.clf()
@@ -1510,6 +1594,9 @@ class ManagementCockpitPanel(tk.Frame):
             ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1,
                     f"{val:.1f}w", ha="center", va="bottom",
                     color=FG_WHITE, fontsize=8)
+        if self._is_sim():      # inside the axes: a title is cut off in the small chart
+            ax.text(0.01, 0.98, f"出所：{self.SIM_SOURCE_LABEL}", transform=ax.transAxes,
+                    ha="left", va="top", color="#81D4FA", fontsize=7)
         self._ccc_canvas.draw()
 
         # Gross Profit chart
@@ -1537,7 +1624,8 @@ class ManagementCockpitPanel(tk.Frame):
         ax2.bar(x, gp_vals,  color=colours, alpha=0.85, label="Gross Profit")
         ax2.set_xticks(list(x))
         ax2.set_xticklabels(scenarios, color=FG_WHITE, fontsize=9)
-        ax2.set_ylabel(f"Value ({self._base_ccy()[0]})", color=FG_ACC, fontsize=8)
+        ax2.set_ylabel(("Value (money)" if self._is_sim()
+                        else f"Value ({self._base_ccy()[0]})"), color=FG_ACC, fontsize=8)
         ax2.tick_params(colors=FG_WHITE, labelsize=8)
         ax2.legend(facecolor=BG_LIGHT, labelcolor=FG_WHITE, fontsize=8)
         for spine in ax2.spines.values():
@@ -1546,6 +1634,9 @@ class ManagementCockpitPanel(tk.Frame):
         for xi, gm_val in enumerate(gm_vals):
             ax2.text(xi, gp_vals[xi] * 1.02, f"{gm_val*100:.1f}%",
                      ha="center", va="bottom", color=FG_WHITE, fontsize=8)
+        if self._is_sim():      # inside the axes: a title is cut off in the small chart
+            ax2.text(0.01, 0.98, f"出所：{self.SIM_SOURCE_LABEL}", transform=ax2.transAxes,
+                    ha="left", va="top", color="#81D4FA", fontsize=7)
         self._gp_canvas.draw()
 
     def _refresh_issue_selector(self):
@@ -5138,6 +5229,7 @@ class WOMApp(tk.Tk):
         self._plan_run = {"run_id": "", "model_dir": "", "sc_tree_path": ""}
         self._ppc_ctx = make_context()
         self._ppc_gate = PPCRunGate()      # which plan's PPC may run / be shown
+        self._shown_result = ""            # 1.1: "plan" / "sim" / "" (nothing yet)
 
         # Detect sample data directory relative to this file
         # Default to smartx-2027-2029 subfolder (has sc_tree_master.csv)
@@ -5229,7 +5321,10 @@ class WOMApp(tk.Tk):
         plan = self._plan_run
         outside = is_outside_work_root(loaded) if loaded else False
         txt = f"モデル：{describe_model_dir(loaded)}"
-        if plan.get("run_id"):
+        if getattr(self, "_shown_result", "") == "sim":
+            txt += ("\n表示中の結果：Run Simulation（money によるシナリオ比較。"
+                    "Planning Engine・PPC は未実行）")
+        elif plan.get("run_id"):
             same = (os.path.normcase(os.path.abspath(plan["model_dir"] or "."))
                     == os.path.normcase(os.path.abspath(loaded or ".")))
             txt += (f"\n表示中の計画：{plan['run_id']}" if same else
@@ -5266,6 +5361,7 @@ class WOMApp(tk.Tk):
         self._ppc_gate.set_current("")
         self._plan_run = {"run_id": "", "model_dir": "", "sc_tree_path": ""}
         self._plan_run_pending = None
+        self._shown_result = ""
         if hasattr(self, "_mgmt_panel"):
             self._mgmt_panel.on_model_loaded(getattr(self, "_model_dir", ""))
         if hasattr(self, "_ppc_panel"):
@@ -5693,7 +5789,10 @@ class WOMApp(tk.Tk):
             self.after(0, self._on_simulation_done)
         except Exception as e:
             import traceback
-            self.after(0, lambda: self._on_simulation_error(traceback.format_exc()))
+            # format_exc() must run HERE: inside the lambda (called later on the
+            # main thread) there is no current exception and it gave "NoneType: None".
+            _tb = traceback.format_exc()
+            self.after(0, lambda: self._on_simulation_error(_tb))
 
     def _on_simulation_done(self):
         self._progress.stop()
@@ -5739,11 +5838,29 @@ class WOMApp(tk.Tk):
         except Exception as _lc_exc:
             print(f"[LandedCost] sim compute failed: {_lc_exc}")
 
+        # RequestLetter_SimMgmt 1.1: the simulation's result replaces the plan on
+        # the screen (self._mgr is a new ScenarioManager). A PPC of an earlier
+        # plan that is still running is not the result shown any more: it is
+        # ignored when it finishes (and not started if it is still waiting).
+        # (A Planning Engine run started before and still computing stays the
+        # current plan: when it finishes, its result replaces this one.)
+        from wom.ppc.ppc_run_info import make_context, STATE_NONE
+        _pending = getattr(self, "_plan_run_pending", None)
+        _in_progress = bool(_pending) and _pending.get("run_id") != self._plan_run.get("run_id")
+        self._ppc_gate.set_current(_pending["run_id"] if _in_progress else "")
+        self._plan_run = {"run_id": "", "model_dir": "", "sc_tree_path": ""}
+        if not _in_progress:
+            self._plan_run_pending = None
+        self._shown_result = "sim"
+        self._ppc_ctx = make_context(STATE_NONE, "", getattr(self, "_model_dir", ""))
+        self._ppc_panel.set_ppc_context(self._ppc_ctx)
+        self._update_model_display()
+
         self._chart_panel.load(mgr)
         self._kpi_panel.load(mgr)
         self._load_risk_tab(mgr)
         self._load_delta_tab(mgr)
-        self._mgmt_panel.load(mgr)
+        self._mgmt_panel.show_simulation(mgr, getattr(self, "_model_dir", ""))
         self._network_panel.load(mgr)
         # Load node_master into World Map panel
         node_path = self._f_node.get() if hasattr(self, '_f_node') else ""
@@ -6169,6 +6286,7 @@ class WOMApp(tk.Tk):
                                   "sc_tree_path": ""})
         self._ppc_ctx = make_context(STATE_RUNNING, self._plan_run["run_id"],
                                      self._plan_run["model_dir"])
+        self._shown_result = "plan"     # 1.1: the Planning Engine's result is shown
         self._mgmt_panel.set_ppc_context(self._ppc_ctx)
         self._ppc_panel.set_ppc_context(self._ppc_ctx)
         self._update_model_display()
