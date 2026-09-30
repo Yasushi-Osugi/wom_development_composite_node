@@ -1,0 +1,56 @@
+# Request Letter：段階 D（金額編）の設計のための調査（読み取りだけ）
+
+- 宛先：Code君（Claude Code、Windows）
+- 依頼者：大杉（WOM Project Owner）
+- 起草：Claude君
+- 着手の時期：`RequestLetter_SimMgmt_WorldMapTrial` を終えた後
+- 種別：**読み取り・計測だけ**。コード・データ・golden を変えない。commit しない。
+- 前提：`docs/design/drafts/WOM_ValueChain_Model_StageD_Design_v0.2.md`（以下「設計草案」）
+
+## 1. 目的
+
+段階 D（Value Chain Model、金額編）の設計を確定するため、今の PPC と money が「何を起点に、どの単位で、どの週に、どのノードの金額を作っているか」を、コードと実際の出力で確かめる。設計草案の §9（第 1 回の受入条件）の比較の土台にする。**直し方は書かないでください。** 事実と、設計草案と食い違う点を報告してください。
+
+## 2. 調べること
+
+### S1　今の PPC の計算の経路
+
+`wom/ppc/`（engine・forward・transfer・tariff・profit_zone・backward・reconcile・kpi・psi_psi_bridge）について、次を表にする。
+
+| 観点 | 知りたいこと |
+|---|---|
+| 起点 | 何の記録を起点にするか（市場 leaf の販売記録か、各ノードの出荷か） |
+| 数量 | lot 数か物量か。`cpu_size` をどこで掛けるか。`qty` の意味 |
+| 週 | 各費用・売上を、どの週の日付で計上するか |
+| ノード | 各ノードの売上・原価を、どの数量から作っているか（中間ノードは leaf の数量から導出か） |
+| 区間 | 運賃・関税・保険を、どの区間・どの数量で計上するか |
+| 移転価格 | `ppc_transfer_price_rule.csv` の価格を、どのノード間の取引に使っているか |
+| 通貨 | どの週の為替で換算しているか |
+
+### S2　money（`wom/engine/money.py`・`sc_tree_to_df.py`）の経路
+
+同じ観点で、ノードごとの売上・原価（S2 の修正後、実出荷ベース）を表にする。PPC と money で、同じノードの金額が違う場合の理由も書く。
+
+### S3　単位の検証（設計草案 v0.1 §3.6）
+
+モデルごと（13 golden ＋ alloc）に、次の積を 1 つずつたどり、表にする。
+
+```
+実出荷 lot 数 × 物量／lot（cpu_size など） × 物量当たり単価 × 通貨換算
+```
+
+- 各マスター（`sku_master`、`ppc_market_price`、`ppc_supplier_cost`、`ppc_node_cost_rule`、`ppc_edge_cost_rule`、`ppc_transfer_price_rule`）の価格・原価が、「lot 当たり」か「物量当たり」かを、列名・コメント・値の大きさから判断し、判断の根拠を書く。
+- 今の PPC の約束（マスターの単価は物量当たり、集計で qty を掛ける）と合っているかを示す。
+- iphone_global の売上 641 兆円が、どの掛け算から来ているかを示す。money の 4.16 億円との違いの理由も示す。
+
+### S4　設計草案の割当での今の価格の位置づけ
+
+設計草案 §7 の法人の割当（案）で、今の移転価格が「法人間の価格」「法人内の管理価格」のどちらに当たるかを、Cookie と soysauce-jpy-alloc で確かめる。法人間の取引が起きる区間で、価格の設定が無いものを一覧にする。
+
+## 3. 成果物
+
+報告書 `docs/development/WOM_StageD_Survey_Report.md`
+
+- S1〜S4 の表
+- 設計草案と食い違う点、設計草案が見落としている点
+- 未確認の点
