@@ -170,6 +170,69 @@ class FileEntry(tk.Frame):
 
 
 # ──────────────────────────────────────────────────────────────────────
+# Model folder helpers (RequestLetter_StalePPC_Units_KittingView P2)
+#   Pure functions (no Tk state), so that the rules can be tested.
+# ──────────────────────────────────────────────────────────────────────
+
+# FileEntry attribute of WOMApp -> standard file name inside a model folder
+MODEL_FILE_MAP = [
+    ("_f_sku",       "sku_master.csv"),
+    ("_f_dem",       "demand_forecast.csv"),
+    ("_f_inv",       "inventory_master.csv"),
+    ("_f_cap",       "capacity_plan.csv"),
+    ("_f_push",      "push_config.csv"),
+    ("_f_holiday",   "holiday_calendar.csv"),
+    ("_f_lane",      "lane_assignment.csv"),
+    ("_f_node",      "node_master.csv"),
+    ("_f_edge_cost", "edge_cost_master.csv"),
+    ("_f_route",     "route_master.csv"),
+    ("_f_sc_tree",   "sc_tree_master.csv"),
+]
+
+
+def model_folder_file_map(folder: str) -> dict:
+    """{FileEntry attribute: path} for a model folder.
+
+    Every entry belongs to THIS folder: a file that the folder does not have
+    gives "" (the entry is cleared). Before P2 a missing file left the entry
+    untouched, so it kept pointing at the PREVIOUS model's file (e.g. another
+    model's push_config.csv / edge_cost_master.csv was applied to the new one).
+    """
+    out = {}
+    for attr, fname in MODEL_FILE_MAP:
+        path = os.path.join(folder, fname)
+        out[attr] = path if os.path.exists(path) else ""
+    return out
+
+
+def work_root() -> str:
+    """The working folder of this application (the repository root)."""
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def is_outside_work_root(path: str, root: str = None) -> bool:
+    """True when `path` is not inside the working folder (e.g. a model folder of
+    an older copy of the repository)."""
+    if not path:
+        return False
+    root = os.path.normcase(os.path.abspath(root or work_root()))
+    p = os.path.normcase(os.path.abspath(path))
+    try:
+        return os.path.commonpath([root, p]) != root
+    except ValueError:                       # different drives
+        return True
+
+
+def describe_model_dir(path: str, root: str = None) -> str:
+    """Full path of a model folder for display, with a warning when it is
+    outside the working folder."""
+    if not path:
+        return "（モデル未読み込み）"
+    full = os.path.abspath(path)
+    return (f"⚠ 作業フォルダの外：{full}" if is_outside_work_root(full, root) else full)
+
+
+# ──────────────────────────────────────────────────────────────────────
 # Chart panel
 # ──────────────────────────────────────────────────────────────────────
 
@@ -226,6 +289,23 @@ class ChartPanel(tk.Frame):
         toolbar_frame = tk.Frame(self, bg=BG_MID)
         toolbar_frame.pack(fill="x")
         NavigationToolbar2Tk(self.canvas, toolbar_frame)
+
+    def clear(self) -> None:
+        """A model folder was (re)loaded: nothing of the previous plan stays."""
+        self._mgr = None
+        self._sc_tree = None
+        self.sku_cb["values"] = ["ALL"]
+        self.reg_cb["values"] = ["ALL"]
+        self.sku_var.set("ALL")
+        self.reg_var.set("ALL")
+        self.fig.clf()
+        ax = self.fig.add_subplot(111)
+        ax.set_facecolor(BG_MID)
+        self.fig.patch.set_facecolor(BG_DARK)
+        ax.set_xticks([]); ax.set_yticks([])
+        ax.text(0.5, 0.5, "モデルを読み込みました。Planning Engine を実行してください",
+                ha="center", va="center", color=FG_ACC, transform=ax.transAxes, fontsize=11)
+        self.canvas.draw()
 
     def load(self, mgr: ScenarioManager) -> None:
         self._mgr = mgr
@@ -580,6 +660,11 @@ class KPITablePanel(tk.Frame):
         self.filter_var.set("ALL")
         self._apply_filter()
 
+    def clear(self) -> None:
+        """A model folder was (re)loaded: nothing of the previous plan stays."""
+        self._mgr = None
+        self.tree.delete(*self.tree.get_children())
+
     def _apply_filter(self):
         if self._df is None:
             return
@@ -630,9 +715,69 @@ class ManagementCockpitPanel(tk.Frame):
         super().__init__(parent, bg=BG_DARK, **kw)
         self._mgr: Optional[ScenarioManager] = None
         self._lc_comparison_df = None
+        # RequestLetter_StalePPC P1: which plan the PPC output must belong to
+        # ({"state", "run_id", "model_dir"} -- wom/ppc/ppc_run_info.py). None =
+        # no plan yet: the PPC files are NOT read.
+        self._ppc_ctx: Optional[dict] = None
         self._build()
 
+    # ── P1: is output/ppc the result of the plan shown here? ─────────
+    def set_ppc_context(self, ctx: Optional[dict]) -> None:
+        self._ppc_ctx = dict(ctx) if ctx else None
+        self._refresh_ppc_banner()
+
+    def _ppc_check(self):
+        """(ok, label). ok=False -> the PPC files must not be shown as the
+        result of the current plan (not run / running / failed / other plan or
+        model / sample sales data)."""
+        from wom.ppc.ppc_run_info import check_ppc_output
+        return check_ppc_output(getattr(self, "_node_pl_output_dir", "output/ppc"),
+                                self._ppc_ctx)
+
+    def _refresh_ppc_banner(self):
+        if not hasattr(self, "_ppc_banner_var"):
+            return
+        ok, label = self._ppc_check()
+        ctx = self._ppc_ctx or {}
+        model = describe_model_dir(ctx.get("model_dir", "")) if ctx.get("model_dir") else "—"
+        if ok:
+            txt = f"PPC：{label}　｜　計画のモデル：{model}　｜　計画 ID：{ctx.get('run_id', '')}"
+            fg = "#69F0AE"
+        else:
+            txt = (f"PPC：{label}　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の "
+                   f"PPC の結果が出るまで表示しません　｜　計画のモデル：{model}")
+            fg = "#FFD740" if (ctx.get("state") in ("running", "none", None)) else "#FF8A80"
+        self._ppc_banner_var.set(txt)
+        self._ppc_banner_lbl.configure(fg=fg)
+
+    def on_model_loaded(self, model_dir: str) -> None:
+        """A model folder was (re)loaded: the tables of the previous plan are
+        removed, so that no number of another model stays on the screen."""
+        self._mgr = None
+        self._ppc_ctx = None
+        for tree in (self._pl_tree, self._node_pl_tree, self._lc_tree):
+            tree.delete(*tree.get_children())
+        self._lc_narrative.configure(state="normal")
+        self._lc_narrative.delete("1.0", "end")
+        self._lc_narrative.configure(state="disabled")
+        for fig, canvas in ((self._ccc_fig, self._ccc_canvas), (self._gp_fig, self._gp_canvas)):
+            fig.clf()
+            canvas.draw()
+        self._refresh_strategic_kpis()
+        self._ppc_banner_var.set(
+            f"モデルを読み込みました：{describe_model_dir(model_dir)}　→　"
+            "Planning Engine を実行してください（前の計画の表は消しました）")
+        self._ppc_banner_lbl.configure(fg="#FFD740")
+
     def _build(self):
+        # ── P1: which plan / which PPC result is shown ────────────────
+        self._ppc_banner_var = tk.StringVar(
+            value="PPC：未実行（Planning Engine を実行すると表示されます）")
+        self._ppc_banner_lbl = tk.Label(self, textvariable=self._ppc_banner_var,
+                                        bg=BG_DARK, fg="#FFD740", anchor="w", justify="left",
+                                        font=("Segoe UI", 8, "bold"), wraplength=1500)
+        self._ppc_banner_lbl.pack(fill="x", padx=8, pady=(6, 0))
+
         # ── SKU filter (applies to P&L / Strategic KPI / Landed Cost) ──
         filt = tk.Frame(self, bg=BG_DARK)
         filt.pack(fill="x", padx=8, pady=(8, 0))
@@ -654,16 +799,20 @@ class ManagementCockpitPanel(tk.Frame):
         pl_frame.pack(fill="x", padx=8, pady=(8, 4))
 
         pl_cols = ["scenario", "revenue", "cogs", "gross_profit",
-                   "gross_margin%", "inv_value", "ccc_wks", "ar_value", "ap_value"]
+                   "gross_margin%", "inv_value", "ccc_wks", "ar_value", "ap_value",
+                   "source"]
         self._pl_tree = ttk.Treeview(pl_frame, columns=pl_cols,
                                      show="headings", height=5)
         pl_widths = {"scenario": 90, "revenue": 110, "cogs": 100,
                      "gross_profit": 110, "gross_margin%": 95,
                      "inv_value": 110, "ccc_wks": 80,
-                     "ar_value": 110, "ap_value": 110}
+                     "ar_value": 110, "ap_value": 110, "source": 330}
         for c in pl_cols:
-            self._pl_tree.heading(c, text=c.replace("_", " ").title())
-            self._pl_tree.column(c, width=pl_widths.get(c, 100), anchor="center")
+            # "source" (P1): where Revenue/COGS/GP/GM of the row come from
+            self._pl_tree.heading(c, text=("出所（Revenue〜GM）" if c == "source"
+                                           else c.replace("_", " ").title()))
+            self._pl_tree.column(c, width=pl_widths.get(c, 100),
+                                 anchor=("w" if c == "source" else "center"))
 
         pl_vsb = ttk.Scrollbar(pl_frame, orient="vertical", command=self._pl_tree.yview)
         self._pl_tree.configure(yscrollcommand=pl_vsb.set)
@@ -868,6 +1017,7 @@ class ManagementCockpitPanel(tk.Frame):
 
     def load(self, mgr: ScenarioManager) -> None:
         self._mgr = mgr
+        self._refresh_ppc_banner()
         self._refresh_sku_filter()
         self._refresh_pl_table()
         self._refresh_node_pl_table()
@@ -892,6 +1042,12 @@ class ManagementCockpitPanel(tk.Frame):
         build_node_pl_summary()). Filtered by the SKU dropdown above.
         """
         self._node_pl_tree.delete(*self._node_pl_tree.get_children())
+        # P1: the file in output/ppc is shown only when it is the result of the
+        # current plan. Otherwise one line says why (never another plan's nodes).
+        _ok, _label = self._ppc_check()
+        if not _ok:
+            self._node_pl_tree.insert("", "end", values=[f"（{_label}）", "", "", "", "", "", ""])
+            return
         path = os.path.join(getattr(self, "_node_pl_output_dir", "output/ppc"),
                              "ppc_node_pl_summary.csv")
         if not os.path.exists(path):
@@ -1034,6 +1190,15 @@ class ManagementCockpitPanel(tk.Frame):
         self._lc_narrative.configure(state="normal")
         self._lc_narrative.delete("1.0", "end")
 
+        # Owner decision (2026-09-30): no table without the current plan's PPC
+        # result -- only the state (no money values instead).
+        _ppc_ok, _ppc_label = self._ppc_check()
+        if not _ppc_ok:
+            self._lc_narrative.insert(
+                "end", f"{_ppc_label}\n（今の計画の PPC の結果が出るまで、Landed Cost は表示しません）")
+            self._lc_narrative.configure(state="disabled")
+            return
+
         if lc_df is None or lc_df.empty:
             self._lc_narrative.insert("end",
                 "（Edge Cost Master / Route Master を設定して\n"
@@ -1089,6 +1254,11 @@ class ManagementCockpitPanel(tk.Frame):
         Falls back to ("USD","$") when unavailable."""
         import json
         base = getattr(self, "_node_pl_output_dir", "output/ppc")
+        if not self._ppc_check()[0]:
+            # P1: the PPC files are not the current plan's -- their currency must
+            # not be used either. money values are in the sku_master currency,
+            # which is not recorded, so no symbol is shown.
+            return "", ""
         try:
             p = os.path.join(base, "ppc_kpi_summary.json")
             if os.path.exists(p):
@@ -1121,6 +1291,8 @@ class ManagementCockpitPanel(tk.Frame):
         landed_gross_margin, margin_impact_pp, tariff_burden_pct}} or None
         (caller then keeps the money-engine values).
         """
+        if not self._ppc_check()[0]:
+            return None      # P1: not the current plan's PPC result -> money values
         base_dir  = getattr(self, "_node_pl_output_dir", "output/ppc")
         pl_path   = os.path.join(base_dir, "ppc_node_pl_summary.csv")
         lc_scens  = getattr(self._mgr, "lc_scens",  None) if self._mgr else None
@@ -1213,6 +1385,8 @@ class ManagementCockpitPanel(tk.Frame):
         """
         import json
         base = getattr(self, "_node_pl_output_dir", "output/ppc")
+        if not self._ppc_check()[0]:
+            return None      # P1: not the current plan's PPC result -> money values
         try:
             if not sku or sku == "All":
                 p = os.path.join(base, "ppc_kpi_summary.json")
@@ -1254,7 +1428,18 @@ class ManagementCockpitPanel(tk.Frame):
         # applies to the displayed (Planning) row(s). (Scenario-specific PPC
         # re-runs are future work.)
         _ledger = self._ledger_pl_for_sku(self._current_sku())
+        _ppc_ok, _ppc_label = self._ppc_check()
         self._pl_tree.delete(*self._pl_tree.get_children())
+        if not _ppc_ok or _ledger is None:
+            # Owner decision (2026-09-30): without the current plan's PPC result
+            # the row is left EMPTY and only says why -- money values are not
+            # shown instead (their scale can differ from PPC by orders of
+            # magnitude, e.g. iphone_global).
+            _why = _ppc_label if not _ppc_ok else "PPC の台帳にこの SKU が無い"
+            for _, row in kpi.iterrows():
+                self._pl_tree.insert("", "end", values=[row.get(Cols.SCENARIO, "")] + [""] * 8 + [_why])
+            return
+        _source = _ppc_label
         for _, row in kpi.iterrows():
             rev  = float(row.get(Cols.REVENUE,      0) or 0)
             cogs = float(row.get(Cols.COGS,         0) or 0)
@@ -1277,6 +1462,7 @@ class ManagementCockpitPanel(tk.Frame):
                 f"{ccc:.1f}",
                 f"{ar:,.0f}",
                 f"{ap:,.0f}",
+                _source,
             ])
 
     def _refresh_charts(self):
@@ -1288,6 +1474,23 @@ class ManagementCockpitPanel(tk.Frame):
         scenarios = kpi[Cols.SCENARIO].tolist()
         colours = [COLOURS.get(s, DEFAULT_COLOURS[i % len(DEFAULT_COLOURS)])
                    for i, s in enumerate(scenarios)]
+
+        # Owner decision (2026-09-30): without the current plan's PPC result the
+        # charts are left empty and only say why (no money values instead).
+        _ppc_ok, _ppc_label = self._ppc_check()
+        if not _ppc_ok:
+            for _fig, _canvas in ((self._ccc_fig, self._ccc_canvas), (self._gp_fig, self._gp_canvas)):
+                _fig.clf()
+                _ax = _fig.add_subplot(111)
+                _ax.set_facecolor(BG_MID)
+                _fig.patch.set_facecolor(BG_DARK)
+                _ax.set_xticks([]); _ax.set_yticks([])
+                for _sp in _ax.spines.values():
+                    _sp.set_edgecolor(BG_LIGHT)
+                _ax.text(0.5, 0.5, _ppc_label, ha="center", va="center", color=FG_ACC,
+                         transform=_ax.transAxes, fontsize=11)
+                _canvas.draw()
+            return
 
         # CCC chart
         self._ccc_fig.clf()
@@ -1404,7 +1607,15 @@ class PPCTabPanel(tk.Frame):
         super().__init__(parent, bg=BG_DARK, **kw)
         self._output_dir = output_dir
         self._cockpit = None
+        # RequestLetter_StalePPC P1: the plan this tab must show. False = not
+        # managed (the panel is used on its own: show whatever the folder has).
+        self._ppc_ctx = False
         self._build_frame()
+        self._try_load()
+
+    def set_ppc_context(self, ctx) -> None:
+        """P1: tell the tab which plan's PPC result it may show, and reload."""
+        self._ppc_ctx = dict(ctx) if ctx else None
         self._try_load()
 
     def _build_frame(self) -> None:
@@ -1437,23 +1648,54 @@ class PPCTabPanel(tk.Frame):
         self._placeholder = tk.Frame(self._content, bg=BG_DARK)
         self._placeholder.pack(fill="both", expand=True)
 
-        msg = (
+        self._placeholder_default = (
             "PPC output not found.\n\n"
             "Run the PPC engine first:\n"
             "    python -m wom.ppc\n\n"
             "Then click  \u27f3 Refresh  above."
         )
+        self._placeholder_var = tk.StringVar(value=self._placeholder_default)
         tk.Label(
-            self._placeholder, text=msg,
-            bg=BG_DARK, fg="#546E7A",
+            self._placeholder, textvariable=self._placeholder_var,
+            bg=BG_DARK, fg="#90A4AE",
             font=("Segoe UI", 12), justify="center",
         ).pack(expand=True)
+        # P1: the folder may hold another plan's / model's result. It can still
+        # be opened on purpose, clearly marked as unverified.
+        self._unverified_btn = tk.Button(
+            self._placeholder, text="確認なしで表示（出力フォルダにあるもの。今の計画の結果とは限りません）",
+            bg=BG_LIGHT, fg="#FFD740", font=("Segoe UI", 9), relief=tk.FLAT,
+            command=lambda: self._try_load(force=True))
 
-    def _try_load(self) -> None:
-        """Load PPCCockpitApp from output_dir. Show placeholder if unavailable."""
+    def _try_load(self, force: bool = False) -> None:
+        """Load PPCCockpitApp from output_dir. Show placeholder if unavailable.
+
+        P1: when the tab is managed by the app (set_ppc_context), the output
+        folder is shown only if it is the result of the current plan; otherwise
+        the placeholder says why (未実行／計算中／失敗／別の計画・別のモデル／サンプル).
+        force=True shows the folder anyway, marked as unverified."""
         kpi_path = os.path.join(self._output_dir, "ppc_kpi_summary.json")
+        _unverified_note = ""
+        self._unverified_btn.pack_forget()
+        if self._ppc_ctx is not False:
+            from wom.ppc.ppc_run_info import check_ppc_output, read_run_info
+            _ok, _label = check_ppc_output(self._output_dir, self._ppc_ctx)
+            if not _ok:
+                _info = read_run_info(self._output_dir) or {}
+                _what = (f"出力フォルダにあるのは：{_info.get('model_dir', '?')}"
+                         f"（計画 ID {_info.get('run_id', '?')}、販売記録 {_info.get('sales_source', '?')}）"
+                         if _info else "出力フォルダに、どの計画の結果かの印はありません")
+                if not force:
+                    self._placeholder_var.set(f"{_label}\n\n今の計画の PPC の結果は、まだありません。\n{_what}")
+                    self._status_var.set(_label)
+                    if os.path.exists(kpi_path):
+                        self._unverified_btn.pack(pady=(0, 40))
+                    self._show_placeholder()
+                    return
+                _unverified_note = f"⚠ 未確認の出力（{_label}）：{_what}"
 
         if not os.path.exists(kpi_path):
+            self._placeholder_var.set(self._placeholder_default)
             self._status_var.set(f"No PPC data — run  python -m wom.ppc  first")
             self._show_placeholder()
             return
@@ -1490,7 +1732,15 @@ class PPCTabPanel(tk.Frame):
                     except Exception:
                         pass
             self._cockpit.pack(fill="both", expand=True)
-            self._status_var.set(f"Loaded  {self._output_dir}/")
+            if _unverified_note:
+                self._status_var.set(_unverified_note)
+            elif isinstance(self._ppc_ctx, dict):
+                self._status_var.set(
+                    f"Loaded  {self._output_dir}/　｜　計画のモデル："
+                    f"{describe_model_dir(self._ppc_ctx.get('model_dir', ''))}"
+                    f"　｜　計画 ID：{self._ppc_ctx.get('run_id', '')}")
+            else:
+                self._status_var.set(f"Loaded  {self._output_dir}/")
             # Re-apply filters so charts reflect restored SKU/channel selection
             if _saved and hasattr(self._cockpit, '_redraw'):
                 try:
@@ -1503,7 +1753,10 @@ class PPCTabPanel(tk.Frame):
 
     def _show_placeholder(self) -> None:
         if self._cockpit is not None:
-            self._cockpit.pack_forget()
+            # P1: destroy (not just hide) -- a hidden cockpit of another plan must
+            # not come back when the tab is redrawn.
+            self._cockpit.destroy()
+            self._cockpit = None
         self._placeholder.pack(fill="both", expand=True)
 
     def refresh(self, output_dir: Optional[str] = None) -> None:
@@ -1738,6 +1991,14 @@ class PSIListPanel(tk.Frame):
         """Load a PlanNode and display its PSI data."""
         self._node = node
         self._refresh()
+
+    def clear(self) -> None:
+        """A model folder was (re)loaded: nothing of the previous plan stays."""
+        self._node = None
+        self._tree.delete(*self._tree.get_children())
+        self._node_var.set("No node loaded — use the node selector above")
+        self._cap_fig.clf()
+        self._cap_canvas.draw()
 
     # ── Internal helpers ─────────────────────────────────────────────
 
@@ -2009,7 +2270,11 @@ class FlowCheckPanel(tk.Frame):
                shipment − closing I) and arrival (what the supplier shipped
                towards the node vs what it received).
       Table 2 (market leaf_out): demand = on time + early + late + backlog.
+      Table 3 (Kitting; RequestLetter_StalePPC P5): per assembly node and per
+               component yard -- receipt / payout / closing stock of each
+               component, completed IDs vs the assembly's P.
     NG rows are red; 対象外 rows are grey with the reason.
+    The header shows the folder of the model the plan was made from (P2).
     """
 
     _NODE_COLS = [
@@ -2027,6 +2292,16 @@ class FlowCheckPanel(tk.Frame):
         ("product", "製品", 130), ("leaf", "市場（leaf_out）", 160), ("demand", "需要", 70),
         ("on_time", "当週出荷", 70), ("early", "早出し", 60), ("late", "遅配", 60),
         ("backlog_end", "期末注文残", 80), ("check", "検算", 55),
+    ]
+    _KITTING_COLS = [
+        ("product", "製品", 110), ("assembly", "組立ノード", 140), ("row", "行", 95),
+        ("node", "置場／組立", 170), ("receipt_sum", "入庫 Σ", 70), ("payout_sum", "払出 Σ", 70),
+        ("closing_I", "期末残", 60), ("component_diff", "部材の保存差", 85),
+        ("completed_ids", "完成した ID", 85), ("assembly_p_sum", "組立の P Σ", 80),
+        ("completed_minus_p", "差（完成−P）", 85), ("kits_dup", "二重生成", 65),
+        ("incomplete", "未そろい完成", 85), ("premature", "到着前完成", 80),
+        ("waiting_components_end", "期末に待つ部材", 100),
+        ("status", "判定", 55), ("reason", "理由", 220),
     ]
     _QTY_COLS = {"opening_I", "receipt_sum", "ship_sum", "closing_I", "upstream_ship_sum",
                  "in_transit_end", "closing_CO", "demand", "on_time", "early", "late",
@@ -2053,12 +2328,21 @@ class FlowCheckPanel(tk.Frame):
                        command=self._fill, bg=BG_MID, fg=FG_WHITE, selectcolor=BG_LIGHT,
                        activebackground=BG_MID, font=("Segoe UI", 8)).pack(side="right", padx=4)
 
+        # P2: the folder of the model this plan was made from (full path)
+        self._model_var = tk.StringVar(value="モデル：—")
+        self._model_lbl = tk.Label(self, textvariable=self._model_var, bg=BG_DARK, fg="#B0BEC5",
+                                   font=("Segoe UI", 8), anchor="w")
+        self._model_lbl.pack(fill="x", padx=8)
+
         paned = tk.PanedWindow(self, orient="vertical", bg=BG_DARK, sashwidth=4)
         paned.pack(fill="both", expand=True)
         self._node_tree = self._make_tree(paned, self._NODE_COLS, "表 1：ノードごとの保存と到着",
-                                          height=18)
+                                          height=14)
         self._market_tree = self._make_tree(paned, self._MARKET_COLS, "表 2：市場の需要の行き先",
-                                            height=10)
+                                            height=8)
+        self._kitting_tree = self._make_tree(
+            paned, self._KITTING_COLS,
+            "表 3：Kitting の照合（部材の消費と完成。差（完成−P）は 0 が正）", height=5)
 
         self._note_var = tk.StringVar(value=(
             "保存差 = 期首 I + 入庫 Σ − 実出荷 Σ − 期末 I（0 が正）　"
@@ -2078,7 +2362,8 @@ class FlowCheckPanel(tk.Frame):
                             height=height, style="PSI.Treeview")
         for c, h, w in cols:
             tree.heading(c, text=h)
-            tree.column(c, width=w, anchor="w" if c in ("product", "node", "leaf", "reason")
+            tree.column(c, width=w, anchor="w" if c in ("product", "node", "leaf", "reason",
+                                                         "assembly", "row")
                         else "center", stretch=(c == "reason"))
         vsb = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
         hsb = ttk.Scrollbar(lf, orient="horizontal", command=tree.xview)
@@ -2092,9 +2377,22 @@ class FlowCheckPanel(tk.Frame):
         tree.tag_configure("total", foreground=FG_ACC, background=BG_LIGHT)
         return tree
 
+    def clear(self) -> None:
+        """A model folder was (re)loaded: nothing of the previous plan stays."""
+        self._fc = None
+        self._model_dir = ""
+        for tree in (self._node_tree, self._market_tree, self._kitting_tree):
+            tree.delete(*tree.get_children())
+        self._summary_var.set("Flow Check：Planning Engine を実行すると表示されます")
+        self._model_var.set("モデル：—")
+        self._model_lbl.configure(fg="#B0BEC5")
+
     def load(self, sc_tree, forward_results=None, model_dir: str = "") -> None:
         from wom.engine.flow_check import compute_flow_check
         self._model_dir = model_dir or ""
+        self._model_var.set(f"モデル：{describe_model_dir(self._model_dir)}")
+        self._model_lbl.configure(
+            fg=("#FF8A80" if is_outside_work_root(self._model_dir) else "#B0BEC5"))
         try:
             self._fc = compute_flow_check(sc_tree, forward_results or {})
         except Exception as exc:
@@ -2112,11 +2410,22 @@ class FlowCheckPanel(tk.Frame):
         return "—" if v is None else v
 
     def _fill(self):
-        for tree in (self._node_tree, self._market_tree):
+        for tree in (self._node_tree, self._market_tree, self._kitting_tree):
             for iid in tree.get_children():
                 tree.delete(iid)
         if not self._fc:
             return
+        # 表 3（P5）：Kitting の照合。組立の置場が無いモデルは、その旨を 1 行で出す。
+        _kit = self._fc.get("kitting") or []
+        if not _kit:
+            self._kitting_tree.insert(
+                "", "end", tags=("na",),
+                values=["", "組立の置場なし"] + [""] * (len(self._KITTING_COLS) - 2))
+        for r in _kit:
+            tag = "ng" if r["status"] == "NG" else ("total" if r["row"] == "完成品（組立）" else "ok")
+            self._kitting_tree.insert(
+                "", "end", tags=(tag,),
+                values=["" if r.get(c) is None else r.get(c) for c, _h, _w in self._KITTING_COLS])
         for r in self._fc["nodes"]:
             tag = {"NG": "ng", "対象外": "na"}.get(r["status"], "ok")
             self._node_tree.insert("", "end", values=[self._val(r, c) for c, _h, _w in self._NODE_COLS],
@@ -3124,6 +3433,54 @@ class SCNetworkPanel(tk.Frame):
 
         self._net_canvas.draw()
 
+    def clear(self) -> None:
+        """A model folder was (re)loaded: nothing of the previous plan stays
+        (graph, PSI / Cost charts, PSI List, Flow Check, animation)."""
+        self._anim_running = False
+        if self._anim_after_id:
+            try:
+                self.after_cancel(self._anim_after_id)
+            except Exception:
+                pass
+            self._anim_after_id = None
+        self._anim_week = 0
+        self._timeline = None
+        self._mgr = None
+        self._sc_tree = None
+        self._hammock_mode = False
+        self._node_map = {}
+        self._node_map_hammock = {}
+        self._selected_node = ""
+        self._pos = {}
+        if not hasattr(self, "_net_fig"):
+            return                      # HAS_NX=False: the panel was never built
+        for _fig, _canvas in ((self._net_fig, self._net_canvas), (self._psi_fig, self._psi_canvas),
+                              (self._cost_fig, self._cost_canvas)):
+            _fig.clf()
+            _fig.patch.set_facecolor(BG_DARK)
+            _canvas.draw()
+        _ax = self._net_fig.add_subplot(111)
+        _ax.set_facecolor(BG_DARK)
+        _ax.axis("off")
+        _ax.text(0.5, 0.5, "モデルを読み込みました。Planning Engine を実行してください",
+                 ha="center", va="center", color=FG_ACC, transform=_ax.transAxes, fontsize=11)
+        self._net_canvas.draw()
+        self._scen_cb["values"] = []
+        self._prod_cb["values"] = []
+        self._prod_var.set("")
+        self._node_lbl_var.set("← Click a node to inspect its PSI / Cost")
+        self._week_lbl_var.set("Event Flow Tracing  (Run Planning Engine first)")
+        for _b in ("_anim_play_btn", "_anim_pause_btn", "_anim_stop_btn"):
+            if hasattr(self, _b):
+                getattr(self, _b).config(state="disabled")
+        if hasattr(self, "_psi_node_cb"):
+            self._psi_node_cb["values"] = []
+            self._psi_node_var.set("")
+        if hasattr(self, "_psi_list_panel"):
+            self._psi_list_panel.clear()
+        if hasattr(self, "_flow_check_panel"):
+            self._flow_check_panel.clear()
+
     def load_planning_tree(self, sc_tree, model_dir: str = "",
                            forward_results=None) -> None:
         """
@@ -3907,6 +4264,24 @@ class WorldMapPanel(tk.Frame):
         self._info_text.config(state="disabled")
 
     # ── EventTimeline animation ───────────────────────────────────────────
+
+    def clear_timeline(self) -> None:
+        """A model folder was (re)loaded: the lot-flow animation of the previous
+        plan is removed (the node map itself is reloaded by the caller)."""
+        self._anim_running = False
+        if getattr(self, "_anim_after_id", None):
+            try:
+                self.after_cancel(self._anim_after_id)
+            except Exception:
+                pass
+            self._anim_after_id = None
+        self._anim_week = 0
+        self._timeline = None
+        for _b in ("_map_play_btn", "_map_pause_btn", "_map_stop_btn"):
+            if hasattr(self, _b):
+                getattr(self, _b).config(state="disabled")
+        if hasattr(self, "_map_week_var"):
+            self._map_week_var.set("Planning Engine を実行すると、アニメーションが使えます")
 
     def set_timeline(self, timeline) -> None:
         """Enable lot-flow animation once planning is complete."""
@@ -4756,6 +5131,13 @@ class WOMApp(tk.Tk):
 
         self._sim: Optional[WOMSimulator] = None
         self._mgr: Optional[ScenarioManager] = None
+        # RequestLetter_StalePPC P1/P2: the plan on the screen and its PPC state.
+        #   _plan_run : {"run_id", "model_dir", "sc_tree_path"} of the last plan
+        #   _ppc_ctx  : {"state", "run_id", "model_dir"} (wom/ppc/ppc_run_info.py)
+        from wom.ppc.ppc_run_info import make_context, PPCRunGate
+        self._plan_run = {"run_id": "", "model_dir": "", "sc_tree_path": ""}
+        self._ppc_ctx = make_context()
+        self._ppc_gate = PPCRunGate()      # which plan's PPC may run / be shown
 
         # Detect sample data directory relative to this file
         # Default to smartx-2027-2029 subfolder (has sc_tree_master.csv)
@@ -4778,6 +5160,12 @@ class WOMApp(tk.Tk):
         tk.Label(title_bar, text=self._version,
                  bg="#0D1B2A", fg=FG_ACC,
                  font=("Segoe UI", 10)).pack(side="right", padx=16)
+        # P2: full path of the loaded model folder, and the plan on the screen.
+        self._model_path_var = tk.StringVar(value="")
+        self._model_path_lbl = tk.Label(title_bar, textvariable=self._model_path_var,
+                                        bg="#0D1B2A", fg="#B0BEC5", anchor="w", justify="left",
+                                        font=("Segoe UI", 8))
+        self._model_path_lbl.pack(side="left", padx=(8, 8), fill="x", expand=True)
 
         # ── Main area ────────────────────────────────────────────
         main = tk.Frame(self, bg=BG_DARK)
@@ -4824,10 +5212,94 @@ class WOMApp(tk.Tk):
                           bg="#0D1B2A", fg=FG_ACC,
                           font=("Segoe UI", 9), anchor="w", padx=12)
         status.pack(fill="x", side="bottom")
+        self._status_lbl = status
 
-    def _status(self, msg: str) -> None:
-        """Update the status bar text."""
+    def _status(self, msg: str, warn: bool = False) -> None:
+        """Update the status bar text (warn=True: shown in a warning colour)."""
         self._status_var.set(msg)
+        if hasattr(self, "_status_lbl"):
+            self._status_lbl.configure(fg=("#FF8A80" if warn else FG_ACC))
+
+    # ── P2: which model folder is loaded / which plan is on the screen ─
+    def _update_model_display(self) -> None:
+        """Window title + title-bar label: the FULL path of the loaded model
+        folder (a warning when it is outside the working folder) and the model
+        of the plan currently shown in the tabs."""
+        loaded = getattr(self, "_model_dir", "") or ""
+        plan = self._plan_run
+        outside = is_outside_work_root(loaded) if loaded else False
+        txt = f"モデル：{describe_model_dir(loaded)}"
+        if plan.get("run_id"):
+            same = (os.path.normcase(os.path.abspath(plan["model_dir"] or "."))
+                    == os.path.normcase(os.path.abspath(loaded or ".")))
+            txt += (f"\n表示中の計画：{plan['run_id']}" if same else
+                    f"\n⚠ 表示中の計画は別のモデル：{describe_model_dir(plan['model_dir'])}"
+                    f"（{plan['run_id']}）→ Planning Engine を実行してください")
+            outside = outside or not same
+        else:
+            txt += "\n表示中の計画：なし（Planning Engine 未実行）"
+        self._model_path_var.set(txt)
+        self._model_path_lbl.configure(fg=("#FF8A80" if outside else "#B0BEC5"))
+        self.title(f"WOM – Weekly Operation Model  {self._version}  —  "
+                   f"{describe_model_dir(loaded)}")
+
+    def _apply_model_folder(self, folder: str):
+        """Point every input entry at `folder` (P2). Returns (loaded, missing)
+        file names. An entry whose file the folder does not have is CLEARED, so
+        that no file of the previously loaded model stays in use."""
+        loaded, missing = [], []
+        for attr, path in model_folder_file_map(folder).items():
+            getattr(self, attr).set(path)
+            fname = dict(MODEL_FILE_MAP)[attr]
+            (loaded if path else missing).append(fname)
+        self._model_dir = folder
+        self._node_cost_master = None  # invalidate cache
+        return loaded, missing
+
+    def _on_model_changed(self) -> None:
+        """P1: a model folder was (re)loaded -> nothing of the previous plan's
+        PPC result may stay on the Management / PPC tabs."""
+        from wom.ppc.ppc_run_info import make_context, STATE_NONE
+        self._ppc_ctx = make_context(STATE_NONE, "", getattr(self, "_model_dir", ""))
+        # No plan is on the screen any more: a PPC run of the previous model
+        # that finishes later is ignored, and one still waiting is not started.
+        self._ppc_gate.set_current("")
+        self._plan_run = {"run_id": "", "model_dir": "", "sc_tree_path": ""}
+        self._plan_run_pending = None
+        if hasattr(self, "_mgmt_panel"):
+            self._mgmt_panel.on_model_loaded(getattr(self, "_model_dir", ""))
+        if hasattr(self, "_ppc_panel"):
+            self._ppc_panel.set_ppc_context(self._ppc_ctx)
+        # Owner decision (2026-09-30): "everything on the screen is the result
+        # of the loaded model and its plan" -- every result tab is emptied.
+        self._clear_result_tabs()
+        self._update_model_display()
+
+    def _clear_result_tabs(self) -> None:
+        """Empty Charts / KPI Table / At-Risk / Scenario Delta / Network (incl.
+        PSI List and Flow Check) / World Map animation / Debug after a model
+        folder was (re)loaded."""
+        self._mgr = None
+        self._sim = None
+        self._fwd_results = None
+        for _name, _call in (
+                ("_chart_panel", lambda p: p.clear()),
+                ("_kpi_panel", lambda p: p.clear()),
+                ("_network_panel", lambda p: p.clear()),
+                ("_worldmap_panel", lambda p: p.clear_timeline()),
+                ("_debug_panel", lambda p: p._on_reset())):
+            _p = getattr(self, _name, None)
+            if _p is None:
+                continue
+            try:
+                _call(_p)
+            except Exception as _exc:
+                print(f"[ModelChange] clearing {_name} failed: {_exc}")
+        if hasattr(self, "_risk_tree"):
+            self._risk_tree.delete(*self._risk_tree.get_children())
+        if hasattr(self, "_delta_fig"):
+            self._delta_fig.clf()
+            self._delta_canvas.draw()
 
     def _build_left_panel(self, parent):
         # ── Config section ───────────────────────────────────────────
@@ -5085,25 +5557,8 @@ class WOMApp(tk.Tk):
 
     def _try_load_sample_paths(self):
         sd = self._sample_dir
-        for attr, fname in [
-            ("_f_sku",       "sku_master.csv"),
-            ("_f_dem",       "demand_forecast.csv"),
-            ("_f_inv",       "inventory_master.csv"),
-            ("_f_cap",       "capacity_plan.csv"),
-            ("_f_push",      "push_config.csv"),
-            ("_f_holiday",   "holiday_calendar.csv"),
-            ("_f_lane",      "lane_assignment.csv"),
-            ("_f_node",      "node_master.csv"),
-            ("_f_edge_cost", "edge_cost_master.csv"),
-            ("_f_route",     "route_master.csv"),
-            ("_f_sc_tree",   "sc_tree_master.csv"),
-        ]:
-            path = os.path.join(sd, fname)
-            if os.path.exists(path):
-                getattr(self, attr).set(path)
-        # Cache model_dir for cost chart lookup
-        self._model_dir = sd
-        self._node_cost_master = None  # invalidate cache
+        self._apply_model_folder(sd)
+        self._on_model_changed()
 
     # ------------------------------------------------------------------ #
     # Load Model Folder + Auto-detect Period
@@ -5114,27 +5569,9 @@ class WOMApp(tk.Tk):
         folder = filedialog.askdirectory(title="モデルフォルダを選択 (CSVファイルが入ったフォルダ)")
         if not folder:
             return
-        FILE_MAP = [
-            ("_f_sku",       "sku_master.csv"),
-            ("_f_dem",       "demand_forecast.csv"),
-            ("_f_inv",       "inventory_master.csv"),
-            ("_f_cap",       "capacity_plan.csv"),
-            ("_f_push",      "push_config.csv"),
-            ("_f_holiday",   "holiday_calendar.csv"),
-            ("_f_lane",      "lane_assignment.csv"),
-            ("_f_node",      "node_master.csv"),
-            ("_f_edge_cost", "edge_cost_master.csv"),
-            ("_f_route",     "route_master.csv"),
-            ("_f_sc_tree",   "sc_tree_master.csv"),
-        ]
-        loaded, missing = [], []
-        for attr, fname in FILE_MAP:
-            path = os.path.join(folder, fname)
-            if os.path.exists(path):
-                getattr(self, attr).set(path)
-                loaded.append(fname)
-            else:
-                missing.append(fname)
+        # P2: every entry now belongs to this folder (missing files are cleared,
+        # not left pointing at the previous model).
+        loaded, missing = self._apply_model_folder(folder)
         # Auto-detect planning period from demand file
         self._auto_detect_planning_period()
 
@@ -5146,14 +5583,14 @@ class WOMApp(tk.Tk):
         self._files_toggle_btn.config(text="▼ 詳細")
         self._files_collapsed = True
 
-        # Cache model_dir for cost chart lookup
-        self._model_dir = folder
-        self._node_cost_master = None  # invalidate cache
+        # P1/P2: the previous plan's PPC result is removed from the screen, and
+        # the full path of the loaded folder is shown.
+        self._on_model_changed()
 
-        msg = f"📂 {base}: {len(loaded)} files loaded"
+        msg = f"📂 {describe_model_dir(folder)}: {len(loaded)} files loaded"
         if missing:
-            msg += f"  (not found: {', '.join(missing)})"
-        self._status(msg)
+            msg += f"  (not found → 欄を空にしました: {', '.join(missing)})"
+        self._status(msg, warn=is_outside_work_root(folder))
 
         # Load node_master into WorldMap immediately on folder selection
         node_path = os.path.join(folder, "node_master.csv")
@@ -5562,7 +5999,22 @@ class WOMApp(tk.Tk):
     def _run_planning_engine(self):
         """Build SCTree from input files (or demo data) and run the lot-based planning pipeline."""
         self._progress.start(10)
-        self._status("Running Planning Engine (lot-based PSI)…")
+        # P1/P2: a new plan starts. Its identifier, and the folder of the SC Tree
+        # Master that is ACTUALLY used (the entry may have been edited by hand).
+        from wom.ppc.ppc_run_info import new_run_id, make_context, STATE_NONE
+        _sc_path = self._f_sc_tree.get() if hasattr(self, "_f_sc_tree") else ""
+        _plan_dir = os.path.dirname(_sc_path) if _sc_path else (getattr(self, "_model_dir", "") or "")
+        self._plan_run_pending = {"run_id": new_run_id(_plan_dir), "model_dir": _plan_dir,
+                                  "sc_tree_path": _sc_path}
+        self._ppc_ctx = make_context(STATE_NONE, self._plan_run_pending["run_id"], _plan_dir)
+        # From now on only THIS plan's PPC result may be shown: a PPC run of the
+        # previous plan that is still going is ignored when it finishes.
+        self._ppc_gate.set_current(self._plan_run_pending["run_id"])
+        print(f"[Planning] run_id={self._plan_run_pending['run_id']}  "
+              f"sc_tree_master={os.path.abspath(_sc_path) if _sc_path else '(none: demo tree)'}")
+        self._status(f"Running Planning Engine (lot-based PSI)…  SC Tree Master: "
+                     f"{os.path.abspath(_sc_path) if _sc_path else '（なし：Demo tree）'}",
+                     warn=is_outside_work_root(_plan_dir))
         # Build list of active (checked) plugin instances
         self._active_plugins = [
             inst for name, inst in getattr(self, '_plugin_instances', {}).items()
@@ -5707,6 +6159,19 @@ class WOMApp(tk.Tk):
                 self._worldmap_panel.load_default(node_path, sc_tree_path_wm)
         except Exception as _wm_exc:
             print(f"[WorldMap] node load failed: {_wm_exc}")
+
+        # -- P1/P2: this plan is now the one on the screen. Its PPC has not run
+        #    yet, so until _on_ppc_done the Management / PPC tabs must not read
+        #    output/ppc (it still holds the PREVIOUS plan's result).
+        from wom.ppc.ppc_run_info import make_context, STATE_RUNNING
+        self._plan_run = dict(getattr(self, "_plan_run_pending", None)
+                              or {"run_id": "", "model_dir": getattr(self, "_model_dir", ""),
+                                  "sc_tree_path": ""})
+        self._ppc_ctx = make_context(STATE_RUNNING, self._plan_run["run_id"],
+                                     self._plan_run["model_dir"])
+        self._mgmt_panel.set_ppc_context(self._ppc_ctx)
+        self._ppc_panel.set_ppc_context(self._ppc_ctx)
+        self._update_model_display()
 
         # -- Integrate Planning results into KPI/Management tabs
         planning_status = ""
@@ -5872,8 +6337,10 @@ class WOMApp(tk.Tk):
         separate, independently-editable widget.
         """
         weeks = list(sc_tree.week_labels)
+        _run = dict(self._plan_run)          # the plan this PPC run belongs to (P1)
         if not weeks:
             print("[PPC B2] sc_tree.week_labels is empty; aborting PPC run")
+            self._on_ppc_error("sc_tree.week_labels is empty", _run.get("run_id", ""))
             return
 
         self._status_var.set(
@@ -5914,8 +6381,10 @@ class WOMApp(tk.Tk):
 
         def _ppc_thread():
             try:
-                from wom.ppc.ppc_runner import run_ppc_from_psi
-                kpi = run_ppc_from_psi(
+                import wom.ppc.ppc_runner as _ppc_runner
+                # One PPC run at a time (one output folder); a run whose plan is
+                # no longer the current one when its turn comes is not started.
+                kpi = self._ppc_gate.run(_run.get("run_id", ""), lambda: _ppc_runner.run_ppc_from_psi(
                     sc_tree=sc_tree,
                     weeks=weeks,
                     data_dir=_ppc_data_dir,
@@ -5923,42 +6392,91 @@ class WOMApp(tk.Tk):
                     base_currency=_base_currency,
                     verbose=True,
                     use_node_name=(_ppc_data_dir != "data/ppc"),
-                )
-                self.after(0, lambda: self._on_ppc_done(kpi))
+                    run_info={"run_id": _run.get("run_id", ""),
+                              "model_dir": _run.get("model_dir", "")},
+                ))
+                if kpi is self._ppc_gate.SKIPPED:
+                    print(f"[PPC B2] not started: the plan is no longer the current one "
+                          f"(run_id={_run.get('run_id', '')})")
+                    return
+                self.after(0, lambda: self._on_ppc_done(kpi, _run.get("run_id", "")))
             except Exception as _exc:
                 import traceback
                 _tb = traceback.format_exc()
                 print(f"[PPC B2] engine failed:\n{_tb}")
-                self.after(0, lambda e=_exc: self._on_ppc_error(str(e)))
+                self.after(0, lambda e=_exc: self._on_ppc_error(str(e), _run.get("run_id", "")))
 
         threading.Thread(target=_ppc_thread, daemon=True).start()
 
-    def _on_ppc_done(self, kpi: dict):
-        """Called on main thread after PPC engine completes."""
+    def _on_ppc_done(self, kpi: dict, run_id: str = ""):
+        """Called on main thread after PPC engine completes.
+
+        P1: the result counts only if it belongs to the plan on the screen
+        (run_id). A PPC thread of an OLDER plan that finishes late is ignored.
+        On success the whole Management tab is refreshed -- before P1 only the
+        PPC tab and Node P&L were, so P&L Summary / Landed Cost / the GP chart
+        kept the values they had read from output/ppc when the plan finished,
+        i.e. the PREVIOUS plan's PPC result.
+        """
+        from wom.ppc.ppc_run_info import make_context, STATE_DONE
+        if run_id != self._plan_run.get("run_id", "") or not self._ppc_gate.is_current(run_id):
+            print(f"[PPC B2] result of an older plan ignored (run_id={run_id}; "
+                  f"current={self._ppc_gate.current})")
+            return
         margin = kpi.get("gross_margin_pct", 0.0)
         lots   = kpi.get("total_lots", 0)
         psi_mode = kpi.get("_psi_mode", False)
-        mode_label = "PSI-linked" if psi_mode else "sample data"
-        self._status(
-            f"💰 PPC complete ({mode_label}) — "
-            f"Lots: {lots:,}  Margin: {margin:.1%}  "
-            f"| PPC tab refreshed"
-        )
+        if psi_mode:
+            # P3: sales records built from the plan (market leaf shipments)
+            self._status(
+                f"💰 PPC complete (PSI-linked) — "
+                f"Lots: {lots:,}  Margin: {margin:.1%}  "
+                f"| PPC・Management tabs refreshed"
+            )
+        else:
+            # P3: the plan's products / channels were not found in the PPC
+            # masters, so ppc_runner replaced the sales records by SAMPLE data.
+            # These numbers do not correspond to the plan.
+            self._status(
+                "⚠ PPC はサンプルの販売データで計算されました（計画の製品・市場が PPC のマスターに"
+                "見つからないため）。PPC の数字は、この計画の数量と対応していません — "
+                f"Lots: {lots:,}  Margin: {margin:.1%}", warn=True)
+        self._ppc_ctx = make_context(STATE_DONE, self._plan_run.get("run_id", ""),
+                                     self._plan_run.get("model_dir", ""))
         # Refresh the PPC tab with newly written output/ppc/ files
         if hasattr(self, "_ppc_panel"):
-            self._ppc_panel.refresh(output_dir="output/ppc")
-        # Node P&L (拠点別損益) table lives on the Management tab but is
-        # sourced from the same output/ppc/ppc_node_pl_summary.csv file
+            self._ppc_panel._output_dir = "output/ppc"
+            self._ppc_panel.set_ppc_context(self._ppc_ctx)
+        # Management: P&L Summary / Node P&L / Landed Cost / charts all read
+        # output/ppc -- refresh them all now that it holds THIS plan's result.
         if hasattr(self, "_mgmt_panel"):
-            self._mgmt_panel.refresh_node_pl(output_dir="output/ppc")
+            self._mgmt_panel._node_pl_output_dir = "output/ppc"
+            self._mgmt_panel.set_ppc_context(self._ppc_ctx)
+            if self._mgr is not None:
+                self._mgmt_panel.load(self._mgr)
+            else:
+                self._mgmt_panel.refresh_node_pl(output_dir="output/ppc")
 
-    def _on_ppc_error(self, msg: str):
+    def _on_ppc_error(self, msg: str, run_id: str = ""):
         """Called on main thread if PPC engine fails (non-fatal)."""
+        from wom.ppc.ppc_run_info import make_context, STATE_FAILED
         print(f"[PPC B2] Non-fatal error: {msg}")
+        if run_id and (run_id != self._plan_run.get("run_id", "")
+                       or not self._ppc_gate.is_current(run_id)):
+            return                       # an older plan's PPC run
         self._status(
             self._status_var.get().replace("  |  💰 Running PPC …", "") +
-            "  |  ⚠ PPC engine error (see console)"
+            "  |  ⚠ PPC engine error (see console)", warn=True
         )
+        # P1: the screen must say "PPC 失敗", not show the previous result.
+        self._ppc_ctx = make_context(STATE_FAILED, self._plan_run.get("run_id", ""),
+                                     self._plan_run.get("model_dir", ""), error=str(msg))
+        if hasattr(self, "_ppc_panel"):
+            self._ppc_panel.set_ppc_context(self._ppc_ctx)
+        if hasattr(self, "_mgmt_panel"):
+            self._mgmt_panel.set_ppc_context(self._ppc_ctx)
+            if self._mgr is not None:
+                self._mgmt_panel.load(self._mgr)
 
     def _on_planning_error(self, tb: str):
         self._progress.stop()
@@ -6015,8 +6533,12 @@ class WOMApp(tk.Tk):
     # Status helper
     # ------------------------------------------------------------------ #
 
-    def _status(self, msg: str) -> None:
+    def _status(self, msg: str, warn: bool = False) -> None:
+        # (second definition -- it is the one Python keeps. Same as the one next
+        #  to the status bar: warn=True shows the text in a warning colour.)
         self._status_var.set(msg)
+        if hasattr(self, "_status_lbl"):
+            self._status_lbl.configure(fg=("#FF8A80" if warn else FG_ACC))
 
 # ======================================================================
 # Entry point

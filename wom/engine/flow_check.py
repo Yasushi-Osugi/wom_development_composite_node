@@ -54,7 +54,13 @@ Table 3 (Kitting; one row per assembly node and per component yard --
   yard row      receipt_sum (component arrivals) = payout_sum (paid out to the
                 gate) + closing_I                      -> component_diff (0 = OK)
                 payout_not_in_kits  paid-out Lot_IDs that are not a finished kit
-  assembly row  kits       Lot_IDs in the assembly's P (finished products)
+  assembly row  completed_ids   Lot_IDs paid out by EVERY yard (= kits the gate
+                                completed), counted from the yards' payouts
+                assembly_p_sum  lots in the assembly's P over the horizon
+                completed_minus_p  completed_ids - assembly_p_sum   (0 = OK:
+                                every completed kit is in P exactly once, and
+                                P holds nothing else)
+                kits       Lot_IDs in the assembly's P (finished products)
                 kits_dup   Lot_IDs produced twice or more            (0 = OK)
                 incomplete kits whose Lot_ID was not paid out by EVERY yard
                                                                      (0 = OK)
@@ -93,7 +99,8 @@ MARKET_COLUMNS = [
 ]
 KITTING_COLUMNS = [
     "product", "assembly", "row", "node", "receipt_sum", "payout_sum", "closing_I",
-    "component_diff", "payout_not_in_kits", "kits", "kits_dup", "incomplete",
+    "component_diff", "payout_not_in_kits", "completed_ids", "assembly_p_sum",
+    "completed_minus_p", "kits", "kits_dup", "incomplete",
     "premature", "waiting_components_end", "status", "reason",
 ]
 QTY_SUFFIX = "_qty"
@@ -265,6 +272,7 @@ def compute_kitting_check(sc_tree) -> List[dict]:
                     "product": prod, "assembly": asm.node_name, "row": "部材（置場）",
                     "node": yard.node_name, "receipt_sum": receipt, "payout_sum": payout,
                     "closing_I": closing, "component_diff": diff, "payout_not_in_kits": not_kit,
+                    "completed_ids": None, "assembly_p_sum": None, "completed_minus_p": None,
                     "kits": None, "kits_dup": None, "incomplete": None, "premature": None,
                     "waiting_components_end": closing,
                     "status": STATUS_OK if ok else STATUS_NG,
@@ -273,17 +281,24 @@ def compute_kitting_check(sc_tree) -> List[dict]:
             paid_by_all = paid_by_all or set()
             incomplete = sum(1 for lot in kit_week if lot not in paid_by_all)
             premature = sum(1 for lot, w in kit_week.items() if w < last_arrival.get(lot, -1))
+            completed_ids = len(paid_by_all)
+            p_sum = sum(kit_count.values())
             ok = (kits_dup == 0 and incomplete == 0 and premature == 0
+                  and completed_ids - p_sum == 0
                   and all(r["status"] == STATUS_OK for r in yard_rows))
             why = [t for t, v in (("完成品の二重生成", kits_dup), ("部材がそろっていない完成", incomplete),
-                                  ("部材の到着より前の完成", premature)) if v]
+                                  ("部材の到着より前の完成", premature),
+                                  ("完成した ID の数と P Σ の差", completed_ids - p_sum)) if v]
             if not why and not ok:
                 why = ["置場の行に NG"]
             rows.append({
                 "product": prod, "assembly": asm.node_name, "row": "完成品（組立）",
                 "node": asm.node_name, "receipt_sum": sum(kit_count.values()),
                 "payout_sum": None, "closing_I": None, "component_diff": None,
-                "payout_not_in_kits": None, "kits": len(kit_week), "kits_dup": kits_dup,
+                "payout_not_in_kits": None,
+                "completed_ids": completed_ids, "assembly_p_sum": p_sum,
+                "completed_minus_p": completed_ids - p_sum,
+                "kits": len(kit_week), "kits_dup": kits_dup,
                 "incomplete": incomplete, "premature": premature,
                 "waiting_components_end": waiting,
                 "status": STATUS_OK if ok else STATUS_NG, "reason": "／".join(why),

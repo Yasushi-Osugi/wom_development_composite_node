@@ -76,6 +76,10 @@ from wom.model.plan_node import S, CO, I, P as P_, NODE_TYPE_DAD
 
 SCENARIO_PLANNING = "Planning"
 
+# Region prefix of the DAD (DC / distribution stock) rows. They are NOT market
+# sales rows: the same lots appear once more in the leaf_out rows below them.
+DAD_REGION_PREFIX = "DAD:"
+
 
 def _ship_count(node, w: int) -> int:
     """Actual shipment lots of the week (node._actual_ship, set by
@@ -273,7 +277,7 @@ def sc_tree_to_planning_df(
                 rows.append({
                     Cols.SCENARIO:         scenario_name,
                     Cols.SKU_ID:           prod_nm,
-                    Cols.REGION:           f"DAD:{region}",
+                    Cols.REGION:           f"{DAD_REGION_PREFIX}{region}",
                     Cols.WEEK:             wk_label,
                     Cols.OPENING_INV:      round(opening_inv,  4),
                     Cols.SUPPLY_RECEIPT:   round(supply_receipt, 4),

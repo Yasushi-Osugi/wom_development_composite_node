@@ -75,6 +75,13 @@ def export_results(result: PPCSimulationResult, output_dir: str) -> None:
     """
     os.makedirs(output_dir, exist_ok=True)
 
+    # RequestLetter_StalePPC P1: the files below are about to be overwritten, so
+    # the mark that says "this folder holds the result of run X" is removed
+    # first. ppc_runner writes a new mark after everything is written, and only
+    # when the caller identifies the run (GUI). Never part of the PPC results.
+    from .ppc_run_info import clear_run_info
+    clear_run_info(output_dir)
+
     # ── ppc_event_ledger.csv ───────────────────────────────────────────
     events_df = _events_to_df(result.ppc_events)
     _safe_write_csv(events_df,

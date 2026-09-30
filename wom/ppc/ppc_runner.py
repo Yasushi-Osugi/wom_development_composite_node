@@ -33,10 +33,26 @@ def run_ppc_from_psi(
     base_currency: str = "JPY",
     verbose: bool = False,
     use_node_name: bool = False,
+    run_info: Optional[dict] = None,
 ) -> dict:
     """
     Run the full PPC Simulation pipeline using PSI leaf-out quantities.
+
+    run_info (RequestLetter_StalePPC P1): {"run_id": ..., "model_dir": ...} of
+        the planning run this PPC run belongs to. When given, the output folder
+        is marked with ppc_run_info.json AFTER all files are written, so that a
+        reader can check that the files are the result of that run (see
+        wom/ppc/ppc_run_info.py). When None (headless runner, tests) no mark is
+        written and the output files are exactly as before.
+
+    Returned dict (P3): the KPI summary plus
+        "_psi_mode"     True when the sales records came from the plan (PSI),
+                        False when they were replaced by SAMPLE sales data
+        "sales_source"  "psi" / "sample"
+    (these two keys are not written to ppc_kpi_summary.json).
     """
+    from .ppc_run_info import (clear_run_info, write_run_info, SALES_PSI, SALES_SAMPLE)
+    clear_run_info(output_dir)      # the folder is about to be overwritten
     warnings.filterwarnings("ignore")
 
     # ── Step 1: Load PPC rules ─────────────────────────────────────────────
@@ -315,6 +331,23 @@ def run_ppc_from_psi(
             print("[PPC Runner] WARNING: Results based on SAMPLE data (PSI->PPC mapping missing)")
 
     # ── Step 6: Export ────────────────────────────────────────────────────
+    sales_source = SALES_PSI if psi_mode else SALES_SAMPLE
     export_results(result, output_dir)
+    if run_info:
+        import datetime as _dt
+        write_run_info(output_dir, {
+            "run_id": run_info.get("run_id", ""),
+            "model_dir": run_info.get("model_dir", ""),
+            "sales_source": sales_source,
+            "data_dir": data_dir,
+            "base_currency": base_currency,
+            "first_week": weeks[0] if weeks else "",
+            "n_weeks": len(weeks),
+            "lot_flow_mode": getattr(sc_tree, "lot_flow_mode", None),
+            "finished_at": _dt.datetime.now().isoformat(timespec="seconds"),
+        })
 
-    return result.kpi_summary
+    out = dict(result.kpi_summary)
+    out["_psi_mode"] = psi_mode          # P3: was read by the GUI but never set
+    out["sales_source"] = sales_source
+    return out

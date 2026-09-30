@@ -16,6 +16,17 @@ Converts quantity PSI simulation output into money PSI:
     (no column)    simulator scenarios (inventory.py): "simulated".
   The basis is carried into weekly_df / summary_df as Cols.QTY_BASIS. Prices,
   costs, currency and the lot / cpu_size conversion are not changed here.
+
+  total_units / units (RequestLetter_StalePPC_Units_KittingView P4)
+    The lot count used by the Landed Cost engine (freight per lot, KD assembly
+    cost per lot) is the quantity SOLD TO THE MARKET: the sum of
+    demand_fulfilled over the market rows only. The Planning DataFrame also
+    has one row set per DAD node (region "DAD:<...>", sc_tree_to_df.py) that
+    repeats the same lots as they pass through each DC; those rows are
+    inventory / throughput rows, not sales, and carry no price. Until P4 they
+    were summed too, so units was 2x (one DAD tier) or 3x (two tiers) the
+    market quantity and freight was overstated by the same factor. This was a
+    counting error in both lot flow modes, so it is corrected for both.
   Gross Profit   = Revenue - COGS
   Gross Margin%  = Gross Profit / Revenue
   Inventory Value= closing_inv × unit_cost
@@ -43,6 +54,14 @@ from wom.data.schema import Cols
 # ──────────────────────────────────────────────────────────────────────
 # Public API
 # ──────────────────────────────────────────────────────────────────────
+
+DAD_REGION_PREFIX = "DAD:"     # same value as wom/engine/sc_tree_to_df.DAD_REGION_PREFIX
+
+
+def is_dad_region(region) -> "pd.Series":
+    """True for the DAD (DC) rows of the Planning DataFrame -- not market sales."""
+    return pd.Series(region).astype(str).str.startswith(DAD_REGION_PREFIX).to_numpy()
+
 
 def evaluate_money(
     sim_df: pd.DataFrame,
@@ -99,6 +118,11 @@ def evaluate_money(
         Cols.INV_VALUE_COST, Cols.DSO_WKS, Cols.DPO_WKS, Cols.QTY_BASIS,
     ]].copy()
 
+    # P4: units sold to the market -- DAD rows are not sales (see the docstring).
+    # (a working copy: weekly_df itself keeps its columns.)
+    _weekly_units = weekly_df.assign(_market_units=np.where(
+        is_dad_region(weekly_df[Cols.REGION]), 0.0, weekly_df[Cols.DEMAND_FULFILLED]))
+
     # ── Per-SKU×Region×Scenario summary + CCC ─────────────────────
     group_keys = [Cols.SCENARIO, Cols.SKU_ID, Cols.REGION]
 
@@ -110,14 +134,14 @@ def evaluate_money(
     )
 
     agg = (
-        weekly_df.groupby(group_keys)
+        _weekly_units.groupby(group_keys)
         .agg(
             total_revenue   =(Cols.REVENUE,        "sum"),
             total_cogs      =(Cols.COGS,            "sum"),
             total_gp        =(Cols.GROSS_PROFIT,    "sum"),
             avg_margin      =(Cols.GROSS_MARGIN,    "mean"),
             avg_inv_value   =(Cols.INV_VALUE_COST,  "mean"),
-            total_units     =(Cols.DEMAND_FULFILLED,"sum"),   # lot count, for Landed Cost engine
+            total_units     =("_market_units",      "sum"),   # market lots, for Landed Cost engine (P4)
             dso_wks         =(Cols.DSO_WKS,         "first"),   # from price_df
             dpo_wks         =(Cols.DPO_WKS,         "first"),
         )

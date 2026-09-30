@@ -956,7 +956,8 @@ WOM の KPI フレームワークは根本的に異なる 3 次元構造を持�
 - **legacy の計画は、これまでどおり S（要求）ベース**（比較用。行の `qty_basis` が `request`）。legacy の値は 1 つも変えていない。
 - 実出荷の記録が無い identity のノードは「不明」（NaN、`qty_basis=unknown`）で、要求 S では代用しない。実出荷 0 の記録は 0。
 - Charts の Harvest Input は、Demand レイヤーの S（要求）のまま。図の題と軸に「需要」と書いてある。
-- 残っている未対応：(1) money の `units`（Landed Cost の運賃の計算に使う lot 数）は、DAD の行も合計するので、市場の lot 数の 2〜3 倍になる（今回の変更の前から。値は変えていない）。(2) money（`sku_master` の価格）と PPC（`ppc_market_price`×為替）の売上は、もともと別の台帳で、一致しないモデルがある（Management の P&L は PPC の台帳で上書きする）。
+- money の `units`（Landed Cost の運賃・KD 組立費に使う lot 数）は、**市場 leaf の行だけ**を合計する（2026-09-30、`RequestLetter_StalePPC_Units_KittingView` P4 で修正。前は DAD の行も合計していて、市場の lot 数の 2〜4 倍だった。legacy・identity の両方を直した）。
+- 残っている未対応：money（`sku_master` の価格）と PPC（`ppc_market_price`×為替）の売上は、もともと別の台帳で、一致しないモデルがある（Management の P&L は PPC の台帳で上書きする）。
 | Gross Profit / Profit Zone | PPC engine 出力 | 事業利益 → ROE |
 
 ---
@@ -1035,6 +1036,12 @@ branch `wom-v1r2m0`。デモ動画（経営者・コンサル向け、国産醤�
 - 二本木：`Materials_JP`(leaf_in) → `Brewing_Noda` → `Bottling_Noda`(終端mom) → `SP_Soy` → `FG_WH_Noda`(dad, ss=21) → {`DC_US_SF`/`DC_US_NY`/`DC_JP`/`DC_EU_RTM`}(dad) → `Rest_*`(leaf_out)。MOM＝千葉県野田（仮想座標）。海上LT：US 5/6週、EU 6週。1製品 `Soy_Sauce`、104週（2027-W01〜2028-W52）。
 - **S1（米国集中）= us フォルダ**：需要 JP300/US_W350/US_E350/EU0（312 lot-records）。**S2（欧州分散）= eu フォルダ**：JP300/US175×2/FR150/BE100/NL100（624 lot-records）。両フォルダは sc_tree 同一、`demand_forecast.csv` の配分だけが違う（case1 方式）。
 - **重要（GUI キャッシュ挙動）**：フォルダ切替のみ（`python -m main` 再起動なし）だと前フォルダの output/ppc が残り、Management に古い値が出る。ケースを替えたら必ず `python -m main` を再実行して初期化すること（大杉さんと確認済み）。
+  - **【2026-09-30 更新】この問題は直した**（`RequestLetter_StalePPC_Units_KittingView` P1、報告書 `docs/development/WOM_StalePPC_Units_KittingView_Report.md`）。原因は「再起動の有無」ではなく、**Management の P&L Summary・Landed Cost・GP チャートが、計画の完了時（＝今回の PPC が走る前）に `output/ppc` を読み、PPC の完了時には更新されていなかった**こと（PPC タブと Node P&L だけが更新されていた）。つまり、いつも「1 つ前の計画」の PPC の値を出していた。
+  - 今は、計画の実行ごとに識別子（run_id）を作り、PPC の出力フォルダに印（`ppc_run_info.json`、`wom/ppc/ppc_run_info.py`）を書く。Management・PPC タブは、印の run_id とモデルのフォルダが今の計画と一致するときだけ PPC の出力を読む。一致しないときは、P&L Summary・Node P&L・Landed Cost・チャートを**空欄**にして「PPC 未実行／計算中／失敗」だけを出す（money の値では代用しない。大杉さんの判断、2026-09-30）。PPC の完了時に Management 全体を更新する。
+  - モデルを読み込み直すと、**すべての結果のタブ**（Charts・KPI Table・At-Risk・Scenario Delta・Management・PPC・Network〔PSI List・Flow Check を含む〕・World Map のアニメーション・Debug）を消す。「画面に出ているものは、すべて今のモデル・今の計画の結果」にそろえる。
+  - 2 つの計画を PPC が終わる前に続けて実行しても、前の計画の PPC の結果は画面に出ない（`PPCRunGate`：PPC の実行は 1 つずつ、今の計画でない PPC は始めない・受け取らない）。
+  - headless（`tools/run_headless_from_folder.py`）は印を書かない（出力ファイルは前と 1 バイトも変わらない）。
+  - ウィンドウのタイトルと上の帯に、読み込んだモデルのフォルダのフルパスが出る（作業フォルダの外のモデルは赤字で「⚠ 作業フォルダの外」）。「Load Model Folder」は、フォルダに無いファイルの欄を空にする（前のモデルのファイルを残さない）。
 - 匿名化：企業名を出さず「国産醤油」で統一。関税率・価格は例示（HS2103.10、対米 12.5%、対欧 8%）。sku_master は6 region 行（USD建て：US $40 / JP $24 / EU $41、unit_cost $16）。**当初 sku_master が JP 1行だけで US/EU 市場に価格が付かず US=EU 同値になるバグ**があり、6 region 行に拡張して解消。
 
 ### Phase 1：関税マスタの canonical 化（`tools/gen_tariff_edges.py` 新設）

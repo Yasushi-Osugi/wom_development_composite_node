@@ -1,0 +1,1393 @@
+{
+ "errors": [],
+ "steps": {
+  "1_startup": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029\n表示中の計画：なし（Planning Engine 未実行）",
+   "status_line": "Ready. Load data files and click Run.",
+   "ppc_ctx": {
+    "state": "none",
+    "run_id": "",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "",
+    "model_dir": "",
+    "sc_tree_path": ""
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029\\push_config.csv"
+   },
+   "mgmt_banner": "モデルを読み込みました：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029　→　Planning Engine を実行してください（前の計画の表は消しました）",
+   "pl_summary": [],
+   "node_pl": [],
+   "node_pl_count": 0,
+   "landed_cost": [],
+   "lc_narrative_head": "",
+   "ppc_tab_status": "PPC 未実行",
+   "ppc_tab_shows_cockpit": false,
+   "ppc_tab_placeholder": "PPC 未実行\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダに、どの計画の結果かの印はありません",
+   "flow_check_model": "モデル：—",
+   "flow_check_summary": "Flow Check：Planning Engine を実行すると表示されます",
+   "flow_check_table3": [],
+   "flow_check_table1_rows": 0,
+   "flow_check_table2_rows": 0,
+   "charts_has_plan": false,
+   "charts_text": [
+    "モデルを読み込みました。Planning Engine を実行してください"
+   ],
+   "kpi_table_rows": 0,
+   "at_risk_rows": 0,
+   "network_has_plan": false,
+   "network_products": [],
+   "psi_list_node": "No node loaded — use the node selector above",
+   "psi_list_rows": 0,
+   "gp_chart_text": [],
+   "ccc_chart_text": [],
+   "app_mgr_is_none": true,
+   "run_info_file": null
+  },
+  "2a_first_loaded": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\n表示中の計画：なし（Planning Engine 未実行）",
+   "status_line": "📂 C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026: 11 files loaded",
+   "ppc_ctx": {
+    "state": "none",
+    "run_id": "",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "",
+    "model_dir": "",
+    "sc_tree_path": ""
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\push_config.csv"
+   },
+   "mgmt_banner": "モデルを読み込みました：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026　→　Planning Engine を実行してください（前の計画の表は消しました）",
+   "pl_summary": [],
+   "node_pl": [],
+   "node_pl_count": 0,
+   "landed_cost": [],
+   "lc_narrative_head": "",
+   "ppc_tab_status": "PPC 未実行",
+   "ppc_tab_shows_cockpit": false,
+   "ppc_tab_placeholder": "PPC 未実行\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダに、どの計画の結果かの印はありません",
+   "flow_check_model": "モデル：—",
+   "flow_check_summary": "Flow Check：Planning Engine を実行すると表示されます",
+   "flow_check_table3": [],
+   "flow_check_table1_rows": 0,
+   "flow_check_table2_rows": 0,
+   "charts_has_plan": false,
+   "charts_text": [
+    "モデルを読み込みました。Planning Engine を実行してください"
+   ],
+   "kpi_table_rows": 0,
+   "at_risk_rows": 0,
+   "network_has_plan": false,
+   "network_products": [],
+   "psi_list_node": "No node loaded — use the node selector above",
+   "psi_list_rows": 0,
+   "gp_chart_text": [],
+   "ccc_chart_text": [],
+   "app_mgr_is_none": true,
+   "run_info_file": null
+  },
+  "2b_first_ppc_done": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\n表示中の計画：20261001-001054.623-a69848__ev-thailand-2026",
+   "status_line": "💰 PPC complete (PSI-linked) — Lots: 624  Margin: 56.5%  | PPC・Management tabs refreshed",
+   "ppc_ctx": {
+    "state": "done",
+    "run_id": "20261001-001054.623-a69848__ev-thailand-2026",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "20261001-001054.623-a69848__ev-thailand-2026",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\sc_tree_master.csv"
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026\\push_config.csv"
+   },
+   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026　｜　計画 ID：20261001-001054.623-a69848__ev-thailand-2026",
+   "pl_summary": [
+    [
+     "Planning",
+     "319,119,580,000",
+     "138,830,903,750",
+     "180,288,676,250",
+     "56.5%",
+     "0",
+     "-59.0",
+     "4,964,427,107",
+     "27,830,826,446",
+     "PPC 台帳（今の計画）"
+    ]
+   ],
+   "node_pl": [
+    [
+     "Components_CN",
+     "EVmaker_Import",
+     "0",
+     "26,877,000,000",
+     "-26,877,000,000",
+     "--",
+     "0"
+    ],
+    [
+     "DC_EV_Import",
+     "EVmaker_Import",
+     "0",
+     "7,435,970,000",
+     "-7,435,970,000",
+     "--",
+     "3,583,600,000"
+    ],
+    [
+     "Factory_Import_CN",
+     "EVmaker_Import",
+     "0",
+     "3,729,183,750",
+     "-3,729,183,750",
+     "--",
+     "0"
+    ],
+    [
+     "Sales_TH_BKK_i",
+     "EVmaker_Import",
+     "37,122,198,750",
+     "0",
+     "37,122,198,750",
+     "100.0%",
+     "0"
+    ],
+    [
+     "Sales_TH_ONL_i",
+     "EVmaker_Import",
+     "7,241,706,750",
+     "0",
+     "7,241,706,750",
+     "100.0%",
+     "0"
+    ],
+    [
+     "Sales_TH_PRO_i",
+     "EVmaker_Import",
+     "29,725,962,000",
+     "0",
+     "29,725,962,000",
+     "100.0%",
+     "0"
+    ]
+   ],
+   "node_pl_count": 12,
+   "landed_cost": [
+    [
+     "Planning",
+     "Base",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ],
+    [
+     "Planning",
+     "EV30",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ],
+    [
+     "Planning",
+     "EV35",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ],
+    [
+     "Planning",
+     "TariffRestore",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ],
+    [
+     "Planning",
+     "SubsidyEnd",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ]
+   ],
+   "lc_narrative_head": "【Landed Cost シナリオ分析サマリー】",
+   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026　｜　計画 ID：20261001-001054.623-a69848__ev-thailand-2026",
+   "ppc_tab_shows_cockpit": true,
+   "ppc_tab_placeholder": "",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+   "flow_check_summary": "表 1：ノード 14（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 63240 ＝ 当週出荷 63240 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 0（検算の不一致 0 行）　cpu_size=1",
+   "flow_check_table3": [
+    [
+     "",
+     "組立の置場なし",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "flow_check_table1_rows": 14,
+   "flow_check_table2_rows": 9,
+   "charts_has_plan": true,
+   "charts_text": [],
+   "kpi_table_rows": 8,
+   "at_risk_rows": 638,
+   "network_has_plan": true,
+   "network_products": [
+    "EVmaker_Local",
+    "EVmaker_Import"
+   ],
+   "psi_list_node": "OUT:supply_point:SP_EV_Local:EVmaker_Local  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_rows": 122,
+   "gp_chart_text": [
+    "56.5%"
+   ],
+   "ccc_chart_text": [
+    "-59.0w"
+   ],
+   "app_mgr_is_none": false,
+   "run_info_file": {
+    "run_id": "20261001-001054.623-a69848__ev-thailand-2026",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+    "sales_source": "psi",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+    "base_currency": "JPY",
+    "first_week": "2025-W37",
+    "n_weeks": 121,
+    "lot_flow_mode": "identity",
+    "finished_at": "2026-10-01T00:10:59"
+   }
+  },
+  "3_second_loaded_before_plan": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：なし（Planning Engine 未実行）",
+   "status_line": "📂 C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global: 11 files loaded",
+   "ppc_ctx": {
+    "state": "none",
+    "run_id": "",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "",
+    "model_dir": "",
+    "sc_tree_path": ""
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+   },
+   "mgmt_banner": "モデルを読み込みました：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　→　Planning Engine を実行してください（前の計画の表は消しました）",
+   "pl_summary": [],
+   "node_pl": [],
+   "node_pl_count": 0,
+   "landed_cost": [],
+   "lc_narrative_head": "",
+   "ppc_tab_status": "PPC 未実行",
+   "ppc_tab_shows_cockpit": false,
+   "ppc_tab_placeholder": "PPC 未実行\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026（計画 ID 20261001-001054.623-a69848__ev-thailand-2026、販売記録 psi）",
+   "flow_check_model": "モデル：—",
+   "flow_check_summary": "Flow Check：Planning Engine を実行すると表示されます",
+   "flow_check_table3": [],
+   "flow_check_table1_rows": 0,
+   "flow_check_table2_rows": 0,
+   "charts_has_plan": false,
+   "charts_text": [
+    "モデルを読み込みました。Planning Engine を実行してください"
+   ],
+   "kpi_table_rows": 0,
+   "at_risk_rows": 0,
+   "network_has_plan": false,
+   "network_products": [],
+   "psi_list_node": "No node loaded — use the node selector above",
+   "psi_list_rows": 0,
+   "gp_chart_text": [],
+   "ccc_chart_text": [],
+   "app_mgr_is_none": true,
+   "run_info_file": {
+    "run_id": "20261001-001054.623-a69848__ev-thailand-2026",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+    "sales_source": "psi",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026",
+    "base_currency": "JPY",
+    "first_week": "2025-W37",
+    "n_weeks": 121,
+    "lot_flow_mode": "identity",
+    "finished_at": "2026-10-01T00:10:59"
+   }
+  },
+  "4_second_planned_ppc_running": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-001103.958-708502__iphone_global",
+   "status_line": "Planning Engine complete. Products: 3  |  Nodes: 32  |  Planning: fill 90.1%, stockout 113,668（実出荷ベース）  |  Check Charts/KPI/Management tabs for 'Planning' scenario  |  💰 Running PPC …",
+   "ppc_ctx": {
+    "state": "running",
+    "run_id": "20261001-001103.958-708502__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "20261001-001103.958-708502__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv"
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+   },
+   "mgmt_banner": "PPC：PPC 計算中　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "pl_summary": [
+    [
+     "Planning",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "PPC 計算中"
+    ]
+   ],
+   "node_pl": [
+    [
+     "（PPC 計算中）",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "node_pl_count": 1,
+   "landed_cost": [],
+   "lc_narrative_head": "PPC 計算中",
+   "ppc_tab_status": "PPC 計算中",
+   "ppc_tab_shows_cockpit": false,
+   "ppc_tab_placeholder": "PPC 計算中\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026（計画 ID 20261001-001054.623-a69848__ev-thailand-2026、販売記録 psi）",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "flow_check_summary": "表 1：ノード 32（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 470924 ＝ 当週出荷 414090 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 56834（検算の不一致 0 行）　cpu_size=1",
+   "flow_check_table3": [
+    [
+     "",
+     "組立の置場なし",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "flow_check_table1_rows": 32,
+   "flow_check_table2_rows": 13,
+   "charts_has_plan": true,
+   "charts_text": [],
+   "kpi_table_rows": 18,
+   "at_risk_rows": 1574,
+   "network_has_plan": true,
+   "network_products": [
+    "iPhone16",
+    "iPhone15",
+    "iPhone17"
+   ],
+   "psi_list_node": "OUT:supply_point:SP_iPhone16:iPhone16  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_rows": 183,
+   "gp_chart_text": [
+    "PPC 計算中"
+   ],
+   "ccc_chart_text": [
+    "PPC 計算中"
+   ],
+   "app_mgr_is_none": false,
+   "run_info_file": null
+  },
+  "5_second_ppc_done": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-001103.958-708502__iphone_global",
+   "status_line": "💰 PPC complete (PSI-linked) — Lots: 1,127  Margin: 41.2%  | PPC・Management tabs refreshed",
+   "ppc_ctx": {
+    "state": "done",
+    "run_id": "20261001-001103.958-708502__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "20261001-001103.958-708502__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv"
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+   },
+   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-001103.958-708502__iphone_global",
+   "pl_summary": [
+    [
+     "Planning",
+     "641,014,134,734,200",
+     "376,951,243,839,178",
+     "264,062,890,895,022",
+     "41.2%",
+     "56,071",
+     "-14.0",
+     "102,939,035",
+     "60,556,605",
+     "PPC 台帳（今の計画）"
+    ]
+   ],
+   "node_pl": [
+    [
+     "Foxconn_CN_i15",
+     "iPhone15",
+     "0",
+     "34,361,288,955,900",
+     "-34,361,288,955,900",
+     "--",
+     "0"
+    ],
+    [
+     "Retail_AMER_i15",
+     "iPhone15",
+     "37,079,557,882,200",
+     "6,171,306,244,808",
+     "30,908,251,637,392",
+     "83.4%",
+     "5,317,256,342,228"
+    ],
+    [
+     "Retail_APAC_i15",
+     "iPhone15",
+     "7,883,443,887,000",
+     "161,555,937,900",
+     "7,721,887,949,100",
+     "98.0%",
+     "0"
+    ],
+    [
+     "Retail_EMEA_i15",
+     "iPhone15",
+     "23,231,734,706,600",
+     "1,403,535,511,835",
+     "21,828,199,194,765",
+     "94.0%",
+     "874,352,067,955"
+    ],
+    [
+     "SP_iPhone15",
+     "iPhone15",
+     "0",
+     "84,842,688,780",
+     "-84,842,688,780",
+     "--",
+     "0"
+    ],
+    [
+     "Foxconn_CN",
+     "iPhone16",
+     "0",
+     "170,274,272,789,000",
+     "-170,274,272,789,000",
+     "--",
+     "0"
+    ]
+   ],
+   "node_pl_count": 15,
+   "landed_cost": [
+    [
+     "Planning",
+     "Base",
+     "¥641,014,134,734,200",
+     "¥47,204,973,279,778",
+     "¥15,397,247",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "TrumpTariff",
+     "¥641,014,134,734,200",
+     "¥47,204,973,279,778",
+     "¥15,397,247",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "KD_Parts",
+     "¥641,014,134,734,200",
+     "¥47,204,973,279,778",
+     "¥19,413,920",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "CNtoAPAC",
+     "¥641,014,134,734,200",
+     "¥47,204,973,279,778",
+     "¥15,397,247",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ]
+   ],
+   "lc_narrative_head": "【Landed Cost シナリオ分析サマリー】",
+   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-001103.958-708502__iphone_global",
+   "ppc_tab_shows_cockpit": true,
+   "ppc_tab_placeholder": "",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "flow_check_summary": "表 1：ノード 32（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 470924 ＝ 当週出荷 414090 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 56834（検算の不一致 0 行）　cpu_size=1",
+   "flow_check_table3": [
+    [
+     "",
+     "組立の置場なし",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "flow_check_table1_rows": 32,
+   "flow_check_table2_rows": 13,
+   "charts_has_plan": true,
+   "charts_text": [],
+   "kpi_table_rows": 18,
+   "at_risk_rows": 1574,
+   "network_has_plan": true,
+   "network_products": [
+    "iPhone16",
+    "iPhone15",
+    "iPhone17"
+   ],
+   "psi_list_node": "OUT:supply_point:SP_iPhone16:iPhone16  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_rows": 183,
+   "gp_chart_text": [
+    "41.2%"
+   ],
+   "ccc_chart_text": [
+    "-14.0w"
+   ],
+   "app_mgr_is_none": false,
+   "run_info_file": {
+    "run_id": "20261001-001103.958-708502__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "sales_source": "psi",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "base_currency": "JPY",
+    "first_week": "2026-W28",
+    "n_weeks": 182,
+    "lot_flow_mode": "identity",
+    "finished_at": "2026-10-01T00:11:34"
+   },
+   "flow_check_table3_after": [
+    [
+     "",
+     "組立の置場なし",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ]
+  },
+  "6_second_ppc_failed": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-001146.083-6325c2__iphone_global",
+   "status_line": "Planning Engine complete. Products: 3  |  Nodes: 32  |  Planning: fill 90.1%, stockout 113,668（実出荷ベース）  |  Check Charts/KPI/Management tabs for 'Planning' scenario  |  ⚠ PPC engine error (see console)",
+   "ppc_ctx": {
+    "state": "failed",
+    "run_id": "20261001-001146.083-6325c2__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": "PPC を失敗させた（受入の確認用）"
+   },
+   "plan_run": {
+    "run_id": "20261001-001146.083-6325c2__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv"
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+   },
+   "mgmt_banner": "PPC：PPC 失敗　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "pl_summary": [
+    [
+     "Planning",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "PPC 失敗"
+    ]
+   ],
+   "node_pl": [
+    [
+     "（PPC 失敗）",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "node_pl_count": 1,
+   "landed_cost": [],
+   "lc_narrative_head": "PPC 失敗",
+   "ppc_tab_status": "PPC 失敗",
+   "ppc_tab_shows_cockpit": false,
+   "ppc_tab_placeholder": "PPC 失敗\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global（計画 ID 20261001-001103.958-708502__iphone_global、販売記録 psi）",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "flow_check_summary": "表 1：ノード 32（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 470924 ＝ 当週出荷 414090 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 56834（検算の不一致 0 行）　cpu_size=1",
+   "flow_check_table3": [
+    [
+     "",
+     "組立の置場なし",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "flow_check_table1_rows": 32,
+   "flow_check_table2_rows": 13,
+   "charts_has_plan": true,
+   "charts_text": [],
+   "kpi_table_rows": 18,
+   "at_risk_rows": 1574,
+   "network_has_plan": true,
+   "network_products": [
+    "iPhone16",
+    "iPhone15",
+    "iPhone17"
+   ],
+   "psi_list_node": "OUT:supply_point:SP_iPhone16:iPhone16  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_rows": 183,
+   "gp_chart_text": [
+    "PPC 失敗"
+   ],
+   "ccc_chart_text": [
+    "PPC 失敗"
+   ],
+   "app_mgr_is_none": false,
+   "run_info_file": {
+    "run_id": "20261001-001103.958-708502__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "sales_source": "psi",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "base_currency": "JPY",
+    "first_week": "2026-W28",
+    "n_weeks": 182,
+    "lot_flow_mode": "identity",
+    "finished_at": "2026-10-01T00:11:34"
+   }
+  },
+  "7a_outside_copy_loaded": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  ⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+   "model_label": "モデル：⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\n表示中の計画：なし（Planning Engine 未実行）",
+   "status_line": "📂 ⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update: 11 files loaded",
+   "ppc_ctx": {
+    "state": "none",
+    "run_id": "",
+    "model_dir": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "",
+    "model_dir": "",
+    "sc_tree_path": ""
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\push_config.csv"
+   },
+   "mgmt_banner": "モデルを読み込みました：⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update　→　Planning Engine を実行してください（前の計画の表は消しました）",
+   "pl_summary": [],
+   "node_pl": [],
+   "node_pl_count": 0,
+   "landed_cost": [],
+   "lc_narrative_head": "",
+   "ppc_tab_status": "PPC 未実行",
+   "ppc_tab_shows_cockpit": false,
+   "ppc_tab_placeholder": "PPC 未実行\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global（計画 ID 20261001-001103.958-708502__iphone_global、販売記録 psi）",
+   "flow_check_model": "モデル：—",
+   "flow_check_summary": "Flow Check：Planning Engine を実行すると表示されます",
+   "flow_check_table3": [],
+   "flow_check_table1_rows": 0,
+   "flow_check_table2_rows": 0,
+   "charts_has_plan": false,
+   "charts_text": [
+    "モデルを読み込みました。Planning Engine を実行してください"
+   ],
+   "kpi_table_rows": 0,
+   "at_risk_rows": 0,
+   "network_has_plan": false,
+   "network_products": [],
+   "psi_list_node": "No node loaded — use the node selector above",
+   "psi_list_rows": 0,
+   "gp_chart_text": [],
+   "ccc_chart_text": [],
+   "app_mgr_is_none": true,
+   "run_info_file": {
+    "run_id": "20261001-001103.958-708502__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "sales_source": "psi",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "base_currency": "JPY",
+    "first_week": "2026-W28",
+    "n_weeks": 182,
+    "lot_flow_mode": "identity",
+    "finished_at": "2026-10-01T00:11:34"
+   }
+  },
+  "7b_outside_copy_ppc_done": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  ⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+   "model_label": "モデル：⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\n表示中の計画：20261001-001215.534-756bf4__ev-thailand-2026_update",
+   "status_line": "💰 PPC complete (PSI-linked) — Lots: 624  Margin: 56.5%  | PPC・Management tabs refreshed",
+   "ppc_ctx": {
+    "state": "done",
+    "run_id": "20261001-001215.534-756bf4__ev-thailand-2026_update",
+    "model_dir": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "20261001-001215.534-756bf4__ev-thailand-2026_update",
+    "model_dir": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+    "sc_tree_path": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\sc_tree_master.csv"
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update\\push_config.csv"
+   },
+   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update　｜　計画 ID：20261001-001215.534-756bf4__ev-thailand-2026_update",
+   "pl_summary": [
+    [
+     "Planning",
+     "319,119,580,000",
+     "138,830,903,750",
+     "180,288,676,250",
+     "56.5%",
+     "0",
+     "-59.0",
+     "4,964,427,107",
+     "27,830,826,446",
+     "PPC 台帳（今の計画）"
+    ]
+   ],
+   "node_pl": [
+    [
+     "Components_CN",
+     "EVmaker_Import",
+     "0",
+     "26,877,000,000",
+     "-26,877,000,000",
+     "--",
+     "0"
+    ],
+    [
+     "DC_EV_Import",
+     "EVmaker_Import",
+     "0",
+     "7,435,970,000",
+     "-7,435,970,000",
+     "--",
+     "3,583,600,000"
+    ],
+    [
+     "Factory_Import_CN",
+     "EVmaker_Import",
+     "0",
+     "3,729,183,750",
+     "-3,729,183,750",
+     "--",
+     "0"
+    ],
+    [
+     "Sales_TH_BKK_i",
+     "EVmaker_Import",
+     "37,122,198,750",
+     "0",
+     "37,122,198,750",
+     "100.0%",
+     "0"
+    ],
+    [
+     "Sales_TH_ONL_i",
+     "EVmaker_Import",
+     "7,241,706,750",
+     "0",
+     "7,241,706,750",
+     "100.0%",
+     "0"
+    ],
+    [
+     "Sales_TH_PRO_i",
+     "EVmaker_Import",
+     "29,725,962,000",
+     "0",
+     "29,725,962,000",
+     "100.0%",
+     "0"
+    ]
+   ],
+   "node_pl_count": 13,
+   "landed_cost": [
+    [
+     "Planning",
+     "Base",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ],
+    [
+     "Planning",
+     "EV30",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ],
+    [
+     "Planning",
+     "EV35",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ],
+    [
+     "Planning",
+     "TariffRestore",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ],
+    [
+     "Planning",
+     "SubsidyEnd",
+     "¥319,119,580,000",
+     "¥3,583,600,000",
+     "¥654,534,000",
+     "56.5%",
+     "+0.0pp",
+     "1.1%"
+    ]
+   ],
+   "lc_narrative_head": "【Landed Cost シナリオ分析サマリー】",
+   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update　｜　計画 ID：20261001-001215.534-756bf4__ev-thailand-2026_update",
+   "ppc_tab_shows_cockpit": true,
+   "ppc_tab_placeholder": "",
+   "flow_check_model": "モデル：⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+   "flow_check_summary": "表 1：ノード 17（NG 0・対象外 1・同一ID重複 0・Kitting の照合 1 組立（NG 0））　表 2（モデル全体、lot）：需要 63240 ＝ 当週出荷 63240 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 0（検算の不一致 0 行）　cpu_size=1",
+   "flow_check_table3": [
+    [
+     "EVmaker_Local",
+     "Factory_Local_TH",
+     "完成品（組立）",
+     "Factory_Local_TH",
+     "52700",
+     "",
+     "",
+     "",
+     "52700",
+     "52700",
+     "0",
+     "0",
+     "0",
+     "0",
+     "0",
+     "OK",
+     ""
+    ],
+    [
+     "EVmaker_Local",
+     "Factory_Local_TH",
+     "部材（置場）",
+     "Platform_Unit_Assy_Yard",
+     "52700",
+     "52700",
+     "0",
+     "0",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "0",
+     "OK",
+     ""
+    ],
+    [
+     "EVmaker_Local",
+     "Factory_Local_TH",
+     "部材（置場）",
+     "Motor_Unit_Assy_Yard",
+     "52700",
+     "52700",
+     "0",
+     "0",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "0",
+     "OK",
+     ""
+    ]
+   ],
+   "flow_check_table1_rows": 17,
+   "flow_check_table2_rows": 9,
+   "charts_has_plan": true,
+   "charts_text": [],
+   "kpi_table_rows": 8,
+   "at_risk_rows": 638,
+   "network_has_plan": true,
+   "network_products": [
+    "EVmaker_Local",
+    "EVmaker_Import"
+   ],
+   "psi_list_node": "OUT:supply_point:SP_EV_Local:EVmaker_Local  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_rows": 122,
+   "gp_chart_text": [
+    "56.5%"
+   ],
+   "ccc_chart_text": [
+    "-59.0w"
+   ],
+   "app_mgr_is_none": false,
+   "run_info_file": {
+    "run_id": "20261001-001215.534-756bf4__ev-thailand-2026_update",
+    "model_dir": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+    "sales_source": "psi",
+    "data_dir": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+    "base_currency": "JPY",
+    "first_week": "2025-W37",
+    "n_weeks": 121,
+    "lot_flow_mode": "identity",
+    "finished_at": "2026-10-01T00:12:27"
+   }
+  },
+  "8_meta": {
+   "first_run_id": "20261001-001234.125-7e0cb6__ev-thailand-2026"
+  },
+  "8a_second_loaded_while_first_ppc_runs": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：なし（Planning Engine 未実行）",
+   "status_line": "📂 C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global: 11 files loaded",
+   "ppc_ctx": {
+    "state": "none",
+    "run_id": "",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "",
+    "model_dir": "",
+    "sc_tree_path": ""
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+   },
+   "mgmt_banner": "モデルを読み込みました：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　→　Planning Engine を実行してください（前の計画の表は消しました）",
+   "pl_summary": [],
+   "node_pl": [],
+   "node_pl_count": 0,
+   "landed_cost": [],
+   "lc_narrative_head": "",
+   "ppc_tab_status": "PPC 未実行",
+   "ppc_tab_shows_cockpit": false,
+   "ppc_tab_placeholder": "PPC 未実行\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update（計画 ID 20261001-001215.534-756bf4__ev-thailand-2026_update、販売記録 psi）",
+   "flow_check_model": "モデル：—",
+   "flow_check_summary": "Flow Check：Planning Engine を実行すると表示されます",
+   "flow_check_table3": [],
+   "flow_check_table1_rows": 0,
+   "flow_check_table2_rows": 0,
+   "charts_has_plan": false,
+   "charts_text": [
+    "モデルを読み込みました。Planning Engine を実行してください"
+   ],
+   "kpi_table_rows": 0,
+   "at_risk_rows": 0,
+   "network_has_plan": false,
+   "network_products": [],
+   "psi_list_node": "No node loaded — use the node selector above",
+   "psi_list_rows": 0,
+   "gp_chart_text": [],
+   "ccc_chart_text": [],
+   "app_mgr_is_none": true,
+   "run_info_file": {
+    "run_id": "20261001-001215.534-756bf4__ev-thailand-2026_update",
+    "model_dir": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+    "sales_source": "psi",
+    "data_dir": "C:\\Users\\ohsug\\AppData\\Local\\Temp\\wom_old_copy_nfz3ce6z\\data\\sample\\ev-thailand-2026_update",
+    "base_currency": "JPY",
+    "first_week": "2025-W37",
+    "n_weeks": 121,
+    "lot_flow_mode": "identity",
+    "finished_at": "2026-10-01T00:12:27"
+   }
+  },
+  "8b_second_ppc_done_first_ppc_finished_late": {
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-001238.167-92d3eb__iphone_global",
+   "status_line": "💰 PPC complete (PSI-linked) — Lots: 1,127  Margin: 41.2%  | PPC・Management tabs refreshed",
+   "ppc_ctx": {
+    "state": "done",
+    "run_id": "20261001-001238.167-92d3eb__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "error": ""
+   },
+   "plan_run": {
+    "run_id": "20261001-001238.167-92d3eb__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv"
+   },
+   "entries": {
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+   },
+   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-001238.167-92d3eb__iphone_global",
+   "pl_summary": [
+    [
+     "Planning",
+     "641,014,134,734,200",
+     "376,951,243,839,178",
+     "264,062,890,895,022",
+     "41.2%",
+     "56,071",
+     "-14.0",
+     "102,939,035",
+     "60,556,605",
+     "PPC 台帳（今の計画）"
+    ]
+   ],
+   "node_pl": [
+    [
+     "Foxconn_CN_i15",
+     "iPhone15",
+     "0",
+     "34,361,288,955,900",
+     "-34,361,288,955,900",
+     "--",
+     "0"
+    ],
+    [
+     "Retail_AMER_i15",
+     "iPhone15",
+     "37,079,557,882,200",
+     "6,171,306,244,808",
+     "30,908,251,637,392",
+     "83.4%",
+     "5,317,256,342,228"
+    ],
+    [
+     "Retail_APAC_i15",
+     "iPhone15",
+     "7,883,443,887,000",
+     "161,555,937,900",
+     "7,721,887,949,100",
+     "98.0%",
+     "0"
+    ],
+    [
+     "Retail_EMEA_i15",
+     "iPhone15",
+     "23,231,734,706,600",
+     "1,403,535,511,835",
+     "21,828,199,194,765",
+     "94.0%",
+     "874,352,067,955"
+    ],
+    [
+     "SP_iPhone15",
+     "iPhone15",
+     "0",
+     "84,842,688,780",
+     "-84,842,688,780",
+     "--",
+     "0"
+    ],
+    [
+     "Foxconn_CN",
+     "iPhone16",
+     "0",
+     "170,274,272,789,000",
+     "-170,274,272,789,000",
+     "--",
+     "0"
+    ]
+   ],
+   "node_pl_count": 15,
+   "landed_cost": [
+    [
+     "Planning",
+     "Base",
+     "¥641,014,134,734,200",
+     "¥47,204,973,279,778",
+     "¥15,397,247",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "TrumpTariff",
+     "¥641,014,134,734,200",
+     "¥47,204,973,279,778",
+     "¥15,397,247",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "KD_Parts",
+     "¥641,014,134,734,200",
+     "¥47,204,973,279,778",
+     "¥19,413,920",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ],
+    [
+     "Planning",
+     "CNtoAPAC",
+     "¥641,014,134,734,200",
+     "¥47,204,973,279,778",
+     "¥15,397,247",
+     "41.2%",
+     "+0.0pp",
+     "7.4%"
+    ]
+   ],
+   "lc_narrative_head": "【Landed Cost シナリオ分析サマリー】",
+   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-001238.167-92d3eb__iphone_global",
+   "ppc_tab_shows_cockpit": true,
+   "ppc_tab_placeholder": "",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "flow_check_summary": "表 1：ノード 32（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 470924 ＝ 当週出荷 414090 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 56834（検算の不一致 0 行）　cpu_size=1",
+   "flow_check_table3": [
+    [
+     "",
+     "組立の置場なし",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "flow_check_table1_rows": 32,
+   "flow_check_table2_rows": 13,
+   "charts_has_plan": true,
+   "charts_text": [],
+   "kpi_table_rows": 18,
+   "at_risk_rows": 1574,
+   "network_has_plan": true,
+   "network_products": [
+    "iPhone16",
+    "iPhone15",
+    "iPhone17"
+   ],
+   "psi_list_node": "OUT:supply_point:SP_iPhone16:iPhone16  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_rows": 183,
+   "gp_chart_text": [
+    "41.2%"
+   ],
+   "ccc_chart_text": [
+    "-14.0w"
+   ],
+   "app_mgr_is_none": false,
+   "run_info_file": {
+    "run_id": "20261001-001238.167-92d3eb__iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "sales_source": "psi",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "base_currency": "JPY",
+    "first_week": "2026-W28",
+    "n_weeks": 182,
+    "lot_flow_mode": "identity",
+    "finished_at": "2026-10-01T00:13:18"
+   },
+   "ppc_callbacks": [
+    {
+     "run_id": "20261001-001234.125-7e0cb6__ev-thailand-2026",
+     "accepted": false,
+     "revenue": 319119580000.0
+    },
+    {
+     "run_id": "20261001-001238.167-92d3eb__iphone_global",
+     "accepted": true,
+     "revenue": 641014134734200.0
+    }
+   ],
+   "screen_history": [
+    [
+     0.9,
+     [],
+     "",
+     "PPC 未実行",
+     ""
+    ],
+    [
+     35.7,
+     [
+      ""
+     ],
+     "（PPC 計算中）",
+     "PPC 計算中",
+     "67-92d3eb__iphone_global"
+    ],
+    [
+     49.5,
+     [
+      "641,014,134,734,200"
+     ],
+     "Foxconn_CN_i15",
+     "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\oh",
+     "67-92d3eb__iphone_global"
+    ]
+   ],
+   "ppc_calls": 2
+  }
+ }
+}

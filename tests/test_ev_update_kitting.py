@@ -239,3 +239,54 @@ def test_recording_duplicates_does_not_change_the_plan():
     assert sorted(r.supply_duplicate_ids) == [("N", "2026-W01", "a", 3), ("N", "2026-W01", "b", 2)]
     m, ud, us = ForwardPlanner._match_by_identity(["a", "b", "z"], ["a", "b", "a", "c", "a", "b"])
     assert (m, ud, us) == (["a", "b"], ["z"], ["c"])      # 2 件目以降の a・b は在庫にも残らない
+
+
+# ---------------------------------------------------------------------------
+# RequestLetter_StalePPC_Units_KittingView P5：表 3 の「完成した ID の数 ＝ 組立の P Σ」
+# ---------------------------------------------------------------------------
+
+def test_table3_completed_ids_equal_assembly_p(base):
+    from wom.engine.flow_check import compute_flow_check, KITTING_COLUMNS
+    _snap, tree, fres = base
+    fc = compute_flow_check(tree, fres)
+    rows = [r for r in fc["kitting"] if r["assembly"] == "Factory_Local_TH"]
+    asm = next(r for r in rows if r["row"] == "完成品（組立）")
+    assert asm["completed_ids"] == asm["assembly_p_sum"] == 52700
+    assert asm["completed_minus_p"] == 0 and asm["status"] == "OK"
+    yards = [r for r in rows if r["row"] == "部材（置場）"]
+    assert [r["node"] for r in yards] == list(YARDS)                 # 置場 2 つの行
+    assert all((r["receipt_sum"], r["payout_sum"], r["closing_I"]) == (52700, 52700, 0) for r in yards)
+    assert {"completed_ids", "assembly_p_sum", "completed_minus_p"} <= set(KITTING_COLUMNS)
+    # Kitting の無い製品（EVmaker_Import）の行は無い
+    assert {r["product"] for r in fc["kitting"]} == {PROD}
+
+
+def test_table3_flags_a_difference_between_completed_ids_and_p(base):
+    """完成した ID と組立の P が食い違えば NG（P から 1 件を抜いて確かめ、元に戻す）。"""
+    from wom.engine.flow_check import compute_flow_check, compute_kitting_check
+    _snap, tree, fres = base
+    fac = _node(tree, "Factory_Local_TH")
+    w = next(w for w in range(tree.num_weeks()) if fac.psi4supply[w][P])
+    lot = fac.psi4supply[w][P].pop()
+    try:
+        asm = next(r for r in compute_kitting_check(tree)
+                   if r["assembly"] == "Factory_Local_TH" and r["row"] == "完成品（組立）")
+        assert asm["completed_minus_p"] == 1 and asm["status"] == "NG"
+        assert "完成した ID の数と P Σ の差" in asm["reason"]
+        fc = compute_flow_check(tree, fres)
+        fac_row = next(r for r in fc["nodes"] if r["node"] == "Factory_Local_TH")
+        assert fac_row["status"] == "NG" and fc["summary"]["kitting_ng"] >= 1
+    finally:
+        fac.psi4supply[w][P].append(lot)
+    assert compute_flow_check(tree, fres)["summary"]["kitting_ng"] == 0
+
+
+def test_model_without_kitting_has_no_table3_rows():
+    import pandas as pd
+    from wom.model.sc_tree import build_demo_sc_tree
+    from wom.engine.flow_check import compute_flow_check
+    weeks = [f"2024-W{i:02d}" for i in range(1, 9)]
+    tree = build_demo_sc_tree(pd.DataFrame([{"sku_id": "A", "sku_name": "A", "region": "JP",
+                                             "lead_time_wks": 1}]), weeks)
+    fc = compute_flow_check(tree, {})
+    assert fc["kitting"] == [] and fc["summary"]["kitting_assemblies"] == 0
