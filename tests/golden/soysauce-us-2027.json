@@ -4,6 +4,7 @@
   },
   "case": "soysauce-us-2027",
   "config": {
+    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -11,12 +12,13 @@
     ]
   },
   "forward": {
-    "cap_hard_sealed": 0,
+    "cap_hard_deferred_lot_weeks": 0,
+    "cap_hard_deferred_lots": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
-    "start": "2027-W01",
-    "weeks": 104
+    "start": "2026-W28",
+    "weeks": 130
   },
   "ppc": {
     "base_currency": "USD",
@@ -36,18 +38,18 @@
       "Bottling_Noda": {
         "CO": 0,
         "I_max": 1500,
-        "I_sum": 75750,
-        "P": 85750,
-        "S": 92712,
-        "series_md5": "0cd5fc019065"
+        "I_sum": 100500,
+        "P": 100500,
+        "S": 100500,
+        "series_md5": "3e6cc8a3e3e9"
       },
       "Brewing_Noda": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 85750,
-        "S": 85750,
-        "series_md5": "5e0a132f2195"
+        "P": 100500,
+        "S": 100500,
+        "series_md5": "32190909021d"
       },
       "DC_EU_RTM": {
         "CO": 0,
@@ -55,47 +57,47 @@
         "I_sum": 0,
         "P": 0,
         "S": 0,
-        "series_md5": "23e4a603a2cb"
+        "series_md5": "60b42876bafc"
       },
       "DC_JP": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 30112,
-        "S": 30112,
-        "series_md5": "3e1594890202"
+        "P": 30150,
+        "S": 30150,
+        "series_md5": "14e6c85c7bf4"
       },
       "DC_US_NY": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 35131,
-        "S": 35131,
-        "series_md5": "67f29edc9d04"
+        "I_max": 1050,
+        "I_sum": 105525,
+        "P": 35175,
+        "S": 35175,
+        "series_md5": "3f04db799024"
       },
       "DC_US_SF": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 35131,
-        "S": 35131,
-        "series_md5": "67f29edc9d04"
+        "I_max": 1050,
+        "I_sum": 105525,
+        "P": 35175,
+        "S": 35175,
+        "series_md5": "3f04db799024"
       },
       "FG_WH_Noda": {
-        "CO": 1020762,
+        "CO": 0,
         "I_max": 3000,
-        "I_sum": 257250,
-        "P": 85750,
-        "S": 96187,
-        "series_md5": "d83189d111d4"
+        "I_sum": 301500,
+        "P": 100500,
+        "S": 100500,
+        "series_md5": "f08efdbed51e"
       },
       "Materials_JP": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 85750,
-        "S": 85750,
-        "series_md5": "a3296cda68d6"
+        "P": 100500,
+        "S": 100500,
+        "series_md5": "46209efd216c"
       },
       "Rest_BE": {
         "CO": 0,
@@ -103,7 +105,7 @@
         "I_sum": 0,
         "P": 0,
         "S": 0,
-        "series_md5": "23e4a603a2cb"
+        "series_md5": "60b42876bafc"
       },
       "Rest_FR": {
         "CO": 0,
@@ -111,7 +113,7 @@
         "I_sum": 0,
         "P": 0,
         "S": 0,
-        "series_md5": "23e4a603a2cb"
+        "series_md5": "60b42876bafc"
       },
       "Rest_JP": {
         "CO": 0,
@@ -119,7 +121,7 @@
         "I_sum": 0,
         "P": 30150,
         "S": 30150,
-        "series_md5": "c0d44c270f03"
+        "series_md5": "f2004ded1b44"
       },
       "Rest_NL": {
         "CO": 0,
@@ -127,7 +129,7 @@
         "I_sum": 0,
         "P": 0,
         "S": 0,
-        "series_md5": "23e4a603a2cb"
+        "series_md5": "60b42876bafc"
       },
       "Rest_US_East": {
         "CO": 0,
@@ -135,7 +137,7 @@
         "I_sum": 0,
         "P": 35175,
         "S": 35175,
-        "series_md5": "f4114ab5eb45"
+        "series_md5": "037433d10280"
       },
       "Rest_US_West": {
         "CO": 0,
@@ -143,15 +145,15 @@
         "I_sum": 0,
         "P": 35175,
         "S": 35175,
-        "series_md5": "f4114ab5eb45"
+        "series_md5": "037433d10280"
       },
       "SP_Soy": {
-        "CO": 696086,
-        "I_max": 1500,
-        "I_sum": 13000,
-        "P": 85750,
-        "S": 92712,
-        "series_md5": "d2d384ccd46a"
+        "CO": 0,
+        "I_max": 1000,
+        "I_sum": 3000,
+        "P": 100500,
+        "S": 100500,
+        "series_md5": "0ece6d5d89d5"
       }
     }
   }

@@ -4,6 +4,7 @@
   },
   "case": "apparel-global-2028-2029",
   "config": {
+    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -11,12 +12,13 @@
     ]
   },
   "forward": {
-    "cap_hard_sealed": 0,
+    "cap_hard_deferred_lot_weeks": 0,
+    "cap_hard_deferred_lots": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
-    "start": "2028-W01",
-    "weeks": 104
+    "start": "2027-W40",
+    "weeks": 117
   },
   "ppc": {
     "base_currency": "USD",
@@ -40,7 +42,7 @@
         "I_sum": 0,
         "P": 31188,
         "S": 31188,
-        "series_md5": "92978f912415"
+        "series_md5": "55bba95a2756"
       },
       "DC_US_Offshore": {
         "CO": 0,
@@ -48,39 +50,39 @@
         "I_sum": 0,
         "P": 57572,
         "S": 57572,
-        "series_md5": "a4756df5e614"
+        "series_md5": "b002e875b650"
       },
       "Dyeing_BD": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 83586,
-        "S": 83586,
-        "series_md5": "83365b7e053f"
+        "P": 88760,
+        "S": 88760,
+        "series_md5": "e897ff18bf04"
       },
       "FG_WH_BD": {
-        "CO": 494630,
+        "CO": 0,
         "I_max": 6629,
-        "I_sum": 250758,
-        "P": 83586,
+        "I_sum": 266280,
+        "P": 88760,
         "S": 88760,
-        "series_md5": "2832e14a7d24"
+        "series_md5": "33292ad88767"
       },
       "Fabric_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 83586,
-        "S": 83586,
-        "series_md5": "0b08ace4dda9"
+        "P": 88760,
+        "S": 88760,
+        "series_md5": "742723a893eb"
       },
       "Garment_BD": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 83586,
-        "S": 88243,
-        "series_md5": "2309c6d8af84"
+        "P": 88760,
+        "S": 88760,
+        "series_md5": "fe88651d5527"
       },
       "Retail_JP_Offshore": {
         "CO": 0,
@@ -88,7 +90,7 @@
         "I_sum": 0,
         "P": 31188,
         "S": 31188,
-        "series_md5": "db7eaef5cf8b"
+        "series_md5": "f92976fa6483"
       },
       "Retail_US_Offshore": {
         "CO": 0,
@@ -96,23 +98,23 @@
         "I_sum": 0,
         "P": 57572,
         "S": 57572,
-        "series_md5": "7f3c4665aa1d"
+        "series_md5": "98aec05797d8"
       },
       "SP_Apparel_Offshore": {
-        "CO": 461214,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 83586,
-        "S": 88243,
-        "series_md5": "cfcb5070af47"
+        "P": 88760,
+        "S": 88760,
+        "series_md5": "fe88651d5527"
       },
       "Trim_VN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 83586,
-        "S": 83586,
-        "series_md5": "147dac412462"
+        "P": 88760,
+        "S": 88760,
+        "series_md5": "00e410b753ae"
       }
     },
     "Apparel_Vertical": {
@@ -122,7 +124,7 @@
         "I_sum": 0,
         "P": 32268,
         "S": 32268,
-        "series_md5": "97f24f913ba9"
+        "series_md5": "14a6eee017cb"
       },
       "DC_US_Vertical": {
         "CO": 0,
@@ -130,39 +132,39 @@
         "I_sum": 0,
         "P": 60498,
         "S": 60498,
-        "series_md5": "7f706ccea21b"
+        "series_md5": "8411a4f11185"
       },
       "Dyeing_PT": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 90696,
-        "S": 90696,
-        "series_md5": "c6121e69df07"
+        "P": 92766,
+        "S": 92766,
+        "series_md5": "72f2ef5ff880"
       },
       "FG_WH_PT": {
-        "CO": 207230,
+        "CO": 0,
         "I_max": 2300,
-        "I_sum": 90696,
-        "P": 90696,
+        "I_sum": 92766,
+        "P": 92766,
         "S": 92766,
-        "series_md5": "875ceff705b4"
+        "series_md5": "33b73b60fd25"
       },
       "Fabric_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 90696,
-        "S": 90696,
-        "series_md5": "7b46460f39be"
+        "P": 92766,
+        "S": 92766,
+        "series_md5": "2481c7948a91"
       },
       "Garment_PT": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 90696,
-        "S": 92536,
-        "series_md5": "54a1bc02cb32"
+        "P": 92766,
+        "S": 92766,
+        "series_md5": "cf28ed123e50"
       },
       "Retail_JP_Vertical": {
         "CO": 0,
@@ -170,7 +172,7 @@
         "I_sum": 0,
         "P": 32268,
         "S": 32268,
-        "series_md5": "41e5a8ddc69b"
+        "series_md5": "a1b20c50f6c4"
       },
       "Retail_US_Vertical": {
         "CO": 0,
@@ -178,23 +180,23 @@
         "I_sum": 0,
         "P": 60498,
         "S": 60498,
-        "series_md5": "e6a3d4fa6844"
+        "series_md5": "f23766ebd9f1"
       },
       "SP_Apparel_Vertical": {
-        "CO": 187450,
+        "CO": 0,
         "I_max": 2588,
         "I_sum": 18814,
-        "P": 90696,
-        "S": 92536,
-        "series_md5": "7f4641e9b41d"
+        "P": 92766,
+        "S": 92766,
+        "series_md5": "3e0ceb8f2475"
       },
       "Trim_MA": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 90696,
-        "S": 90696,
-        "series_md5": "41c9c5ee83c7"
+        "P": 92766,
+        "S": 92766,
+        "series_md5": "261d3e529965"
       }
     }
   }

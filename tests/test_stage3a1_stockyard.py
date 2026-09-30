@@ -314,7 +314,12 @@ def test_ev_europe_2026_import_chain_matches_post_gate_baseline(tmp_path):
     either way -- that invariant carries over verbatim.
 
     Asserted values are those of lot_flow_mode="legacy" (RequestLetter_LotIdentityFlow:
-    identity makes upstream shortages reach the market, so revenue differs)."""
+    identity makes upstream shortages reach the market, so revenue differs).
+
+    2026-09-30 (RequestLetter_Warmup17_IdentityGolden): ev-europe-2026 now has
+    warmup_lt=17. The start-up shortfall of the Mode 4 push (P 7,945 against
+    S 8,345) is produced in the warm-up weeks, so P = S = 8,815. Revenue / GM%
+    are unchanged."""
     result, sc_tree = _execute_pipeline(
         EV_EUROPE_DIR, "safe", str(tmp_path / "ppc"), "EVmaker_Import", [],
         lot_flow_mode="legacy")
@@ -323,8 +328,9 @@ def test_ev_europe_2026_import_chain_matches_post_gate_baseline(tmp_path):
     def total(node, bucket):
         return sum(len(node.psi4supply[w][bucket]) for w in range(len(node.week_labels)))
 
-    assert total(mom, P) == 7945, "P must equal real unique demand, not 3x-duplicated"
-    assert total(mom, S) == 8345
+    # was 7945 / 8345 before warmup_lt=17 (start-up shortfall of 400 + 470 lots)
+    assert total(mom, P) == 8815, "P must equal real unique demand, not 3x-duplicated"
+    assert total(mom, S) == 8815
     assert total(mom, I) == 0, "I must no longer be a non-physical runaway (was 734,873)"
 
     kpi_path = os.path.join(str(tmp_path / "ppc"), "ppc_kpi_summary.json")
@@ -336,12 +342,16 @@ def test_ev_europe_2026_import_chain_matches_post_gate_baseline(tmp_path):
 
 def test_ev_europe_2026_local_chain_matches_pre_yard_baseline(tmp_path):
     """Local chain has no push_config -- pure PULL. Same missing count
-    (500, boundary-week ECU_DE_Yard shortfall) as before Yard insertion."""
+    (500, boundary-week ECU_DE_Yard shortfall) as before Yard insertion.
+
+    2026-09-30 (RequestLetter_Warmup17_IdentityGolden): with warmup_lt=17 the
+    boundary-week shortfall (500 of 41,975) no longer occurs, and the kits of
+    the warm-up production are counted too: 44,325 complete of 44,325."""
     result, sc_tree = _execute_pipeline(
         EV_EUROPE_DIR, "safe", str(tmp_path / "ppc"), "EVmaker_Local", [])
     mom = sc_tree.get_in_root("EVmaker_Local")
     complete, tot = _kitting_complete_total(mom)
-    assert (complete, tot) == (41475, 41975)
+    assert (complete, tot) == (44325, 44325)   # was (41475, 41975) before warmup_lt=17
 
 
 def test_bom_test_2026_three_cases_gate_deduplicates_vehicle_assy_p():

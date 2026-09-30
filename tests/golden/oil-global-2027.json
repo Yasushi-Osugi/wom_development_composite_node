@@ -4,6 +4,7 @@
   },
   "case": "oil-global-2027",
   "config": {
+    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -11,22 +12,23 @@
     ]
   },
   "forward": {
-    "cap_hard_sealed": 0,
+    "cap_hard_deferred_lot_weeks": 0,
+    "cap_hard_deferred_lots": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
-    "start": "2027-W01",
-    "weeks": 78
+    "start": "2026-W28",
+    "weeks": 104
   },
   "ppc": {
     "base_currency": "JPY",
-    "cost_base": 1070189765287.0,
-    "gross_margin_pct": 0.351293,
-    "gross_profit_base": 579538174893.0,
-    "revenue_base": 1649727940180.0,
+    "cost_base": 1018758265287.0,
+    "gross_margin_pct": 0.351563,
+    "gross_profit_base": 552339674893.0,
+    "revenue_base": 1571097940180.0,
     "tariff_base": 53620617.0,
-    "total_lots": 1408,
-    "trust_event_count": 742
+    "total_lots": 1399,
+    "trust_event_count": 733
   },
   "products": [
     "Gasoline_Local",
@@ -41,20 +43,20 @@
   "psi": {
     "Gasoline_EU_Import": {
       "Import_Hub_EU": {
-        "CO": 33176,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11320,
-        "S": 11757,
-        "series_md5": "51fc088db93f"
+        "P": 12093,
+        "S": 12093,
+        "series_md5": "76bb52d9bf00"
       },
       "Refinery_US": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11320,
-        "S": 11320,
-        "series_md5": "9b9a36300908"
+        "P": 12093,
+        "S": 12093,
+        "series_md5": "b8b3b105e484"
       },
       "Retail_EU_Import_DE_I": {
         "CO": 0,
@@ -62,7 +64,7 @@
         "I_sum": 0,
         "P": 7558,
         "S": 7558,
-        "series_md5": "bf021ab33a28"
+        "series_md5": "a55290e32dd1"
       },
       "Retail_EU_Import_FR_I": {
         "CO": 0,
@@ -70,23 +72,23 @@
         "I_sum": 0,
         "P": 4535,
         "S": 4535,
-        "series_md5": "75ae9b36fcd5"
+        "series_md5": "38e4c1bc894e"
       },
       "SP_Oil_EU_Import": {
-        "CO": 33176,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11320,
-        "S": 11757,
-        "series_md5": "51fc088db93f"
+        "P": 12093,
+        "S": 12093,
+        "series_md5": "76bb52d9bf00"
       },
       "Tank_EU_Import": {
-        "CO": 54204,
+        "CO": 0,
         "I_max": 519,
-        "I_sum": 33960,
-        "P": 11320,
-        "S": 12060,
-        "series_md5": "425001b64c60"
+        "I_sum": 36279,
+        "P": 12093,
+        "S": 12093,
+        "series_md5": "420efb2e1489"
       }
     },
     "Gasoline_EU_Local": {
@@ -94,17 +96,17 @@
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 43863,
-        "S": 43863,
-        "series_md5": "a35f2abf3485"
+        "P": 50581,
+        "S": 50581,
+        "series_md5": "74906fdd68d7"
       },
       "Refinery_EU": {
-        "CO": 148200,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 43863,
-        "S": 45813,
-        "series_md5": "a12e1ef03a1e"
+        "P": 50581,
+        "S": 50581,
+        "series_md5": "286cc4152fb9"
       },
       "Retail_EU_DE": {
         "CO": 0,
@@ -112,7 +114,7 @@
         "I_sum": 0,
         "P": 26035,
         "S": 26035,
-        "series_md5": "52039ec1885b"
+        "series_md5": "54ace22d7f9a"
       },
       "Retail_EU_FR": {
         "CO": 0,
@@ -120,7 +122,7 @@
         "I_sum": 0,
         "P": 16361,
         "S": 16361,
-        "series_md5": "0154e8b62888"
+        "series_md5": "275b7e66194f"
       },
       "Retail_EU_NL": {
         "CO": 0,
@@ -128,41 +130,41 @@
         "I_sum": 0,
         "P": 8185,
         "S": 8185,
-        "series_md5": "96cf04d2a83c"
+        "series_md5": "e610927372c2"
       },
       "SP_Oil_EU_Local": {
-        "CO": 323174,
-        "I_max": 494,
-        "I_sum": 5447,
-        "P": 43863,
-        "S": 49986,
-        "series_md5": "2b37be1b324e"
+        "CO": 0,
+        "I_max": 4812,
+        "I_sum": 170662,
+        "P": 50581,
+        "S": 50581,
+        "series_md5": "b398a882583b"
       },
       "Tank_EU_Local": {
-        "CO": 346229,
-        "I_max": 729,
-        "I_sum": 43863,
-        "P": 43863,
-        "S": 50448,
-        "series_md5": "28802bc17393"
+        "CO": 0,
+        "I_max": 735,
+        "I_sum": 50581,
+        "P": 50581,
+        "S": 50581,
+        "series_md5": "073036f778c8"
       }
     },
     "Gasoline_Import": {
       "Import_Hub": {
-        "CO": 46575,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 8928,
-        "S": 9550,
-        "series_md5": "0e0aa24bbf73"
+        "P": 9823,
+        "S": 9823,
+        "series_md5": "3f6d3a9e2cb5"
       },
       "Refinery_SG": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 8928,
-        "S": 8928,
-        "series_md5": "5f31e3b8c06e"
+        "P": 9823,
+        "S": 9823,
+        "series_md5": "bd696ac096e1"
       },
       "Retail_Import_KANSAI_I": {
         "CO": 0,
@@ -170,7 +172,7 @@
         "I_sum": 0,
         "P": 3779,
         "S": 3779,
-        "series_md5": "7884d5b58953"
+        "series_md5": "32880c04fbdb"
       },
       "Retail_Import_KANTO_I": {
         "CO": 0,
@@ -178,23 +180,23 @@
         "I_sum": 0,
         "P": 6044,
         "S": 6044,
-        "series_md5": "e317d53aa992"
+        "series_md5": "9a87f0d9b810"
       },
       "SP_Oil_Import": {
-        "CO": 46575,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 8928,
-        "S": 9550,
-        "series_md5": "0e0aa24bbf73"
+        "P": 9823,
+        "S": 9823,
+        "series_md5": "3f6d3a9e2cb5"
       },
       "Tank_Import": {
-        "CO": 62578,
+        "CO": 0,
         "I_max": 420,
-        "I_sum": 26784,
-        "P": 8928,
-        "S": 9796,
-        "series_md5": "ee1b184136b8"
+        "I_sum": 29469,
+        "P": 9823,
+        "S": 9823,
+        "series_md5": "7603ae45cca8"
       }
     },
     "Gasoline_Local": {
@@ -202,17 +204,17 @@
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 40778,
-        "S": 40778,
-        "series_md5": "9f144e70b2f2"
+        "P": 42395,
+        "S": 42395,
+        "series_md5": "1902d1fea122"
       },
       "Refinery_Local": {
-        "CO": 85048,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 40778,
-        "S": 41899,
-        "series_md5": "78c2297266ad"
+        "P": 42395,
+        "S": 42395,
+        "series_md5": "b20f8e45732d"
       },
       "Retail_Local_CHUBU": {
         "CO": 0,
@@ -220,7 +222,7 @@
         "I_sum": 0,
         "P": 6693,
         "S": 6693,
-        "series_md5": "753ec5a666a4"
+        "series_md5": "5cdfa4558c23"
       },
       "Retail_Local_KANSAI": {
         "CO": 0,
@@ -228,7 +230,7 @@
         "I_sum": 0,
         "P": 13388,
         "S": 13388,
-        "series_md5": "d57e4ee204b9"
+        "series_md5": "52e01a0e511c"
       },
       "Retail_Local_KANTO": {
         "CO": 0,
@@ -236,23 +238,23 @@
         "I_sum": 0,
         "P": 22314,
         "S": 22314,
-        "series_md5": "46d9436bee62"
+        "series_md5": "c69abd44951a"
       },
       "SP_Oil_Local": {
-        "CO": 85048,
+        "CO": 0,
         "I_max": 993,
         "I_sum": 5800,
-        "P": 40778,
-        "S": 41899,
-        "series_md5": "f21b57c68c2a"
+        "P": 42395,
+        "S": 42395,
+        "series_md5": "8ad990eeb8d6"
       },
       "Tank_Local": {
-        "CO": 112224,
+        "CO": 0,
         "I_max": 615,
-        "I_sum": 40778,
-        "P": 40778,
-        "S": 42284,
-        "series_md5": "f6ee49600e4b"
+        "I_sum": 42395,
+        "P": 42395,
+        "S": 42395,
+        "series_md5": "c3e40f2ee41a"
       }
     },
     "Gasoline_Local_Hormuz": {
@@ -260,17 +262,17 @@
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 60,
-        "S": 60,
-        "series_md5": "61f25e2be782"
+        "P": 103,
+        "S": 103,
+        "series_md5": "5a231dd2a620"
       },
       "Refinery_Local_H": {
-        "CO": 1824,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 60,
-        "S": 84,
-        "series_md5": "10c722a1f283"
+        "P": 103,
+        "S": 103,
+        "series_md5": "00c68e3c3ad0"
       },
       "Retail_Local_H_CHUBU": {
         "CO": 0,
@@ -278,7 +280,7 @@
         "I_sum": 0,
         "P": 26,
         "S": 26,
-        "series_md5": "e1c1d687eb2d"
+        "series_md5": "02dd86eeb51d"
       },
       "Retail_Local_H_KANSAI": {
         "CO": 0,
@@ -286,7 +288,7 @@
         "I_sum": 0,
         "P": 26,
         "S": 26,
-        "series_md5": "e1c1d687eb2d"
+        "series_md5": "02dd86eeb51d"
       },
       "Retail_Local_H_KANTO": {
         "CO": 0,
@@ -294,23 +296,23 @@
         "I_sum": 0,
         "P": 51,
         "S": 51,
-        "series_md5": "9faa4bb1e42b"
+        "series_md5": "7be8fe836802"
       },
       "SP_Oil_Local_H": {
-        "CO": 1824,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 60,
-        "S": 84,
-        "series_md5": "10c722a1f283"
+        "P": 103,
+        "S": 103,
+        "series_md5": "00c68e3c3ad0"
       },
       "Tank_Local_H": {
-        "CO": 3120,
+        "CO": 0,
         "I_max": 32,
-        "I_sum": 240,
-        "P": 60,
+        "I_sum": 412,
+        "P": 103,
         "S": 103,
-        "series_md5": "f65e9a3ad602"
+        "series_md5": "ecbffd2e2f21"
       }
     },
     "Gasoline_Local_RedSea": {
@@ -318,33 +320,33 @@
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 335,
-        "S": 335,
-        "series_md5": "9f8f128db43e"
+        "P": 465,
+        "S": 465,
+        "series_md5": "4227d9516c19"
       },
       "Refinery_Local_R": {
-        "CO": 1875,
+        "CO": 2525,
         "I_max": 0,
         "I_sum": 0,
-        "P": 335,
-        "S": 360,
-        "series_md5": "017602a2d2c0"
+        "P": 465,
+        "S": 490,
+        "series_md5": "1ee076a3bc6a"
       },
       "Retail_Local_R_CHUBU": {
-        "CO": 0,
+        "CO": 100,
         "I_max": 0,
         "I_sum": 0,
-        "P": 124,
+        "P": 104,
         "S": 124,
-        "series_md5": "f2cd827b5b22"
+        "series_md5": "17de30235b89"
       },
       "Retail_Local_R_KANSAI": {
-        "CO": 0,
+        "CO": 36,
         "I_max": 0,
         "I_sum": 0,
-        "P": 124,
+        "P": 115,
         "S": 124,
-        "series_md5": "f2cd827b5b22"
+        "series_md5": "ff19cd7bb589"
       },
       "Retail_Local_R_KANTO": {
         "CO": 0,
@@ -352,41 +354,41 @@
         "I_sum": 0,
         "P": 246,
         "S": 246,
-        "series_md5": "44c5d930df23"
+        "series_md5": "0eb92442ef70"
       },
       "SP_Oil_Local_R": {
-        "CO": 5194,
-        "I_max": 21,
-        "I_sum": 161,
-        "P": 335,
+        "CO": 319,
+        "I_max": 151,
+        "I_sum": 6401,
+        "P": 465,
         "S": 494,
-        "series_md5": "9ad2223550b6"
+        "series_md5": "0b712f21f055"
       },
       "Tank_Local_R": {
-        "CO": 4399,
+        "CO": 174,
         "I_max": 32,
-        "I_sum": 1340,
-        "P": 335,
+        "I_sum": 1860,
+        "P": 465,
         "S": 494,
-        "series_md5": "f3f61982d1c3"
+        "series_md5": "e606b1d4e9dd"
       }
     },
     "Gasoline_US_Import": {
       "Import_Hub_US": {
-        "CO": 11239,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 7265,
-        "S": 7412,
-        "series_md5": "ed17a31a1625"
+        "P": 7557,
+        "S": 7557,
+        "series_md5": "b2ad700540f3"
       },
       "OilSands_Alberta": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 7265,
-        "S": 7265,
-        "series_md5": "a07437441819"
+        "P": 7557,
+        "S": 7557,
+        "series_md5": "14903e545224"
       },
       "Retail_US_Import_MW_I": {
         "CO": 0,
@@ -394,7 +396,7 @@
         "I_sum": 0,
         "P": 4535,
         "S": 4535,
-        "series_md5": "75ae9b36fcd5"
+        "series_md5": "38e4c1bc894e"
       },
       "Retail_US_Import_NE_I": {
         "CO": 0,
@@ -402,33 +404,33 @@
         "I_sum": 0,
         "P": 3022,
         "S": 3022,
-        "series_md5": "d8632d73abc0"
+        "series_md5": "d154b63c5b0f"
       },
       "SP_Oil_US_Import": {
-        "CO": 11239,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 7265,
-        "S": 7412,
-        "series_md5": "ed17a31a1625"
+        "P": 7557,
+        "S": 7557,
+        "series_md5": "b2ad700540f3"
       },
       "Tank_US_Import": {
-        "CO": 20120,
+        "CO": 0,
         "I_max": 216,
-        "I_sum": 14530,
-        "P": 7265,
-        "S": 7535,
-        "series_md5": "bdbea2022b40"
+        "I_sum": 15114,
+        "P": 7557,
+        "S": 7557,
+        "series_md5": "51d6cda370c5"
       }
     },
     "Gasoline_US_Local": {
       "Refinery_USGulf": {
-        "CO": 69300,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 64467,
-        "S": 65367,
-        "series_md5": "e3221687607d"
+        "P": 68012,
+        "S": 68012,
+        "series_md5": "154ad4835bb4"
       },
       "Retail_US_CA": {
         "CO": 0,
@@ -436,7 +438,7 @@
         "I_sum": 0,
         "P": 22670,
         "S": 22670,
-        "series_md5": "704fb80b7795"
+        "series_md5": "b96cb758520f"
       },
       "Retail_US_NY": {
         "CO": 0,
@@ -444,7 +446,7 @@
         "I_sum": 0,
         "P": 11336,
         "S": 11336,
-        "series_md5": "fd3d0339779f"
+        "series_md5": "f20421a94a88"
       },
       "Retail_US_TX": {
         "CO": 0,
@@ -452,31 +454,31 @@
         "I_sum": 0,
         "P": 34006,
         "S": 34006,
-        "series_md5": "2c38363f9b12"
+        "series_md5": "f026cfa5eb39"
       },
       "SP_Oil_US_Local": {
-        "CO": 141002,
-        "I_max": 994,
-        "I_sum": 20713,
-        "P": 64467,
-        "S": 67147,
-        "series_md5": "c3572ecea9e9"
+        "CO": 0,
+        "I_max": 2700,
+        "I_sum": 89742,
+        "P": 68012,
+        "S": 68012,
+        "series_md5": "ca1e4f9b61c3"
       },
       "Shale_Permian": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 64467,
-        "S": 64467,
-        "series_md5": "4764ccabbe21"
+        "P": 68012,
+        "S": 68012,
+        "series_md5": "13d2ef574743"
       },
       "Tank_US_Local": {
-        "CO": 185311,
+        "CO": 0,
         "I_max": 972,
-        "I_sum": 64467,
-        "P": 64467,
-        "S": 67797,
-        "series_md5": "b678974f6c85"
+        "I_sum": 68012,
+        "P": 68012,
+        "S": 68012,
+        "series_md5": "42e524c13093"
       }
     }
   }

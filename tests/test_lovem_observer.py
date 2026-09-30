@@ -8,6 +8,8 @@ tests/test_lovem_observer.py — LOVEM stage A on ev-thailand-2026 (request A4).
   A4-2  every (snapshot, node, layer, bucket, week) of the decoded intervals
         matches state_digests.
   A4-5  se2_case.json reproduces 168 for 2026-W38/W39 at Factory_Import_CN.
+        (run on a copy of the model WITHOUT warm-up: since 2026-09-30 the
+        original has warmup_lt=17, which removes that start-up shortfall.)
   plus  the observation wrappers are removed after the run; the model folder
         is not written.
 """
@@ -54,9 +56,40 @@ def test_intervals_restore_every_digest(q12):
     assert v["duplicate_interval_ids"] == 0
 
 
-def test_se2_168_is_reproduced(q12):
+@pytest.fixture(scope="module")
+def se2_run(tmp_path_factory):
+    """One observed legacy run on a copy of ev-thailand-2026 without warm-up.
+
+    SE2 (168 lots short in 2026-W38/W39) is the start-up shortfall of the plan
+    that begins at the first demand week. The original model now has
+    warmup_lt=17 (RequestLetter_Warmup17_IdentityGolden), and there the
+    shortfall is 0. The copy gets warmup_lt=0, and materialize_warmup strips
+    the generated warm-up rows, which gives back the input of stage A."""
+    import csv
+    import shutil
+    from wom.engine.warmup import materialize_warmup
+    from wom.lovem.observer import observe_run
+    base = tmp_path_factory.mktemp("lovem_se2")
+    model = str(base / "ev-thailand-2026")
+    out = str(base / "run")
+    shutil.copytree(MODEL, model)
+    with open(os.path.join(model, "planning_config.csv"), "w", encoding="utf-8", newline="") as f:
+        f.write("key,value\nwarmup_lt,0\n")
+    materialize_warmup(model)
+    with open(os.path.join(model, "demand_forecast.csv"), encoding="utf-8-sig", newline="") as f:
+        assert min(r["week"] for r in csv.DictReader(f)) == "2026-W02", "warm-up rows were not stripped"
+    cwd = os.getcwd()
+    os.chdir(REPO)
+    try:
+        observe_run(model, out, plugins=PLUGINS, label="se2", lot_flow_mode="legacy")
+    finally:
+        os.chdir(cwd)
+    return out
+
+
+def test_se2_168_is_reproduced(se2_run):
     from wom.lovem.se2 import build_se2_case
-    _res, out = q12
+    out = se2_run
     case = build_se2_case(out)
     rows = {r["week"]: r for r in case["target_week_rows"]}
     assert (rows["2026-W38"]["planned_s"], rows["2026-W38"]["actual_s"]) == (150, 132)

@@ -4,6 +4,7 @@
   },
   "case": "iphone_global",
   "config": {
+    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -11,7 +12,8 @@
     ]
   },
   "forward": {
-    "cap_hard_sealed": 1230,
+    "cap_hard_deferred_lot_weeks": 55413,
+    "cap_hard_deferred_lots": 55413,
     "cap_soft_violation_count": 0
   },
   "period": {
@@ -20,13 +22,13 @@
   },
   "ppc": {
     "base_currency": "JPY",
-    "cost_base": 417085188783232.6,
-    "gross_margin_pct": 0.415283,
-    "gross_profit_base": 296225445796167.4,
-    "revenue_base": 713310634579400.0,
-    "tariff_base": 47447152070602.62,
-    "total_lots": 1170,
-    "trust_event_count": 390
+    "cost_base": 343633181158412.5,
+    "gross_margin_pct": 0.410885,
+    "gross_profit_base": 239671166835787.5,
+    "revenue_base": 583304347994200.0,
+    "tariff_base": 43919387145012.5,
+    "total_lots": 1047,
+    "trust_event_count": 366
   },
   "products": [
     "iPhone16",
@@ -68,28 +70,28 @@
         "series_md5": "d2da66650a7e"
       },
       "Retail_AMER_i15": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 34580,
+        "CO": 944000,
+        "I_max": 400,
+        "I_sum": 28180,
+        "P": 28180,
         "S": 34580,
-        "series_md5": "2eed558f199b"
+        "series_md5": "c87e8b1ac45c"
       },
       "Retail_APAC_i15": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 27664,
+        "CO": 2593798,
+        "I_max": 63,
+        "I_sum": 4975,
+        "P": 4975,
         "S": 27664,
-        "series_md5": "b7ee38e133ff"
+        "series_md5": "aeec47b3001e"
       },
       "Retail_EMEA_i15": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 24204,
+        "CO": 1226184,
+        "I_max": 204,
+        "I_sum": 15246,
+        "P": 15246,
         "S": 24204,
-        "series_md5": "a804583857ff"
+        "series_md5": "4e5eec94d12c"
       },
       "SP_iPhone15": {
         "CO": 4128095,
@@ -166,28 +168,28 @@
         "series_md5": "f09bd7576fa8"
       },
       "Retail_AMER": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 100306,
+        "CO": 1090800,
+        "I_max": 1009,
+        "I_sum": 93106,
+        "P": 93106,
         "S": 100306,
-        "series_md5": "52339677cbaf"
+        "series_md5": "61f03aa21105"
       },
       "Retail_APAC": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 80184,
+        "CO": 4934573,
+        "I_max": 334,
+        "I_sum": 37047,
+        "P": 37047,
         "S": 80184,
-        "series_md5": "288ec5e7fc53"
+        "series_md5": "db231444e6d3"
       },
       "Retail_EMEA": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 70736,
+        "CO": 1398600,
+        "I_max": 678,
+        "I_sum": 61286,
+        "P": 61286,
         "S": 70736,
-        "series_md5": "131e0b6c8592"
+        "series_md5": "32770f33d632"
       },
       "SP_iPhone16": {
         "CO": 5853428,
@@ -216,68 +218,68 @@
     },
     "iPhone17": {
       "DC_AMER_i17": {
-        "CO": 38446,
+        "CO": 0,
         "I_max": 1093,
-        "I_sum": 52674,
-        "P": 52674,
+        "I_sum": 53300,
+        "P": 53300,
         "S": 53300,
-        "series_md5": "5c9ebdce05b0"
+        "series_md5": "8caefea41dd7"
       },
       "DC_APAC_i17": {
-        "CO": 16,
-        "I_max": 868,
-        "I_sum": 42632,
-        "P": 42632,
+        "CO": 0,
+        "I_max": 874,
+        "I_sum": 42640,
+        "P": 42640,
         "S": 42640,
-        "series_md5": "73601b6f7e20"
+        "series_md5": "05187810a934"
       },
       "DC_EMEA_i17": {
-        "CO": 17585,
-        "I_max": 758,
-        "I_sum": 36714,
-        "P": 36714,
+        "CO": 0,
+        "I_max": 765,
+        "I_sum": 37310,
+        "P": 37310,
         "S": 37310,
-        "series_md5": "5e27134df3f7"
+        "series_md5": "ca7020d392db"
       },
       "Foxconn_CN_i17": {
-        "CO": 121896,
+        "CO": 0,
         "I_max": 75306,
-        "I_sum": 132020,
-        "P": 132020,
+        "I_sum": 77837,
+        "P": 133250,
         "S": 133250,
-        "series_md5": "10ab3a91004a"
+        "series_md5": "11b691b4df4d"
       },
       "Retail_AMER_i17": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
+        "I_max": 1093,
+        "I_sum": 53300,
         "P": 53300,
         "S": 53300,
-        "series_md5": "32e85324d289"
+        "series_md5": "78691e92f872"
       },
       "Retail_APAC_i17": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
+        "I_max": 874,
+        "I_sum": 42640,
         "P": 42640,
         "S": 42640,
-        "series_md5": "2fe3210a857d"
+        "series_md5": "73e553fbdea9"
       },
       "Retail_EMEA_i17": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
+        "I_max": 765,
+        "I_sum": 37310,
         "P": 37310,
         "S": 37310,
-        "series_md5": "1a7caba1b4c5"
+        "series_md5": "1df485e5b5ea"
       },
       "SP_iPhone17": {
-        "CO": 60333,
+        "CO": 0,
         "I_max": 75013,
         "I_sum": 3217648,
-        "P": 132020,
+        "P": 133250,
         "S": 133250,
-        "series_md5": "8ba26a67199d"
+        "series_md5": "3a8af0f3a13c"
       },
       "SiliconWafer_TW_i17": {
         "CO": 0,

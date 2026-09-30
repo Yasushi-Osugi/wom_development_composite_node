@@ -4,6 +4,7 @@
   },
   "case": "soysauce-jpy-2027",
   "config": {
+    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -11,7 +12,8 @@
     ]
   },
   "forward": {
-    "cap_hard_sealed": 0,
+    "cap_hard_deferred_lot_weeks": 0,
+    "cap_hard_deferred_lots": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
@@ -51,11 +53,11 @@
       },
       "DC_EU_RTM": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
+        "I_max": 1050,
+        "I_sum": 105525,
         "P": 35175,
         "S": 35175,
-        "series_md5": "3d53cd9aa00b"
+        "series_md5": "bb3333fd0a19"
       },
       "DC_JP": {
         "CO": 0,
@@ -67,19 +69,19 @@
       },
       "DC_US_NY": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
+        "I_max": 525,
+        "I_sum": 52764,
         "P": 17588,
         "S": 17588,
-        "series_md5": "cbbc593e46f8"
+        "series_md5": "4ae0df47f38e"
       },
       "DC_US_SF": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
+        "I_max": 525,
+        "I_sum": 52764,
         "P": 17588,
         "S": 17588,
-        "series_md5": "cbbc593e46f8"
+        "series_md5": "4ae0df47f38e"
       },
       "FG_WH_Noda": {
         "CO": 0,

@@ -1,4 +1,11 @@
 sku_id,node_name,week,max_supply,cap_pieces,source
+EVmaker_Import,Components_CN,2025-W37,500,,warmup
+EVmaker_Import,DC_EV_Import,2025-W37,105,,warmup
+EVmaker_Import,Factory_Import_CN,2025-W37,105,,warmup
+EVmaker_Local,DC_EV_Local,2025-W37,2900,,warmup
+EVmaker_Local,Factory_Local_TH,2025-W37,2900,,warmup
+EVmaker_Local,Motor_Unit_Assy,2025-W37,3000,,warmup
+EVmaker_Local,Platform_Unit_Assy,2025-W37,3000,,warmup
 EVmaker_Import,Components_CN,2025-W38,500,,warmup
 EVmaker_Import,DC_EV_Import,2025-W38,105,,warmup
 EVmaker_Import,Factory_Import_CN,2025-W38,105,,warmup

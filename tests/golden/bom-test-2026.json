@@ -4,6 +4,7 @@
   },
   "case": "bom-test-2026",
   "config": {
+    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -11,12 +12,13 @@
     ]
   },
   "forward": {
-    "cap_hard_sealed": 0,
+    "cap_hard_deferred_lot_weeks": 0,
+    "cap_hard_deferred_lots": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
-    "start": "2025-W41",
-    "weeks": 32
+    "start": "2025-W36",
+    "weeks": 37
   },
   "ppc": {
     "base_currency": "USD",
@@ -39,7 +41,7 @@
         "I_sum": 0,
         "P": 100,
         "S": 100,
-        "series_md5": "c1efed775621"
+        "series_md5": "705ccce52336"
       },
       "Battery_Yard": {
         "CO": 0,
@@ -47,7 +49,7 @@
         "I_sum": 0,
         "P": 100,
         "S": 100,
-        "series_md5": "f8a4fb232672"
+        "series_md5": "17d09fae68c6"
       },
       "DC_Vehicle": {
         "CO": 0,
@@ -55,7 +57,7 @@
         "I_sum": 100,
         "P": 100,
         "S": 100,
-        "series_md5": "d58eed04acaa"
+        "series_md5": "3a68428f8442"
       },
       "Dealer_Sales": {
         "CO": 0,
@@ -63,7 +65,7 @@
         "I_sum": 0,
         "P": 100,
         "S": 100,
-        "series_md5": "392f30ca7266"
+        "series_md5": "43d0662d5b11"
       },
       "SP_Vehicle": {
         "CO": 0,
@@ -71,7 +73,7 @@
         "I_sum": 0,
         "P": 100,
         "S": 100,
-        "series_md5": "f8a4fb232672"
+        "series_md5": "17d09fae68c6"
       },
       "Tire_Supply": {
         "CO": 0,
@@ -79,7 +81,7 @@
         "I_sum": 0,
         "P": 100,
         "S": 100,
-        "series_md5": "c1efed775621"
+        "series_md5": "705ccce52336"
       },
       "Tire_Yard": {
         "CO": 0,
@@ -87,7 +89,7 @@
         "I_sum": 0,
         "P": 100,
         "S": 100,
-        "series_md5": "f8a4fb232672"
+        "series_md5": "17d09fae68c6"
       },
       "Vehicle_Assy": {
         "CO": 0,
@@ -95,7 +97,7 @@
         "I_sum": 0,
         "P": 100,
         "S": 100,
-        "series_md5": "f8a4fb232672"
+        "series_md5": "17d09fae68c6"
       }
     }
   }

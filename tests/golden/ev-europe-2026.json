@@ -4,6 +4,7 @@
   },
   "case": "ev-europe-2026",
   "config": {
+    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -11,12 +12,13 @@
     ]
   },
   "forward": {
-    "cap_hard_sealed": 0,
+    "cap_hard_deferred_lot_weeks": 0,
+    "cap_hard_deferred_lots": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
-    "start": "2026-W02",
-    "weeks": 88
+    "start": "2025-W37",
+    "weeks": 105
   },
   "ppc": {
     "base_currency": "JPY",
@@ -38,73 +40,73 @@
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 7945,
-        "S": 7945,
-        "series_md5": "890e35e5ef71"
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "4088175414be"
       },
       "Battery_HU_Yard": {
         "CO": 0,
         "I_max": 300,
-        "I_sum": 15890,
-        "P": 7945,
-        "S": 7945,
-        "series_md5": "3bd65ba03a6f"
+        "I_sum": 17630,
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "f9ac29ae3563"
       },
       "DC_EV_Import": {
-        "CO": 60186,
+        "CO": 0,
         "I_max": 230,
-        "I_sum": 15890,
-        "P": 7945,
-        "S": 8661,
-        "series_md5": "1021097299bf"
+        "I_sum": 17630,
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "d2afef364042"
       },
       "ECU_HU": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 7945,
-        "S": 7945,
-        "series_md5": "890e35e5ef71"
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "4088175414be"
       },
       "ECU_HU_Yard": {
         "CO": 0,
         "I_max": 150,
-        "I_sum": 7945,
-        "P": 7945,
-        "S": 7945,
-        "series_md5": "74bef56c86f0"
+        "I_sum": 8815,
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "e20bddd7473c"
       },
       "Factory_Import_HU": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 7945,
-        "S": 8345,
-        "series_md5": "83a8f33d217c"
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "d40117a84d83"
       },
       "Motor_HU": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 7945,
-        "S": 7945,
-        "series_md5": "890e35e5ef71"
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "4088175414be"
       },
       "Motor_HU_Yard": {
         "CO": 0,
         "I_max": 300,
-        "I_sum": 15890,
-        "P": 7945,
-        "S": 7945,
-        "series_md5": "3bd65ba03a6f"
+        "I_sum": 17630,
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "f9ac29ae3563"
       },
       "SP_EV_Import": {
-        "CO": 34200,
+        "CO": 0,
         "I_max": 200,
         "I_sum": 830,
-        "P": 7945,
-        "S": 8345,
-        "series_md5": "0820a633b0b7"
+        "P": 8815,
+        "S": 8815,
+        "series_md5": "b526ff1bafd3"
       },
       "Sales_DE_BER_i": {
         "CO": 0,
@@ -112,7 +114,7 @@
         "I_sum": 0,
         "P": 4430,
         "S": 4430,
-        "series_md5": "99bd91c57144"
+        "series_md5": "100552e81e37"
       },
       "Sales_DE_ONL_i": {
         "CO": 0,
@@ -120,7 +122,7 @@
         "I_sum": 0,
         "P": 879,
         "S": 879,
-        "series_md5": "e6348a752e65"
+        "series_md5": "cb8faa7bd034"
       },
       "Sales_DE_REG_i": {
         "CO": 0,
@@ -128,7 +130,7 @@
         "I_sum": 0,
         "P": 3506,
         "S": 3506,
-        "series_md5": "a3c18beb75f0"
+        "series_md5": "2c5c8282e053"
       }
     },
     "EVmaker_Local": {
@@ -136,73 +138,73 @@
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 41975,
-        "S": 41975,
-        "series_md5": "18f639795ae2"
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "5c359e1a76c0"
       },
       "Battery_DE_Yard": {
         "CO": 0,
-        "I_max": 500,
-        "I_sum": 43500,
-        "P": 41975,
-        "S": 41475,
-        "series_md5": "5b1d2300bbc1"
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "8a83aae7353a"
       },
       "DC_EV_Local": {
-        "CO": 177930,
+        "CO": 0,
         "I_max": 575,
-        "I_sum": 41475,
-        "P": 41475,
-        "S": 43555,
-        "series_md5": "3c96768c444f"
+        "I_sum": 44325,
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "feff73a68f91"
       },
       "ECU_DE": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 41475,
-        "S": 41475,
-        "series_md5": "33269389c7ba"
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "7cf68fae6b40"
       },
       "ECU_DE_Yard": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 41475,
-        "S": 41475,
-        "series_md5": "a418a2277e7c"
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "8a83aae7353a"
       },
       "Factory_Local_DE": {
-        "CO": 86500,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 41475,
-        "S": 42475,
-        "series_md5": "a34a214d97ec"
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "8a83aae7353a"
       },
       "Motor_DE": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 41975,
-        "S": 41975,
-        "series_md5": "18f639795ae2"
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "5c359e1a76c0"
       },
       "Motor_DE_Yard": {
         "CO": 0,
-        "I_max": 500,
-        "I_sum": 43500,
-        "P": 41975,
-        "S": 41475,
-        "series_md5": "5b1d2300bbc1"
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "8a83aae7353a"
       },
       "SP_EV_Local": {
-        "CO": 86500,
+        "CO": 0,
         "I_max": 500,
         "I_sum": 1000,
-        "P": 41475,
-        "S": 42475,
-        "series_md5": "787af8c9171d"
+        "P": 44325,
+        "S": 44325,
+        "series_md5": "84d3a14d333a"
       },
       "Sales_DE_BER": {
         "CO": 0,
@@ -210,7 +212,7 @@
         "I_sum": 0,
         "P": 22165,
         "S": 22165,
-        "series_md5": "afa7c3c085c5"
+        "series_md5": "773e79310da7"
       },
       "Sales_DE_ONL": {
         "CO": 0,
@@ -218,7 +220,7 @@
         "I_sum": 0,
         "P": 4430,
         "S": 4430,
-        "series_md5": "99bd91c57144"
+        "series_md5": "100552e81e37"
       },
       "Sales_DE_REG": {
         "CO": 0,
@@ -226,7 +228,7 @@
         "I_sum": 0,
         "P": 17730,
         "S": 17730,
-        "series_md5": "b9367f59fcaa"
+        "series_md5": "bcb67efeb9f7"
       }
     }
   }

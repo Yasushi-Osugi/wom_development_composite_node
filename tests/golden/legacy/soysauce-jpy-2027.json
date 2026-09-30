@@ -2,9 +2,8 @@
   "backward": {
     "cap_soft_envelope_count": 0
   },
-  "case": "soysauce-eu-2027",
+  "case": "soysauce-jpy-2027",
   "config": {
-    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -12,8 +11,7 @@
     ]
   },
   "forward": {
-    "cap_hard_deferred_lot_weeks": 0,
-    "cap_hard_deferred_lots": 0,
+    "cap_hard_sealed": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
@@ -21,14 +19,14 @@
     "weeks": 130
   },
   "ppc": {
-    "base_currency": "USD",
-    "cost_base": 2637203.47,
-    "gross_margin_pct": 0.271994,
-    "gross_profit_base": 985297.12,
-    "revenue_base": 3622500.59,
-    "tariff_base": 132466.07,
+    "base_currency": "JPY",
+    "cost_base": 442528784.19,
+    "gross_margin_pct": 0.280427,
+    "gross_profit_base": 172459615.81,
+    "revenue_base": 614988400.0,
+    "tariff_base": 21923341.69,
     "total_lots": 624,
-    "trust_event_count": 0
+    "trust_event_count": 32
   },
   "products": [
     "Soy_Sauce"
@@ -37,11 +35,11 @@
     "Soy_Sauce": {
       "Bottling_Noda": {
         "CO": 0,
-        "I_max": 1500,
+        "I_max": 1286,
         "I_sum": 100501,
         "P": 100501,
         "S": 100501,
-        "series_md5": "14290844418c"
+        "series_md5": "42e03c631199"
       },
       "Brewing_Noda": {
         "CO": 0,
@@ -49,15 +47,15 @@
         "I_sum": 0,
         "P": 100501,
         "S": 100501,
-        "series_md5": "f54faec7b8fe"
+        "series_md5": "20dfbcb469c0"
       },
       "DC_EU_RTM": {
         "CO": 0,
-        "I_max": 1050,
-        "I_sum": 105525,
+        "I_max": 0,
+        "I_sum": 0,
         "P": 35175,
         "S": 35175,
-        "series_md5": "bb3333fd0a19"
+        "series_md5": "3d53cd9aa00b"
       },
       "DC_JP": {
         "CO": 0,
@@ -69,19 +67,19 @@
       },
       "DC_US_NY": {
         "CO": 0,
-        "I_max": 525,
-        "I_sum": 52764,
+        "I_max": 0,
+        "I_sum": 0,
         "P": 17588,
         "S": 17588,
-        "series_md5": "4ae0df47f38e"
+        "series_md5": "cbbc593e46f8"
       },
       "DC_US_SF": {
         "CO": 0,
-        "I_max": 525,
-        "I_sum": 52764,
+        "I_max": 0,
+        "I_sum": 0,
         "P": 17588,
         "S": 17588,
-        "series_md5": "4ae0df47f38e"
+        "series_md5": "cbbc593e46f8"
       },
       "FG_WH_Noda": {
         "CO": 0,
@@ -97,7 +95,7 @@
         "I_sum": 0,
         "P": 100501,
         "S": 100501,
-        "series_md5": "e372afd2289b"
+        "series_md5": "c6f19adf598d"
       },
       "Rest_BE": {
         "CO": 0,
@@ -150,10 +148,10 @@
       "SP_Soy": {
         "CO": 0,
         "I_max": 1000,
-        "I_sum": 3000,
+        "I_sum": 6852,
         "P": 100501,
         "S": 100501,
-        "series_md5": "c563a0eaec9d"
+        "series_md5": "67c647194ebb"
       }
     }
   }

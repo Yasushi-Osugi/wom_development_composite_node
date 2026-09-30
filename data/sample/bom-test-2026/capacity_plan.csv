@@ -1,4 +1,14 @@
 sku_id,node_name,week,max_supply,cap_pieces,source
+EV_Model_A,Battery_Supply,2025-W36,1000,,warmup
+EV_Model_A,Tire_Supply,2025-W36,1000,,warmup
+EV_Model_A,Battery_Supply,2025-W37,1000,,warmup
+EV_Model_A,Tire_Supply,2025-W37,1000,,warmup
+EV_Model_A,Battery_Supply,2025-W38,1000,,warmup
+EV_Model_A,Tire_Supply,2025-W38,1000,,warmup
+EV_Model_A,Battery_Supply,2025-W39,1000,,warmup
+EV_Model_A,Tire_Supply,2025-W39,1000,,warmup
+EV_Model_A,Battery_Supply,2025-W40,1000,,warmup
+EV_Model_A,Tire_Supply,2025-W40,1000,,warmup
 EV_Model_A,Battery_Supply,2025-W41,1000,,warmup
 EV_Model_A,Tire_Supply,2025-W41,1000,,warmup
 EV_Model_A,Battery_Supply,2025-W42,1000,,warmup

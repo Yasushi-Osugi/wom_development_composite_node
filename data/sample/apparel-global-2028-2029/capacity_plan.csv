@@ -1,60 +1,242 @@
 sku_id,node_name,week,max_supply,cap_pieces,source
-Apparel_Offshore,Garment_BD,2028-W01,3500,,Garment weekly capacity
-Apparel_Offshore,Dyeing_BD,2028-W01,50000,,"Dyeing tier, effectively unconstrained"
-Apparel_Offshore,Trim_VN,2028-W01,50000,,"Trim tier, effectively unconstrained"
-Apparel_Offshore,Fabric_CN,2028-W01,50000,,"Fabric supply, effectively unconstrained"
-Apparel_Offshore,FG_WH_BD,2028-W01,6000,,FG warehouse throughput
-Apparel_Offshore,DC_US_Offshore,2028-W01,5000,,US DC throughput
-Apparel_Offshore,DC_JP_Offshore,2028-W01,3000,,JP DC throughput
-Apparel_Vertical,Garment_PT,2028-W01,2000,,Garment weekly capacity
-Apparel_Vertical,Dyeing_PT,2028-W01,50000,,"Dyeing tier, effectively unconstrained"
-Apparel_Vertical,Trim_MA,2028-W01,50000,,"Trim tier, effectively unconstrained"
-Apparel_Vertical,Fabric_ES,2028-W01,50000,,"Fabric supply, effectively unconstrained"
-Apparel_Vertical,FG_WH_PT,2028-W01,4000,,FG warehouse throughput
-Apparel_Vertical,DC_US_Vertical,2028-W01,4000,,US DC throughput
-Apparel_Vertical,DC_JP_Vertical,2028-W01,2500,,JP DC throughput
-Apparel_Offshore,Garment_BD,2028-W02,3500,,Garment weekly capacity
-Apparel_Offshore,Dyeing_BD,2028-W02,50000,,"Dyeing tier, effectively unconstrained"
-Apparel_Offshore,Trim_VN,2028-W02,50000,,"Trim tier, effectively unconstrained"
-Apparel_Offshore,Fabric_CN,2028-W02,50000,,"Fabric supply, effectively unconstrained"
-Apparel_Offshore,FG_WH_BD,2028-W02,6000,,FG warehouse throughput
-Apparel_Offshore,DC_US_Offshore,2028-W02,5000,,US DC throughput
-Apparel_Offshore,DC_JP_Offshore,2028-W02,3000,,JP DC throughput
-Apparel_Vertical,Garment_PT,2028-W02,2000,,Garment weekly capacity
-Apparel_Vertical,Dyeing_PT,2028-W02,50000,,"Dyeing tier, effectively unconstrained"
-Apparel_Vertical,Trim_MA,2028-W02,50000,,"Trim tier, effectively unconstrained"
-Apparel_Vertical,Fabric_ES,2028-W02,50000,,"Fabric supply, effectively unconstrained"
-Apparel_Vertical,FG_WH_PT,2028-W02,4000,,FG warehouse throughput
-Apparel_Vertical,DC_US_Vertical,2028-W02,4000,,US DC throughput
-Apparel_Vertical,DC_JP_Vertical,2028-W02,2500,,JP DC throughput
-Apparel_Offshore,Garment_BD,2028-W03,3500,,Garment weekly capacity
-Apparel_Offshore,Dyeing_BD,2028-W03,50000,,"Dyeing tier, effectively unconstrained"
-Apparel_Offshore,Trim_VN,2028-W03,50000,,"Trim tier, effectively unconstrained"
-Apparel_Offshore,Fabric_CN,2028-W03,50000,,"Fabric supply, effectively unconstrained"
-Apparel_Offshore,FG_WH_BD,2028-W03,6000,,FG warehouse throughput
-Apparel_Offshore,DC_US_Offshore,2028-W03,5000,,US DC throughput
-Apparel_Offshore,DC_JP_Offshore,2028-W03,3000,,JP DC throughput
-Apparel_Vertical,Garment_PT,2028-W03,2000,,Garment weekly capacity
-Apparel_Vertical,Dyeing_PT,2028-W03,50000,,"Dyeing tier, effectively unconstrained"
-Apparel_Vertical,Trim_MA,2028-W03,50000,,"Trim tier, effectively unconstrained"
-Apparel_Vertical,Fabric_ES,2028-W03,50000,,"Fabric supply, effectively unconstrained"
-Apparel_Vertical,FG_WH_PT,2028-W03,4000,,FG warehouse throughput
-Apparel_Vertical,DC_US_Vertical,2028-W03,4000,,US DC throughput
-Apparel_Vertical,DC_JP_Vertical,2028-W03,2500,,JP DC throughput
-Apparel_Offshore,Garment_BD,2028-W04,3500,,Garment weekly capacity
-Apparel_Offshore,Dyeing_BD,2028-W04,50000,,"Dyeing tier, effectively unconstrained"
-Apparel_Offshore,Trim_VN,2028-W04,50000,,"Trim tier, effectively unconstrained"
-Apparel_Offshore,Fabric_CN,2028-W04,50000,,"Fabric supply, effectively unconstrained"
-Apparel_Offshore,FG_WH_BD,2028-W04,6000,,FG warehouse throughput
-Apparel_Offshore,DC_US_Offshore,2028-W04,5000,,US DC throughput
-Apparel_Offshore,DC_JP_Offshore,2028-W04,3000,,JP DC throughput
-Apparel_Vertical,Garment_PT,2028-W04,2000,,Garment weekly capacity
-Apparel_Vertical,Dyeing_PT,2028-W04,50000,,"Dyeing tier, effectively unconstrained"
-Apparel_Vertical,Trim_MA,2028-W04,50000,,"Trim tier, effectively unconstrained"
-Apparel_Vertical,Fabric_ES,2028-W04,50000,,"Fabric supply, effectively unconstrained"
-Apparel_Vertical,FG_WH_PT,2028-W04,4000,,FG warehouse throughput
-Apparel_Vertical,DC_US_Vertical,2028-W04,4000,,US DC throughput
-Apparel_Vertical,DC_JP_Vertical,2028-W04,2500,,JP DC throughput
+Apparel_Offshore,DC_JP_Offshore,2027-W40,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W40,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W40,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W40,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W40,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W40,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W40,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W40,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W40,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W40,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W40,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W40,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W40,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W40,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W41,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W41,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W41,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W41,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W41,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W41,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W41,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W41,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W41,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W41,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W41,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W41,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W41,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W41,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W42,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W42,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W42,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W42,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W42,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W42,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W42,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W42,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W42,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W42,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W42,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W42,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W42,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W42,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W43,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W43,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W43,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W43,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W43,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W43,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W43,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W43,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W43,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W43,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W43,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W43,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W43,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W43,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W44,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W44,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W44,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W44,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W44,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W44,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W44,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W44,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W44,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W44,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W44,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W44,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W44,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W44,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W45,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W45,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W45,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W45,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W45,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W45,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W45,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W45,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W45,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W45,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W45,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W45,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W45,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W45,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W46,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W46,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W46,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W46,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W46,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W46,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W46,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W46,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W46,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W46,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W46,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W46,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W46,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W46,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W47,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W47,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W47,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W47,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W47,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W47,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W47,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W47,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W47,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W47,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W47,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W47,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W47,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W47,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W48,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W48,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W48,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W48,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W48,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W48,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W48,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W48,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W48,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W48,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W48,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W48,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W48,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W48,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W49,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W49,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W49,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W49,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W49,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W49,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W49,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W49,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W49,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W49,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W49,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W49,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W49,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W49,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W50,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W50,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W50,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W50,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W50,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W50,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W50,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W50,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W50,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W50,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W50,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W50,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W50,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W50,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W51,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W51,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W51,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W51,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W51,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W51,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W51,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W51,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W51,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W51,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W51,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W51,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W51,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W51,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2027-W52,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2027-W52,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2027-W52,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2027-W52,6000,,warmup
+Apparel_Offshore,Fabric_CN,2027-W52,50000,,warmup
+Apparel_Offshore,Garment_BD,2027-W52,3500,,warmup
+Apparel_Offshore,Trim_VN,2027-W52,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2027-W52,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2027-W52,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2027-W52,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2027-W52,4000,,warmup
+Apparel_Vertical,Fabric_ES,2027-W52,50000,,warmup
+Apparel_Vertical,Garment_PT,2027-W52,2000,,warmup
+Apparel_Vertical,Trim_MA,2027-W52,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2028-W01,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2028-W01,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2028-W01,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2028-W01,6000,,warmup
+Apparel_Offshore,Fabric_CN,2028-W01,50000,,warmup
+Apparel_Offshore,Garment_BD,2028-W01,3500,,warmup
+Apparel_Offshore,Trim_VN,2028-W01,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2028-W01,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2028-W01,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2028-W01,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2028-W01,4000,,warmup
+Apparel_Vertical,Fabric_ES,2028-W01,50000,,warmup
+Apparel_Vertical,Garment_PT,2028-W01,2000,,warmup
+Apparel_Vertical,Trim_MA,2028-W01,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2028-W02,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2028-W02,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2028-W02,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2028-W02,6000,,warmup
+Apparel_Offshore,Fabric_CN,2028-W02,50000,,warmup
+Apparel_Offshore,Garment_BD,2028-W02,3500,,warmup
+Apparel_Offshore,Trim_VN,2028-W02,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2028-W02,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2028-W02,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2028-W02,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2028-W02,4000,,warmup
+Apparel_Vertical,Fabric_ES,2028-W02,50000,,warmup
+Apparel_Vertical,Garment_PT,2028-W02,2000,,warmup
+Apparel_Vertical,Trim_MA,2028-W02,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2028-W03,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2028-W03,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2028-W03,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2028-W03,6000,,warmup
+Apparel_Offshore,Fabric_CN,2028-W03,50000,,warmup
+Apparel_Offshore,Garment_BD,2028-W03,3500,,warmup
+Apparel_Offshore,Trim_VN,2028-W03,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2028-W03,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2028-W03,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2028-W03,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2028-W03,4000,,warmup
+Apparel_Vertical,Fabric_ES,2028-W03,50000,,warmup
+Apparel_Vertical,Garment_PT,2028-W03,2000,,warmup
+Apparel_Vertical,Trim_MA,2028-W03,50000,,warmup
+Apparel_Offshore,DC_JP_Offshore,2028-W04,3000,,warmup
+Apparel_Offshore,DC_US_Offshore,2028-W04,5000,,warmup
+Apparel_Offshore,Dyeing_BD,2028-W04,50000,,warmup
+Apparel_Offshore,FG_WH_BD,2028-W04,6000,,warmup
+Apparel_Offshore,Fabric_CN,2028-W04,50000,,warmup
+Apparel_Offshore,Garment_BD,2028-W04,3500,,warmup
+Apparel_Offshore,Trim_VN,2028-W04,50000,,warmup
+Apparel_Vertical,DC_JP_Vertical,2028-W04,2500,,warmup
+Apparel_Vertical,DC_US_Vertical,2028-W04,4000,,warmup
+Apparel_Vertical,Dyeing_PT,2028-W04,50000,,warmup
+Apparel_Vertical,FG_WH_PT,2028-W04,4000,,warmup
+Apparel_Vertical,Fabric_ES,2028-W04,50000,,warmup
+Apparel_Vertical,Garment_PT,2028-W04,2000,,warmup
+Apparel_Vertical,Trim_MA,2028-W04,50000,,warmup
 Apparel_Offshore,Garment_BD,2028-W05,3500,,Garment weekly capacity
 Apparel_Offshore,Dyeing_BD,2028-W05,50000,,"Dyeing tier, effectively unconstrained"
 Apparel_Offshore,Trim_VN,2028-W05,50000,,"Trim tier, effectively unconstrained"

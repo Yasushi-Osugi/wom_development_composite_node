@@ -4,7 +4,6 @@
   },
   "case": "ev-thailand-2026",
   "config": {
-    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -12,8 +11,7 @@
     ]
   },
   "forward": {
-    "cap_hard_deferred_lot_weeks": 0,
-    "cap_hard_deferred_lots": 0,
+    "cap_hard_sealed": 0,
     "cap_soft_violation_count": 0
   },
   "period": {

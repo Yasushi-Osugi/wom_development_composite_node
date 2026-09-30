@@ -4,7 +4,6 @@
   },
   "case": "Cookie-jp-2026",
   "config": {
-    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
@@ -12,8 +11,7 @@
     ]
   },
   "forward": {
-    "cap_hard_deferred_lot_weeks": 0,
-    "cap_hard_deferred_lots": 0,
+    "cap_hard_sealed": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
@@ -46,11 +44,11 @@
       },
       "DC_Import_Main": {
         "CO": 0,
-        "I_max": 788,
-        "I_sum": 78930,
+        "I_max": 0,
+        "I_sum": 0,
         "P": 78930,
         "S": 78930,
-        "series_md5": "c920b092134f"
+        "series_md5": "7880e1952e05"
       },
       "Factory_GP_CN": {
         "CO": 0,

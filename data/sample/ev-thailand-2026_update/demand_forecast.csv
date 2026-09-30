@@ -1,4 +1,10 @@
 sku_id,region,week,quantity
+EVmaker_Import,BKK,2025-W37,0
+EVmaker_Import,ONL,2025-W37,0
+EVmaker_Import,PRO,2025-W37,0
+EVmaker_Local,BKK,2025-W37,0
+EVmaker_Local,ONL,2025-W37,0
+EVmaker_Local,PRO,2025-W37,0
 EVmaker_Import,BKK,2025-W38,0
 EVmaker_Import,ONL,2025-W38,0
 EVmaker_Import,PRO,2025-W38,0

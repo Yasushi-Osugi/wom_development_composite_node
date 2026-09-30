@@ -17,6 +17,15 @@ golden の作り方（オーナーが Windows で実行して commit）:
 
 意図的に挙動を変えたときは、golden を**意識的に再生成して commit**（差分が監査証跡）。
 golden が1つも無ければ本テストは skip される（ハーネスだけ先に入れても CI が赤にならない）。
+
+2 つのフォルダ（RequestLetter_Warmup17_IdentityGolden §3）:
+  tests/golden/*.json         各モデルの planning_config.csv の方式で作った golden
+                              （rice は legacy、それ以外は identity。方式は config に記録）
+  tests/golden/legacy/*.json  旧方式（決定記録 D3 で残した legacy）を守る網。
+                              planning_config.csv の指定によらず、必ず legacy で実行して比べる。
+  legacy の golden の作り方:
+  python -m tools.run_headless_from_folder --model-dir data/sample/<case> --lot-flow-mode legacy
+         --out tests/golden/legacy/<case>.json --quiet
 """
 import glob
 import json
@@ -26,29 +35,44 @@ import pytest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GOLDEN_DIR = os.path.join(HERE, "golden")
+LEGACY_GOLDEN_DIR = os.path.join(GOLDEN_DIR, "legacy")
 REPO_ROOT = os.path.dirname(HERE)
 SAMPLE_DIR = os.path.join(REPO_ROOT, "data", "sample")
 
 _golden_files = sorted(glob.glob(os.path.join(GOLDEN_DIR, "*.json")))
 _cases = [os.path.splitext(os.path.basename(p))[0] for p in _golden_files]
+_legacy_cases = [os.path.splitext(os.path.basename(p))[0]
+                 for p in sorted(glob.glob(os.path.join(LEGACY_GOLDEN_DIR, "*.json")))]
 
 
 @pytest.mark.skipif(not _cases, reason="no golden snapshots yet (tests/golden/*.json)")
 @pytest.mark.parametrize("case", _cases)
 def test_golden_matches(case, tmp_path):
     """記録した golden と現行エンジンの ppc/psi が一致する事。"""
+    # Forward の方式は golden の config に記録された値で比較する
+    # （RequestLetter_LotIdentityFlow C1）。記録の無い golden は legacy。
+    _check_golden(os.path.join(GOLDEN_DIR, case + ".json"), case, tmp_path, forced_mode=None)
+
+
+@pytest.mark.skipif(not _legacy_cases, reason="no legacy golden snapshots (tests/golden/legacy/*.json)")
+@pytest.mark.parametrize("case", _legacy_cases)
+def test_legacy_golden_matches(case, tmp_path):
+    """旧方式（legacy）の解き方が壊れていない事（決定記録 D3）。"""
+    _check_golden(os.path.join(LEGACY_GOLDEN_DIR, case + ".json"), case, tmp_path,
+                  forced_mode="legacy")
+
+
+def _check_golden(golden_path, case, tmp_path, forced_mode=None):
     from tools.run_headless_from_folder import run
 
-    with open(os.path.join(GOLDEN_DIR, case + ".json"), encoding="utf-8") as f:
+    with open(golden_path, encoding="utf-8") as f:
         golden = json.load(f)
 
     plugins = ",".join(golden.get("config", {}).get("plugins", [])) or "none"
     model_dir = os.path.join(SAMPLE_DIR, case)
     assert os.path.isdir(model_dir), f"model dir not found: {model_dir}"
 
-    # Forward の方式は golden の config に記録された値で比較する
-    # （RequestLetter_LotIdentityFlow C1）。記録の無い既存 golden は legacy。
-    lot_flow_mode = golden.get("config", {}).get("lot_flow_mode", "legacy")
+    lot_flow_mode = forced_mode or golden.get("config", {}).get("lot_flow_mode", "legacy")
     snap = run(model_dir, plugins_spec=plugins,
                output_ppc_dir=str(tmp_path / "ppc"), verbose=False,
                lot_flow_mode=lot_flow_mode)
