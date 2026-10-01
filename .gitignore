@@ -25,3 +25,6 @@ data/worldmap_cache.db
 
 # Phase 7 の層間ハンドオフが生成する需要CSV（allocation_id ごと・再生成可能）
 data/sample/*/demand_forecast_A*.csv
+
+# Obsidian Vault: WOM の機能の整合性を優先するため当面は検討対象外。backup としてリポジトリの外へ移動した（2026-10-01）
+/WOM_Knowledge_Vault*/
