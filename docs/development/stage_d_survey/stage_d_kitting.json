@@ -1,0 +1,202 @@
+[
+ {
+  "model": "ev-thailand-2026_update",
+  "variant": null,
+  "assemblies": [
+   {
+    "product": "EVmaker_Local",
+    "node": "Factory_Local_TH",
+    "yards": [
+     "Motor_Unit_Assy_Yard",
+     "Platform_Unit_Assy_Yard"
+    ],
+    "complete_lots": 52700,
+    "P_lots": 52700,
+    "P_minus_complete": {
+     "+0w | same week": 52700
+    },
+    "examples": [],
+    "capacity_deferred_records": 0,
+    "capacity_deferred_kit_weeks": 0,
+    "deferred_sample": [],
+    "kitting_fallback_events": 0
+   }
+  ]
+ },
+ {
+  "model": "ev-thailand-2026_update",
+  "variant": [
+   "EVmaker_Local",
+   "Factory_Local_TH",
+   400
+  ],
+  "assemblies": [
+   {
+    "product": "EVmaker_Local",
+    "node": "Factory_Local_TH",
+    "yards": [
+     "Motor_Unit_Assy_Yard",
+     "Platform_Unit_Assy_Yard"
+    ],
+    "complete_lots": 45045,
+    "P_lots": 45045,
+    "P_minus_complete": {
+     "+0w | same week": 45045
+    },
+    "examples": [],
+    "capacity_deferred_records": 0,
+    "capacity_deferred_kit_weeks": 0,
+    "deferred_sample": [],
+    "kitting_fallback_events": 0
+   }
+  ]
+ },
+ {
+  "model": "bom-test-2026",
+  "variant": null,
+  "assemblies": [
+   {
+    "product": "EV_Model_A",
+    "node": "Vehicle_Assy",
+    "yards": [
+     "Battery_Yard",
+     "Tire_Yard"
+    ],
+    "complete_lots": 100,
+    "P_lots": 100,
+    "P_minus_complete": {
+     "+0w | same week": 100
+    },
+    "examples": [],
+    "capacity_deferred_records": 0,
+    "capacity_deferred_kit_weeks": 0,
+    "deferred_sample": [],
+    "kitting_fallback_events": 0
+   }
+  ]
+ },
+ {
+  "model": "bom-test-2026",
+  "variant": [
+   "EV_Model_A",
+   "Vehicle_Assy",
+   3
+  ],
+  "assemblies": [
+   {
+    "product": "EV_Model_A",
+    "node": "Vehicle_Assy",
+    "yards": [
+     "Battery_Yard",
+     "Tire_Yard"
+    ],
+    "complete_lots": 100,
+    "P_lots": 100,
+    "P_minus_complete": {
+     "+0w | same week": 100
+    },
+    "examples": [],
+    "capacity_deferred_records": 0,
+    "capacity_deferred_kit_weeks": 0,
+    "deferred_sample": [],
+    "kitting_fallback_events": 0
+   }
+  ]
+ },
+ {
+  "model": "ev-europe-2026",
+  "variant": null,
+  "assemblies": [
+   {
+    "product": "EVmaker_Local",
+    "node": "Factory_Local_DE",
+    "yards": [
+     "Battery_DE_Yard",
+     "ECU_DE_Yard",
+     "Motor_DE_Yard"
+    ],
+    "complete_lots": 44325,
+    "P_lots": 44325,
+    "P_minus_complete": {
+     "+0w | same week": 44325
+    },
+    "examples": [],
+    "capacity_deferred_records": 0,
+    "capacity_deferred_kit_weeks": 0,
+    "deferred_sample": [],
+    "kitting_fallback_events": 0
+   },
+   {
+    "product": "EVmaker_Import",
+    "node": "Factory_Import_HU",
+    "yards": [
+     "Battery_HU_Yard",
+     "ECU_HU_Yard",
+     "Motor_HU_Yard"
+    ],
+    "complete_lots": 8815,
+    "P_lots": 8815,
+    "P_minus_complete": {
+     "+1w | P at demand week (components early)": 8815
+    },
+    "examples": [
+     {
+      "lot": "EVmaker_Import:REG:2026-W02:00001",
+      "complete": "2025-W48",
+      "demand_week": "2025-W49",
+      "P": "2025-W49",
+      "yard_I_weeks_while_waiting": {
+       "Battery_HU_Yard": [
+        "2025-W48"
+       ],
+       "Motor_HU_Yard": [
+        "2025-W48"
+       ],
+       "ECU_HU_Yard": [
+        "2025-W48"
+       ]
+      }
+     },
+     {
+      "lot": "EVmaker_Import:REG:2026-W02:00002",
+      "complete": "2025-W48",
+      "demand_week": "2025-W49",
+      "P": "2025-W49",
+      "yard_I_weeks_while_waiting": {
+       "Battery_HU_Yard": [
+        "2025-W48"
+       ],
+       "Motor_HU_Yard": [
+        "2025-W48"
+       ],
+       "ECU_HU_Yard": [
+        "2025-W48"
+       ]
+      }
+     },
+     {
+      "lot": "EVmaker_Import:REG:2026-W02:00003",
+      "complete": "2025-W48",
+      "demand_week": "2025-W49",
+      "P": "2025-W49",
+      "yard_I_weeks_while_waiting": {
+       "Battery_HU_Yard": [
+        "2025-W48"
+       ],
+       "Motor_HU_Yard": [
+        "2025-W48"
+       ],
+       "ECU_HU_Yard": [
+        "2025-W48"
+       ]
+      }
+     }
+    ],
+    "capacity_deferred_records": 0,
+    "capacity_deferred_kit_weeks": 0,
+    "deferred_sample": [],
+    "kitting_fallback_events": 0
+   }
+  ]
+ }
+]

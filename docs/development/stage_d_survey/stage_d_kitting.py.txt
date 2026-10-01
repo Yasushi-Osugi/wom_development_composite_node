@@ -1,0 +1,116 @@
+# -*- coding: utf-8 -*-
+"""S5: Kitting -- 'components complete' week vs 'kit entered the assembly P' week.
+Runs on TEMP COPIES. Variants lower the assembly capacity IN THE COPY only."""
+import json, os, shutil, sys, tempfile
+from collections import Counter
+REPO, OUT = sys.argv[1], sys.argv[2]
+sys.path.insert(0, REPO); os.chdir(REPO)
+import pandas as pd
+import tools.run_headless_from_folder as H
+import wom.engine.forward_planner as FP
+from wom.model.plan_node import P, S, I
+
+CASES = [
+    ("ev-thailand-2026_update", "safe", None),
+    ("ev-thailand-2026_update", "safe", ("EVmaker_Local", "Factory_Local_TH", 400)),
+    ("bom-test-2026", None, None),
+    ("bom-test-2026", None, ("EV_Model_A", "Vehicle_Assy", 3)),
+    ("ev-europe-2026", None, None),
+]
+
+
+def golden_plugins(m):
+    with open(os.path.join(REPO, "tests", "golden", m + ".json"), encoding="utf-8") as f:
+        return ",".join(json.load(f)["config"]["plugins"]) or "none"
+
+
+def run_case(model, plugins, variant):
+    tmp = tempfile.mkdtemp(prefix="stageD_kit_")
+    mdir = os.path.join(tmp, "data", "sample", model)
+    shutil.copytree(os.path.join(REPO, "data", "sample", model), mdir)
+    if variant:                                   # lower the assembly capacity in the COPY
+        sku, node, cap = variant
+        cp = os.path.join(mdir, "capacity_plan.csv")
+        df = pd.read_csv(cp)
+        m = (df["sku_id"] == sku) & (df["node_name"] == node)
+        if m.any():
+            df.loc[m, "max_supply"] = cap
+        else:
+            weeks = sorted(df["week"].unique())
+            df = pd.concat([df, pd.DataFrame({"sku_id": sku, "node_name": node, "week": weeks,
+                                              "max_supply": cap, "cap_pieces": None,
+                                              "source": "survey variant"})])
+        df.to_csv(cp, index=False)
+    cap_tree, results = {}, []
+    orig_run, orig_ppc = FP.ForwardPlanner.run, H._run_ppc
+
+    def spy_run(self, *a, **k):
+        r = orig_run(self, *a, **k)
+        results.append(r)
+        return r
+
+    def spy_ppc(sc_tree, weeks, model_dir, out, verbose):
+        cap_tree["t"] = sc_tree
+        return {}
+    FP.ForwardPlanner.run, H._run_ppc = spy_run, spy_ppc
+    try:
+        H.run(mdir, plugins_spec=plugins or golden_plugins(model),
+              output_ppc_dir=os.path.join(tmp, "ppc"), verbose=False)
+    finally:
+        FP.ForwardPlanner.run, H._run_ppc = orig_run, orig_ppc
+    t = cap_tree["t"]
+    wl = t.week_labels
+    out = {"model": model, "variant": variant, "assemblies": []}
+    for prod in t.products:
+        for nd in t.iter_all_nodes(prod):
+            ych = [c for c in nd.children if c.node_type == "stockyard"]
+            if not ych or len(ych) != len(nd.children):
+                continue
+            yn = {c.node_name for c in ych}
+            pw = {}
+            for w in range(len(wl)):
+                for lot in nd.psi4supply[w][P]:
+                    pw.setdefault(lot, w)
+            comp = {}
+            for aw, lots in enumerate(nd.kitting):
+                for lot, arr in (lots or {}).items():
+                    if set(arr) >= yn:
+                        comp[lot] = (max(arr.values()), aw)
+            dist, ex = Counter(), []
+            for lot, (c, dw) in comp.items():
+                p = pw.get(lot)
+                if p is None:
+                    dist["complete, never in P"] += 1
+                    continue
+                reason = ("same week" if p == c else
+                          "P at demand week (components early)" if p == dw and dw > c else
+                          "later than both (capacity/closure)" if p > max(c, dw) else "other")
+                dist[f"{p - c:+d}w | {reason}"] += 1
+                if p != c and len(ex) < 3:
+                    # where were the components in the waiting weeks?
+                    yard_i = {y.node_name: [wl[w] for w in range(c, p) if lot in y.psi4supply[w][I]] for y in ych}
+                    ex.append({"lot": lot, "complete": wl[c], "demand_week": wl[dw], "P": wl[p],
+                               "yard_I_weeks_while_waiting": yard_i})
+            deferred = [x for r in results for x in r.kitting_capacity_deferred if x[0] == nd.node_id]
+            fallback = [x for r in results for x in r.kitting_fallback_events if x[0] == nd.node_id]
+            out["assemblies"].append({"product": prod, "node": nd.node_name, "yards": sorted(yn),
+                                      "complete_lots": len(comp), "P_lots": len(pw),
+                                      "P_minus_complete": dict(dist), "examples": ex,
+                                      "capacity_deferred_records": len(deferred),
+                                      "capacity_deferred_kit_weeks": sum(x[2] for x in deferred),
+                                      "deferred_sample": deferred[:3],
+                                      "kitting_fallback_events": len(fallback)})
+    shutil.rmtree(tmp, ignore_errors=True)
+    return out
+
+
+res = [run_case(*c) for c in CASES]
+os.makedirs(OUT, exist_ok=True)
+with open(os.path.join(OUT, "stage_d_kitting.json"), "w", encoding="utf-8") as f:
+    json.dump(res, f, ensure_ascii=False, indent=1, default=str)
+for r in res:
+    for a in r["assemblies"]:
+        print(r["model"], r["variant"], a["node"], a["complete_lots"], a["P_lots"], a["P_minus_complete"],
+              "deferred", a["capacity_deferred_records"], a["capacity_deferred_kit_weeks"], "fb", a["kitting_fallback_events"])
+        for e in a["examples"][:2]:
+            print("    ", e)

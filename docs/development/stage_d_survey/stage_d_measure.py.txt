@@ -1,0 +1,218 @@
+# -*- coding: utf-8 -*-
+"""Stage D survey: read-only measurement (runs on TEMP COPIES of each model).
+
+python stage_d_measure.py <repo> <out_dir>
+"""
+import json, os, shutil, sys, tempfile, traceback
+from collections import Counter, defaultdict
+
+REPO, OUT = sys.argv[1], sys.argv[2]
+sys.path.insert(0, REPO)
+os.chdir(REPO)
+import pandas as pd
+import tools.run_headless_from_folder as H
+from wom.engine.sc_tree_to_df import sc_tree_to_planning_df, apply_inv_value
+from wom.engine.money import evaluate_money, is_dad_region
+from wom.ppc.ppc_psi_bridge import psi_to_sales_records
+from wom.ppc.ppc_rules import PPCRuleSet
+from wom.ppc.ppc_fx import FXConverter
+from wom.model.plan_node import NODE_TYPE_LEAF_OUT, NODE_TYPE_DAD, P, S, I
+
+GOLDEN = ["Cookie-jp-2026", "apparel-global-2028-2029", "apparel-us-2026", "bom-test-2026",
+          "ev-europe-2026", "ev-thailand-2026", "iphone_global", "oil-global-2027",
+          "rice-japan-2027-2028", "smartx-2027-2029", "soysauce-eu-2027", "soysauce-jpy-2027",
+          "soysauce-us-2027"]
+EXTRA = {"soysauce-jpy-2027-alloc": "safe", "ev-thailand-2026_update": "safe"}
+
+
+def plugins_for(m):
+    if m in EXTRA:
+        return EXTRA[m]
+    with open(os.path.join(REPO, "tests", "golden", m + ".json"), encoding="utf-8") as f:
+        return ",".join(json.load(f)["config"]["plugins"]) or "none"
+
+
+def measure(model):
+    src = os.path.join(REPO, "data", "sample", model)
+    tmp = tempfile.mkdtemp(prefix="stageD_")
+    mdir = os.path.join(tmp, "data", "sample", model)
+    shutil.copytree(src, mdir)
+    ppc_out = os.path.join(OUT, "ppc", model)
+    cap = {}
+    orig = H._run_ppc
+
+    def spy(sc_tree, weeks, model_dir, output_ppc_dir, verbose):
+        cap["sc_tree"], cap["weeks"] = sc_tree, weeks
+        return orig(sc_tree, weeks, model_dir, output_ppc_dir, verbose)
+
+    H._run_ppc = spy
+    try:
+        snap = H.run(mdir, plugins_spec=plugins_for(model), output_ppc_dir=ppc_out, verbose=False)
+    finally:
+        H._run_ppc = orig
+    t = cap["sc_tree"]
+    r = {"model": model, "plugins": plugins_for(model), "lot_flow_mode": t.lot_flow_mode,
+         "cpu_size": t.cpu_size, "weeks": [t.week_labels[0], t.week_labels[-1], len(t.week_labels)],
+         "snapshot_ppc": snap.get("ppc")}
+    # ── which PPC master folder / fx file ──
+    local = os.path.exists(os.path.join(mdir, "ppc_market_price.csv"))
+    data_dir = mdir if local else "data/ppc"
+    r["ppc_data_dir"] = "model" if local else "data/ppc (fallback: whole set)"
+    r["fx_file"] = ("model" if os.path.exists(os.path.join(data_dir, "ppc_fx_rate.csv"))
+                    else "data/ppc/ppc_fx_rate.csv (fallback)")
+    rules = PPCRuleSet.load(data_dir)
+    r["base_currency"] = snap.get("ppc", {}).get("base_currency")
+    # ── bridge: sales records before / after the filter ──
+    sales = psi_to_sales_records(t, list(t.week_labels), use_node_name=local)
+    kp = set(rules.supplier_cost["product_id"]); kc = set(rules.market_price["market_node"])
+    keep = sales["product_id"].isin(kp) & sales["channel_node"].isin(kc) if not sales.empty else []
+    leaf_lots = 0
+    leaf_info = {}
+    for prod in t.products:
+        for nd in t.iter_all_nodes(prod):
+            if nd.node_type == NODE_TYPE_LEAF_OUT:
+                a = getattr(nd, "_actual_ship", None) or {}
+                n = sum(len(v) for v in a.values())
+                leaf_lots += n
+                leaf_info[(prod, nd.node_name)] = {"node_id": nd.node_id, "ship_lots": n}
+    r["bridge"] = {"leaf_actual_ship_lots": leaf_lots, "records": int(len(sales)),
+                   "qty": float(sales["qty"].sum()) if len(sales) else 0.0,
+                   "kept_records": int(keep.sum()) if len(sales) else 0,
+                   "kept_qty": float(sales.loc[keep, "qty"].sum()) if len(sales) else 0.0,
+                   "unique_lot_ids": int(sales["lot_id"].nunique()) if len(sales) else 0}
+    # ── PPC outputs ──
+    ev = pd.read_csv(os.path.join(ppc_out, "ppc_event_ledger.csv"), low_memory=False)
+    rec = pd.read_csv(os.path.join(ppc_out, "ppc_lot_reconciliation.csv"))
+    with open(os.path.join(ppc_out, "ppc_kpi_summary.json"), encoding="utf-8") as f:
+        kpi = json.load(f)
+    r["ppc_kpi"] = {k: kpi[k] for k in ("base_currency", "total_lots", "total_qty_units",
+                                        "total_revenue_base", "total_cost_base", "gross_margin_pct")}
+    # every event of a lot-record carries the record's (sale) week?
+    wk_by_lot = dict(zip(rec["lot_id"], rec["week"]))
+    ev["_sale_week"] = ev["lot_id"].map(wk_by_lot)
+    r["events"] = {"n": int(len(ev)), "types": dict(Counter(ev["ppc_event_type"])),
+                   "all_at_sale_week": bool((ev["week"] == ev["_sale_week"]).all()),
+                   "currencies": dict(Counter(ev["currency"])),
+                   "nodes": sorted(ev["node_id"].dropna().astype(str).unique().tolist())}
+    # revenue decomposition per (product, channel)
+    rv = ev[ev["ppc_event_type"] == "market_revenue"].copy()
+    rv["total"] = rv["amount_base"] * rv["qty"]
+    decomp = []
+    for (p, c), g in rv.groupby(["product_id", "node_id"]):
+        li = leaf_info.get((p, c), {})
+        decomp.append({"product": p, "channel": c, "ship_lots": li.get("ship_lots"),
+                       "qty": float(g["qty"].sum()), "price_local_first": float(g["amount_local"].iloc[0]),
+                       "currency": g["currency"].iloc[0], "fx_first": float(g["fx_rate"].iloc[0]),
+                       "fx_min": float(g["fx_rate"].min()), "fx_max": float(g["fx_rate"].max()),
+                       "revenue_base": float(g["total"].sum())})
+    r["revenue_decomp"] = decomp
+    # intermediate nodes: event qty (per unique lot-record) vs the node's own actual shipment
+    inter = []
+    for prod in t.products:
+        for nd in t.iter_all_nodes(prod):
+            if nd.node_type == NODE_TYPE_LEAF_OUT:
+                continue
+            e = ev[(ev["node_id"] == nd.node_name) & (ev["product_id"] == prod)]
+            if e.empty:
+                continue
+            q = float(e.drop_duplicates("lot_id")["qty"].sum())
+            a = getattr(nd, "_actual_ship", None) or {}
+            ship = sum(len(v) for v in a.values()) * t.cpu_size
+            first_ship = min((w for w, v in a.items() if v), default=None)
+            inter.append({"product": prod, "node": nd.node_name, "type": nd.node_type,
+                          "ppc_qty": q, "own_actual_ship_qty": ship,
+                          "ppc_first_week": str(e["week"].min()),
+                          "own_first_ship_week": t.week_labels[first_ship] if first_ship is not None else None})
+    r["intermediate_nodes"] = inter
+    # ── money ──
+    sku = pd.read_csv(os.path.join(mdir, "sku_master.csv"))
+    df = sc_tree_to_planning_df(t)
+    apply_inv_value(df, sku)
+    wk, sm = evaluate_money(df, sku)
+    leaf = sm[~is_dad_region(sm["region"])]
+    dad = sm[is_dad_region(sm["region"])]
+    r["money"] = {"revenue": float(sm["revenue"].sum()), "cogs": float(sm["cogs"].sum()),
+                  "leaf_revenue": float(leaf["revenue"].sum()), "dad_revenue": float(dad["revenue"].sum()),
+                  "dad_rows_with_price": int((dad["revenue"] > 0).sum()),
+                  "leaf_rows_without_price": int(((wk["selling_price"] == 0) & ~is_dad_region(wk["region"])
+                                                  & (wk["demand_fulfilled"] > 0)).sum()),
+                  "qty_basis": sorted(wk["qty_basis"].dropna().unique().tolist()),
+                  "units_leaf": float(leaf["total_units"].sum())}
+    per = []
+    for _, row in leaf.iterrows():
+        per.append({"sku": row["sku_id"], "region": row["region"], "revenue": float(row["revenue"]),
+                    "units": float(row["total_units"])})
+    r["money_per_leaf"] = per
+    r["sku_master_price"] = sku[["sku_id", "region", "selling_price", "unit_cost", "uom"]].to_dict("records")
+    # ── FX coverage over the plan weeks ──
+    fxdf = rules.fx_rate
+    base = r["base_currency"] or "JPY"
+    fx = FXConverter(fxdf, base)
+    used = sorted(set(ev["currency"].dropna()) - {base})
+    pairs = sorted({(str(a), str(b)) for a, b in zip(fxdf["currency"], fxdf["base_currency"])})
+    cov = {}
+    for cur in used:
+        exact = fb = miss = 0
+        for w in t.week_labels:
+            try:
+                _, is_fb = fx.get_rate(w, cur)
+                fb += int(is_fb); exact += int(not is_fb)
+            except ValueError:
+                miss += 1
+        cov[cur] = {"exact": exact, "fallback": fb, "missing": miss}
+    wks = sorted(fxdf["week"].astype(str).unique())
+    r["fx"] = {"pairs": pairs, "fx_weeks": [wks[0], wks[-1], len(wks)] if wks else None,
+               "event_currencies_non_base": used, "coverage_over_plan_weeks": cov,
+               "plan_first_week": t.week_labels[0]}
+    # ── Kitting (S5) ──
+    kit = []
+    for prod in t.products:
+        for nd in t.iter_all_nodes(prod):
+            kr = getattr(nd, "kitting", None)
+            if not kr or not any(kr.values() if isinstance(kr, dict) else kr):
+                continue
+            yards = [c for c in nd.children]
+            ynames = {c.node_name for c in yards}
+            p_week = {}
+            for w in range(len(t.week_labels)):
+                for lot in nd.psi4supply[w][P]:
+                    p_week.setdefault(lot, w)
+            rows = []
+            items = kr.items() if isinstance(kr, dict) else enumerate(kr)
+            for aw, lots in items:
+                for lot, arr in (lots or {}).items():
+                    complete = max(arr.values()) if set(arr) >= ynames else None
+                    rows.append((lot, aw, complete, p_week.get(lot)))
+            diff = Counter()
+            for lot, aw, comp, pw in rows:
+                if comp is None:
+                    diff["incomplete"] += 1
+                elif pw is None:
+                    diff["complete_not_in_P"] += 1
+                else:
+                    diff[f"P-complete={pw - comp}"] += 1
+            examples = [dict(lot=l, demand_w=t.week_labels[a] if isinstance(a, int) else a,
+                             complete=t.week_labels[c] if c is not None else None,
+                             p=t.week_labels[pw] if pw is not None else None)
+                        for l, a, c, pw in rows if c is not None and pw is not None and pw != c][:5]
+            kit.append({"product": prod, "node": nd.node_name, "children": sorted(ynames),
+                        "child_types": sorted({c.node_type for c in yards}),
+                        "lots_recorded": len(rows), "P_minus_complete": dict(diff), "examples": examples})
+    r["kitting"] = kit
+    shutil.rmtree(tmp, ignore_errors=True)
+    return r
+
+
+if __name__ == "__main__":
+    os.makedirs(OUT, exist_ok=True)
+    models = sys.argv[3].split(",") if len(sys.argv) > 3 else GOLDEN + list(EXTRA)
+    res, err = {}, {}
+    for m in models:
+        try:
+            res[m] = measure(m)
+            print("ok", m, flush=True)
+        except Exception:
+            err[m] = traceback.format_exc()
+            print("ERR", m, err[m][-800:], flush=True)
+    with open(os.path.join(OUT, "stage_d_measure.json"), "w", encoding="utf-8") as f:
+        json.dump({"results": res, "errors": err}, f, ensure_ascii=False, indent=1, default=str)

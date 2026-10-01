@@ -1,0 +1,8293 @@
+{
+ "results": {
+  "Cookie-jp-2026": {
+   "model": "Cookie-jp-2026",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2025-W37",
+    "2027-W52",
+    121
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 624,
+    "revenue_base": 4259700000.0,
+    "cost_base": 3573471000.0,
+    "gross_profit_base": 686229000.0,
+    "gross_margin_pct": 0.161098,
+    "tariff_base": 213111000.0,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "data/ppc/ppc_fx_rate.csv (fallback)",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 141990,
+    "records": 624,
+    "qty": 141990.0,
+    "kept_records": 624,
+    "kept_qty": 141990.0,
+    "unique_lot_ids": 624
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 624,
+    "total_qty_units": 141990.0,
+    "total_revenue_base": 4259700000.0,
+    "total_cost_base": 3573471000.0,
+    "gross_margin_pct": 0.16109796464539755
+   },
+   "events": {
+    "n": 8112,
+    "types": {
+     "supplier_cost": 624,
+     "conversion_cost": 1248,
+     "logistics_cost": 1872,
+     "transfer_price_set": 624,
+     "tariff_cost": 624,
+     "landed_cost_total": 624,
+     "sga_cost": 624,
+     "market_revenue": 624,
+     "mom_profit": 624,
+     "backward_allowable": 624
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "JPY": 8112
+    },
+    "nodes": [
+     "DC_Import_Buffer",
+     "DC_Import_Main",
+     "DC_Local_JP",
+     "Factory_DP_JP",
+     "Factory_GP_CN",
+     "Ingredients_CN",
+     "Ingredients_JP",
+     "Retail_JP_CVS",
+     "Retail_JP_EC",
+     "Retail_JP_SM"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Cookie_Import",
+     "channel": "Retail_JP_CVS",
+     "ship_lots": 31560,
+     "qty": 31560.0,
+     "price_local_first": 30000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 946800000.0
+    },
+    {
+     "product": "Cookie_Import",
+     "channel": "Retail_JP_EC",
+     "ship_lots": 15810,
+     "qty": 15810.0,
+     "price_local_first": 30000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 474300000.0
+    },
+    {
+     "product": "Cookie_Import",
+     "channel": "Retail_JP_SM",
+     "ship_lots": 31560,
+     "qty": 31560.0,
+     "price_local_first": 30000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 946800000.0
+    },
+    {
+     "product": "Cookie_Local",
+     "channel": "Retail_JP_CVS",
+     "ship_lots": 26270,
+     "qty": 26270.0,
+     "price_local_first": 30000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 788100000.0
+    },
+    {
+     "product": "Cookie_Local",
+     "channel": "Retail_JP_EC",
+     "ship_lots": 10520,
+     "qty": 10520.0,
+     "price_local_first": 30000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 315600000.0
+    },
+    {
+     "product": "Cookie_Local",
+     "channel": "Retail_JP_SM",
+     "ship_lots": 26270,
+     "qty": 26270.0,
+     "price_local_first": 30000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 788100000.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "Cookie_Import",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 78930.0,
+     "own_actual_ship_qty": 78930,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W51"
+    },
+    {
+     "product": "Cookie_Import",
+     "node": "DC_Import_Main",
+     "type": "dad",
+     "ppc_qty": 78930.0,
+     "own_actual_ship_qty": 78930,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2026-W01"
+    },
+    {
+     "product": "Cookie_Import",
+     "node": "Factory_GP_CN",
+     "type": "mom",
+     "ppc_qty": 78930.0,
+     "own_actual_ship_qty": 78930,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W41"
+    },
+    {
+     "product": "Cookie_Import",
+     "node": "Ingredients_CN",
+     "type": "leaf_in",
+     "ppc_qty": 78930.0,
+     "own_actual_ship_qty": 78930,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W39"
+    },
+    {
+     "product": "Cookie_Local",
+     "node": "DC_Local_JP",
+     "type": "dad",
+     "ppc_qty": 63060.0,
+     "own_actual_ship_qty": 63060,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2026-W01"
+    },
+    {
+     "product": "Cookie_Local",
+     "node": "Factory_DP_JP",
+     "type": "mom",
+     "ppc_qty": 63060.0,
+     "own_actual_ship_qty": 63060,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W51"
+    },
+    {
+     "product": "Cookie_Local",
+     "node": "Ingredients_JP",
+     "type": "leaf_in",
+     "ppc_qty": 63060.0,
+     "own_actual_ship_qty": 63060,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W50"
+    }
+   ],
+   "money": {
+    "revenue": 4259700000.0,
+    "cogs": 2603010000.0,
+    "leaf_revenue": 4259700000.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 141990.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Cookie_Import",
+     "region": "CVS",
+     "revenue": 946800000.0,
+     "units": 31560.0
+    },
+    {
+     "sku": "Cookie_Import",
+     "region": "EC",
+     "revenue": 474300000.0,
+     "units": 15810.0
+    },
+    {
+     "sku": "Cookie_Import",
+     "region": "SM",
+     "revenue": 946800000.0,
+     "units": 31560.0
+    },
+    {
+     "sku": "Cookie_Local",
+     "region": "CVS",
+     "revenue": 788100000.0,
+     "units": 26270.0
+    },
+    {
+     "sku": "Cookie_Local",
+     "region": "EC",
+     "revenue": 315600000.0,
+     "units": 10520.0
+    },
+    {
+     "sku": "Cookie_Local",
+     "region": "SM",
+     "revenue": 788100000.0,
+     "units": 26270.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Cookie_Import",
+     "region": "CVS",
+     "selling_price": 30000,
+     "unit_cost": 17000,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Cookie_Import",
+     "region": "SM",
+     "selling_price": 30000,
+     "unit_cost": 17000,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Cookie_Import",
+     "region": "EC",
+     "selling_price": 30000,
+     "unit_cost": 17000,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Cookie_Local",
+     "region": "CVS",
+     "selling_price": 30000,
+     "unit_cost": 20000,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Cookie_Local",
+     "region": "SM",
+     "selling_price": 30000,
+     "unit_cost": 20000,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Cookie_Local",
+     "region": "EC",
+     "selling_price": 30000,
+     "unit_cost": 20000,
+     "uom": "CS"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "CNY",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2028-W51",
+     156
+    ],
+    "event_currencies_non_base": [],
+    "coverage_over_plan_weeks": {},
+    "plan_first_week": "2025-W37"
+   },
+   "kitting": [
+    {
+     "product": "Cookie_Import",
+     "node": "Factory_GP_CN",
+     "children": [
+      "Ingredients_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 78930,
+     "P_minus_complete": {
+      "P-complete=0": 78930
+     },
+     "examples": []
+    },
+    {
+     "product": "Cookie_Local",
+     "node": "Factory_DP_JP",
+     "children": [
+      "Ingredients_JP"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 63060,
+     "P_minus_complete": {
+      "P-complete=0": 63060
+     },
+     "examples": []
+    }
+   ]
+  },
+  "apparel-global-2028-2029": {
+   "model": "apparel-global-2028-2029",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2027-W40",
+    "2029-W52",
+    117
+   ],
+   "snapshot_ppc": {
+    "base_currency": "USD",
+    "total_lots": 394,
+    "revenue_base": 10387986.16,
+    "cost_base": 6393265.75,
+    "gross_profit_base": 3994720.41,
+    "gross_margin_pct": 0.384552,
+    "tariff_base": 408595.75,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "USD",
+   "bridge": {
+    "leaf_actual_ship_lots": 181526,
+    "records": 394,
+    "qty": 181526.0,
+    "kept_records": 394,
+    "kept_qty": 181526.0,
+    "unique_lot_ids": 394
+   },
+   "ppc_kpi": {
+    "base_currency": "USD",
+    "total_lots": 394,
+    "total_qty_units": 181526.0,
+    "total_revenue_base": 10387986.1592,
+    "total_cost_base": 6393265.746959999,
+    "gross_margin_pct": 0.3845519575227892
+   },
+   "events": {
+    "n": 7486,
+    "types": {
+     "supplier_cost": 394,
+     "logistics_cost": 2364,
+     "conversion_cost": 1182,
+     "transfer_price_set": 394,
+     "landed_cost_total": 394,
+     "warehouse_cost": 788,
+     "sga_cost": 394,
+     "tariff_cost": 394,
+     "market_revenue": 394,
+     "mom_profit": 394,
+     "backward_allowable": 394
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 7288,
+     "JPY": 198
+    },
+    "nodes": [
+     "DC_JP_Offshore",
+     "DC_JP_Vertical",
+     "DC_US_Offshore",
+     "DC_US_Vertical",
+     "Dyeing_BD",
+     "Dyeing_PT",
+     "FG_WH_BD",
+     "FG_WH_PT",
+     "Fabric_CN",
+     "Fabric_ES",
+     "Garment_BD",
+     "Garment_PT",
+     "Retail_JP_Offshore",
+     "Retail_JP_Vertical",
+     "Retail_US_Offshore",
+     "Retail_US_Vertical",
+     "Trim_MA",
+     "Trim_VN"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Apparel_Offshore",
+     "channel": "Retail_JP_Offshore",
+     "ship_lots": 31188,
+     "qty": 31188.0,
+     "price_local_first": 7900.0,
+     "currency": "JPY",
+     "fx_first": 0.006667,
+     "fx_min": 0.006667,
+     "fx_max": 0.006667,
+     "revenue_base": 1642650.1283999998
+    },
+    {
+     "product": "Apparel_Offshore",
+     "channel": "Retail_US_Offshore",
+     "ship_lots": 57572,
+     "qty": 57572.0,
+     "price_local_first": 52.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 2993744.0
+    },
+    {
+     "product": "Apparel_Vertical",
+     "channel": "Retail_JP_Vertical",
+     "ship_lots": 32268,
+     "qty": 32268.0,
+     "price_local_first": 9300.0,
+     "currency": "JPY",
+     "fx_first": 0.006667,
+     "fx_min": 0.006667,
+     "fx_max": 0.006667,
+     "revenue_base": 2000716.0308
+    },
+    {
+     "product": "Apparel_Vertical",
+     "channel": "Retail_US_Vertical",
+     "ship_lots": 60498,
+     "qty": 60498.0,
+     "price_local_first": 62.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 3750876.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "Apparel_Offshore",
+     "node": "FG_WH_BD",
+     "type": "dad",
+     "ppc_qty": 88760.0,
+     "own_actual_ship_qty": 88760,
+     "ppc_first_week": "2028-W07",
+     "own_first_ship_week": "2028-W02"
+    },
+    {
+     "product": "Apparel_Offshore",
+     "node": "DC_US_Offshore",
+     "type": "dad",
+     "ppc_qty": 57572.0,
+     "own_actual_ship_qty": 57572,
+     "ppc_first_week": "2028-W09",
+     "own_first_ship_week": "2028-W08"
+    },
+    {
+     "product": "Apparel_Offshore",
+     "node": "DC_JP_Offshore",
+     "type": "dad",
+     "ppc_qty": 31188.0,
+     "own_actual_ship_qty": 31188,
+     "ppc_first_week": "2028-W07",
+     "own_first_ship_week": "2028-W06"
+    },
+    {
+     "product": "Apparel_Offshore",
+     "node": "Garment_BD",
+     "type": "mom",
+     "ppc_qty": 88760.0,
+     "own_actual_ship_qty": 88760,
+     "ppc_first_week": "2028-W07",
+     "own_first_ship_week": "2027-W50"
+    },
+    {
+     "product": "Apparel_Offshore",
+     "node": "Trim_VN",
+     "type": "mom",
+     "ppc_qty": 88760.0,
+     "own_actual_ship_qty": 88760,
+     "ppc_first_week": "2028-W07",
+     "own_first_ship_week": "2027-W48"
+    },
+    {
+     "product": "Apparel_Offshore",
+     "node": "Dyeing_BD",
+     "type": "mom",
+     "ppc_qty": 88760.0,
+     "own_actual_ship_qty": 88760,
+     "ppc_first_week": "2028-W07",
+     "own_first_ship_week": "2027-W45"
+    },
+    {
+     "product": "Apparel_Offshore",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 88760.0,
+     "own_actual_ship_qty": 88760,
+     "ppc_first_week": "2028-W07",
+     "own_first_ship_week": "2027-W42"
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "FG_WH_PT",
+     "type": "dad",
+     "ppc_qty": 92766.0,
+     "own_actual_ship_qty": 92766,
+     "ppc_first_week": "2028-W05",
+     "own_first_ship_week": "2028-W02"
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "DC_US_Vertical",
+     "type": "dad",
+     "ppc_qty": 60498.0,
+     "own_actual_ship_qty": 60498,
+     "ppc_first_week": "2028-W05",
+     "own_first_ship_week": "2028-W04"
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "DC_JP_Vertical",
+     "type": "dad",
+     "ppc_qty": 32268.0,
+     "own_actual_ship_qty": 32268,
+     "ppc_first_week": "2028-W05",
+     "own_first_ship_week": "2028-W04"
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "Garment_PT",
+     "type": "mom",
+     "ppc_qty": 92766.0,
+     "own_actual_ship_qty": 92766,
+     "ppc_first_week": "2028-W05",
+     "own_first_ship_week": "2027-W52"
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "Trim_MA",
+     "type": "mom",
+     "ppc_qty": 92766.0,
+     "own_actual_ship_qty": 92766,
+     "ppc_first_week": "2028-W05",
+     "own_first_ship_week": "2027-W51"
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "Dyeing_PT",
+     "type": "mom",
+     "ppc_qty": 92766.0,
+     "own_actual_ship_qty": 92766,
+     "ppc_first_week": "2028-W05",
+     "own_first_ship_week": "2027-W50"
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 92766.0,
+     "own_actual_ship_qty": 92766,
+     "ppc_first_week": "2028-W05",
+     "own_first_ship_week": "2027-W49"
+    }
+   ],
+   "money": {
+    "revenue": 10367012.0,
+    "cogs": 4023675.04,
+    "leaf_revenue": 10367012.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 181526.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Apparel_Offshore",
+     "region": "JP",
+     "revenue": 1621776.0,
+     "units": 31188.0
+    },
+    {
+     "sku": "Apparel_Offshore",
+     "region": "US",
+     "revenue": 2993744.0,
+     "units": 57572.0
+    },
+    {
+     "sku": "Apparel_Vertical",
+     "region": "JP",
+     "revenue": 2000616.0,
+     "units": 32268.0
+    },
+    {
+     "sku": "Apparel_Vertical",
+     "region": "US",
+     "revenue": 3750876.0,
+     "units": 60498.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Apparel_Offshore",
+     "region": "US",
+     "selling_price": 52.0,
+     "unit_cost": 19.58,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Offshore",
+     "region": "JP",
+     "selling_price": 52.0,
+     "unit_cost": 19.58,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Vertical",
+     "region": "US",
+     "selling_price": 62.0,
+     "unit_cost": 24.64,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Vertical",
+     "region": "JP",
+     "selling_price": 62.0,
+     "unit_cost": 24.64,
+     "uom": "EA"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "JPY",
+      "USD"
+     ],
+     [
+      "USD",
+      "USD"
+     ]
+    ],
+    "fx_weeks": [
+     "2028-W01",
+     "2029-W52",
+     104
+    ],
+    "event_currencies_non_base": [
+     "JPY"
+    ],
+    "coverage_over_plan_weeks": {
+     "JPY": {
+      "exact": 104,
+      "fallback": 0,
+      "missing": 13
+     }
+    },
+    "plan_first_week": "2027-W40"
+   },
+   "kitting": [
+    {
+     "product": "Apparel_Offshore",
+     "node": "Garment_BD",
+     "children": [
+      "Trim_VN"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 88760,
+     "P_minus_complete": {
+      "P-complete=0": 88760
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Offshore",
+     "node": "Trim_VN",
+     "children": [
+      "Dyeing_BD"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 88760,
+     "P_minus_complete": {
+      "P-complete=0": 88760
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Offshore",
+     "node": "Dyeing_BD",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 88760,
+     "P_minus_complete": {
+      "P-complete=0": 88760
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "Garment_PT",
+     "children": [
+      "Trim_MA"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 92766,
+     "P_minus_complete": {
+      "P-complete=0": 92766
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "Trim_MA",
+     "children": [
+      "Dyeing_PT"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 92766,
+     "P_minus_complete": {
+      "P-complete=0": 92766
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Vertical",
+     "node": "Dyeing_PT",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 92766,
+     "P_minus_complete": {
+      "P-complete=0": 92766
+     },
+     "examples": []
+    }
+   ]
+  },
+  "apparel-us-2026": {
+   "model": "apparel-us-2026",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2025-W37",
+    "2027-W22",
+    91
+   ],
+   "snapshot_ppc": {
+    "base_currency": "USD",
+    "total_lots": 312,
+    "revenue_base": 12209428.0,
+    "cost_base": 7027273.33,
+    "gross_profit_base": 5182154.67,
+    "gross_margin_pct": 0.424439,
+    "tariff_base": 822890.53,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "USD",
+   "bridge": {
+    "leaf_actual_ship_lots": 249172,
+    "records": 312,
+    "qty": 249172.0,
+    "kept_records": 312,
+    "kept_qty": 249172.0,
+    "unique_lot_ids": 312
+   },
+   "ppc_kpi": {
+    "base_currency": "USD",
+    "total_lots": 312,
+    "total_qty_units": 249172.0,
+    "total_revenue_base": 12209428.0,
+    "total_cost_base": 7027273.33,
+    "gross_margin_pct": 0.4244387755102041
+   },
+   "events": {
+    "n": 3120,
+    "types": {
+     "supplier_cost": 312,
+     "conversion_cost": 312,
+     "transfer_price_set": 312,
+     "tariff_cost": 312,
+     "logistics_cost": 312,
+     "landed_cost_total": 312,
+     "warehouse_cost": 312,
+     "market_revenue": 312,
+     "mom_profit": 312,
+     "backward_allowable": 312
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 3120
+    },
+    "nodes": [
+     "DC_Import_Buffer",
+     "DC_Local_US",
+     "Fabric_CN",
+     "Fabric_ES",
+     "Factory_Import_CN",
+     "Factory_Local_ES",
+     "Sales_US_CA_I",
+     "Sales_US_CA_L",
+     "Sales_US_NY_I",
+     "Sales_US_NY_L",
+     "Sales_US_TX_I",
+     "Sales_US_TX_L"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Apparel_Integrated_S1",
+     "channel": "Sales_US_CA_L",
+     "ship_lots": 8212,
+     "qty": 8212.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 402388.0
+    },
+    {
+     "product": "Apparel_Integrated_S1",
+     "channel": "Sales_US_NY_L",
+     "ship_lots": 6716,
+     "qty": 6716.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 329084.0
+    },
+    {
+     "product": "Apparel_Integrated_S1",
+     "channel": "Sales_US_TX_L",
+     "ship_lots": 8956,
+     "qty": 8956.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 438844.0
+    },
+    {
+     "product": "Apparel_Integrated_S2",
+     "channel": "Sales_US_CA_L",
+     "ship_lots": 8212,
+     "qty": 8212.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 402388.0
+    },
+    {
+     "product": "Apparel_Integrated_S2",
+     "channel": "Sales_US_NY_L",
+     "ship_lots": 6716,
+     "qty": 6716.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 329084.0
+    },
+    {
+     "product": "Apparel_Integrated_S2",
+     "channel": "Sales_US_TX_L",
+     "ship_lots": 8956,
+     "qty": 8956.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 438844.0
+    },
+    {
+     "product": "Apparel_Integrated_S3",
+     "channel": "Sales_US_CA_L",
+     "ship_lots": 6772,
+     "qty": 6772.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 331828.0
+    },
+    {
+     "product": "Apparel_Integrated_S3",
+     "channel": "Sales_US_NY_L",
+     "ship_lots": 5540,
+     "qty": 5540.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 271460.0
+    },
+    {
+     "product": "Apparel_Integrated_S3",
+     "channel": "Sales_US_TX_L",
+     "ship_lots": 7384,
+     "qty": 7384.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 361816.0
+    },
+    {
+     "product": "Apparel_Integrated_S4",
+     "channel": "Sales_US_CA_L",
+     "ship_lots": 4656,
+     "qty": 4656.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 228144.0
+    },
+    {
+     "product": "Apparel_Integrated_S4",
+     "channel": "Sales_US_NY_L",
+     "ship_lots": 3808,
+     "qty": 3808.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 186592.0
+    },
+    {
+     "product": "Apparel_Integrated_S4",
+     "channel": "Sales_US_TX_L",
+     "ship_lots": 5078,
+     "qty": 5078.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 248822.0
+    },
+    {
+     "product": "Apparel_Integrated_S5",
+     "channel": "Sales_US_CA_L",
+     "ship_lots": 3386,
+     "qty": 3386.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 165914.0
+    },
+    {
+     "product": "Apparel_Integrated_S5",
+     "channel": "Sales_US_NY_L",
+     "ship_lots": 2770,
+     "qty": 2770.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 135730.0
+    },
+    {
+     "product": "Apparel_Integrated_S5",
+     "channel": "Sales_US_TX_L",
+     "ship_lots": 3692,
+     "qty": 3692.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 180908.0
+    },
+    {
+     "product": "Apparel_Integrated_S6",
+     "channel": "Sales_US_CA_L",
+     "ship_lots": 4106,
+     "qty": 4106.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 201194.0
+    },
+    {
+     "product": "Apparel_Integrated_S6",
+     "channel": "Sales_US_NY_L",
+     "ship_lots": 3358,
+     "qty": 3358.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 164542.0
+    },
+    {
+     "product": "Apparel_Integrated_S6",
+     "channel": "Sales_US_TX_L",
+     "ship_lots": 4478,
+     "qty": 4478.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 219422.0
+    },
+    {
+     "product": "Apparel_Integrated_S7",
+     "channel": "Sales_US_CA_L",
+     "ship_lots": 3386,
+     "qty": 3386.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 165914.0
+    },
+    {
+     "product": "Apparel_Integrated_S7",
+     "channel": "Sales_US_NY_L",
+     "ship_lots": 2770,
+     "qty": 2770.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 135730.0
+    },
+    {
+     "product": "Apparel_Integrated_S7",
+     "channel": "Sales_US_TX_L",
+     "ship_lots": 3692,
+     "qty": 3692.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 180908.0
+    },
+    {
+     "product": "Apparel_Integrated_S8",
+     "channel": "Sales_US_CA_L",
+     "ship_lots": 4106,
+     "qty": 4106.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 201194.0
+    },
+    {
+     "product": "Apparel_Integrated_S8",
+     "channel": "Sales_US_NY_L",
+     "ship_lots": 3358,
+     "qty": 3358.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 164542.0
+    },
+    {
+     "product": "Apparel_Integrated_S8",
+     "channel": "Sales_US_TX_L",
+     "ship_lots": 4478,
+     "qty": 4478.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 219422.0
+    },
+    {
+     "product": "Apparel_Outsourced_S1",
+     "channel": "Sales_US_CA_I",
+     "ship_lots": 8212,
+     "qty": 8212.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 402388.0
+    },
+    {
+     "product": "Apparel_Outsourced_S1",
+     "channel": "Sales_US_NY_I",
+     "ship_lots": 6716,
+     "qty": 6716.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 329084.0
+    },
+    {
+     "product": "Apparel_Outsourced_S1",
+     "channel": "Sales_US_TX_I",
+     "ship_lots": 8956,
+     "qty": 8956.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 438844.0
+    },
+    {
+     "product": "Apparel_Outsourced_S2",
+     "channel": "Sales_US_CA_I",
+     "ship_lots": 8212,
+     "qty": 8212.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 402388.0
+    },
+    {
+     "product": "Apparel_Outsourced_S2",
+     "channel": "Sales_US_NY_I",
+     "ship_lots": 6716,
+     "qty": 6716.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 329084.0
+    },
+    {
+     "product": "Apparel_Outsourced_S2",
+     "channel": "Sales_US_TX_I",
+     "ship_lots": 8956,
+     "qty": 8956.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 438844.0
+    },
+    {
+     "product": "Apparel_Outsourced_S3",
+     "channel": "Sales_US_CA_I",
+     "ship_lots": 6772,
+     "qty": 6772.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 331828.0
+    },
+    {
+     "product": "Apparel_Outsourced_S3",
+     "channel": "Sales_US_NY_I",
+     "ship_lots": 5540,
+     "qty": 5540.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 271460.0
+    },
+    {
+     "product": "Apparel_Outsourced_S3",
+     "channel": "Sales_US_TX_I",
+     "ship_lots": 7384,
+     "qty": 7384.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 361816.0
+    },
+    {
+     "product": "Apparel_Outsourced_S4",
+     "channel": "Sales_US_CA_I",
+     "ship_lots": 4656,
+     "qty": 4656.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 228144.0
+    },
+    {
+     "product": "Apparel_Outsourced_S4",
+     "channel": "Sales_US_NY_I",
+     "ship_lots": 3808,
+     "qty": 3808.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 186592.0
+    },
+    {
+     "product": "Apparel_Outsourced_S4",
+     "channel": "Sales_US_TX_I",
+     "ship_lots": 5078,
+     "qty": 5078.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 248822.0
+    },
+    {
+     "product": "Apparel_Outsourced_S5",
+     "channel": "Sales_US_CA_I",
+     "ship_lots": 3386,
+     "qty": 3386.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 165914.0
+    },
+    {
+     "product": "Apparel_Outsourced_S5",
+     "channel": "Sales_US_NY_I",
+     "ship_lots": 2770,
+     "qty": 2770.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 135730.0
+    },
+    {
+     "product": "Apparel_Outsourced_S5",
+     "channel": "Sales_US_TX_I",
+     "ship_lots": 3692,
+     "qty": 3692.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 180908.0
+    },
+    {
+     "product": "Apparel_Outsourced_S6",
+     "channel": "Sales_US_CA_I",
+     "ship_lots": 4106,
+     "qty": 4106.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 201194.0
+    },
+    {
+     "product": "Apparel_Outsourced_S6",
+     "channel": "Sales_US_NY_I",
+     "ship_lots": 3358,
+     "qty": 3358.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 164542.0
+    },
+    {
+     "product": "Apparel_Outsourced_S6",
+     "channel": "Sales_US_TX_I",
+     "ship_lots": 4478,
+     "qty": 4478.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 219422.0
+    },
+    {
+     "product": "Apparel_Outsourced_S7",
+     "channel": "Sales_US_CA_I",
+     "ship_lots": 3386,
+     "qty": 3386.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 165914.0
+    },
+    {
+     "product": "Apparel_Outsourced_S7",
+     "channel": "Sales_US_NY_I",
+     "ship_lots": 2770,
+     "qty": 2770.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 135730.0
+    },
+    {
+     "product": "Apparel_Outsourced_S7",
+     "channel": "Sales_US_TX_I",
+     "ship_lots": 3692,
+     "qty": 3692.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 180908.0
+    },
+    {
+     "product": "Apparel_Outsourced_S8",
+     "channel": "Sales_US_CA_I",
+     "ship_lots": 4106,
+     "qty": 4106.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 201194.0
+    },
+    {
+     "product": "Apparel_Outsourced_S8",
+     "channel": "Sales_US_NY_I",
+     "ship_lots": 3358,
+     "qty": 3358.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 164542.0
+    },
+    {
+     "product": "Apparel_Outsourced_S8",
+     "channel": "Sales_US_TX_I",
+     "ship_lots": 4478,
+     "qty": 4478.0,
+     "price_local_first": 49.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 219422.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "Apparel_Outsourced_S1",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "Apparel_Outsourced_S1",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W45"
+    },
+    {
+     "product": "Apparel_Outsourced_S1",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W42"
+    },
+    {
+     "product": "Apparel_Outsourced_S2",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W09",
+     "own_first_ship_week": "2026-W07"
+    },
+    {
+     "product": "Apparel_Outsourced_S2",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W09",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "Apparel_Outsourced_S2",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W09",
+     "own_first_ship_week": "2025-W49"
+    },
+    {
+     "product": "Apparel_Outsourced_S3",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 19696.0,
+     "own_actual_ship_qty": 19696,
+     "ppc_first_week": "2026-W16",
+     "own_first_ship_week": "2026-W14"
+    },
+    {
+     "product": "Apparel_Outsourced_S3",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 19696.0,
+     "own_actual_ship_qty": 19696,
+     "ppc_first_week": "2026-W16",
+     "own_first_ship_week": "2026-W07"
+    },
+    {
+     "product": "Apparel_Outsourced_S3",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 19696.0,
+     "own_actual_ship_qty": 19696,
+     "ppc_first_week": "2026-W16",
+     "own_first_ship_week": "2026-W04"
+    },
+    {
+     "product": "Apparel_Outsourced_S4",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 13542.0,
+     "own_actual_ship_qty": 13542,
+     "ppc_first_week": "2026-W22",
+     "own_first_ship_week": "2026-W20"
+    },
+    {
+     "product": "Apparel_Outsourced_S4",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 13542.0,
+     "own_actual_ship_qty": 13542,
+     "ppc_first_week": "2026-W22",
+     "own_first_ship_week": "2026-W13"
+    },
+    {
+     "product": "Apparel_Outsourced_S4",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 13542.0,
+     "own_actual_ship_qty": 13542,
+     "ppc_first_week": "2026-W22",
+     "own_first_ship_week": "2026-W10"
+    },
+    {
+     "product": "Apparel_Outsourced_S5",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W29",
+     "own_first_ship_week": "2026-W27"
+    },
+    {
+     "product": "Apparel_Outsourced_S5",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W29",
+     "own_first_ship_week": "2026-W20"
+    },
+    {
+     "product": "Apparel_Outsourced_S5",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W29",
+     "own_first_ship_week": "2026-W17"
+    },
+    {
+     "product": "Apparel_Outsourced_S6",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W35",
+     "own_first_ship_week": "2026-W33"
+    },
+    {
+     "product": "Apparel_Outsourced_S6",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W35",
+     "own_first_ship_week": "2026-W26"
+    },
+    {
+     "product": "Apparel_Outsourced_S6",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W35",
+     "own_first_ship_week": "2026-W23"
+    },
+    {
+     "product": "Apparel_Outsourced_S7",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W42",
+     "own_first_ship_week": "2026-W40"
+    },
+    {
+     "product": "Apparel_Outsourced_S7",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W42",
+     "own_first_ship_week": "2026-W33"
+    },
+    {
+     "product": "Apparel_Outsourced_S7",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W42",
+     "own_first_ship_week": "2026-W30"
+    },
+    {
+     "product": "Apparel_Outsourced_S8",
+     "node": "DC_Import_Buffer",
+     "type": "dad",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W48",
+     "own_first_ship_week": "2026-W46"
+    },
+    {
+     "product": "Apparel_Outsourced_S8",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W48",
+     "own_first_ship_week": "2026-W39"
+    },
+    {
+     "product": "Apparel_Outsourced_S8",
+     "node": "Fabric_CN",
+     "type": "leaf_in",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W48",
+     "own_first_ship_week": "2026-W36"
+    },
+    {
+     "product": "Apparel_Integrated_S1",
+     "node": "DC_Local_US",
+     "type": "dad",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2026-W01"
+    },
+    {
+     "product": "Apparel_Integrated_S1",
+     "node": "Factory_Local_ES",
+     "type": "mom",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W51"
+    },
+    {
+     "product": "Apparel_Integrated_S1",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W50"
+    },
+    {
+     "product": "Apparel_Integrated_S2",
+     "node": "DC_Local_US",
+     "type": "dad",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W09",
+     "own_first_ship_week": "2026-W08"
+    },
+    {
+     "product": "Apparel_Integrated_S2",
+     "node": "Factory_Local_ES",
+     "type": "mom",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W09",
+     "own_first_ship_week": "2026-W06"
+    },
+    {
+     "product": "Apparel_Integrated_S2",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 23884.0,
+     "own_actual_ship_qty": 23884,
+     "ppc_first_week": "2026-W09",
+     "own_first_ship_week": "2026-W05"
+    },
+    {
+     "product": "Apparel_Integrated_S3",
+     "node": "DC_Local_US",
+     "type": "dad",
+     "ppc_qty": 19696.0,
+     "own_actual_ship_qty": 19696,
+     "ppc_first_week": "2026-W16",
+     "own_first_ship_week": "2026-W15"
+    },
+    {
+     "product": "Apparel_Integrated_S3",
+     "node": "Factory_Local_ES",
+     "type": "mom",
+     "ppc_qty": 19696.0,
+     "own_actual_ship_qty": 19696,
+     "ppc_first_week": "2026-W16",
+     "own_first_ship_week": "2026-W13"
+    },
+    {
+     "product": "Apparel_Integrated_S3",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 19696.0,
+     "own_actual_ship_qty": 19696,
+     "ppc_first_week": "2026-W16",
+     "own_first_ship_week": "2026-W12"
+    },
+    {
+     "product": "Apparel_Integrated_S4",
+     "node": "DC_Local_US",
+     "type": "dad",
+     "ppc_qty": 13542.0,
+     "own_actual_ship_qty": 13542,
+     "ppc_first_week": "2026-W22",
+     "own_first_ship_week": "2026-W21"
+    },
+    {
+     "product": "Apparel_Integrated_S4",
+     "node": "Factory_Local_ES",
+     "type": "mom",
+     "ppc_qty": 13542.0,
+     "own_actual_ship_qty": 13542,
+     "ppc_first_week": "2026-W22",
+     "own_first_ship_week": "2026-W19"
+    },
+    {
+     "product": "Apparel_Integrated_S4",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 13542.0,
+     "own_actual_ship_qty": 13542,
+     "ppc_first_week": "2026-W22",
+     "own_first_ship_week": "2026-W18"
+    },
+    {
+     "product": "Apparel_Integrated_S5",
+     "node": "DC_Local_US",
+     "type": "dad",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W29",
+     "own_first_ship_week": "2026-W28"
+    },
+    {
+     "product": "Apparel_Integrated_S5",
+     "node": "Factory_Local_ES",
+     "type": "mom",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W29",
+     "own_first_ship_week": "2026-W26"
+    },
+    {
+     "product": "Apparel_Integrated_S5",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W29",
+     "own_first_ship_week": "2026-W25"
+    },
+    {
+     "product": "Apparel_Integrated_S6",
+     "node": "DC_Local_US",
+     "type": "dad",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W35",
+     "own_first_ship_week": "2026-W34"
+    },
+    {
+     "product": "Apparel_Integrated_S6",
+     "node": "Factory_Local_ES",
+     "type": "mom",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W35",
+     "own_first_ship_week": "2026-W31"
+    },
+    {
+     "product": "Apparel_Integrated_S6",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W35",
+     "own_first_ship_week": "2026-W30"
+    },
+    {
+     "product": "Apparel_Integrated_S7",
+     "node": "DC_Local_US",
+     "type": "dad",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W42",
+     "own_first_ship_week": "2026-W41"
+    },
+    {
+     "product": "Apparel_Integrated_S7",
+     "node": "Factory_Local_ES",
+     "type": "mom",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W42",
+     "own_first_ship_week": "2026-W39"
+    },
+    {
+     "product": "Apparel_Integrated_S7",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 9848.0,
+     "own_actual_ship_qty": 9848,
+     "ppc_first_week": "2026-W42",
+     "own_first_ship_week": "2026-W38"
+    },
+    {
+     "product": "Apparel_Integrated_S8",
+     "node": "DC_Local_US",
+     "type": "dad",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W48",
+     "own_first_ship_week": "2026-W47"
+    },
+    {
+     "product": "Apparel_Integrated_S8",
+     "node": "Factory_Local_ES",
+     "type": "mom",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W48",
+     "own_first_ship_week": "2026-W45"
+    },
+    {
+     "product": "Apparel_Integrated_S8",
+     "node": "Fabric_ES",
+     "type": "leaf_in",
+     "ppc_qty": 11942.0,
+     "own_actual_ship_qty": 11942,
+     "ppc_first_week": "2026-W48",
+     "own_first_ship_week": "2026-W44"
+    }
+   ],
+   "money": {
+    "revenue": 12209428.0,
+    "cogs": 4485096.0,
+    "leaf_revenue": 12209428.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 249172.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Apparel_Integrated_S1",
+     "region": "CA",
+     "revenue": 402388.0,
+     "units": 8212.0
+    },
+    {
+     "sku": "Apparel_Integrated_S1",
+     "region": "NY",
+     "revenue": 329084.0,
+     "units": 6716.0
+    },
+    {
+     "sku": "Apparel_Integrated_S1",
+     "region": "TX",
+     "revenue": 438844.0,
+     "units": 8956.0
+    },
+    {
+     "sku": "Apparel_Integrated_S2",
+     "region": "CA",
+     "revenue": 402388.0,
+     "units": 8212.0
+    },
+    {
+     "sku": "Apparel_Integrated_S2",
+     "region": "NY",
+     "revenue": 329084.0,
+     "units": 6716.0
+    },
+    {
+     "sku": "Apparel_Integrated_S2",
+     "region": "TX",
+     "revenue": 438844.0,
+     "units": 8956.0
+    },
+    {
+     "sku": "Apparel_Integrated_S3",
+     "region": "CA",
+     "revenue": 331828.0,
+     "units": 6772.0
+    },
+    {
+     "sku": "Apparel_Integrated_S3",
+     "region": "NY",
+     "revenue": 271460.0,
+     "units": 5540.0
+    },
+    {
+     "sku": "Apparel_Integrated_S3",
+     "region": "TX",
+     "revenue": 361816.0,
+     "units": 7384.0
+    },
+    {
+     "sku": "Apparel_Integrated_S4",
+     "region": "CA",
+     "revenue": 228144.0,
+     "units": 4656.0
+    },
+    {
+     "sku": "Apparel_Integrated_S4",
+     "region": "NY",
+     "revenue": 186592.0,
+     "units": 3808.0
+    },
+    {
+     "sku": "Apparel_Integrated_S4",
+     "region": "TX",
+     "revenue": 248822.0,
+     "units": 5078.0
+    },
+    {
+     "sku": "Apparel_Integrated_S5",
+     "region": "CA",
+     "revenue": 165914.0,
+     "units": 3386.0
+    },
+    {
+     "sku": "Apparel_Integrated_S5",
+     "region": "NY",
+     "revenue": 135730.0,
+     "units": 2770.0
+    },
+    {
+     "sku": "Apparel_Integrated_S5",
+     "region": "TX",
+     "revenue": 180908.0,
+     "units": 3692.0
+    },
+    {
+     "sku": "Apparel_Integrated_S6",
+     "region": "CA",
+     "revenue": 201194.0,
+     "units": 4106.0
+    },
+    {
+     "sku": "Apparel_Integrated_S6",
+     "region": "NY",
+     "revenue": 164542.0,
+     "units": 3358.0
+    },
+    {
+     "sku": "Apparel_Integrated_S6",
+     "region": "TX",
+     "revenue": 219422.0,
+     "units": 4478.0
+    },
+    {
+     "sku": "Apparel_Integrated_S7",
+     "region": "CA",
+     "revenue": 165914.0,
+     "units": 3386.0
+    },
+    {
+     "sku": "Apparel_Integrated_S7",
+     "region": "NY",
+     "revenue": 135730.0,
+     "units": 2770.0
+    },
+    {
+     "sku": "Apparel_Integrated_S7",
+     "region": "TX",
+     "revenue": 180908.0,
+     "units": 3692.0
+    },
+    {
+     "sku": "Apparel_Integrated_S8",
+     "region": "CA",
+     "revenue": 201194.0,
+     "units": 4106.0
+    },
+    {
+     "sku": "Apparel_Integrated_S8",
+     "region": "NY",
+     "revenue": 164542.0,
+     "units": 3358.0
+    },
+    {
+     "sku": "Apparel_Integrated_S8",
+     "region": "TX",
+     "revenue": 219422.0,
+     "units": 4478.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S1",
+     "region": "CA",
+     "revenue": 402388.0,
+     "units": 8212.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S1",
+     "region": "NY",
+     "revenue": 329084.0,
+     "units": 6716.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S1",
+     "region": "TX",
+     "revenue": 438844.0,
+     "units": 8956.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S2",
+     "region": "CA",
+     "revenue": 402388.0,
+     "units": 8212.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S2",
+     "region": "NY",
+     "revenue": 329084.0,
+     "units": 6716.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S2",
+     "region": "TX",
+     "revenue": 438844.0,
+     "units": 8956.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S3",
+     "region": "CA",
+     "revenue": 331828.0,
+     "units": 6772.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S3",
+     "region": "NY",
+     "revenue": 271460.0,
+     "units": 5540.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S3",
+     "region": "TX",
+     "revenue": 361816.0,
+     "units": 7384.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S4",
+     "region": "CA",
+     "revenue": 228144.0,
+     "units": 4656.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S4",
+     "region": "NY",
+     "revenue": 186592.0,
+     "units": 3808.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S4",
+     "region": "TX",
+     "revenue": 248822.0,
+     "units": 5078.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S5",
+     "region": "CA",
+     "revenue": 165914.0,
+     "units": 3386.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S5",
+     "region": "NY",
+     "revenue": 135730.0,
+     "units": 2770.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S5",
+     "region": "TX",
+     "revenue": 180908.0,
+     "units": 3692.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S6",
+     "region": "CA",
+     "revenue": 201194.0,
+     "units": 4106.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S6",
+     "region": "NY",
+     "revenue": 164542.0,
+     "units": 3358.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S6",
+     "region": "TX",
+     "revenue": 219422.0,
+     "units": 4478.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S7",
+     "region": "CA",
+     "revenue": 165914.0,
+     "units": 3386.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S7",
+     "region": "NY",
+     "revenue": 135730.0,
+     "units": 2770.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S7",
+     "region": "TX",
+     "revenue": 180908.0,
+     "units": 3692.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S8",
+     "region": "CA",
+     "revenue": 201194.0,
+     "units": 4106.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S8",
+     "region": "NY",
+     "revenue": 164542.0,
+     "units": 3358.0
+    },
+    {
+     "sku": "Apparel_Outsourced_S8",
+     "region": "TX",
+     "revenue": 219422.0,
+     "units": 4478.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Apparel_Outsourced_S1",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S1",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S1",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S2",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S2",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S2",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S3",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S3",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S3",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S4",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S4",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S4",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S5",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S5",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S5",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S6",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S6",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S6",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S7",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S7",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S7",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S8",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S8",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Outsourced_S8",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 19.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S1",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S1",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S1",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S2",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S2",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S2",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S3",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S3",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S3",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S4",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S4",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S4",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S5",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S5",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S5",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S6",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S6",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S6",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S7",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S7",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S7",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S8",
+     "region": "TX",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S8",
+     "region": "CA",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "Apparel_Integrated_S8",
+     "region": "NY",
+     "selling_price": 49.0,
+     "unit_cost": 17.0,
+     "uom": "EA"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "USD",
+      "USD"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2027-W52",
+     105
+    ],
+    "event_currencies_non_base": [],
+    "coverage_over_plan_weeks": {},
+    "plan_first_week": "2025-W37"
+   },
+   "kitting": [
+    {
+     "product": "Apparel_Outsourced_S1",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 23884,
+     "P_minus_complete": {
+      "P-complete=0": 23884
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Outsourced_S2",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 23884,
+     "P_minus_complete": {
+      "P-complete=0": 23884
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Outsourced_S3",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 19696,
+     "P_minus_complete": {
+      "P-complete=0": 19696
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Outsourced_S4",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 13542,
+     "P_minus_complete": {
+      "P-complete=0": 13542
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Outsourced_S5",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 9848,
+     "P_minus_complete": {
+      "P-complete=0": 9848
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Outsourced_S6",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 11942,
+     "P_minus_complete": {
+      "P-complete=0": 11942
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Outsourced_S7",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 9848,
+     "P_minus_complete": {
+      "P-complete=0": 9848
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Outsourced_S8",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Fabric_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 11942,
+     "P_minus_complete": {
+      "P-complete=0": 11942
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Integrated_S1",
+     "node": "Factory_Local_ES",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 23884,
+     "P_minus_complete": {
+      "P-complete=0": 23884
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Integrated_S2",
+     "node": "Factory_Local_ES",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 23884,
+     "P_minus_complete": {
+      "P-complete=0": 23884
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Integrated_S3",
+     "node": "Factory_Local_ES",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 19696,
+     "P_minus_complete": {
+      "P-complete=0": 19696
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Integrated_S4",
+     "node": "Factory_Local_ES",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 13542,
+     "P_minus_complete": {
+      "P-complete=0": 13542
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Integrated_S5",
+     "node": "Factory_Local_ES",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 9848,
+     "P_minus_complete": {
+      "P-complete=0": 9848
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Integrated_S6",
+     "node": "Factory_Local_ES",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 11942,
+     "P_minus_complete": {
+      "P-complete=0": 11942
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Integrated_S7",
+     "node": "Factory_Local_ES",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 9848,
+     "P_minus_complete": {
+      "P-complete=0": 9848
+     },
+     "examples": []
+    },
+    {
+     "product": "Apparel_Integrated_S8",
+     "node": "Factory_Local_ES",
+     "children": [
+      "Fabric_ES"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 11942,
+     "P_minus_complete": {
+      "P-complete=0": 11942
+     },
+     "examples": []
+    }
+   ]
+  },
+  "bom-test-2026": {
+   "model": "bom-test-2026",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2025-W36",
+    "2026-W20",
+    37
+   ],
+   "snapshot_ppc": {
+    "base_currency": "USD",
+    "total_lots": 20,
+    "revenue_base": 3200000.0,
+    "cost_base": 807000.0,
+    "gross_profit_base": 2393000.0,
+    "gross_margin_pct": 0.747812,
+    "tariff_base": 0.0,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "USD",
+   "bridge": {
+    "leaf_actual_ship_lots": 100,
+    "records": 20,
+    "qty": 100.0,
+    "kept_records": 20,
+    "kept_qty": 100.0,
+    "unique_lot_ids": 20
+   },
+   "ppc_kpi": {
+    "base_currency": "USD",
+    "total_lots": 20,
+    "total_qty_units": 100.0,
+    "total_revenue_base": 3200000.0,
+    "total_cost_base": 807000.0,
+    "gross_margin_pct": 0.7478125
+   },
+   "events": {
+    "n": 220,
+    "types": {
+     "supplier_cost": 40,
+     "conversion_cost": 20,
+     "logistics_cost": 40,
+     "transfer_price_set": 20,
+     "tariff_cost": 20,
+     "landed_cost_total": 20,
+     "market_revenue": 20,
+     "mom_profit": 20,
+     "backward_allowable": 20
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 220
+    },
+    "nodes": [
+     "Battery_Supply",
+     "DC_Vehicle",
+     "Dealer_Sales",
+     "Tire_Supply",
+     "Vehicle_Assy"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "EV_Model_A",
+     "channel": "Dealer_Sales",
+     "ship_lots": 100,
+     "qty": 100.0,
+     "price_local_first": 32000.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 3200000.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "EV_Model_A",
+     "node": "DC_Vehicle",
+     "type": "dad",
+     "ppc_qty": 100.0,
+     "own_actual_ship_qty": 100,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "EV_Model_A",
+     "node": "Vehicle_Assy",
+     "type": "mom",
+     "ppc_qty": 100.0,
+     "own_actual_ship_qty": 100,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W50"
+    },
+    {
+     "product": "EV_Model_A",
+     "node": "Tire_Supply",
+     "type": "leaf_in",
+     "ppc_qty": 100.0,
+     "own_actual_ship_qty": 100,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W49"
+    },
+    {
+     "product": "EV_Model_A",
+     "node": "Battery_Supply",
+     "type": "leaf_in",
+     "ppc_qty": 100.0,
+     "own_actual_ship_qty": 100,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W49"
+    }
+   ],
+   "money": {
+    "revenue": 3200000.0,
+    "cogs": 2000000.0,
+    "leaf_revenue": 3200000.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 100.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "EV_Model_A",
+     "region": "US",
+     "revenue": 3200000.0,
+     "units": 100.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "EV_Model_A",
+     "region": "US",
+     "selling_price": 32000,
+     "unit_cost": 20000,
+     "uom": "EA"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "USD",
+      "USD"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2026-W01",
+     1
+    ],
+    "event_currencies_non_base": [],
+    "coverage_over_plan_weeks": {},
+    "plan_first_week": "2025-W36"
+   },
+   "kitting": [
+    {
+     "product": "EV_Model_A",
+     "node": "Vehicle_Assy",
+     "children": [
+      "Battery_Yard",
+      "Tire_Yard"
+     ],
+     "child_types": [
+      "stockyard"
+     ],
+     "lots_recorded": 100,
+     "P_minus_complete": {
+      "P-complete=0": 100
+     },
+     "examples": []
+    },
+    {
+     "product": "EV_Model_A",
+     "node": "Tire_Yard",
+     "children": [
+      "Tire_Supply"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 100,
+     "P_minus_complete": {
+      "P-complete=0": 100
+     },
+     "examples": []
+    },
+    {
+     "product": "EV_Model_A",
+     "node": "Battery_Yard",
+     "children": [
+      "Battery_Supply"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 100,
+     "P_minus_complete": {
+      "P-complete=0": 100
+     },
+     "examples": []
+    }
+   ]
+  },
+  "ev-europe-2026": {
+   "model": "ev-europe-2026",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2025-W37",
+    "2027-W36",
+    105
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 526,
+    "revenue_base": 366508230000.0,
+    "cost_base": 174173455500.0,
+    "gross_profit_base": 192334774500.0,
+    "gross_margin_pct": 0.524776,
+    "tariff_base": 1803549000.0,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 53140,
+    "records": 526,
+    "qty": 53140.0,
+    "kept_records": 526,
+    "kept_qty": 53140.0,
+    "unique_lot_ids": 526
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 526,
+    "total_qty_units": 53140.0,
+    "total_revenue_base": 366508230000.0,
+    "total_cost_base": 174173455500.0,
+    "gross_margin_pct": 0.5247761407704269
+   },
+   "events": {
+    "n": 6312,
+    "types": {
+     "supplier_cost": 1578,
+     "conversion_cost": 526,
+     "logistics_cost": 1052,
+     "transfer_price_set": 526,
+     "tariff_cost": 526,
+     "landed_cost_total": 526,
+     "market_revenue": 526,
+     "mom_profit": 526,
+     "backward_allowable": 526
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "EUR": 4734,
+     "JPY": 1578
+    },
+    "nodes": [
+     "Battery_DE",
+     "Battery_HU",
+     "DC_EV_Import",
+     "DC_EV_Local",
+     "ECU_DE",
+     "ECU_HU",
+     "Factory_Import_HU",
+     "Factory_Local_DE",
+     "Motor_DE",
+     "Motor_HU",
+     "Sales_DE_BER",
+     "Sales_DE_BER_i",
+     "Sales_DE_ONL",
+     "Sales_DE_ONL_i",
+     "Sales_DE_REG",
+     "Sales_DE_REG_i"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_DE_BER_i",
+     "ship_lots": 4430,
+     "qty": 4430.0,
+     "price_local_first": 42000.0,
+     "currency": "EUR",
+     "fx_first": 165.0,
+     "fx_min": 165.0,
+     "fx_max": 165.0,
+     "revenue_base": 30699900000.0
+    },
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_DE_ONL_i",
+     "ship_lots": 879,
+     "qty": 879.0,
+     "price_local_first": 40000.0,
+     "currency": "EUR",
+     "fx_first": 165.0,
+     "fx_min": 165.0,
+     "fx_max": 165.0,
+     "revenue_base": 5801400000.0
+    },
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_DE_REG_i",
+     "ship_lots": 3506,
+     "qty": 3506.0,
+     "price_local_first": 42000.0,
+     "currency": "EUR",
+     "fx_first": 165.0,
+     "fx_min": 165.0,
+     "fx_max": 165.0,
+     "revenue_base": 24296580000.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_DE_BER",
+     "ship_lots": 22165,
+     "qty": 22165.0,
+     "price_local_first": 42000.0,
+     "currency": "EUR",
+     "fx_first": 165.0,
+     "fx_min": 165.0,
+     "fx_max": 165.0,
+     "revenue_base": 153603450000.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_DE_ONL",
+     "ship_lots": 4430,
+     "qty": 4430.0,
+     "price_local_first": 40000.0,
+     "currency": "EUR",
+     "fx_first": 165.0,
+     "fx_min": 165.0,
+     "fx_max": 165.0,
+     "revenue_base": 29238000000.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_DE_REG",
+     "ship_lots": 17730,
+     "qty": 17730.0,
+     "price_local_first": 42000.0,
+     "currency": "EUR",
+     "fx_first": 165.0,
+     "fx_min": 165.0,
+     "fx_max": 165.0,
+     "revenue_base": 122868900000.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "EVmaker_Local",
+     "node": "DC_EV_Local",
+     "type": "dad",
+     "ppc_qty": 44325.0,
+     "own_actual_ship_qty": 44325,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Factory_Local_DE",
+     "type": "mom",
+     "ppc_qty": 44325.0,
+     "own_actual_ship_qty": 44325,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W50"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Battery_DE",
+     "type": "leaf_in",
+     "ppc_qty": 44325.0,
+     "own_actual_ship_qty": 44325,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W49"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Motor_DE",
+     "type": "leaf_in",
+     "ppc_qty": 44325.0,
+     "own_actual_ship_qty": 44325,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W49"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "ECU_DE",
+     "type": "leaf_in",
+     "ppc_qty": 44325.0,
+     "own_actual_ship_qty": 44325,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W48"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "DC_EV_Import",
+     "type": "dad",
+     "ppc_qty": 8815.0,
+     "own_actual_ship_qty": 8815,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Factory_Import_HU",
+     "type": "mom",
+     "ppc_qty": 8815.0,
+     "own_actual_ship_qty": 8815,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W49"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Battery_HU",
+     "type": "leaf_in",
+     "ppc_qty": 8815.0,
+     "own_actual_ship_qty": 8815,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W45"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Motor_HU",
+     "type": "leaf_in",
+     "ppc_qty": 8815.0,
+     "own_actual_ship_qty": 8815,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W45"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "ECU_HU",
+     "type": "leaf_in",
+     "ppc_qty": 8815.0,
+     "own_actual_ship_qty": 8815,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W45"
+    }
+   ],
+   "money": {
+    "revenue": 2221262000.0,
+    "cogs": 1044666100.0,
+    "leaf_revenue": 2221262000.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 53140.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "EVmaker_Import",
+     "region": "BER",
+     "revenue": 186060000.0,
+     "units": 4430.0
+    },
+    {
+     "sku": "EVmaker_Import",
+     "region": "ONL",
+     "revenue": 35160000.0,
+     "units": 879.0
+    },
+    {
+     "sku": "EVmaker_Import",
+     "region": "REG",
+     "revenue": 147252000.0,
+     "units": 3506.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "BER",
+     "revenue": 930930000.0,
+     "units": 22165.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "ONL",
+     "revenue": 177200000.0,
+     "units": 4430.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "REG",
+     "revenue": 744660000.0,
+     "units": 17730.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "BER",
+     "selling_price": 42000,
+     "unit_cost": 20100,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "REG",
+     "selling_price": 42000,
+     "unit_cost": 20100,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "ONL",
+     "selling_price": 40000,
+     "unit_cost": 20100,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "BER",
+     "selling_price": 42000,
+     "unit_cost": 17440,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "REG",
+     "selling_price": 42000,
+     "unit_cost": 17440,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "ONL",
+     "selling_price": 40000,
+     "unit_cost": 17440,
+     "uom": "EA"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "EUR",
+      "JPY"
+     ],
+     [
+      "HUF",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2027-W51",
+     104
+    ],
+    "event_currencies_non_base": [
+     "EUR"
+    ],
+    "coverage_over_plan_weeks": {
+     "EUR": {
+      "exact": 89,
+      "fallback": 0,
+      "missing": 16
+     }
+    },
+    "plan_first_week": "2025-W37"
+   },
+   "kitting": [
+    {
+     "product": "EVmaker_Local",
+     "node": "Factory_Local_DE",
+     "children": [
+      "Battery_DE_Yard",
+      "ECU_DE_Yard",
+      "Motor_DE_Yard"
+     ],
+     "child_types": [
+      "stockyard"
+     ],
+     "lots_recorded": 44325,
+     "P_minus_complete": {
+      "P-complete=0": 44325
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Battery_DE_Yard",
+     "children": [
+      "Battery_DE"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 44325,
+     "P_minus_complete": {
+      "P-complete=0": 44325
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Motor_DE_Yard",
+     "children": [
+      "Motor_DE"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 44325,
+     "P_minus_complete": {
+      "P-complete=0": 44325
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "ECU_DE_Yard",
+     "children": [
+      "ECU_DE"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 44325,
+     "P_minus_complete": {
+      "P-complete=0": 44325
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Factory_Import_HU",
+     "children": [
+      "Battery_HU_Yard",
+      "ECU_HU_Yard",
+      "Motor_HU_Yard"
+     ],
+     "child_types": [
+      "stockyard"
+     ],
+     "lots_recorded": 8815,
+     "P_minus_complete": {
+      "P-complete=1": 8815
+     },
+     "examples": [
+      {
+       "lot": "EVmaker_Import:REG:2026-W02:00001",
+       "demand_w": "2025-W49",
+       "complete": "2025-W48",
+       "p": "2025-W49"
+      },
+      {
+       "lot": "EVmaker_Import:REG:2026-W02:00002",
+       "demand_w": "2025-W49",
+       "complete": "2025-W48",
+       "p": "2025-W49"
+      },
+      {
+       "lot": "EVmaker_Import:REG:2026-W02:00003",
+       "demand_w": "2025-W49",
+       "complete": "2025-W48",
+       "p": "2025-W49"
+      },
+      {
+       "lot": "EVmaker_Import:REG:2026-W02:00004",
+       "demand_w": "2025-W49",
+       "complete": "2025-W48",
+       "p": "2025-W49"
+      },
+      {
+       "lot": "EVmaker_Import:REG:2026-W02:00005",
+       "demand_w": "2025-W49",
+       "complete": "2025-W48",
+       "p": "2025-W49"
+      }
+     ]
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Battery_HU_Yard",
+     "children": [
+      "Battery_HU"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 8815,
+     "P_minus_complete": {
+      "P-complete=0": 8815
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Motor_HU_Yard",
+     "children": [
+      "Motor_HU"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 8815,
+     "P_minus_complete": {
+      "P-complete=0": 8815
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "ECU_HU_Yard",
+     "children": [
+      "ECU_HU"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 8815,
+     "P_minus_complete": {
+      "P-complete=0": 8815
+     },
+     "examples": []
+    }
+   ]
+  },
+  "ev-thailand-2026": {
+   "model": "ev-thailand-2026",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2025-W37",
+    "2027-W52",
+    121
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 624,
+    "revenue_base": 319119580000.0,
+    "cost_base": 138830903750.0,
+    "gross_profit_base": 180288676250.0,
+    "gross_margin_pct": 0.564956,
+    "tariff_base": 3583600000.0,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 63240,
+    "records": 624,
+    "qty": 63240.0,
+    "kept_records": 624,
+    "kept_qty": 63240.0,
+    "unique_lot_ids": 624
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 624,
+    "total_qty_units": 63240.0,
+    "total_revenue_base": 319119580000.0,
+    "total_cost_base": 138830903750.0,
+    "gross_margin_pct": 0.5649564851207187
+   },
+   "events": {
+    "n": 6552,
+    "types": {
+     "supplier_cost": 624,
+     "conversion_cost": 936,
+     "logistics_cost": 1248,
+     "transfer_price_set": 624,
+     "tariff_cost": 624,
+     "landed_cost_total": 624,
+     "market_revenue": 624,
+     "mom_profit": 624,
+     "backward_allowable": 624
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "THB": 4680,
+     "JPY": 1872
+    },
+    "nodes": [
+     "Battery_CN",
+     "Components_CN",
+     "DC_EV_Import",
+     "DC_EV_Local",
+     "Factory_Import_CN",
+     "Factory_Local_TH",
+     "Sales_TH_BKK",
+     "Sales_TH_BKK_i",
+     "Sales_TH_ONL",
+     "Sales_TH_ONL_i",
+     "Sales_TH_PRO",
+     "Sales_TH_PRO_i"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_TH_BKK_i",
+     "ship_lots": 5265,
+     "qty": 5265.0,
+     "price_local_first": 1659000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 37122198750.0
+    },
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_TH_ONL_i",
+     "ship_lots": 1059,
+     "qty": 1059.0,
+     "price_local_first": 1609000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 7241706750.0
+    },
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_TH_PRO_i",
+     "ship_lots": 4216,
+     "qty": 4216.0,
+     "price_local_first": 1659000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 29725962000.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_TH_BKK",
+     "ship_lots": 26355,
+     "qty": 26355.0,
+     "price_local_first": 1099000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 123097616250.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_TH_ONL",
+     "ship_lots": 5265,
+     "qty": 5265.0,
+     "price_local_first": 1049000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 23472686250.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_TH_PRO",
+     "ship_lots": 21080,
+     "qty": 21080.0,
+     "price_local_first": 1099000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 98459410000.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "EVmaker_Local",
+     "node": "DC_EV_Local",
+     "type": "dad",
+     "ppc_qty": 52700.0,
+     "own_actual_ship_qty": 52700,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Factory_Local_TH",
+     "type": "mom",
+     "ppc_qty": 52700.0,
+     "own_actual_ship_qty": 52700,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W50"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Battery_CN",
+     "type": "leaf_in",
+     "ppc_qty": 52700.0,
+     "own_actual_ship_qty": 52700,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W46"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "DC_EV_Import",
+     "type": "dad",
+     "ppc_qty": 10540.0,
+     "own_actual_ship_qty": 10540,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 10540.0,
+     "own_actual_ship_qty": 10540,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W46"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Components_CN",
+     "type": "leaf_in",
+     "ppc_qty": 10540.0,
+     "own_actual_ship_qty": 10540,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W42"
+    }
+   ],
+   "money": {
+    "revenue": 75086960000.0,
+    "cogs": 51119000000.0,
+    "leaf_revenue": 75086960000.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 63240.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "EVmaker_Import",
+     "region": "BKK",
+     "revenue": 8734635000.0,
+     "units": 5265.0
+    },
+    {
+     "sku": "EVmaker_Import",
+     "region": "ONL",
+     "revenue": 1703931000.0,
+     "units": 1059.0
+    },
+    {
+     "sku": "EVmaker_Import",
+     "region": "PRO",
+     "revenue": 6994344000.0,
+     "units": 4216.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "BKK",
+     "revenue": 28964145000.0,
+     "units": 26355.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "ONL",
+     "revenue": 5522985000.0,
+     "units": 5265.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "PRO",
+     "revenue": 23166920000.0,
+     "units": 21080.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "BKK",
+     "selling_price": 1099000,
+     "unit_cost": 780000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "PRO",
+     "selling_price": 1099000,
+     "unit_cost": 780000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "ONL",
+     "selling_price": 1049000,
+     "unit_cost": 780000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "BKK",
+     "selling_price": 1659000,
+     "unit_cost": 950000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "PRO",
+     "selling_price": 1659000,
+     "unit_cost": 950000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "ONL",
+     "selling_price": 1609000,
+     "unit_cost": 950000,
+     "uom": "EA"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "CNY",
+      "JPY"
+     ],
+     [
+      "THB",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2027-W51",
+     104
+    ],
+    "event_currencies_non_base": [
+     "THB"
+    ],
+    "coverage_over_plan_weeks": {
+     "THB": {
+      "exact": 104,
+      "fallback": 1,
+      "missing": 16
+     }
+    },
+    "plan_first_week": "2025-W37"
+   },
+   "kitting": [
+    {
+     "product": "EVmaker_Local",
+     "node": "Factory_Local_TH",
+     "children": [
+      "Battery_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 52700,
+     "P_minus_complete": {
+      "P-complete=0": 52700
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Components_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 10540,
+     "P_minus_complete": {
+      "P-complete=0": 10540
+     },
+     "examples": []
+    }
+   ]
+  },
+  "iphone_global": {
+   "model": "iphone_global",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2026-W28",
+    "2029-W52",
+    182
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 1127,
+    "revenue_base": 641014134734200.0,
+    "cost_base": 376951243839177.5,
+    "gross_profit_base": 264062890895022.5,
+    "gross_margin_pct": 0.411946,
+    "tariff_base": 47204973279777.5,
+    "trust_event_count": 390
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "data/ppc/ppc_fx_rate.csv (fallback)",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 414090,
+    "records": 1127,
+    "qty": 414090.0,
+    "kept_records": 1127,
+    "kept_qty": 414090.0,
+    "unique_lot_ids": 1127
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 1127,
+    "total_qty_units": 414090.0,
+    "total_revenue_base": 641014134734200.0,
+    "total_cost_base": 376951243839177.5,
+    "gross_margin_pct": 0.4119455041416795
+   },
+   "events": {
+    "n": 13524,
+    "types": {
+     "supplier_cost": 1127,
+     "conversion_cost": 1127,
+     "logistics_cost": 3381,
+     "transfer_price_set": 1127,
+     "tariff_cost": 2254,
+     "landed_cost_total": 1127,
+     "market_revenue": 1127,
+     "mom_profit": 1127,
+     "backward_allowable": 1127
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 10143,
+     "JPY": 3381
+    },
+    "nodes": [
+     "Foxconn_CN",
+     "Foxconn_CN_i15",
+     "Foxconn_CN_i17",
+     "Retail_AMER",
+     "Retail_AMER_i15",
+     "Retail_AMER_i17",
+     "Retail_APAC",
+     "Retail_APAC_i15",
+     "Retail_APAC_i17",
+     "Retail_EMEA",
+     "Retail_EMEA_i15",
+     "Retail_EMEA_i17",
+     "SP_iPhone15",
+     "SP_iPhone16",
+     "SP_iPhone17"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "iPhone15",
+     "channel": "Retail_AMER_i15",
+     "ship_lots": 34580,
+     "qty": 34580.0,
+     "price_local_first": 6990000.0,
+     "currency": "USD",
+     "fx_first": 151.95,
+     "fx_min": 150.92,
+     "fx_max": 155.79,
+     "revenue_base": 37079557882200.0
+    },
+    {
+     "product": "iPhone15",
+     "channel": "Retail_APAC_i15",
+     "ship_lots": 7895,
+     "qty": 7895.0,
+     "price_local_first": 6490000.0,
+     "currency": "USD",
+     "fx_first": 151.95,
+     "fx_min": 151.95,
+     "fx_max": 155.79,
+     "revenue_base": 7883443887000.0
+    },
+    {
+     "product": "iPhone15",
+     "channel": "Retail_EMEA_i15",
+     "ship_lots": 18926,
+     "qty": 18926.0,
+     "price_local_first": 7990000.0,
+     "currency": "USD",
+     "fx_first": 151.95,
+     "fx_min": 150.92,
+     "fx_max": 155.79,
+     "revenue_base": 23231734706600.0
+    },
+    {
+     "product": "iPhone16",
+     "channel": "Retail_AMER",
+     "ship_lots": 100306,
+     "qty": 100306.0,
+     "price_local_first": 9990000.0,
+     "currency": "USD",
+     "fx_first": 151.95,
+     "fx_min": 150.92,
+     "fx_max": 155.79,
+     "revenue_base": 153903789352800.0
+    },
+    {
+     "product": "iPhone16",
+     "channel": "Retail_APAC",
+     "ship_lots": 48397,
+     "qty": 48397.0,
+     "price_local_first": 9490000.0,
+     "currency": "USD",
+     "fx_first": 151.95,
+     "fx_min": 150.92,
+     "fx_max": 155.79,
+     "revenue_base": 70675739546100.0
+    },
+    {
+     "product": "iPhone16",
+     "channel": "Retail_EMEA",
+     "ship_lots": 70736,
+     "qty": 70736.0,
+     "price_local_first": 10990000.0,
+     "currency": "USD",
+     "fx_first": 151.95,
+     "fx_min": 150.92,
+     "fx_max": 155.79,
+     "revenue_base": 119400878848300.0
+    },
+    {
+     "product": "iPhone17",
+     "channel": "Retail_AMER_i17",
+     "ship_lots": 53300,
+     "qty": 53300.0,
+     "price_local_first": 10990000.0,
+     "currency": "USD",
+     "fx_first": 153.98,
+     "fx_min": 152.6,
+     "fx_max": 154.76,
+     "revenue_base": 90546913324000.0
+    },
+    {
+     "product": "iPhone17",
+     "channel": "Retail_APAC_i17",
+     "ship_lots": 42640,
+     "qty": 42640.0,
+     "price_local_first": 10490000.0,
+     "currency": "USD",
+     "fx_first": 153.98,
+     "fx_min": 152.6,
+     "fx_max": 154.76,
+     "revenue_base": 69141917101600.0
+    },
+    {
+     "product": "iPhone17",
+     "channel": "Retail_EMEA_i17",
+     "ship_lots": 37310,
+     "qty": 37310.0,
+     "price_local_first": 11990000.0,
+     "currency": "USD",
+     "fx_first": 153.98,
+     "fx_min": 152.6,
+     "fx_max": 154.76,
+     "revenue_base": 69150160085600.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "iPhone16",
+     "node": "SP_iPhone16",
+     "type": "supply_point",
+     "ppc_qty": 219439.0,
+     "own_actual_ship_qty": 219439,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W48"
+    },
+    {
+     "product": "iPhone16",
+     "node": "Foxconn_CN",
+     "type": "mom",
+     "ppc_qty": 219439.0,
+     "own_actual_ship_qty": 119133,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W37"
+    },
+    {
+     "product": "iPhone15",
+     "node": "SP_iPhone15",
+     "type": "supply_point",
+     "ppc_qty": 61401.0,
+     "own_actual_ship_qty": 61401,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W48"
+    },
+    {
+     "product": "iPhone15",
+     "node": "Foxconn_CN_i15",
+     "type": "mom",
+     "ppc_qty": 61401.0,
+     "own_actual_ship_qty": 61401,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W39"
+    },
+    {
+     "product": "iPhone17",
+     "node": "SP_iPhone17",
+     "type": "supply_point",
+     "ppc_qty": 133250.0,
+     "own_actual_ship_qty": 133250,
+     "ppc_first_week": "2028-W27",
+     "own_first_ship_week": "2028-W21"
+    },
+    {
+     "product": "iPhone17",
+     "node": "Foxconn_CN_i17",
+     "type": "mom",
+     "ppc_qty": 133250.0,
+     "own_actual_ship_qty": 133250,
+     "ppc_first_week": "2028-W27",
+     "own_first_ship_week": "2028-W21"
+    }
+   ],
+   "money": {
+    "revenue": 416331210.0,
+    "cogs": 183688370.0,
+    "leaf_revenue": 416331210.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 414090.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "iPhone15",
+     "region": "AMER",
+     "revenue": 24171420.0,
+     "units": 34580.0
+    },
+    {
+     "sku": "iPhone15",
+     "region": "APAC",
+     "revenue": 5123855.0,
+     "units": 7895.0
+    },
+    {
+     "sku": "iPhone15",
+     "region": "EMEA",
+     "revenue": 15121874.0,
+     "units": 18926.0
+    },
+    {
+     "sku": "iPhone16",
+     "region": "AMER",
+     "revenue": 100205694.0,
+     "units": 100306.0
+    },
+    {
+     "sku": "iPhone16",
+     "region": "APAC",
+     "revenue": 45928753.0,
+     "units": 48397.0
+    },
+    {
+     "sku": "iPhone16",
+     "region": "EMEA",
+     "revenue": 77738864.0,
+     "units": 70736.0
+    },
+    {
+     "sku": "iPhone17",
+     "region": "AMER",
+     "revenue": 58576700.0,
+     "units": 53300.0
+    },
+    {
+     "sku": "iPhone17",
+     "region": "APAC",
+     "revenue": 44729360.0,
+     "units": 42640.0
+    },
+    {
+     "sku": "iPhone17",
+     "region": "EMEA",
+     "revenue": 44734690.0,
+     "units": 37310.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "iPhone16",
+     "region": "AMER",
+     "selling_price": 999,
+     "unit_cost": 450,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "iPhone16",
+     "region": "EMEA",
+     "selling_price": 1099,
+     "unit_cost": 450,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "iPhone16",
+     "region": "APAC",
+     "selling_price": 949,
+     "unit_cost": 450,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "iPhone15",
+     "region": "AMER",
+     "selling_price": 699,
+     "unit_cost": 320,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "iPhone15",
+     "region": "EMEA",
+     "selling_price": 799,
+     "unit_cost": 320,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "iPhone15",
+     "region": "APAC",
+     "selling_price": 649,
+     "unit_cost": 320,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "iPhone17",
+     "region": "AMER",
+     "selling_price": 1099,
+     "unit_cost": 490,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "iPhone17",
+     "region": "EMEA",
+     "selling_price": 1199,
+     "unit_cost": 490,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "iPhone17",
+     "region": "APAC",
+     "selling_price": 1049,
+     "unit_cost": 490,
+     "uom": "EA"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "CNY",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2028-W51",
+     156
+    ],
+    "event_currencies_non_base": [
+     "USD"
+    ],
+    "coverage_over_plan_weeks": {
+     "USD": {
+      "exact": 129,
+      "fallback": 53,
+      "missing": 0
+     }
+    },
+    "plan_first_week": "2026-W28"
+   },
+   "kitting": [
+    {
+     "product": "iPhone16",
+     "node": "Foxconn_CN",
+     "children": [
+      "TSMC_TW"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 119133,
+     "P_minus_complete": {
+      "P-complete=0": 119133
+     },
+     "examples": []
+    },
+    {
+     "product": "iPhone16",
+     "node": "TSMC_TW",
+     "children": [
+      "SiliconWafer_TW"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 119133,
+     "P_minus_complete": {
+      "P-complete=0": 119133
+     },
+     "examples": []
+    },
+    {
+     "product": "iPhone16",
+     "node": "Foxconn_IN",
+     "children": [
+      "BoschSensor_IN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 100306,
+     "P_minus_complete": {
+      "P-complete=0": 100306
+     },
+     "examples": []
+    },
+    {
+     "product": "iPhone15",
+     "node": "Foxconn_CN_i15",
+     "children": [
+      "TSMC_TW_i15"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 61401,
+     "P_minus_complete": {
+      "P-complete=0": 61401
+     },
+     "examples": []
+    },
+    {
+     "product": "iPhone15",
+     "node": "TSMC_TW_i15",
+     "children": [
+      "SiliconWafer_TW_i15"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 61401,
+     "P_minus_complete": {
+      "P-complete=0": 61401
+     },
+     "examples": []
+    },
+    {
+     "product": "iPhone17",
+     "node": "Foxconn_CN_i17",
+     "children": [
+      "TSMC_TW_i17"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 133250,
+     "P_minus_complete": {
+      "P-complete=0": 77837,
+      "P-complete=1": 55413
+     },
+     "examples": [
+      {
+       "lot": "iPhone17:AMER:2028-W33:00027",
+       "demand_w": "2028-W28",
+       "complete": "2028-W27",
+       "p": "2028-W28"
+      },
+      {
+       "lot": "iPhone17:AMER:2028-W33:00028",
+       "demand_w": "2028-W28",
+       "complete": "2028-W27",
+       "p": "2028-W28"
+      },
+      {
+       "lot": "iPhone17:AMER:2028-W33:00029",
+       "demand_w": "2028-W28",
+       "complete": "2028-W27",
+       "p": "2028-W28"
+      },
+      {
+       "lot": "iPhone17:AMER:2028-W33:00030",
+       "demand_w": "2028-W28",
+       "complete": "2028-W27",
+       "p": "2028-W28"
+      },
+      {
+       "lot": "iPhone17:AMER:2028-W33:00031",
+       "demand_w": "2028-W28",
+       "complete": "2028-W27",
+       "p": "2028-W28"
+      }
+     ]
+    },
+    {
+     "product": "iPhone17",
+     "node": "TSMC_TW_i17",
+     "children": [
+      "SiliconWafer_TW_i17"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 133250,
+     "P_minus_complete": {
+      "P-complete=0": 133250
+     },
+     "examples": []
+    }
+   ]
+  },
+  "oil-global-2027": {
+   "model": "oil-global-2027",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2026-W28",
+    "2028-W26",
+    104
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 1399,
+    "revenue_base": 1571097940180.0,
+    "cost_base": 1018758265287.0,
+    "gross_profit_base": 552339674893.0,
+    "gross_margin_pct": 0.351563,
+    "tariff_base": 53620617.0,
+    "trust_event_count": 733
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 191029,
+    "records": 1399,
+    "qty": 191029.0,
+    "kept_records": 1399,
+    "kept_qty": 191029.0,
+    "unique_lot_ids": 1399
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 1399,
+    "total_qty_units": 191029.0,
+    "total_revenue_base": 1571097940180.0,
+    "total_cost_base": 1018758265287.0,
+    "gross_margin_pct": 0.3515628534461185
+   },
+   "events": {
+    "n": 13990,
+    "types": {
+     "supplier_cost": 1399,
+     "conversion_cost": 1399,
+     "logistics_cost": 2798,
+     "transfer_price_set": 1399,
+     "tariff_cost": 1399,
+     "landed_cost_total": 1399,
+     "market_revenue": 1399,
+     "mom_profit": 1399,
+     "backward_allowable": 1399
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 3739,
+     "JPY": 7911,
+     "EUR": 2340
+    },
+    "nodes": [
+     "Crude_ME",
+     "Crude_ME_EU",
+     "Crude_ME_Hormuz",
+     "Crude_ME_RedSea",
+     "Import_Hub",
+     "Import_Hub_EU",
+     "Import_Hub_US",
+     "OilSands_Alberta",
+     "Refinery_EU",
+     "Refinery_Local",
+     "Refinery_Local_H",
+     "Refinery_Local_R",
+     "Refinery_SG",
+     "Refinery_US",
+     "Refinery_USGulf",
+     "Retail_EU_DE",
+     "Retail_EU_FR",
+     "Retail_EU_Import_DE_I",
+     "Retail_EU_Import_FR_I",
+     "Retail_EU_NL",
+     "Retail_Import_KANSAI_I",
+     "Retail_Import_KANTO_I",
+     "Retail_Local_CHUBU",
+     "Retail_Local_H_CHUBU",
+     "Retail_Local_H_KANSAI",
+     "Retail_Local_H_KANTO",
+     "Retail_Local_KANSAI",
+     "Retail_Local_KANTO",
+     "Retail_Local_R_CHUBU",
+     "Retail_Local_R_KANSAI",
+     "Retail_Local_R_KANTO",
+     "Retail_US_CA",
+     "Retail_US_Import_MW_I",
+     "Retail_US_Import_NE_I",
+     "Retail_US_NY",
+     "Retail_US_TX",
+     "Shale_Permian",
+     "Tank_EU_Import",
+     "Tank_EU_Local",
+     "Tank_Import",
+     "Tank_Local",
+     "Tank_Local_H",
+     "Tank_Local_R",
+     "Tank_US_Import",
+     "Tank_US_Local"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Gasoline_EU_Import",
+     "channel": "Retail_EU_Import_DE_I",
+     "ship_lots": 7558,
+     "qty": 7558.0,
+     "price_local_first": 1700.0,
+     "currency": "EUR",
+     "fx_first": 163.0,
+     "fx_min": 163.0,
+     "fx_max": 163.0,
+     "revenue_base": 2094321800.0
+    },
+    {
+     "product": "Gasoline_EU_Import",
+     "channel": "Retail_EU_Import_FR_I",
+     "ship_lots": 4535,
+     "qty": 4535.0,
+     "price_local_first": 1720.0,
+     "currency": "EUR",
+     "fx_first": 163.0,
+     "fx_min": 163.0,
+     "fx_max": 163.0,
+     "revenue_base": 1271432600.0
+    },
+    {
+     "product": "Gasoline_EU_Local",
+     "channel": "Retail_EU_DE",
+     "ship_lots": 26035,
+     "qty": 26035.0,
+     "price_local_first": 1750.0,
+     "currency": "EUR",
+     "fx_first": 163.0,
+     "fx_min": 163.0,
+     "fx_max": 163.0,
+     "revenue_base": 7426483750.0
+    },
+    {
+     "product": "Gasoline_EU_Local",
+     "channel": "Retail_EU_FR",
+     "ship_lots": 16361,
+     "qty": 16361.0,
+     "price_local_first": 1800.0,
+     "currency": "EUR",
+     "fx_first": 163.0,
+     "fx_min": 163.0,
+     "fx_max": 163.0,
+     "revenue_base": 4800317400.0
+    },
+    {
+     "product": "Gasoline_EU_Local",
+     "channel": "Retail_EU_NL",
+     "ship_lots": 8185,
+     "qty": 8185.0,
+     "price_local_first": 1900.0,
+     "currency": "EUR",
+     "fx_first": 163.0,
+     "fx_min": 163.0,
+     "fx_max": 163.0,
+     "revenue_base": 2534894500.0
+    },
+    {
+     "product": "Gasoline_Import",
+     "channel": "Retail_Import_KANSAI_I",
+     "ship_lots": 3779,
+     "qty": 3779.0,
+     "price_local_first": 163000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 615977000.0
+    },
+    {
+     "product": "Gasoline_Import",
+     "channel": "Retail_Import_KANTO_I",
+     "ship_lots": 6044,
+     "qty": 6044.0,
+     "price_local_first": 165000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 997260000.0
+    },
+    {
+     "product": "Gasoline_Local",
+     "channel": "Retail_Local_CHUBU",
+     "ship_lots": 6693,
+     "qty": 6693.0,
+     "price_local_first": 172000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 1151196000.0
+    },
+    {
+     "product": "Gasoline_Local",
+     "channel": "Retail_Local_KANSAI",
+     "ship_lots": 13388,
+     "qty": 13388.0,
+     "price_local_first": 168000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 2249184000.0
+    },
+    {
+     "product": "Gasoline_Local",
+     "channel": "Retail_Local_KANTO",
+     "ship_lots": 22314,
+     "qty": 22314.0,
+     "price_local_first": 170000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 3793380000.0
+    },
+    {
+     "product": "Gasoline_Local_Hormuz",
+     "channel": "Retail_Local_H_CHUBU",
+     "ship_lots": 26,
+     "qty": 26.0,
+     "price_local_first": 2730000000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 70980000000.0
+    },
+    {
+     "product": "Gasoline_Local_Hormuz",
+     "channel": "Retail_Local_H_KANSAI",
+     "ship_lots": 26,
+     "qty": 26.0,
+     "price_local_first": 2670000000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 69420000000.0
+    },
+    {
+     "product": "Gasoline_Local_Hormuz",
+     "channel": "Retail_Local_H_KANTO",
+     "ship_lots": 51,
+     "qty": 51.0,
+     "price_local_first": 2700000000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 137700000000.0
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "channel": "Retail_Local_R_CHUBU",
+     "ship_lots": 104,
+     "qty": 104.0,
+     "price_local_first": 2730000000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 283920000000.0
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "channel": "Retail_Local_R_KANSAI",
+     "ship_lots": 115,
+     "qty": 115.0,
+     "price_local_first": 2670000000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 307050000000.0
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "channel": "Retail_Local_R_KANTO",
+     "ship_lots": 246,
+     "qty": 246.0,
+     "price_local_first": 2700000000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 664200000000.0
+    },
+    {
+     "product": "Gasoline_US_Import",
+     "channel": "Retail_US_Import_MW_I",
+     "ship_lots": 4535,
+     "qty": 4535.0,
+     "price_local_first": 880.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 155.0,
+     "revenue_base": 604230000.0
+    },
+    {
+     "product": "Gasoline_US_Import",
+     "channel": "Retail_US_Import_NE_I",
+     "ship_lots": 3022,
+     "qty": 3022.0,
+     "price_local_first": 920.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 155.0,
+     "revenue_base": 420940480.0
+    },
+    {
+     "product": "Gasoline_US_Local",
+     "channel": "Retail_US_CA",
+     "ship_lots": 22670,
+     "qty": 22670.0,
+     "price_local_first": 1050.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 155.0,
+     "revenue_base": 3603978000.0
+    },
+    {
+     "product": "Gasoline_US_Local",
+     "channel": "Retail_US_NY",
+     "ship_lots": 11336,
+     "qty": 11336.0,
+     "price_local_first": 950.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 155.0,
+     "revenue_base": 1630518250.0
+    },
+    {
+     "product": "Gasoline_US_Local",
+     "channel": "Retail_US_TX",
+     "ship_lots": 34006,
+     "qty": 34006.0,
+     "price_local_first": 900.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 155.0,
+     "revenue_base": 4633826400.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "Gasoline_Local",
+     "node": "Tank_Local",
+     "type": "dad",
+     "ppc_qty": 42395.0,
+     "own_actual_ship_qty": 42395,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W52"
+    },
+    {
+     "product": "Gasoline_Local",
+     "node": "Refinery_Local",
+     "type": "mom",
+     "ppc_qty": 42395.0,
+     "own_actual_ship_qty": 42395,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W50"
+    },
+    {
+     "product": "Gasoline_Local",
+     "node": "Crude_ME",
+     "type": "leaf_in",
+     "ppc_qty": 42395.0,
+     "own_actual_ship_qty": 42395,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W47"
+    },
+    {
+     "product": "Gasoline_Import",
+     "node": "Tank_Import",
+     "type": "dad",
+     "ppc_qty": 9823.0,
+     "own_actual_ship_qty": 9823,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W52"
+    },
+    {
+     "product": "Gasoline_Import",
+     "node": "Import_Hub",
+     "type": "mom",
+     "ppc_qty": 9823.0,
+     "own_actual_ship_qty": 9823,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W48"
+    },
+    {
+     "product": "Gasoline_Import",
+     "node": "Refinery_SG",
+     "type": "leaf_in",
+     "ppc_qty": 9823.0,
+     "own_actual_ship_qty": 9823,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W43"
+    },
+    {
+     "product": "Gasoline_Local_Hormuz",
+     "node": "Tank_Local_H",
+     "type": "dad",
+     "ppc_qty": 103.0,
+     "own_actual_ship_qty": 103,
+     "ppc_first_week": "2027-W02",
+     "own_first_ship_week": "2027-W01"
+    },
+    {
+     "product": "Gasoline_Local_Hormuz",
+     "node": "Refinery_Local_H",
+     "type": "mom",
+     "ppc_qty": 103.0,
+     "own_actual_ship_qty": 103,
+     "ppc_first_week": "2027-W02",
+     "own_first_ship_week": "2026-W49"
+    },
+    {
+     "product": "Gasoline_Local_Hormuz",
+     "node": "Crude_ME_Hormuz",
+     "type": "leaf_in",
+     "ppc_qty": 103.0,
+     "own_actual_ship_qty": 103,
+     "ppc_first_week": "2027-W02",
+     "own_first_ship_week": "2026-W46"
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "node": "Tank_Local_R",
+     "type": "dad",
+     "ppc_qty": 465.0,
+     "own_actual_ship_qty": 465,
+     "ppc_first_week": "2027-W16",
+     "own_first_ship_week": "2027-W14"
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "node": "Refinery_Local_R",
+     "type": "mom",
+     "ppc_qty": 465.0,
+     "own_actual_ship_qty": 465,
+     "ppc_first_week": "2027-W16",
+     "own_first_ship_week": "2026-W33"
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "node": "Crude_ME_RedSea",
+     "type": "leaf_in",
+     "ppc_qty": 465.0,
+     "own_actual_ship_qty": 465,
+     "ppc_first_week": "2027-W16",
+     "own_first_ship_week": "2026-W28"
+    },
+    {
+     "product": "Gasoline_EU_Local",
+     "node": "Tank_EU_Local",
+     "type": "dad",
+     "ppc_qty": 50581.0,
+     "own_actual_ship_qty": 50581,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W52"
+    },
+    {
+     "product": "Gasoline_EU_Local",
+     "node": "Refinery_EU",
+     "type": "mom",
+     "ppc_qty": 50581.0,
+     "own_actual_ship_qty": 50581,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W46"
+    },
+    {
+     "product": "Gasoline_EU_Local",
+     "node": "Crude_ME_EU",
+     "type": "leaf_in",
+     "ppc_qty": 50581.0,
+     "own_actual_ship_qty": 50581,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W43"
+    },
+    {
+     "product": "Gasoline_EU_Import",
+     "node": "Tank_EU_Import",
+     "type": "dad",
+     "ppc_qty": 12093.0,
+     "own_actual_ship_qty": 12093,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W52"
+    },
+    {
+     "product": "Gasoline_EU_Import",
+     "node": "Import_Hub_EU",
+     "type": "mom",
+     "ppc_qty": 12093.0,
+     "own_actual_ship_qty": 12093,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W48"
+    },
+    {
+     "product": "Gasoline_EU_Import",
+     "node": "Refinery_US",
+     "type": "leaf_in",
+     "ppc_qty": 12093.0,
+     "own_actual_ship_qty": 12093,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W45"
+    },
+    {
+     "product": "Gasoline_US_Local",
+     "node": "Tank_US_Local",
+     "type": "dad",
+     "ppc_qty": 68012.0,
+     "own_actual_ship_qty": 68012,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W52"
+    },
+    {
+     "product": "Gasoline_US_Local",
+     "node": "Refinery_USGulf",
+     "type": "mom",
+     "ppc_qty": 68012.0,
+     "own_actual_ship_qty": 68012,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W50"
+    },
+    {
+     "product": "Gasoline_US_Local",
+     "node": "Shale_Permian",
+     "type": "leaf_in",
+     "ppc_qty": 68012.0,
+     "own_actual_ship_qty": 68012,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W49"
+    },
+    {
+     "product": "Gasoline_US_Import",
+     "node": "Tank_US_Import",
+     "type": "dad",
+     "ppc_qty": 7557.0,
+     "own_actual_ship_qty": 7557,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W52"
+    },
+    {
+     "product": "Gasoline_US_Import",
+     "node": "Import_Hub_US",
+     "type": "mom",
+     "ppc_qty": 7557.0,
+     "own_actual_ship_qty": 7557,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W49"
+    },
+    {
+     "product": "Gasoline_US_Import",
+     "node": "OilSands_Alberta",
+     "type": "leaf_in",
+     "ppc_qty": 7557.0,
+     "own_actual_ship_qty": 7557,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W47"
+    }
+   ],
+   "money": {
+    "revenue": 1542260157490.0,
+    "cogs": 50503639276.0,
+    "leaf_revenue": 1542260157490.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 191029.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Gasoline_EU_Import",
+     "region": "DE_I",
+     "revenue": 12848600.0,
+     "units": 7558.0
+    },
+    {
+     "sku": "Gasoline_EU_Import",
+     "region": "FR_I",
+     "revenue": 7800200.0,
+     "units": 4535.0
+    },
+    {
+     "sku": "Gasoline_EU_Local",
+     "region": "DE",
+     "revenue": 45561250.0,
+     "units": 26035.0
+    },
+    {
+     "sku": "Gasoline_EU_Local",
+     "region": "FR",
+     "revenue": 29449800.0,
+     "units": 16361.0
+    },
+    {
+     "sku": "Gasoline_EU_Local",
+     "region": "NL",
+     "revenue": 15551500.0,
+     "units": 8185.0
+    },
+    {
+     "sku": "Gasoline_Import",
+     "region": "KANSAI_I",
+     "revenue": 615977000.0,
+     "units": 3779.0
+    },
+    {
+     "sku": "Gasoline_Import",
+     "region": "KANTO_I",
+     "revenue": 997260000.0,
+     "units": 6044.0
+    },
+    {
+     "sku": "Gasoline_Local",
+     "region": "CHUBU",
+     "revenue": 1151196000.0,
+     "units": 6693.0
+    },
+    {
+     "sku": "Gasoline_Local",
+     "region": "KANSAI",
+     "revenue": 2249184000.0,
+     "units": 13388.0
+    },
+    {
+     "sku": "Gasoline_Local",
+     "region": "KANTO",
+     "revenue": 3793380000.0,
+     "units": 22314.0
+    },
+    {
+     "sku": "Gasoline_Local_Hormuz",
+     "region": "CHUBU",
+     "revenue": 70980000000.0,
+     "units": 26.0
+    },
+    {
+     "sku": "Gasoline_Local_Hormuz",
+     "region": "KANSAI",
+     "revenue": 69420000000.0,
+     "units": 26.0
+    },
+    {
+     "sku": "Gasoline_Local_Hormuz",
+     "region": "KANTO",
+     "revenue": 137700000000.0,
+     "units": 51.0
+    },
+    {
+     "sku": "Gasoline_Local_RedSea",
+     "region": "CHUBU",
+     "revenue": 283920000000.0,
+     "units": 104.0
+    },
+    {
+     "sku": "Gasoline_Local_RedSea",
+     "region": "KANSAI",
+     "revenue": 307050000000.0,
+     "units": 115.0
+    },
+    {
+     "sku": "Gasoline_Local_RedSea",
+     "region": "KANTO",
+     "revenue": 664200000000.0,
+     "units": 246.0
+    },
+    {
+     "sku": "Gasoline_US_Import",
+     "region": "MW_I",
+     "revenue": 3990800.0,
+     "units": 4535.0
+    },
+    {
+     "sku": "Gasoline_US_Import",
+     "region": "NE_I",
+     "revenue": 2780240.0,
+     "units": 3022.0
+    },
+    {
+     "sku": "Gasoline_US_Local",
+     "region": "CA",
+     "revenue": 23803500.0,
+     "units": 22670.0
+    },
+    {
+     "sku": "Gasoline_US_Local",
+     "region": "NY",
+     "revenue": 10769200.0,
+     "units": 11336.0
+    },
+    {
+     "sku": "Gasoline_US_Local",
+     "region": "TX",
+     "revenue": 30605400.0,
+     "units": 34006.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Gasoline_Local",
+     "region": "KANTO",
+     "selling_price": 170000,
+     "unit_cost": 110000,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_Local",
+     "region": "KANSAI",
+     "selling_price": 168000,
+     "unit_cost": 110000,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_Local",
+     "region": "CHUBU",
+     "selling_price": 172000,
+     "unit_cost": 110000,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_Import",
+     "region": "KANTO_I",
+     "selling_price": 165000,
+     "unit_cost": 97500,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_Import",
+     "region": "KANSAI_I",
+     "selling_price": 163000,
+     "unit_cost": 97500,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_Local_Hormuz",
+     "region": "KANTO",
+     "selling_price": 2700000000,
+     "unit_cost": 73584906,
+     "uom": "KL100KBBL"
+    },
+    {
+     "sku_id": "Gasoline_Local_Hormuz",
+     "region": "KANSAI",
+     "selling_price": 2670000000,
+     "unit_cost": 73584906,
+     "uom": "KL100KBBL"
+    },
+    {
+     "sku_id": "Gasoline_Local_Hormuz",
+     "region": "CHUBU",
+     "selling_price": 2730000000,
+     "unit_cost": 73584906,
+     "uom": "KL100KBBL"
+    },
+    {
+     "sku_id": "Gasoline_Local_RedSea",
+     "region": "KANTO",
+     "selling_price": 2700000000,
+     "unit_cost": 80188679,
+     "uom": "KL100KBBL"
+    },
+    {
+     "sku_id": "Gasoline_Local_RedSea",
+     "region": "KANSAI",
+     "selling_price": 2670000000,
+     "unit_cost": 80188679,
+     "uom": "KL100KBBL"
+    },
+    {
+     "sku_id": "Gasoline_Local_RedSea",
+     "region": "CHUBU",
+     "selling_price": 2730000000,
+     "unit_cost": 80188679,
+     "uom": "KL100KBBL"
+    },
+    {
+     "sku_id": "Gasoline_EU_Local",
+     "region": "DE",
+     "selling_price": 1750,
+     "unit_cost": 145,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_EU_Local",
+     "region": "FR",
+     "selling_price": 1800,
+     "unit_cost": 145,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_EU_Local",
+     "region": "NL",
+     "selling_price": 1900,
+     "unit_cost": 145,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_EU_Import",
+     "region": "DE_I",
+     "selling_price": 1700,
+     "unit_cost": 130,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_EU_Import",
+     "region": "FR_I",
+     "selling_price": 1720,
+     "unit_cost": 130,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_US_Local",
+     "region": "TX",
+     "selling_price": 900,
+     "unit_cost": 88,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_US_Local",
+     "region": "CA",
+     "selling_price": 1050,
+     "unit_cost": 88,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_US_Local",
+     "region": "NY",
+     "selling_price": 950,
+     "unit_cost": 88,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_US_Import",
+     "region": "MW_I",
+     "selling_price": 880,
+     "unit_cost": 76,
+     "uom": "KL"
+    },
+    {
+     "sku_id": "Gasoline_US_Import",
+     "region": "NE_I",
+     "selling_price": 920,
+     "unit_cost": 76,
+     "uom": "KL"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "EUR",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2027-W01",
+     "2027-W31",
+     3
+    ],
+    "event_currencies_non_base": [
+     "EUR",
+     "USD"
+    ],
+    "coverage_over_plan_weeks": {
+     "EUR": {
+      "exact": 1,
+      "fallback": 77,
+      "missing": 26
+     },
+     "USD": {
+      "exact": 3,
+      "fallback": 75,
+      "missing": 26
+     }
+    },
+    "plan_first_week": "2026-W28"
+   },
+   "kitting": [
+    {
+     "product": "Gasoline_Local",
+     "node": "Refinery_Local",
+     "children": [
+      "Crude_ME"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 42395,
+     "P_minus_complete": {
+      "P-complete=0": 42395
+     },
+     "examples": []
+    },
+    {
+     "product": "Gasoline_Import",
+     "node": "Import_Hub",
+     "children": [
+      "Refinery_SG"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 9823,
+     "P_minus_complete": {
+      "P-complete=0": 9823
+     },
+     "examples": []
+    },
+    {
+     "product": "Gasoline_Local_Hormuz",
+     "node": "Refinery_Local_H",
+     "children": [
+      "Crude_ME_Hormuz"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 103,
+     "P_minus_complete": {
+      "P-complete=0": 103
+     },
+     "examples": []
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "node": "Refinery_Local_R",
+     "children": [
+      "Crude_ME_RedSea"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 465,
+     "P_minus_complete": {
+      "P-complete=0": 465
+     },
+     "examples": []
+    },
+    {
+     "product": "Gasoline_EU_Local",
+     "node": "Refinery_EU",
+     "children": [
+      "Crude_ME_EU"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 50581,
+     "P_minus_complete": {
+      "P-complete=0": 50581
+     },
+     "examples": []
+    },
+    {
+     "product": "Gasoline_EU_Import",
+     "node": "Import_Hub_EU",
+     "children": [
+      "Refinery_US"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 12093,
+     "P_minus_complete": {
+      "P-complete=0": 12093
+     },
+     "examples": []
+    },
+    {
+     "product": "Gasoline_US_Local",
+     "node": "Refinery_USGulf",
+     "children": [
+      "Shale_Permian"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 68012,
+     "P_minus_complete": {
+      "P-complete=0": 68012
+     },
+     "examples": []
+    },
+    {
+     "product": "Gasoline_US_Import",
+     "node": "Import_Hub_US",
+     "children": [
+      "OilSands_Alberta"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 7557,
+     "P_minus_complete": {
+      "P-complete=0": 7557
+     },
+     "examples": []
+    }
+   ]
+  },
+  "rice-japan-2027-2028": {
+   "model": "rice-japan-2027-2028",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HarvestBatchPlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "legacy",
+   "cpu_size": 1,
+   "weeks": [
+    "2026-W01",
+    "2028-W51",
+    156
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 1240,
+    "revenue_base": 1829200000.0,
+    "cost_base": 1124103687.0,
+    "gross_profit_base": 705096313.0,
+    "gross_margin_pct": 0.385467,
+    "tariff_base": 0.0,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "data/ppc (fallback: whole set)",
+   "fx_file": "model",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 235316,
+    "records": 1240,
+    "qty": 235316.0,
+    "kept_records": 1240,
+    "kept_qty": 235316.0,
+    "unique_lot_ids": 310
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 1240,
+    "total_qty_units": 235316.0,
+    "total_revenue_base": 1829200000.0,
+    "total_cost_base": 1124103687.0,
+    "gross_margin_pct": 0.38546704187623004
+   },
+   "events": {
+    "n": 14880,
+    "types": {
+     "supplier_cost": 1240,
+     "logistics_cost": 3720,
+     "conversion_cost": 1240,
+     "transfer_price_set": 1240,
+     "landed_cost_total": 1240,
+     "warehouse_cost": 1240,
+     "market_revenue": 1240,
+     "sga_cost": 1240,
+     "mom_profit": 1240,
+     "backward_allowable": 1240
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "JPY": 14880
+    },
+    "nodes": [
+     "DC_Rice",
+     "Farm_JP",
+     "JA_Seihaku",
+     "JP_Channel"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Koshihikari",
+     "channel": "JP_Channel",
+     "ship_lots": null,
+     "qty": 181085.0,
+     "price_local_first": 8000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 1495286200.0
+    },
+    {
+     "product": "Yumepirika",
+     "channel": "JP_Channel",
+     "ship_lots": null,
+     "qty": 54231.0,
+     "price_local_first": 6000.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 333913800.0
+    }
+   ],
+   "intermediate_nodes": [],
+   "money": {
+    "revenue": 725656000000.0,
+    "cogs": 407299500000.0,
+    "leaf_revenue": 725656000000.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "request"
+    ],
+    "units_leaf": 235316.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Koshihikari",
+     "region": "KANSAI",
+     "revenue": 149298600000.0,
+     "units": 45242.0
+    },
+    {
+     "sku": "Koshihikari",
+     "region": "KANTO",
+     "revenue": 232032000000.0,
+     "units": 72510.0
+    },
+    {
+     "sku": "Koshihikari",
+     "region": "KYUSHU",
+     "revenue": 56082100000.0,
+     "units": 18091.0
+    },
+    {
+     "sku": "Koshihikari",
+     "region": "TOHOKU",
+     "revenue": 135726000000.0,
+     "units": 45242.0
+    },
+    {
+     "sku": "Yumepirika",
+     "region": "KANSAI",
+     "revenue": 62808200000.0,
+     "units": 21658.0
+    },
+    {
+     "sku": "Yumepirika",
+     "region": "KANTO",
+     "revenue": 37912000000.0,
+     "units": 13540.0
+    },
+    {
+     "sku": "Yumepirika",
+     "region": "KYUSHU",
+     "revenue": 22440000000.0,
+     "units": 8160.0
+    },
+    {
+     "sku": "Yumepirika",
+     "region": "TOHOKU",
+     "revenue": 29357100000.0,
+     "units": 10873.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Koshihikari",
+     "region": "KANTO",
+     "selling_price": 3200000,
+     "unit_cost": 1800000,
+     "uom": "lot"
+    },
+    {
+     "sku_id": "Koshihikari",
+     "region": "TOHOKU",
+     "selling_price": 3000000,
+     "unit_cost": 1800000,
+     "uom": "lot"
+    },
+    {
+     "sku_id": "Koshihikari",
+     "region": "KANSAI",
+     "selling_price": 3300000,
+     "unit_cost": 1800000,
+     "uom": "lot"
+    },
+    {
+     "sku_id": "Koshihikari",
+     "region": "KYUSHU",
+     "selling_price": 3100000,
+     "unit_cost": 1800000,
+     "uom": "lot"
+    },
+    {
+     "sku_id": "Yumepirika",
+     "region": "KANTO",
+     "selling_price": 2800000,
+     "unit_cost": 1500000,
+     "uom": "lot"
+    },
+    {
+     "sku_id": "Yumepirika",
+     "region": "TOHOKU",
+     "selling_price": 2700000,
+     "unit_cost": 1500000,
+     "uom": "lot"
+    },
+    {
+     "sku_id": "Yumepirika",
+     "region": "KANSAI",
+     "selling_price": 2900000,
+     "unit_cost": 1500000,
+     "uom": "lot"
+    },
+    {
+     "sku_id": "Yumepirika",
+     "region": "KYUSHU",
+     "selling_price": 2750000,
+     "unit_cost": 1500000,
+     "uom": "lot"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "CNY",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2028-W51",
+     156
+    ],
+    "event_currencies_non_base": [],
+    "coverage_over_plan_weeks": {},
+    "plan_first_week": "2026-W01"
+   },
+   "kitting": [
+    {
+     "product": "Koshihikari",
+     "node": "Sanchiku_Niigata",
+     "children": [
+      "Tanbo_Niigata"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 139500,
+     "P_minus_complete": {
+      "P-complete=0": 139500
+     },
+     "examples": []
+    },
+    {
+     "product": "Yumepirika",
+     "node": "Sanchiku_Hokkaido",
+     "children": [
+      "Tanbo_Hokkaido"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 51288,
+     "P_minus_complete": {
+      "P-complete=0": 51288
+     },
+     "examples": []
+    }
+   ]
+  },
+  "smartx-2027-2029": {
+   "model": "smartx-2027-2029",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2025-W36",
+    "2030-W52",
+    278
+   ],
+   "snapshot_ppc": {
+    "base_currency": "USD",
+    "total_lots": 1716,
+    "revenue_base": 702250439.0,
+    "cost_base": 67621679.16,
+    "gross_profit_base": 634628759.84,
+    "gross_margin_pct": 0.903707,
+    "tariff_base": 2558419.56,
+    "trust_event_count": 207
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "USD",
+   "bridge": {
+    "leaf_actual_ship_lots": 709811,
+    "records": 1716,
+    "qty": 709811.0,
+    "kept_records": 1716,
+    "kept_qty": 709811.0,
+    "unique_lot_ids": 1716
+   },
+   "ppc_kpi": {
+    "base_currency": "USD",
+    "total_lots": 1716,
+    "total_qty_units": 709811.0,
+    "total_revenue_base": 702250439.0,
+    "total_cost_base": 67621679.16,
+    "gross_margin_pct": 0.9037071742435749
+   },
+   "events": {
+    "n": 22662,
+    "types": {
+     "supplier_cost": 1716,
+     "conversion_cost": 4941,
+     "logistics_cost": 6183,
+     "transfer_price_set": 1716,
+     "landed_cost_total": 1716,
+     "tariff_cost": 1242,
+     "market_revenue": 1716,
+     "mom_profit": 1716,
+     "backward_allowable": 1716
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 22662
+    },
+    "nodes": [
+     "AssemblyCN",
+     "AssemblyCN_g1",
+     "AssemblyCN_g3",
+     "AssemblyIN",
+     "DC_AMER",
+     "DC_AMER_g1",
+     "DC_AMER_g3",
+     "DC_APAC",
+     "DC_APAC_g1",
+     "DC_APAC_g3",
+     "DC_EMEA",
+     "DC_EMEA_g1",
+     "DC_EMEA_g3",
+     "FoundryTW",
+     "FoundryTW_g1",
+     "FoundryTW_g3",
+     "Retail_AMER",
+     "Retail_AMER_g1",
+     "Retail_AMER_g3",
+     "Retail_APAC",
+     "Retail_APAC_g1",
+     "Retail_APAC_g3",
+     "Retail_EMEA",
+     "Retail_EMEA_g1",
+     "Retail_EMEA_g3",
+     "SensorIN",
+     "WaferFab_TW",
+     "WaferFab_TW_g1",
+     "WaferFab_TW_g3"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "SmartX",
+     "channel": "Retail_AMER_g1",
+     "ship_lots": 59659,
+     "qty": 59659.0,
+     "price_local_first": 699.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 41701641.0
+    },
+    {
+     "product": "SmartX",
+     "channel": "Retail_APAC_g1",
+     "ship_lots": 47732,
+     "qty": 47732.0,
+     "price_local_first": 649.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 30978068.0
+    },
+    {
+     "product": "SmartX",
+     "channel": "Retail_EMEA_g1",
+     "ship_lots": 41754,
+     "qty": 41754.0,
+     "price_local_first": 799.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 33361446.0
+    },
+    {
+     "product": "SmartXNext",
+     "channel": "Retail_AMER_g3",
+     "ship_lots": 117500,
+     "qty": 117500.0,
+     "price_local_first": 1099.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 129132500.0
+    },
+    {
+     "product": "SmartXNext",
+     "channel": "Retail_APAC_g3",
+     "ship_lots": 94013,
+     "qty": 94013.0,
+     "price_local_first": 1049.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 98619637.0
+    },
+    {
+     "product": "SmartXNext",
+     "channel": "Retail_EMEA_g3",
+     "ship_lots": 82251,
+     "qty": 82251.0,
+     "price_local_first": 1199.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 98618949.0
+    },
+    {
+     "product": "SmartXPro_CN",
+     "channel": "Retail_APAC",
+     "ship_lots": 85410,
+     "qty": 85410.0,
+     "price_local_first": 949.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 81054090.0
+    },
+    {
+     "product": "SmartXPro_CN",
+     "channel": "Retail_EMEA",
+     "ship_lots": 74736,
+     "qty": 74736.0,
+     "price_local_first": 1099.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 82134864.0
+    },
+    {
+     "product": "SmartXPro_IN",
+     "channel": "Retail_AMER",
+     "ship_lots": 106756,
+     "qty": 106756.0,
+     "price_local_first": 999.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 106649244.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "SmartX",
+     "node": "DC_AMER_g1",
+     "type": "dad",
+     "ppc_qty": 59659.0,
+     "own_actual_ship_qty": 59659,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "SmartX",
+     "node": "DC_EMEA_g1",
+     "type": "dad",
+     "ppc_qty": 41754.0,
+     "own_actual_ship_qty": 41754,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "SmartX",
+     "node": "DC_APAC_g1",
+     "type": "dad",
+     "ppc_qty": 47732.0,
+     "own_actual_ship_qty": 47732,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "SmartX",
+     "node": "AssemblyCN_g1",
+     "type": "mom",
+     "ppc_qty": 149145.0,
+     "own_actual_ship_qty": 149145,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W49"
+    },
+    {
+     "product": "SmartX",
+     "node": "FoundryTW_g1",
+     "type": "mom",
+     "ppc_qty": 149145.0,
+     "own_actual_ship_qty": 149145,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W41"
+    },
+    {
+     "product": "SmartX",
+     "node": "WaferFab_TW_g1",
+     "type": "leaf_in",
+     "ppc_qty": 149145.0,
+     "own_actual_ship_qty": 149145,
+     "ppc_first_week": "2026-W01",
+     "own_first_ship_week": "2025-W39"
+    },
+    {
+     "product": "SmartXNext",
+     "node": "DC_AMER_g3",
+     "type": "dad",
+     "ppc_qty": 117500.0,
+     "own_actual_ship_qty": 117500,
+     "ppc_first_week": "2028-W27",
+     "own_first_ship_week": "2028-W26"
+    },
+    {
+     "product": "SmartXNext",
+     "node": "DC_EMEA_g3",
+     "type": "dad",
+     "ppc_qty": 82251.0,
+     "own_actual_ship_qty": 82251,
+     "ppc_first_week": "2028-W27",
+     "own_first_ship_week": "2028-W26"
+    },
+    {
+     "product": "SmartXNext",
+     "node": "DC_APAC_g3",
+     "type": "dad",
+     "ppc_qty": 94013.0,
+     "own_actual_ship_qty": 94013,
+     "ppc_first_week": "2028-W27",
+     "own_first_ship_week": "2028-W26"
+    },
+    {
+     "product": "SmartXNext",
+     "node": "AssemblyCN_g3",
+     "type": "mom",
+     "ppc_qty": 293764.0,
+     "own_actual_ship_qty": 293764,
+     "ppc_first_week": "2028-W27",
+     "own_first_ship_week": "2028-W23"
+    },
+    {
+     "product": "SmartXNext",
+     "node": "FoundryTW_g3",
+     "type": "mom",
+     "ppc_qty": 293764.0,
+     "own_actual_ship_qty": 293764,
+     "ppc_first_week": "2028-W27",
+     "own_first_ship_week": "2028-W18"
+    },
+    {
+     "product": "SmartXNext",
+     "node": "WaferFab_TW_g3",
+     "type": "leaf_in",
+     "ppc_qty": 293764.0,
+     "own_actual_ship_qty": 293764,
+     "ppc_first_week": "2028-W27",
+     "own_first_ship_week": "2028-W16"
+    },
+    {
+     "product": "SmartXPro_CN",
+     "node": "DC_EMEA",
+     "type": "dad",
+     "ppc_qty": 74736.0,
+     "own_actual_ship_qty": 74736,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "SmartXPro_CN",
+     "node": "DC_APAC",
+     "type": "dad",
+     "ppc_qty": 85410.0,
+     "own_actual_ship_qty": 85410,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "SmartXPro_CN",
+     "node": "AssemblyCN",
+     "type": "mom",
+     "ppc_qty": 160146.0,
+     "own_actual_ship_qty": 160146,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W50"
+    },
+    {
+     "product": "SmartXPro_CN",
+     "node": "FoundryTW",
+     "type": "mom",
+     "ppc_qty": 160146.0,
+     "own_actual_ship_qty": 160146,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W44"
+    },
+    {
+     "product": "SmartXPro_CN",
+     "node": "WaferFab_TW",
+     "type": "leaf_in",
+     "ppc_qty": 160146.0,
+     "own_actual_ship_qty": 160146,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W05"
+    },
+    {
+     "product": "SmartXPro_IN",
+     "node": "DC_AMER",
+     "type": "dad",
+     "ppc_qty": 106756.0,
+     "own_actual_ship_qty": 106756,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "SmartXPro_IN",
+     "node": "AssemblyIN",
+     "type": "mom",
+     "ppc_qty": 106756.0,
+     "own_actual_ship_qty": 106756,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W51"
+    },
+    {
+     "product": "SmartXPro_IN",
+     "node": "SensorIN",
+     "type": "leaf_in",
+     "ppc_qty": 106756.0,
+     "own_actual_ship_qty": 106756,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W48"
+    }
+   ],
+   "money": {
+    "revenue": 702250439.0,
+    "cogs": 311776660.0,
+    "leaf_revenue": 702250439.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 709811.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "SmartX",
+     "region": "AMER",
+     "revenue": 41701641.0,
+     "units": 59659.0
+    },
+    {
+     "sku": "SmartX",
+     "region": "APAC",
+     "revenue": 30978068.0,
+     "units": 47732.0
+    },
+    {
+     "sku": "SmartX",
+     "region": "EMEA",
+     "revenue": 33361446.0,
+     "units": 41754.0
+    },
+    {
+     "sku": "SmartXNext",
+     "region": "AMER",
+     "revenue": 129132500.0,
+     "units": 117500.0
+    },
+    {
+     "sku": "SmartXNext",
+     "region": "APAC",
+     "revenue": 98619637.0,
+     "units": 94013.0
+    },
+    {
+     "sku": "SmartXNext",
+     "region": "EMEA",
+     "revenue": 98618949.0,
+     "units": 82251.0
+    },
+    {
+     "sku": "SmartXPro_CN",
+     "region": "APAC",
+     "revenue": 81054090.0,
+     "units": 85410.0
+    },
+    {
+     "sku": "SmartXPro_CN",
+     "region": "EMEA",
+     "revenue": 82134864.0,
+     "units": 74736.0
+    },
+    {
+     "sku": "SmartXPro_IN",
+     "region": "AMER",
+     "revenue": 106649244.0,
+     "units": 106756.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "SmartXPro_IN",
+     "region": "AMER",
+     "selling_price": 999,
+     "unit_cost": 450,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "SmartXPro_CN",
+     "region": "EMEA",
+     "selling_price": 1099,
+     "unit_cost": 450,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "SmartXPro_CN",
+     "region": "APAC",
+     "selling_price": 949,
+     "unit_cost": 450,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "SmartX",
+     "region": "AMER",
+     "selling_price": 699,
+     "unit_cost": 320,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "SmartX",
+     "region": "EMEA",
+     "selling_price": 799,
+     "unit_cost": 320,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "SmartX",
+     "region": "APAC",
+     "selling_price": 649,
+     "unit_cost": 320,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "SmartXNext",
+     "region": "AMER",
+     "selling_price": 1099,
+     "unit_cost": 490,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "SmartXNext",
+     "region": "EMEA",
+     "selling_price": 1199,
+     "unit_cost": 490,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "SmartXNext",
+     "region": "APAC",
+     "selling_price": 1049,
+     "unit_cost": 490,
+     "uom": "EA"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "USD",
+      "USD"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2030-W52",
+     261
+    ],
+    "event_currencies_non_base": [],
+    "coverage_over_plan_weeks": {},
+    "plan_first_week": "2025-W36"
+   },
+   "kitting": [
+    {
+     "product": "SmartX",
+     "node": "AssemblyCN_g1",
+     "children": [
+      "FoundryTW_g1"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 149145,
+     "P_minus_complete": {
+      "P-complete=0": 149145
+     },
+     "examples": []
+    },
+    {
+     "product": "SmartX",
+     "node": "FoundryTW_g1",
+     "children": [
+      "WaferFab_TW_g1"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 149145,
+     "P_minus_complete": {
+      "P-complete=0": 149145
+     },
+     "examples": []
+    },
+    {
+     "product": "SmartXNext",
+     "node": "AssemblyCN_g3",
+     "children": [
+      "FoundryTW_g3"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 293764,
+     "P_minus_complete": {
+      "P-complete=0": 293764
+     },
+     "examples": []
+    },
+    {
+     "product": "SmartXNext",
+     "node": "FoundryTW_g3",
+     "children": [
+      "WaferFab_TW_g3"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 293764,
+     "P_minus_complete": {
+      "P-complete=0": 293764
+     },
+     "examples": []
+    },
+    {
+     "product": "SmartXPro_CN",
+     "node": "AssemblyCN",
+     "children": [
+      "FoundryTW"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 160146,
+     "P_minus_complete": {
+      "P-complete=0": 160146
+     },
+     "examples": []
+    },
+    {
+     "product": "SmartXPro_CN",
+     "node": "Buffer_Chip_TW",
+     "children": [
+      "WaferFab_TW"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 160146,
+     "P_minus_complete": {
+      "P-complete=0": 160146
+     },
+     "examples": []
+    },
+    {
+     "product": "SmartXPro_IN",
+     "node": "AssemblyIN",
+     "children": [
+      "SensorIN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 106756,
+     "P_minus_complete": {
+      "P-complete=0": 93050,
+      "P-complete=1": 13706
+     },
+     "examples": [
+      {
+       "lot": "SmartXPro_IN:AMER:2027-W46:00014",
+       "demand_w": "2027-W43",
+       "complete": "2027-W42",
+       "p": "2027-W43"
+      },
+      {
+       "lot": "SmartXPro_IN:AMER:2027-W46:00015",
+       "demand_w": "2027-W43",
+       "complete": "2027-W42",
+       "p": "2027-W43"
+      },
+      {
+       "lot": "SmartXPro_IN:AMER:2027-W46:00016",
+       "demand_w": "2027-W43",
+       "complete": "2027-W42",
+       "p": "2027-W43"
+      },
+      {
+       "lot": "SmartXPro_IN:AMER:2027-W46:00017",
+       "demand_w": "2027-W43",
+       "complete": "2027-W42",
+       "p": "2027-W43"
+      },
+      {
+       "lot": "SmartXPro_IN:AMER:2027-W46:00018",
+       "demand_w": "2027-W43",
+       "complete": "2027-W42",
+       "p": "2027-W43"
+      }
+     ]
+    }
+   ]
+  },
+  "soysauce-eu-2027": {
+   "model": "soysauce-eu-2027",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2026-W28",
+    "2028-W52",
+    130
+   ],
+   "snapshot_ppc": {
+    "base_currency": "USD",
+    "total_lots": 624,
+    "revenue_base": 3622500.59,
+    "cost_base": 2637203.47,
+    "gross_profit_base": 985297.12,
+    "gross_margin_pct": 0.271994,
+    "tariff_base": 132466.07,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "USD",
+   "bridge": {
+    "leaf_actual_ship_lots": 100501,
+    "records": 624,
+    "qty": 100501.0,
+    "kept_records": 624,
+    "kept_qty": 100501.0,
+    "unique_lot_ids": 624
+   },
+   "ppc_kpi": {
+    "base_currency": "USD",
+    "total_lots": 624,
+    "total_qty_units": 100501.0,
+    "total_revenue_base": 3622500.592,
+    "total_cost_base": 2637203.4699999997,
+    "gross_margin_pct": 0.2719936400220195
+   },
+   "events": {
+    "n": 10504,
+    "types": {
+     "supplier_cost": 624,
+     "logistics_cost": 3120,
+     "conversion_cost": 1248,
+     "transfer_price_set": 624,
+     "landed_cost_total": 624,
+     "warehouse_cost": 1248,
+     "sga_cost": 520,
+     "tariff_cost": 624,
+     "market_revenue": 624,
+     "mom_profit": 624,
+     "backward_allowable": 624
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 10088,
+     "JPY": 104,
+     "EUR": 312
+    },
+    "nodes": [
+     "Bottling_Noda",
+     "Brewing_Noda",
+     "DC_EU_RTM",
+     "DC_JP",
+     "DC_US_NY",
+     "DC_US_SF",
+     "FG_WH_Noda",
+     "Materials_JP",
+     "Rest_BE",
+     "Rest_FR",
+     "Rest_JP",
+     "Rest_NL",
+     "Rest_US_East",
+     "Rest_US_West"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_BE",
+     "ship_lots": 10050,
+     "qty": 10050.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 1.08,
+     "fx_min": 1.08,
+     "fx_max": 1.08,
+     "revenue_base": 412452.00000000006
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_FR",
+     "ship_lots": 15075,
+     "qty": 15075.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 1.08,
+     "fx_min": 1.08,
+     "fx_max": 1.08,
+     "revenue_base": 618678.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_JP",
+     "ship_lots": 30150,
+     "qty": 30150.0,
+     "price_local_first": 3840.0,
+     "currency": "JPY",
+     "fx_first": 0.006667,
+     "fx_min": 0.006667,
+     "fx_max": 0.006667,
+     "revenue_base": 771878.5920000001
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_NL",
+     "ship_lots": 10050,
+     "qty": 10050.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 1.08,
+     "fx_min": 1.08,
+     "fx_max": 1.08,
+     "revenue_base": 412452.00000000006
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_US_East",
+     "ship_lots": 17588,
+     "qty": 17588.0,
+     "price_local_first": 40.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 703520.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_US_West",
+     "ship_lots": 17588,
+     "qty": 17588.0,
+     "price_local_first": 40.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 703520.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "Soy_Sauce",
+     "node": "FG_WH_Noda",
+     "type": "dad",
+     "ppc_qty": 100501.0,
+     "own_actual_ship_qty": 100501,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W44"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_US_SF",
+     "type": "dad",
+     "ppc_qty": 17588.0,
+     "own_actual_ship_qty": 17588,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_US_NY",
+     "type": "dad",
+     "ppc_qty": 17588.0,
+     "own_actual_ship_qty": 17588,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_JP",
+     "type": "dad",
+     "ppc_qty": 30150.0,
+     "own_actual_ship_qty": 30150,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_EU_RTM",
+     "type": "dad",
+     "ppc_qty": 35175.0,
+     "own_actual_ship_qty": 35175,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Bottling_Noda",
+     "type": "mom",
+     "ppc_qty": 100501.0,
+     "own_actual_ship_qty": 100501,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W40"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Brewing_Noda",
+     "type": "mom",
+     "ppc_qty": 100501.0,
+     "own_actual_ship_qty": 100501,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W35"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Materials_JP",
+     "type": "leaf_in",
+     "ppc_qty": 100501.0,
+     "own_actual_ship_qty": 100501,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W33"
+    }
+   ],
+   "money": {
+    "revenue": 3621055.0,
+    "cogs": 1608016.0,
+    "leaf_revenue": 3621055.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 100501.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Soy_Sauce",
+     "region": "BE",
+     "revenue": 412050.0,
+     "units": 10050.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "FR",
+     "revenue": 618075.0,
+     "units": 15075.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "JP",
+     "revenue": 771840.0,
+     "units": 30150.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "NL",
+     "revenue": 412050.0,
+     "units": 10050.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "US_E",
+     "revenue": 703520.0,
+     "units": 17588.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "US_W",
+     "revenue": 703520.0,
+     "units": 17588.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "US_W",
+     "selling_price": 40.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "US_E",
+     "selling_price": 40.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "JP",
+     "selling_price": 25.6,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "FR",
+     "selling_price": 41.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "BE",
+     "selling_price": 41.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "NL",
+     "selling_price": 41.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "EUR",
+      "USD"
+     ],
+     [
+      "JPY",
+      "USD"
+     ],
+     [
+      "USD",
+      "USD"
+     ]
+    ],
+    "fx_weeks": [
+     "2027-W01",
+     "2028-W52",
+     104
+    ],
+    "event_currencies_non_base": [
+     "EUR",
+     "JPY"
+    ],
+    "coverage_over_plan_weeks": {
+     "EUR": {
+      "exact": 104,
+      "fallback": 0,
+      "missing": 26
+     },
+     "JPY": {
+      "exact": 104,
+      "fallback": 0,
+      "missing": 26
+     }
+    },
+    "plan_first_week": "2026-W28"
+   },
+   "kitting": [
+    {
+     "product": "Soy_Sauce",
+     "node": "Bottling_Noda",
+     "children": [
+      "Brewing_Noda"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 100501,
+     "P_minus_complete": {
+      "P-complete=0": 100501
+     },
+     "examples": []
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Brewing_Noda",
+     "children": [
+      "Materials_JP"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 100501,
+     "P_minus_complete": {
+      "P-complete=0": 100501
+     },
+     "examples": []
+    }
+   ]
+  },
+  "soysauce-jpy-2027": {
+   "model": "soysauce-jpy-2027",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2026-W28",
+    "2028-W52",
+    130
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 624,
+    "revenue_base": 614988400.0,
+    "cost_base": 442528784.19,
+    "gross_profit_base": 172459615.81,
+    "gross_margin_pct": 0.280427,
+    "tariff_base": 21923341.69,
+    "trust_event_count": 32
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 100501,
+    "records": 624,
+    "qty": 100501.0,
+    "kept_records": 624,
+    "kept_qty": 100501.0,
+    "unique_lot_ids": 624
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 624,
+    "total_qty_units": 100501.0,
+    "total_revenue_base": 614988400.0,
+    "total_cost_base": 442528784.1875,
+    "gross_margin_pct": 0.2804274288954068
+   },
+   "events": {
+    "n": 10504,
+    "types": {
+     "supplier_cost": 624,
+     "logistics_cost": 3120,
+     "conversion_cost": 1248,
+     "transfer_price_set": 624,
+     "landed_cost_total": 624,
+     "warehouse_cost": 1248,
+     "sga_cost": 520,
+     "tariff_cost": 624,
+     "market_revenue": 624,
+     "mom_profit": 624,
+     "backward_allowable": 624
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 5616,
+     "JPY": 3952,
+     "EUR": 936
+    },
+    "nodes": [
+     "Bottling_Noda",
+     "Brewing_Noda",
+     "DC_EU_RTM",
+     "DC_JP",
+     "DC_US_NY",
+     "DC_US_SF",
+     "FG_WH_Noda",
+     "Materials_JP",
+     "Rest_BE",
+     "Rest_FR",
+     "Rest_JP",
+     "Rest_NL",
+     "Rest_US_East",
+     "Rest_US_West"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_BE",
+     "ship_lots": 10050,
+     "qty": 10050.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 162.0,
+     "fx_min": 162.0,
+     "fx_max": 216.0,
+     "revenue_base": 72230400.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_FR",
+     "ship_lots": 15075,
+     "qty": 15075.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 162.0,
+     "fx_min": 162.0,
+     "fx_max": 216.0,
+     "revenue_base": 108345600.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_JP",
+     "ship_lots": 30150,
+     "qty": 30150.0,
+     "price_local_first": 3840.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 115776000.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_NL",
+     "ship_lots": 10050,
+     "qty": 10050.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 162.0,
+     "fx_min": 162.0,
+     "fx_max": 216.0,
+     "revenue_base": 72230400.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_US_East",
+     "ship_lots": 17588,
+     "qty": 17588.0,
+     "price_local_first": 40.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 200.0,
+     "revenue_base": 123203000.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_US_West",
+     "ship_lots": 17588,
+     "qty": 17588.0,
+     "price_local_first": 40.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 200.0,
+     "revenue_base": 123203000.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "Soy_Sauce",
+     "node": "FG_WH_Noda",
+     "type": "dad",
+     "ppc_qty": 100501.0,
+     "own_actual_ship_qty": 100501,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W44"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_US_SF",
+     "type": "dad",
+     "ppc_qty": 17588.0,
+     "own_actual_ship_qty": 17588,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_US_NY",
+     "type": "dad",
+     "ppc_qty": 17588.0,
+     "own_actual_ship_qty": 17588,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_JP",
+     "type": "dad",
+     "ppc_qty": 30150.0,
+     "own_actual_ship_qty": 30150,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_EU_RTM",
+     "type": "dad",
+     "ppc_qty": 35175.0,
+     "own_actual_ship_qty": 35175,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Bottling_Noda",
+     "type": "mom",
+     "ppc_qty": 100501.0,
+     "own_actual_ship_qty": 100501,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W40"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Brewing_Noda",
+     "type": "mom",
+     "ppc_qty": 100501.0,
+     "own_actual_ship_qty": 100501,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W35"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Materials_JP",
+     "type": "leaf_in",
+     "ppc_qty": 100501.0,
+     "own_actual_ship_qty": 100501,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W33"
+    }
+   ],
+   "money": {
+    "revenue": 543369300.0,
+    "cogs": 241202400.0,
+    "leaf_revenue": 543369300.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 100501.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Soy_Sauce",
+     "region": "BE",
+     "revenue": 61867800.0,
+     "units": 10050.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "FR",
+     "revenue": 92801700.0,
+     "units": 15075.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "JP",
+     "revenue": 115776000.0,
+     "units": 30150.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "NL",
+     "revenue": 61867800.0,
+     "units": 10050.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "US_E",
+     "revenue": 105528000.0,
+     "units": 17588.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "US_W",
+     "revenue": 105528000.0,
+     "units": 17588.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "US_W",
+     "selling_price": 6000,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "US_E",
+     "selling_price": 6000,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "JP",
+     "selling_price": 3840,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "FR",
+     "selling_price": 6156,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "BE",
+     "selling_price": 6156,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "NL",
+     "selling_price": 6156,
+     "unit_cost": 2400,
+     "uom": "CS"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "EUR",
+      "JPY"
+     ],
+     [
+      "JPY",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2027-W01",
+     "2028-W52",
+     104
+    ],
+    "event_currencies_non_base": [
+     "EUR",
+     "USD"
+    ],
+    "coverage_over_plan_weeks": {
+     "EUR": {
+      "exact": 104,
+      "fallback": 0,
+      "missing": 26
+     },
+     "USD": {
+      "exact": 104,
+      "fallback": 0,
+      "missing": 26
+     }
+    },
+    "plan_first_week": "2026-W28"
+   },
+   "kitting": [
+    {
+     "product": "Soy_Sauce",
+     "node": "Bottling_Noda",
+     "children": [
+      "Brewing_Noda"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 100501,
+     "P_minus_complete": {
+      "P-complete=0": 100501
+     },
+     "examples": []
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Brewing_Noda",
+     "children": [
+      "Materials_JP"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 100501,
+     "P_minus_complete": {
+      "P-complete=0": 100501
+     },
+     "examples": []
+    }
+   ]
+  },
+  "soysauce-us-2027": {
+   "model": "soysauce-us-2027",
+   "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2026-W28",
+    "2028-W52",
+    130
+   ],
+   "snapshot_ppc": {
+    "base_currency": "USD",
+    "total_lots": 312,
+    "revenue_base": 3585878.59,
+    "cost_base": 2622283.69,
+    "gross_profit_base": 963594.9,
+    "gross_margin_pct": 0.268719,
+    "tariff_base": 161541.19,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "USD",
+   "bridge": {
+    "leaf_actual_ship_lots": 100500,
+    "records": 312,
+    "qty": 100500.0,
+    "kept_records": 312,
+    "kept_qty": 100500.0,
+    "unique_lot_ids": 312
+   },
+   "ppc_kpi": {
+    "base_currency": "USD",
+    "total_lots": 312,
+    "total_qty_units": 100500.0,
+    "total_revenue_base": 3585878.592,
+    "total_cost_base": 2622283.6875,
+    "gross_margin_pct": 0.2687193332896866
+   },
+   "events": {
+    "n": 5200,
+    "types": {
+     "supplier_cost": 312,
+     "logistics_cost": 1560,
+     "conversion_cost": 624,
+     "transfer_price_set": 312,
+     "landed_cost_total": 312,
+     "warehouse_cost": 624,
+     "sga_cost": 208,
+     "tariff_cost": 312,
+     "market_revenue": 312,
+     "mom_profit": 312,
+     "backward_allowable": 312
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 5096,
+     "JPY": 104
+    },
+    "nodes": [
+     "Bottling_Noda",
+     "Brewing_Noda",
+     "DC_JP",
+     "DC_US_NY",
+     "DC_US_SF",
+     "FG_WH_Noda",
+     "Materials_JP",
+     "Rest_JP",
+     "Rest_US_East",
+     "Rest_US_West"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_JP",
+     "ship_lots": 30150,
+     "qty": 30150.0,
+     "price_local_first": 3840.0,
+     "currency": "JPY",
+     "fx_first": 0.006667,
+     "fx_min": 0.006667,
+     "fx_max": 0.006667,
+     "revenue_base": 771878.5920000001
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_US_East",
+     "ship_lots": 35175,
+     "qty": 35175.0,
+     "price_local_first": 40.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 1407000.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_US_West",
+     "ship_lots": 35175,
+     "qty": 35175.0,
+     "price_local_first": 40.0,
+     "currency": "USD",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 1407000.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "Soy_Sauce",
+     "node": "FG_WH_Noda",
+     "type": "dad",
+     "ppc_qty": 100500.0,
+     "own_actual_ship_qty": 100500,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W44"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_US_SF",
+     "type": "dad",
+     "ppc_qty": 35175.0,
+     "own_actual_ship_qty": 35175,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_US_NY",
+     "type": "dad",
+     "ppc_qty": 35175.0,
+     "own_actual_ship_qty": 35175,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_JP",
+     "type": "dad",
+     "ppc_qty": 30150.0,
+     "own_actual_ship_qty": 30150,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Bottling_Noda",
+     "type": "mom",
+     "ppc_qty": 100500.0,
+     "own_actual_ship_qty": 100500,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W40"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Brewing_Noda",
+     "type": "mom",
+     "ppc_qty": 100500.0,
+     "own_actual_ship_qty": 100500,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W35"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Materials_JP",
+     "type": "leaf_in",
+     "ppc_qty": 100500.0,
+     "own_actual_ship_qty": 100500,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W33"
+    }
+   ],
+   "money": {
+    "revenue": 3585840.0,
+    "cogs": 1608000.0,
+    "leaf_revenue": 3585840.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 100500.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Soy_Sauce",
+     "region": "BE",
+     "revenue": 0.0,
+     "units": 0.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "FR",
+     "revenue": 0.0,
+     "units": 0.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "JP",
+     "revenue": 771840.0,
+     "units": 30150.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "NL",
+     "revenue": 0.0,
+     "units": 0.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "US_E",
+     "revenue": 1407000.0,
+     "units": 35175.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "US_W",
+     "revenue": 1407000.0,
+     "units": 35175.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "US_W",
+     "selling_price": 40.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "US_E",
+     "selling_price": 40.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "JP",
+     "selling_price": 25.6,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "FR",
+     "selling_price": 41.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "BE",
+     "selling_price": 41.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "NL",
+     "selling_price": 41.0,
+     "unit_cost": 16.0,
+     "uom": "CS"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "EUR",
+      "USD"
+     ],
+     [
+      "JPY",
+      "USD"
+     ],
+     [
+      "USD",
+      "USD"
+     ]
+    ],
+    "fx_weeks": [
+     "2027-W01",
+     "2028-W52",
+     104
+    ],
+    "event_currencies_non_base": [
+     "JPY"
+    ],
+    "coverage_over_plan_weeks": {
+     "JPY": {
+      "exact": 104,
+      "fallback": 0,
+      "missing": 26
+     }
+    },
+    "plan_first_week": "2026-W28"
+   },
+   "kitting": [
+    {
+     "product": "Soy_Sauce",
+     "node": "Bottling_Noda",
+     "children": [
+      "Brewing_Noda"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 100500,
+     "P_minus_complete": {
+      "P-complete=0": 100500
+     },
+     "examples": []
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Brewing_Noda",
+     "children": [
+      "Materials_JP"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 100500,
+     "P_minus_complete": {
+      "P-complete=0": 100500
+     },
+     "examples": []
+    }
+   ]
+  },
+  "soysauce-jpy-2027-alloc": {
+   "model": "soysauce-jpy-2027-alloc",
+   "plugins": "safe",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2026-W28",
+    "2028-W52",
+    130
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 464,
+    "revenue_base": 427957532.0,
+    "cost_base": 316318290.04,
+    "gross_profit_base": 111639241.96,
+    "gross_margin_pct": 0.260865,
+    "tariff_base": 15670707.44,
+    "trust_event_count": 30
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 75291,
+    "records": 464,
+    "qty": 75291.0,
+    "kept_records": 464,
+    "kept_qty": 75291.0,
+    "unique_lot_ids": 464
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 464,
+    "total_qty_units": 75291.0,
+    "total_revenue_base": 427957532.0,
+    "total_cost_base": 316318290.0425,
+    "gross_margin_pct": 0.26086523453803817
+   },
+   "events": {
+    "n": 7787,
+    "types": {
+     "supplier_cost": 464,
+     "logistics_cost": 2320,
+     "conversion_cost": 928,
+     "transfer_price_set": 464,
+     "landed_cost_total": 464,
+     "warehouse_cost": 928,
+     "sga_cost": 363,
+     "tariff_cost": 464,
+     "market_revenue": 464,
+     "mom_profit": 464,
+     "backward_allowable": 464
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "USD": 4318,
+     "JPY": 2986,
+     "EUR": 483
+    },
+    "nodes": [
+     "Bottling_Noda",
+     "Brewing_Noda",
+     "DC_EU_RTM",
+     "DC_JP",
+     "DC_US_NY",
+     "DC_US_SF",
+     "FG_WH_Noda",
+     "Materials_JP",
+     "Rest_BE",
+     "Rest_FR",
+     "Rest_JP",
+     "Rest_NL",
+     "Rest_US_East",
+     "Rest_US_West"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_BE",
+     "ship_lots": 2650,
+     "qty": 2650.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 162.0,
+     "fx_min": 162.0,
+     "fx_max": 162.0,
+     "revenue_base": 16313400.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_FR",
+     "ship_lots": 6615,
+     "qty": 6615.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 162.0,
+     "fx_min": 162.0,
+     "fx_max": 216.0,
+     "revenue_base": 44304732.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_JP",
+     "ship_lots": 29250,
+     "qty": 29250.0,
+     "price_local_first": 3840.0,
+     "currency": "JPY",
+     "fx_first": 1.0,
+     "fx_min": 1.0,
+     "fx_max": 1.0,
+     "revenue_base": 112320000.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_NL",
+     "ship_lots": 2650,
+     "qty": 2650.0,
+     "price_local_first": 38.0,
+     "currency": "EUR",
+     "fx_first": 162.0,
+     "fx_min": 162.0,
+     "fx_max": 162.0,
+     "revenue_base": 16313400.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_US_East",
+     "ship_lots": 17063,
+     "qty": 17063.0,
+     "price_local_first": 40.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 200.0,
+     "revenue_base": 119353000.0
+    },
+    {
+     "product": "Soy_Sauce",
+     "channel": "Rest_US_West",
+     "ship_lots": 17063,
+     "qty": 17063.0,
+     "price_local_first": 40.0,
+     "currency": "USD",
+     "fx_first": 150.0,
+     "fx_min": 150.0,
+     "fx_max": 200.0,
+     "revenue_base": 119353000.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "Soy_Sauce",
+     "node": "FG_WH_Noda",
+     "type": "dad",
+     "ppc_qty": 75291.0,
+     "own_actual_ship_qty": 75291,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W44"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_US_SF",
+     "type": "dad",
+     "ppc_qty": 17063.0,
+     "own_actual_ship_qty": 17063,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_US_NY",
+     "type": "dad",
+     "ppc_qty": 17063.0,
+     "own_actual_ship_qty": 17063,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_JP",
+     "type": "dad",
+     "ppc_qty": 29250.0,
+     "own_actual_ship_qty": 29250,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "DC_EU_RTM",
+     "type": "dad",
+     "ppc_qty": 11915.0,
+     "own_actual_ship_qty": 11915,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W53"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Bottling_Noda",
+     "type": "mom",
+     "ppc_qty": 75291.0,
+     "own_actual_ship_qty": 75291,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W35"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Brewing_Noda",
+     "type": "mom",
+     "ppc_qty": 75291.0,
+     "own_actual_ship_qty": 75291,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W30"
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Materials_JP",
+     "type": "leaf_in",
+     "ppc_qty": 75291.0,
+     "own_actual_ship_qty": 75291,
+     "ppc_first_week": "2027-W01",
+     "own_first_ship_week": "2026-W28"
+    }
+   ],
+   "money": {
+    "revenue": 390424740.0,
+    "cogs": 180698400.0,
+    "leaf_revenue": 390424740.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 75291.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "Soy_Sauce",
+     "region": "BE",
+     "revenue": 16313400.0,
+     "units": 2650.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "FR",
+     "revenue": 40721940.0,
+     "units": 6615.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "JP",
+     "revenue": 112320000.0,
+     "units": 29250.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "NL",
+     "revenue": 16313400.0,
+     "units": 2650.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "US_E",
+     "revenue": 102378000.0,
+     "units": 17063.0
+    },
+    {
+     "sku": "Soy_Sauce",
+     "region": "US_W",
+     "revenue": 102378000.0,
+     "units": 17063.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "US_W",
+     "selling_price": 6000,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "US_E",
+     "selling_price": 6000,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "JP",
+     "selling_price": 3840,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "FR",
+     "selling_price": 6156,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "BE",
+     "selling_price": 6156,
+     "unit_cost": 2400,
+     "uom": "CS"
+    },
+    {
+     "sku_id": "Soy_Sauce",
+     "region": "NL",
+     "selling_price": 6156,
+     "unit_cost": 2400,
+     "uom": "CS"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "EUR",
+      "JPY"
+     ],
+     [
+      "JPY",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2027-W01",
+     "2028-W52",
+     104
+    ],
+    "event_currencies_non_base": [
+     "EUR",
+     "USD"
+    ],
+    "coverage_over_plan_weeks": {
+     "EUR": {
+      "exact": 104,
+      "fallback": 0,
+      "missing": 26
+     },
+     "USD": {
+      "exact": 104,
+      "fallback": 0,
+      "missing": 26
+     }
+    },
+    "plan_first_week": "2026-W28"
+   },
+   "kitting": [
+    {
+     "product": "Soy_Sauce",
+     "node": "Bottling_Noda",
+     "children": [
+      "Brewing_Noda"
+     ],
+     "child_types": [
+      "mom"
+     ],
+     "lots_recorded": 75291,
+     "P_minus_complete": {
+      "P-complete=0": 75291
+     },
+     "examples": []
+    },
+    {
+     "product": "Soy_Sauce",
+     "node": "Brewing_Noda",
+     "children": [
+      "Materials_JP"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 75291,
+     "P_minus_complete": {
+      "P-complete=0": 75291
+     },
+     "examples": []
+    }
+   ]
+  },
+  "ev-thailand-2026_update": {
+   "model": "ev-thailand-2026_update",
+   "plugins": "safe",
+   "lot_flow_mode": "identity",
+   "cpu_size": 1,
+   "weeks": [
+    "2025-W37",
+    "2027-W52",
+    121
+   ],
+   "snapshot_ppc": {
+    "base_currency": "JPY",
+    "total_lots": 624,
+    "revenue_base": 319119580000.0,
+    "cost_base": 138830903750.0,
+    "gross_profit_base": 180288676250.0,
+    "gross_margin_pct": 0.564956,
+    "tariff_base": 3583600000.0,
+    "trust_event_count": 0
+   },
+   "ppc_data_dir": "model",
+   "fx_file": "model",
+   "base_currency": "JPY",
+   "bridge": {
+    "leaf_actual_ship_lots": 63240,
+    "records": 624,
+    "qty": 63240.0,
+    "kept_records": 624,
+    "kept_qty": 63240.0,
+    "unique_lot_ids": 624
+   },
+   "ppc_kpi": {
+    "base_currency": "JPY",
+    "total_lots": 624,
+    "total_qty_units": 63240.0,
+    "total_revenue_base": 319119580000.0,
+    "total_cost_base": 138830903750.0,
+    "gross_margin_pct": 0.5649564851207187
+   },
+   "events": {
+    "n": 6864,
+    "types": {
+     "supplier_cost": 936,
+     "conversion_cost": 936,
+     "logistics_cost": 1248,
+     "transfer_price_set": 624,
+     "tariff_cost": 624,
+     "landed_cost_total": 624,
+     "market_revenue": 624,
+     "mom_profit": 624,
+     "backward_allowable": 624
+    },
+    "all_at_sale_week": true,
+    "currencies": {
+     "THB": 4992,
+     "JPY": 1872
+    },
+    "nodes": [
+     "Components_CN",
+     "DC_EV_Import",
+     "DC_EV_Local",
+     "Factory_Import_CN",
+     "Factory_Local_TH",
+     "Motor_Unit_Assy",
+     "Platform_Unit_Assy",
+     "Sales_TH_BKK",
+     "Sales_TH_BKK_i",
+     "Sales_TH_ONL",
+     "Sales_TH_ONL_i",
+     "Sales_TH_PRO",
+     "Sales_TH_PRO_i"
+    ]
+   },
+   "revenue_decomp": [
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_TH_BKK_i",
+     "ship_lots": 5265,
+     "qty": 5265.0,
+     "price_local_first": 1659000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 37122198750.0
+    },
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_TH_ONL_i",
+     "ship_lots": 1059,
+     "qty": 1059.0,
+     "price_local_first": 1609000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 7241706750.0
+    },
+    {
+     "product": "EVmaker_Import",
+     "channel": "Sales_TH_PRO_i",
+     "ship_lots": 4216,
+     "qty": 4216.0,
+     "price_local_first": 1659000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 29725962000.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_TH_BKK",
+     "ship_lots": 26355,
+     "qty": 26355.0,
+     "price_local_first": 1099000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 123097616250.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_TH_ONL",
+     "ship_lots": 5265,
+     "qty": 5265.0,
+     "price_local_first": 1049000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 23472686250.0
+    },
+    {
+     "product": "EVmaker_Local",
+     "channel": "Sales_TH_PRO",
+     "ship_lots": 21080,
+     "qty": 21080.0,
+     "price_local_first": 1099000.0,
+     "currency": "THB",
+     "fx_first": 4.25,
+     "fx_min": 4.25,
+     "fx_max": 4.25,
+     "revenue_base": 98459410000.0
+    }
+   ],
+   "intermediate_nodes": [
+    {
+     "product": "EVmaker_Local",
+     "node": "DC_EV_Local",
+     "type": "dad",
+     "ppc_qty": 52700.0,
+     "own_actual_ship_qty": 52700,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Factory_Local_TH",
+     "type": "mom",
+     "ppc_qty": 52700.0,
+     "own_actual_ship_qty": 52700,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W50"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Platform_Unit_Assy",
+     "type": "leaf_in",
+     "ppc_qty": 52700.0,
+     "own_actual_ship_qty": 52700,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W46"
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Motor_Unit_Assy",
+     "type": "leaf_in",
+     "ppc_qty": 52700.0,
+     "own_actual_ship_qty": 52700,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W49"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "DC_EV_Import",
+     "type": "dad",
+     "ppc_qty": 10540.0,
+     "own_actual_ship_qty": 10540,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W52"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Factory_Import_CN",
+     "type": "mom",
+     "ppc_qty": 10540.0,
+     "own_actual_ship_qty": 10540,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W46"
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Components_CN",
+     "type": "leaf_in",
+     "ppc_qty": 10540.0,
+     "own_actual_ship_qty": 10540,
+     "ppc_first_week": "2026-W02",
+     "own_first_ship_week": "2025-W42"
+    }
+   ],
+   "money": {
+    "revenue": 75086960000.0,
+    "cogs": 51119000000.0,
+    "leaf_revenue": 75086960000.0,
+    "dad_revenue": 0.0,
+    "dad_rows_with_price": 0,
+    "leaf_rows_without_price": 0,
+    "qty_basis": [
+     "actual_ship"
+    ],
+    "units_leaf": 63240.0
+   },
+   "money_per_leaf": [
+    {
+     "sku": "EVmaker_Import",
+     "region": "BKK",
+     "revenue": 8734635000.0,
+     "units": 5265.0
+    },
+    {
+     "sku": "EVmaker_Import",
+     "region": "ONL",
+     "revenue": 1703931000.0,
+     "units": 1059.0
+    },
+    {
+     "sku": "EVmaker_Import",
+     "region": "PRO",
+     "revenue": 6994344000.0,
+     "units": 4216.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "BKK",
+     "revenue": 28964145000.0,
+     "units": 26355.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "ONL",
+     "revenue": 5522985000.0,
+     "units": 5265.0
+    },
+    {
+     "sku": "EVmaker_Local",
+     "region": "PRO",
+     "revenue": 23166920000.0,
+     "units": 21080.0
+    }
+   ],
+   "sku_master_price": [
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "BKK",
+     "selling_price": 1099000,
+     "unit_cost": 780000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "PRO",
+     "selling_price": 1099000,
+     "unit_cost": 780000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Local",
+     "region": "ONL",
+     "selling_price": 1049000,
+     "unit_cost": 780000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "BKK",
+     "selling_price": 1659000,
+     "unit_cost": 950000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "PRO",
+     "selling_price": 1659000,
+     "unit_cost": 950000,
+     "uom": "EA"
+    },
+    {
+     "sku_id": "EVmaker_Import",
+     "region": "ONL",
+     "selling_price": 1609000,
+     "unit_cost": 950000,
+     "uom": "EA"
+    }
+   ],
+   "fx": {
+    "pairs": [
+     [
+      "CNY",
+      "JPY"
+     ],
+     [
+      "THB",
+      "JPY"
+     ],
+     [
+      "USD",
+      "JPY"
+     ]
+    ],
+    "fx_weeks": [
+     "2026-W01",
+     "2027-W51",
+     104
+    ],
+    "event_currencies_non_base": [
+     "THB"
+    ],
+    "coverage_over_plan_weeks": {
+     "THB": {
+      "exact": 104,
+      "fallback": 1,
+      "missing": 16
+     }
+    },
+    "plan_first_week": "2025-W37"
+   },
+   "kitting": [
+    {
+     "product": "EVmaker_Local",
+     "node": "Factory_Local_TH",
+     "children": [
+      "Motor_Unit_Assy_Yard",
+      "Platform_Unit_Assy_Yard"
+     ],
+     "child_types": [
+      "stockyard"
+     ],
+     "lots_recorded": 52700,
+     "P_minus_complete": {
+      "P-complete=0": 52700
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Platform_Unit_Assy_Yard",
+     "children": [
+      "Platform_Unit_Assy"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 52700,
+     "P_minus_complete": {
+      "P-complete=0": 52700
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Local",
+     "node": "Motor_Unit_Assy_Yard",
+     "children": [
+      "Motor_Unit_Assy"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 52700,
+     "P_minus_complete": {
+      "P-complete=0": 52700
+     },
+     "examples": []
+    },
+    {
+     "product": "EVmaker_Import",
+     "node": "Factory_Import_CN",
+     "children": [
+      "Components_CN"
+     ],
+     "child_types": [
+      "leaf_in"
+     ],
+     "lots_recorded": 10540,
+     "P_minus_complete": {
+      "P-complete=0": 10540
+     },
+     "examples": []
+    }
+   ]
+  }
+ },
+ "errors": {}
+}
