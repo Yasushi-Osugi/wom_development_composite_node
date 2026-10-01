@@ -63,9 +63,25 @@ def test_freight_on_a_node_stops(tmp_path):
 
 @pytest.fixture(scope="module")
 def alloc_run(tmp_path_factory):
+    # The "prices not set" path (judgment b): run on a copy whose vc_price_rule.csv has only
+    # the header, so these tests do not depend on the provisional prices in the sample.
     from wom.valuechain.run import run_valuechain
+    src = tmp_path_factory.mktemp("vc_alloc_src") / "soysauce-jpy-2027-alloc"
+    shutil.copytree(ALLOC, src)
+    with open(src / "vc_price_rule.csv", "w", encoding="utf-8") as f:
+        f.write("edge_id,product_id,price_type,week,price,currency\n")
     out = tmp_path_factory.mktemp("vc_alloc")
-    return run_valuechain(ALLOC, str(out)), out
+    return run_valuechain(str(src), str(out)), out
+
+
+def test_alloc_sample_prices_leave_nothing_unvalued(tmp_path):
+    # The sample's provisional prices (README, 2026-10-01) fill every missing price.
+    from wom.valuechain.run import run_valuechain
+    r = run_valuechain(ALLOC, str(tmp_path))
+    c = r["checks"]
+    assert c["conservation_ok"] and c["external_sales"]["ok_identity"] and c["external_sales"]["ok_records"]
+    m = pd.read_csv(tmp_path / "vc_missing_prices.csv")
+    assert len(m) == 0
 
 
 def test_alloc_ledger_records_match_the_plan(alloc_run):

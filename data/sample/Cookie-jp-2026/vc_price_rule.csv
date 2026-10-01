@@ -1,1 +1,3 @@
 edge_id,product_id,price_type,week,price,currency
+DC_Import_Main->Retail_JP_CVS,Cookie_Import,wholesale,2026-W01,21000,JPY
+DC_Local_JP->Retail_JP_CVS,Cookie_Local,wholesale,2026-W01,21000,JPY

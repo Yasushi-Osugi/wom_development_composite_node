@@ -1,1 +1,8 @@
 edge_id,product_id,price_type,week,price,currency
+FG_WH_Noda->DC_US_SF,Soy_Sauce,intercompany,2026-W01,18.8,USD
+FG_WH_Noda->DC_US_NY,Soy_Sauce,intercompany,2026-W01,18.8,USD
+FG_WH_Noda->DC_EU_RTM,Soy_Sauce,intercompany,2026-W01,18.8,USD
+DC_US_NY->Rest_US_East,Soy_Sauce,wholesale,2026-W01,30.0,USD
+DC_EU_RTM->Rest_FR,Soy_Sauce,wholesale,2026-W01,28.5,EUR
+DC_EU_RTM->Rest_BE,Soy_Sauce,wholesale,2026-W01,28.5,EUR
+DC_EU_RTM->Rest_NL,Soy_Sauce,wholesale,2026-W01,28.5,EUR
