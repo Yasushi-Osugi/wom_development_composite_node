@@ -22,9 +22,9 @@
   },
   "ppc": {
     "base_currency": "JPY",
-    "cost_base": 3573471000.0,
-    "gross_margin_pct": 0.161098,
-    "gross_profit_base": 686229000.0,
+    "cost_base": 3494541000.0,
+    "gross_margin_pct": 0.179627,
+    "gross_profit_base": 765159000.0,
     "revenue_base": 4259700000.0,
     "tariff_base": 213111000.0,
     "total_lots": 624,

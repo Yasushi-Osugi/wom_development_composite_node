@@ -1,5 +1,1 @@
 edge_id,product_id,cost_type,basis,rate,fixed_amount,currency
-Factory_Local_DE->SP_EV_Local,EVmaker_Local,logistics_cost,per_lot,0.0,400,EUR
-SP_EV_Local->DC_EV_Local,EVmaker_Local,logistics_cost,per_lot,0.0,800,EUR
-Factory_Import_HU->SP_EV_Import,EVmaker_Import,logistics_cost,per_lot,0.0,600,EUR
-SP_EV_Import->DC_EV_Import,EVmaker_Import,logistics_cost,per_lot,0.0,1940,EUR

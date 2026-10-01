@@ -9,6 +9,7 @@ Output files:
     ppc_profit_zone_summary.csv - aggregated by profit_zone
     ppc_lot_reconciliation.csv  - lot-level forward vs backward comparison
     ppc_kpi_summary.json        - top-level KPI dict
+    ppc_warnings.csv            - silent substitutions (prior-week FX, FX 0 -> 1.0, ...)
 
 Write strategy: atomic write via temp file + fsync.
   1. Write to <file>.tmp
@@ -26,6 +27,10 @@ from typing import List
 import pandas as pd
 
 from .ppc_models import PPCEvent, PPCSimulationResult
+
+
+WARNING_COLUMNS = ["kind", "location", "currency", "requested_week", "used_week",
+                   "count", "detail"]
 
 
 def _safe_write_csv(df: pd.DataFrame, path: str) -> None:
@@ -112,6 +117,16 @@ def export_results(result: PPCSimulationResult, output_dir: str) -> None:
         ])
     _safe_write_csv(node_pl_df,
                     os.path.join(output_dir, "ppc_node_pl_summary.csv"))
+
+    # ── ppc_warnings.csv (RequestLetter_StageD_Phase1 0-5) ──────────────
+    # Silent substitutions of the run (prior-week FX, FX 0 -> 1.0, Landed Cost
+    # fx_rate defaults). Values are NOT changed by this; the file only shows
+    # where they happened. Always written (header only when there is none).
+    warn_df = pd.DataFrame(result.warnings or [], columns=WARNING_COLUMNS)
+    _safe_write_csv(warn_df, os.path.join(output_dir, "ppc_warnings.csv"))
+    if len(warn_df):
+        by_kind = warn_df.groupby("kind")["count"].sum().to_dict()
+        print(f"[PPC] WARNING silent substitutions: {by_kind} -> ppc_warnings.csv")
 
     print(f"[PPC Export] Written to {output_dir}/")
     print(f"  ppc_event_ledger.csv        ({len(events_df)} events)")

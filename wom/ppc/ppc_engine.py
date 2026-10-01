@@ -97,6 +97,7 @@ class PPCSimulationEngine:
         all_events = []
 
         # Step 1: Supplier Offering Cost Forward Propagation
+        self._fx.location = "Step 1 forward (supplier / inbound edges / MOM costs)"
         fwd_events = run_forward_propagation(
             accumulators, self.rules, self._fx, self.sc_paths,
             mom_node=self.mom_node, supplier_node=self.supplier_node,
@@ -108,6 +109,7 @@ class PPCSimulationEngine:
             print(f"[PPC Step 1] Forward propagation: {len(fwd_events)} events")
 
         # Step 2: Transfer Price Determination
+        self._fx.location = "Step 2 transfer price"
         tp_events = run_transfer_price_determination(
             accumulators, self.rules, self._fx,
             mom_node=self.mom_node,
@@ -117,6 +119,7 @@ class PPCSimulationEngine:
             print(f"[PPC Step 2] Transfer price: {len(tp_events)} events")
 
         # Step 3: Tariff & Landed Cost
+        self._fx.location = "Step 3 tariff / DAD chain / outbound edge"
         tar_events = run_tariff_and_landed_cost(
             accumulators, self.rules, self._fx, self.sc_paths,
             mom_node=self.mom_node, dad_node=self.dad_node,
@@ -127,6 +130,7 @@ class PPCSimulationEngine:
             print(f"[PPC Step 3] Tariff/landed: {len(tar_events)} events")
 
         # Step 4: Profit Zone Allocation + Market Revenue
+        self._fx.location = "Step 4 market revenue / channel costs"
         pz_events = run_profit_zone_allocation(
             accumulators, self.rules, self._fx,
             mom_node=self.mom_node,
@@ -136,6 +140,7 @@ class PPCSimulationEngine:
             print(f"[PPC Step 4] Profit zone: {len(pz_events)} events")
 
         # Step 5: Market Requesting Price Backward Propagation
+        self._fx.location = "Step 5 backward allowable"
         bwd_events = run_backward_propagation(
             accumulators, self.rules, self._fx, self.sc_paths,
             mom_node=self.mom_node, dad_node=self.dad_node,
@@ -166,6 +171,7 @@ class PPCSimulationEngine:
             lot_reconciliation=lot_df,
             kpi_summary=kpi,
             node_pl_summary=node_pl_df,
+            warnings=[dict(w) for w in self._fx.fallback_warnings],
         )
         return self._result
 

@@ -235,3 +235,6 @@ class PPCSimulationResult:
     lot_reconciliation:     "pd.DataFrame"   # type: ignore
     kpi_summary:            Dict
     node_pl_summary:        "pd.DataFrame" = None   # type: ignore  # 拠点別P/L評価 (full-horizon, per node x product)
+    # Silent substitutions made visible (RequestLetter_StageD_Phase1 0-5):
+    # list of {kind, location, currency, requested_week, used_week, count, detail}
+    warnings:               list = None

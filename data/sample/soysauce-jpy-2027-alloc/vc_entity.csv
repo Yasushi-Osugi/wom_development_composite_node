@@ -1,0 +1,9 @@
+entity_id,entity_name,kind,functional_currency,consolidated
+E_JP,本社（日本）,group,JPY,1
+E_US,米国の販売子会社,group,USD,1
+E_EU,欧州の販売子会社,group,EUR,1
+EXT_SUP_JP_MAT,外部の供給者（原料）,external_supplier,JPY,0
+EXT_CH_US_EAST,外部の販売チャネル（米国東部）,external_channel,USD,0
+EXT_CH_FR,外部の販売チャネル（フランス）,external_channel,EUR,0
+EXT_CH_BE,外部の販売チャネル（ベルギー）,external_channel,EUR,0
+EXT_CH_NL,外部の販売チャネル（オランダ）,external_channel,EUR,0

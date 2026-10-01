@@ -58,7 +58,18 @@ def main(argv=None) -> int:
             out += find_nb(c)
         return out
 
-    top = [nb for nb in find_nb(app) if mg in [nb.nametowidget(t) for t in nb.tabs()]][0]
+    # the main notebook (holds the PPC tab); Management is a container with its own
+    # notebook (Overview = mg, Value Chain) since RequestLetter_StageD_Phase1 Part 2
+    _main = [nb for nb in find_nb(app) if app._ppc_panel in [nb.nametowidget(t) for t in nb.tabs()]][0]
+
+    class _Top:
+        def select(self, tab):
+            if tab is mg or tab is getattr(app, '_vc_panel', None):
+                _main.select(app._mgmt_outer)
+                app._mgmt_nb.select(tab)
+            else:
+                _main.select(tab)
+    top = _Top()
 
     def rows(tree):
         return [[str(v) for v in tree.item(i)["values"]] for i in tree.get_children()]

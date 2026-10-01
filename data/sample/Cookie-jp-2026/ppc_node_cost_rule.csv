@@ -1,12 +1,7 @@
 node_id,product_id,cost_type,basis,rate,fixed_amount,currency,note
 Factory_GP_CN,Cookie_Import,conversion_cost,per_lot,0,8000,JPY,製造労務費+製造間接費 JPY/lot
-Factory_GP_CN,Cookie_Import,logistics_cost,per_lot,0,500,JPY,中国国内輸送（工場→輸出港FOB） JPY/lot
-DC_Import_Buffer,Cookie_Import,logistics_cost,per_lot,0,2000,JPY,海上運賃CIF（横浜港着） JPY/lot
 DC_Import_Buffer,Cookie_Import,conversion_cost,per_lot,0,500,JPY,保税倉庫 取扱・通関費用 JPY/lot
-DC_Import_Main,Cookie_Import,logistics_cost,per_lot,0,1000,JPY,国内陸送費（保税倉庫→国内DC） JPY/lot
 DC_Import_Main,Cookie_Import,conversion_cost,per_lot,0,500,JPY,DC 仕分け・保管費用 JPY/lot
 DC_Import_Main,Cookie_Import,sga_cost,per_lot,0,1500,JPY,グローバルブランドSGA按分（Global Player Japan）
 Factory_DP_JP,Cookie_Local,conversion_cost,per_lot,0,9000,JPY,国内製造労務費+間接費 JPY/lot
-Factory_DP_JP,Cookie_Local,logistics_cost,per_lot,0,200,JPY,工場→Domestic_Player DC 短距離輸送 JPY/lot
-DC_Local_JP,Cookie_Local,logistics_cost,per_lot,0,300,JPY,パン便相乗り 限界輸送費 JPY/lot
 DC_Local_JP,Cookie_Local,sga_cost,per_lot,0,4000,JPY,国内ブランドSGA（Domestic Player マーケティング費）

@@ -1,0 +1,6 @@
+entity_id,entity_name,kind,functional_currency,consolidated
+E_CN,中国の製造子会社,group,CNY,1
+E_JP,日本本社,group,JPY,1
+EXT_SUP_CN,外部の供給者（中国）,external_supplier,CNY,0
+EXT_SUP_JP,外部の供給者（日本）,external_supplier,JPY,0
+EXT_CH_JP_CVS,外部の販売チャネル（日本の CVS）,external_channel,JPY,0

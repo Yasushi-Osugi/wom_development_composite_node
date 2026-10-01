@@ -1,2 +1,3 @@
 key,value
 warmup_lt,26
+cpu_size,1000

@@ -326,11 +326,14 @@ def test_oil_uom_split_and_hierarchy():
     # chosen_point()（格子の真の最良点）を採るようになったため、この経路で
     # +1,025,033 円（Phase 6-5 Request Letter §E1 の実測どおり）だけ P_hier が
     # 増えた。値は実測値（Code君が正典）。
-    assert r["profit"] == pytest.approx(12_137_141_564.0, abs=1.0)
+    # Stage D Part 0-3: the duplicated supply point freight rows were removed from
+    # oil-global-2027/ppc_edge_cost_rule.csv (every market's block falls by exactly its two
+    # SP edges): 12,137,141,564 -> 12,614,052,978.
+    assert r["profit"] == pytest.approx(12_614_052_978.0, abs=1.0)
 
     g = hierarchy_gap(blocks, tree, tp, SC_OIL, cap_wk=800.0)
     assert g["P_flat"] is None                    # 13.9億点なので走らせない
-    assert g["hierarchy_gap"] == pytest.approx(363_942_316.0, abs=1.0)   # P_hier 改善分だけ縮小
+    assert g["hierarchy_gap"] == pytest.approx(374_903_812.0, abs=1.0)   # Stage D Part 0-3 で再測定（旧 363,942,316）
 
 
 def test_oil_structure_only():

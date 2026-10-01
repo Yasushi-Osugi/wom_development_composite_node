@@ -1,7 +1,5 @@
 edge_id,from_country,to_country,product_id,hs_code,tariff_rate,tariff_basis
-DC_US_SF->Rest_US_West,JP,US,Soy_Sauce,2103100000,0.125,transfer_price
-DC_US_NY->Rest_US_East,JP,US,Soy_Sauce,2103100000,0.125,transfer_price
-DC_JP->Rest_JP,JP,JP,Soy_Sauce,2103100000,0.0,transfer_price
-DC_EU_RTM->Rest_FR,JP,FR,Soy_Sauce,2103100000,0.08,transfer_price
-DC_EU_RTM->Rest_BE,JP,BE,Soy_Sauce,2103100000,0.08,transfer_price
-DC_EU_RTM->Rest_NL,JP,NL,Soy_Sauce,2103100000,0.08,transfer_price
+FG_WH_Noda->DC_US_SF,JP,US,Soy_Sauce,2103100000,0.125,transfer_price
+FG_WH_Noda->DC_US_NY,JP,US,Soy_Sauce,2103100000,0.125,transfer_price
+FG_WH_Noda->DC_EU_RTM,JP,EU,Soy_Sauce,2103100000,0.08,transfer_price
+FG_WH_Noda->DC_JP,JP,JP,Soy_Sauce,2103100000,0.0,transfer_price

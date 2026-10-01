@@ -1,6 +1,7 @@
 edge_id,product_id,cost_type,basis,rate,fixed_amount,currency
-Factory_GP_CN->SP_Cookie_Import,Cookie_Import,logistics_cost,per_lot,0.0,500,JPY
-SP_Cookie_Import->DC_Import_Buffer,Cookie_Import,logistics_cost,per_lot,0.0,2000,JPY
+Factory_GP_CN->DC_Import_Buffer,Cookie_Import,logistics_cost,per_lot,0.0,2500,JPY
 DC_Import_Buffer->DC_Import_Main,Cookie_Import,logistics_cost,per_lot,0.0,1000,JPY
-Factory_DP_JP->SP_Cookie_Local,Cookie_Local,logistics_cost,per_lot,0.0,200,JPY
-SP_Cookie_Local->DC_Local_JP,Cookie_Local,logistics_cost,per_lot,0.0,300,JPY
+Factory_DP_JP->DC_Local_JP,Cookie_Local,logistics_cost,per_lot,0.0,200,JPY
+DC_Local_JP->Retail_JP_CVS,Cookie_Local,logistics_cost,per_lot,0.0,300,JPY
+DC_Local_JP->Retail_JP_SM,Cookie_Local,logistics_cost,per_lot,0.0,300,JPY
+DC_Local_JP->Retail_JP_EC,Cookie_Local,logistics_cost,per_lot,0.0,300,JPY

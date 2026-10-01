@@ -43,7 +43,12 @@ class FXConverter:
         # Sorted unique weeks for fallback lookup
         self._weeks_sorted = sorted({k[0] for k in self._rates})
 
-        # Track fallback warnings (lot_id → warning message) for event ledger
+        # Silent substitutions, made visible (RequestLetter_StageD_Phase1 0-5).
+        # One record per distinct (kind, location, currency, requested week,
+        # used week) with a count -- the VALUES used are not changed here.
+        # `location` is set by the engine before each step (see ppc_engine.run).
+        self.location: str = ""
+        self._warn_index: Dict[tuple, dict] = {}
         self.fallback_warnings: list = []
 
     # ------------------------------------------------------------------
@@ -68,16 +73,30 @@ class FXConverter:
         for w in reversed(prior):
             fallback_key = (w, currency)
             if fallback_key in self._rates:
-                self.fallback_warnings.append(
-                    f"FX FALLBACK: week={week} currency={currency} "
-                    f"→ used rate from {w}"
-                )
+                self.record("fx_fallback_prior_week", currency=currency,
+                            requested_week=week, used_week=w,
+                            detail=f"rate {self._rates[fallback_key]} of {w} used for {week}")
                 return self._rates[fallback_key], True
 
         raise ValueError(
             f"No FX rate found for currency={currency!r} on or before week={week!r}. "
             f"Add a row to ppc_fx_rate.csv."
         )
+
+    # ------------------------------------------------------------------
+    def record(self, kind: str, location: Optional[str] = None, currency: str = "",
+               requested_week: str = "", used_week: str = "", detail: str = "") -> None:
+        """Record one silent substitution (aggregated: the count goes up)."""
+        loc = self.location if location is None else location
+        key = (kind, loc, currency, requested_week, used_week)
+        rec = self._warn_index.get(key)
+        if rec is None:
+            rec = {"kind": kind, "location": loc, "currency": currency,
+                   "requested_week": requested_week, "used_week": used_week,
+                   "count": 0, "detail": detail}
+            self._warn_index[key] = rec
+            self.fallback_warnings.append(rec)
+        rec["count"] += 1
 
     # ------------------------------------------------------------------
     def convert(

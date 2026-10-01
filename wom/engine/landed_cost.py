@@ -100,6 +100,36 @@ class RouteAssignment:
 # Loaders
 # ──────────────────────────────────────────────────────────────────────
 
+def fx_rate_substitutions(df: "pd.DataFrame") -> List[dict]:
+    """Rows of edge_cost_master whose fx_rate is not used as written
+    (RequestLetter_StageD_Phase1 0-5; the values are NOT changed):
+      0      -> 1.0 is used   (``float(x or 1.0)`` below)
+      blank  -> NaN is used   (pandas NaN is truthy, so ``x or 1.0`` keeps NaN)
+    Returns [{kind, location, currency, requested_week, used_week, count, detail}]."""
+    out: List[dict] = []
+    if "fx_rate" not in df.columns:
+        return out
+    for i, row in df.iterrows():
+        v = row.get("fx_rate")
+        loc = (f"landed_cost edge_cost_master.csv row {i + 2} "
+               f"({row.get('scenario', '')} {row.get('src_region', '')}->{row.get('dst_region', '')})")
+        cur = f"{row.get('src_currency', '')}->{row.get('dst_currency', '')}"
+        if pd.isna(v):
+            out.append({"kind": "landed_cost_fx_blank_as_nan", "location": loc, "currency": cur,
+                        "requested_week": "", "used_week": "", "count": 1,
+                        "detail": "fx_rate blank; NaN is used (not 1.0)"})
+        else:
+            try:
+                fv = float(v)
+            except (TypeError, ValueError):
+                continue
+            if fv == 0.0:
+                out.append({"kind": "landed_cost_fx_zero_as_1", "location": loc, "currency": cur,
+                            "requested_week": "", "used_week": "", "count": 1,
+                            "detail": "fx_rate 0; 1.0 is used"})
+    return out
+
+
 def load_edge_cost_master(path: str) -> Dict[str, LandedCostScenario]:
     """
     Load edge_cost_master.csv into a dict of LandedCostScenario.
@@ -109,6 +139,10 @@ def load_edge_cost_master(path: str) -> Dict[str, LandedCostScenario]:
         src_currency, dst_currency, freight_usd_per_lot, [notes]
     """
     df = pd.read_csv(path)
+    subs = fx_rate_substitutions(df)
+    if subs:
+        print(f"[LandedCost] WARNING {len(subs)} fx_rate cell(s) of {path} are not used as "
+              f"written: {[(x['location'], x['kind']) for x in subs[:3]]}")
     scenarios: Dict[str, LandedCostScenario] = {}
 
     for _, row in df.iterrows():

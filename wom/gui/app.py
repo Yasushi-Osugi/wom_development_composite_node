@@ -5362,6 +5362,9 @@ class WOMApp(tk.Tk):
         self._plan_run = {"run_id": "", "model_dir": "", "sc_tree_path": ""}
         self._plan_run_pending = None
         self._shown_result = ""
+        if hasattr(self, "_vc_panel"):
+            self._vc_panel.set_current_plan("")
+            self._vc_panel.clear("モデルを読み込みました → Planning Engine を実行すると台帳を作ります")
         if hasattr(self, "_mgmt_panel"):
             self._mgmt_panel.on_model_loaded(getattr(self, "_model_dir", ""))
         if hasattr(self, "_ppc_panel"):
@@ -5610,8 +5613,17 @@ class WOMApp(tk.Tk):
         nb.add(self._delta_frame, text="  Δ  Scenario Delta  ")
         self._build_delta_tab(self._delta_frame)
 
-        self._mgmt_panel = ManagementCockpitPanel(nb)
-        nb.add(self._mgmt_panel, text="  \U0001f4b9 Management  ")
+        # RequestLetter_StageD_Phase1 Part 2: Management holds two views -- the
+        # existing panel ("Overview", unchanged) and the stage D ledger ("Value Chain").
+        self._mgmt_outer = tk.Frame(nb, bg=BG_DARK)
+        self._mgmt_nb = ttk.Notebook(self._mgmt_outer)
+        self._mgmt_nb.pack(fill="both", expand=True)
+        self._mgmt_panel = ManagementCockpitPanel(self._mgmt_nb)
+        self._mgmt_nb.add(self._mgmt_panel, text="  Overview  ")
+        from wom.gui.valuechain_panel import ValueChainPanel
+        self._vc_panel = ValueChainPanel(self._mgmt_nb)
+        self._mgmt_nb.add(self._vc_panel, text="  \U0001f517 Value Chain  ")
+        nb.add(self._mgmt_outer, text="  \U0001f4b9 Management  ")
 
         self._ppc_panel = PPCTabPanel(nb, output_dir="output/ppc")
         nb.add(self._ppc_panel, text="  \U0001f4b0 PPC  ")
@@ -5852,6 +5864,9 @@ class WOMApp(tk.Tk):
         if not _in_progress:
             self._plan_run_pending = None
         self._shown_result = "sim"
+        if hasattr(self, "_vc_panel"):
+            self._vc_panel.set_current_plan("")
+            self._vc_panel.clear("Run Simulation の結果には台帳がありません（台帳は Planning Engine の計画から作ります）")
         self._ppc_ctx = make_context(STATE_NONE, "", getattr(self, "_model_dir", ""))
         self._ppc_panel.set_ppc_context(self._ppc_ctx)
         self._update_model_display()
@@ -6426,6 +6441,15 @@ class WOMApp(tk.Tk):
         # Launch PPC engine in background using the sc_tree just computed.
         # On completion, refresh the PPC tab automatically.
         self._run_ppc_from_planning(sc_tree)
+
+        # ── stage D: the Value Chain ledger of THIS plan (background thread; the
+        #    plan is not re-run). Models without the vc_* masters show a message.
+        if hasattr(self, "_vc_panel"):
+            try:
+                self._vc_panel.start_build(sc_tree, self._plan_run.get("model_dir", ""),
+                                           self._plan_run.get("run_id", ""))
+            except Exception as _vc_exc:
+                print(f"[ValueChain] start failed: {_vc_exc}")
 
     def _run_ppc_from_planning(self, sc_tree):
         """

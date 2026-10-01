@@ -66,6 +66,10 @@ def run_transfer_price_determination(
 
             mom_fx_rate, _ = fx.get_rate(week, tp_currency)
             if mom_fx_rate == 0:
+                # value unchanged (0 -> 1.0); recorded (RequestLetter_StageD_Phase1 0-5)
+                fx.record("transfer_fx_zero_as_1", location=f"ppc_transfer cost_plus {m_node}",
+                          currency=tp_currency, requested_week=week, used_week=week,
+                          detail="FX rate 0 for the transfer-price currency; 1.0 used")
                 mom_fx_rate = 1.0
 
             accumulated_local = (
@@ -91,6 +95,10 @@ def run_transfer_price_determination(
         try:
             tp_fx_rate_val, _ = fx.get_rate(week, tp_currency)
         except Exception:
+            # value unchanged (1.0 written on the event); recorded (0-5)
+            fx.record("transfer_event_fx_missing_as_1", location=f"ppc_transfer event {m_node}",
+                      currency=tp_currency, requested_week=week, used_week="",
+                      detail="no FX rate for the transfer_price_set event; fx_rate 1.0 written")
             tp_fx_rate_val = 1.0
 
         profit_zone = rules.get_profit_zone(m_node, product)

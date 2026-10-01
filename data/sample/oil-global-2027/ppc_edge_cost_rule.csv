@@ -1,17 +1,1 @@
 edge_id,product_id,cost_type,basis,rate,fixed_amount,currency
-Refinery_Local->SP_Oil_Local,Gasoline_Local,logistics_cost,per_lot,0.0,3000,JPY
-SP_Oil_Local->Tank_Local,Gasoline_Local,logistics_cost,per_lot,0.0,2500,JPY
-Import_Hub->SP_Oil_Import,Gasoline_Import,logistics_cost,per_lot,0.0,4000,JPY
-SP_Oil_Import->Tank_Import,Gasoline_Import,logistics_cost,per_lot,0.0,2500,JPY
-Refinery_Local_H->SP_Oil_Local_H,Gasoline_Local_Hormuz,logistics_cost,per_lot,0.0,50000000,JPY
-SP_Oil_Local_H->Tank_Local_H,Gasoline_Local_Hormuz,logistics_cost,per_lot,0.0,40000000,JPY
-Refinery_Local_R->SP_Oil_Local_R,Gasoline_Local_RedSea,logistics_cost,per_lot,0.0,50000000,JPY
-SP_Oil_Local_R->Tank_Local_R,Gasoline_Local_RedSea,logistics_cost,per_lot,0.0,40000000,JPY
-Refinery_EU->SP_Oil_EU_Local,Gasoline_EU_Local,logistics_cost,per_lot,0.0,20,EUR
-SP_Oil_EU_Local->Tank_EU_Local,Gasoline_EU_Local,logistics_cost,per_lot,0.0,15,EUR
-Import_Hub_EU->SP_Oil_EU_Import,Gasoline_EU_Import,logistics_cost,per_lot,0.0,25,EUR
-SP_Oil_EU_Import->Tank_EU_Import,Gasoline_EU_Import,logistics_cost,per_lot,0.0,15,EUR
-Refinery_USGulf->SP_Oil_US_Local,Gasoline_US_Local,logistics_cost,per_lot,0.0,25,USD
-SP_Oil_US_Local->Tank_US_Local,Gasoline_US_Local,logistics_cost,per_lot,0.0,20,USD
-Import_Hub_US->SP_Oil_US_Import,Gasoline_US_Import,logistics_cost,per_lot,0.0,30,USD
-SP_Oil_US_Import->Tank_US_Import,Gasoline_US_Import,logistics_cost,per_lot,0.0,20,USD

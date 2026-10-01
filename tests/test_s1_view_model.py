@@ -384,9 +384,11 @@ def test_leaf_economics_kanto():
     assert le["ccy"] == "JPY"
     assert le["price_local"] == pytest.approx(170_000.0)
     assert le["rev"] == pytest.approx(170_000.0)
-    assert le["cost"] == pytest.approx(111_000.0)
-    assert le["margin"] == pytest.approx(59_000.0)
-    assert le["margin_pct"] == pytest.approx(59_000.0 / 170_000.0, abs=1e-6)
+    # Stage D Part 0-3: the duplicated supply point freight (MOM->SP 3,000 + SP->Tank 2,500 JPY)
+    # was removed from ppc_edge_cost_rule.csv (it is on the nodes too): 111,000 -> 105,500.
+    assert le["cost"] == pytest.approx(105_500.0)
+    assert le["margin"] == pytest.approx(64_500.0)   # Stage D Part 0-3 (+5,500)
+    assert le["margin_pct"] == pytest.approx(64_500.0 / 170_000.0, abs=1e-6)
     assert le["rank"] == 9
     assert le["n_markets"] == 15
     assert le["cap_lots"] == pytest.approx(5148.0, abs=1.0)
@@ -401,9 +403,10 @@ def test_leaf_economics_us_tx_zero_shipped():
     assert le["ccy"] == "USD"
     assert le["price_local"] == pytest.approx(900.0)
     assert le["rev"] == pytest.approx(135_000.0)
-    assert le["cost"] == pytest.approx(115_500.0)
-    assert le["margin"] == pytest.approx(19_500.0)
-    assert le["margin_pct"] == pytest.approx(19_500.0 / 135_000.0, abs=1e-6)
+    # Stage D Part 0-3: duplicated supply point freight USD 25 + 20 = 45 (x 150) removed: 115,500 -> 108,750.
+    assert le["cost"] == pytest.approx(108_750.0)
+    assert le["margin"] == pytest.approx(26_250.0)   # Stage D Part 0-3 (+6,750)
+    assert le["margin_pct"] == pytest.approx(26_250.0 / 135_000.0, abs=1e-6)
     assert le["rank"] == 15
     assert le["n_markets"] == 15
     assert le["shipped"] == pytest.approx(0.0, abs=1e-6)

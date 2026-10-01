@@ -1,5 +1,1 @@
 edge_id,product_id,cost_type,basis,rate,fixed_amount,currency
-Factory_Local_TH->SP_EV_Local,EVmaker_Local,logistics_cost,per_lot,0.0,10000,THB
-SP_EV_Local->DC_EV_Local,EVmaker_Local,logistics_cost,per_lot,0.0,20000,THB
-Factory_Import_CN->SP_EV_Import,EVmaker_Import,logistics_cost,per_lot,0.0,33250,THB
-SP_EV_Import->DC_EV_Import,EVmaker_Import,logistics_cost,per_lot,0.0,76000,THB

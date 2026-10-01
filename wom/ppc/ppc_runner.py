@@ -318,6 +318,15 @@ def run_ppc_from_psi(
         verbose=False,
     )
     result = eng.run()
+    # RequestLetter_StageD_Phase1 0-5: the Landed Cost engine's silent fx_rate
+    # defaults of this model's edge_cost_master.csv go to the same warnings file.
+    _ecm = os.path.join(data_dir, "edge_cost_master.csv")
+    if os.path.exists(_ecm):
+        try:
+            from wom.engine.landed_cost import fx_rate_substitutions
+            result.warnings = list(result.warnings or []) + fx_rate_substitutions(pd.read_csv(_ecm))
+        except Exception as _exc:
+            print(f"[PPC Runner] edge_cost_master fx_rate check failed: {_exc}")
 
     if verbose:
         kpi = result.kpi_summary

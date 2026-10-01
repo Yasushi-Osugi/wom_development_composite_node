@@ -237,7 +237,14 @@ def run_backward_propagation(
                     acc.transfer_price_local, acc.transfer_price_base,
                     rules, fx,
                 )
-                # No tariff on inter-DAD domestic edges
+                # Tariff on a DAD -> DAD edge when the border is crossed there
+                # (RequestLetter_StageD_Phase1 Part 0-4; 0 when there is no rule,
+                # i.e. for every domestic inter-DAD edge -- same as before).
+                allowable -= _tariff_base(
+                    edge, product, week,
+                    acc.transfer_price_local, rules, fx,
+                    tp_currency=tp_currency,
+                )
             else:
                 # First DAD: inbound from MOM (freight + tariff)
                 inbound_edge = f"{m_node}->{d}"

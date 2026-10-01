@@ -1,0 +1,16 @@
+node_id,product_id,entity_id,channel_type,local_currency
+Materials_JP,Soy_Sauce,EXT_SUP_JP_MAT,,
+Brewing_Noda,Soy_Sauce,E_JP,,
+Bottling_Noda,Soy_Sauce,E_JP,,
+SP_Soy,Soy_Sauce,E_JP,,
+FG_WH_Noda,Soy_Sauce,E_JP,,
+DC_JP,Soy_Sauce,E_JP,,
+Rest_JP,Soy_Sauce,E_JP,own,JPY
+DC_US_SF,Soy_Sauce,E_US,,
+DC_US_NY,Soy_Sauce,E_US,,
+Rest_US_West,Soy_Sauce,E_US,own,USD
+Rest_US_East,Soy_Sauce,EXT_CH_US_EAST,external,USD
+DC_EU_RTM,Soy_Sauce,E_EU,,
+Rest_FR,Soy_Sauce,EXT_CH_FR,external,EUR
+Rest_BE,Soy_Sauce,EXT_CH_BE,external,EUR
+Rest_NL,Soy_Sauce,EXT_CH_NL,external,EUR

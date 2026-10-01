@@ -1,0 +1,16 @@
+node_id,product_id,entity_id,channel_type,local_currency
+Ingredients_CN,Cookie_Import,EXT_SUP_CN,,
+Factory_GP_CN,Cookie_Import,E_CN,,
+SP_Cookie_Import,Cookie_Import,E_JP,,
+DC_Import_Buffer,Cookie_Import,E_JP,,
+DC_Import_Main,Cookie_Import,E_JP,,
+Retail_JP_SM,Cookie_Import,E_JP,own,JPY
+Retail_JP_CVS,Cookie_Import,EXT_CH_JP_CVS,external,JPY
+Retail_JP_EC,Cookie_Import,E_JP,online,JPY
+Ingredients_JP,Cookie_Local,EXT_SUP_JP,,
+Factory_DP_JP,Cookie_Local,E_JP,,
+SP_Cookie_Local,Cookie_Local,E_JP,,
+DC_Local_JP,Cookie_Local,E_JP,,
+Retail_JP_SM,Cookie_Local,E_JP,own,JPY
+Retail_JP_CVS,Cookie_Local,EXT_CH_JP_CVS,external,JPY
+Retail_JP_EC,Cookie_Local,E_JP,online,JPY

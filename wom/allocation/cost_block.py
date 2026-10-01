@@ -145,6 +145,30 @@ def derive_cost_blocks(model_dir: str, base_week: str = BASE_WEEK,
         if parent and child not in pred:
             pred[child] = parent
 
+    # Stage D Part 0-3: the supply point is a virtual bridge, not a physical place, so
+    # ppc_edge_cost_rule.csv no longer has "MOM->SP" / "SP->DAD" rows (their freight was
+    # also on the nodes). The route must still cross the bridge: link each supply_point
+    # with no predecessor to its product's InBound root MOM -- the same product_name join
+    # the planner uses (forward_planner Phase 2). More than one MOM is an error (never a
+    # silent pick); none leaves the route ending at the supply point, as before.
+    mom_roots: Dict[str, List[str]] = defaultdict(list)
+    for r in sct_rows:
+        if r["node_type"] == "mom" and not (r.get("parent_node") or "").strip():
+            mom_roots[r["product_name"]].append(r["node_name"])
+    for r in sct_rows:
+        sp = r["node_name"]
+        if r["node_type"] != "supply_point" or sp in pred:
+            continue
+        roots = sorted(set(mom_roots.get(r["product_name"], [])))
+        if len(roots) == 1:
+            pred[sp] = roots[0]
+        elif len(roots) > 1:
+            raise ValueError(
+                f"supply_point {sp!r} (product {r['product_name']!r}) has several InBound "
+                f"root MOMs {roots}; choose the route with the physical edge 'MOM-><first DAD>' "
+                f"in ppc_edge_cost_rule.csv (never a 'MOM->SP' row: the supply point is "
+                f"virtual and carries no freight)")
+
     # region -> leaf_out node（重複検出つき、V6.1）。
     # `region` は必ずしも一意ではない（同じ地域に複数の販路を持つモデルがある）ため、
     # 最初の1件だけを覚えて黙って上書きするのではなく、重複を dup_regions に記録し、

@@ -89,6 +89,21 @@ def _resolve_chain(
     return [chain] if chain else [fallback_dad]
 
 
+def _tariff_local(tariff_row, acc, rules, fx, m_node, product, week):
+    """(tariff amount in the transfer-price currency, that currency) for one lot
+    unit -- the basis rules of the MOM -> first DAD tariff (section a-1)."""
+    tariff_rate  = float(tariff_row["tariff_rate"])
+    tariff_basis = str(tariff_row["tariff_basis"])
+    tp_rule = rules.get_transfer_price_rule(m_node, product)
+    tp_currency = str(tp_rule["currency"]) if tp_rule is not None else "JPY"
+    if tariff_basis == "material_cost":
+        mom_fx_rate, _ = fx.get_rate(week, tp_currency)
+        basis_local = acc.supplier_cost_base / mom_fx_rate if mom_fx_rate else 0.0
+    else:                      # "transfer_price", "" and anything else
+        basis_local = acc.transfer_price_local
+    return basis_local * tariff_rate, tp_currency
+
+
 def run_tariff_and_landed_cost(
     accumulators: List[LotCostAccumulator],
     rules: PPCRuleSet,
@@ -289,6 +304,29 @@ def run_tariff_and_landed_cost(
                         source_rule="ppc_edge_cost_rule.csv", direction="forward",
                         profit_zone=next_zone,
                         cost_phase="DAD",
+                    ))
+
+                # Tariff on a DAD -> DAD edge (RequestLetter_StageD_Phase1 Part 0-4:
+                # the border can be crossed between two DCs, e.g. soysauce's
+                # FG_WH_Noda (JP) -> DC_US_SF (US)). Same basis / currency rules as
+                # the MOM -> first DAD tariff (a-1). No model had such a row before.
+                inter_tariff = rules.get_tariff(inter_edge, product)
+                if inter_tariff is not None:
+                    it_local, it_currency = _tariff_local(inter_tariff, acc, rules, fx,
+                                                          m_node, product, week)
+                    it_fx_rate, it_base = fx.convert(it_local, it_currency, week)
+                    acc.tariff_in_base += it_base
+                    events.append(PPCEvent(
+                        event_id=f"TAR-{next(_ctr):06d}",
+                        week=week, lot_id=acc.lot_id, node_id=next_dad,
+                        edge_id=inter_edge, product_id=product, qty=int(round(acc.qty)),
+                        ppc_event_type="tariff_cost",
+                        amount_local=it_local, currency=it_currency,
+                        fx_rate=it_fx_rate, amount_base=it_base,
+                        amount_per_unit_base=it_base,
+                        source_rule="ppc_tariff_rule.csv", direction="forward",
+                        profit_zone=next_zone,
+                        cost_phase="TARIFF",
                     ))
 
         # ── d) last_DAD -> Channel outbound edge ───────────────────────
