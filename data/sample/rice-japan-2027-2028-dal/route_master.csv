@@ -1,0 +1,9 @@
+sku_id,region,src_region,dst_region,hs_code,product_type,assembly_cost_usd_per_lot
+Koshihikari,KANTO,JP,KANTO,1006,polished_rice,0
+Koshihikari,TOHOKU,JP,TOHOKU,1006,polished_rice,0
+Koshihikari,KANSAI,JP,KANSAI,1006,polished_rice,0
+Koshihikari,KYUSHU,JP,KYUSHU,1006,polished_rice,0
+Yumepirika,KANTO,JP,KANTO,1006,polished_rice,0
+Yumepirika,TOHOKU,JP,TOHOKU,1006,polished_rice,0
+Yumepirika,KANSAI,JP,KANSAI,1006,polished_rice,0
+Yumepirika,KYUSHU,JP,KYUSHU,1006,polished_rice,0

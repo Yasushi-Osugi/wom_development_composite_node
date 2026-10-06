@@ -1,0 +1,17 @@
+case,product,node,weekly_capacities,planned_P,actual_P,actual_S,planned_over_capacity_weeks,peak_planned_P,max_realized_P,capacity_deferred_lot_weeks,capacity_deferred_weeks
+baseline,Koshihikari,Seihaku_E,[900.0],115818,109401,109401,14,1809,900,6417,14
+baseline,Koshihikari,Seihaku_W,[700.0],62334,61019,61019,6,1061,700,1315,6
+baseline,Yumepirika,Seihaku_E,[400.0],24002,24002,24002,0,354,354,0,0
+baseline,Yumepirika,Seihaku_W,[300.0],29352,28512,28512,8,503,300,840,8
+legacy_calendar,Koshihikari,Seihaku_E,[900.0],116629,110126,110126,15,1809,900,6503,15
+legacy_calendar,Koshihikari,Seihaku_W,[700.0],62771,61456,61456,6,1061,700,1315,6
+legacy_calendar,Yumepirika,Seihaku_E,[400.0],24170,24170,24170,0,354,354,0,0
+legacy_calendar,Yumepirika,Seihaku_W,[300.0],29557,28717,28717,8,503,300,840,8
+dal_current,Koshihikari,Seihaku_E,[900.0],129080,73969,73969,15,1809,900,1139187,80
+dal_current,Koshihikari,Seihaku_W,[700.0],69467,40965,40965,6,1061,700,420078,57
+dal_current,Yumepirika,Seihaku_E,[400.0],26747,21825,21825,0,354,400,149338,51
+dal_current,Yumepirika,Seihaku_W,[300.0],32706,24239,24239,8,503,300,311995,75
+dal_increased,Koshihikari,Seihaku_E,[900.0],129080,91625,91625,15,1809,900,1872105,100
+dal_increased,Koshihikari,Seihaku_W,[700.0],69467,50597,50597,6,1061,700,697783,71
+dal_increased,Yumepirika,Seihaku_E,[400.0],26747,21825,21825,0,354,400,150250,51
+dal_increased,Yumepirika,Seihaku_W,[300.0],32706,24372,24372,8,503,300,316263,75

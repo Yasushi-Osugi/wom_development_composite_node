@@ -1,0 +1,34 @@
+{
+  "baseline_sha": "d848c5fa0565d70f6817c1a0257341067712deca",
+  "code_sha": "d848c5fa0565d70f6817c1a0257341067712deca",
+  "digest_rows": 99648,
+  "digest_rows_matched": 99648,
+  "dirty": true,
+  "dirty_explanation": "Only untracked trial model/tools; tracked baseline files hash-verified unchanged",
+  "elapsed_seconds": 309.985,
+  "expanded_occurrences": 85454676,
+  "intervals": 18444584,
+  "lot_flow_mode": "identity",
+  "ordered_list_restoration": "not claimed; intervals preserve multisets",
+  "plugins": [
+    "BufferingStockOptimizerPlugin",
+    "CapacityOverridePlugin",
+    "HolidayCalendarPlugin"
+  ],
+  "q12": {
+    "actual": true,
+    "backward": true,
+    "forward": true,
+    "ppc_files": true,
+    "snapshot": true,
+    "states": true
+  },
+  "shipment_counts_by_product": {
+    "Koshihikari": 929984,
+    "Yumepirika": 363315
+  },
+  "shipment_residual": 0,
+  "shipments_expected": 1293299,
+  "shipments_matched": 1293299,
+  "shipments_observed": 1293299
+}

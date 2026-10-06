@@ -1,0 +1,468 @@
+{
+  "cases": [
+    {
+      "case": "baseline",
+      "cohort_fill_by_end": 1.0,
+      "demand": 235316,
+      "early": 0,
+      "late": 0,
+      "max_delay_weeks": 0,
+      "not_shipped": 0,
+      "on_time": 235316,
+      "on_time_fill_rate": 1.0,
+      "opening_inv_synthetic": 58729,
+      "ppc": {
+        "aggregate_sale_records": 1240,
+        "cost_jpy": 1124103687.0,
+        "gross_margin": 0.38546704187623004,
+        "gross_profit_jpy": 705096313.0,
+        "revenue_jpy": 1829200000.0,
+        "shipped_lots": 235316
+      },
+      "scope": "all",
+      "shipped_for_cohort": 235316
+    },
+    {
+      "case": "baseline",
+      "cohort_fill_by_end": 1.0,
+      "demand": 157473,
+      "early": 0,
+      "late": 0,
+      "max_delay_weeks": 0,
+      "not_shipped": 0,
+      "on_time": 157473,
+      "on_time_fill_rate": 1.0,
+      "opening_inv_synthetic": 58729,
+      "ppc": {
+        "aggregate_sale_records": 824,
+        "cost_jpy": 757252274.0,
+        "gross_margin": 0.38750627030737184,
+        "gross_profit_jpy": 479090626.0,
+        "revenue_jpy": 1236342900.0,
+        "shipped_lots": 157473
+      },
+      "scope": "report",
+      "shipped_for_cohort": 157473
+    },
+    {
+      "case": "legacy_calendar",
+      "cohort_fill_by_end": 1.0,
+      "demand": 236937,
+      "early": 0,
+      "late": 0,
+      "max_delay_weeks": 0,
+      "not_shipped": 0,
+      "on_time": 236937,
+      "on_time_fill_rate": 1.0,
+      "opening_inv_synthetic": 58729,
+      "ppc": {
+        "aggregate_sale_records": 1248,
+        "cost_jpy": 1132460983.0,
+        "gross_margin": 0.385198933135461,
+        "gross_profit_jpy": 709534817.0,
+        "revenue_jpy": 1841995800.0,
+        "shipped_lots": 236937
+      },
+      "scope": "all",
+      "shipped_for_cohort": 236937
+    },
+    {
+      "case": "legacy_calendar",
+      "cohort_fill_by_end": 1.0,
+      "demand": 159094,
+      "early": 0,
+      "late": 0,
+      "max_delay_weeks": 0,
+      "not_shipped": 0,
+      "on_time": 159094,
+      "on_time_fill_rate": 1.0,
+      "opening_inv_synthetic": 58729,
+      "ppc": {
+        "aggregate_sale_records": 832,
+        "cost_jpy": 765609570.0,
+        "gross_margin": 0.3870900245104887,
+        "gross_profit_jpy": 483529130.0,
+        "revenue_jpy": 1249138700.0,
+        "shipped_lots": 159094
+      },
+      "scope": "report",
+      "shipped_for_cohort": 159094
+    },
+    {
+      "case": "dal_current",
+      "cohort_fill_by_end": 0.5934957173447537,
+      "demand": 261520,
+      "early": 0,
+      "late": 152687,
+      "max_delay_weeks": 74,
+      "not_shipped": 106309,
+      "on_time": 2524,
+      "on_time_fill_rate": 0.009651269501376568,
+      "opening_inv_synthetic": 0,
+      "ppc": {
+        "aggregate_sale_records": 533,
+        "cost_jpy": 759134431.0,
+        "gross_margin": 0.37544391492271684,
+        "gross_profit_jpy": 456343969.0,
+        "revenue_jpy": 1215478400.0,
+        "shipped_lots": 155211
+      },
+      "scope": "all",
+      "shipped_for_cohort": 155211
+    },
+    {
+      "case": "dal_current",
+      "cohort_fill_by_end": 0.39022213282713364,
+      "demand": 159094,
+      "early": 0,
+      "late": 62082,
+      "max_delay_weeks": 74,
+      "not_shipped": 97012,
+      "on_time": 0,
+      "on_time_fill_rate": 0.0,
+      "opening_inv_synthetic": 0,
+      "ppc": {
+        "aggregate_sale_records": 420,
+        "cost_jpy": 619950471.0,
+        "gross_margin": 0.3834334312990017,
+        "gross_profit_jpy": 385537829.0,
+        "revenue_jpy": 1005488300.0,
+        "shipped_lots": 126549
+      },
+      "scope": "report",
+      "shipped_for_cohort": 62082
+    },
+    {
+      "case": "dal_increased",
+      "cohort_fill_by_end": 0.6996329152646069,
+      "demand": 261520,
+      "early": 0,
+      "late": 180444,
+      "max_delay_weeks": 51,
+      "not_shipped": 78552,
+      "on_time": 2524,
+      "on_time_fill_rate": 0.009651269501376568,
+      "opening_inv_synthetic": 0,
+      "ppc": {
+        "aggregate_sale_records": 591,
+        "cost_jpy": 892376877.0,
+        "gross_margin": 0.3807528953362698,
+        "gross_profit_jpy": 548690623.0,
+        "revenue_jpy": 1441067500.0,
+        "shipped_lots": 182968
+      },
+      "scope": "all",
+      "shipped_for_cohort": 182968
+    },
+    {
+      "case": "dal_increased",
+      "cohort_fill_by_end": 0.5646913145687456,
+      "demand": 159094,
+      "early": 0,
+      "late": 89839,
+      "max_delay_weeks": 51,
+      "not_shipped": 69255,
+      "on_time": 0,
+      "on_time_fill_rate": 0.0,
+      "opening_inv_synthetic": 0,
+      "ppc": {
+        "aggregate_sale_records": 478,
+        "cost_jpy": 753192917.0,
+        "gross_margin": 0.3881839460297135,
+        "gross_profit_jpy": 477884483.0,
+        "revenue_jpy": 1231077400.0,
+        "shipped_lots": 154306
+      },
+      "scope": "report",
+      "shipped_for_cohort": 89839
+    }
+  ],
+  "legacy_harvest_omissions": [
+    {
+      "after_harvest_field_P": 139500,
+      "before_field_P": 173971,
+      "case": "baseline",
+      "omitted_by_harvest": 34471,
+      "product": "Koshihikari"
+    },
+    {
+      "after_harvest_field_P": 51288,
+      "before_field_P": 51288,
+      "case": "baseline",
+      "omitted_by_harvest": 0,
+      "product": "Yumepirika"
+    },
+    {
+      "after_harvest_field_P": 139500,
+      "before_field_P": 175219,
+      "case": "legacy_calendar",
+      "omitted_by_harvest": 35719,
+      "product": "Koshihikari"
+    },
+    {
+      "after_harvest_field_P": 51661,
+      "before_field_P": 51661,
+      "case": "legacy_calendar",
+      "omitted_by_harvest": 0,
+      "product": "Yumepirika"
+    }
+  ],
+  "polishing": [
+    {
+      "actual_P": 109401,
+      "actual_S": 109401,
+      "capacity_deferred_lot_weeks": 6417,
+      "capacity_deferred_weeks": 14,
+      "case": "baseline",
+      "max_realized_P": 900,
+      "node": "Seihaku_E",
+      "peak_planned_P": 1809,
+      "planned_P": 115818,
+      "planned_over_capacity_weeks": 14,
+      "product": "Koshihikari",
+      "weekly_capacities": [
+        900.0
+      ]
+    },
+    {
+      "actual_P": 61019,
+      "actual_S": 61019,
+      "capacity_deferred_lot_weeks": 1315,
+      "capacity_deferred_weeks": 6,
+      "case": "baseline",
+      "max_realized_P": 700,
+      "node": "Seihaku_W",
+      "peak_planned_P": 1061,
+      "planned_P": 62334,
+      "planned_over_capacity_weeks": 6,
+      "product": "Koshihikari",
+      "weekly_capacities": [
+        700.0
+      ]
+    },
+    {
+      "actual_P": 24002,
+      "actual_S": 24002,
+      "capacity_deferred_lot_weeks": 0,
+      "capacity_deferred_weeks": 0,
+      "case": "baseline",
+      "max_realized_P": 354,
+      "node": "Seihaku_E",
+      "peak_planned_P": 354,
+      "planned_P": 24002,
+      "planned_over_capacity_weeks": 0,
+      "product": "Yumepirika",
+      "weekly_capacities": [
+        400.0
+      ]
+    },
+    {
+      "actual_P": 28512,
+      "actual_S": 28512,
+      "capacity_deferred_lot_weeks": 840,
+      "capacity_deferred_weeks": 8,
+      "case": "baseline",
+      "max_realized_P": 300,
+      "node": "Seihaku_W",
+      "peak_planned_P": 503,
+      "planned_P": 29352,
+      "planned_over_capacity_weeks": 8,
+      "product": "Yumepirika",
+      "weekly_capacities": [
+        300.0
+      ]
+    },
+    {
+      "actual_P": 110126,
+      "actual_S": 110126,
+      "capacity_deferred_lot_weeks": 6503,
+      "capacity_deferred_weeks": 15,
+      "case": "legacy_calendar",
+      "max_realized_P": 900,
+      "node": "Seihaku_E",
+      "peak_planned_P": 1809,
+      "planned_P": 116629,
+      "planned_over_capacity_weeks": 15,
+      "product": "Koshihikari",
+      "weekly_capacities": [
+        900.0
+      ]
+    },
+    {
+      "actual_P": 61456,
+      "actual_S": 61456,
+      "capacity_deferred_lot_weeks": 1315,
+      "capacity_deferred_weeks": 6,
+      "case": "legacy_calendar",
+      "max_realized_P": 700,
+      "node": "Seihaku_W",
+      "peak_planned_P": 1061,
+      "planned_P": 62771,
+      "planned_over_capacity_weeks": 6,
+      "product": "Koshihikari",
+      "weekly_capacities": [
+        700.0
+      ]
+    },
+    {
+      "actual_P": 24170,
+      "actual_S": 24170,
+      "capacity_deferred_lot_weeks": 0,
+      "capacity_deferred_weeks": 0,
+      "case": "legacy_calendar",
+      "max_realized_P": 354,
+      "node": "Seihaku_E",
+      "peak_planned_P": 354,
+      "planned_P": 24170,
+      "planned_over_capacity_weeks": 0,
+      "product": "Yumepirika",
+      "weekly_capacities": [
+        400.0
+      ]
+    },
+    {
+      "actual_P": 28717,
+      "actual_S": 28717,
+      "capacity_deferred_lot_weeks": 840,
+      "capacity_deferred_weeks": 8,
+      "case": "legacy_calendar",
+      "max_realized_P": 300,
+      "node": "Seihaku_W",
+      "peak_planned_P": 503,
+      "planned_P": 29557,
+      "planned_over_capacity_weeks": 8,
+      "product": "Yumepirika",
+      "weekly_capacities": [
+        300.0
+      ]
+    },
+    {
+      "actual_P": 73969,
+      "actual_S": 73969,
+      "capacity_deferred_lot_weeks": 1139187,
+      "capacity_deferred_weeks": 80,
+      "case": "dal_current",
+      "max_realized_P": 900,
+      "node": "Seihaku_E",
+      "peak_planned_P": 1809,
+      "planned_P": 129080,
+      "planned_over_capacity_weeks": 15,
+      "product": "Koshihikari",
+      "weekly_capacities": [
+        900.0
+      ]
+    },
+    {
+      "actual_P": 40965,
+      "actual_S": 40965,
+      "capacity_deferred_lot_weeks": 420078,
+      "capacity_deferred_weeks": 57,
+      "case": "dal_current",
+      "max_realized_P": 700,
+      "node": "Seihaku_W",
+      "peak_planned_P": 1061,
+      "planned_P": 69467,
+      "planned_over_capacity_weeks": 6,
+      "product": "Koshihikari",
+      "weekly_capacities": [
+        700.0
+      ]
+    },
+    {
+      "actual_P": 21825,
+      "actual_S": 21825,
+      "capacity_deferred_lot_weeks": 149338,
+      "capacity_deferred_weeks": 51,
+      "case": "dal_current",
+      "max_realized_P": 400,
+      "node": "Seihaku_E",
+      "peak_planned_P": 354,
+      "planned_P": 26747,
+      "planned_over_capacity_weeks": 0,
+      "product": "Yumepirika",
+      "weekly_capacities": [
+        400.0
+      ]
+    },
+    {
+      "actual_P": 24239,
+      "actual_S": 24239,
+      "capacity_deferred_lot_weeks": 311995,
+      "capacity_deferred_weeks": 75,
+      "case": "dal_current",
+      "max_realized_P": 300,
+      "node": "Seihaku_W",
+      "peak_planned_P": 503,
+      "planned_P": 32706,
+      "planned_over_capacity_weeks": 8,
+      "product": "Yumepirika",
+      "weekly_capacities": [
+        300.0
+      ]
+    },
+    {
+      "actual_P": 91625,
+      "actual_S": 91625,
+      "capacity_deferred_lot_weeks": 1872105,
+      "capacity_deferred_weeks": 100,
+      "case": "dal_increased",
+      "max_realized_P": 900,
+      "node": "Seihaku_E",
+      "peak_planned_P": 1809,
+      "planned_P": 129080,
+      "planned_over_capacity_weeks": 15,
+      "product": "Koshihikari",
+      "weekly_capacities": [
+        900.0
+      ]
+    },
+    {
+      "actual_P": 50597,
+      "actual_S": 50597,
+      "capacity_deferred_lot_weeks": 697783,
+      "capacity_deferred_weeks": 71,
+      "case": "dal_increased",
+      "max_realized_P": 700,
+      "node": "Seihaku_W",
+      "peak_planned_P": 1061,
+      "planned_P": 69467,
+      "planned_over_capacity_weeks": 6,
+      "product": "Koshihikari",
+      "weekly_capacities": [
+        700.0
+      ]
+    },
+    {
+      "actual_P": 21825,
+      "actual_S": 21825,
+      "capacity_deferred_lot_weeks": 150250,
+      "capacity_deferred_weeks": 51,
+      "case": "dal_increased",
+      "max_realized_P": 400,
+      "node": "Seihaku_E",
+      "peak_planned_P": 354,
+      "planned_P": 26747,
+      "planned_over_capacity_weeks": 0,
+      "product": "Yumepirika",
+      "weekly_capacities": [
+        400.0
+      ]
+    },
+    {
+      "actual_P": 24372,
+      "actual_S": 24372,
+      "capacity_deferred_lot_weeks": 316263,
+      "capacity_deferred_weeks": 75,
+      "case": "dal_increased",
+      "max_realized_P": 300,
+      "node": "Seihaku_W",
+      "peak_planned_P": 503,
+      "planned_P": 32706,
+      "planned_over_capacity_weeks": 8,
+      "product": "Yumepirika",
+      "weekly_capacities": [
+        300.0
+      ]
+    }
+  ]
+}

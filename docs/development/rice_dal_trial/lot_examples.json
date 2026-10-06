@@ -1,0 +1,170 @@
+[
+  {
+    "actual_ships": [
+      {
+        "node": "SP_Kome",
+        "node_id": "OUT:supply_point:SP_Kome:Koshihikari",
+        "sequence": 2458,
+        "week": "2027-W43",
+        "week_index": 111
+      },
+      {
+        "node": "Genmai_Souko_Niigata",
+        "node_id": "OUT:dad:Genmai_Souko_Niigata:Koshihikari",
+        "sequence": 2458,
+        "week": "2027-W44",
+        "week_index": 112
+      },
+      {
+        "node": "Seihaku_W",
+        "node_id": "OUT:dad:Seihaku_W:Koshihikari",
+        "sequence": 625,
+        "week": "2028-W01",
+        "week_index": 121
+      },
+      {
+        "node": "DC_Nishi",
+        "node_id": "OUT:dad:DC_Nishi:Koshihikari",
+        "sequence": 2025,
+        "week": "2028-W02",
+        "week_index": 122
+      },
+      {
+        "node": "Retail_KANSAI",
+        "node_id": "OUT:leaf_out:KANSAI:Koshihikari",
+        "sequence": 1400,
+        "week": "2028-W03",
+        "week_index": 123
+      },
+      {
+        "node": "Sanchiku_Niigata",
+        "node_id": "IN:mom:Sanchiku_Niigata:Koshihikari",
+        "sequence": 2458,
+        "week": "2027-W43",
+        "week_index": 111
+      },
+      {
+        "node": "Tanbo_Niigata",
+        "node_id": "IN:leaf_in:Tanbo_Niigata:Koshihikari",
+        "sequence": 2458,
+        "week": "2027-W42",
+        "week_index": 110
+      }
+    ],
+    "field": [
+      {
+        "field": "Tanbo_Niigata",
+        "field_P_week": "2026-W48",
+        "field_P_week_index": 63,
+        "field_required_week": "2026-W48",
+        "is_harvest_week": false,
+        "latest_eligible_harvest": "2026-W43",
+        "lot_id": "Koshihikari:KANSAI:2027-W01:00001",
+        "market_due_week": "2027-W01",
+        "matches_latest_eligible_harvest": false,
+        "no_prior_crop_in_horizon": false,
+        "product": "Koshihikari"
+      }
+    ],
+    "lot_id": "Koshihikari:KANSAI:2027-W01:00001",
+    "market": {
+      "delay_weeks": 54.0,
+      "in_report": true,
+      "lot_id": "Koshihikari:KANSAI:2027-W01:00001",
+      "node": "Retail_KANSAI",
+      "node_id": "OUT:leaf_out:KANSAI:Koshihikari",
+      "product": "Koshihikari",
+      "required_week": "2027-W01",
+      "required_week_index": 69,
+      "shipment_occurrences": 1,
+      "shipment_week": "2028-W03",
+      "shipment_week_index": 123.0,
+      "status": "late"
+    },
+    "product": "Koshihikari"
+  },
+  {
+    "actual_ships": [
+      {
+        "node": "SP_Kome",
+        "node_id": "OUT:supply_point:SP_Kome:Yumepirika",
+        "sequence": 541,
+        "week": "2027-W38",
+        "week_index": 106
+      },
+      {
+        "node": "Genmai_Souko_Hokkaido",
+        "node_id": "OUT:dad:Genmai_Souko_Hokkaido:Yumepirika",
+        "sequence": 541,
+        "week": "2027-W40",
+        "week_index": 108
+      },
+      {
+        "node": "Seihaku_W",
+        "node_id": "OUT:dad:Seihaku_W:Yumepirika",
+        "sequence": 205,
+        "week": "2027-W43",
+        "week_index": 111
+      },
+      {
+        "node": "DC_Nishi",
+        "node_id": "OUT:dad:DC_Nishi:Yumepirika",
+        "sequence": 205,
+        "week": "2027-W44",
+        "week_index": 112
+      },
+      {
+        "node": "Retail_KANSAI",
+        "node_id": "OUT:leaf_out:KANSAI:Yumepirika",
+        "sequence": 149,
+        "week": "2027-W45",
+        "week_index": 113
+      },
+      {
+        "node": "Sanchiku_Hokkaido",
+        "node_id": "IN:mom:Sanchiku_Hokkaido:Yumepirika",
+        "sequence": 541,
+        "week": "2027-W38",
+        "week_index": 106
+      },
+      {
+        "node": "Tanbo_Hokkaido",
+        "node_id": "IN:leaf_in:Tanbo_Hokkaido:Yumepirika",
+        "sequence": 541,
+        "week": "2027-W37",
+        "week_index": 105
+      }
+    ],
+    "field": [
+      {
+        "field": "Tanbo_Hokkaido",
+        "field_P_week": "2026-W46",
+        "field_P_week_index": 61,
+        "field_required_week": "2026-W46",
+        "is_harvest_week": false,
+        "latest_eligible_harvest": "2026-W43",
+        "lot_id": "Yumepirika:KANSAI:2027-W01:00001",
+        "market_due_week": "2027-W01",
+        "matches_latest_eligible_harvest": false,
+        "no_prior_crop_in_horizon": false,
+        "product": "Yumepirika"
+      }
+    ],
+    "lot_id": "Yumepirika:KANSAI:2027-W01:00001",
+    "market": {
+      "delay_weeks": 44.0,
+      "in_report": true,
+      "lot_id": "Yumepirika:KANSAI:2027-W01:00001",
+      "node": "Retail_KANSAI",
+      "node_id": "OUT:leaf_out:KANSAI:Yumepirika",
+      "product": "Yumepirika",
+      "required_week": "2027-W01",
+      "required_week_index": 69,
+      "shipment_occurrences": 1,
+      "shipment_week": "2027-W45",
+      "shipment_week_index": 113.0,
+      "status": "late"
+    },
+    "product": "Yumepirika"
+  }
+]

@@ -1,0 +1,5 @@
+case,product,before_field_P,after_harvest_field_P,omitted_by_harvest
+baseline,Koshihikari,173971,139500,34471
+baseline,Yumepirika,51288,51288,0
+legacy_calendar,Koshihikari,175219,139500,35719
+legacy_calendar,Yumepirika,51661,51661,0

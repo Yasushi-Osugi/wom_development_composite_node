@@ -1,0 +1,9 @@
+sku_id,sku_name,region,uom,unit_cost,safety_stock_wks,lead_time_wks,order_multiple,max_order_qty,shelf_life_wks,active,selling_price,dso_wks,dpo_wks
+Koshihikari,新潟県産コシヒカリ,KANTO,lot,1800000,4,3,100,0,52,True,3200000,30,45
+Koshihikari,新潟県産コシヒカリ,TOHOKU,lot,1800000,4,3,100,0,52,True,3000000,30,45
+Koshihikari,新潟県産コシヒカリ,KANSAI,lot,1800000,4,3,100,0,52,True,3300000,30,45
+Koshihikari,新潟県産コシヒカリ,KYUSHU,lot,1800000,4,3,100,0,52,True,3100000,30,45
+Yumepirika,北海道産ユメピリカ,KANTO,lot,1500000,4,3,100,0,52,True,2800000,30,45
+Yumepirika,北海道産ユメピリカ,TOHOKU,lot,1500000,4,3,100,0,52,True,2700000,30,45
+Yumepirika,北海道産ユメピリカ,KANSAI,lot,1500000,4,3,100,0,52,True,2900000,30,45
+Yumepirika,北海道産ユメピリカ,KYUSHU,lot,1500000,4,3,100,0,52,True,2750000,30,45

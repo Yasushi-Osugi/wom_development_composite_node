@@ -1,0 +1,280 @@
+{
+  "added_anchor_ids": 4304,
+  "added_by_product": {
+    "Koshihikari": 3312,
+    "Yumepirika": 992
+  },
+  "all_added_have_HOL_prefix": true,
+  "anchors_after_holiday": 261520,
+  "anchors_before_holiday": 258112,
+  "gzip_checks": [
+    {
+      "file": "raw/baseline/Koshihikari_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 19175139
+    },
+    {
+      "file": "raw/baseline/Koshihikari_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 15374396
+    },
+    {
+      "file": "raw/baseline/Yumepirika_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 5609844
+    },
+    {
+      "file": "raw/baseline/Yumepirika_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 5611312
+    },
+    {
+      "file": "raw/baseline/actual_shipments.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 178530515
+    },
+    {
+      "file": "raw/baseline/backward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 1487970
+    },
+    {
+      "file": "raw/baseline/demand_anchors.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 24440491
+    },
+    {
+      "file": "raw/baseline/forward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 141520
+    },
+    {
+      "file": "raw/baseline/market_lot_status.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 31413785
+    },
+    {
+      "file": "raw/baseline/q1_field_placement.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 21800798
+    },
+    {
+      "file": "raw/dal_current/Koshihikari_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 21468359
+    },
+    {
+      "file": "raw/dal_current/Koshihikari_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 21468359
+    },
+    {
+      "file": "raw/dal_current/Yumepirika_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 6295731
+    },
+    {
+      "file": "raw/dal_current/Yumepirika_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 6295731
+    },
+    {
+      "file": "raw/dal_current/actual_shipments.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 159731290
+    },
+    {
+      "file": "raw/dal_current/backward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 1436527
+    },
+    {
+      "file": "raw/dal_current/demand_anchors.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 27171381
+    },
+    {
+      "file": "raw/dal_current/forward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 4894768
+    },
+    {
+      "file": "raw/dal_current/market_lot_status.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 33878877
+    },
+    {
+      "file": "raw/dal_current/q1_field_placement.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 29689979
+    },
+    {
+      "file": "raw/dal_increased/Koshihikari_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 21468359
+    },
+    {
+      "file": "raw/dal_increased/Koshihikari_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 21468359
+    },
+    {
+      "file": "raw/dal_increased/Yumepirika_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 6295731
+    },
+    {
+      "file": "raw/dal_increased/Yumepirika_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 6295731
+    },
+    {
+      "file": "raw/dal_increased/actual_shipments.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 191737279
+    },
+    {
+      "file": "raw/dal_increased/backward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 1436527
+    },
+    {
+      "file": "raw/dal_increased/demand_anchors.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 27171381
+    },
+    {
+      "file": "raw/dal_increased/forward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 3614459
+    },
+    {
+      "file": "raw/dal_increased/market_lot_status.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 34037957
+    },
+    {
+      "file": "raw/dal_increased/q1_field_placement.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 29689979
+    },
+    {
+      "file": "raw/dal_observed/Koshihikari_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 21468359
+    },
+    {
+      "file": "raw/dal_observed/Koshihikari_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 21468359
+    },
+    {
+      "file": "raw/dal_observed/Yumepirika_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 6295731
+    },
+    {
+      "file": "raw/dal_observed/Yumepirika_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 6295731
+    },
+    {
+      "file": "raw/dal_observed/actual_shipments.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 159731290
+    },
+    {
+      "file": "raw/dal_observed/backward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 1436527
+    },
+    {
+      "file": "raw/dal_observed/demand_anchors.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 27171381
+    },
+    {
+      "file": "raw/dal_observed/forward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 4894768
+    },
+    {
+      "file": "raw/dal_observed/market_lot_status.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 33878877
+    },
+    {
+      "file": "raw/dal_observed/q1_field_placement.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 29689979
+    },
+    {
+      "file": "raw/legacy_calendar/Koshihikari_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 19313168
+    },
+    {
+      "file": "raw/legacy_calendar/Koshihikari_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 15374396
+    },
+    {
+      "file": "raw/legacy_calendar/Yumepirika_post_backward_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 5650781
+    },
+    {
+      "file": "raw/legacy_calendar/Yumepirika_post_backward_hooks_field_P.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 5652249
+    },
+    {
+      "file": "raw/legacy_calendar/actual_shipments.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 179284370
+    },
+    {
+      "file": "raw/legacy_calendar/backward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 1490116
+    },
+    {
+      "file": "raw/legacy_calendar/demand_anchors.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 24609422
+    },
+    {
+      "file": "raw/legacy_calendar/forward_results.json.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 142777
+    },
+    {
+      "file": "raw/legacy_calendar/market_lot_status.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 31631346
+    },
+    {
+      "file": "raw/legacy_calendar/q1_field_placement.csv.gz",
+      "gzip_valid": true,
+      "uncompressed_bytes": 21844346
+    }
+  ],
+  "gzip_files": 50,
+  "removed_anchor_ids": 896,
+  "removed_by_product": {
+    "Koshihikari": 688,
+    "Yumepirika": 208
+  },
+  "terminal_CO_by_leaf": {
+    "OUT:leaf_out:KANSAI:Koshihikari": 21968,
+    "OUT:leaf_out:KANSAI:Yumepirika": 6877,
+    "OUT:leaf_out:KANTO:Koshihikari": 36443,
+    "OUT:leaf_out:KANTO:Yumepirika": 3378,
+    "OUT:leaf_out:KYUSHU:Koshihikari": 9014,
+    "OUT:leaf_out:KYUSHU:Yumepirika": 2704,
+    "OUT:leaf_out:TOHOKU:Koshihikari": 23051,
+    "OUT:leaf_out:TOHOKU:Yumepirika": 2874
+  },
+  "terminal_CO_exact_identity_match": true,
+  "terminal_CO_total": 106309
+}
