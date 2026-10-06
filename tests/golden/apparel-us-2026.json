@@ -17,17 +17,49 @@
     "cap_soft_violation_count": 0
   },
   "period": {
+    "filled_weeks": [
+      "2026-W07",
+      "2026-W08",
+      "2026-W14",
+      "2026-W15",
+      "2026-W20",
+      "2026-W21",
+      "2026-W27",
+      "2026-W28",
+      "2026-W33",
+      "2026-W34",
+      "2026-W40",
+      "2026-W41",
+      "2026-W46",
+      "2026-W47",
+      "2026-W53",
+      "2027-W01",
+      "2027-W07",
+      "2027-W08",
+      "2027-W14",
+      "2027-W15",
+      "2027-W20",
+      "2027-W21",
+      "2027-W27",
+      "2027-W28",
+      "2027-W33",
+      "2027-W34",
+      "2027-W40",
+      "2027-W41",
+      "2027-W46",
+      "2027-W47"
+    ],
     "start": "2025-W37",
-    "weeks": 91
+    "weeks": 121
   },
   "ppc": {
     "base_currency": "USD",
-    "cost_base": 7027273.33,
+    "cost_base": 10068743.74,
     "gross_margin_pct": 0.424439,
-    "gross_profit_base": 5182154.67,
-    "revenue_base": 12209428.0,
-    "tariff_base": 822890.53,
-    "total_lots": 312,
+    "gross_profit_base": 7425040.26,
+    "revenue_base": 17493784.0,
+    "tariff_base": 1179045.34,
+    "total_lots": 444,
     "trust_event_count": 0
   },
   "products": [
@@ -56,7 +88,7 @@
         "I_sum": 23884,
         "P": 23884,
         "S": 23884,
-        "series_md5": "3b752cbc11b1"
+        "series_md5": "9d75d12e0755"
       },
       "Fabric_ES": {
         "CO": 0,
@@ -64,7 +96,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "104f76880e3a"
+        "series_md5": "13ce617bcea9"
       },
       "Factory_Local_ES": {
         "CO": 0,
@@ -72,7 +104,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "79e20e014c38"
+        "series_md5": "fc079bdaaa6e"
       },
       "SP_Apparel_Integrated": {
         "CO": 0,
@@ -80,7 +112,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "79e20e014c38"
+        "series_md5": "fc079bdaaa6e"
       },
       "Sales_US_CA_L": {
         "CO": 0,
@@ -88,7 +120,7 @@
         "I_sum": 0,
         "P": 8212,
         "S": 8212,
-        "series_md5": "d023aea77559"
+        "series_md5": "c5f8a7c32a39"
       },
       "Sales_US_NY_L": {
         "CO": 0,
@@ -96,7 +128,7 @@
         "I_sum": 0,
         "P": 6716,
         "S": 6716,
-        "series_md5": "67370a81d867"
+        "series_md5": "23ce7c9ec56f"
       },
       "Sales_US_TX_L": {
         "CO": 0,
@@ -104,7 +136,7 @@
         "I_sum": 0,
         "P": 8956,
         "S": 8956,
-        "series_md5": "37908b042ab5"
+        "series_md5": "bdda6b43841a"
       }
     },
     "Apparel_Integrated_S2": {
@@ -114,7 +146,7 @@
         "I_sum": 23884,
         "P": 23884,
         "S": 23884,
-        "series_md5": "74d9e551bac3"
+        "series_md5": "32717ce682b3"
       },
       "Fabric_ES": {
         "CO": 0,
@@ -122,7 +154,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "ddf3d8c3f8ec"
+        "series_md5": "884a88cd4554"
       },
       "Factory_Local_ES": {
         "CO": 0,
@@ -130,7 +162,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "7af25626e213"
+        "series_md5": "dfefe767e917"
       },
       "SP_Apparel_Integrated": {
         "CO": 0,
@@ -138,7 +170,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "7af25626e213"
+        "series_md5": "dfefe767e917"
       },
       "Sales_US_CA_L": {
         "CO": 0,
@@ -146,7 +178,7 @@
         "I_sum": 0,
         "P": 8212,
         "S": 8212,
-        "series_md5": "3ba65fa7db5f"
+        "series_md5": "bdf0e4f14aaf"
       },
       "Sales_US_NY_L": {
         "CO": 0,
@@ -154,7 +186,7 @@
         "I_sum": 0,
         "P": 6716,
         "S": 6716,
-        "series_md5": "aa556c4a0d1e"
+        "series_md5": "00fd0842c835"
       },
       "Sales_US_TX_L": {
         "CO": 0,
@@ -162,7 +194,7 @@
         "I_sum": 0,
         "P": 8956,
         "S": 8956,
-        "series_md5": "544fd1bc0fee"
+        "series_md5": "8618aff59cef"
       }
     },
     "Apparel_Integrated_S3": {
@@ -172,7 +204,7 @@
         "I_sum": 19696,
         "P": 19696,
         "S": 19696,
-        "series_md5": "c57550668958"
+        "series_md5": "4411f6e10358"
       },
       "Fabric_ES": {
         "CO": 0,
@@ -180,7 +212,7 @@
         "I_sum": 0,
         "P": 19696,
         "S": 19696,
-        "series_md5": "4fa230c47020"
+        "series_md5": "95e9ebf57604"
       },
       "Factory_Local_ES": {
         "CO": 0,
@@ -188,7 +220,7 @@
         "I_sum": 0,
         "P": 19696,
         "S": 19696,
-        "series_md5": "2af1f42ab560"
+        "series_md5": "1b9b0c15023c"
       },
       "SP_Apparel_Integrated": {
         "CO": 0,
@@ -196,7 +228,7 @@
         "I_sum": 0,
         "P": 19696,
         "S": 19696,
-        "series_md5": "2af1f42ab560"
+        "series_md5": "1b9b0c15023c"
       },
       "Sales_US_CA_L": {
         "CO": 0,
@@ -204,7 +236,7 @@
         "I_sum": 0,
         "P": 6772,
         "S": 6772,
-        "series_md5": "5c193436f3f1"
+        "series_md5": "9c749410d4b0"
       },
       "Sales_US_NY_L": {
         "CO": 0,
@@ -212,7 +244,7 @@
         "I_sum": 0,
         "P": 5540,
         "S": 5540,
-        "series_md5": "8081a8ca039c"
+        "series_md5": "c140ce32b1dd"
       },
       "Sales_US_TX_L": {
         "CO": 0,
@@ -220,297 +252,297 @@
         "I_sum": 0,
         "P": 7384,
         "S": 7384,
-        "series_md5": "041ebff2500b"
+        "series_md5": "af4d698529e1"
       }
     },
     "Apparel_Integrated_S4": {
       "DC_Local_US": {
         "CO": 0,
         "I_max": 3200,
-        "I_sum": 13542,
-        "P": 13542,
-        "S": 13542,
-        "series_md5": "377141a6bebf"
+        "I_sum": 23884,
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "c6c7f9fc637c"
       },
       "Fabric_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 13542,
-        "S": 13542,
-        "series_md5": "0d6a116b8cf0"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "43f77388137c"
       },
       "Factory_Local_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 13542,
-        "S": 13542,
-        "series_md5": "ac6c204291ba"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "da4dab587f59"
       },
       "SP_Apparel_Integrated": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 13542,
-        "S": 13542,
-        "series_md5": "ac6c204291ba"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "da4dab587f59"
       },
       "Sales_US_CA_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4656,
-        "S": 4656,
-        "series_md5": "dcd9a8f653d3"
+        "P": 8212,
+        "S": 8212,
+        "series_md5": "2b320e8fc4f5"
       },
       "Sales_US_NY_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3808,
-        "S": 3808,
-        "series_md5": "09190bf9bce7"
+        "P": 6716,
+        "S": 6716,
+        "series_md5": "713c2574e4cd"
       },
       "Sales_US_TX_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 5078,
-        "S": 5078,
-        "series_md5": "62b37bd0dc89"
+        "P": 8956,
+        "S": 8956,
+        "series_md5": "b506b5cdaf05"
       }
     },
     "Apparel_Integrated_S5": {
       "DC_Local_US": {
         "CO": 0,
         "I_max": 3043,
-        "I_sum": 9848,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "7380d8899a2e"
+        "I_sum": 19696,
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "5906ee64863a"
       },
       "Fabric_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "f83a0a67af49"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "798843c5963c"
       },
       "Factory_Local_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "01dc2bf21dd2"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "bc7013bb73e2"
       },
       "SP_Apparel_Integrated": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "01dc2bf21dd2"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "bc7013bb73e2"
       },
       "Sales_US_CA_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3386,
-        "S": 3386,
-        "series_md5": "33dfb1b6d75e"
+        "P": 6772,
+        "S": 6772,
+        "series_md5": "5099aee2453c"
       },
       "Sales_US_NY_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 2770,
-        "S": 2770,
-        "series_md5": "40e983c3b577"
+        "P": 5540,
+        "S": 5540,
+        "series_md5": "43d8d2dd45ed"
       },
       "Sales_US_TX_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3692,
-        "S": 3692,
-        "series_md5": "57ca6ce0bd12"
+        "P": 7384,
+        "S": 7384,
+        "series_md5": "88d727c86e28"
       }
     },
     "Apparel_Integrated_S6": {
       "DC_Local_US": {
         "CO": 0,
         "I_max": 3200,
-        "I_sum": 11942,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "dbe2cc807ae0"
+        "I_sum": 23884,
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "1e910a66d2c8"
       },
       "Fabric_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "e9f1df6da476"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "8d2190b5d0b4"
       },
       "Factory_Local_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "2111b16584a9"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "2d2725e4d278"
       },
       "SP_Apparel_Integrated": {
         "CO": 0,
         "I_max": 1371,
-        "I_sum": 2642,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "aab762bc126a"
+        "I_sum": 5284,
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "7c856c5e5671"
       },
       "Sales_US_CA_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4106,
-        "S": 4106,
-        "series_md5": "909332606d39"
+        "P": 8212,
+        "S": 8212,
+        "series_md5": "9b7b7fb3ea60"
       },
       "Sales_US_NY_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3358,
-        "S": 3358,
-        "series_md5": "c2df22db55b1"
+        "P": 6716,
+        "S": 6716,
+        "series_md5": "2f38026200b7"
       },
       "Sales_US_TX_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4478,
-        "S": 4478,
-        "series_md5": "a4bf4d26a7ad"
+        "P": 8956,
+        "S": 8956,
+        "series_md5": "002028464b78"
       }
     },
     "Apparel_Integrated_S7": {
       "DC_Local_US": {
         "CO": 0,
         "I_max": 3043,
-        "I_sum": 9848,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "122af9829e1e"
+        "I_sum": 19696,
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "f3cf335334ab"
       },
       "Fabric_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "f1beb29c767f"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "3c49a21e89d4"
       },
       "Factory_Local_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "02bab8adf6ec"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "c5c1d1e7184f"
       },
       "SP_Apparel_Integrated": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "02bab8adf6ec"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "c5c1d1e7184f"
       },
       "Sales_US_CA_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3386,
-        "S": 3386,
-        "series_md5": "49087e2bf66e"
+        "P": 6772,
+        "S": 6772,
+        "series_md5": "a00d3294306a"
       },
       "Sales_US_NY_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 2770,
-        "S": 2770,
-        "series_md5": "30c376a5257e"
+        "P": 5540,
+        "S": 5540,
+        "series_md5": "41a21fee3aa6"
       },
       "Sales_US_TX_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3692,
-        "S": 3692,
-        "series_md5": "ff0264084911"
+        "P": 7384,
+        "S": 7384,
+        "series_md5": "919614c256eb"
       }
     },
     "Apparel_Integrated_S8": {
       "DC_Local_US": {
         "CO": 0,
         "I_max": 3200,
-        "I_sum": 11942,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "a04e15b7ad35"
+        "I_sum": 23884,
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "932ae94d413b"
       },
       "Fabric_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "eaa4c3b983c2"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "36f9cf6d099b"
       },
       "Factory_Local_ES": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "c8e3c5d8a50f"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "39cb53c6b5e2"
       },
       "SP_Apparel_Integrated": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "c8e3c5d8a50f"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "39cb53c6b5e2"
       },
       "Sales_US_CA_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4106,
-        "S": 4106,
-        "series_md5": "1fb95bb56b74"
+        "P": 8212,
+        "S": 8212,
+        "series_md5": "f725fdf90115"
       },
       "Sales_US_NY_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3358,
-        "S": 3358,
-        "series_md5": "bad0180d4317"
+        "P": 6716,
+        "S": 6716,
+        "series_md5": "723f5f81e465"
       },
       "Sales_US_TX_L": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4478,
-        "S": 4478,
-        "series_md5": "0c2b0f494f87"
+        "P": 8956,
+        "S": 8956,
+        "series_md5": "743f61d6daca"
       }
     },
     "Apparel_Outsourced_S1": {
@@ -520,7 +552,7 @@
         "I_sum": 71652,
         "P": 23884,
         "S": 23884,
-        "series_md5": "67b58253e7e5"
+        "series_md5": "4ef181bdf6b0"
       },
       "Fabric_CN": {
         "CO": 0,
@@ -528,7 +560,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "c64fc8e78300"
+        "series_md5": "0c32d1255bf6"
       },
       "Factory_Import_CN": {
         "CO": 0,
@@ -536,7 +568,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "99a988042d9d"
+        "series_md5": "1348caeeb502"
       },
       "SP_Apparel_Outsourced": {
         "CO": 0,
@@ -544,7 +576,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "99a988042d9d"
+        "series_md5": "1348caeeb502"
       },
       "Sales_US_CA_I": {
         "CO": 0,
@@ -552,7 +584,7 @@
         "I_sum": 0,
         "P": 8212,
         "S": 8212,
-        "series_md5": "d023aea77559"
+        "series_md5": "c5f8a7c32a39"
       },
       "Sales_US_NY_I": {
         "CO": 0,
@@ -560,7 +592,7 @@
         "I_sum": 0,
         "P": 6716,
         "S": 6716,
-        "series_md5": "67370a81d867"
+        "series_md5": "23ce7c9ec56f"
       },
       "Sales_US_TX_I": {
         "CO": 0,
@@ -568,7 +600,7 @@
         "I_sum": 0,
         "P": 8956,
         "S": 8956,
-        "series_md5": "37908b042ab5"
+        "series_md5": "bdda6b43841a"
       }
     },
     "Apparel_Outsourced_S2": {
@@ -578,7 +610,7 @@
         "I_sum": 71652,
         "P": 23884,
         "S": 23884,
-        "series_md5": "4ed9e581d7b3"
+        "series_md5": "82aa42e15399"
       },
       "Fabric_CN": {
         "CO": 0,
@@ -586,7 +618,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "7091b2de35e0"
+        "series_md5": "60e2a59352e1"
       },
       "Factory_Import_CN": {
         "CO": 0,
@@ -594,7 +626,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "b586415f0157"
+        "series_md5": "1b8a424d271f"
       },
       "SP_Apparel_Outsourced": {
         "CO": 0,
@@ -602,7 +634,7 @@
         "I_sum": 0,
         "P": 23884,
         "S": 23884,
-        "series_md5": "b586415f0157"
+        "series_md5": "1b8a424d271f"
       },
       "Sales_US_CA_I": {
         "CO": 0,
@@ -610,7 +642,7 @@
         "I_sum": 0,
         "P": 8212,
         "S": 8212,
-        "series_md5": "3ba65fa7db5f"
+        "series_md5": "bdf0e4f14aaf"
       },
       "Sales_US_NY_I": {
         "CO": 0,
@@ -618,7 +650,7 @@
         "I_sum": 0,
         "P": 6716,
         "S": 6716,
-        "series_md5": "aa556c4a0d1e"
+        "series_md5": "00fd0842c835"
       },
       "Sales_US_TX_I": {
         "CO": 0,
@@ -626,7 +658,7 @@
         "I_sum": 0,
         "P": 8956,
         "S": 8956,
-        "series_md5": "544fd1bc0fee"
+        "series_md5": "8618aff59cef"
       }
     },
     "Apparel_Outsourced_S3": {
@@ -636,7 +668,7 @@
         "I_sum": 59088,
         "P": 19696,
         "S": 19696,
-        "series_md5": "1166ebabd3dc"
+        "series_md5": "f72a2d459dfb"
       },
       "Fabric_CN": {
         "CO": 0,
@@ -644,7 +676,7 @@
         "I_sum": 0,
         "P": 19696,
         "S": 19696,
-        "series_md5": "f81273c0c5f8"
+        "series_md5": "efd5ce4df3b4"
       },
       "Factory_Import_CN": {
         "CO": 0,
@@ -652,7 +684,7 @@
         "I_sum": 0,
         "P": 19696,
         "S": 19696,
-        "series_md5": "5cbeda728db9"
+        "series_md5": "cd882caebb41"
       },
       "SP_Apparel_Outsourced": {
         "CO": 0,
@@ -660,7 +692,7 @@
         "I_sum": 708,
         "P": 19696,
         "S": 19696,
-        "series_md5": "6fe6e18eca33"
+        "series_md5": "5bc822fbbb87"
       },
       "Sales_US_CA_I": {
         "CO": 0,
@@ -668,7 +700,7 @@
         "I_sum": 0,
         "P": 6772,
         "S": 6772,
-        "series_md5": "5c193436f3f1"
+        "series_md5": "9c749410d4b0"
       },
       "Sales_US_NY_I": {
         "CO": 0,
@@ -676,7 +708,7 @@
         "I_sum": 0,
         "P": 5540,
         "S": 5540,
-        "series_md5": "8081a8ca039c"
+        "series_md5": "c140ce32b1dd"
       },
       "Sales_US_TX_I": {
         "CO": 0,
@@ -684,297 +716,297 @@
         "I_sum": 0,
         "P": 7384,
         "S": 7384,
-        "series_md5": "041ebff2500b"
+        "series_md5": "af4d698529e1"
       }
     },
     "Apparel_Outsourced_S4": {
       "DC_Import_Buffer": {
         "CO": 0,
         "I_max": 8413,
-        "I_sum": 40626,
-        "P": 13542,
-        "S": 13542,
-        "series_md5": "9cd75a4f2166"
+        "I_sum": 71652,
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "aa5549ce3c93"
       },
       "Fabric_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 13542,
-        "S": 13542,
-        "series_md5": "6abb7f512a92"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "f27cc79a619b"
       },
       "Factory_Import_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 13542,
-        "S": 13542,
-        "series_md5": "5ec6b28ebd97"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "10b08a127e59"
       },
       "SP_Apparel_Outsourced": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 13542,
-        "S": 13542,
-        "series_md5": "5ec6b28ebd97"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "10b08a127e59"
       },
       "Sales_US_CA_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4656,
-        "S": 4656,
-        "series_md5": "dcd9a8f653d3"
+        "P": 8212,
+        "S": 8212,
+        "series_md5": "2b320e8fc4f5"
       },
       "Sales_US_NY_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3808,
-        "S": 3808,
-        "series_md5": "09190bf9bce7"
+        "P": 6716,
+        "S": 6716,
+        "series_md5": "713c2574e4cd"
       },
       "Sales_US_TX_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 5078,
-        "S": 5078,
-        "series_md5": "62b37bd0dc89"
+        "P": 8956,
+        "S": 8956,
+        "series_md5": "b506b5cdaf05"
       }
     },
     "Apparel_Outsourced_S5": {
       "DC_Import_Buffer": {
         "CO": 0,
         "I_max": 7967,
-        "I_sum": 29544,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "a2e8aaa22aed"
+        "I_sum": 59088,
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "4d0c4330ddfe"
       },
       "Fabric_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "fc7e0e280e8c"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "0aa77ed8b001"
       },
       "Factory_Import_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "cd11a5531bcb"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "cbcbeb0620d2"
       },
       "SP_Apparel_Outsourced": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "cd11a5531bcb"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "cbcbeb0620d2"
       },
       "Sales_US_CA_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3386,
-        "S": 3386,
-        "series_md5": "33dfb1b6d75e"
+        "P": 6772,
+        "S": 6772,
+        "series_md5": "5099aee2453c"
       },
       "Sales_US_NY_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 2770,
-        "S": 2770,
-        "series_md5": "40e983c3b577"
+        "P": 5540,
+        "S": 5540,
+        "series_md5": "43d8d2dd45ed"
       },
       "Sales_US_TX_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3692,
-        "S": 3692,
-        "series_md5": "57ca6ce0bd12"
+        "P": 7384,
+        "S": 7384,
+        "series_md5": "88d727c86e28"
       }
     },
     "Apparel_Outsourced_S6": {
       "DC_Import_Buffer": {
         "CO": 0,
         "I_max": 8413,
-        "I_sum": 35826,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "452657be544d"
+        "I_sum": 71652,
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "d1213a11dbca"
       },
       "Fabric_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "0a9df24b8ab3"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "e53a676d66fe"
       },
       "Factory_Import_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "df64795e37ab"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "a322657e5427"
       },
       "SP_Apparel_Outsourced": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "df64795e37ab"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "a322657e5427"
       },
       "Sales_US_CA_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4106,
-        "S": 4106,
-        "series_md5": "909332606d39"
+        "P": 8212,
+        "S": 8212,
+        "series_md5": "9b7b7fb3ea60"
       },
       "Sales_US_NY_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3358,
-        "S": 3358,
-        "series_md5": "c2df22db55b1"
+        "P": 6716,
+        "S": 6716,
+        "series_md5": "2f38026200b7"
       },
       "Sales_US_TX_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4478,
-        "S": 4478,
-        "series_md5": "a4bf4d26a7ad"
+        "P": 8956,
+        "S": 8956,
+        "series_md5": "002028464b78"
       }
     },
     "Apparel_Outsourced_S7": {
       "DC_Import_Buffer": {
         "CO": 0,
         "I_max": 7967,
-        "I_sum": 29544,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "0f2ec31adc5a"
+        "I_sum": 59088,
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "c99b71585977"
       },
       "Fabric_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "c1526ad31f7e"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "94577f60980a"
       },
       "Factory_Import_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "b77222f75010"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "0034de678606"
       },
       "SP_Apparel_Outsourced": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 9848,
-        "S": 9848,
-        "series_md5": "b77222f75010"
+        "P": 19696,
+        "S": 19696,
+        "series_md5": "0034de678606"
       },
       "Sales_US_CA_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3386,
-        "S": 3386,
-        "series_md5": "49087e2bf66e"
+        "P": 6772,
+        "S": 6772,
+        "series_md5": "a00d3294306a"
       },
       "Sales_US_NY_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 2770,
-        "S": 2770,
-        "series_md5": "30c376a5257e"
+        "P": 5540,
+        "S": 5540,
+        "series_md5": "41a21fee3aa6"
       },
       "Sales_US_TX_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3692,
-        "S": 3692,
-        "series_md5": "ff0264084911"
+        "P": 7384,
+        "S": 7384,
+        "series_md5": "919614c256eb"
       }
     },
     "Apparel_Outsourced_S8": {
       "DC_Import_Buffer": {
         "CO": 0,
         "I_max": 8413,
-        "I_sum": 35826,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "cfef5d0ad13b"
+        "I_sum": 71652,
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "a89e34191d8d"
       },
       "Fabric_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "50ef413d0561"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "87f8ef8474cf"
       },
       "Factory_Import_CN": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "ed83102cfa34"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "9a6bbb0efdcd"
       },
       "SP_Apparel_Outsourced": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 11942,
-        "S": 11942,
-        "series_md5": "ed83102cfa34"
+        "P": 23884,
+        "S": 23884,
+        "series_md5": "9a6bbb0efdcd"
       },
       "Sales_US_CA_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4106,
-        "S": 4106,
-        "series_md5": "1fb95bb56b74"
+        "P": 8212,
+        "S": 8212,
+        "series_md5": "f725fdf90115"
       },
       "Sales_US_NY_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 3358,
-        "S": 3358,
-        "series_md5": "bad0180d4317"
+        "P": 6716,
+        "S": 6716,
+        "series_md5": "723f5f81e465"
       },
       "Sales_US_TX_I": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 4478,
-        "S": 4478,
-        "series_md5": "0c2b0f494f87"
+        "P": 8956,
+        "S": 8956,
+        "series_md5": "743f61d6daca"
       }
     }
   }

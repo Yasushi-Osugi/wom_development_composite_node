@@ -5119,18 +5119,20 @@ class WOMApp(tk.Tk):
             print(format_summary(materialize_warmup(os.path.dirname(dem_path))))
         except Exception as exc:
             print(f"[warmup] skipped: {exc}")
+        # The plan period: every ISO week from the demand CSV's first week to its last
+        # (wom/engine/plan_period.py -- the same function as the headless runner). Weeks the
+        # CSV does not list are planned with demand 0 and reported, never silently.
+        self._period_filled_weeks = []
         try:
-            dem_df = pd.read_csv(dem_path)
-            if "week" not in dem_df.columns:
-                return
-            weeks_sorted = sorted(dem_df["week"].dropna().unique().tolist())
-            if not weeks_sorted:
-                return
-            start_wk = weeks_sorted[0]
-            n_weeks  = len(weeks_sorted)
-            self._e_start.set(start_wk)
-            self._e_weeks.set(str(n_weeks))
-            print(f"[AutoDetect] period: {start_wk}  ×  {n_weeks} weeks")
+            from wom.engine.plan_period import detect_plan_period
+            period = detect_plan_period(dem_path)
+            self._e_start.set(period.start)
+            self._e_weeks.set(str(period.n_weeks))
+            self._period_filled_weeks = list(period.filled_weeks)
+            print(f"[AutoDetect] period: {period.start}  ×  {period.n_weeks} weeks")
+            if period.filled_weeks:
+                print(f"[AutoDetect] WARNING {period.warning()}")
+                self.after(0, lambda w=period.warning(): self._status(f"⚠ {w}", warn=True))
         except Exception as exc:
             print(f"[AutoDetect] failed: {exc}")
 
@@ -5503,6 +5505,8 @@ class WOMApp(tk.Tk):
         # The evaluation (planning DataFrame, Strategic KPI, PPC bridge, node
         # Cost/Revenue chart) reads the mode from the tree -- S2 C2.
         sc_tree.lot_flow_mode = _cfg["lot_flow_mode"]
+        # weeks the demand CSV does not list (planned with demand 0; plan_period.py)
+        sc_tree.period_filled_weeks = list(getattr(self, "_period_filled_weeks", []))
 
         return {
             "sc_tree":     sc_tree,

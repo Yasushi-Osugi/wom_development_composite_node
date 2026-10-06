@@ -52,10 +52,14 @@ SAFE_DEFAULT = {
 
 # ──────────────────────────────────────────────────────────────────────
 def _detect_period(dem_path: str):
-    """demand_forecast.csv から (start_week, n_weeks) を自動検出（GUI と同じ）。"""
-    dem_df = pd.read_csv(dem_path)
-    weeks_sorted = sorted(dem_df["week"].dropna().unique().tolist())
-    return str(weeks_sorted[0]), len(weeks_sorted)
+    """demand_forecast.csv から (start_week, n_weeks) を自動検出（GUI と同じ関数
+    wom/engine/plan_period.detect_plan_period：最初の週から最後の週までの連続した暦の週。
+    CSV に無い週は需要 0 として含め、警告を出す。RequestLetter_PeriodDetection_Fix）。"""
+    from wom.engine.plan_period import detect_plan_period
+    p = detect_plan_period(dem_path)
+    if p.filled_weeks:
+        print(f"[Period] WARNING {p.warning()}")
+    return p.start, p.n_weeks
 
 
 def _build_week_labels(start: str, n_weeks: int):
@@ -149,8 +153,13 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
 
     # ── 期間の自動検出 ─────────────────────────────────────────────
     dem_path = _p(demand_file)
-    start, n_weeks = _detect_period(dem_path)
+    from wom.engine.plan_period import detect_plan_period
+    period = detect_plan_period(dem_path)
+    if period.filled_weeks:
+        print(f"[Headless] WARNING {period.warning()}")
+    start, n_weeks = period.start, period.n_weeks
     weeks = _build_week_labels(start, n_weeks)
+    assert weeks == period.weeks
     if verbose:
         print(f"[Headless] {os.path.basename(model_dir.rstrip('/'))}: "
               f"period {start} x {n_weeks} weeks")
@@ -161,6 +170,7 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     # 評価（sc_tree_to_planning_df・Strategic KPI・PPC ブリッジ）が、どの方式の計画かを
     # 知るための印（RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2）。計画は変えない。
     sc_tree.lot_flow_mode = lot_flow_mode
+    sc_tree.period_filled_weeks = list(period.filled_weeks)   # weeks not in the demand CSV (demand 0)
     # Request Letter A (request_letter_a_cpu_size_to_plan.md) discrepancy,
     # resolved here and flagged for owner review: sc_tree.cpu_size is read
     # from planning_config.csv and used by the KPI/display conversion layer
@@ -302,7 +312,9 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
         "case": os.path.basename(model_dir.rstrip("/\\")),
         "config": {"plugins": sorted(type(p).__name__ for p in active_plugins),
                    **({} if lot_flow_mode == LOT_FLOW_LEGACY else {"lot_flow_mode": lot_flow_mode})},
-        "period": {"start": start, "weeks": n_weeks},
+        "period": dict({"start": start, "weeks": n_weeks},
+                       # only when the demand CSV skips weeks (they are planned with demand 0)
+                       **({"filled_weeks": list(period.filled_weeks)} if period.filled_weeks else {})),
         "products": list(sc_tree.products),
         "forward": _forward,
         "backward": {"cap_soft_envelope_count": _bwd_soft_env},
