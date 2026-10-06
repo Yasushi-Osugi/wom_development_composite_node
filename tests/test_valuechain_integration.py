@@ -82,6 +82,22 @@ def test_alloc_sample_prices_leave_nothing_unvalued(tmp_path):
     assert c["conservation_ok"] and c["external_sales"]["ok_identity"] and c["external_sales"]["ok_records"]
     m = pd.read_csv(tmp_path / "vc_missing_prices.csv")
     assert len(m) == 0
+    # round 2 (RequestLetter_StageD_Phase2): the reconciliation holds in every week and over
+    # the reporting period; the opening unrealized profit comes from the warmup weeks
+    u = c["unrealized"]
+    assert u["ok"], u
+    p = u["period"]
+    assert p["round1_minus_round2"] == pytest.approx(
+        p["unrealized_closing_hq"] - p["unrealized_opening_hq"] + p["to_unvalued_in_period_hq"], abs=1e-3)
+    assert p["unrealized_opening_hq"] == pytest.approx(1099305.0, abs=1e-3)
+    assert p["to_unvalued_in_period_hq"] == 0
+    d = pd.read_csv(tmp_path / "vc_unrealized_weekly.csv")
+    assert {"owner", "location", "unrealized_hq", "eliminated_hq", "realized_hq", "to_unvalued_hq",
+            "change_hq"} <= set(d.columns)
+    assert set(d[d["unrealized_hq"] != 0]["owner"]) <= {"E_US", "E_EU"}    # the importers hold it
+    v3 = r["views"]["v3"]
+    assert {"profit_r2_hq_wk", "external_cogs_r2_hq_cum", "unrealized_change_hq_wk",
+            "unrealized_balance_hq_wk", "inv_group_hq", "profit_hq_wk"} <= set(v3.columns)
 
 
 def test_alloc_ledger_records_match_the_plan(alloc_run):
@@ -136,3 +152,15 @@ def test_alloc_three_views_and_channels(alloc_run):
     inv = v["inventory"]
     ext = inv[inv["external"] == 1]
     assert set(ext["owner"]) <= {"EXT_CH_US_EAST", "EXT_CH_FR", "EXT_CH_BE", "EXT_CH_NL"}
+
+
+def test_alloc_round2_without_prices(alloc_run):
+    """No intercompany price: the importers' lots are unvalued -- their unrealized profit is not
+    0 but unvalued (counted), and round 1 - round 2 still reconciles every week."""
+    r, out = alloc_run
+    u = r["checks"]["unrealized"]
+    assert u["ok"], u
+    w = r["views"]["unrealized_week"]
+    assert float(w["eliminated_hq"].sum()) == 0                  # no price, no internal profit
+    assert int(w["lots_unvalued"].max()) > 0                     # counted, not 0
+    assert os.path.exists(out / "vc_unrealized_weekly.csv")

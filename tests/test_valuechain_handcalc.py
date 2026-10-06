@@ -10,7 +10,7 @@ W3 に D に到着。W4 に D が外部の顧客へ 150 で販売、販売の運
 計画の木の形（合成）：A→置場 YA→F、B→置場 YB→F（組立は置場の払い出しの週＝F の P の週）、
 F→supply point→D（leaf_out。D が消費者に売る）。
 
-第 2 回（未実現利益の消去後）の期待値も持ち、今回は skip。
+第 2 回（未実現利益の消去後）の期待値も持つ（RequestLetter_StageD_Phase2 で有効にした）。
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ from wom.valuechain.ledger import Ledger
 from wom.valuechain.masters import Assignment, Entity, VCMasters
 from wom.valuechain.records import (K_CONSUMER, K_HANDOFF, K_INBOUND, K_OUTBOUND, K_PURCHASE,
                                     NodeInfo, PlanRecords, Shipment)
-from wom.valuechain.views import build_views, check_conservation
+from wom.valuechain.views import build_views, check_conservation, check_unrealized
 
 W = ["2026-W01", "2026-W02", "2026-W03", "2026-W04"]
 P = "P"
@@ -135,12 +135,19 @@ def test_basic_table():
     assert check_conservation(led, v)["ok"].all()
 
 
-@pytest.mark.skip(reason="第 2 回（内部の未実現利益の消去後）の期待値。第 1 回では算出しない")
 def test_basic_table_round2():
     led, v, _ = _run(_masters())
     v3 = v["v3"]
     assert [_row(v3, w)["profit_r2_hq_wk"] for w in (1, 2, 3)] == pytest.approx([0, 0, 62])
     assert [_inv(v, w, col="group_hq") for w in (1, 2, 3)] == pytest.approx([85, 85, 0])
+    # the internal profit of E1 (100 - 80 = 20) sits in E2's inventory until D sells (W4)
+    assert [_row(v3, w)["unrealized_balance_hq_wk"] for w in (0, 1, 2, 3)] == pytest.approx([0, 20, 20, 0])
+    assert [_row(v3, w)["unrealized_change_hq_wk"] for w in (1, 2, 3)] == pytest.approx([20, 0, -20])
+    # round 1 - round 2 = the change of the balance, each week; cumulative both 62 at W4
+    assert _row(v3, 3)["profit_r2_hq_cum"] == pytest.approx(_row(v3, 3)["profit_hq_cum"]) == pytest.approx(62)
+    c = check_unrealized(led, v)
+    assert c["ok"], c
+    assert c["period"]["unrealized_opening_hq"] == 0 and c["period"]["unrealized_closing_hq"] == 0
 
 
 # ── (1) F and D in the same entity E1 ─────────────────────────────────
@@ -201,11 +208,18 @@ def test_variation_4_end_in_transit():
     assert list(e2["location_kind"]) == ["transit"] and float(e2["entity_hq"].sum()) == pytest.approx(105)
 
 
-@pytest.mark.skip(reason="第 2 回の期待値（累計 0、在庫 85）")
 def test_variation_4_round2():
     led, v, _ = _run(_masters(), n_weeks=2)
     assert _row(v["v3"], 1)["profit_r2_hq_cum"] == pytest.approx(0)
     assert _inv(v, 1, col="group_hq") == pytest.approx(85)
+    # round 1 cumulative 20 - round 2 cumulative 0 = closing unrealized 20 - opening 0
+    c = check_unrealized(led, v)
+    assert c["ok"], c
+    assert c["period"]["round1_minus_round2"] == pytest.approx(20)
+    assert c["period"]["unrealized_closing_hq"] == pytest.approx(20)
+    by = {x["entity"]: x for x in c["by_entity"]}
+    assert by["E2"]["closing_hq"] == pytest.approx(20) and by["E2"]["eliminated_in_period_hq"] == pytest.approx(20)
+    assert by["E1"]["closing_hq"] == pytest.approx(0)
 
 
 # ── (5) purchase and assembly in the warmup weeks (report from W3) ────
@@ -221,11 +235,17 @@ def test_variation_5_warmup():
     assert rep["receipts"].sum() == pytest.approx(0) and rep["issues"].sum() == pytest.approx(105)
 
 
-@pytest.mark.skip(reason="第 2 回の期待値（期首 85、利益 62）")
 def test_variation_5_round2():
     led, v, _ = _run(_masters(), report_idx=2)
     assert _inv(v, 1, col="group_hq") == pytest.approx(85)
     assert _row(v["v3"], 3)["profit_r2_hq_cum"] == pytest.approx(62)
+    # the opening unrealized profit (20, built in the warmup) is carried in and realized in W4
+    c = check_unrealized(led, v)
+    assert c["ok"], c
+    p = c["period"]
+    assert p["unrealized_opening_hq"] == pytest.approx(20) and p["unrealized_closing_hq"] == pytest.approx(0)
+    assert p["profit_round1_hq"] == pytest.approx(42) and p["profit_round2_hq"] == pytest.approx(62)
+    assert p["round1_minus_round2"] == pytest.approx(-20)          # = closing 0 - opening 20
 
 
 # ── §5.5 currencies (USD and JPY) ─────────────────────────────────────
@@ -253,6 +273,19 @@ def test_currency_table_5_5():
     # original amounts are kept with their currency
     rev = [l for l in lines if l[9] == "revenue" and l[6] == "E_US"]
     assert rev[0][14] == pytest.approx(150) and rev[0][15] == "USD"
+    # round 2 (design 5.5): group revenue 21,000, group cost 8,000 (carried at the purchase-week
+    # rate), profit 13,000 JPY -- W2 0 and W4 13,000; round 1 W2 7,000 and W4 6,000
+    v3 = v["v3"]
+    assert [_row(v3, w)["profit_hq_wk"] for w in (1, 3)] == pytest.approx([7000, 6000])
+    assert [_row(v3, w)["profit_r2_hq_wk"] for w in (1, 3)] == pytest.approx([0, 13000])
+    assert _row(v3, 3)["external_cogs_r2_hq_wk"] == pytest.approx(-8000)
+    assert _row(v3, 3)["profit_r2_hq_cum"] == pytest.approx(_row(v3, 3)["profit_hq_cum"]) == pytest.approx(13000)
+    assert [_row(v3, w)["unrealized_balance_hq_wk"] for w in (1, 2, 3)] == pytest.approx([7000, 7000, 0])
+    # the common currency (USD): the same identity holds week by week
+    c = check_unrealized(led, v)
+    assert c["ok"], c
+    # kept apart from the local profit translated at the week's rate (V2, 7,000 above)
+    assert "profit_local_translated_hq_wk" not in v3.columns
 
 
 def test_fx_no_silent_one_or_prior_week():
@@ -282,3 +315,7 @@ def test_missing_price_is_unvalued_and_listed():
     ic = a[(a["kind"] == "revenue") & (a["scope"] == "intercompany")]
     assert int(ic["n_unvalued"].sum()) == 1 and float(ic["hq"].sum()) == 0
     assert check_conservation(led, v)["ok"].all()
+    # round 2: the lot without a price has an unvalued unrealized profit -- counted, never 0
+    uw = v["unrealized_week"].set_index("week_index")
+    assert [int(uw["lots_unvalued"][w]) for w in (1, 2)] == [1, 1]
+    assert check_unrealized(led, v)["ok"]

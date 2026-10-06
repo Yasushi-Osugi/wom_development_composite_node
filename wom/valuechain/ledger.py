@@ -25,6 +25,15 @@
 費用の分け方は policy.py（1 か所）。為替は fx.py（取引の週の為替。在庫原価は取得時の換算額のまま）。
 未評価（NaN）の明細は、その lot の記録を「未評価」にし、その後の明細にも印を付ける（合計に 0 として
 足さない）。
+
+内部の未実現利益（RequestLetter_StageD_Phase2）
+    連結の法人が持つ評価済みの在庫の lot ごとに U ＝ 法人の原価（entity）− グループの原価（group）。
+    U の動きを、法人・製品・所在ごとの事象として `unreal` に記録する（HQ・共通の 2 つの額）：
+      eliminated    法人間の販売で新しく生じた内部の利益（買い手の在庫に入る）
+      transfer_out / transfer_in   法人間の販売で、売り手の在庫にあった U が買い手へ移る
+      realized      外部への評価済みの販売で実現した U（売り手）
+      to_unvalued   lot が未評価になって、評価済みの残高から外れた U（価格・為替が無い）
+    週末の残高の増減 ＝ eliminated ＋ transfer_in − transfer_out − realized − to_unvalued（法人ごと）。
 """
 from __future__ import annotations
 
@@ -96,6 +105,31 @@ class Ledger:
         # cost issued by a sale whose price is not set (the cost leaves the seller's books,
         # but the sale cannot be valued in the P&L) -- for the conservation check
         self.unpriced_issue: Dict[tuple, float] = defaultdict(float)
+        # internal unrealized profit events: (w, owner, product, loc_kind, loc, event) -> [hq, common]
+        self.unreal: Dict[tuple, List[float]] = defaultdict(lambda: [0.0, 0.0])
+
+    # ── internal unrealized profit (round 2) ───────────────────────
+    def _u(self, rec) -> Optional[Tuple[float, float]]:
+        """U = entity cost - group cost of a valued lot held by a consolidated group entity;
+        None when the lot is not part of the valued group inventory."""
+        if rec.external or not rec.valued:
+            return None
+        ent = self.m.entities.get(rec.owner)
+        if ent is None or not (ent.is_group and ent.consolidated):
+            return None
+        e, g = rec.cost["entity"], rec.cost["group"]
+        return (e[0] - g[0], e[1] - g[1])
+
+    def _uev(self, w, rec, event, u, owner=None):
+        if u is None:
+            return
+        if rec.location.startswith("transit:"):
+            lk, loc = "transit", rec.transit_edge
+        else:
+            lk, loc = "node", rec.location
+        a = self.unreal[(w, owner or rec.owner, rec.product, lk, loc, event)]
+        a[0] += u[0]
+        a[1] += u[1] if not _isnan(u[1]) else 0.0
 
     # ── currency ────────────────────────────────────────────────────
     def _conv(self, amount, ccy, w, func_ccy, local_ccy, context):
@@ -159,6 +193,7 @@ class Ledger:
         if _isnan(hq) and rec.valued:
             # the record's valued cost leaves the valued balance (conservation check)
             self.unvalued_out[(w, rec.owner)] += rec.cost["entity"][0]
+            self._uev(w, rec, "to_unvalued", self._u(rec))
             rec.valued = False
         for b in bases:
             c = rec.cost[b]
@@ -268,6 +303,7 @@ class Ledger:
             rec.transit_edge = s.edge
             rec.owner = buyer.entity_id
             return
+        u0 = self._u(rec)                    # the lot's unrealized profit before the transfer
         if buyer.entity_id == seller.entity_id:
             scope = "management"
         elif buyer.is_group and buyer.consolidated and seller.consolidated:
@@ -317,6 +353,13 @@ class Ledger:
                 # so the record stays valued for V2 / V3
             elif scope == "intercompany":
                 ent_func = rec.cost["entity"]
+                if u0 is not None:
+                    if _isnan(bhq):
+                        self._uev(w, rec, "to_unvalued", u0)
+                    else:
+                        self._uev(w, rec, "transfer_out", u0)
+                        new_u = (bhq - ent_func[0], (bcm - ent_func[1]) if not _isnan(bcm) else NAN)
+                        unreal_after = (u0, new_u)
                 rec.cost["v1"] = [bhq, bcm, bfn]
                 rec.cost["entity"] = [bhq, bcm, bfn]
                 g = rec.cost["group"]
@@ -327,6 +370,8 @@ class Ledger:
                 if _isnan(bhq):
                     rec.valued = False
             else:   # left the consolidated group
+                if u0 is not None:     # the lot's unrealized profit is realized by a priced sale
+                    self._uev(w, rec, "realized" if priced else "to_unvalued", u0)
                 if buyer.is_group:   # a group company outside consolidation: its own book starts here
                     for b in BASES:
                         rec.cost[b] = [bhq, bcm, bfn]
@@ -342,6 +387,9 @@ class Ledger:
         rec.owner = buyer.entity_id
         rec.location = f"transit:{s.ship_id}"
         rec.transit_edge = s.edge
+        if ptype != "cost_transfer" and scope == "intercompany" and u0 is not None and not _isnan(bhq):
+            self._uev(w, rec, "transfer_in", unreal_after[0])
+            self._uev(w, rec, "eliminated", unreal_after[1])
         self._edge_costs(s, rec, seller, buyer)
 
     def _edge_costs(self, s: Shipment, rec: Rec, seller, buyer):
@@ -409,6 +457,7 @@ class Ledger:
                            hq, cm, fn, owner.functional_currency, lc, local or owner.functional_currency,
                            not _isnan(amount), "外部チャネルの消費者への販売（観測。グループの売上ではない）")
             else:
+                self._uev(w, rec, "realized" if not _isnan(price) else "to_unvalued", self._u(rec))
                 if _isnan(price):
                     self._missing(s, "market_price", owner.entity_id, s.to)
                     if rec.valued:
@@ -450,6 +499,7 @@ class Ledger:
         if info.node_type == "mom":         # production / assembly: one record per lot at the node
             here = self._at(s.product, s.lot_id, s.to)
             if len(here) > 1:
+                us = [(r_, self._u(r_)) for r_ in here]
                 keep = here[0]
                 for other in here[1:]:
                     if other.owner != keep.owner:
@@ -462,6 +512,10 @@ class Ledger:
                         if keep.purchase[1] == other.purchase[1]:
                             keep.purchase = (keep.purchase[0] + other.purchase[0], keep.purchase[1])
                     self._drop(other)
+                if not keep.valued:     # a valued part merged with an unvalued one: its U leaves
+                    for r_, u_ in us:
+                        if u_ is not None:
+                            self._uev(s.arrival_week, keep, "to_unvalued", u_, owner=r_.owner)
                 recs = [keep]
             for rec in recs:
                 rec.item = "finished" if info.is_terminal_mom else f"wip:{s.to}"

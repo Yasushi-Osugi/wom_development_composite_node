@@ -20,7 +20,7 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description="Value Chain ledger (stage D, round 1)")
+    ap = argparse.ArgumentParser(description="Value Chain ledger (stage D, rounds 1 and 2)")
     ap.add_argument("--model-dir", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--lovem-run", default=None, help="LOVEM run folder (tools.lovem_observe) to reconcile with")
@@ -38,6 +38,13 @@ def main(argv=None) -> int:
           f"{c['external_sales']['ok_records']}  missing prices {c['missing_price_rows']}  "
           f"fx first-week {c['fx_first_week_rate_uses']}  fx unvalued {c['fx_unvalued_uses']}  "
           f"unvalued lines {c['unvalued_lines']}  issues {len(c['issues'])}")
+    u = c["unrealized"]
+    if "period" in u:
+        pr = u["period"]
+        print(f"[valuechain] round 2 (unrealized profit eliminated) {'OK' if u['ok'] else 'NG'}: "
+              f"weekly diff {u['weekly_max_abs_diff_hq']:.6g}  period round1 {pr['profit_round1_hq']:,.0f} "
+              f"round2 {pr['profit_round2_hq']:,.0f}  unrealized opening {pr['unrealized_opening_hq']:,.0f} "
+              f"closing {pr['unrealized_closing_hq']:,.0f}  to unvalued {pr['to_unvalued_in_period_hq']:,.0f}")
     if "lovem" in c:
         lv = c["lovem"]
         print(f"[valuechain] LOVEM {lv['ok']}: matched {lv['matched']:,} / lovem {lv['lovem_actual_ship']:,} "

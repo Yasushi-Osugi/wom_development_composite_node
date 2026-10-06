@@ -47,7 +47,7 @@ from wom.valuechain.fx import FxTable
 from wom.valuechain.ledger import LINE_COLS, Ledger
 from wom.valuechain.masters import load_masters
 from wom.valuechain.records import build_records, edge_flows
-from wom.valuechain.views import build_views, check_conservation, check_external_sales
+from wom.valuechain.views import build_views, check_conservation, check_external_sales, check_unrealized
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -158,6 +158,9 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
     views["inventory"].to_csv(os.path.join(out_dir, "vc_inventory_weekly.csv"), index=False)
     for k in ("v1", "v2", "v3", "observation"):
         views[k].to_csv(os.path.join(out_dir, f"vc_{k}_weekly.csv"), index=False)
+    # round 2: the internal unrealized profit by week x entity x product x location
+    views["unrealized"].to_csv(os.path.join(out_dir, "vc_unrealized_weekly.csv"), index=False)
+    unreal_check = check_unrealized(led, views)
     miss = pd.DataFrame(list(led.missing.values()),
                         columns=["edge_id", "product_id", "price_type", "week", "price", "currency",
                                  "seller_entity", "buyer_entity", "lots", "units", "first_ship_week",
@@ -191,6 +194,7 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
         "holding_rate": "未設定（holding_rate_weekly が空欄。0 として計算しない）"
                         if masters.holding_rate_weekly is None else masters.holding_rate_weekly,
         "unvalued_lines": int(views["agg"]["n_unvalued"].sum()),
+        "unrealized": unreal_check,
     }
     if lovem_run:
         checks["lovem"] = compare_with_lovem(records, lovem_run, gs, hashes_before, plugins)
@@ -208,7 +212,7 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
         "entities": {k: vars(v) for k, v in masters.entities.items()},
         "shipments": len(records.shipments),
         "created_at": datetime.datetime.now().isoformat(timespec="seconds"),
-        "round": "第 1 回（内部の未実現利益の消去前）",
+        "round": "第 1 回（消去前）と第 2 回（内部の未実現利益の消去後）の両方",
         "ppc_snapshot": snap.get("ppc"),
     }
     with open(os.path.join(out_dir, "vc_run_info.json"), "w", encoding="utf-8") as f:
