@@ -6,7 +6,8 @@ RequestLetter_SimMgmt_WorldMapTrial Part 2：World Map の試作（Natural Earth
 - 変換の道具（tools/build_worldmap_ne.py）が、同じ入力から同じ配列を作ること
 - サンプルモデルの拠点・線・週ごとの流れ
 - 画面（MapView）：表示範囲・細かさ・週の再生（blitting あり／なし）
-今の World Map タブ（wom/gui/app.py WorldMapPanel）は変えていない。
+World Map タブはこの地図データで置き換えた（wom/gui/worldmap_panel.py、実出荷の流れ）。そのテストは
+tests/test_worldmap_actual_flows.py。ここは試作の窓（需要の流れ）のテスト。
 """
 from __future__ import annotations
 

@@ -50,6 +50,9 @@ VIEWS = {
     "Bangkok":  (100.15, 13.45, 100.95, 14.05),
 }
 MODELS = ["ev-thailand-2026", "iphone_global", "oil-global-2027"]
+DEMAND_TAG = "需要の流れ（試作の計測用。計画の結果ではない）"
+DEMAND_BANNER = ("  " + DEMAND_TAG + "　｜　計画の実出荷の流れは WOM の World Map タブ"
+                 "（Run Planning Engine の後）で見る")
 
 
 def view_to_xy(v):
@@ -216,7 +219,7 @@ class MapView(tk.Frame):
         self.flows.set_alpha(None)
         nf = m.node_flow[w] / self._nf_max
         self.nodes.set_sizes(18 + 220 * nf)
-        self.week_text.set_text(f"{m.name}   {m.weeks[w]}  ({w + 1}/{len(m.weeks)})")
+        self.week_text.set_text(f"{m.name}   {m.weeks[w]}  ({w + 1}/{len(m.weeks)})  {DEMAND_TAG}")
 
     def set_week(self, w: int) -> float:
         """Show week w; returns the milliseconds it took (update + draw on screen)."""
@@ -275,9 +278,13 @@ class TrialApp(tk.Tk):
 
     def __init__(self, model: str = MODELS[0], lod: str = "auto", blit: bool = True):
         super().__init__()
-        self.title("WOM World Map trial — Natural Earth + matplotlib (試作。今の World Map タブは変えない)")
+        self.title("WOM World Map trial — Natural Earth + matplotlib（描画の速さを測る試作の窓）")
         self.geometry("1400x860")
         self.nemap = NEMap().load(["110m"])
+        # RequestLetter_WorldMap_ActualFlows §2: this window's flows are built from the
+        # demand (model.py), not from the plan -- say so, so they are not read as shipments.
+        tk.Label(self, text=DEMAND_BANNER, bg="#FFF3E0", fg="#BF360C", anchor="w",
+                 font=("Segoe UI", 10, "bold")).pack(fill="x")
         bar = tk.Frame(self)
         bar.pack(fill="x")
         tk.Label(bar, text="Model:").pack(side="left", padx=(6, 2))

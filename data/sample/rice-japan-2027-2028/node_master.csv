@@ -1,16 +1,16 @@
 node_id,node_name,node_type,lat,lon,sku_id,region,description
-IN:leaf_in:Tanbo_Niigata:Koshihikari,稲作田（新潟）,sku_supplier,37.11,138.68,Koshihikari,JP,越後平野 水田地帯（コシヒカリ）収穫期: W41-W43
-IN:leaf_in:Tanbo_Hokkaido:Yumepirika,稲作田（北海道）,sku_supplier,43.2,143.2,Yumepirika,JP,十勝平野 水田地帯（ゆめぴりか）収穫期: W37-W43
-IN:mom:Sanchiku_Niigata:Koshihikari,産地集荷センター（新潟）,mother_plant,37.916,139.036,Koshihikari,JP,JA全農にいがた 玄米集荷・乾燥調製センター
-IN:mom:Sanchiku_Hokkaido:Yumepirika,産地集荷センター（北海道）,mother_plant,43.062,141.354,Yumepirika,JP,JA北海道 玄米集荷・乾燥調製センター
-OUT:supply_point:SP_Kome:Planning,米供給配分本部（仮想）,procurement,36.5,137.8,,JP,計画層仮想ノード: 全国の在庫・能力を見て供給配分を決定
-OUT:dad:Genmai_Souko_Niigata:Koshi,玄米保管拠点（新潟近郊）,procurement,36.147,139.462,Koshihikari,JP,コシヒカリ用 玄米長期保管拠点（埼玉・栃木）Decoupling Point
-OUT:dad:Genmai_Souko_Hokkaido:Yume,玄米保管拠点（北海道）,procurement,42.9,141.4,Yumepirika,JP,ゆめぴりか用 玄米長期保管拠点（道内）Decoupling Point
-OUT:dad:Seihaku_E:Planning,精米・包装センター（東）,region_dc,35.72,139.74,,JP,首都圏 精米・包装工場（コシヒカリ/ゆめぴりか共用）
-OUT:dad:Seihaku_W:Planning,精米・包装センター（西）,region_dc,34.65,135.5,,JP,近畿 精米・包装工場（コシヒカリ/ゆめぴりか共用）
-OUT:dad:DC_Higashi:Planning,東日本DC,region_dc,35.68,139.88,,JP,東日本広域配送センター（千葉）
-OUT:dad:DC_Nishi:Planning,西日本DC,region_dc,34.69,135.502,,JP,西日本広域配送センター（大阪）
-OUT:leaf_out:KANTO:Retail,小売チャネル（関東）,marketing,35.689,139.691,,KANTO,関東エリア スーパー・量販店
-OUT:leaf_out:TOHOKU:Retail,小売チャネル（東北）,marketing,38.269,140.869,,TOHOKU,東北エリア スーパー・量販店
-OUT:leaf_out:KANSAI:Retail,小売チャネル（関西）,marketing,34.693,135.502,,KANSAI,関西エリア スーパー・量販店
-OUT:leaf_out:KYUSHU:Retail,小売チャネル（九州）,marketing,33.59,130.401,,KYUSHU,九州エリア スーパー・量販店
+Tanbo_Niigata,稲作田（新潟）,sku_supplier,37.11,138.68,Koshihikari,JP,越後平野 水田地帯（コシヒカリ）収穫期: W41-W43
+Tanbo_Hokkaido,稲作田（北海道）,sku_supplier,43.2,143.2,Yumepirika,JP,十勝平野 水田地帯（ゆめぴりか）収穫期: W37-W43
+Sanchiku_Niigata,産地集荷センター（新潟）,mother_plant,37.916,139.036,Koshihikari,JP,JA全農にいがた 玄米集荷・乾燥調製センター
+Sanchiku_Hokkaido,産地集荷センター（北海道）,mother_plant,43.062,141.354,Yumepirika,JP,JA北海道 玄米集荷・乾燥調製センター
+SP_Kome,米供給配分本部（仮想）,procurement,36.5,137.8,,JP,計画層仮想ノード: 全国の在庫・能力を見て供給配分を決定
+Genmai_Souko_Niigata,玄米保管拠点（新潟近郊）,procurement,36.147,139.462,Koshihikari,JP,コシヒカリ用 玄米長期保管拠点（埼玉・栃木）Decoupling Point
+Genmai_Souko_Hokkaido,玄米保管拠点（北海道）,procurement,42.9,141.4,Yumepirika,JP,ゆめぴりか用 玄米長期保管拠点（道内）Decoupling Point
+Seihaku_E,精米・包装センター（東）,region_dc,35.72,139.74,,JP,首都圏 精米・包装工場（コシヒカリ/ゆめぴりか共用）
+Seihaku_W,精米・包装センター（西）,region_dc,34.65,135.5,,JP,近畿 精米・包装工場（コシヒカリ/ゆめぴりか共用）
+DC_Higashi,東日本DC,region_dc,35.68,139.88,,JP,東日本広域配送センター（千葉）
+DC_Nishi,西日本DC,region_dc,34.69,135.502,,JP,西日本広域配送センター（大阪）
+Retail_KANTO,小売チャネル（関東）,marketing,35.689,139.691,,KANTO,関東エリア スーパー・量販店
+Retail_TOHOKU,小売チャネル（東北）,marketing,38.269,140.869,,TOHOKU,東北エリア スーパー・量販店
+Retail_KANSAI,小売チャネル（関西）,marketing,34.693,135.502,,KANSAI,関西エリア スーパー・量販店
+Retail_KYUSHU,小売チャネル（九州）,marketing,33.59,130.401,,KYUSHU,九州エリア スーパー・量販店

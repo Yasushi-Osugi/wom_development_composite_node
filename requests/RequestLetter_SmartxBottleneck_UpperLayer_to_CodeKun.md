@@ -5,6 +5,7 @@
 - 起草：Claude君（2026-10-01）
 - 作業フォルダ：`C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r5m1_cap_trial`
 - **着手の時期：World Map と段階 D 第 2 回の依頼を終えた後**（着手時の SHA を報告書に記録する）
+- **GPT-6 Astra君が担当する場合**（大杉さんの判断で分担）：GitHub の `wom-v1r5m1_cap_trial` の最新の push から始めてよい（World Map・段階 D 第 2 回とは触るファイルが重ならないので、その完了を待たなくてよい）。成果物（報告書、試行用のモデル、道具、試作のコード）は、大杉さんがリポジトリに置く。Windows の手順（golden の再生成など）は不要（この依頼では golden を変えない）。
 - 前提：決定記録 `docs/design/WOM_Forward_LotID_Decision_Record_2026-09-29.md` §3「モデル 4：Inbound のボトルネック」
 - 種別：**調査と試作**。計画エンジンの外側（上位）に置く新しいモジュールの試作。**保護対象のコア・計画エンジン・golden は変えない。** 本実装は、この報告を見て大杉さんが方針を決めてから行う。
 

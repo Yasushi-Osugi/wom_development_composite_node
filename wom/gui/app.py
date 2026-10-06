@@ -3899,627 +3899,11 @@ class SCNetworkPanel(tk.Frame):
 
 
 # ──────────────────────────────────────────────────────────────────────
-# World Map Panel  (tkintermapview-based SC node visualizer)
+# World Map Panel — Natural Earth (local data) + the plan's actual shipments
+# (RequestLetter_WorldMap_ActualFlows; wom/gui/worldmap_panel.py). No tkintermapview,
+# no map tiles: nothing is fetched over the network.
 # ──────────────────────────────────────────────────────────────────────
-
-# Node type → (marker circle color, marker outside color, label prefix)
-_MAP_NODE_STYLE = {
-    "procurement":  ("#FF9800", "#E65100", "📦"),
-    "mother_plant": ("#9C27B0", "#4A148C", "🏭"),
-    "sku_supplier": ("#4CAF50", "#1B5E20", "🔩"),
-    "region_dc":    ("#2196F3", "#0D47A1", "🏬"),
-    "marketing":    ("#F44336", "#B71C1C", "🌎"),
-}
-
-# SC links to draw between node types (src_type → dst_type)
-_MAP_LINKS = [
-    ("procurement",  "sku_supplier"),   # procurement → each supplier
-    ("sku_supplier", "mother_plant"),   # suppliers → mother plant
-    ("mother_plant", "region_dc"),      # plant → each DC
-    ("region_dc",    "marketing"),      # DCs → marketing HQ
-]
-
-
-class WorldMapPanel(tk.Frame):
-    """
-    🗺 World Map tab — interactive SC node map using tkintermapview.
-
-    Shows SC nodes as coloured markers on a world map.
-    After "Run Planning Engine", overlays lot-flow animation per week.
-    """
-
-    def __init__(self, parent, **kw):
-        super().__init__(parent, bg=BG_DARK, **kw)
-        self._nodes: list = []           # list of dicts from node_master.csv
-        self._markers: list = []         # active TkinterMapView marker objects
-        self._paths:   list = []         # active TkinterMapView path objects
-        self._timeline = None            # EventTimeline (set after planning)
-        self._anim_running  = False
-        self._anim_week     = 0
-        self._anim_speed_ms = 1000
-        self._anim_after_id = None
-        self._map_widget    = None
-        self._sc_tree_path: str = ""     # sc_tree_master.csv path (optional)
-        self._sc_edges: list = []        # [{"child":node_id,"parent":node_id,"product":str}, ...]
-        self._product_nodes: dict = {}   # product_name -> set(node_id) incl. bridge/dad nodes
-        self._build()
-
-    # ── Layout ───────────────────────────────────────────────────────────
-
-    def _build(self):
-        try:
-            from tkintermapview import TkinterMapView
-            HAS_MAP = True
-        except ImportError:
-            HAS_MAP = False
-
-        if not HAS_MAP:
-            tk.Label(self,
-                     text="tkintermapview not installed.\nRun:  pip install tkintermapview",
-                     bg=BG_DARK, fg="#FF6B6B",
-                     font=("Segoe UI", 11)).pack(expand=True)
-            return
-
-        # Control bar
-        bar = tk.Frame(self, bg=BG_MID, pady=4)
-        bar.pack(fill="x", side="top")
-
-        tk.Label(bar, text="Node Master:", bg=BG_MID, fg=FG_WHITE,
-                 font=("Segoe UI", 9)).pack(side="left", padx=(8, 2))
-        self._file_var = tk.StringVar(value="")
-        self._file_entry = tk.Entry(bar, textvariable=self._file_var,
-                                    width=38, bg=BG_LIGHT, fg=FG_WHITE,
-                                    font=("Segoe UI", 8), relief="flat")
-        self._file_entry.pack(side="left", padx=2)
-        tk.Button(bar, text="Browse…",
-                  command=self._browse_node_master,
-                  bg=BG_LIGHT, fg=FG_WHITE, font=("Segoe UI", 8),
-                  relief="flat").pack(side="left", padx=2)
-        tk.Button(bar, text="⟳ Reload",
-                  command=self._reload,
-                  bg="#1565C0", fg="white", font=("Segoe UI", 8),
-                  relief="flat").pack(side="left", padx=(6, 2))
-
-        # SKU/product filter — narrows markers + SC-tree edges to one product
-        # so multi-SKU / multi-region models don't turn into an unreadable
-        # tangle of overlapping pins and lines.
-        tk.Label(bar, text="  SKU:", bg=BG_MID, fg=FG_WHITE,
-                 font=("Segoe UI", 9)).pack(side="left", padx=(10, 2))
-        self._map_sku_var = tk.StringVar(value="All")
-        self._map_sku_cb = ttk.Combobox(bar, textvariable=self._map_sku_var,
-                                         values=["All"], width=16, state="readonly",
-                                         font=("Segoe UI", 8))
-        self._map_sku_cb.pack(side="left", padx=2)
-        self._map_sku_cb.bind("<<ComboboxSelected>>", lambda _: self._on_map_sku_change())
-
-        # Animation controls (enabled after planning)
-        tk.Label(bar, text="  |", bg=BG_MID, fg="#546E7A").pack(side="left")
-        self._map_play_btn = tk.Button(
-            bar, text="▶", width=3, command=self._anim_play,
-            bg="#1B5E20", fg="white", font=("Segoe UI", 9, "bold"),
-            relief="flat", state="disabled")
-        self._map_play_btn.pack(side="left", padx=(6, 2))
-        self._map_pause_btn = tk.Button(
-            bar, text="⏸", width=3, command=self._anim_pause,
-            bg=BG_LIGHT, fg=FG_WHITE, font=("Segoe UI", 9),
-            relief="flat", state="disabled")
-        self._map_pause_btn.pack(side="left", padx=2)
-        self._map_stop_btn = tk.Button(
-            bar, text="⏹", width=3, command=self._anim_stop,
-            bg=BG_LIGHT, fg=FG_WHITE, font=("Segoe UI", 9),
-            relief="flat", state="disabled")
-        self._map_stop_btn.pack(side="left", padx=2)
-
-        self._map_week_var = tk.StringVar(value="Run Planning Engine to enable animation")
-        tk.Label(bar, textvariable=self._map_week_var,
-                 bg=BG_MID, fg=FG_ACC,
-                 font=("Segoe UI", 8, "italic")).pack(side="left", padx=10)
-
-        # Main split: map (left) + info panel (right)
-        paned = tk.PanedWindow(self, orient="horizontal", bg=BG_DARK,
-                               sashwidth=5, sashrelief="flat")
-        paned.pack(fill="both", expand=True)
-
-        # Map widget
-        map_frame = tk.Frame(paned, bg=BG_DARK)
-        paned.add(map_frame, minsize=820)
-
-        from tkintermapview import TkinterMapView
-        # SQLite tile cache: <project>/data/worldmap_cache.db
-        # Pre-populate offline: python tools/download_worldmap_tiles.py
-        # If DB exists → served locally (works offline).
-        # If DB missing → created automatically; tiles cache on first online use.
-        _gui_dir  = os.path.dirname(os.path.abspath(__file__))   # wom/gui/
-        _wom_dir  = os.path.dirname(_gui_dir)                     # wom/
-        _proj_dir = os.path.dirname(_wom_dir)                     # project root
-        _tile_db  = os.path.join(_proj_dir, "data", "worldmap_cache.db")
-        self._map_widget = TkinterMapView(
-            map_frame, width=700, height=520,
-            corner_radius=0,
-            database_path=_tile_db)
-        self._map_widget.pack(fill="both", expand=True)
-        # Use CARTO tiles — not blocked by usage policy unlike OSM default.
-        # DB server key must match this URL exactly for offline cache lookup.
-        # download_worldmap_tiles.py uses the same URL for pre-caching.
-        _CARTO = "https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"
-        try:
-            self._map_widget.set_tile_server(_CARTO, max_zoom=19)
-        except Exception:
-            pass
-        # Center on world view
-        self._map_widget.set_position(20.0, 10.0)
-        self._map_widget.set_zoom(2)
-
-        # Info panel (right)
-        info_frame = tk.Frame(paned, bg=BG_DARK)
-        paned.add(info_frame, minsize=180)
-
-        tk.Label(info_frame, text="Node Info",
-                 bg=BG_DARK, fg=FG_ACC,
-                 font=("Segoe UI", 10, "bold")).pack(anchor="w", padx=8, pady=(8, 2))
-
-        self._info_text = tk.Text(
-            info_frame, bg=BG_MID, fg=FG_WHITE,
-            font=("Segoe UI", 9), relief="flat",
-            wrap="word", state="disabled", width=28)
-        self._info_text.pack(fill="both", expand=True, padx=6, pady=4)
-
-        # Legend
-        leg = tk.LabelFrame(info_frame, text=" Legend ",
-                            bg=BG_DARK, fg=FG_ACC,
-                            font=("Segoe UI", 8, "bold"),
-                            relief="groove", bd=1)
-        leg.pack(fill="x", padx=6, pady=4)
-        for ntype, (cc, co, icon) in _MAP_NODE_STYLE.items():
-            row = tk.Frame(leg, bg=BG_DARK)
-            row.pack(fill="x", padx=4, pady=1)
-            tk.Label(row, text="●", fg=cc, bg=BG_DARK,
-                     font=("Segoe UI", 10)).pack(side="left")
-            tk.Label(row, text=f"{icon} {ntype.replace('_', ' ').title()}",
-                     bg=BG_DARK, fg=FG_WHITE,
-                     font=("Segoe UI", 8)).pack(side="left", padx=4)
-
-    # ── File operations ───────────────────────────────────────────────────
-
-    def _browse_node_master(self):
-        path = filedialog.askopenfilename(
-            title="Select node_master.csv",
-            filetypes=[("CSV", "*.csv"), ("All", "*.*")])
-        if path:
-            self._file_var.set(path)
-            self._reload()
-
-    def load_default(self, csv_path: str, sc_tree_path: str = "") -> None:
-        """Load a node master CSV path without user interaction.
-
-        sc_tree_path (optional): sc_tree_master.csv from the same model
-        folder — used to derive real parent/child edges and the SKU filter
-        list. Without it, the panel falls back to the old node_type
-        all-pairs heuristic (_MAP_LINKS) and shows no SKU filter options.
-        """
-        self._file_var.set(csv_path)
-        self._sc_tree_path = sc_tree_path or ""
-        self._reload()
-
-    def _reload(self):
-        path = self._file_var.get()
-        if not path or not os.path.exists(path):
-            return
-        try:
-            df = pd.read_csv(path)
-            self._nodes = df.to_dict("records")
-            self._load_sc_tree_edges()
-            self._draw_nodes()
-        except Exception as exc:
-            messagebox.showerror("World Map", f"Failed to load {path}:\n{exc}")
-
-    def _load_sc_tree_edges(self):
-        """
-        Parse sc_tree_master.csv (if available) into real parent/child edges
-        and a product_name -> {node_id} map, so the map can (a) draw only
-        actually-linked nodes instead of a node_type all-pairs guess, and
-        (b) offer a SKU/product filter dropdown.
-
-        Note: sc_tree_master.csv's "node_name" column holds the same short
-        identifier as node_master.csv's "node_id" column (node_master's own
-        "node_name" is a separate, human-readable description) — matching
-        must be done on that id, not on node_master's node_name.
-        """
-        self._sc_edges = []
-        self._product_nodes = {}
-        path = self._sc_tree_path
-        if not path or not os.path.exists(path):
-            self._map_sku_cb["values"] = ["All"]
-            self._map_sku_var.set("All")
-            return
-        try:
-            sc_df = pd.read_csv(path)
-        except Exception as exc:
-            print(f"[WorldMap] sc_tree_master load failed: {exc}")
-            self._map_sku_cb["values"] = ["All"]
-            self._map_sku_var.set("All")
-            return
-
-        # mom_root(s) / supply_point_root per product, for the synthetic
-        # InBound<->OutBound bridge edge (see note below). A product can
-        # have more than one mom root (Multi-MOM models, e.g. iphone-2027-2029).
-        mom_roots: dict = {}   # product -> [node_id, ...]
-        sp_root: dict = {}     # product -> node_id
-
-        for _, row in sc_df.iterrows():
-            node_id  = str(row.get("node_name", "")).strip()
-            parent   = str(row.get("parent_node", "") or "").strip()
-            product  = str(row.get("product_name", "")).strip()
-            ntype    = str(row.get("node_type", "")).strip()
-            if not node_id or not product:
-                continue
-            self._product_nodes.setdefault(product, set()).add(node_id)
-            if parent and parent.lower() != "nan":
-                self._product_nodes[product].add(parent)
-                self._sc_edges.append(
-                    {"child": node_id, "parent": parent, "product": product})
-            elif ntype == "mom":
-                mom_roots.setdefault(product, []).append(node_id)
-            elif ntype == "supply_point":
-                sp_root[product] = node_id
-
-        # WOM's InBound (mom root) and OutBound (supply_point root) trees
-        # are two independent roots in sc_tree_master.csv — the engine
-        # bridges them at runtime by product_name match, not via a
-        # parent_node cell (see CLAUDE.md's SCTree diagram: "Bridge").
-        # Without this synthetic edge, the map shows the MOM/leaf_in side
-        # (e.g. an overseas factory) as visually disconnected from its own
-        # DC/leaf_out side, even though they're the same product's one lane.
-        for product, mom_ids in mom_roots.items():
-            sp_id = sp_root.get(product)
-            if not sp_id:
-                continue
-            for mom_id in mom_ids:
-                self._sc_edges.append(
-                    {"child": sp_id, "parent": mom_id, "product": product})
-
-        products = sorted(self._product_nodes.keys())
-        values = ["All"] + products
-        self._map_sku_cb["values"] = values
-        if self._map_sku_var.get() not in values:
-            self._map_sku_var.set("All")
-
-    def _current_map_sku(self):
-        v = self._map_sku_var.get() if hasattr(self, "_map_sku_var") else "All"
-        return None if (not v or v == "All") else v
-
-    def _on_map_sku_change(self):
-        self._draw_nodes()
-
-    # ── Map drawing ───────────────────────────────────────────────────────
-
-    def _draw_nodes(self):
-        if self._map_widget is None:
-            return
-        # Clear existing
-        for m in self._markers:
-            try: m.delete()
-            except Exception: pass
-        for p in self._paths:
-            try: p.delete()
-            except Exception: pass
-        self._markers.clear()
-        self._paths.clear()
-
-        # ── SKU/product filter ────────────────────────────────────────────
-        sku = self._current_map_sku()
-        allowed_ids = self._product_nodes.get(sku) if sku else None
-        if allowed_ids is not None:
-            nodes_to_draw = [n for n in self._nodes
-                             if str(n.get("node_id", "")) in allowed_ids]
-        else:
-            nodes_to_draw = list(self._nodes)
-
-        # Lat/lon lookup by node_id (used for sc_tree-edge endpoints,
-        # unfiltered so edges always resolve even if only one endpoint
-        # happens to be shared infrastructure)
-        pos_by_id = {}
-        for n in self._nodes:
-            try:
-                pos_by_id[str(n.get("node_id", ""))] = (float(n["lat"]), float(n["lon"]))
-            except (TypeError, ValueError, KeyError):
-                pass
-
-        # ── Draw SC link paths first (beneath markers) ───────────────────
-        link_color = "#546E7A"
-        if self._sc_edges:
-            # Real parent/child edges from sc_tree_master.csv, optionally
-            # narrowed to the selected product — no more all-pairs guessing.
-            for edge in self._sc_edges:
-                if sku and edge["product"] != sku:
-                    continue
-                p1 = pos_by_id.get(edge["child"])
-                p2 = pos_by_id.get(edge["parent"])
-                if p1 is None or p2 is None:
-                    continue
-                try:
-                    path = self._map_widget.set_path(
-                        [p1, p2], color=link_color, width=2)
-                    self._paths.append(path)
-                except Exception:
-                    pass
-        else:
-            # Fallback: no sc_tree_master.csv available for this model —
-            # use the old node_type all-pairs heuristic on the filtered set.
-            by_type: dict = {}
-            for node in nodes_to_draw:
-                ntype = str(node.get("node_type", ""))
-                by_type.setdefault(ntype, []).append(node)
-            for src_type, dst_type in _MAP_LINKS:
-                for src in by_type.get(src_type, []):
-                    for dst in by_type.get(dst_type, []):
-                        try:
-                            path = self._map_widget.set_path(
-                                [(float(src["lat"]), float(src["lon"])),
-                                 (float(dst["lat"]), float(dst["lon"]))],
-                                color=link_color, width=2)
-                            self._paths.append(path)
-                        except Exception:
-                            pass
-
-        # Draw node markers (filtered set only)
-        #
-        # 2026-07-14 GUI review finding: removing the label entirely (first
-        # attempt) made nodes impossible to identify without clicking every
-        # pin -- too aggressive. Reverted per user feedback: show the bare
-        # node_name only (no icon prefix, no description) as a short,
-        # single-line label -- this keeps most overlap cases readable while
-        # still trimming label width versus the original "icon + name"
-        # text. Full detail (type/lat/lon/SKU/region/description) remains
-        # a click away via _on_marker_click / the Node Info panel.
-        for node in nodes_to_draw:
-            ntype  = str(node.get("node_type", ""))
-            style  = _MAP_NODE_STYLE.get(ntype, ("#607D8B", "#455A64", "📍"))
-            cc, co, icon = style
-            label  = str(node.get("node_name", node.get("node_id", "")))
-            try:
-                marker = self._map_widget.set_marker(
-                    float(node["lat"]), float(node["lon"]),
-                    text=label,
-                    marker_color_circle=cc,
-                    marker_color_outside=co,
-                    command=lambda m, n=node: self._on_marker_click(m, n),
-                    text_color="#222222",
-                    font=("Segoe UI", 8, "bold"))
-                self._markers.append(marker)
-            except Exception:
-                pass
-
-        # ── Auto-fit map view to node bounding box (filtered set) ─────────
-        self._fit_nodes_cache = nodes_to_draw
-        self.after(200, self._fit_to_nodes)
-
-    def _fit_to_nodes(self):
-        """Fit the map view to the bounding box of the currently-drawn
-        (SKU-filtered) node set, with padding."""
-        nodes = getattr(self, "_fit_nodes_cache", None) or self._nodes
-        if not nodes or self._map_widget is None:
-            return
-        try:
-            import math
-            lats = [float(n["lat"]) for n in nodes
-                    if n.get("lat") not in (None, "", "nan")]
-            lons = [float(n["lon"]) for n in nodes
-                    if n.get("lon") not in (None, "", "nan")]
-            if not lats or not lons:
-                return
-
-            min_lat, max_lat = min(lats), max(lats)
-            min_lon, max_lon = min(lons), max(lons)
-
-            # 15% padding so markers don't sit at viewport edge
-            pad_lat = max((max_lat - min_lat) * 0.15, 0.5)
-            pad_lon = max((max_lon - min_lon) * 0.15, 0.5)
-
-            top_left     = (max_lat + pad_lat, min_lon - pad_lon)
-            bottom_right = (min_lat - pad_lat, max_lon + pad_lon)
-
-            try:
-                # tkintermapview >= 0.3 has fit_bounding_box
-                self._map_widget.fit_bounding_box(top_left, bottom_right)
-            except AttributeError:
-                # Fallback: set_position + estimated zoom
-                center_lat = (min_lat + max_lat) / 2
-                center_lon = (min_lon + max_lon) / 2
-                lat_span   = (max_lat - min_lat) + 2 * pad_lat
-                lon_span   = (max_lon - min_lon) + 2 * pad_lon
-                max_span   = max(lat_span, lon_span, 0.01)
-                zoom = max(4, min(14, round(8.5 - math.log2(max_span))))
-                self._map_widget.set_position(center_lat, center_lon)
-                self._map_widget.set_zoom(zoom)
-        except Exception as e:
-            print(f"[WorldMap] fit_to_nodes failed: {e}")
-
-    def _on_marker_click(self, marker, node: dict):
-        """Show node info in the right panel."""
-        info = []
-        info.append(f"🏷  {node.get('node_name', node.get('node_id', ''))}")
-        info.append(f"Type:  {node.get('node_type', '')}")
-        info.append(f"Lat:   {node.get('lat', '')}")
-        info.append(f"Lon:   {node.get('lon', '')}")
-        if node.get("sku_id"):
-            info.append(f"SKU:   {node['sku_id']}")
-        if node.get("region"):
-            info.append(f"Region: {node['region']}")
-        if node.get("description"):
-            info.append(f"\n{node['description']}")
-        text = "\n".join(info)
-        self._info_text.config(state="normal")
-        self._info_text.delete("1.0", "end")
-        self._info_text.insert("end", text)
-        self._info_text.config(state="disabled")
-
-    # ── EventTimeline animation ───────────────────────────────────────────
-
-    def clear_timeline(self) -> None:
-        """A model folder was (re)loaded: the lot-flow animation of the previous
-        plan is removed (the node map itself is reloaded by the caller)."""
-        self._anim_running = False
-        if getattr(self, "_anim_after_id", None):
-            try:
-                self.after_cancel(self._anim_after_id)
-            except Exception:
-                pass
-            self._anim_after_id = None
-        self._anim_week = 0
-        self._timeline = None
-        for _b in ("_map_play_btn", "_map_pause_btn", "_map_stop_btn"):
-            if hasattr(self, _b):
-                getattr(self, _b).config(state="disabled")
-        if hasattr(self, "_map_week_var"):
-            self._map_week_var.set("Planning Engine を実行すると、アニメーションが使えます")
-
-    def set_timeline(self, timeline) -> None:
-        """Enable lot-flow animation once planning is complete."""
-        self._timeline     = timeline
-        self._anim_week    = 0
-        self._anim_running = False
-        if hasattr(self, "_map_play_btn"):
-            self._map_play_btn.config(state="normal")
-            self._map_stop_btn.config(state="normal")
-        n = len(timeline)
-        self._map_week_var.set(f"Week 0/{n}  ←  press ▶ to animate")
-
-    def _anim_play(self):
-        if not self._timeline:
-            return
-        self._anim_running = True
-        self._map_play_btn.config(state="disabled")
-        self._map_pause_btn.config(state="normal")
-        self._map_stop_btn.config(state="normal")
-        self._map_tick()
-
-    def _anim_pause(self):
-        self._anim_running = False
-        self._map_play_btn.config(state="normal")
-        self._map_pause_btn.config(state="disabled")
-
-    def _anim_stop(self):
-        self._anim_running = False
-        self._anim_week    = 0
-        if self._anim_after_id:
-            self.after_cancel(self._anim_after_id)
-            self._anim_after_id = None
-        self._map_play_btn.config(state="normal")
-        self._map_pause_btn.config(state="disabled")
-        # Restore static paths
-        self._draw_nodes()
-        n = len(self._timeline) if self._timeline else 0
-        self._map_week_var.set(f"Week 0/{n}  ←  press ▶ to animate")
-
-    def _map_tick(self):
-        if not self._anim_running or not self._timeline:
-            return
-        n = len(self._timeline)
-        if self._anim_week >= n:
-            self._anim_week = 0
-        snap = self._timeline[self._anim_week]
-        self._draw_animated_paths(snap)
-        self._map_week_var.set(
-            f"Week {self._anim_week + 1}/{n}  |  {snap.week_label}")
-        self._anim_week += 1
-        self._anim_after_id = self.after(self._anim_speed_ms, self._map_tick)
-
-    def _draw_animated_paths(self, snap):
-        """Redraw SC paths with widths proportional to this week's lot flows."""
-        if self._map_widget is None or not self._nodes:
-            return
-        # Clear old paths only
-        for p in self._paths:
-            try: p.delete()
-            except Exception: pass
-        self._paths.clear()
-
-        # Build lot-flow lookup from snapshot: gui_label -> flow count
-        # GUI labels: "Region:{reg}", "Mother Plant", "SKU:{sku}"
-        max_flow = snap.max_flow or 1
-
-        # Node position lookup
-        node_pos: dict = {}
-        for node in self._nodes:
-            ntype = str(node.get("node_type", ""))
-            if ntype == "mother_plant":
-                node_pos["Mother\nPlant"] = (float(node["lat"]), float(node["lon"]))
-            elif ntype == "region_dc":
-                reg = str(node.get("region", ""))
-                node_pos[f"Region:{reg}"] = (float(node["lat"]), float(node["lon"]))
-            elif ntype == "sku_supplier":
-                sku = str(node.get("sku_id", ""))
-                node_pos[f"SKU:{sku}"] = (float(node["lat"]), float(node["lon"]))
-            elif ntype == "procurement":
-                node_pos["Global\nProcurement"] = (float(node["lat"]), float(node["lon"]))
-
-        # Draw flows
-        for ef in snap.edge_flows:
-            src_pos = node_pos.get(ef.src)
-            dst_pos = node_pos.get(ef.dst)
-            if src_pos is None or dst_pos is None:
-                continue
-            ratio = ef.lot_count / max_flow
-            width = max(2, int(2 + 8 * ratio))
-            color = "#66BB6A" if ef.direction == "supply" else "#42A5F5"
-            if ef.bucket == "CO":
-                color = "#FF9800"
-            try:
-                path = self._map_widget.set_path(
-                    [src_pos, dst_pos],
-                    color=color, width=width)
-                self._paths.append(path)
-            except Exception:
-                pass
-
-        # Static dim lines for inactive edges (respects the SKU filter)
-        sku = self._current_map_sku()
-        if self._sc_edges:
-            pos_by_id = {}
-            for n in self._nodes:
-                try:
-                    pos_by_id[str(n.get("node_id", ""))] = (float(n["lat"]), float(n["lon"]))
-                except (TypeError, ValueError, KeyError):
-                    pass
-            for edge in self._sc_edges:
-                if sku and edge["product"] != sku:
-                    continue
-                s_pos = pos_by_id.get(edge["child"])
-                d_pos = pos_by_id.get(edge["parent"])
-                if s_pos is None or d_pos is None:
-                    continue
-                try:
-                    path = self._map_widget.set_path(
-                        [s_pos, d_pos], color="#263238", width=1)
-                    self._paths.insert(0, path)  # behind flow paths
-                except Exception:
-                    pass
-        else:
-            allowed_ids = self._product_nodes.get(sku) if sku else None
-            nodes_scope = ([n for n in self._nodes
-                            if str(n.get("node_id", "")) in allowed_ids]
-                           if allowed_ids is not None else self._nodes)
-            for src_type, dst_type in _MAP_LINKS:
-                for src_node in nodes_scope:
-                    if src_node.get("node_type") != src_type:
-                        continue
-                    for dst_node in nodes_scope:
-                        if dst_node.get("node_type") != dst_type:
-                            continue
-                        # Check if this edge already has a flow path
-                        s_pos = (float(src_node["lat"]), float(src_node["lon"]))
-                        d_pos = (float(dst_node["lat"]), float(dst_node["lon"]))
-                        # Add dim background line
-                        try:
-                            path = self._map_widget.set_path(
-                                [s_pos, d_pos],
-                                color="#263238", width=1)
-                            self._paths.insert(0, path)  # behind flow paths
-                        except Exception:
-                            pass
-
-# ──────────────────────────────────────────────────────────────────────
+from wom.gui.worldmap_panel import WorldMapPanel  # noqa: E402
 
 # ──────────────────────────────────────────────────────────────────────
 # Planning Operation Debugger panel
@@ -5867,6 +5251,9 @@ class WOMApp(tk.Tk):
         if hasattr(self, "_vc_panel"):
             self._vc_panel.set_current_plan("")
             self._vc_panel.clear("Run Simulation の結果には台帳がありません（台帳は Planning Engine の計画から作ります）")
+        self._worldmap_panel.set_current_plan("")
+        self._worldmap_panel.clear_flows("Run Simulation の結果には実出荷の記録がありません"
+                                         "（流れは Planning Engine の計画の実出荷から描きます）")
         self._ppc_ctx = make_context(STATE_NONE, "", getattr(self, "_model_dir", ""))
         self._ppc_panel.set_ppc_context(self._ppc_ctx)
         self._update_model_display()
@@ -6271,7 +5658,6 @@ class WOMApp(tk.Tk):
             from wom.engine.event_timeline import build_event_timeline
             timeline = build_event_timeline(sc_tree)
             self._network_panel.set_timeline(timeline)
-            self._worldmap_panel.set_timeline(timeline)
         except Exception as exc:
             import traceback
             print(f"[EventTimeline] build failed: {exc}")
@@ -6442,12 +5828,47 @@ class WOMApp(tk.Tk):
         # On completion, refresh the PPC tab automatically.
         self._run_ppc_from_planning(sc_tree)
 
-        # ── stage D: the Value Chain ledger of THIS plan (background thread; the
-        #    plan is not re-run). Models without the vc_* masters show a message.
+        # ── the shipment records of THIS plan (stage D, records.py), built ONCE in a
+        #    background thread and used by both the World Map (actual flows) and the
+        #    Value Chain ledger. The plan is not re-run.
+        self._start_records_job(sc_tree)
+
+    def _start_records_job(self, sc_tree):
+        run_id = self._plan_run.get("run_id", "")
+        model_dir = self._plan_run.get("model_dir", "")
+        self._worldmap_panel.begin_flows(run_id)
+        if hasattr(self, "_vc_panel"):
+            self._vc_panel.set_current_plan(run_id)
+            self._vc_panel.clear("出荷の記録を作成中…（World Map と同じ記録を使います）")
+
+        def work():
+            import time as _time
+            records = flows = problem = None
+            t0 = _time.perf_counter()
+            try:
+                from wom.valuechain.records import build_records
+                from wom.worldmap_ne.flows import FlowData, records_problem
+                records = build_records(sc_tree, run_id)
+                problem = records_problem(records)
+                if problem is None:
+                    flows = FlowData.from_records(records, sc_tree)
+            except Exception as exc:          # shown on the band, not swallowed
+                import traceback
+                traceback.print_exc()
+                problem = f"出荷の記録を作れませんでした：{exc}"
+            secs = _time.perf_counter() - t0
+            print(f"[Records] {run_id}: {len(records.shipments) if records else 0:,} shipments "
+                  f"in {secs:.1f}s" + (f"  ({problem})" if problem else ""))
+            self.after(0, lambda: self._records_done(sc_tree, run_id, model_dir, records, flows,
+                                                     problem, secs))
+        threading.Thread(target=work, daemon=True).start()
+
+    def _records_done(self, sc_tree, run_id, model_dir, records, flows, problem, secs):
+        self._records_seconds = secs
+        self._worldmap_panel.set_flows(run_id, flows, problem)
         if hasattr(self, "_vc_panel"):
             try:
-                self._vc_panel.start_build(sc_tree, self._plan_run.get("model_dir", ""),
-                                           self._plan_run.get("run_id", ""))
+                self._vc_panel.start_build(sc_tree, model_dir, run_id, records=records)
             except Exception as _vc_exc:
                 print(f"[ValueChain] start failed: {_vc_exc}")
 

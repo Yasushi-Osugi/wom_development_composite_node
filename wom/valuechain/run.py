@@ -93,15 +93,20 @@ def plan_model(model_dir: str, ppc_out: str, plugins: Optional[str] = None):
     return cap["t"], snap, plugins, "identity"
 
 
-def build_ledger(sc_tree, model_dir: str, plan_id: str, sink=None) -> dict:
+def build_ledger(sc_tree, model_dir: str, plan_id: str, sink=None, records=None) -> dict:
     """Build the ledger from an already planned tree (the GUI uses this after its own
     Planning Engine run; no re-planning). Returns records / masters / fx / ledger / views /
-    report_idx. `sink` receives every money line (None: lines are only aggregated)."""
+    report_idx. `sink` receives every money line (None: lines are only aggregated).
+    `records`: the shipment records of the same plan when already built (the GUI builds them
+    once for the World Map and the ledger); they must belong to `plan_id`."""
     from wom.engine.warmup import first_nonzero_demand_week
     mode = str(getattr(sc_tree, "lot_flow_mode", "") or "").lower()
     if mode != "identity":
         raise ValueError(f"the ledger needs an identity plan (lot_flow_mode={mode or 'not set'})")
-    records = build_records(sc_tree, plan_id)
+    if records is None:
+        records = build_records(sc_tree, plan_id)
+    elif records.plan_id != plan_id:
+        raise ValueError(f"the records belong to another plan ({records.plan_id} != {plan_id})")
     masters = load_masters(model_dir, records.terminal_moms(), records.physical_edges())
     fx = FxTable.load(model_dir, os.path.join(REPO, "data", "ppc"))
     labels = records.week_labels

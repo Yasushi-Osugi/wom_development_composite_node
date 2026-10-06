@@ -159,8 +159,10 @@ class ValueChainPanel(tk.Frame):
                      (self._btn_fx, "為替：最初の週 —")):
             b.configure(text=t)
 
-    def start_build(self, sc_tree, model_dir: str, run_id: str, on_done=None) -> bool:
-        """Build the ledger of the plan `run_id` in a thread (False: this model has no masters)."""
+    def start_build(self, sc_tree, model_dir: str, run_id: str, on_done=None, records=None) -> bool:
+        """Build the ledger of the plan `run_id` in a thread (False: this model has no masters).
+        `records`: the plan's shipment records when the app already built them (shared with the
+        World Map, so they are not built twice)."""
         from wom.valuechain.run import has_ledger_masters
         self.set_current_plan(run_id)
         if not model_dir or not has_ledger_masters(model_dir):
@@ -173,7 +175,7 @@ class ValueChainPanel(tk.Frame):
         def work():
             try:
                 from wom.valuechain.run import build_ledger
-                res = build_ledger(sc_tree, model_dir, run_id)
+                res = build_ledger(sc_tree, model_dir, run_id, records=records)
                 err = None
             except Exception as exc:          # shown on the panel, not swallowed
                 import traceback

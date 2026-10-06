@@ -36,7 +36,7 @@ python \-m pytest tests/test\_ppc\_vertical\_slice.py \-v
 
 python \-m wom.ppc
 
-依存: `pip install tkintermapview pandas numpy matplotlib openpyxl networkx pytest`
+依存: `pip install pandas numpy matplotlib openpyxl networkx pytest`（World Map は手元の Natural Earth のデータ `data/worldmap_ne/ne_*.npz` を matplotlib で描く。tkintermapview は使わない）
 
 ---
 
@@ -197,12 +197,12 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
 | クラス | タブ | 役割 |
 | :---- | :---- | :---- |
 | `ChartPanel` | Charts | Buffer Stock/Harvest Input/Fill Rate等 |
-| `WorldMapPanel` | World Map | tkintermapviewベースの地図（起動時初期タブ） |
+| `WorldMapPanel` | World Map | Natural Earth（手元のデータ）＋計画の実出荷の流れ（起動時初期タブ、`wom/gui/worldmap_panel.py`） |
 | `NetworkPanel` | Network | NetworkXによるHammockグラフ |
 | `ManagementPanel` | Management | KPI・PPC・Tariff\&FX |
 | `PPCPanel` | PPC | Profit Zone可視化 |
 
-**WorldMapPanel:** 起動時の初期タブ。`_render_nodes()`後に`self.after(200, self._fit_to_nodes)`でノード群にauto-zoom。`fit_bounding_box()`またはフォールバック`set_position()+set_zoom()`。
+**WorldMapPanel:**（2026-10 置き換え、RequestLetter_WorldMap_ActualFlows）起動時の初期タブ。地図は `wom/worldmap_ne/data.py`（Natural Earth の `ne_{110m,50m,10m}.npz`、ズームで細かさを切り替え）を matplotlib で描き、**実行時にネットワークへ出ない**。拠点は `node_master.csv` の緯度・経度（座標の無い拠点は描かず「座標なし」の一覧へ）。区間は**物理の区間だけ**（supply point を通らない：MOM → supply point の子を直接結ぶ。supply point は中抜きのひし形の仮想ノード）。Run Planning Engine の後、その計画の**実出荷**（段階 D の出荷の記録 `wom/valuechain/records.py` → `wom/worldmap_ne/flows.py` の `FlowData`）で週ごとに動かす。表示は「出荷」と「輸送中」、線の太さの基準は全期間の最大で固定。出荷の記録は app の `_start_records_job` が裏のスレッドで 1 回だけ作り、Value Chain の台帳と使い回す。計画 ID が違う流れは出さない（`set_current_plan` / `set_flows(run_id, …)`）。
 
 **Planning Engine完了後のフロー（`_on_planning_done`）：**
 
@@ -266,7 +266,7 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
   **重要（2026-07-07追記、v1r0m5セッションで再確認・範囲を拡大）**: この切り捨ては`cat`/`python open()`だけでなく**`git`コマンド自体**（Linux bashマウント経由で実行した場合）にも及ぶことを確認済み。`git diff`/`git status`がapp.pyの末尾（`_on_ppc_done`以降、`launch()`まで）を「削除」として表示するが、これは実際の変更ではなく、bashマウント越しにgitが読んだファイルが切り捨てられているために生じる幻影。しかも**この現象はapp.py（約170KB超級）だけでなく、CLAUDE.md自体（57KB程度、760行）でも再現した**——`wc -l`がgit HEAD blobより少ない行数を返し、`git diff -w`が実際には発生していない大量の削除を表示した。つまり閾値は「約172KB」という固定サイズではなく、bashマウントのセッション内での累積読み込み量や再読込みタイミングに依存する可能性が高く、**編集した全てのファイルについて`git`をLinux bash経由で実行するのは危険**と考えるべき。
   **対策**: WOMのコード・ドキュメントに変更を加えたセッションでは、`git add`/`git commit`/`git push`は必ずユーザー自身のWindows側ターミナルで実行してもらうこと。Claude側のbashツールで`git add`/`git commit`を実行するのは絶対に避ける（ステージされる内容が切り捨てられた壊れたバージョンになる恐れがあるため）。`git diff`/`git status`をClaude側で覗き見て「変更点の要約」を作ること自体は無害だが、その差分表示を鵜呑みにせず、真に受けるべきは常にRead toolで読んだ内容（Windows側の実ファイル）である。
 - `sc_tree_to_planning_df()`は`leaf_out`ノードのみを処理するため、DAD在庫はKPI DataFrameに現れない  
-- `fit_bounding_box()`はtkintermapview \>= 0.3が必要  
+- World Map の地図データは `data/worldmap_ne/`（`tools/build_worldmap_ne.py` が作る）。`data/worldmap_cache.db`・`tools/download_worldmap_tiles.py` は使われていない（残してあるだけ。消すかは大杉さんが決める。download は実行しない）  
 - Planning Engine実行後にChartsタブを確認する場合、`Refresh`ボタンを押すこと  
 - 新しいモデルフォルダを追加する場合は`rice-japan-2027-2028/`を参考に全CSVを揃えること
 - Linuxのbash Editツールは大きいファイルを切り捨てることがある。重要ファイルの書き換えは `cat > file << 'PYEOF'` ヒアドックで行うこと
@@ -484,6 +484,8 @@ Gasoline_Import: Refinery_SG(leaf_in, SG) → Import_Hub(mom, JP) → supply_poi
 ---
 
 ### World Map: SKUフィルタ + sc_tree_master.csvベースの実エッジ描画（`WorldMapPanel`、完了、2026-07-07）
+
+> **【2026-10 置き換え済み】** 下の記述は tkintermapview 時代の旧 `WorldMapPanel`（app.py 内）のもの。現在の World Map は `wom/gui/worldmap_panel.py`（本ファイル末尾「World Map を Natural Earth ＋ 実出荷に置き換え」参照）。SKU フィルタ・sc_tree ベースの区間は引き継いだが、**MOM → supply point の合成の線は廃止**（物理の区間だけを描く）。
 
 oil-global-2027モデルをWorld Mapで確認した際、大杉さんから「北米・欧州・東南アジア・中国・アフリカ・ロシア・インドのようにGlobal Main Marketが増えると、地図が真っ黒になって判別できなくなるのでは？SKUでフィルタリングするのか？」という指摘があり、実際に調査したところ2つの根本的な制約が見つかった。
 
@@ -1842,3 +1844,15 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 **WOMとの関係**：Planning Engine（禁足コア）には一切関係しない。`(x_JP,x_US,x_EU)`という3変数上の分析に閉じており、週次PSIシミュレーション・SCTree・BackwardPlanner/ForwardPlannerには触れない。役割は`compare_with_grid()`に厳密な参照点を追加すること——現状は格子最適点を真の最適の代役に使わざるを得ず`structural_residual`が「下界」（今回96.6%）にしかならないが、真の連続最適が手に入れば乖離を**格子解像度の誤差**（真の連続最適−格子最適）と**非凹性由来の取りこぼし**（真の連続最適−貪欲法の利益）に**厳密に**2分解できるようになる。既存の231点グリッドスキャン（地形図描画用）は置き換えない——面を見せる役割はグリッドのまま、新関数は`compare_with_grid()`内部の参照値だけを差し替える想定。
 
 ---
+
+## World Map を Natural Earth ＋ 実出荷に置き換え（RequestLetter_WorldMap_ActualFlows、2026-10）
+
+- **報告書（正典）**：`docs/development/WOM_WorldMap_ActualFlows_Report.md`
+- **コード**：`wom/gui/worldmap_panel.py`（画面）、`wom/worldmap_ne/flows.py`（拠点・物理の区間・`FlowData`）、`wom/worldmap_ne/data.py`（地図データ、試作から）。app.py の旧 `WorldMapPanel`（tkintermapview・タイル）は削除。
+- **流れの出どころは計画の実出荷だけ**：`build_records()`（段階 D）→ `FlowData.from_records()`。計画の S・需要・EventTimeline は使わない。出荷の記録に食い違い（`records.issues`）があれば流れを出さず、帯に理由を出す。
+- **出荷**＝`ship_week == w` の lot 数、**輸送中**＝`ship_week <= w < arrival_week`（計画の期間の後に着くものは期間の終わりまで）。
+- **黙った既定値を作らない**：座標の無い拠点・描けない区間は「座標なし」の一覧。node_master の種類が色の表に無いときだけ、計画の木の役割の色（一覧に注記）。
+- **照合**：`tools/worldmap_flow_check.py`（vc_edge_flows.csv・LOVEM の観測と）、`tools/gui_worldmap_check.py`（全モデルの GUI の通し・描画時間・スクリーンショット）、`tests/test_worldmap_actual_flows.py`。
+- **試作の窓** `python -m wom.worldmap_ne` は描画の速さを測る道具として残す（流れは需要から作ったもので、窓に「需要の流れ（試作の計測用。計画の結果ではない）」と出す）。
+- **座標の規則**：座標は node_master の行だけから取る。例外は Stock Yard（`node_type = stockyard`）で、座標が無ければ親の組立工場の位置に置き「親の位置に合わせた」一覧に出す（node_master に書けばそちらを使う）。rice の node_master の node_id は計画の木の名前に揃えた。iphone は i15/i17 の DC・工場の行を足し、`Retail_*` は代表の地点（仮）（`data/sample/iphone_global/README.md`）。2026-10-06 時点で 15 モデルすべて「座標なし」0。
+
