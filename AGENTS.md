@@ -12,6 +12,9 @@ WOM is a weekly supply chain planning and simulation tool for PSI and PPC.
 
 Before editing code, read the following documents.
 
+0. `docs/WOM_Start_Here.md` — the entry point as of 2026-10: an index of the rules in force,
+   how to build a new model, and a map of the features. The planning canon is
+   `docs/design/WOM_Forward_LotID_Decision_Record_2026-09-29.md`.
 1. `README.md`
 2. `docs/development/README.md`
 3. `docs/architecture/README.md`

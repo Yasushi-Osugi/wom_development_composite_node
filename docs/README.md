@@ -19,8 +19,9 @@ docs/
 For a new human developer or AI agent:
 
 ```text
+0. docs/WOM_Start_Here.md   （2026-10 時点の入口。今有効な規則の索引）
 1. AGENTS.md
-2. docs/development/current_status.md
+2. docs/development/current_status.md   （v1r1m5 時点の記録。今の状態は Start Here を参照）
 3. docs/design/wom_canonical_concepts.md
 4. docs/architecture/repository_map.md
 5. docs/architecture/runtime_entrypoints.md
