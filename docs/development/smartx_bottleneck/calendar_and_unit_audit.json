@@ -1,0 +1,13 @@
+{
+  "iso_week_gaps": 0,
+  "first": "2025-W36",
+  "last": "2030-W52",
+  "weeks": 278,
+  "cpu_size": 1,
+  "bom_qty_all_one": true,
+  "unit_label_missing_in_capacity_csv": true,
+  "capacity_column_actually_read": "max_supply",
+  "unmatched_capacity_rows": 408,
+  "shared_resource_identifier_present": false,
+  "limits_of_inference": "Per-product PlanNodes are separate in code; physical equipment sharing is undetermined"
+}

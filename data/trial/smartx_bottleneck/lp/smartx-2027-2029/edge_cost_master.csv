@@ -1,0 +1,17 @@
+scenario,src_region,dst_region,tariff_rate,fx_rate,src_currency,dst_currency,freight_usd_per_lot,notes
+Base,CN,AMER,0.0,1.0,USD,USD,50,No tariff baseline — SmartX CN→AMER
+Base,CN,EMEA,0.0,0.91,USD,EUR,40,No tariff baseline — SmartX CN→EMEA
+Base,CN,APAC,0.0,1.0,USD,USD,25,No tariff baseline — SmartX CN→APAC
+TrumpTariff,CN,AMER,0.25,1.0,USD,USD,50,Trump 25% tariff on CN goods → AMER
+TrumpTariff,CN,EMEA,0.0,0.91,USD,EUR,40,EU unchanged
+TrumpTariff,CN,APAC,0.0,1.0,USD,USD,25,APAC unchanged — reroute target
+KD_Parts,CN,AMER,0.025,1.0,USD,USD,80,KD assembly in AMER — lower tariff + higher freight
+KD_Parts,CN,EMEA,0.0,0.91,USD,EUR,40,EU unchanged
+KD_Parts,CN,APAC,0.0,1.0,USD,USD,25,APAC unchanged
+CNtoAPAC,CN,AMER,0.25,1.0,USD,USD,50,Keep Trump tariff on AMER
+CNtoAPAC,CN,EMEA,0.0,0.91,USD,EUR,40,EU unchanged
+CNtoAPAC,CN,APAC,0.0,1.0,USD,USD,25,Reroute CN production via APAC hub
+Base,IN,AMER,0.0,1.0,USD,USD,50,"No tariff baseline — SmartX CN→AMER [SmartXPro_IN: AssemblyIN(India) origin, same $ magnitude as CN baseline pending real India-tariff-schedule review]"
+TrumpTariff,IN,AMER,0.25,1.0,USD,USD,50,"Trump 25% tariff on CN goods → AMER [SmartXPro_IN: AssemblyIN(India) origin, same $ magnitude as CN baseline pending real India-tariff-schedule review]"
+KD_Parts,IN,AMER,0.025,1.0,USD,USD,80,"KD assembly in AMER — lower tariff + higher freight [SmartXPro_IN: AssemblyIN(India) origin, same $ magnitude as CN baseline pending real India-tariff-schedule review]"
+CNtoAPAC,IN,AMER,0.25,1.0,USD,USD,50,"Keep Trump tariff on AMER [SmartXPro_IN: AssemblyIN(India) origin, same $ magnitude as CN baseline pending real India-tariff-schedule review]"

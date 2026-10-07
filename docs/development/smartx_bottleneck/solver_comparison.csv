@@ -1,0 +1,7 @@
+hypothesis,method,demand,served_integer_lots,unallocated,advance_lot_weeks,relaxation_upper_bound,fractional_cells,fractional_remainder,elapsed_seconds
+as_implemented,greedy,709811,707130,2681,29532,,0,0.0,0.139
+as_implemented,lp,709811,709811,0,122101,709811.0,0,0.0,1.095
+declared_independent,greedy,709811,486940,222871,51902,,0,0.0,0.172
+declared_independent,lp,709811,491308,218503,273618,491308.0,0,0.0,0.936
+declared_shared,greedy,709811,262145,447666,15306,,0,0.0,0.183
+declared_shared,lp,709811,399111,310700,1660802,399123.6153409792,25,12.615340979196835,0.948

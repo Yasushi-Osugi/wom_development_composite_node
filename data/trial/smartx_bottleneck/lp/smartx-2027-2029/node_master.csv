@@ -1,0 +1,43 @@
+node_id,node_name,node_type,lat,lon,sku_id,region,description
+SP-SmartX,Supply Point,supply_point,34.6937,135.5023,,,SmartX Supply Point Bridge
+AssemblyCN,AssemblyCN Zhengzhou,mother_plant,34.7466,113.6253,,,Final Assembly
+FoundryTW,FoundryTW Hsinchu,sku_supplier,24.7881,120.997,SmartXPro_CN,TW,NextGen SoC Wafer Fab
+FoundryTW-g1,FoundryTW Fab,sku_supplier,23.0013,120.214,SmartX,TW,Gen1 SoC Wafer Fab
+SiWafer-TW,Silicon Wafer TW,sku_supplier,25.033,121.5654,,,Silicon Wafer Supplier
+DC-AMER,DC Americas,region_dc,33.9425,-118.4081,,AMER,Los Angeles Distribution
+DC-EMEA,DC EMEA,region_dc,52.3676,4.9041,,EMEA,Amsterdam Distribution
+DC-APAC,DC APAC,region_dc,1.3521,103.8198,,APAC,Singapore Distribution
+GBL-Proc,Global Procurement,procurement,24.7881,120.997,,,Global Procurement
+GBL-Mkt,Global Marketing,marketing,37.3318,-122.0312,,,Global HQ
+SP_SmartX,Supply Point (SmartX),supply_point,34.6937,135.5023,SmartX,,Supply Point bridge OT/IN
+DC_AMER_g1,Americas DC (SmartX),region_dc,33.9425,-118.4081,SmartX,AMER,Americas DC — SmartX
+Retail_AMER_g1,Americas Retail (SmartX),marketing,34.2425,-118.4081,SmartX,AMER,Americas Retail — SmartX
+DC_EMEA_g1,EMEA DC (SmartX),region_dc,52.3676,4.9041,SmartX,EMEA,EMEA DC — SmartX
+Retail_EMEA_g1,EMEA Retail (SmartX),marketing,52.6676,4.9041,SmartX,EMEA,EMEA Retail — SmartX
+DC_APAC_g1,APAC DC (SmartX),region_dc,1.3521,103.8198,SmartX,APAC,APAC DC — SmartX
+Retail_APAC_g1,APAC Retail (SmartX),marketing,1.6521000000000001,103.8198,SmartX,APAC,APAC Retail — SmartX
+AssemblyCN_g1,Final Assembly (SmartX),mother_plant,34.7466,113.6253,SmartX,CN,Final Assembly — SmartX line
+FoundryTW_g1,Gen1 SoC Wafer Fab,sku_supplier,24.7881,120.997,SmartX,TW,Gen1 SoC Wafer Fab — FoundryTW
+WaferFab_TW_g1,Silicon Wafer (SmartX),sku_supplier,25.033,121.5654,SmartX,TW,Silicon Wafer raw material — SmartX
+SP_SmartXNext,Supply Point (SmartXNext),supply_point,34.6937,135.5023,SmartXNext,,Supply Point bridge OT/IN
+DC_AMER_g3,Americas DC (SmartXNext),region_dc,33.9425,-118.4081,SmartXNext,AMER,Americas DC — SmartXNext
+Retail_AMER_g3,Americas Retail (SmartXNext),marketing,34.2425,-118.4081,SmartXNext,AMER,Americas Retail — SmartXNext
+DC_EMEA_g3,EMEA DC (SmartXNext),region_dc,52.3676,4.9041,SmartXNext,EMEA,EMEA DC — SmartXNext
+Retail_EMEA_g3,EMEA Retail (SmartXNext),marketing,52.6676,4.9041,SmartXNext,EMEA,EMEA Retail — SmartXNext
+DC_APAC_g3,APAC DC (SmartXNext),region_dc,1.3521,103.8198,SmartXNext,APAC,APAC DC — SmartXNext
+Retail_APAC_g3,APAC Retail (SmartXNext),marketing,1.6521000000000001,103.8198,SmartXNext,APAC,APAC Retail — SmartXNext
+AssemblyCN_g3,Final Assembly (SmartXNext),mother_plant,34.7466,113.6253,SmartXNext,CN,Final Assembly — SmartXNext line
+FoundryTW_g3,Gen3 SoC Wafer Fab,sku_supplier,24.7881,120.997,SmartXNext,TW,Gen3 SoC Wafer Fab — next-gen node
+WaferFab_TW_g3,Silicon Wafer (SmartXNext),sku_supplier,25.033,121.5654,SmartXNext,TW,Silicon Wafer raw material — SmartXNext
+SP_SmartXPro_CN,Supply Point (SmartXPro_CN),supply_point,34.6937,135.5023,SmartXPro_CN,,Supply Point bridge OT/IN
+DC_EMEA,EMEA Distribution Center (Amsterdam),region_dc,52.3676,4.9041,SmartXPro_CN,EMEA,EMEA Distribution Center (Amsterdam)
+Retail_EMEA,EMEA Retail / Online Sales,marketing,52.6676,4.9041,SmartXPro_CN,EMEA,EMEA Retail / Online Sales
+DC_APAC,APAC Distribution Center (Singapore),region_dc,1.3521,103.8198,SmartXPro_CN,APAC,APAC Distribution Center (Singapore)
+Retail_APAC,APAC Retail / Online Sales,marketing,1.6521000000000001,103.8198,SmartXPro_CN,APAC,APAC Retail / Online Sales
+Buffer_Chip_TW,Silicon Wafer Buffer Warehouse,sku_supplier,24.4881,120.997,SmartXPro_CN,TW,Silicon Wafer Buffer Warehouse (Decoupling Point)
+WaferFab_TW,Silicon Wafer (raw material),sku_supplier,25.033,121.5654,SmartXPro_CN,TW,Silicon Wafer raw material — FoundryTW supply
+SP_SmartXPro_IN,Supply Point (SmartXPro_IN),supply_point,34.6937,135.5023,SmartXPro_IN,,Supply Point bridge OT/IN
+DC_AMER,Americas Distribution Center (Los Angeles),region_dc,33.9425,-118.4081,SmartXPro_IN,AMER,Americas Distribution Center (Los Angeles)
+Retail_AMER,Americas Retail / Online Sales,marketing,34.2425,-118.4081,SmartXPro_IN,AMER,Americas Retail / Online Sales
+AssemblyIN,Final Assembly — AssemblyIN Pune,mother_plant,18.5204,73.8567,SmartXPro_IN,IN,Final Assembly — AssemblyIN Pune (AMER dedicated)
+SensorIN,Sensors & Modules (India sourcing),sku_supplier,13.0827,80.2707,SmartXPro_IN,IN,Sensors & Modules — India sourcing

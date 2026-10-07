@@ -1,0 +1,8 @@
+mom_node,product_id,method,margin_rate,fixed_price,currency
+AssemblyCN,SmartXPro_CN,cost_plus,0.1,,USD
+AssemblyIN,SmartXPro_IN,cost_plus,0.08,,USD
+FoundryTW,SmartXPro_CN,cost_plus,0.15,,USD
+AssemblyCN_g1,SmartX,cost_plus,0.1,,USD
+FoundryTW_g1,SmartX,cost_plus,0.15,,USD
+AssemblyCN_g3,SmartXNext,cost_plus,0.1,,USD
+FoundryTW_g3,SmartXNext,cost_plus,0.15,,USD

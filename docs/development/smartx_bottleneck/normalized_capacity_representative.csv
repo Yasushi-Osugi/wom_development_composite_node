@@ -1,0 +1,13 @@
+product,node_name,finite_weeks,hard_min,hard_median,hard_max,normalized_median,closed_weeks
+SmartX,AssemblyCN_g1,0,0.0,0.0,0.0,,0
+SmartX,FoundryTW_g1,0,0.0,0.0,0.0,,0
+SmartX,WaferFab_TW_g1,10,0.0,0.0,0.0,,10
+SmartXNext,AssemblyCN_g3,0,0.0,0.0,0.0,,0
+SmartXNext,FoundryTW_g3,0,0.0,0.0,0.0,,0
+SmartXNext,WaferFab_TW_g3,10,0.0,0.0,0.0,,10
+SmartXPro_CN,AssemblyCN,239,0.0,901.0,1350.0,0.0675,0
+SmartXPro_CN,Buffer_Chip_TW,278,1350.0,1350.0,1350.0,0.0675,0
+SmartXPro_CN,FoundryTW,278,1350.0,1350.0,1350.0,0.0675,0
+SmartXPro_CN,WaferFab_TW,278,20000.0,20000.0,20000.0,1.0,10
+SmartXPro_IN,AssemblyIN,278,88.0,695.5,1119.0,0.9329301646022412,0
+SmartXPro_IN,SensorIN,278,105.0,745.5,1169.0,1.0,5

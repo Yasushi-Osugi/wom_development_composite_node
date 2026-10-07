@@ -1,0 +1,10 @@
+market_node,product_id,week,market_price,currency
+Retail_AMER,SmartXPro_IN,2027-W01,999,USD
+Retail_EMEA,SmartXPro_CN,2027-W01,1099,USD
+Retail_APAC,SmartXPro_CN,2027-W01,949,USD
+Retail_AMER_g1,SmartX,2027-W01,699,USD
+Retail_EMEA_g1,SmartX,2027-W01,799,USD
+Retail_APAC_g1,SmartX,2027-W01,649,USD
+Retail_AMER_g3,SmartXNext,2027-W01,1099,USD
+Retail_EMEA_g3,SmartXNext,2027-W01,1199,USD
+Retail_APAC_g3,SmartXNext,2027-W01,1049,USD

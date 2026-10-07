@@ -1,0 +1,38 @@
+[
+  {
+    "node_id": "IN:leaf_in:SensorIN:SmartXPro_IN",
+    "node_name": "SensorIN",
+    "status": "late",
+    "lot_id": "SmartXPro_IN:AMER:2027-W48:00230",
+    "due_week": "2027-W48",
+    "actual_week": "2027-W49",
+    "deferral_week": "2027-W41"
+  },
+  {
+    "node_id": "IN:leaf_in:SensorIN:SmartXPro_IN",
+    "node_name": "SensorIN",
+    "status": "on_time",
+    "lot_id": "SmartXPro_IN:AMER:2027-W46:00077",
+    "due_week": "2027-W46",
+    "actual_week": "2027-W46",
+    "deferral_week": "2027-W39"
+  },
+  {
+    "node_id": "IN:mom:AssemblyIN:SmartXPro_IN",
+    "node_name": "AssemblyIN",
+    "status": "late",
+    "lot_id": "SmartXPro_IN:AMER:2027-W49:00239",
+    "due_week": "2027-W49",
+    "actual_week": "2027-W50",
+    "deferral_week": "2027-W46"
+  },
+  {
+    "node_id": "IN:mom:AssemblyIN:SmartXPro_IN",
+    "node_name": "AssemblyIN",
+    "status": "on_time",
+    "lot_id": "SmartXPro_IN:AMER:2027-W46:00014",
+    "due_week": "2027-W46",
+    "actual_week": "2027-W46",
+    "deferral_week": "2027-W42"
+  }
+]

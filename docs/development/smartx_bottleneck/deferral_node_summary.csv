@@ -1,0 +1,3 @@
+node_id,node_name,deferred_events,distinct_ids,market_late_ids,market_on_time_ids,first_week,last_week
+IN:leaf_in:SensorIN:SmartXPro_IN,SensorIN,6181,6181,3513,2668,2027-W39,2029-W40
+IN:mom:AssemblyIN:SmartXPro_IN,AssemblyIN,13706,13706,12560,1146,2027-W42,2029-W45

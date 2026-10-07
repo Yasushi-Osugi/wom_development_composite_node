@@ -1,0 +1,10 @@
+sku_id,region,src_region,dst_region,hs_code,product_type,assembly_cost_usd_per_lot
+SmartXPro_IN,AMER,IN,AMER,8517,finished_goods,0
+SmartXPro_CN,EMEA,CN,EMEA,8517,finished_goods,0
+SmartXPro_CN,APAC,CN,APAC,8517,finished_goods,0
+SmartX,AMER,CN,AMER,8517,finished_goods,0
+SmartX,EMEA,CN,EMEA,8517,finished_goods,0
+SmartX,APAC,CN,APAC,8517,finished_goods,0
+SmartXNext,AMER,CN,AMER,8517,finished_goods,0
+SmartXNext,EMEA,CN,EMEA,8517,finished_goods,0
+SmartXNext,APAC,CN,APAC,8517,finished_goods,0

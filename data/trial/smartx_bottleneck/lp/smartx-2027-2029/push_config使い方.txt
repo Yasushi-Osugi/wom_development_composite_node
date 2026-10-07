@@ -1,0 +1,3 @@
+使い方： PUSHを有効にしたい場合は push_config.csv に例えば以下を追記してGUIで読み込むだけです：
+SmartXPro,IN:mom:AssemblyCN:SmartXPro,0,20
+これで node_id=IN:mom:AssemblyCN:SmartXPro のMOMノードがバッファ20lot補充モード（PUSH）になり、その下のサプライチェーンが push_sub（全量上流送り）に切り替わります。

@@ -1,0 +1,32 @@
+[
+  {
+    "case": "baseline",
+    "shipment_event_count_minus_distinct_node_id_count": 0,
+    "processed_P_capacity_breach_node_weeks": 0,
+    "market_actual_event_count": 709811
+  },
+  {
+    "case": "greedy_csv",
+    "shipment_event_count_minus_distinct_node_id_count": 0,
+    "processed_P_capacity_breach_node_weeks": 0,
+    "market_actual_event_count": 707130
+  },
+  {
+    "case": "lp_csv",
+    "shipment_event_count_minus_distinct_node_id_count": 0,
+    "processed_P_capacity_breach_node_weeks": 0,
+    "market_actual_event_count": 709811
+  },
+  {
+    "case": "greedy_identity",
+    "shipment_event_count_minus_distinct_node_id_count": 0,
+    "processed_P_capacity_breach_node_weeks": 0,
+    "market_actual_event_count": 707130
+  },
+  {
+    "case": "lp_identity",
+    "shipment_event_count_minus_distinct_node_id_count": 0,
+    "processed_P_capacity_breach_node_weeks": 0,
+    "market_actual_event_count": 709811
+  }
+]

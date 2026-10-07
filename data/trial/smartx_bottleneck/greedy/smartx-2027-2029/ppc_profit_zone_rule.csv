@@ -1,0 +1,17 @@
+profit_zone_role,product_id,profit_type,basis,rate,fixed_amount
+OUTBOUND_CHANNEL_PROFIT,SmartX,channel_margin,market_price,0.15,0
+MOM_PLANT_PROFIT,SmartX,mom_margin,transfer_price,0.1,0
+GLOBAL_HQ_PROFIT,SmartX,brand_royalty,market_price,0.05,0
+GLOBAL_HQ_PROFIT,SmartX,global_marketing,revenue,0.02,0
+OUTBOUND_CHANNEL_PROFIT,SmartXNext,channel_margin,market_price,0.15,0
+MOM_PLANT_PROFIT,SmartXNext,mom_margin,transfer_price,0.1,0
+GLOBAL_HQ_PROFIT,SmartXNext,brand_royalty,market_price,0.05,0
+GLOBAL_HQ_PROFIT,SmartXNext,global_marketing,revenue,0.02,0
+OUTBOUND_CHANNEL_PROFIT,SmartXPro_CN,channel_margin,market_price,0.15,0
+OUTBOUND_CHANNEL_PROFIT,SmartXPro_IN,channel_margin,market_price,0.15,0
+MOM_PLANT_PROFIT,SmartXPro_CN,mom_margin,transfer_price,0.1,0
+MOM_PLANT_PROFIT,SmartXPro_IN,mom_margin,transfer_price,0.1,0
+GLOBAL_HQ_PROFIT,SmartXPro_CN,brand_royalty,market_price,0.05,0
+GLOBAL_HQ_PROFIT,SmartXPro_IN,brand_royalty,market_price,0.05,0
+GLOBAL_HQ_PROFIT,SmartXPro_CN,global_marketing,revenue,0.02,0
+GLOBAL_HQ_PROFIT,SmartXPro_IN,global_marketing,revenue,0.02,0

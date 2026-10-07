@@ -1,0 +1,11 @@
+{
+  "market_late_ids": 16073,
+  "deferred_global_ids": 19887,
+  "late_with_deferral": 16073,
+  "late_without_deferral": 0,
+  "deferred_but_on_time": 3814,
+  "delay_histogram": {
+    "1": 16073
+  },
+  "node_deferral_intersection": 0
+}

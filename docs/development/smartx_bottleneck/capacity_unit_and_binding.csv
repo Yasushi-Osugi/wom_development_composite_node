@@ -1,0 +1,9 @@
+product,csv_node,exact_node_match,row_count,min_max_supply,max_max_supply,column_unit,cpu_size,bom_qty,finished_demand_lots_per_capacity_unit,source
+SmartX,AssemblyCN,False,278,0,633,engine lot-count threshold; cap_pieces ignored,1,1,1,capacity_sealer.load_capacity_dataframe -> PlanNode.cap_hard; Forward len(P)
+SmartXNext,AssemblyCN,False,130,26,1600,engine lot-count threshold; cap_pieces ignored,1,1,1,capacity_sealer.load_capacity_dataframe -> PlanNode.cap_hard; Forward len(P)
+SmartXPro_CN,AssemblyCN,True,278,0,1350,engine lot-count threshold; cap_pieces ignored,1,1,1,capacity_sealer.load_capacity_dataframe -> PlanNode.cap_hard; Forward len(P)
+SmartXPro_CN,Buffer_Chip_TW,True,278,1350,1350,engine lot-count threshold; cap_pieces ignored,1,1,1,capacity_sealer.load_capacity_dataframe -> PlanNode.cap_hard; Forward len(P)
+SmartXPro_CN,FoundryTW,True,278,1350,1350,engine lot-count threshold; cap_pieces ignored,1,1,1,capacity_sealer.load_capacity_dataframe -> PlanNode.cap_hard; Forward len(P)
+SmartXPro_CN,WaferFab_TW,True,278,20000,20000,engine lot-count threshold; cap_pieces ignored,1,1,1,capacity_sealer.load_capacity_dataframe -> PlanNode.cap_hard; Forward len(P)
+SmartXPro_IN,AssemblyIN,True,278,88,1119,engine lot-count threshold; cap_pieces ignored,1,1,1,capacity_sealer.load_capacity_dataframe -> PlanNode.cap_hard; Forward len(P)
+SmartXPro_IN,SensorIN,True,278,105,1169,engine lot-count threshold; cap_pieces ignored,1,1,1,capacity_sealer.load_capacity_dataframe -> PlanNode.cap_hard; Forward len(P)

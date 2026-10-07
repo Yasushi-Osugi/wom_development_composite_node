@@ -1,0 +1,37 @@
+{
+  "adapter": "smartx_serial_receipt_slots_v0.1",
+  "max_advance_weeks": 17,
+  "original_market_due_preserved_by_id_adapter": true,
+  "warnings": [
+    {
+      "node_id": "IN:mom:AssemblyCN_g1:SmartX",
+      "kind": "unset_capacity_not_physical_unlimited",
+      "trial_policy": "explicit_engine_unbounded"
+    },
+    {
+      "node_id": "IN:mom:FoundryTW_g1:SmartX",
+      "kind": "unset_capacity_not_physical_unlimited",
+      "trial_policy": "explicit_engine_unbounded"
+    },
+    {
+      "node_id": "IN:mom:AssemblyCN_g3:SmartXNext",
+      "kind": "unset_capacity_not_physical_unlimited",
+      "trial_policy": "explicit_engine_unbounded"
+    },
+    {
+      "node_id": "IN:mom:FoundryTW_g3:SmartXNext",
+      "kind": "unset_capacity_not_physical_unlimited",
+      "trial_policy": "explicit_engine_unbounded"
+    }
+  ],
+  "resource_unit": "one demand-set lot; cpu_size=1 and bom_qty=1",
+  "shared_capacity": "per-product, as implemented; not a claim of independent physical equipment",
+  "baseline_sha": "e355908b0a480b78d2d3a3f445fac38c27e93f43",
+  "request_count": 1716,
+  "option_count": 30601,
+  "push_leads": {
+    "IN:mom:Buffer_Chip_TW:SmartXPro_CN": 39
+  },
+  "horizon_start": "2025-W36",
+  "horizon_end": "2030-W52"
+}

@@ -1,0 +1,15 @@
+edge_id,from_country,to_country,product_id,hs_code,tariff_rate,tariff_basis
+AssemblyCN_g1->SP_SmartX,CN,CN,SmartX,8517120000,0.0,transfer_price
+SP_SmartX->Retail_AMER_g1,CN,US,SmartX,8517120000,0.25,transfer_price
+SP_SmartX->Retail_EMEA_g1,CN,EU,SmartX,8517120000,0.075,transfer_price
+SP_SmartX->Retail_APAC_g1,CN,SG,SmartX,8517120000,0.0,transfer_price
+AssemblyCN_g3->SP_SmartXNext,CN,CN,SmartXNext,8517120000,0.0,transfer_price
+SP_SmartXNext->Retail_AMER_g3,CN,US,SmartXNext,8517120000,0.25,transfer_price
+SP_SmartXNext->Retail_EMEA_g3,CN,EU,SmartXNext,8517120000,0.075,transfer_price
+SP_SmartXNext->Retail_APAC_g3,CN,SG,SmartXNext,8517120000,0.0,transfer_price
+AssemblyIN->DC_AMER,IN,US,SmartXPro_IN,8517120000,0.25,transfer_price
+DC_AMER->Retail_AMER,US,US,SmartXPro_IN,8517120000,0.0,transfer_price
+AssemblyCN->DC_EMEA,CN,EU,SmartXPro_CN,8517120000,0.075,transfer_price
+DC_EMEA->Retail_EMEA,EU,EU,SmartXPro_CN,8517120000,0.0,transfer_price
+AssemblyCN->DC_APAC,CN,SG,SmartXPro_CN,8517120000,0.0,transfer_price
+DC_APAC->Retail_APAC,SG,SG,SmartXPro_CN,8517120000,0.0,transfer_price

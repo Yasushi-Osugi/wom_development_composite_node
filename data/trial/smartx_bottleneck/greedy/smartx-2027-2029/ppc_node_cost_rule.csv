@@ -1,0 +1,33 @@
+node_id,product_id,cost_type,basis,rate,fixed_amount,currency,note
+AssemblyCN,SmartXPro_CN,conversion_cost,per_lot,0,50.0,USD,Assembly labor + overhead per lot (100 units)
+AssemblyCN,SmartXPro_CN,logistics_cost,per_lot,0,5.0,USD,Inbound logistics CN domestic
+AssemblyIN,SmartXPro_IN,conversion_cost,per_lot,0,52.0,USD,Assembly labor + overhead per lot India
+AssemblyIN,SmartXPro_IN,logistics_cost,per_lot,0,6.0,USD,Inbound logistics India domestic
+FoundryTW,SmartXPro_CN,conversion_cost,per_lot,0,7.0,USD,SoC fab processing cost NextGen
+FoundryTW,SmartXPro_CN,logistics_cost,per_lot,0,2.0,USD,Wafer logistics TW→CN
+DC_AMER,SmartXPro_IN,logistics_cost,per_lot,0,10.0,USD,Ocean freight CN→AMER + port handling
+DC_AMER,SmartXPro_IN,conversion_cost,per_lot,0,5.0,USD,DC picking packing labor AMER
+DC_EMEA,SmartXPro_CN,logistics_cost,per_lot,0,12.0,USD,Air/ocean freight CN→EMEA + customs
+DC_EMEA,SmartXPro_CN,conversion_cost,per_lot,0,5.5,USD,DC picking packing labor EMEA
+DC_APAC,SmartXPro_CN,logistics_cost,per_lot,0,8.0,USD,Ocean freight CN→APAC Singapore
+DC_APAC,SmartXPro_CN,conversion_cost,per_lot,0,4.5,USD,DC picking packing labor APAC
+AssemblyCN_g1,SmartX,conversion_cost,per_lot,0,40.0,USD,Assembly labor + overhead per lot SmartX
+AssemblyCN_g1,SmartX,logistics_cost,per_lot,0,4.5,USD,Inbound logistics CN domestic
+FoundryTW_g1,SmartX,conversion_cost,per_lot,0,5.0,USD,SoC fab processing cost Gen1
+FoundryTW_g1,SmartX,logistics_cost,per_lot,0,1.8,USD,Wafer logistics TW→CN SmartX
+DC_AMER_g1,SmartX,logistics_cost,per_lot,0,9.5,USD,Ocean freight CN→AMER SmartX
+DC_AMER_g1,SmartX,conversion_cost,per_lot,0,4.8,USD,DC picking packing labor AMER SmartX
+DC_EMEA_g1,SmartX,logistics_cost,per_lot,0,11.0,USD,Air/ocean freight CN→EMEA SmartX
+DC_EMEA_g1,SmartX,conversion_cost,per_lot,0,5.2,USD,DC picking packing labor EMEA SmartX
+DC_APAC_g1,SmartX,logistics_cost,per_lot,0,7.5,USD,Ocean freight CN→APAC SmartX
+DC_APAC_g1,SmartX,conversion_cost,per_lot,0,4.2,USD,DC picking packing labor APAC SmartX
+AssemblyCN_g3,SmartXNext,conversion_cost,per_lot,0,55.0,USD,Assembly labor + overhead per lot SmartXNext
+AssemblyCN_g3,SmartXNext,logistics_cost,per_lot,0,5.5,USD,Inbound logistics CN domestic SmartXNext
+FoundryTW_g3,SmartXNext,conversion_cost,per_lot,0,8.5,USD,SoC fab processing cost Gen3 next-gen
+FoundryTW_g3,SmartXNext,logistics_cost,per_lot,0,2.2,USD,Wafer logistics TW→CN SmartXNext
+DC_AMER_g3,SmartXNext,logistics_cost,per_lot,0,10.5,USD,Ocean freight CN→AMER SmartXNext
+DC_AMER_g3,SmartXNext,conversion_cost,per_lot,0,5.2,USD,DC picking packing labor AMER SmartXNext
+DC_EMEA_g3,SmartXNext,logistics_cost,per_lot,0,12.5,USD,Air/ocean freight CN→EMEA SmartXNext
+DC_EMEA_g3,SmartXNext,conversion_cost,per_lot,0,5.8,USD,DC picking packing labor EMEA SmartXNext
+DC_APAC_g3,SmartXNext,logistics_cost,per_lot,0,8.5,USD,Ocean freight CN→APAC SmartXNext
+DC_APAC_g3,SmartXNext,conversion_cost,per_lot,0,4.8,USD,DC picking packing labor APAC SmartXNext
