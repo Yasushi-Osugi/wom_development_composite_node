@@ -51,24 +51,41 @@ class CapacityOverridePlugin(WOMPlugin):
             print(f"[CapacityOverridePlugin] Could not read {override_path}: {exc}")
             return
 
+        # RequestLetter_CapacityZeroBlank: the same value rule as
+        # capacity_plan.csv -- blank = this column is not overridden, 0 = zero
+        # capacity, > 0 = the ceiling, negative / not a number = stop. A row
+        # for a product that is not in the plan tree stops too; rows outside
+        # the horizon are skipped with a warning.
+        from wom.engine.capacity_sealer import (
+            parse_capacity_value, _raise_not_found, _warn_out_of_range)
+        src = os.path.basename(override_path)
         week_idx_map = {wk: i for i, wk in enumerate(weeks)}
-
-        for _, row in df.iterrows():
-            sku_id = str(row.get("sku_id", ""))
-            week   = str(row.get("week", ""))
-            w_idx  = week_idx_map.get(week)
-            if not sku_id or w_idx is None:
-                continue
+        rows, missing, out_of_range = [], [], 0
+        for i, row in enumerate(df.to_dict("records")):
+            line = i + 2
+            sku_id = str(row.get("sku_id", "") or "")
+            week   = str(row.get("week", "") or "")
+            kw_cap: dict = {}
+            for col in ("cap_hard", "cap_soft"):
+                if col in df.columns:
+                    v = parse_capacity_value(row.get(col), source=src, line=line, column=col)
+                    if v is not None:
+                        kw_cap[col] = v
             try:
                 mom = sc_tree.get_in_root(sku_id)
             except Exception:
+                missing.append((line, sku_id, "(InBound root)"))
                 continue
+            w_idx = week_idx_map.get(week)
+            if w_idx is None:
+                out_of_range += 1
+                continue
+            rows.append((mom, w_idx, sku_id, week, kw_cap))
+        if missing:
+            _raise_not_found(src, missing, "製品")
+        _warn_out_of_range(src, out_of_range)
 
-            kw_cap: dict = {}
-            if "cap_hard" in df.columns and pd.notna(row["cap_hard"]):
-                kw_cap["cap_hard"] = float(row["cap_hard"])
-            if "cap_soft" in df.columns and pd.notna(row["cap_soft"]):
-                kw_cap["cap_soft"] = float(row["cap_soft"])
+        for mom, w_idx, sku_id, week, kw_cap in rows:
             if kw_cap:
                 mom.set_capacity(w_idx, **kw_cap)
                 print(f"[CapacityOverridePlugin] {sku_id} {week} → {kw_cap}")

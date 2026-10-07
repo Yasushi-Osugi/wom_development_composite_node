@@ -1,0 +1,14 @@
+[
+ {
+  "model": "smartx-2027-2029",
+  "rows": 2076,
+  "run_error": null,
+  "max_supply:positive": 2011,
+  "max_supply:zero_open": 65,
+  "zero_open_by_node": {
+   "max_supply|SmartX|AssemblyCN_g1": 26,
+   "max_supply|SmartXPro_CN|AssemblyCN": 39
+  },
+  "node_not_found_by_key": {}
+ }
+]

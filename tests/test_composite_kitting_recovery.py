@@ -108,13 +108,17 @@ def test_carry_in_order_matches_opening_finished_goods():
     assert sum(len(b[P]) for b in mom.psi4supply) == 0
 
 
-@pytest.mark.parametrize("hard,expected", [(0, 2), (0.1, 0), (1, 1)])
-def test_hard_capacity_csv_loader_to_gate(tmp_path, hard, expected):
+# RequestLetter_CapacityZeroBlank: blank = not set (no ceiling: both kits made),
+# 0 = zero capacity (the kits wait, components stay in the yards). Formerly 0
+# meant "no ceiling".
+@pytest.mark.parametrize("hard,stored,expected",
+                         [("", None, 2), ("0", 0.0, 0), ("0.1", 0.1, 0), ("1", 1.0, 1)])
+def test_hard_capacity_csv_loader_to_gate(tmp_path, hard, stored, expected):
     tree, mom, yards, _ = _build_planned_case(2)
     csv = tmp_path / "capacity.csv"
     csv.write_text(f"sku_id,node_name,week,max_supply\nSKU-A,MOM,2024-W06,{hard}\n", encoding="utf-8")
-    load_capacity_dataframe(tree, pd.read_csv(csv), H["WEEKS"])
-    assert mom.cap_hard(5) == hard
+    load_capacity_dataframe(tree, pd.read_csv(csv, dtype={"max_supply": str}), H["WEEKS"])
+    assert mom.cap_hard(5) == stored
     fp, _ = run(tree, mom)
     assert len(mom.psi4supply[5][P]) == expected
     assert sum(len(b[P]) for b in mom.psi4supply) == 2

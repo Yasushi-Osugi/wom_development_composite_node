@@ -1871,11 +1871,12 @@ def psi_list_capacity_cells(node, w: int):
     """(CapHard text, CapSoft text) for one PSI List row.
 
     CapHard = the raw physical ceiling (a closure does not rewrite it);
-    "—" only when unset (0). CapSoft = planned_capacity: "—" when unset,
-    "0" in a closed week, the value otherwise.
+    "—" when not set, "0" for zero capacity (RequestLetter_CapacityZeroBlank).
+    CapSoft = planned_capacity: "—" when unset, "0" in a closed week or for zero
+    planned capacity, the value otherwise.
     """
     ch = node.cap_hard(w)
-    hard_txt = _fmt_cap_value(ch) if ch > 0 else "—"
+    hard_txt = _fmt_cap_value(ch) if ch is not None else "—"
     pc = node.planned_capacity(w)
     if pc is None:
         soft_txt = "—"
@@ -2142,16 +2143,18 @@ class PSIListPanel(tk.Frame):
             pc  = node.planned_capacity(w)
             hard_txt, soft_txt = psi_list_capacity_cells(node, w)
 
-            if ch > 0 or pc is not None:
+            if ch is not None or pc is not None:
                 has_cap = True
 
             # Row colour: a closed week is shown as closed (never as a
             # capacity violation); otherwise capacity violation takes priority.
             if not node.is_open(w):
                 tag = "closed"
-            elif ch > 0 and proc[w] > ch:
+            # RequestLetter_CapacityZeroBlank: None = not set (never a
+            # violation); 0 = zero capacity (any processing is over it).
+            elif ch is not None and proc[w] > ch:
                 tag = "over_hard"
-            elif pc and proc[w] > pc:
+            elif pc is not None and proc[w] > pc:
                 tag = "over_soft"
             elif any([sq, coq, iq, pq, r["Ship"] or 0]):
                 tag = "active"
@@ -2256,12 +2259,17 @@ class PSIListPanel(tk.Frame):
         # coloured as a violation.
         is_throughput = (node.plan_mode == "push" and psi is node.psi4supply)
         p_qty = capacity_view_series(node, psi)
-        ch_v  = [node.cap_hard(w) for w in range(n)]
-        cs_v  = [(node.planned_capacity(w) or 0.0) for w in range(n)]
+        # RequestLetter_CapacityZeroBlank: None = not set, 0 = zero capacity.
+        ch_raw = [node.cap_hard(w) for w in range(n)]
+        cs_raw = [node.planned_capacity(w) for w in range(n)]
+        ch_v  = [(c if c is not None else 0.0) for c in ch_raw]
+        cs_v  = [(c if c is not None else 0.0) for c in cs_raw]
         closed_v = [not node.is_open(w) for w in range(n)]
 
         max_ch = max(ch_v) if ch_v else 0
         max_cs = max(cs_v) if cs_v else 0
+        _any_cap = any(c is not None for c in ch_raw) or any(
+            c is not None and node.is_open(w) for w, c in enumerate(cs_raw))
 
         self._cap_fig.clf()
         ax = self._cap_fig.add_subplot(111)
@@ -2269,7 +2277,7 @@ class PSIListPanel(tk.Frame):
         self._cap_fig.patch.set_facecolor(BG_DARK)
 
         # Placeholder when no capacity data
-        if max_ch == 0 and max_cs == 0:
+        if not _any_cap:
             ax.text(0.5, 0.5, "No CapHard / CapSoft set on this node",
                     color="#546E7A", ha="center", va="center",
                     transform=ax.transAxes, fontsize=8)
@@ -2285,9 +2293,9 @@ class PSIListPanel(tk.Frame):
             ch = ch_v[w]; cs = cs_v[w]; p = p_qty[w]
             if closed_v[w]:
                 bar_colors.append("#4CAF50")
-            elif ch > 0 and p > ch:
+            elif ch_raw[w] is not None and p > ch:
                 bar_colors.append("#F44336")
-            elif cs > 0 and p > cs:
+            elif cs_raw[w] is not None and p > cs:
                 bar_colors.append("#FF9800")
             else:
                 bar_colors.append("#4CAF50")
@@ -4503,14 +4511,15 @@ class DebugPanel(tk.Frame):
 
         # -- Capacity Line (step function) ----------------------------------
         # Draw cap_hard as an orange dashed step line on the main (left) axis.
-        # Only draw where cap > 0 to avoid cluttering unconstrained nodes.
-        if cap_values and any(v > 0 for v in cap_values):
+        # Not-set weeks (None) are gaps; zero capacity (0) is drawn at 0
+        # (RequestLetter_CapacityZeroBlank).
+        if cap_values and any(v is not None for v in cap_values):
             cap_n = min(len(cap_values), n)
             # Build step-line segments: draw horizontal segments for each week
             cap_x, cap_y = [], []
             for wi in range(cap_n):
                 cv = cap_values[wi]
-                if cv > 0:
+                if cv is not None:
                     cap_x += [wi - 0.5, wi + 0.5]
                     cap_y += [cv, cv]
                 else:
@@ -5457,11 +5466,12 @@ class WOMApp(tk.Tk):
         #   cap_hard のみ設定）。
         cap_path = self._f_cap.get()
         if cap_path and os.path.exists(cap_path):
-            try:
-                from wom.engine.capacity_sealer import load_capacity_dataframe
-                load_capacity_dataframe(sc_tree, pd.read_csv(cap_path), weeks)
-            except Exception:
-                pass
+            # RequestLetter_CapacityZeroBlank: an unreadable capacity row stops
+            # the planning run (shown in the Planning Engine Error dialog) --
+            # formerly every error was swallowed and the capacity silently lost.
+            from wom.engine.capacity_sealer import load_capacity_dataframe
+            load_capacity_dataframe(sc_tree, pd.read_csv(cap_path, dtype={"max_supply": str}),
+                                    weeks, source=cap_path)
 
         # ── Operating calendar (per-node shift plan; Phase 2, opt-in) ─
         #   Set node.op_shifts before BackwardPlanner runs. Looked up in the

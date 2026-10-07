@@ -697,8 +697,10 @@ class ForwardPlanner:
             # PUSH decoupling nodes (e.g. Buffer_Wafer_TW) skip sealing:
             # their P bucket holds incoming inventory (already produced upstream),
             # not production at this node. Surplus P flows to I via PUSH_MODE logic.
+            # RequestLetter_CapacityZeroBlank: None = not set (no sealing);
+            # 0.0 = zero capacity -> the whole P is over the ceiling.
             ch = node.cap_hard(w)
-            if not is_push_mode and ch > 0 and len(node.psi4supply[w][P]) > int(ch):
+            if not is_push_mode and ch is not None and len(node.psi4supply[w][P]) > int(ch):
                 excess = node.psi4supply[w][P][int(ch):]
                 node.psi4supply[w][P] = node.psi4supply[w][P][:int(ch)]
                 if self._identity:
@@ -727,7 +729,7 @@ class ForwardPlanner:
             # PROCESSED (shipped), not on P (= receipt): that check runs in the
             # push branch below, after the shipment is known (§4.5).
             pc = node.planned_capacity(w)
-            if (not is_push_mode and pc is not None and pc > 0
+            if (not is_push_mode and pc is not None
                     and len(node.psi4supply[w][P]) > int(pc)):
                 result.record_cap_soft_violation(
                     node.node_id, wk_label,
@@ -779,7 +781,7 @@ class ForwardPlanner:
                     if (w + 1) < n_weeks:
                         node.psi4supply[w + 1][CO].extend(unmatched_demand)
                     result.record_shortfall(node.node_id, wk_label, len(unmatched_demand))
-                if pc is not None and pc > 0 and len(actual_s) > int(pc):
+                if pc is not None and len(actual_s) > int(pc):
                     result.record_cap_soft_violation(
                         node.node_id, wk_label, len(actual_s) - int(pc))
                 nid = node.node_id
@@ -832,7 +834,7 @@ class ForwardPlanner:
                     node._push_shortfall[w] = max(0, total_cnt - avail_cnt)
 
                 # Step 0b for push nodes: planned capacity vs actual processing.
-                if pc is not None and pc > 0 and len(actual_s) > int(pc):
+                if pc is not None and len(actual_s) > int(pc):
                     result.record_cap_soft_violation(
                         node.node_id, wk_label, len(actual_s) - int(pc))
 

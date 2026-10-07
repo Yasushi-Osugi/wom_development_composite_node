@@ -95,8 +95,9 @@ def test_loader_reads_cap_soft_column_node_name():
 
 def test_loader_absent_cap_soft_column_is_backward_compatible():
     """
-    cap_soft 列が **無い** 従来 CSV：cap_hard は設定され、cap_soft は既定 0.0 のまま
-    （＝無制限。既存6ケースの挙動・golden 不変）。
+    cap_soft 列が **無い** 従来 CSV：cap_hard は設定され、cap_soft は未設定（None
+    ＝無制限。既存6ケースの挙動・golden 不変）。
+    RequestLetter_CapacityZeroBlank: 前は既定 0.0（＝無制限）だった。今は 0 が能力ゼロ。
     """
     sc_tree, weeks, sku_id, region, mom = _demo_tree()
 
@@ -107,8 +108,8 @@ def test_loader_absent_cap_soft_column_is_backward_compatible():
 
     w06 = weeks.index("2024-W06")
     assert mom.cap_hard(w06) == 4.0
-    assert mom.cap_soft(w06) == 0.0, (
-        f"cap_soft 列が無い場合は 0.0（無制限）のままであるべき, got {mom.cap_soft(w06)}"
+    assert mom.cap_soft(w06) is None, (
+        f"cap_soft 列が無い場合は未設定（None＝無制限）のままであるべき, got {mom.cap_soft(w06)}"
     )
 
 

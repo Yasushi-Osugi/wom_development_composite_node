@@ -1,0 +1,151 @@
+[
+ {
+  "model": "Cookie-jp-2026",
+  "rows": 847,
+  "run_error": null,
+  "max_supply:positive": 847,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "apparel-global-2028-2029",
+  "rows": 1638,
+  "run_error": null,
+  "max_supply:positive": 1638,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "apparel-us-2026",
+  "rows": 636,
+  "run_error": null,
+  "max_supply:positive": 636,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "bom-test-2026",
+  "rows": 36,
+  "run_error": null,
+  "max_supply:positive": 36,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "ev-europe-2026",
+  "rows": 1140,
+  "run_error": null,
+  "max_supply:positive": 1140,
+  "week_out": 90,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "ev-thailand-2026",
+  "rows": 726,
+  "run_error": null,
+  "max_supply:positive": 726,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "ev-thailand-2026_update",
+  "rows": 847,
+  "run_error": null,
+  "max_supply:positive": 847,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "india-ghee-2026",
+  "rows": 812,
+  "run_error": null,
+  "max_supply:positive": 812,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "iphone",
+  "rows": 104,
+  "run_error": "ValueError: No FX rate found for currency='CNY' on or before week='2024-W01'. Add a row to ppc_fx_rate.csv."
+ },
+ {
+  "model": "iphone_global",
+  "rows": 442,
+  "run_error": null,
+  "max_supply:positive": 442,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "oil-global-2027",
+  "rows": 1664,
+  "run_error": null,
+  "max_supply:positive": 1664,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "rice-japan-2027-2028",
+  "rows": 936,
+  "run_error": null,
+  "max_supply:positive": 936,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "rice-japan-2027-2028-dal",
+  "rows": 1038,
+  "run_error": null,
+  "max_supply:positive": 1038,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "smartx-2027-2029",
+  "rows": 2076,
+  "run_error": null,
+  "node_not_found": 408,
+  "max_supply:positive": 1629,
+  "max_supply:zero_open": 39,
+  "zero_open_by_node": {
+   "max_supply|SmartXPro_CN|AssemblyCN": 39
+  },
+  "node_not_found_by_key": {
+   "SmartX|AssemblyCN": 278,
+   "SmartXNext|AssemblyCN": 130
+  }
+ },
+ {
+  "model": "soysauce-eu-2027",
+  "rows": 390,
+  "run_error": null,
+  "max_supply:positive": 390,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "soysauce-jpy-2027",
+  "rows": 390,
+  "run_error": null,
+  "max_supply:positive": 390,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "soysauce-jpy-2027-alloc",
+  "rows": 390,
+  "run_error": null,
+  "max_supply:positive": 390,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ },
+ {
+  "model": "soysauce-us-2027",
+  "rows": 390,
+  "run_error": null,
+  "max_supply:positive": 390,
+  "zero_open_by_node": {},
+  "node_not_found_by_key": {}
+ }
+]

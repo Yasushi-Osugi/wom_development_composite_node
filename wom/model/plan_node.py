@@ -232,7 +232,9 @@ class PlanNode:
 
         self.psi4demand = [_empty_buckets() for _ in range(n)]
         self.psi4supply = [_empty_buckets() for _ in range(n)]
-        self.capacity   = [[0.0, 0.0] for _ in range(n)]
+        # RequestLetter_CapacityZeroBlank: None = not set (no ceiling),
+        # 0.0 = zero capacity (nothing can be processed), > 0 = the ceiling.
+        self.capacity   = [[None, None] for _ in range(n)]
         # Phase 2 operating calendar: per-week shift count (0..MAX_SHIFTS).
         # None = no calendar entry (always open); 0 = closed; N>0 = open with N shifts.
         self.op_shifts  = [None] * n
@@ -309,12 +311,24 @@ class PlanNode:
     # Capacity accessors
     # ======================================================================
 
-    def cap_hard(self, week: int) -> float:
-        """Equipment / physical capacity ceiling for the week [lot units]."""
+    # RequestLetter_CapacityZeroBlank (2026-10-07): the value of a capacity is
+    #   None  -> not set: no ceiling (formerly written as 0)
+    #   0.0   -> zero capacity: nothing can be processed in that week. A week
+    #            state of its own, distinct from a closure (is_open): a closure
+    #            keeps its own behaviour (push nodes accept receipts, Backward
+    #            skips the week in LT offsets, ...); zero capacity only says the
+    #            ceiling is 0.
+    #   > 0   -> the ceiling
+    # Every reader must tell the three apart (never "> 0 means set").
+
+    def cap_hard(self, week: int) -> Optional[float]:
+        """Equipment / physical capacity ceiling for the week [lot units];
+        None = not set (no ceiling), 0.0 = zero capacity."""
         return self.capacity[week][CAP_HARD]
 
-    def cap_soft(self, week: int) -> float:
-        """Operational plan capacity ceiling for the week [lot units]."""
+    def cap_soft(self, week: int) -> Optional[float]:
+        """Operational plan capacity ceiling for the week [lot units];
+        None = not set (no ceiling), 0.0 = zero planned capacity."""
         return self.capacity[week][CAP_SOFT]
 
     def set_capacity(
@@ -329,11 +343,20 @@ class PlanNode:
         The former defaults (0.0) silently reset the value that was not passed
         -- e.g. set_capacity(w, cap_hard=0.1) wiped a cap_soft of 686, which is
         what made soysauce W18 depend on an accidental chain (Trial-02 §3).
+        Passing 0.0 sets ZERO capacity (RequestLetter_CapacityZeroBlank); use
+        clear_capacity() to make a value "not set" again.
         """
         if cap_hard is not None:
             self.capacity[week][CAP_HARD] = cap_hard
         if cap_soft is not None:
             self.capacity[week][CAP_SOFT] = cap_soft
+
+    def clear_capacity(self, week: int, hard: bool = True, soft: bool = True) -> None:
+        """Make the capacity of the week "not set" (no ceiling) again."""
+        if hard:
+            self.capacity[week][CAP_HARD] = None
+        if soft:
+            self.capacity[week][CAP_SOFT] = None
 
     # ======================================================================
     # Operating calendar (per-week shift count; Phase 2)
@@ -361,24 +384,29 @@ class PlanNode:
     # A closure (holiday / maintenance stop) is a WEEK STATE (op_shifts == 0),
     # never a special capacity value. cap_hard stays the physical ceiling of
     # the equipment and is not rewritten by a closure. These two readers fold
-    # the week state in and return None for "not set", so that new code never
-    # confuses 0 ("closed") with 0 ("unset", the D7 legacy convention that
-    # cap_hard()/cap_soft() still follow).
+    # the week state in and return None for "not set". Since
+    # RequestLetter_CapacityZeroBlank, cap_hard()/cap_soft() themselves return
+    # None for "not set" and 0.0 means zero capacity (no longer "unset").
     # ----------------------------------------------------------------------
 
     def processing_limit(self, week: int) -> Optional[float]:
-        """Processing ceiling: closed week = 0.0, unset = None, else cap_hard."""
+        """Processing ceiling: closed week = 0.0, unset = None, zero capacity =
+        0.0, else cap_hard."""
         if not self.is_open(week):
             return 0.0
-        ch = self.cap_hard(week)
-        return ch if ch > 0 else None
+        return self.cap_hard(week)
 
     def planned_capacity(self, week: int) -> Optional[float]:
-        """Planned operating capacity: closed week = 0.0, unset = None, else cap_soft."""
+        """Planned operating capacity: closed week = 0.0, unset = None, zero
+        capacity = 0.0, else cap_soft."""
         if not self.is_open(week):
             return 0.0
-        cs = self.cap_soft(week)
-        return cs if cs > 0 else None
+        return self.cap_soft(week)
+
+    def is_zero_capacity(self, week: int) -> bool:
+        """True in an OPEN week whose cap_hard is explicitly 0 (zero capacity,
+        a state distinct from a closure)."""
+        return self.is_open(week) and self.cap_hard(week) == 0
 
     # ======================================================================
     # Kitting List (stage 1, request_kitting_stage1.md) -- judgement helpers

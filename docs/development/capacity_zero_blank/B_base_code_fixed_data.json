@@ -1,0 +1,103 @@
+{
+ "repo": "C:/Users/ohsug/AppData/Local/Temp/claude/C--Users-ohsug-WOM-V0R2M1-new-cockpit-wom-development/8c8aec65-e54e-4ddf-838e-d5cdd1af1769/scratchpad/base_c97d50e",
+ "model_dir": "C:/Users/ohsug/WOM_V0R2M1_new_cockpit/wom-v1r5m1_cap_trial/data/sample/smartx-2027-2029",
+ "ppc": {
+  "base_currency": "USD",
+  "total_lots": 1613,
+  "revenue_base": 661330146.0,
+  "cost_base": 63587091.16,
+  "gross_profit_base": 597743054.84,
+  "gross_margin_pct": 0.90385,
+  "tariff_base": 2558419.56,
+  "trust_event_count": 207
+ },
+ "forward": {
+  "cap_hard_deferred_lots": 19887,
+  "cap_hard_deferred_lot_weeks": 19887,
+  "cap_soft_violation_count": 0
+ },
+ "market": {
+  "SmartX": {
+   "demand": 149145,
+   "on_time": 90088,
+   "late": 0,
+   "backlog_end": 59057
+  },
+  "SmartXNext": {
+   "demand": 293764,
+   "on_time": 293764,
+   "late": 0,
+   "backlog_end": 0
+  },
+  "SmartXPro_CN": {
+   "demand": 160146,
+   "on_time": 160146,
+   "late": 0,
+   "backlog_end": 0
+  },
+  "SmartXPro_IN": {
+   "demand": 106756,
+   "on_time": 90683,
+   "late": 16073,
+   "backlog_end": 0
+  }
+ },
+ "per_product": {
+  "SmartX": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_hard_sealed": 0,
+   "cap_hard_events_by_node": {},
+   "backward_past_due": 59057,
+   "backward_past_due_by_node": {
+    "AssemblyCN_g1": 52727,
+    "FoundryTW_g1": 5064,
+    "WaferFab_TW_g1": 1266
+   }
+  },
+  "SmartXNext": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_hard_sealed": 0,
+   "cap_hard_events_by_node": {},
+   "backward_past_due": 0,
+   "backward_past_due_by_node": {}
+  },
+  "SmartXPro_CN": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_hard_sealed": 0,
+   "cap_hard_events_by_node": {},
+   "backward_past_due": 0,
+   "backward_past_due_by_node": {}
+  },
+  "SmartXPro_IN": {
+   "cap_hard_deferred_lots": 19887,
+   "cap_hard_deferred_lot_weeks": 19887,
+   "cap_hard_sealed": 0,
+   "cap_hard_events_by_node": {
+    "SensorIN": 6181,
+    "AssemblyIN": 13706
+   },
+   "backward_past_due": 0,
+   "backward_past_due_by_node": {}
+  }
+ },
+ "assembly_capacity": {
+  "SmartX|AssemblyCN_g1": {
+   "weeks_set": 252,
+   "weeks_zero_or_unset": 26,
+   "sum_ceiling": 96856.0
+  },
+  "SmartXNext|AssemblyCN_g3": {
+   "weeks_set": 130,
+   "weeks_zero_or_unset": 148,
+   "sum_ceiling": 139600.0
+  },
+  "SmartXPro_CN|AssemblyCN": {
+   "weeks_set": 239,
+   "weeks_zero_or_unset": 39,
+   "sum_ceiling": 252554.0
+  }
+ }
+}

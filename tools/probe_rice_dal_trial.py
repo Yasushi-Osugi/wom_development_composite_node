@@ -345,7 +345,7 @@ def summarize(tree, store, snap, raw, ppc_dir, case, plugins):
                         "max_delay_weeks": max((r["delay_weeks"] for r in rr if r["delay_weeks"] != ""), default=0),
                         "duplicate_shipped_ids": sum(r["shipment_occurrences"] > 1 for r in rr)})
             if nd.node_type == "leaf_in":
-                harvest = [w for w in range(n_weeks) if nd.is_open(w) and int(nd.cap_hard(w)) > 0]
+                harvest = [w for w in range(n_weeks) if nd.is_open(w) and int(nd.cap_hard(w) or 0) > 0]
                 for w in range(n_weeks):
                     for lot in nd.psi4demand[w][3]:
                         dw = due.get(lot)

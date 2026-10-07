@@ -188,6 +188,28 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
 
 `sc_tree_master.csv`の`node_type`はWOMモデル用語（`mom`/`dad`/`leaf_in`/`leaf_out`/`supply_point`）を使用。上記とは別体系。
 
+### 能力の値の意味（2026-10-07、`RequestLetter_CapacityZeroBlank`）
+
+`capacity_plan.csv` の `max_supply`（cap_hard）・`cap_soft`、`cap_override.csv` の `cap_hard`・`cap_soft`、`holiday_calendar.csv` の `partial_capacity` の `value` は、同じ規則で読む。
+
+| CSV の値 | 意味 | ノードの値（`PlanNode.cap_hard()`／`cap_soft()`） |
+| :---- | :---- | :---- |
+| 空欄（列が無い、または値が空） | **未設定。上限なし** | `None` |
+| `0` | **能力ゼロ**。その週は処理できない（Forward の Step 0a で P は翌週へ繰り延べ、Backward は前の週へ押し戻す） | `0.0` |
+| 正の数 | その値が上限 | その値 |
+| 負の数・数値でない値 | **読み込みで止める**（ファイル・行・値を出す） | — |
+
+- **前は「0 ＝ 上限なし」だった**（能力ゼロを表せず、rice は 0.1 で代用していた）。古い記録（本ファイルの過去の節）にある「cap_hard=0.0 の曖昧さ」「0 ではなく小さい正の値を入れる」の注意は、この変更で解消した。
+- 能力ゼロは、休業（`is_open`、操業カレンダー・`supply_closure`）とは**別の状態**。休業の振る舞い（push の休業週の入庫の受け入れ、Backward の LT オフセットのスキップなど）は変えていない。`processing_limit()` は休業でも能力ゼロでも 0.0 を返す。区別が要るときは `is_open()`・`is_zero_capacity()` を使う。
+- 未設定に戻すには `PlanNode.clear_capacity()`（`set_capacity()` に `None` を渡すと「変えない」）。
+- **計画の木に無いノード名（製品×ノード）の行は、読み込みで止める**（全行の一覧と直し方を出す）。前は件数を数えるだけで、能力が黙って失われていた（smartx の 408 行）。旧書式（`node_name` 列なし）は、木に無い製品の行で止める。
+- **計画期間の外の週の行は、止めずに件数を警告する**（能力の表が計画期間より長いのは普通）。
+- 旧書式（`node_name` 列なし。製品×週で合計して MOM に入れる）は、同じ製品・週の行に 1 つでも空欄があれば、その週は未設定（上限なし）。
+- GUI・headless とも、能力の読み込みの例外を握りつぶさない（前は `except: pass` で能力が黙って失われていた）。GUI では Planning Engine のエラーとして表示される。
+- **休業と能力ゼロの使い分けの目安**：設備・拠点が止まる週（祝日・保守・ストライキ）は休業（`supply_closure`・操業カレンダーの 0 shift）。Backward はその週を LT オフセットで飛ばし、push の入庫は受け入れる。「その週は作れない」ことだけを言いたい週（発売前・生産終了後・収穫期以外など）は能力 0。Backward はその週に要求を置いたうえで、能力の押し戻しで前の週へ移す。
+- **行が無い週は「未設定＝上限なし」**。製品の発売前の週などで行を省くと、Backward がそこへ作り溜める（smartx の SmartXNext で観測。`docs/development/WOM_CapacityZeroBlank_Report.md` §4）。作れない週は 0 の行を置く。
+- smartx-2027-2029：`capacity_plan.csv` の `node_name=AssemblyCN` のうち、SmartX の 278 行を `AssemblyCN_g1`、SmartXNext の 130 行を `AssemblyCN_g3` に直した（値は同じ。前は計画の木に無いノード名で、黙って読み捨てられていた）。
+
 ---
 
 ## GUI構造（`wom/gui/app.py`）

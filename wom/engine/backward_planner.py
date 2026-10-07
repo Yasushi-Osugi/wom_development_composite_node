@@ -521,7 +521,9 @@ class BackwardPlanner:
             # Closed week = week state op_shifts==0 (Phase 2 Slice 2-3b). Since
             # Explicit Closure v1r5m0, holiday supply_closure also lands here.
             is_closed = not node.is_open(w)
-            if cap_w <= 0.0 and not is_closed:
+            # RequestLetter_CapacityZeroBlank: None = not set (no ceiling);
+            # 0.0 = zero capacity -> fill 0, everything is carried back.
+            if cap_w is None and not is_closed:
                 continue  # unconstrained week (cap not set)
 
             s_lots  = list(node.psi4demand[w][S])
@@ -535,7 +537,7 @@ class BackwardPlanner:
             # below is UNCHANGED and simply uses this target.
             if is_closed:
                 cap_int = 0
-            elif node.demand_envelope == "soft" and cs > 0:
+            elif node.demand_envelope == "soft" and cs is not None:
                 cap_int = int(cs)
             else:
                 cap_int = int(cap_w)
@@ -544,7 +546,7 @@ class BackwardPlanner:
             # Active in "hard" mode where placed production may exceed cap_soft
             # (=> overtime band). In "soft" mode the fill target IS cap_soft, so
             # placed_p <= cap_soft and this never fires (soft = no overtime).
-            if cs > 0:
+            if cs is not None:
                 placed_p = min(len(s_lots), cap_int)
                 if placed_p > int(cs):
                     wk_label = node.week_labels[w] if node.week_labels else str(w)

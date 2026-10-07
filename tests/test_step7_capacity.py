@@ -40,7 +40,7 @@ from wom.engine.capacity_sealer  import (
 # Shared fixture builder
 # ---------------------------------------------------------------------------
 
-def build_tree_with_demand(cap_hard=0.0, cap_soft=0.0, demand_qty=4):
+def build_tree_with_demand(cap_hard=None, cap_soft=None, demand_qty=4):
     """
     Single-region, single-SKU demo tree.
     Demand is set at leaf_out for week W10 (26-week horizon, W01..W26).
@@ -59,7 +59,8 @@ def build_tree_with_demand(cap_hard=0.0, cap_soft=0.0, demand_qty=4):
     mom_node = sc_tree.get_in_root(sku_id)
 
     # Set capacity on MOM
-    if cap_hard > 0 or cap_soft > 0:
+    # RequestLetter_CapacityZeroBlank: 0 は能力ゼロ。未設定は None（None を渡した値は未設定のまま）
+    if cap_hard is not None or cap_soft is not None:
         for w in range(len(weeks)):
             mom_node.set_capacity(w, cap_hard=cap_hard, cap_soft=cap_soft)
 
@@ -91,7 +92,7 @@ def test_cap_hard_sealing():
     Verified constraint: bridge_lots == cap_hard (2); ForwardPlanner seals excess.
     """
     sc_tree, weeks, sku_id, mom = build_tree_with_demand(
-        cap_hard=2.0, cap_soft=0.0, demand_qty=4
+        cap_hard=2.0, cap_soft=None, demand_qty=4
     )
 
     # legacy sealing semantics (excess lost -> CO). In lot_flow_mode="identity"
@@ -124,14 +125,14 @@ def test_cap_hard_sealing():
 
 def test_cap_soft_violation_no_movement():
     """
-    CapSoft=2 only (CapHard=0), demand=4.
+    CapSoft=2 only (CapHard not set), demand=4.
     Expected:
       - NO lots deferred (no CapHard sealing)
       - cap_soft_violations list has entries
       - MOM P still has 4 lots (unchanged)
     """
     sc_tree, weeks, sku_id, mom = build_tree_with_demand(
-        cap_hard=0.0, cap_soft=2.0, demand_qty=4
+        cap_hard=None, cap_soft=2.0, demand_qty=4
     )
 
     # Find the MOM P[W06] before forward planning (from copy)
@@ -146,7 +147,7 @@ def test_cap_soft_violation_no_movement():
     print(f"cap_soft_violations: {result.cap_soft_violations}")
 
     assert result.cap_hard_sealed == 0, (
-        "No CapHard sealing expected when cap_hard=0"
+        "No CapHard sealing expected when cap_hard is not set"
     )
     assert len(result.cap_soft_violations) > 0, (
         "Expected CapSoft violations to be recorded"
@@ -201,7 +202,7 @@ def test_capacity_profile_apply():
     Verify that apply_capacity_profile correctly writes to the node.
     """
     sc_tree, weeks, sku_id, mom = build_tree_with_demand(
-        cap_hard=0.0, cap_soft=0.0, demand_qty=4
+        cap_hard=None, cap_soft=None, demand_qty=4
     )
 
     profile = CapacityProfile()
@@ -237,7 +238,7 @@ def test_build_mom_capacity_profile():
     For the demo tree (one MOM at tier=0), should cover all weeks.
     """
     sc_tree, weeks, sku_id, mom = build_tree_with_demand(
-        cap_hard=0.0, demand_qty=4
+        cap_hard=None, demand_qty=4
     )
 
     profile = build_mom_capacity_profile(
@@ -288,7 +289,7 @@ def test_e2e_cap_hard_causes_leaf_shortfall():
       stays demand-anchored -- just verified through different buckets now.
     """
     sc_tree, weeks, sku_id, mom = build_tree_with_demand(
-        cap_hard=2.0, cap_soft=0.0, demand_qty=4
+        cap_hard=2.0, cap_soft=None, demand_qty=4
     )
 
     # legacy sealing semantics: the 2 sealed lots are lost, so the DAD ships 2.

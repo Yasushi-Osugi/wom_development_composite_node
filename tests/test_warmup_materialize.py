@@ -278,7 +278,7 @@ def test_old_format_csv_to_warmup_to_real_loader(tmp_path):
     cap = lambda sku: [tree.get_in_root(sku).cap_hard(w) for w in range(len(weeks))]
     assert cap("SKU-A") == [1100.0, 1100.0, 1100.0, 1100.0, 1000.0]
     assert cap("SKU-B") == [500.0, 500.0, 500.0, 500.0, 500.0]
-    assert cap("SKU-C") == [0.0, 0.0, 0.0, 0.0, 50.0]      # 発売前は能力の行なし（＝未設定）のまま
+    assert cap("SKU-C") == [None, None, None, None, 50.0]  # 発売前は能力の行なし（＝未設定 None）のまま
 
 
 if __name__ == "__main__":

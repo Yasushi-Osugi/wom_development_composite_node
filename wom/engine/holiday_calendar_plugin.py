@@ -232,7 +232,8 @@ class HolidayCalendarPlugin(WOMPlugin):
             for w in pre_open:
                 ch        = node.cap_hard(w)
                 current_p = len(node.psi4demand[w][P_IDX])
-                space     = max(0, int(ch) - current_p) if ch > 0 else len(displaced)
+                # None = no ceiling; 0 = zero capacity (RequestLetter_CapacityZeroBlank)
+                space     = max(0, int(ch) - current_p) if ch is not None else len(displaced)
                 chunk: List[str] = []
                 for _ in range(space):
                     lot = next(lot_iter, None)
@@ -278,16 +279,36 @@ class HolidayCalendarPlugin(WOMPlugin):
                     ei = week_idx_map.get(end)
                     if si is None or ei is None:
                         continue
+                    effect = row.get("effect", "").strip()
+                    if effect == "partial_capacity":
+                        # RequestLetter_CapacityZeroBlank: a capacity input --
+                        # the value is the ceiling (0 = zero capacity) and must
+                        # be given; a blank / negative / non-number stops.
+                        from wom.engine.capacity_sealer import (
+                            parse_capacity_value, CapacityDataError)
+                        value = parse_capacity_value(
+                            row.get("value"), source=os.path.basename(path),
+                            column=f"value（{row.get('holiday_id', '').strip()}・partial_capacity）")
+                        if value is None:
+                            raise CapacityDataError(
+                                f"{os.path.basename(path)} の {row.get('holiday_id', '').strip()}"
+                                f"（partial_capacity）に value がありません。上限の値を入れてください"
+                                f"（0 は能力ゼロ。完全に止めるなら supply_closure）")
+                    else:
+                        value = float(row.get("value", "0") or 0)
                     rules.append({
                         "holiday_id":   row.get("holiday_id",   "").strip(),
                         "holiday_name": row.get("holiday_name", "").strip(),
                         "node_name":    row.get("node_name",    "").strip(),
-                        "effect":       row.get("effect",       "").strip(),
-                        "value":        float(row.get("value", "0") or 0),
+                        "effect":       effect,
+                        "value":        value,
                         "week_idxs":    list(range(si, ei + 1)),
                         "week_labels":  weeks[si: ei + 1],
                     })
         except Exception as exc:
+            from wom.engine.capacity_sealer import CapacityDataError
+            if isinstance(exc, CapacityDataError):
+                raise
             print(f"[HolidayCalendarPlugin] Error loading {path}: {exc}")
         print(f"[HolidayCalendar] Loaded {len(rules)} rules from {os.path.basename(path)}")
         return rules

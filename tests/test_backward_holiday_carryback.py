@@ -45,7 +45,7 @@ def _demo_mom():
 def test_closed_week_demand_carried_back_respecting_cap():
     sc_tree, n, sku_id, mom = _demo_mom()
     for w in range(n):
-        mom.set_capacity(w, cap_hard=5.0, cap_soft=0.0)   # 物理天井 5/週
+        mom.set_capacity(w, cap_hard=5.0)                 # 物理天井 5/週（cap_soft 未設定）
         mom.set_operating_shifts(w, 14)                    # 全週 open
     mom.set_operating_shifts(10, 0)                        # idx10 を閉鎖
 
@@ -74,7 +74,7 @@ def test_closed_week_demand_carried_back_respecting_cap():
 def test_carryback_never_exceeds_cap_hard():
     sc_tree, n, sku_id, mom = _demo_mom()
     for w in range(n):
-        mom.set_capacity(w, cap_hard=5.0, cap_soft=0.0)
+        mom.set_capacity(w, cap_hard=5.0)
         mom.set_operating_shifts(w, 14)
     mom.set_operating_shifts(10, 0)
 
@@ -100,7 +100,7 @@ def test_carryback_never_exceeds_cap_hard():
 def test_no_calendar_backward_compatible():
     sc_tree, n, sku_id, mom = _demo_mom()
     for w in range(n):
-        mom.set_capacity(w, cap_hard=5.0, cap_soft=0.0)
+        mom.set_capacity(w, cap_hard=5.0)
     # op_shifts は全て None（既定）
 
     mom.psi4demand[10][S] = ["A1", "A2", "A3"]   # cap 5 以下 → 無変更のはず

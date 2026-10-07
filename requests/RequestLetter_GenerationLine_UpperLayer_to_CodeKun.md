@@ -54,6 +54,7 @@
 | `s+g` 以降 | **0** | SmartXNext のライン能力 |
 
 - 前の依頼書で「0 ＝ 能力ゼロ」になるので、エンジンを変えずに「混流しない」ことを表せる。
+- **`AssemblyCN_g3` の発売前の週も、空欄ではなく 0 を明示する。** 前の依頼書の報告（`docs/development/WOM_CapacityZeroBlank_Report.md`）で、`AssemblyCN_g3` の能力の行が 2028-W27 以降しか無いため、それより前の 148 週が未設定（上限なし）になり、Backward が超過分を発売の何年も前へ押し戻して在庫を積み上げる（最大 157,849 lot）ことが分かった。能力の行は計画期間の全週について書く（`AssemblyCN_g1` も切り替えの後を 0 で書く）。
 - この能力の行を、`(s, g, 世代ごとの能力)` から作る道具を用意する（例：`tools/gen_generation_line_capacity.py`）。
 
 ## 4. 上位の層（`wom/capacity_layer/`）

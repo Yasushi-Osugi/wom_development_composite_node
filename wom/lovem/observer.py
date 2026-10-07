@@ -607,7 +607,9 @@ def write_nodes_weeks_capacity(obs: Observer, model_dir: str) -> dict:
                 for w in range(obs.n_weeks):
                     lim, pc = nd.processing_limit(w), nd.planned_capacity(w)
                     sh = nd.operating_shifts(w)
-                    wr.writerow([prod, nd.node_id, w, nd.cap_hard(w), nd.cap_soft(w),
+                    _rh, _rs = nd.cap_hard(w), nd.cap_soft(w)   # None = not set
+                    wr.writerow([prod, nd.node_id, w, "" if _rh is None else _rh,
+                                 "" if _rs is None else _rs,
                                  "" if lim is None else lim, "" if pc is None else pc,
                                  int(nd.is_open(w)), "" if sh is None else sh,
                                  "final_state"])

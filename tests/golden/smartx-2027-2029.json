@@ -22,12 +22,12 @@
   },
   "ppc": {
     "base_currency": "USD",
-    "cost_base": 67621679.16,
-    "gross_margin_pct": 0.903707,
-    "gross_profit_base": 634628759.84,
-    "revenue_base": 702250439.0,
+    "cost_base": 63587091.16,
+    "gross_margin_pct": 0.90385,
+    "gross_profit_base": 597743054.84,
+    "revenue_base": 661330146.0,
     "tariff_base": 2558419.56,
-    "total_lots": 1716,
+    "total_lots": 1613,
     "trust_event_count": 207
   },
   "products": [
@@ -39,12 +39,12 @@
   "psi": {
     "SmartX": {
       "AssemblyCN_g1": {
-        "CO": 0,
+        "CO": 1724925,
         "I_max": 0,
         "I_sum": 0,
-        "P": 149145,
-        "S": 149145,
-        "series_md5": "a7e2e9eaf475"
+        "P": 90088,
+        "S": 96418,
+        "series_md5": "f6d2e63ef653"
       },
       "DC_AMER_g1": {
         "CO": 0,
@@ -55,28 +55,28 @@
         "series_md5": "0d455820c9fb"
       },
       "DC_APAC_g1": {
-        "CO": 0,
+        "CO": 8188731,
         "I_max": 0,
         "I_sum": 0,
-        "P": 47732,
+        "P": 5957,
         "S": 47732,
-        "series_md5": "e966ca8c2e1e"
+        "series_md5": "b80361d60b55"
       },
       "DC_EMEA_g1": {
-        "CO": 0,
+        "CO": 3707131,
         "I_max": 0,
         "I_sum": 0,
-        "P": 41754,
+        "P": 24472,
         "S": 41754,
-        "series_md5": "d97a0d10796f"
+        "series_md5": "6ad893669edc"
       },
       "FoundryTW_g1": {
-        "CO": 0,
-        "I_max": 2386,
-        "I_sum": 15228,
-        "P": 149145,
-        "S": 149145,
-        "series_md5": "607b410f1fa4"
+        "CO": 350049,
+        "I_max": 1183,
+        "I_sum": 8805,
+        "P": 90088,
+        "S": 91354,
+        "series_md5": "63e2e2278e5a"
       },
       "Retail_AMER_g1": {
         "CO": 0,
@@ -87,36 +87,36 @@
         "series_md5": "337c508f7083"
       },
       "Retail_APAC_g1": {
-        "CO": 0,
+        "CO": 8146956,
         "I_max": 0,
         "I_sum": 0,
-        "P": 47732,
+        "P": 5957,
         "S": 47732,
-        "series_md5": "401c150c8836"
+        "series_md5": "fc077c78861a"
       },
       "Retail_EMEA_g1": {
-        "CO": 0,
+        "CO": 3689849,
         "I_max": 0,
         "I_sum": 0,
-        "P": 41754,
+        "P": 24472,
         "S": 41754,
-        "series_md5": "1604957a21c0"
+        "series_md5": "f8881d77f4fa"
       },
       "SP_SmartX": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 149145,
+        "CO": 12031258,
+        "I_max": 2166,
+        "I_sum": 8452,
+        "P": 90088,
         "S": 149145,
-        "series_md5": "a7e2e9eaf475"
+        "series_md5": "19aad862c53d"
       },
       "WaferFab_TW_g1": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 149145,
-        "S": 149145,
-        "series_md5": "4b3f45887359"
+        "P": 90088,
+        "S": 90088,
+        "series_md5": "6de230e68e11"
       }
     },
     "SmartXNext": {
@@ -126,7 +126,7 @@
         "I_sum": 0,
         "P": 293764,
         "S": 293764,
-        "series_md5": "0b4ed0b772fe"
+        "series_md5": "8801c7805ed6"
       },
       "DC_AMER_g3": {
         "CO": 0,
@@ -154,11 +154,11 @@
       },
       "FoundryTW_g3": {
         "CO": 0,
-        "I_max": 6211,
-        "I_sum": 25007,
+        "I_max": 2865,
+        "I_sum": 11475,
         "P": 293764,
         "S": 293764,
-        "series_md5": "6ef42f1836e4"
+        "series_md5": "b8b1ee3f8c46"
       },
       "Retail_AMER_g3": {
         "CO": 0,
@@ -186,11 +186,11 @@
       },
       "SP_SmartXNext": {
         "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
+        "I_max": 157849,
+        "I_sum": 11857497,
         "P": 293764,
         "S": 293764,
-        "series_md5": "0b4ed0b772fe"
+        "series_md5": "ae26675f946f"
       },
       "WaferFab_TW_g3": {
         "CO": 0,
@@ -198,7 +198,7 @@
         "I_sum": 0,
         "P": 293764,
         "S": 293764,
-        "series_md5": "e4ac6e613eee"
+        "series_md5": "0eb045adb1a7"
       }
     },
     "SmartXPro_CN": {
@@ -208,15 +208,15 @@
         "I_sum": 0,
         "P": 160146,
         "S": 160146,
-        "series_md5": "fa203566a2cf"
+        "series_md5": "88814d3714ae"
       },
       "Buffer_Chip_TW": {
         "CO": 0,
-        "I_max": 50979,
-        "I_sum": 6096874,
+        "I_max": 51412,
+        "I_sum": 6097704,
         "P": 160146,
         "S": 160146,
-        "series_md5": "a41b8a2084a8"
+        "series_md5": "0aea46ad5296"
       },
       "DC_APAC": {
         "CO": 0,
@@ -240,7 +240,7 @@
         "I_sum": 0,
         "P": 160146,
         "S": 160146,
-        "series_md5": "a412225735e8"
+        "series_md5": "ca8d72f0594c"
       },
       "Retail_APAC": {
         "CO": 0,
@@ -260,11 +260,11 @@
       },
       "SP_SmartXPro_CN": {
         "CO": 0,
-        "I_max": 3098,
-        "I_sum": 79094,
+        "I_max": 5165,
+        "I_sum": 389556,
         "P": 160146,
         "S": 160146,
-        "series_md5": "52ae06851df1"
+        "series_md5": "37bfd52abd1f"
       },
       "WaferFab_TW": {
         "CO": 0,
@@ -272,7 +272,7 @@
         "I_sum": 0,
         "P": 160146,
         "S": 160146,
-        "series_md5": "7c4b41e14b04"
+        "series_md5": "d6cd16652d2c"
       }
     },
     "SmartXPro_IN": {

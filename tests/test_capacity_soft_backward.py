@@ -38,7 +38,8 @@ def _run_backward(cap_hard, cap_soft, demand_qty):
     ])
     sc_tree = build_demo_sc_tree(sku_master, weeks, lt_wks_ot=1, lt_wks_in=2)
     mom = sc_tree.get_in_root(sku_id)
-    if cap_hard > 0 or cap_soft > 0:
+    # RequestLetter_CapacityZeroBlank: 0 は能力ゼロ。未設定は None（set_capacity に None を渡すと、その値は未設定のまま）
+    if cap_hard is not None or cap_soft is not None:
         for w in range(len(weeks)):
             mom.set_capacity(w, cap_hard=cap_hard, cap_soft=cap_soft)
     assign_demand_lots_from_dict(sc_tree, {(sku_id, region, "2024-W10"): demand_qty}, cpu_size=1)
@@ -89,15 +90,15 @@ def test_backward_cap_soft_envelope_with_hard_overflow():
 # ---------------------------------------------------------------------------
 
 def test_backward_cap_soft_does_not_move_lots():
-    # cap_soft=0（無効）
-    _t0, mom0, res0 = _run_backward(cap_hard=4, cap_soft=0, demand_qty=6)
+    # cap_soft 未設定（無効）。RequestLetter_CapacityZeroBlank: 前は cap_soft=0 で表していた
+    _t0, mom0, res0 = _run_backward(cap_hard=4, cap_soft=None, demand_qty=6)
     # cap_soft=2（有効）
     _t2, mom2, res2 = _run_backward(cap_hard=4, cap_soft=2, demand_qty=6)
 
     assert _totals(mom0) == _totals(mom2), (
         f"cap_soft must NOT change placement (Fork A); "
-        f"soft=0 {_totals(mom0)} vs soft=2 {_totals(mom2)}")
-    # soft=0 は envelope フラグ無し（後方互換）
+        f"soft=unset {_totals(mom0)} vs soft=2 {_totals(mom2)}")
+    # soft 未設定は envelope フラグ無し（後方互換）
     assert len(res0.cap_soft_envelope_violations) == 0
     # soft=2 は envelope フラグ有り
     assert len(res2.cap_soft_envelope_violations) > 0

@@ -143,14 +143,15 @@ def test_t1_supply_closure_is_week_state_independent_of_value(tmp_path, value, c
 
 
 # ===========================================================================
-# Test 2 (旧 Test 2): zero without closure remains unconstrained
+# Test 2 (旧 Test 2): no capacity set and no closure remains unconstrained
+# (RequestLetter_CapacityZeroBlank: "not set" is None now; 0 is zero capacity)
 # ===========================================================================
 
 def test_t2_zero_without_closure_is_unset(tmp_path):
     tree, _b, fres, _fp, _ = _plan(tmp_path)
     mom = _node(tree, MOM_NAME)
     for w in range(N_WEEKS):
-        assert mom.cap_hard(w) == 0.0 and mom.is_open(w)
+        assert mom.cap_hard(w) is None and mom.is_open(w)
         assert mom.processing_limit(w) is None
         assert mom.planned_capacity(w) is None
     assert fres.cap_hard_sealed == 0
@@ -222,7 +223,7 @@ def test_t4_consecutive_closures_carry_to_w04(tmp_path):
     tree = _tree()
     mom = _node(tree, MOM_NAME)
     for w in range(N_WEEKS):
-        mom.set_capacity(w, cap_hard=10.0, cap_soft=0.0)
+        mom.set_capacity(w, cap_hard=10.0)                  # cap_soft not set
     _apply_plugin(tree, tmp_path, [(MOM_NAME, "2024-W05", "2024-W06", "supply_closure", "0")])
     w04, w05, w06 = (WEEKS.index(x) for x in ("2024-W04", "2024-W05", "2024-W06"))
     mom.psi4demand[w06][S] = ["L1", "L2", "L3"]
@@ -413,12 +414,16 @@ def test_t14_capacity_view_cells_and_headless_series(tmp_path):
     mom = _node(tree, MOM_NAME)
     for w in range(N_WEEKS):
         mom.set_capacity(w, cap_hard=800.0, cap_soft=686.0)
-    mom.set_capacity(2, cap_soft=0.0)                       # open week, cap_soft unset
+    mom.clear_capacity(2, hard=False)                       # open week, cap_soft unset
     _apply_plugin(tree, tmp_path, [(MOM_NAME, "2024-W18", "2024-W18", "supply_closure", "0")])
     w18 = WEEKS.index("2024-W18")
 
     assert psi_list_capacity_cells(mom, w18) == ("800", "0")
     assert psi_list_capacity_cells(mom, 2) == ("800", "—")
+    # RequestLetter_CapacityZeroBlank: zero capacity is shown as 0 (not "—")
+    mom.set_capacity(4, cap_hard=0.0, cap_soft=0.0)
+    assert psi_list_capacity_cells(mom, 4) == ("0", "0")
+    mom.set_capacity(4, cap_hard=800.0, cap_soft=686.0)
     assert psi_list_capacity_cells(mom, 3) == ("800", "686")
     raw = _node(tree, RAW_NAME)
     assert psi_list_capacity_cells(raw, 3) == ("—", "—")

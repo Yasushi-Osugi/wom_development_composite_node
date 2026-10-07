@@ -212,10 +212,10 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     from wom.engine.capacity_sealer import load_capacity_dataframe, load_operating_calendar
     cap_path = _p("capacity_plan.csv")
     if os.path.exists(cap_path):
-        try:
-            load_capacity_dataframe(sc_tree, pd.read_csv(cap_path), weeks)
-        except Exception:
-            pass
+        # RequestLetter_CapacityZeroBlank: an unreadable capacity row stops the
+        # run (formerly every error was swallowed and the capacity was lost).
+        load_capacity_dataframe(sc_tree, pd.read_csv(cap_path, dtype={"max_supply": str}),
+                                weeks, source=cap_path)
 
     # ── 操業カレンダー（per-node shift plan; Phase 2、opt-in）─────────
     #   BackwardPlanner 生成より前に node.op_shifts をセットしておく必要がある。
@@ -447,10 +447,15 @@ def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
             # Explicit Closure v1r5m0 §4.7: cap_hard stays the raw physical
             # ceiling (a closure does not rewrite it); cap_soft is the planned
             # operating capacity (closed week = 0, unset -> 0 as before).
-            cap_hard_series = [nd.cap_hard(w) for w in range(n_weeks)]
-            cap_soft_series = [(nd.planned_capacity(w) or 0.0) for w in range(n_weeks)]
+            # RequestLetter_CapacityZeroBlank: None = not set (shown as 0 in
+            # this display series, as before); zero capacity is 0 too, but the
+            # node still counts as a node with capacity.
+            _ch_raw = [nd.cap_hard(w) for w in range(n_weeks)]
+            _cs_raw = [nd.planned_capacity(w) for w in range(n_weeks)]
+            cap_hard_series = [(v if v is not None else 0.0) for v in _ch_raw]
+            cap_soft_series = [(v if v is not None else 0.0) for v in _cs_raw]
             closed_idx = [w for w in range(n_weeks) if not nd.is_open(w)]
-            if any(v > 0 for v in cap_hard_series) or any(v > 0 for v in cap_soft_series):
+            if any(v is not None for v in _ch_raw) or any(v > 0 for v in cap_soft_series):
                 # Phase 8-3c-4・X1: cap_hard と比べるべき系列を「1本だけ」出し、
                 # それが何かを series_kind で宣言する（画面に選ばせない）。
                 # push ノード（decoupling 点）の P は入庫であって生産ではない

@@ -46,7 +46,7 @@ def _demo():
 def test_shifts_derive_cap_soft():
     sc_tree, weeks, sku_id, mom = _demo()
     for w in range(len(weeks)):
-        mom.set_capacity(w, cap_hard=1500.0, cap_soft=0.0)   # 物理天井 1500
+        mom.set_capacity(w, cap_hard=1500.0)                 # 物理天井 1500（cap_soft 未設定）
 
     cal_df = pd.DataFrame([
         {"sku_id": sku_id, "node_name": mom.node_name, "week": "2024-W10", "shifts": 14},
@@ -70,7 +70,7 @@ def test_shifts_derive_cap_soft():
 def test_zero_shift_leaves_cap_soft_and_is_closed():
     sc_tree, weeks, sku_id, mom = _demo()
     w10 = weeks.index("2024-W10")
-    mom.set_capacity(w10, cap_hard=1500.0, cap_soft=0.0)
+    mom.set_capacity(w10, cap_hard=1500.0)
 
     cal_df = pd.DataFrame([
         {"sku_id": sku_id, "node_name": mom.node_name, "week": "2024-W10", "shifts": 0},
@@ -78,7 +78,7 @@ def test_zero_shift_leaves_cap_soft_and_is_closed():
     load_operating_calendar(sc_tree, cal_df, weeks)
 
     assert mom.is_open(w10) is False           # 閉鎖（skip 対象）
-    assert mom.cap_soft(w10) == 0.0            # 導出せず据え置き
+    assert mom.cap_soft(w10) is None           # 導出せず据え置き（未設定のまま）
 
 
 # ---------------------------------------------------------------------------
@@ -88,7 +88,7 @@ def test_zero_shift_leaves_cap_soft_and_is_closed():
 def test_no_cap_hard_no_derivation():
     sc_tree, weeks, sku_id, mom = _demo()
     w10 = weeks.index("2024-W10")
-    # cap_hard を設定しない（既定 0.0 のまま）
+    # cap_hard を設定しない（未設定＝None のまま。RequestLetter_CapacityZeroBlank）
 
     cal_df = pd.DataFrame([
         {"sku_id": sku_id, "node_name": mom.node_name, "week": "2024-W10", "shifts": 14},
@@ -96,7 +96,7 @@ def test_no_cap_hard_no_derivation():
     load_operating_calendar(sc_tree, cal_df, weeks)
 
     assert mom.operating_shifts(w10) == 14     # shift は記録される
-    assert mom.cap_soft(w10) == 0.0            # cap_hard=0 なので cap_soft 導出せず
+    assert mom.cap_soft(w10) is None           # cap_hard 未設定なので cap_soft 導出せず
 
 
 if __name__ == "__main__":

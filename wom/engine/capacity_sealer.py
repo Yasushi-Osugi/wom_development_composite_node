@@ -54,8 +54,8 @@ class CapacityEntry:
     ----------
     node_id:   PlanNode.node_id string
     week:      ISO week label, e.g. "2024-W10"
-    cap_hard:  Hard ceiling in lots (0 = unlimited)
-    cap_soft:  Soft ceiling in lots (0 = unlimited)
+    cap_hard:  Hard ceiling in lots (None = not set / no ceiling, 0 = zero capacity)
+    cap_soft:  Soft ceiling in lots (None = not set / no ceiling, 0 = zero capacity)
     """
     node_id:  str
     week:     str
@@ -78,8 +78,8 @@ class CapacityProfile:
         self,
         node_id:  str,
         week:     str,
-        cap_hard: float = 0.0,
-        cap_soft: float = 0.0,
+        cap_hard: Optional[float] = None,
+        cap_soft: Optional[float] = None,
     ) -> "CapacityProfile":
         """Append one entry (returns self for chaining)."""
         self.entries.append(
@@ -92,8 +92,8 @@ class CapacityProfile:
         self,
         node_id:   str,
         weeks:     List[str],
-        cap_hard:  float = 0.0,
-        cap_soft:  float = 0.0,
+        cap_hard:  Optional[float] = None,
+        cap_soft:  Optional[float] = None,
     ) -> "CapacityProfile":
         """
         Apply the same CapHard/CapSoft to a list of weeks for one node.
@@ -277,10 +277,65 @@ def build_capacity_load_report(
 # capacity_plan.csv loader (single source of truth for GUI + headless)
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Capacity value rule (RequestLetter_CapacityZeroBlank, 2026-10-07)
+# ---------------------------------------------------------------------------
+
+class CapacityDataError(ValueError):
+    """A capacity input that cannot be read. The planning run stops: the rows
+    are listed with how to fix them (no silent default is made up)."""
+
+
+def parse_capacity_value(value, *, source: str = "", line=None, column: str = ""):
+    """One capacity cell -> None (blank: not set, no ceiling) / 0.0 (zero
+    capacity) / a positive float. A non-number or a negative number raises
+    CapacityDataError naming the file, line and value."""
+    if value is None:
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+    s = str(value).strip()
+    if s == "":
+        return None
+    try:
+        x = float(s)
+    except ValueError:
+        x = None
+    if x is None or x != x or x < 0:
+        where = f"{source} {line} 行目" if line is not None else source
+        raise CapacityDataError(
+            f"{where} の {column} が読めません：{value!r}（空欄＝未設定・0＝能力ゼロ・"
+            f"正の数＝上限のどれかにしてください。負の数や数値でない値は使えません）")
+    return x
+
+
+def _raise_not_found(source: str, rows: List[Tuple[int, str, str]], what: str = "ノード") -> None:
+    shown = "\n".join(f"  {source} {ln} 行目：製品 {sku!r}・{what} {name!r}" for ln, sku, name in rows[:30])
+    more = f"\n  ほか {len(rows) - 30} 行" if len(rows) > 30 else ""
+    raise CapacityDataError(
+        f"{source}：計画の木に無い{what}の行が {len(rows)} 行あります。能力が入らないので止めます。\n"
+        f"{shown}{more}\n"
+        f"直し方：{what}名の綴りが sc_tree_master.csv の node_name と同じか、その{what}が"
+        f"その製品（product_name）の木にあるかを確かめてください。")
+
+
+def _warn_out_of_range(source: str, n: int) -> None:
+    if n:
+        import warnings
+        msg = (f"{source}：計画期間の外の週の行 {n} 件を読み飛ばしました"
+               f"（能力の表が計画期間より長いのは普通です）")
+        warnings.warn(msg, RuntimeWarning, stacklevel=3)
+        print(f"[Capacity] {msg}")
+
+
 def load_capacity_dataframe(
     sc_tree:  SCTree,
     cap_df:   "pd.DataFrame",
     weeks:    List[str],
+    source:   str = "capacity_plan.csv",
 ) -> Dict[str, int]:
     """
     Apply a `capacity_plan.csv` DataFrame to the SCTree's PlanNodes.
@@ -298,17 +353,31 @@ def load_capacity_dataframe(
     Optional : ``node_name``  — if present, capacity is applied to that named
                node; otherwise ``max_supply`` is aggregated by (sku_id, week)
                and applied to each product's InBound root (MOM).
-    Optional : ``cap_soft``   — operational/shift ceiling.  **Opt-in**: when the
-               column is absent, ``cap_soft`` is left at its default (0.0 =
-               unlimited), reproducing the pre-existing behaviour exactly so
-               that models without the column are byte-for-byte unchanged.
+    Optional : ``cap_soft``   — operational/shift ceiling.  When the column is
+               absent, ``cap_soft`` stays not set (no ceiling).
+
+    Values (RequestLetter_CapacityZeroBlank, 2026-10-07), both columns:
+      blank      -> not set: no ceiling (the node keeps None)
+      0          -> ZERO capacity: nothing can be processed in that week
+                    (formerly 0 meant "no ceiling")
+      > 0        -> the ceiling
+      a negative number / not a number -> CapacityDataError (file, line, value)
+    A row whose (product, node_name) is not in the plan tree also raises
+    CapacityDataError, listing every such row (formerly it was only counted
+    as node_not_found and silently ignored). Rows outside the plan horizon are
+    skipped with a warning (a capacity table longer than the horizon is
+    normal).
 
     cap_soft semantics (Forward Step 0b) : a *flag only* — lots are never moved
     by cap_soft.  Physical sealing/CO is governed solely by ``cap_hard``.
 
+    Old format without ``node_name`` (aggregated by (sku_id, week) into the
+    product's InBound root): a blank in any row of a group makes the group
+    not set (one source without a ceiling = no ceiling for the sum).
+
     Returns
     -------
-    dict : {"applied": N, "node_not_found": M, "week_out_of_range": K}
+    dict : {"applied": N, "node_not_found": 0, "week_out_of_range": K}
     """
     stats = {"applied": 0, "node_not_found": 0, "week_out_of_range": 0}
 
@@ -318,17 +387,16 @@ def load_capacity_dataframe(
     has_soft = "cap_soft" in cap_df.columns
     widx = {str(w): i for i, w in enumerate(weeks)}
 
-    def _soft_of(row) -> float:
-        """cap_soft 列があり有効値なら float、無ければ 0.0（=無制限、後方互換）。"""
-        if not has_soft:
-            return 0.0
-        val = row["cap_soft"]
-        try:
-            if pd.isna(val):
-                return 0.0
-            return float(val)
-        except (TypeError, ValueError):
-            return 0.0
+    # 1. read every value first (stop on an unreadable one before applying any)
+    parsed = []          # (line, sku, node_name or None, week, hard, soft)
+    for i, row in enumerate(cap_df.to_dict("records")):
+        line = i + 2                       # header is line 1
+        hard = parse_capacity_value(row.get("max_supply"), source=source, line=line,
+                                    column="max_supply")
+        soft = (parse_capacity_value(row.get("cap_soft"), source=source, line=line,
+                                     column="cap_soft") if has_soft else None)
+        node_name = str(row["node_name"]) if "node_name" in cap_df.columns else None
+        parsed.append((line, str(row["sku_id"]), node_name, str(row["week"]), hard, soft))
 
     if "node_name" in cap_df.columns:
         # per-node path
@@ -336,36 +404,46 @@ def load_capacity_dataframe(
         for pn in sc_tree.products:
             for nd in sc_tree.iter_all_nodes(pn):
                 lut[(pn, nd.node_name)] = nd
-        for _, row in cap_df.iterrows():
-            nd = lut.get((str(row["sku_id"]), str(row["node_name"])))
-            if nd is None:
-                stats["node_not_found"] += 1
-                continue
-            wi = widx.get(str(row["week"]))
+        missing = [(ln, sku, nm) for ln, sku, nm, _wk, _h, _s in parsed if (sku, nm) not in lut]
+        if missing:
+            _raise_not_found(source, missing, "ノード")
+        for ln, sku, nm, wk, hard, soft in parsed:
+            wi = widx.get(wk)
             if wi is None:
                 stats["week_out_of_range"] += 1
                 continue
-            nd.set_capacity(wi, cap_hard=float(row["max_supply"]),
-                            cap_soft=_soft_of(row))
+            lut[(sku, nm)].set_capacity(wi, cap_hard=hard, cap_soft=soft)
             stats["applied"] += 1
     else:
         # sku-aggregate → MOM (InBound root) path
-        agg_cols = ["max_supply"] + (["cap_soft"] if has_soft else [])
-        agg = cap_df.groupby(["sku_id", "week"])[agg_cols].sum().reset_index()
+        roots: Dict[str, PlanNode] = {}
         for pn in sc_tree.products:
             try:
-                mom = sc_tree.get_in_root(pn)
+                roots[pn] = sc_tree.get_in_root(pn)
             except Exception:
-                continue
-            for _, row in agg[agg["sku_id"] == pn].iterrows():
-                wi = widx.get(str(row["week"]))
-                if wi is None:
-                    stats["week_out_of_range"] += 1
-                    continue
-                mom.set_capacity(wi, cap_hard=float(row["max_supply"]),
-                                 cap_soft=_soft_of(row))
-                stats["applied"] += 1
+                pass
+        missing = [(ln, sku, "(InBound root)") for ln, sku, _nm, _wk, _h, _s in parsed
+                   if sku not in roots]
+        if missing:
+            _raise_not_found(source, missing, "製品")
+        groups: Dict[Tuple[str, str], list] = {}
+        for ln, sku, _nm, wk, hard, soft in parsed:
+            groups.setdefault((sku, wk), []).append((hard, soft))
 
+        def _sum(vals):
+            return None if any(v is None for v in vals) else float(sum(vals))
+
+        for (sku, wk), vals in groups.items():
+            wi = widx.get(wk)
+            if wi is None:
+                stats["week_out_of_range"] += 1
+                continue
+            hard = _sum([h for h, _s in vals])
+            soft = _sum([s for _h, s in vals]) if has_soft else None
+            roots[sku].set_capacity(wi, cap_hard=hard, cap_soft=soft)
+            stats["applied"] += 1
+
+    _warn_out_of_range(source, stats["week_out_of_range"])
     return stats
 
 
@@ -432,7 +510,7 @@ def load_operating_calendar(
         #   weeks without a physical ceiling (cap_hard==0) are not derived.
         if sh > 0:
             ch = nd.cap_hard(wi)
-            if ch > 0:
+            if ch is not None:          # None = no physical ceiling: nothing to derive
                 nd.set_capacity(wi, cap_hard=ch,
                                 cap_soft=float(round(sh * ch / MAX_SHIFTS)))
 
