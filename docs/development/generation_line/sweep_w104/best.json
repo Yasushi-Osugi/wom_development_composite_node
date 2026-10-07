@@ -1,0 +1,31 @@
+{
+ "best": {
+  "s_index": 141,
+  "s_week": "2028-W20",
+  "resume_week": "2028-W24",
+  "old_demand": 149145,
+  "old_served": 149111,
+  "old_unallocated": 34,
+  "old_advance_lot_weeks": 1221386,
+  "old_advanced_lots": 36616,
+  "old_relaxation_upper_bound": 149111.0,
+  "old_fractional_cells": 0,
+  "old_lots_due_after_s": 26524,
+  "old_demand_due_after_s": 26558,
+  "new_demand": 293764,
+  "new_served": 293749,
+  "new_unallocated": 15,
+  "new_advance_lot_weeks": 0,
+  "new_advanced_lots": 0,
+  "new_relaxation_upper_bound": 293749.0,
+  "new_fractional_cells": 0,
+  "unallocated_total": 49,
+  "advance_lot_weeks_total": 1221386,
+  "elapsed_seconds": 3.89
+ },
+ "rule": "min unallocated_total, then min advance_lot_weeks_total, then earliest s",
+ "candidates_with_same_unallocated": [
+  "2028-W20"
+ ],
+ "elapsed_seconds": 658.8
+}

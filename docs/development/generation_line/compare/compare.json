@@ -1,0 +1,314 @@
+{
+ "off": {
+  "forward": {
+   "cap_hard_deferred_lots": 19887,
+   "cap_hard_deferred_lot_weeks": 19887,
+   "cap_soft_violation_count": 0
+  },
+  "ppc": {
+   "base_currency": "USD",
+   "total_lots": 1697,
+   "revenue_base": 700825463.0,
+   "cost_base": 67503725.76,
+   "gross_profit_base": 633321737.24,
+   "gross_margin_pct": 0.90368,
+   "tariff_base": 2558419.56,
+   "trust_event_count": 207
+  },
+  "lovem_market_ship_events": 708537,
+  "tree_market_ships": 708537,
+  "lovem_matches_tree_one_to_one": true,
+  "no_mixed_flow": {
+   "weeks_both_positive": [],
+   "changeover_weeks": [
+    "2028-W26",
+    "2028-W27",
+    "2028-W28",
+    "2028-W29"
+   ],
+   "changeover_production": 0,
+   "last_old_production_week": "2028-W25",
+   "first_new_production_week": "2028-W30",
+   "old_production_after_line_stop": 0,
+   "new_production_before_line_start": 0
+  }
+ },
+ "on": {
+  "forward": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_soft_violation_count": 0
+  },
+  "ppc": {
+   "base_currency": "USD",
+   "total_lots": 1408,
+   "revenue_base": 689357841.0,
+   "cost_base": 66379381.52,
+   "gross_profit_base": 622978459.48,
+   "gross_margin_pct": 0.903708,
+   "tariff_base": 2555413.92,
+   "trust_event_count": 207
+  },
+  "lovem_market_ship_events": 692909,
+  "tree_market_ships": 692909,
+  "lovem_matches_tree_one_to_one": true,
+  "no_mixed_flow": {
+   "weeks_both_positive": [],
+   "changeover_weeks": [
+    "2028-W26",
+    "2028-W27",
+    "2028-W28",
+    "2028-W29"
+   ],
+   "changeover_production": 0,
+   "last_old_production_week": "2028-W25",
+   "first_new_production_week": "2028-W30",
+   "old_production_after_line_stop": 0,
+   "new_production_before_line_start": 0
+  },
+  "layer": {
+   "SmartX": {
+    "product": "SmartX",
+    "max_advance_weeks": 17,
+    "demand_lots": 149145,
+    "served": 134719,
+    "unallocated": 14426,
+    "unallocated_by_market": {
+     "Retail_AMER_g1": 5813,
+     "Retail_EMEA_g1": 3964,
+     "Retail_APAC_g1": 4649
+    },
+    "advance_lot_weeks": 87343,
+    "advanced_lots": 9367,
+    "relaxation_upper_bound": 134719.0,
+    "fractional_cells": 0,
+    "applied": true,
+    "placed": 134719,
+    "options": 12403,
+    "requests_without_option": [],
+    "unset_capacity_nodes": [
+     "SP_SmartX",
+     "DC_AMER_g1",
+     "Retail_AMER_g1",
+     "DC_EMEA_g1",
+     "Retail_EMEA_g1",
+     "DC_APAC_g1",
+     "Retail_APAC_g1",
+     "FoundryTW_g1"
+    ],
+    "elapsed_seconds": 6.488
+   },
+   "SmartXNext": {
+    "product": "SmartXNext",
+    "max_advance_weeks": 17,
+    "demand_lots": 293764,
+    "served": 292490,
+    "unallocated": 1274,
+    "unallocated_by_market": {
+     "Retail_AMER_g3": 466,
+     "Retail_EMEA_g3": 435,
+     "Retail_APAC_g3": 373
+    },
+    "advance_lot_weeks": 0,
+    "advanced_lots": 0,
+    "relaxation_upper_bound": 292490.0,
+    "fractional_cells": 0,
+    "applied": true,
+    "placed": 292490,
+    "options": 7020,
+    "requests_without_option": [],
+    "unset_capacity_nodes": [
+     "SP_SmartXNext",
+     "DC_AMER_g3",
+     "Retail_AMER_g3",
+     "DC_EMEA_g3",
+     "Retail_EMEA_g3",
+     "DC_APAC_g3",
+     "Retail_APAC_g3",
+     "FoundryTW_g3"
+    ],
+    "elapsed_seconds": 10.646
+   },
+   "SmartXPro_CN": {
+    "product": "SmartXPro_CN",
+    "max_advance_weeks": 17,
+    "demand_lots": 160146,
+    "served": 158944,
+    "unallocated": 1202,
+    "unallocated_by_market": {
+     "Retail_EMEA": 528,
+     "Retail_APAC": 674
+    },
+    "advance_lot_weeks": 222159,
+    "advanced_lots": 42601,
+    "relaxation_upper_bound": 158944.0,
+    "fractional_cells": 0,
+    "applied": true,
+    "placed": 158944,
+    "options": 7452,
+    "requests_without_option": [],
+    "unset_capacity_nodes": [
+     "SP_SmartXPro_CN",
+     "DC_EMEA",
+     "Retail_EMEA",
+     "DC_APAC",
+     "Retail_APAC"
+    ],
+    "elapsed_seconds": 6.482
+   },
+   "SmartXPro_IN": {
+    "product": "SmartXPro_IN",
+    "max_advance_weeks": 17,
+    "demand_lots": 106756,
+    "served": 106756,
+    "unallocated": 0,
+    "unallocated_by_market": {},
+    "advance_lot_weeks": 43007,
+    "advanced_lots": 18425,
+    "relaxation_upper_bound": 106756.0,
+    "fractional_cells": 0,
+    "applied": true,
+    "placed": 106756,
+    "options": 3726,
+    "requests_without_option": [],
+    "unset_capacity_nodes": [
+     "SP_SmartXPro_IN",
+     "DC_AMER",
+     "Retail_AMER"
+    ],
+    "elapsed_seconds": 3.261
+   }
+  }
+ },
+ "market_request_identical": true,
+ "products": [
+  {
+   "case": "off",
+   "product": "SmartX",
+   "demand": 149145,
+   "on_time": 149145,
+   "late": 0,
+   "early": 0,
+   "backlog_end": 0,
+   "unallocated_by_layer": "",
+   "layer_advance_lot_weeks": "",
+   "cap_deferred_lots": 0,
+   "cap_deferred_lot_weeks": 0,
+   "inventory_lot_weeks": 990092,
+   "ppc_revenue": 106041155.0,
+   "ppc_gross_profit": 95705433.6
+  },
+  {
+   "case": "off",
+   "product": "SmartXNext",
+   "demand": 293764,
+   "on_time": 292490,
+   "late": 0,
+   "early": 0,
+   "backlog_end": 1274,
+   "unallocated_by_layer": "",
+   "layer_advance_lot_weeks": "",
+   "cap_deferred_lots": 0,
+   "cap_deferred_lot_weeks": 0,
+   "inventory_lot_weeks": 25007,
+   "ppc_revenue": 324946110.0,
+   "ppc_gross_profit": 297932048.4
+  },
+  {
+   "case": "off",
+   "product": "SmartXPro_CN",
+   "demand": 160146,
+   "on_time": 160146,
+   "late": 0,
+   "early": 0,
+   "backlog_end": 0,
+   "unallocated_by_layer": "",
+   "layer_advance_lot_weeks": "",
+   "cap_deferred_lots": 0,
+   "cap_deferred_lot_weeks": 0,
+   "inventory_lot_weeks": 6487260,
+   "ppc_revenue": 163188954.0,
+   "ppc_gross_profit": 146484132.12
+  },
+  {
+   "case": "off",
+   "product": "SmartXPro_IN",
+   "demand": 106756,
+   "on_time": 90683,
+   "late": 16073,
+   "early": 0,
+   "backlog_end": 0,
+   "unallocated_by_layer": "",
+   "layer_advance_lot_weeks": "",
+   "cap_deferred_lots": 19887,
+   "cap_deferred_lot_weeks": 19887,
+   "inventory_lot_weeks": 335,
+   "ppc_revenue": 106649244.0,
+   "ppc_gross_profit": 93200123.12
+  },
+  {
+   "case": "on",
+   "product": "SmartX",
+   "demand": 149145,
+   "on_time": 134719,
+   "late": 0,
+   "early": 0,
+   "backlog_end": 14426,
+   "unallocated_by_layer": 14426,
+   "layer_advance_lot_weeks": 87343,
+   "cap_deferred_lots": 0,
+   "cap_deferred_lot_weeks": 0,
+   "inventory_lot_weeks": 101183,
+   "ppc_revenue": 95793431.0,
+   "ppc_gross_profit": 86457203.4
+  },
+  {
+   "case": "on",
+   "product": "SmartXNext",
+   "demand": 293764,
+   "on_time": 292490,
+   "late": 0,
+   "early": 0,
+   "backlog_end": 1274,
+   "unallocated_by_layer": 1274,
+   "layer_advance_lot_weeks": 0,
+   "cap_deferred_lots": 0,
+   "cap_deferred_lot_weeks": 0,
+   "inventory_lot_weeks": 25007,
+   "ppc_revenue": 324946110.0,
+   "ppc_gross_profit": 297932048.4
+  },
+  {
+   "case": "on",
+   "product": "SmartXPro_CN",
+   "demand": 160146,
+   "on_time": 158944,
+   "late": 0,
+   "early": 0,
+   "backlog_end": 1202,
+   "unallocated_by_layer": 1202,
+   "layer_advance_lot_weeks": 222159,
+   "cap_deferred_lots": 0,
+   "cap_deferred_lot_weeks": 0,
+   "inventory_lot_weeks": 6273581,
+   "ppc_revenue": 161969056.0,
+   "ppc_gross_profit": 145389084.56
+  },
+  {
+   "case": "on",
+   "product": "SmartXPro_IN",
+   "demand": 106756,
+   "on_time": 106756,
+   "late": 0,
+   "early": 0,
+   "backlog_end": 0,
+   "unallocated_by_layer": 0,
+   "layer_advance_lot_weeks": 43007,
+   "cap_deferred_lots": 0,
+   "cap_deferred_lot_weeks": 0,
+   "inventory_lot_weeks": 48121,
+   "ppc_revenue": 106649244.0,
+   "ppc_gross_profit": 93200123.12
+  }
+ ]
+}

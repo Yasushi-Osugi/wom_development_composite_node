@@ -12,122 +12,37 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .solver import Request, Option, Problem, validate_solution
+from .serial_adapter import SerialLineAdapter
 
 
 def read_csv(path):
     with open(path,encoding="utf-8-sig",newline="") as f: return list(csv.DictReader(f))
 
 
-class SmartxAdapter:
+class SmartxAdapter(SerialLineAdapter):
+    """CSV-backed loader of the measured baseline (nodes.csv, node_week.csv).
+
+    The footprint logic lives in serial_adapter.SerialLineAdapter (production
+    version, RequestLetter_GenerationLine_UpperLayer); this class only reads
+    the exported files of Astra's measurement and keeps its problem/expand/
+    apply_positions signatures for the trial tools.
+    """
     def __init__(self, baseline_dir, *, missing_capacity_policy, push_leads):
         if missing_capacity_policy!="explicit_engine_unbounded":
             raise ValueError("This adapter requires explicit acknowledgement of current unset capacities")
         self.baseline=Path(baseline_dir)
-        self.push_leads=dict(push_leads)
-        self.nodes={r["node_id"]:r for r in read_csv(self.baseline/"nodes.csv")}
+        rows={r["node_id"]:r for r in read_csv(self.baseline/"nodes.csv")}
         weekly=read_csv(self.baseline/"node_week.csv")
-        self.weeks=sorted({r["week"] for r in weekly})
-        self.widx={w:i for i,w in enumerate(self.weeks)}
-        self.state={(r["node_id"],int(r["week_index"])):r for r in weekly}
-        self.products=sorted({r["product"] for r in self.nodes.values()})
-        self.by_product={p:[n for n,r in self.nodes.items() if r["product"]==p] for p in self.products}
-        self.closed={n:{w for w in range(len(self.weeks)) if self.state[n,w]["is_open"]=="False"} for n in self.nodes}
-        self.children=defaultdict(list)
-        for nid,r in self.nodes.items():
-            if r["parent_id"]: self.children[r["parent_id"]].append(nid)
-        for p in self.products:
-            ins=[n for n in self.by_product[p] if self.nodes[n]["side"]=="inbound"]
-            if any(len(self.children[n])>1 for n in ins): raise ValueError("Branched inbound needs a BOM/Kitting adapter")
-            if sum(self.nodes[n]["node_type"]=="leaf_in" for n in ins)!=1: raise ValueError("Exactly one inbound source required")
-            if any(int(self.nodes[n]["bom_qty"])!=1 for n in ins): raise ValueError("Physical-unit BOM conversion must be explicit")
-        self.capacities={}
-        self.warnings=[]
-        for nid,r in self.nodes.items():
-            if r["plan_mode"]=="push": continue # receipt is unsealed in the current engine
-            for w in range(len(self.weeks)):
-                text=self.state[nid,w]["processing_limit"]
-                self.capacities[nid,w]=None if text=="" else int(float(text))
-            if r["side"]=="inbound" and all(self.capacities[nid,w] is None for w in range(len(self.weeks))):
-                self.warnings.append({"node_id":nid,"kind":"unset_capacity_not_physical_unlimited",
-                    "trial_policy":"explicit_engine_unbounded"})
-            if r["side"]=="inbound" and not r["parent_id"]:
-                # Backward also clips the root S at that week. This extra
-                # envelope constraint is the SAME machine, not extra capacity.
-                for w in range(len(self.weeks)):
-                    self.capacities["backward_root:"+nid,w]=self.capacities[nid,w]
-
-    def _back(self,w,lt,nid):
-        if not self.closed[nid]: return w-lt
-        left=lt; v=w-1
-        while left>0:
-            if v not in self.closed[nid]: left-=1
-            v-=1
-        return v+1
-
-    def _open(self,nid,w):
-        return next((x for x in range(max(w,0),len(self.weeks)) if x not in self.closed[nid]),len(self.weeks))
-
-    def footprint(self,product,market,plan_week,market_due=None):
-        """Unit internal demand positions and no-contention receipt/ship weeks.
-
-        Physical capacity is reserved on processing/receipt P, not on planned
-        S. This matters when holiday-skipping Backward offsets move arrivals.
-        """
-        ids=self.by_product[product]
-        leaf=next(n for n in ids if self.nodes[n]["node_name"]==market)
-        due={leaf:plan_week}; n=leaf
-        while self.nodes[n]["parent_id"]:
-            parent=self.nodes[n]["parent_id"]; r=self.nodes[n]
-            due[parent]=self._back(due[n],int(r["lt_wks"])+int(r["ss_wks"]),parent); n=parent
-        ot_root=n
-        root=next(n for n in ids if self.nodes[n]["side"]=="inbound" and not self.nodes[n]["parent_id"])
-        due[root]=due[ot_root]
-        n=root
-        chain=[n]
-        while self.children[n]:
-            child=self.children[n][0]; r=self.nodes[child]
-            due[child]=self._back(due[n],int(r["lt_wks"])+int(r["ss_wks"]),child)
-            n=child; chain.append(n)
-        if min(due.values())<0: return None
-        source=chain[-1]
-        pushed=next((n for n in chain if self.nodes[n]["plan_mode"]=="push"),None)
-        source_p=due[source]
-        if pushed:
-            if pushed not in self.push_leads: raise ValueError("Missing Mode 4 lead-time definition")
-            source_p=due[pushed]-self.push_leads[pushed]
-            if source_p<0: return None
-            if source_p in self.closed[source]:
-                prev=next((w for w in range(source_p-1,-1,-1) if w not in self.closed[source]),None)
-                source_p=prev if prev is not None else self._open(source,source_p+1)
-        actual={}; processed={}; uses=[]; p_w=source_p
-        for nid in reversed(chain):
-            r=self.nodes[nid]
-            if nid!=source:
-                child=self.children[nid][0]; cr=self.nodes[child]
-                # Push-buffer handoff uses its lt; normal handoff uses transit.
-                transit=int(cr["lt_wks"]) if cr["plan_mode"]=="push" else int(cr["transit_lt_wks"])
-                if transit<=0: transit=int(cr["lt_wks"])
-                p_w=actual[child]+transit
-            if r["plan_mode"]=="push":
-                processed[nid]=p_w; actual[nid]=self._open(nid,max(p_w,due[nid]))
-            else:
-                processed[nid]=self._open(nid,p_w)
-                uses.append((nid,processed[nid],1.))
-                actual[nid]=processed[nid] if r["plan_mode"]=="push_sub" else self._open(nid,max(processed[nid],due[nid]))
-            if not r["parent_id"]: uses.append(("backward_root:"+nid,due[nid],1.))
-        actual[ot_root]=max(actual[root],due[ot_root]); processed[ot_root]=actual[root]
-        uses.append((ot_root,processed[ot_root],1.))
-        path=[]; n=leaf
-        while n!=ot_root: path.append(n); n=self.nodes[n]["parent_id"]
-        for nid in reversed(path):
-            r=self.nodes[nid]; parent=r["parent_id"]
-            processed[nid]=self._open(nid,actual[parent]+int(r["lt_wks"]))
-            requested=market_due if nid==leaf and market_due is not None else due[nid]
-            actual[nid]=self._open(nid,max(processed[nid],requested))
-            uses.append((nid,processed[nid],1.))
-        if max(max(due.values()),max(processed.values()),max(actual.values()))>=len(self.weeks): return None
-        return {"positions":due,"processed":processed,"actual":actual,
-            "uses":tuple(uses),"market_week":actual[leaf]}
+        weeks=sorted({r["week"] for r in weekly})
+        nodes={nid:{**r,"lt_wks":int(r["lt_wks"]),"transit_lt_wks":int(r["transit_lt_wks"] or 0),
+                    "ss_wks":int(r["ss_wks"]),"bom_qty":int(r["bom_qty"])} for nid,r in rows.items()}
+        state={(r["node_id"],int(r["week_index"])):{
+                   "processing_limit":None if r["processing_limit"]=="" else int(float(r["processing_limit"])),
+                   "is_open":r["is_open"]!="False"} for r in weekly}
+        super().__init__(nodes,state,weeks,push_leads=push_leads)
+        self.warnings=[{"node_id":n,"kind":"unset_capacity_not_physical_unlimited",
+                        "trial_policy":"explicit_engine_unbounded"}
+                       for n in self.unset_nodes if self.nodes[n]["side"]=="inbound"]
 
     def problem(self,model_dir,max_advance):
         demand=defaultdict(int)

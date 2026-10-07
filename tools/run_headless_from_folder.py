@@ -102,7 +102,7 @@ def _select_plugins(spec: str):
 def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "output/ppc",
         verbose: bool = True, demand_file: str = "demand_forecast.csv",
         planning_state: bool = False, lot_flow_mode: str = None,
-        flow_check_dir: str = None) -> dict:
+        flow_check_dir: str = None, extra_plugins: list = None) -> dict:
     """GUI の planning + PPC を再現し、KPI スナップショット dict を返す。
 
     lot_flow_mode（RequestLetter_LotIdentityFlow C1）："identity"／"legacy"。
@@ -121,6 +121,9 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
             `"demand_forecast_A03.csv"` のように、A系統の配分から生成した
             需要ファイルを差し替えて読める。`materialize_warmup()` にも
             **同じ値**を渡す（V2.4・`demand_file` の分岐が2箇所あることに注意）。
+        extra_plugins: 名前の指定とは別に、このプラグインの実体も登録する（測定の道具が、
+            設定を持たせたプラグインを渡すため。RequestLetter_GenerationLine_UpperLayer）。
+            既定 None のときの動きは変わらない。snapshot の config にはクラス名が入る。
         planning_state: True のときだけ、返却に `"planning_state_extras"` キーを
             足す（週リスト・市場別 S/CO）。既定 False のときの返却は**現行と
             1バイトも変わらない**（C8）。golden 13ケースはこの経路を通らない。
@@ -191,6 +194,7 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
            # read by plugins that trial-run ForwardPlanner (BufferingStockOptimizer)
            "lot_flow_mode": lot_flow_mode}
     active_plugins, harvest_plugin = _select_plugins(plugins_spec)
+    active_plugins = active_plugins + list(extra_plugins or [])
     for pl in active_plugins:
         pl.register(bus)
     if verbose:

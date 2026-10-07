@@ -8,9 +8,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **WOM (Weekly Operation Model)** は週次PSI（Production/Sales/Inventory）を基本単位とするE2Eサプライチェーン計画・シミュレーションツール。Python \+ tkinter GUI。
 
-- 起動: `python -m main`（GUIモード）/ `python -m main --cli`（ヘッドレス）  
-- 現バージョン: v1r0m3（branch: `wom-v1r0m3`）  
-- 適用事例: Japanese Rice SC（`data/sample/rice-japan-2027-2028/`）、iPhone Global SC（`data/sample/iphone-2027-2029/`）
+> **新しい人・新しい AI は、まず `docs/WOM_Start_Here.md` を読むこと。** 今有効な規則の索引、新しいモデルの作り方、機能の地図がある。計画の正典は `docs/design/WOM_Forward_LotID_Decision_Record_2026-09-29.md`。
+> このファイルの日付付きの節の多くは**開発の経緯の記録**で、後の変更で置き換わった記述も残っている。今有効な規則は Start Here から辿ること。
+
+- 起動: `python -m main`（GUIモード）/ headless: `python -m tools.run_headless_from_folder --model-dir data\sample\<モデル> --plugins safe`  
+- 現在の開発ブランチ: `wom-v1r5m1_cap_trial`（リモート `composite_node` ＝ `Yasushi-Osugi/wom_development_composite_node` の default branch。2026-10）  
+- サンプルモデル: `data/sample/`（golden 対象 13 件の一覧と、手本にするモデルは Start Here §4.1）
 
 ---
 
@@ -290,7 +293,7 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
 - `sc_tree_to_planning_df()`は`leaf_out`ノードのみを処理するため、DAD在庫はKPI DataFrameに現れない  
 - World Map の地図データは `data/worldmap_ne/`（`tools/build_worldmap_ne.py` が作る）。`data/worldmap_cache.db`・`tools/download_worldmap_tiles.py` は使われていない（残してあるだけ。消すかは大杉さんが決める。download は実行しない）  
 - Planning Engine実行後にChartsタブを確認する場合、`Refresh`ボタンを押すこと  
-- 新しいモデルフォルダを追加する場合は`rice-japan-2027-2028/`を参考に全CSVを揃えること
+- 新しいモデルフォルダを追加する場合は `docs/WOM_Start_Here.md` §4 を参照（手本は Cookie-jp-2026 など。rice は legacy の方式で、今は手本にしない）
 - Linuxのbash Editツールは大きいファイルを切り捨てることがある。重要ファイルの書き換えは `cat > file << 'PYEOF'` ヒアドックで行うこと
 
 ---
@@ -1877,4 +1880,15 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 - **照合**：`tools/worldmap_flow_check.py`（vc_edge_flows.csv・LOVEM の観測と）、`tools/gui_worldmap_check.py`（全モデルの GUI の通し・描画時間・スクリーンショット）、`tests/test_worldmap_actual_flows.py`。
 - **試作の窓** `python -m wom.worldmap_ne` は描画の速さを測る道具として残す（流れは需要から作ったもので、窓に「需要の流れ（試作の計測用。計画の結果ではない）」と出す）。
 - **座標の規則**：座標は node_master の行だけから取る。例外は Stock Yard（`node_type = stockyard`）で、座標が無ければ親の組立工場の位置に置き「親の位置に合わせた」一覧に出す（node_master に書けばそちらを使う）。rice の node_master の node_id は計画の木の名前に揃えた。iphone は i15/i17 の DC・工場の行を足し、`Retail_*` は代表の地点（仮）（`data/sample/iphone_global/README.md`）。2026-10-06 時点で 15 モデルすべて「座標なし」0。
+
+---
+
+## 世代の切り替えのラインと、能力を上位で扱う層（RequestLetter_GenerationLine_UpperLayer、2026-10-08）
+
+- **報告書（正典）**：`docs/development/WOM_GenerationLine_UpperLayer_Report.md`（付表・図 `docs/development/generation_line/`）
+- **smartx の世代の切り替え**：SmartX と SmartXNext は**同じ組立ラインを共有**（混流なし）。`capacity_plan.csv` の `AssemblyCN_g1`（1,438／週）と `AssemblyCN_g3`（3,713／週）を、切り替えの週 `s*` = **2028-W26**・空き期間 4 週（2028-W26〜W29）で、**計画期間の全週**書いた（〜W25 は g1 だけ、空き期間は両方 0、W30〜は g3 だけ）。発売前・停止後の週も 0 を明示する（空欄は上限なし）。能力 ＝ ピークの週の需要 × 1.1 を切り上げ。詳細・作り直し方は `data/sample/smartx-2027-2029/README.md`、道具 `tools/gen_generation_line_capacity.py`。
+- **`s*` の決め方**：`tools/generation_switch_sweep.py` が候補の週ごとに上位の LP を解き、未割当が最小（同じなら在庫の lot・週が最小）を選ぶ。**`s*` は前倒しの窓で大きく変わる**（17 週 → 2028-W26・未割当 15,700、全期間 → 2028-W19・未割当 0 だが最大 140 週前倒し）。大杉さんの決定は窓 17 週。窓ごとの比較表は報告書 §3.2。
+- **上位の層（Capacity Layer）**：`wom/plugins/capacity_layer.py`（POST_BACKWARD、**既定 OFF**、headless の `safe` にも入れない）。Backward の直後の木から上位の LP（`wom/capacity_layer/solver.py`：①要求週までの割当を最大 → ②前倒しの lot・週を最小）を作って解き、**市場以外のノードの `psi4demand`（内部の計画の位置）だけ**を置き換える。**市場の Lot_ID・要求週・需要 CSV は変えない**。割り当てられない lot は市場に注文残として残り、一覧・警告に出る。設定 `capacity_layer_config.csv`（`max_advance_weeks`、ON なのに無ければ止める）。直列の InBound だけ扱う（分岐・bom_qty≠1・push Mode 1〜3 は `UnsupportedTreeError`／設定エラーで止める）。アダプターは `wom/capacity_layer/serial_adapter.py`（Astra君の試作の footprint をそのまま移した。`smartx_trial.SmartxAdapter` はその上の CSV 読み込み）。
+- **注意：golden は上位の層 OFF**。OFF のとき Backward の能力の押し戻しには**前倒しの上限が無い**ので、smartx の golden の SmartX は切り替えの後の需要を全部作りだめる（`SP_SmartX` の在庫 971,956 lot・週）。窓 17 週の計画は ON で見る（SmartX 未割当 14,426、SmartXNext 1,274、SmartXPro_CN 1,202〔2030-W14 の生産終了、データは今のまま〕、SmartXPro_IN の遅配 16,073 → 0）。
+- **照合の道具**：`tools/generation_line_compare.py`（OFF／ON、市場の要求の同一性、LOVEM の actual_ship との 1 対 1、混流なし）、`tools/gui_generation_line_check.py`（実アプリの窓で Network の図と**全ノードの PSI List** を描かせる）。headless の `run()` に `extra_plugins`（既定 None）を足した。
 
