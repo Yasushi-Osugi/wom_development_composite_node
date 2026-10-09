@@ -97,8 +97,8 @@ const DATA = {
          detail:"InBound leafノード。SiliconWafer_TW等の高固定費Fabが該当。自律PUSHで常時稼働型。調達LTとppc_supplier_costを保持。lot_idのregion部分はlot_id.split(':')[1]で抽出。",
          tags:["InBound","PUSH","調達LT","leaf_in","SiliconWafer_TW"]},
         {id:"mom", label:"MOM（母）", sub:"製造拠点・産地集荷センター",
-         detail:"InBound rootノード（Mother of Manufacturing）。psi4supply[w][I]に実際のバッファ在庫が蓄積。Foxconn_CNがDBRのDrum（ペースメーカー）。cap_hard staircase: 800→534→267→0/wk。",
-         tags:["InBound","製造","BufferStock","cap_hard","Drum","Foxconn_CN"]},
+         detail:"InBound rootノード（Mother of Manufacturing）。psi4supply[w][I]に実際のバッファ在庫が蓄積。EMS_A_CNがDBRのDrum（ペースメーカー）。cap_hard staircase: 800→534→267→0/wk。",
+         tags:["InBound","製造","BufferStock","cap_hard","Drum","EMS_A_CN"]},
         {id:"sp", label:"supply_point", sub:"InBound/OutBound Bridge",
          detail:"HQ BridgeノードでInBoundとOutBoundを接続（MOM S=DAD P）。Multi-MOM配分比率をlane_assignment.csvで管理。Tariff&FX影響額（Landed Cost）の集約点。",
          tags:["Bridge","MOM_S_DAD_P","lane_assignment","HQ","Tariff","FX"]},
@@ -127,7 +127,7 @@ const DATA = {
          detail:"STEP3。HarvestBatchPluginが収穫期バッチ生産を設定。HolidayCalendarPluginがcap_hard設定とexplicit_closuresをPlanningContextに書き込む（v1r0m2設計）。",
          tags:["HOOK_PRE_PLAN","HarvestBatch","HolidayCalendar","cap_hard","explicit_closures"]},
         {id:"bwd", label:"BackwardPlanner", sub:"leaf_out → 上流へ逆伝播（STEP4）",
-         detail:"STEP4。leaf_outから上流へ需要を逆伝播。v1r0m2でweek_idx -= lead_time_weeksのLT offsetと閉鎖週スキップを追加予定。cap_hard envelopeによるJIT同期（commit 7a22648）実装済み。Multi-MOMパスで_build_lot_leaf_index実装済み（iPhoneモデルのAttributeError修正）。",
+         detail:"STEP4。leaf_outから上流へ需要を逆伝播。v1r0m2でweek_idx -= lead_time_weeksのLT offsetと閉鎖週スキップを追加予定。cap_hard envelopeによるJIT同期（commit 7a22648）実装済み。Multi-MOMパスで_build_lot_leaf_index実装済み（SmartphoneモデルのAttributeError修正）。",
          tags:["BackwardPlanner","STEP4","LT_offset","cap_hard_envelope","JIT","commit_7a22648"]},
         {id:"copy", label:"copy_demand_to_supply", sub:"psi4demand → psi4supply（STEP6）",
          detail:"STEP5: HOOK_POST_BACKWARD、STEP6: copy_demand_to_supply()でpsi4demand→psi4supplyへコピー。STEP7: HOOK_POST_COPYプラグインが介入可能。",
@@ -148,8 +148,8 @@ const DATA = {
       ]
     },
     {
-      id:"dbr", title:"DBR設計（iPhone Global SC）", color:"coral",
-      desc:"SiliconWafer → Buffer_Wafer → TSMC → Foxconn のPUSH/PULL構造。Drum-Buffer-Rope設計。",
+      id:"dbr", title:"DBR設計（Smartphone Global SC）", color:"coral",
+      desc:"SiliconWafer → Buffer_Wafer → Foundry_A → EMS_A のPUSH/PULL構造。Drum-Buffer-Rope設計。",
       nodes:[
         {id:"sw", label:"SiliconWafer_TW", sub:"leaf_in（自律PUSH・常時稼働）",
          detail:"InBound leaf_in。高固定費Fab＝常時稼働型。自律PUSHで週次固定量を生産。Buffer_Wafer_TWに供給。push_config.csvでmode_only設定。",
@@ -157,17 +157,17 @@ const DATA = {
         {id:"buf", label:"Buffer_Wafer_TW", sub:"PUSH/PULL break-point（Mode 4）",
          detail:"decouplingノード。Mode 4 LT-shifted PUSH（push_lead_time_weeks=26）で制御。PSI4フェーズ: Pre-build（〜W27: 生産0）→ Pre-build積上（W28〜W52: 800/wk, I→20,800）→ Steady（P=S=800）→ Staircase gap（534→267→0）→ EOL stop。2030-W13付近にI→0。",
          tags:["decoupling","Mode4","LT-shifted","push_lead_time_weeks_26","Buffer","EOL"]},
-        {id:"tsmc", label:"TSMC_TW", sub:"PULL（Foxconn cap_hardに同期）",
-         detail:"cap_hard envelopeでFoxconn_CNのスケジュールにJIT同期（commit 7a22648）。Buffer_Wafer_TWからウェーハを受け取りチップを製造してFoxconn_CNへ供給。",
-         tags:["PULL","JIT","cap_hard_envelope","同期","TSMC","commit_7a22648"]},
-        {id:"fox", label:"Foxconn_CN", sub:"Drum（DBRペースメーカー・MOM）",
+        {id:"foundry_a", label:"Foundry_A_TW", sub:"PULL（EMS_A cap_hardに同期）",
+         detail:"cap_hard envelopeでEMS_A_CNのスケジュールにJIT同期（commit 7a22648）。Buffer_Wafer_TWからウェーハを受け取りチップを製造してEMS_A_CNへ供給。",
+         tags:["PULL","JIT","cap_hard_envelope","同期","Foundry_A","commit_7a22648"]},
+        {id:"fox", label:"EMS_A_CN", sub:"Drum（DBRペースメーカー・MOM）",
          detail:"DBRのDrum = ペースメーカー。cap_hard staircase: 800→534→267→0 lots/wk。このリズムがSC全体に伝播。_in_propagateでall_lots[:int(cap_w)]にクリップ。commit 7a22648で実装済み。",
-         tags:["Drum","DBR","cap_hard","staircase","MOM","Foxconn","ペースメーカー"]}
+         tags:["Drum","DBR","cap_hard","staircase","MOM","EMS_A","ペースメーカー"]}
       ],
       edges:[
         {from:"sw", to:"buf", label:"ウェーハFab PUSH"},
-        {from:"buf", to:"tsmc", label:"ウェーハ供給"},
-        {from:"tsmc", to:"fox", label:"チップ→Foxconn組立"}
+        {from:"buf", to:"foundry_a", label:"ウェーハ供給"},
+        {from:"foundry_a", to:"fox", label:"チップ→EMS_A組立"}
       ]
     },
     {
@@ -227,8 +227,8 @@ const DATA = {
          detail:"node_name, product_nameが主キー。v1r0m2でlead_time_weeks列追加予定。node_typeはWOMモデル用語（mom/dad/leaf_in/leaf_out/supply_point）を使用。rice-japan-2027-2028/を参考に全CSVを揃えること。",
          tags:["sc_tree","LT","v1r0m2","WOMモデル用語","mom","dad","supply_point"]},
         {id:"demand_f", label:"demand_forecast.csv", sub:"sku_id・region・week（週次需要起点）",
-         detail:"週次需要予測の起点。lot_generatorがこのCSVからlot_id付き需要ロットを生成。regionはleaf_outのregion属性と対応。iPhoneモデル: data/sample/iphone-2027-2029/。",
-         tags:["demand_forecast","lot_generator","region","週次","sku_id","iphone"]},
+         detail:"週次需要予測の起点。lot_generatorがこのCSVからlot_id付き需要ロットを生成。regionはleaf_outのregion属性と対応。Smartphoneモデル: data/sample/smartphone-2027-2029/。",
+         tags:["demand_forecast","lot_generator","region","週次","sku_id","smartphone"]},
         {id:"push_c", label:"push_config.csv", sub:"PUSHモード設定（Mode 1〜4）",
          detail:"Mode選択: push_qty_per_week>0→Mode1（固定）、push_lead_time_weeks>0→Mode4（LT-shifted、最優先）、pre_build系→Mode3（時間軸分割）、それ以外→Mode2（補充）。Buffer_Wafer_TW: push_lead_time_weeks=26でライフサイクルPSIを自動生成。",
          tags:["push_config","Mode4","LT-shifted","decoupling","Mode1","Mode2","Mode3"]},
@@ -249,11 +249,11 @@ const DATA = {
         {id:"bug1", label:"HolidayCalendarPlugin MemoryError", sub:"修正済み",
          detail:"on_post_backwardでcap_hard(w)==0.0で閉鎖週判定していたが、plan_node.pyがデフォルト全週cap_hard=0.0に初期化するため全週閉鎖扱いになりdisplaced lotsが指数的増加してMemoryError。修正: explicit_closures dictを構築しCSVに明示定義した週のみ閉鎖週とする。",
          tags:["HolidayCalendar","MemoryError","cap_hard","explicit_closures","修正済"]},
-        {id:"bug2", label:"_build_lot_leaf_index 未実装", sub:"修正済み（iPhone AttributeError）",
-         detail:"backward_planner.pyの多MOMパスで_build_lot_leaf_indexを呼び出していたが未実装だった（iPhoneモデルでAttributeError）。修正: OTツリーのleaf_outノードを走査してlot_id→PlanNodeインデックスを構築。leaf.regionはlot_id.split(':')[1]で抽出。",
-         tags:["BackwardPlanner","MultiMOM","AttributeError","lot_id","修正済","iPhone"]},
+        {id:"bug2", label:"_build_lot_leaf_index 未実装", sub:"修正済み（Smartphone AttributeError）",
+         detail:"backward_planner.pyの多MOMパスで_build_lot_leaf_indexを呼び出していたが未実装だった（SmartphoneモデルでAttributeError）。修正: OTツリーのleaf_outノードを走査してlot_id→PlanNodeインデックスを構築。leaf.regionはlot_id.split(':')[1]で抽出。",
+         tags:["BackwardPlanner","MultiMOM","AttributeError","lot_id","修正済","Smartphone"]},
         {id:"bug3", label:"holiday_calendar.csvノード名誤り", sub:"修正済み",
-         detail:"demand_multiplier行のノード名がSales_US_iPhone16/Sales_EU_iPhone16（存在しない）。正しくはRetail_AMER/Retail_EMEA（sc_tree_master.csvのleaf_out node_name）。",
+         detail:"demand_multiplier行のノード名がSales_US_Phone16/Sales_EU_Phone16（存在しない）。正しくはRetail_AMER/Retail_EMEA（sc_tree_master.csvのleaf_out node_name）。",
          tags:["holiday_calendar","ノード名","Retail_AMER","Retail_EMEA","修正済"]},
         {id:"bug4", label:"ファイルnullバイト汚染", sub:"修正済み（Windowsコピー起因）",
          detail:"v1r0m1のbackward_planner.pyとholiday_calendar.csvにnullバイト混入（Windowsでのコピー操作が原因の可能性）。Linux bashのcpで上書きして修復。app.pyはLinux bashで約172KB切り捨て→Windowsで構文チェック: python -c \"import ast; ast.parse(open('wom/gui/app.py').read())\"",

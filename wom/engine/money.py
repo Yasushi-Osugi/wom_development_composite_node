@@ -5,7 +5,7 @@ Converts quantity PSI simulation output into money PSI:
   Revenue        = demand_fulfilled × selling_price
   COGS           = demand_fulfilled × unit_cost
 
-  What demand_fulfilled is (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2)
+  What demand_fulfilled is (RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 C2)
   is told by the row's Cols.QTY_BASIS, written by sc_tree_to_planning_df:
     "actual_ship"  identity plan: the ACTUAL shipment of the week (late
                    shipments included) -- Revenue / COGS of what was shipped.

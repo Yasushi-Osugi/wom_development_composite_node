@@ -112,8 +112,8 @@ P_opt ≥ P_grid       （格子は連続空間の部分集合）
 | 状況 | ケース数 | 内訳 |
 |---|---:|---|
 | 測定済み | 1 | `soysauce-jpy-2027-alloc` |
-| **`ga_market_aggregation.csv` のみ不足** | 13 | `Cookie-jp-2026` / `apparel-global-2028-2029` / `apparel-us-2026` / `bom-test-2026` / `ev-europe-2026` / `ev-thailand-2026` / `ev-thailand-2026_update` / `india-ghee-2026` / `iphone_global` / `oil-global-2027` / `smartx-2027-2029` / `soysauce-eu-2027` / `soysauce-jpy-2027` / `soysauce-us-2027` |
-| PPC 系 CSV が未整備 | 3 | `iphone` / `rice-japan-2027-2028`（＋バックアップ） |
+| **`ga_market_aggregation.csv` のみ不足** | 12 | `Cookie-jp-2026` / `apparel-global-2028-2029` / `apparel-us-2026` / `bom-test-2026` / `ev-europe-2026` / `ev-thailand-2026` / `ev-thailand-2026_update` / `smartphone-global-2026-2029` / `oil-global-2027` / `smartx-2027-2029` / `soysauce-eu-2027` / `soysauce-jpy-2027` / `soysauce-us-2027` |
+| PPC 系 CSV が未整備 | 3 | `smartphone-legacy`（2026-10-09 削除済み） / `rice-japan-2027-2028`（＋バックアップ） |
 
 **13ケースは `ga_market_aggregation.csv` 1本が足りないだけ**である。`ppc_node_cost_rule` / `ppc_edge_cost_rule` / `ppc_supplier_cost` / `ppc_tariff_rule` / `ppc_market_price` / `sc_tree_master` / `sku_master` / `ppc_transfer_price_rule` はすべて揃っている。
 

@@ -146,7 +146,7 @@ HOOK\_POST\_PLAN     \# 全製品計画完了後
 
 新プラグインは `plugin_base.py` の `WOMPlugin` を継承し、`ALL_BUILTIN_PLUGINS` に追加する。
 
-**モデルごとの推奨のプラグインの組（2026-10-09、`docs/development/WOM_PublicReadiness_Plugins_Report.md`）**：各モデルの `planning_config.csv` の `recommended_plugins`（クラス名の comma 区切り。値に comma があるので `"…"` で囲む）＝その golden の組。**GUI は Load Model Folder でチェックをこの組に合わせ**（組に無いものは OFF、後で手で変えられる）、**headless は `--plugins` を省略するとこの組**（キーが無いモデルは `safe`。使った組の出所を snapshot の `config.plugins_source` に記録）。これで GUI の既定＝headless の既定＝golden。golden の無いモデル（ev-thailand-2026_update・india-ghee-2026・iphone・soysauce-jpy-2027-alloc）は `safe` の 3 つ（Owner の決定）。**知らないプラグインの名前**（`--plugins`・`recommended_plugins`。例：削除した `HarvestBatchPlugin`）は、実行・読み込みの前に止まり、使える名前の一覧を出す（`wom/plugins/selection.py`）。
+**モデルごとの推奨のプラグインの組（2026-10-09、`docs/development/WOM_PublicReadiness_Plugins_Report.md`）**：各モデルの `planning_config.csv` の `recommended_plugins`（クラス名の comma 区切り。値に comma があるので `"…"` で囲む）＝その golden の組。**GUI は Load Model Folder でチェックをこの組に合わせ**（組に無いものは OFF、後で手で変えられる）、**headless は `--plugins` を省略するとこの組**（キーが無いモデルは `safe`。使った組の出所を snapshot の `config.plugins_source` に記録）。これで GUI の既定＝headless の既定＝golden。golden の無いモデル（ev-thailand-2026_update・smartphone-legacy・soysauce-jpy-2027-alloc）は `safe` の 3 つ（Owner の決定）。→ 2026-10-09（`docs/development/WOM_SampleNames_PublicReview_Report.md`）に smartphone-legacy を削除し、ほかは golden を作った（組は `safe` のまま）。**知らないプラグインの名前**（`--plugins`・`recommended_plugins`。例：削除した `HarvestBatchPlugin`）は、実行・読み込みの前に止まり、使える名前の一覧を出す（`wom/plugins/selection.py`）。
 
 ### PPC（Profit Price Cost）エンジン（`wom/ppc/`）
 
@@ -244,7 +244,7 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
 
 - v1r0m2（branch: `wom-v1r0m2`）をベースラインとして保存済み  
 - v1r0m3では **MOM Constrained Demand Allocation**（BackwardPlannerでのMOM cap_hardクリップ + CO前倒し）を実装  
-- `data/sample/iphone-2027-2029/` を参照・拡充する  
+- `data/sample/smartphone-2027-2029/`（現在の `smartphone-global-2026-2029`）を参照・拡充する  
 - コード変更はすべて `wom-v1r0m3` ブランチで行い、GitHubへpushする  
 - GitHub: `https://github.com/Yasushi-Osugi/wom_v1r0m0.git`
 
@@ -284,7 +284,7 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
     python -m tools.run_headless_from_folder --model-dir "data\sample\$c" --plugins $pl --out "tests\golden\$c.json" --quiet }
   ```
   ※ プラグインの組は各モデルの `planning_config.csv` の `recommended_plugins`（＝その golden の組。rice は Rice Seasonal を含む）。**`--plugins` は必ず明示する**（省略すると snapshot の config に `plugins_source` が入り、golden の config と一致しなくなる）。
-  ※ レガシー `iphone`（旧サンプル・CNY FX 欠落で失敗）と `rice-…_BK…`（古いバックアップ）は golden 対象外。
+  ※ レガシー `smartphone-legacy`（旧サンプル・CNY FX 欠落で失敗。2026-10-09 削除済み）と `rice-…_BK…`（古いバックアップ）は golden 対象外。
 
 ---
 
@@ -308,11 +308,11 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
 **修正**: `self._rules` から `explicit_closures` dict を構築し、CSVに明示定義された週のみを閉鎖週とする方式に変更。open週がない場合はlotsをdropする（ForwardPlannerへの再割り当てなし）。
 
 ### BackwardPlanner._build_lot_leaf_index（実装済み）
-`wom/engine/backward_planner.py` の多MOM（Multi-MOM）パスで `self._build_lot_leaf_index(ot_root)` を呼び出しているが、このメソッドが未実装だった（iPhone モデルで `AttributeError`）。
+`wom/engine/backward_planner.py` の多MOM（Multi-MOM）パスで `self._build_lot_leaf_index(ot_root)` を呼び出しているが、このメソッドが未実装だった（Smartphone モデルで `AttributeError`）。
 **修正**: OTツリーのleaf_outノード（`node.children`が空）を走査して `lot_id → PlanNode` インデックスを構築するメソッドを追加。また `leaf.region`（PlanNodeに`.region`属性なし）は `lot_id.split(":")[1]` でlot_idから抽出する方式に変更。
 
 ### holiday_calendar.csv のノード名（修正済み）
-demand_multiplier 行のノード名 `Sales_US_iPhone16` / `Sales_EU_iPhone16` は存在しない。正しくは `Retail_AMER` / `Retail_EMEA`（sc_tree_master.csvのleaf_out node_name）。
+demand_multiplier 行のノード名 `Sales_US_Phone16` / `Sales_EU_Phone16` は存在しない。正しくは `Retail_AMER` / `Retail_EMEA`（sc_tree_master.csvのleaf_out node_name）。
 
 ### ファイルのnullバイト汚染（修正済み）
 v1r0m1の `backward_planner.py` と `holiday_calendar.csv` にnullバイトが混入していた（Windowsでのコピー操作が原因の可能性）。Linuxの `bash cp` で上書きして修復。
@@ -326,23 +326,23 @@ Windowsでフォルダをコピーした場合、`__pycache__/*.pyc` も元の�
 **対処**: `os.utime(file, (now+10, now+10))` で .py ファイルのタイムスタンプを .pyc より新しくするか、`PYTHONDONTWRITEBYTECODE=1` + Python による .py 直接書き込み（`python3 << 'EOF'` ヒアドック）で迂回する。pytest 実行時は `PYTHONDONTWRITEBYTECODE=1 python -m pytest ... -p no:cacheprovider` を使うこと。
 
 ### PPC detect_scenario() が biscuit-jp-2026 → Cookie-jp-2026 リネーム後に不一致（修正済み、2026-07-05）
-`data/sample/biscuit-jp-2026/` を `Cookie-jp-2026/` にリネーム＋SKU名を `OREO_JP`/`LUVAN_JP` → `Cookie_Import`/`Cookie_Local` に変更した際、`wom/ppc/ppc_engine.py` の `detect_scenario()` 側（`_BISCUIT_PRODUCTS = {"OREO_JP", "LUVAN_JP"}` 等）が更新されておらず、新SKU名と一致しないため `"iphone"` シナリオにフォールバックしていた。`mom_node`/`supplier_node`/`dad_node`/`dad_nodes_chain` も旧ノード名（`Factory_OREO_CN`, `DC_JP_BONDED`, `Factory_LUVAN_JP`, `DC_LUVAN_JP` 等）のままで、`ppc_node_cost_rule.csv` の実ノード名（`Factory_GP_CN`, `DC_Import_Buffer`, `DC_Import_Main`, `Factory_DP_JP`, `DC_Local_JP`）と不一致だった。
+`data/sample/biscuit-jp-2026/` を `Cookie-jp-2026/` にリネーム＋SKU名を旧SKU名から `Cookie_Import`/`Cookie_Local` に変更した際、`wom/ppc/ppc_engine.py` の `detect_scenario()` 側（`_BISCUIT_PRODUCTS` 等、旧SKU名のまま）が更新されておらず、新SKU名と一致しないため旧スマートフォンのシナリオにフォールバックしていた。`mom_node`/`supplier_node`/`dad_node`/`dad_nodes_chain` も旧ノード名のままで、`ppc_node_cost_rule.csv` の実ノード名（`Factory_GP_CN`, `DC_Import_Buffer`, `DC_Import_Main`, `Factory_DP_JP`, `DC_Local_JP`）と不一致だった。
 **修正**: `wom/ppc/ppc_engine.py`（`_COOKIE_PRODUCTS`/`_COOKIE_CHANNELS`, `build_cookie_vs_paths()`, `detect_scenario()` の戻り値 `"cookie"`）、`wom/ppc/ppc_runner.py`、`wom/ppc/__main__.py`、`wom/ppc/ppc_backward.py`（コメント）を新ノード名・新シナリオ名に更新。また `node_master.csv` / `sc_tree_master.csv` / `edge_cost_master.csv` 内の日本語ラベル「ビスケット」を「クッキー」に修正（World Map表示にも反映）。
 **確認状況**: World Map表示は確認済みOK。PPC Cockpit（Cookie_Local）のCost Waterfallが `ppc_node_cost_rule.csv` の実値（Factory_DP_JP conversion_cost 9000 JPY, DC_Local_JP sga_cost 4000 JPY）と一致することを確認し、正しいノードチェーンでコストが拾えていることを確認済み。**Cookie_Import 側（`DC_Import_Buffer`→`DC_Import_Main` の2段DADチェーン、`DC_Import_Main`のSGA 1500円が正しく合算されるか）は未確認 — 次回セッションでSKUフィルタを`Cookie_Import`に切り替えて確認すること。** また `python -c "import ast; ast.parse(...)"` によるWindows側の構文チェックも未実施（Linux bashマウント経由では大きめの `.py` ファイルが切り捨てられ `ast.parse` が誤ってSyntaxErrorを出すため、Windows側で確認が必要）。
 
-### ev-thailand-2026 の BYD/Tesla 実ブランド名を匿名化（完了、2026-07-06）
-`data/sample/ev-thailand-2026/` は `BYD_ATTO3`/`TESLA_M3` という実在EVメーカーのブランド名・車種名を含んだままだった。note記事ドラフト（`260704タイEV_note記事ドラフト.docx`）はすでに `EVmaker_Local`/`EVmaker_Import` という匿名名を前提に書かれており、CSVとの不一致があった。
-**修正**: 全17 CSVファイル（`sku_master.csv`, `node_master.csv`, `sc_tree_master.csv`, `node_cost_master.csv`, `edge_cost_master.csv`, `lane_assignment.csv`, `route_master.csv`, `push_config.csv`, `holiday_calendar.csv`, `inventory_master.csv`, `capacity_plan.csv`, `demand_forecast.csv`, `ppc_edge_cost_rule.csv`, `ppc_market_price.csv`, `ppc_node_cost_rule.csv`, `ppc_node_profit_zone.csv`, `ppc_profit_zone_rule.csv`, `ppc_supplier_cost.csv`, `ppc_tariff_rule.csv`, `ppc_transfer_price_rule.csv`）で以下の対応関係にリネーム：
-- `BYD_ATTO3` → `EVmaker_Local`、`TESLA_M3` → `EVmaker_Import`
-- `SP_BYD_TH`→`SP_EV_Local`、`Factory_BYD_TH`→`Factory_Local_TH`、`DC_BYD_TH`→`DC_EV_Local`
-- `SP_TESLA_TH`→`SP_EV_Import`、`Factory_TESLA_CN`→`Factory_Import_CN`、`DC_TESLA_TH`→`DC_EV_Import`、`Components_CN_T`→`Components_CN`
-- `Sales_TH_BKK_t`/`_PRO_t`/`_ONL_t`（Tesla側チャネル）→ `_i` サフィックスに変更（`Sales_TH_BKK_i` 等）。Local側の `Sales_TH_BKK`/`_PRO`/`_ONL` はサフィックスなしのまま据え置き（note記事ドラフトの命名と一致）。
-- 説明文中の実企業名（レバーオートモーティブ、CATL、Gigafactory等）も除去し一般化。
+### ev-thailand-2026 の実ブランド名を匿名化（完了、2026-07-06）
+`data/sample/ev-thailand-2026/` は実在EVメーカーのブランド名・車種名（旧SKU名・旧ノード名）を含んだままだった。note記事ドラフト（`260704タイEV_note記事ドラフト.docx`）はすでに `EVmaker_Local`/`EVmaker_Import` という匿名名を前提に書かれており、CSVとの不一致があった。
+**修正**: 全17 CSVファイル（`sku_master.csv`, `node_master.csv`, `sc_tree_master.csv`, `node_cost_master.csv`, `edge_cost_master.csv`, `lane_assignment.csv`, `route_master.csv`, `push_config.csv`, `holiday_calendar.csv`, `inventory_master.csv`, `capacity_plan.csv`, `demand_forecast.csv`, `ppc_edge_cost_rule.csv`, `ppc_market_price.csv`, `ppc_node_cost_rule.csv`, `ppc_node_profit_zone.csv`, `ppc_profit_zone_rule.csv`, `ppc_supplier_cost.csv`, `ppc_tariff_rule.csv`, `ppc_transfer_price_rule.csv`）で、旧SKU名・旧ノード名を次の一般名にリネーム（旧名との対応はリポジトリに置かない）：
+- SKU：`EVmaker_Local`、`EVmaker_Import`
+- Local 側：`SP_EV_Local`、`Factory_Local_TH`、`DC_EV_Local`
+- Import 側：`SP_EV_Import`、`Factory_Import_CN`、`DC_EV_Import`、`Components_CN`
+- Import 側チャネルは `_i` サフィックス（`Sales_TH_BKK_i` 等）。Local側の `Sales_TH_BKK`/`_PRO`/`_ONL` はサフィックスなしのまま据え置き（note記事ドラフトの命名と一致）。
+- 説明文中の実企業名・工場の呼び名も除去し一般化。
 
-**確認状況**: `wom/ppc/ppc_engine.py`/`ppc_runner.py`にBYD/Tesla固有のハードコード分岐は存在せず（biscuitのような専用シナリオ関数はなし）、PPCエンジンは`ppc_runner.py`の「GENERIC」自動検出パス（sc_treeからmom/supplier/dad nodeを動的に発見）でこのモデルを扱う設計だったため、**Pythonコード側の修正は不要**。リネーム後、CSV内に旧トークン（BYD_ATTO3, TESLA_M3, Factory_BYD_TH等）が残っていないことをGrep確認済み。行数・列構造も変化なし（capacity_plan.csv 625行、demand_forecast.csv 624行、変更前と一致）。GUI起動してWorld MapとPPC Cockpitの実挙動を確認済みOK（下記Landed Costバグ発見時に併せて確認）。
+**確認状況**: `wom/ppc/ppc_engine.py`/`ppc_runner.py`に旧ブランド固有のハードコード分岐は存在せず（biscuitのような専用シナリオ関数はなし）、PPCエンジンは`ppc_runner.py`の「GENERIC」自動検出パス（sc_treeからmom/supplier/dad nodeを動的に発見）でこのモデルを扱う設計だったため、**Pythonコード側の修正は不要**。リネーム後、CSV内に旧トークンが残っていないことをGrep確認済み。行数・列構造も変化なし（capacity_plan.csv 625行、demand_forecast.csv 624行、変更前と一致）。GUI起動してWorld MapとPPC Cockpitの実挙動を確認済みOK（下記Landed Costバグ発見時に併せて確認）。
 
 ### Landed Cost engine: Landed GM%が1129%等の異常値になるバグ（修正済み、2026-07-06）
-`wom/engine/landed_cost.py` の `compute_landed_cost_kpi()` が、Management タブの「Tariff & FX — Landed Cost Impact」パネルで `ev-thailand-2026` を実行した際に `Landed GM% 1129.0%` という非現実的な値を出していた（ユーザー指摘で発覚）。原因は2つ、いずれも「iPhoneモデル（単価$1000前後・fx_rate=1.0のUSDのみ）でしか成立しない代理計算」だった。
+`wom/engine/landed_cost.py` の `compute_landed_cost_kpi()` が、Management タブの「Tariff & FX — Landed Cost Impact」パネルで `ev-thailand-2026` を実行した際に `Landed GM% 1129.0%` という非現実的な値を出していた（ユーザー指摘で発覚）。原因は2つ、いずれも「Smartphoneモデル（単価$1000前後・fx_rate=1.0のUSDのみ）でしか成立しない代理計算」だった。
 1. `estimated_lots = max(revenue / 1000.0, 1.0)` — 「1lot≈$1000」という前提の代理計算。EVモデル（1台80万〜160万THB）では `revenue=75,086,960,000` から `estimated_lots≈75,086,960`（実際は数万〜十数万lot程度のはずが桁違いに膨張）となり、`freight_total = blended_freight_per_lot × estimated_lots` が異常膨張（Freight $43,175,002,000 という表示値の直接原因）。
 2. `fx_gain_loss = (blended_fx - 1.0) * cogs` — `fx_rate` が1.0前後の「比率」である前提だが、実際の`edge_cost_master.csv`の`fx_rate`は35.0（THB/USD）や145.0（JPY/USD）といった**絶対為替レート**。`(35.0-1.0)=34倍`がCOGSに掛かり`landed_cogs`から減算され、Landed GM%が桁違いの値になっていた。
 
@@ -385,7 +385,7 @@ Cookie Japan 2026 note記事ドラフトの注記「DADノードの在庫（I）
 - `_match_by_identity(demand_lots, supply_lots)`staticmethodを新設。Lot_ID identityで`matched`/`unmatched_demand`/`unmatched_supply`を返す。
 - `_process_node`の通常（pull）分岐を、個数ベースのCase1/2/3から`_match_by_identity`ベースに置換。`S[w]`/`CO[w]`は変更せず、`I[w] = unmatched_supply`、`CO[w+1] += unmatched_demand`。
 - `self._actual_s: Dict[node_id, Dict[w, List[lot_id]]]`を新設（旧`_push_actual_s`を全modeに一般化・リネーム）。`_propagate_to_parent`/`_propagate_to_child`/Phase2ブリッジは`psi4supply[w][S]`ではなく`self._actual_s`を参照するよう変更。
-- `is_push_mode`/`is_push_sub`分岐は個数ベースのロジックのまま維持（scope外、iPhoneモデルのBuffer_Wafer_TW等で別途十分にテスト済みのため）。
+- `is_push_mode`/`is_push_sub`分岐は個数ベースのロジックのまま維持（scope外、SmartphoneモデルのBuffer_Wafer_TW等で別途十分にテスト済みのため）。
 
 **確認結果**:
 - 既存63件のテストは`tests/test_step7_capacity.py::test_e2e_cap_hard_causes_leaf_shortfall`と`tests/test_step8_push_pull.py::test_dad_inventory_cap_hard_shortfall`の2件が失敗（想定通り。DAD.Sが「実供給で制約された値」ではなく「計画値のまま」になったため）。両テストは新設計の検証内容（`fp._actual_s`で実出荷数、`psi4supply[w][CO]`で欠品数を確認）に書き換え、63件全PASSを再確認。
@@ -462,7 +462,7 @@ Cookie Japan 2026 note記事ドラフトの注記「DADノードの在庫（I）
 **原因**: `wom/ppc/ppc_runner.py`のGENERICシナリオ自動判定で `elif _nt == NODE_TYPE_LEAF_IN and _prod not in _sup_map: _sup_map[_prod] = _nm` としており、`_prod not in _sup_map`のガードにより2つ目以降のleaf_inは無視されていた。さらに`wom/ppc/ppc_forward.py`の`run_forward_propagation()`は`supplier_node`を単一ノードとしてしか解決しない設計だった（`_resolve_node()`がstr/dict[str,str]のみ対応）。この結果、Motor/ECU側は`ppc_supplier_cost.csv`に行があっても一切参照されず、PPCEventすら生成されないため、ノード別コスト集計をしても0円のまま欠落する。
 
 **修正**:
-- `wom/ppc/ppc_forward.py`: `_resolve_node_list(node, product_id) -> List[str]` を新設（str / list[str] / dict[str,str] / dict[str,list[str]] の全形式に対応、`ppc_backward.py`の`dad_nodes_chain`解決パターンを踏襲）。`run_forward_propagation()`の`supplier_node`引数をこの関数で解決し、**解決された全サプライヤーをループしてコストを積算 + サプライヤーごとに1件ずつ`supplier_cost`イベントを生成**するよう変更（各イベントの`node_id`はそのサプライヤー自身のノードID）。Cookie/iPhone/RiceのようなシングルサプライヤーはP`_resolve_node_list`が単一値を1要素リストにラップするため無変更で動作する。
+- `wom/ppc/ppc_forward.py`: `_resolve_node_list(node, product_id) -> List[str]` を新設（str / list[str] / dict[str,str] / dict[str,list[str]] の全形式に対応、`ppc_backward.py`の`dad_nodes_chain`解決パターンを踏襲）。`run_forward_propagation()`の`supplier_node`引数をこの関数で解決し、**解決された全サプライヤーをループしてコストを積算 + サプライヤーごとに1件ずつ`supplier_cost`イベントを生成**するよう変更（各イベントの`node_id`はそのサプライヤー自身のノードID）。Cookie/Smartphone/RiceのようなシングルサプライヤーはP`_resolve_node_list`が単一値を1要素リストにラップするため無変更で動作する。
 - `wom/ppc/ppc_runner.py`: GENERIC分岐の`_sup_map`（単一値）を`_sup_list_map`（全leaf_inのリスト）に変更。積み上げたリストは複数製品時`dict[product_id -> list[str]]`、単一製品時は素の`list[str]`として`supplier_node`に渡す。
 - `wom/ppc/ppc_kpi.py`: `build_node_pl_summary(events)` を新設。週次分解の`build_node_week_summary()`と異なり、全期間を通算した「拠点別P/L評価」テーブル（`node_id, product_id, revenue_base, cost_base, tariff_base, gross_profit_base, gross_margin_pct, lot_events`）を1ノード1行で返す。PPCEventの`node_id`にサプライヤーごとの実ノードIDが乗るようになった今回の修正により、Battery/Motor/ECUがそれぞれ独立した行として正しく現れる。
 - `wom/ppc/ppc_models.py` / `ppc_engine.py` / `ppc_export.py`: `PPCSimulationResult.node_pl_summary`フィールドを追加し、`run()`内で自動計算・`output/ppc/ppc_node_pl_summary.csv`として出力するよう配線。
@@ -533,7 +533,7 @@ oil-global-2027モデルをWorld Mapで確認した際、大杉さんから「�
 **追加で見つかった不具合とその修正（同日）**: Cookie-jp-2026のCookie_Importで、北京クッキー工場（`Factory_GP_CN`、mom）が日本側のDC/店舗クラスタ（`SP_Cookie_Import`以下、supply_point側）と地図上で線が繋がっていないことが判明。原因は、`sc_tree_master.csv`にはInBound側のmom rootとOutBound側のsupply_point rootの間に`parent_node`列の関係が一切無い（両方とも`parent_node=""`の独立したroot行）ため——CLAUDE.mdのSCTree図で「Bridge」と書かれている部分は、CSV上の親子関係ではなく**エンジンが実行時に`product_name`一致で内部的に繋いでいるだけ**（`forward_planner.py`のPhase 2ブリッジ、`_actual_s`経由）で、`_load_sc_tree_edges()`はCSVの`parent_node`列しか見ていなかったため、このブリッジ区間だけ線が抜け落ちていた。EV/Oilモデルではmom側とsupply_point側の拠点がすべて同じ国・近距離に固まっていたため気づかれなかったが、Cookie_Import（中国工場↔日本市場、地理的に大きく離れている）で初めて可視化されて発覚。
 **修正**: `_load_sc_tree_edges()`に、各`product_name`ごとの`mom` root（複数可、Multi-MOM対応）と`supply_point` root を集計し、`mom_root → supply_point_root`という合成エッジを追加する処理を追加。
 
-**次回セッションでの確認候補**: 上記修正後の再確認（Cookie_Importで北京工場↔日本市場の線が繋がるか）はまだ大杉さんに見てもらえていない。iPhone Global SC（Multi-MOM、`Buffer_Wafer_TW`のPUSH/PULLブレークポイント）でも正しく複数mom→supply_pointのブリッジ線が引かれるか確認する価値がある。
+**次回セッションでの確認候補**: 上記修正後の再確認（Cookie_Importで北京工場↔日本市場の線が繋がるか）はまだ大杉さんに見てもらえていない。Smartphone Global SC（Multi-MOM、`Buffer_Wafer_TW`のPUSH/PULLブレークポイント）でも正しく複数mom→supply_pointのブリッジ線が引かれるか確認する価値がある。
 
 ---
 
@@ -646,9 +646,9 @@ Gasoline_US_Import: OilSands_Alberta(leaf_in, アルバータ州想定 56.70/-11
 
 ### 第5回note記事: 「外側シナリオレイヤー」構想とOPEC+協調減産シナリオの実装（`data/sample/oil-global-2027/`拡張、新規エンジンコード無し、完了、2026-07-07）
 
-大杉さんから「Global Oil Caseの需給バランスのポイントはどこにあるのか？OPEC+・BP・エクソンのようなメジャーが、価格を高値維持しつつ需要破壊を招かない匙加減で供給を調整している、というイメージでは？」という指摘があり、現状のoil-global-2027モデルには**その戦略的・双方向フィードバック（供給調整→価格→需要破壊）が一切実装されていないこと**を確認・共有した。WOMのPlanning Engine（BackwardPlanner/ForwardPlanner）は「需要予測と生産能力を与えられたらその通りに計画する」決定論的エンジンであり、価格弾力性つきの経済均衡ソルバーではないため、本格的な双方向ループをエンジン内部に実装するのはスコープ外と判断。
+大杉さんから「Global Oil Caseの需給バランスのポイントはどこにあるのか？OPEC+や石油メジャーが、価格を高値維持しつつ需要破壊を招かない匙加減で供給を調整している、というイメージでは？」という指摘があり、現状のoil-global-2027モデルには**その戦略的・双方向フィードバック（供給調整→価格→需要破壊）が一切実装されていないこと**を確認・共有した。WOMのPlanning Engine（BackwardPlanner/ForwardPlanner）は「需要予測と生産能力を与えられたらその通りに計画する」決定論的エンジンであり、価格弾力性つきの経済均衡ソルバーではないため、本格的な双方向ループをエンジン内部に実装するのはスコープ外と判断。
 
-大杉さんの提案：「WOMの内部に新機能を実装するのではなく、WOMの外側にGlobal Oil Production and Priceのシナリオをセットするpluginを用意する。OPEC+シナリオ、BPシナリオ、エクソン・シナリオなど、各プレイヤーが何を目指すかをシナリオとして記述し、WOMの外側に定義できるのではないか」。これを採用し、**エンジンを一切変更せず、既存の`gen_oil_model*.py`パターン（CSV生成スクリプト）を拡張する形でOPEC+シナリオを1本、具体的に実装した**（`gen_oil_model_opec_patch.py`）。
+大杉さんの提案：「WOMの内部に新機能を実装するのではなく、WOMの外側にGlobal Oil Production and Priceのシナリオをセットするpluginを用意する。OPEC+シナリオ、石油メジャーAのシナリオ、石油メジャーBのシナリオなど、各プレイヤーが何を目指すかをシナリオとして記述し、WOMの外側に定義できるのではないか」。これを採用し、**エンジンを一切変更せず、既存の`gen_oil_model*.py`パターン（CSV生成スクリプト）を拡張する形でOPEC+シナリオを1本、具体的に実装した**（`gen_oil_model_opec_patch.py`）。
 
 **設計**: WOMの既存Pluginシステム（`HookBus`、`HOOK_PRE_PLAN`等）はエンジンの「内側」で`sc_tree`を直接操作する仕組みだが、今回の「外側シナリオレイヤー」はその手前、WOMが読み込む入力CSV（`holiday_calendar.csv`／`ppc_supplier_cost.csv`／`demand_forecast.csv`）を生成する外部スクリプトとして実装した。WOM本体（BackwardPlanner/ForwardPlanner/PPC/HolidayCalendarPlugin）は一切無変更。
 
@@ -670,7 +670,7 @@ Gasoline_US_Import: OilSands_Alberta(leaf_in, アルバータ州想定 56.70/-11
 
 **未対応・次回検討事項**:
 - 今回はOPEC+シナリオ1本（Crude_ME/Crude_ME_EUのみ）に限定。Gasoline_Import/Gasoline_EU_Import（シンガポール・米国精製品）やGasoline_US_Local/Import（シェール・カナダ産）への波及（グローバル原油価格上昇が間接的に全SKUへ波及する効果）は意図的に対象外とした。
-- BP/エクソンのような「個別メジャーのプレイヤーシナリオ」や、複数プレイヤーの意思決定が絡む汎用フレームワーク化（価格バンド・反応ルール・弾力性パラメータを設定ファイル化する等）は、今回は見送り、大杉さんとの合意通り「まず1本の具体例を作る」を優先した。汎用化する場合の設計候補は、プレイヤーごとの価格バンド・供給反応ルール・需要弾力性パラメータを定義し、それらから週次CSVを計算する小さな「シナリオコンパイラ」を作ること。
+- 石油メジャーA・Bのような「個別メジャーのプレイヤーシナリオ」や、複数プレイヤーの意思決定が絡む汎用フレームワーク化（価格バンド・反応ルール・弾力性パラメータを設定ファイル化する等）は、今回は見送り、大杉さんとの合意通り「まず1本の具体例を作る」を優先した。汎用化する場合の設計候補は、プレイヤーごとの価格バンド・供給反応ルール・需要弾力性パラメータを定義し、それらから週次CSVを計算する小さな「シナリオコンパイラ」を作ること。
 - `gen_oil_model_opec_patch.py`も引き続き`/sessions`側のスクラッチ領域にのみ存在し、リポジトリ未コミット。
 
 ---
@@ -689,16 +689,16 @@ cap_hard enforcement は `_apply_mom_cap_backward`（MOM 専任）と ForwardPla
 
 ### DBR設計：PUSH/PULL break-point at Buffer_Wafer_TW（commit 7a22648）
 
-iPhone Global SC の InBound チェーン：
+Smartphone Global SC の InBound チェーン：
 
 ```
 SiliconWafer_TW (leaf_in, PUSH sub)
   → Buffer_Wafer_TW (decoupling node, PUSH) ← PUSH/PULL break-point
-    → TSMC_TW (PULL)
-      → Foxconn_CN (PULL MOM, Drum)
+    → Foundry_A_TW (PULL)
+      → EMS_A_CN (PULL MOM, Drum)
 ```
 
-- **Drum**: Foxconn_CN（cap_hard staircase: 800→534→267→0/wk）
+- **Drum**: EMS_A_CN（cap_hard staircase: 800→534→267→0/wk）
 - **Buffer**: Buffer_Wafer_TW（在庫クッション、DBRバッファ）
 - **SiliconWafer_TW**: 自律PUSH（ウェーハFab = 高固定費・常時稼働型）
 
@@ -720,7 +720,7 @@ SiliconWafer_TW (leaf_in, PUSH sub)
 | Staircase gap | demand[w+LT] < demand[w] | 生産が先行してステップダウン、バッファが差分を吸収 |
 | EOL stop | demand[w+LT]=0, demand[w]>0 | 生産停止、バッファが最終需要を賄いゼロに収束 |
 
-**iPhone16モデルでの設定** (`push_config.csv`)：
+**Phone16モデルでの設定** (`push_config.csv`)：
 
 ```csv
 push_lead_time_weeks=26
@@ -734,7 +734,7 @@ mom_ref_node_id=""（decoupling node自身 = staircase信号を使用）
 - 2027-W40〜: 生産534 < 消費800、I段階的低下
 - 2030-W13付近: I→0（製品ライフサイクル終了と同時に自然消滅）
 
-Foxconn_CN の生産シフトが TSMC_TW 経由で Buffer_Wafer_TW の在庫減少パターンとして
+EMS_A_CN の生産シフトが Foundry_A_TW 経由で Buffer_Wafer_TW の在庫減少パターンとして
 伝播する「SC lane node間のPSI連動」を実現。
 
 **push_config.csv スキーマ（全フィールド）**：
@@ -806,7 +806,7 @@ def _apply_mom_cap_backward(self, node, n_weeks, result):
 
 ### BackwardPlanner 純粋化：`_in_propagate` からクリッピング削除（v1r0m3後期）
 
-**背景**: v1r0m2 の cap_hard envelope（`_in_propagate` 内のクリッピング）は、上流ノードが cap 前の全量需要を受け取れないという問題を持っていた。MOM の形状（CO あり）と TSMC_TW の形状（クリップ済み）が「少し異なる」という Osugiさんの観察がトリガー。
+**背景**: v1r0m2 の cap_hard envelope（`_in_propagate` 内のクリッピング）は、上流ノードが cap 前の全量需要を受け取れないという問題を持っていた。MOM の形状（CO あり）と Foundry_A_TW の形状（クリップ済み）が「少し異なる」という Osugiさんの観察がトリガー。
 
 **変更内容**:
 - `_in_propagate` の cap_hard clipping と is_decoupling fill-up ロジックを削除
@@ -838,7 +838,7 @@ if cap_values and any(v > 0 for v in cap_values):
 ### app.py: v1r0m3 タイトル更新 + デフォルトサンプルパス修正
 
 - タイトルバーを `v1r0m2` → `v1r0m3` に変更（3箇所）
-- `_sample_dir` を `data/sample` → `data/sample/iphone-2027-2029` に変更（直下に `sc_tree_master.csv` がないため）
+- `_sample_dir` を `data/sample` → `data/sample/smartphone-2027-2029` に変更（直下に `sc_tree_master.csv` がないため）
 
 ---
 
@@ -859,7 +859,7 @@ Planning Engine 内部で行っていた。
   上流ノードほど早い週に需要が配置されるべき「market requesting position」が
   正しく計算されていない
 - 例: Week 10 に Retail_AMER で需要 100 lots、DC→Retail LT=1週、
-  Foxconn→DC LT=2週 の場合、本来は Foxconn に Week 7 の需要として伝播すべきだが、
+  EMS_A→DC LT=2週 の場合、本来は EMS_A に Week 7 の需要として伝播すべきだが、
   現状は全ノードが Week 10 に配置される
 
 ### v1r0m2 向け役割分担設計
@@ -981,7 +981,7 @@ WOM の KPI フレームワークは根本的に異なる 3 次元構造を持�
 | Sell-through サイクル (週) | 実出荷（`ship_qty`）の連続性（S は要求） | デイリー在庫日数 → 販社在庫日数 |
 | 販売チャネル Revenue | 価格 × 実出荷（`ship_qty`。遅配分の出荷を含む）。PPC も money も実出荷を使う。S は要求 | 売上高 → 事業損益 |
 
-\* 上の定義は、**identity の計画**について、2026-09-30 に実装した（`RequestLetter_iPhoneWarmup_EVUpdateKitting_S2` C、報告書 `docs/development/WOM_iPhoneWarmup_EVUpdateKitting_S2_Report.md`）。
+\* 上の定義は、**identity の計画**について、2026-09-30 に実装した（`RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2` C、報告書 `docs/development/WOM_SmartphoneWarmup_EVUpdateKitting_S2_Report.md`）。
 - 実装した範囲：`sc_tree_to_df.py`（`demand_fulfilled`＝実出荷、`fill_rate`、`stockout_qty`＝当週未充足、新しい列 `qty_basis`・`request_qty`・`on_time_qty`・`co_end_qty`）、それを読む `money.py` の Revenue・COGS、`strategic_kpi.py` の充足率、KPI・Charts・Management の画面、ノードの Cost/Revenue チャート（任意のノードの実出荷）。方式は `sc_tree.lot_flow_mode`（GUI・headless が付ける印）か、引数 `lot_flow_mode` で渡す。
 - **legacy の計画は、これまでどおり S（要求）ベース**（比較用。行の `qty_basis` が `request`）。legacy の値は 1 つも変えていない。
 - 実出荷の記録が無い identity のノードは「不明」（NaN、`qty_basis=unknown`）で、要求 S では代用しない。実出荷 0 の記録は 0。
@@ -1160,7 +1160,7 @@ branch `wom-v1r2m2`。`requests/operating-constraint-layer-request-letter.md` �
 ### Phase 1a：ゴールデン・ハーネス（先に網を張る）
 - `tools/run_headless_from_folder.py`（新規）：GUI の `_build_planning_context`/`_planning_thread`/`_run_ppc_from_planning` を tkinter 抜きで移植。`run(model_dir, plugins_spec, ...)` が Load→Planning→PPC を実行し KPI スナップショット dict を返す。忠実性は GUI 実値と一致確認済み（soysauce-us 26.9%／jpy 28.0%・trust32／apparel 42.4%／rice 38.5% 等）。「手動 probe が毎回消える」問題の恒久対策。
 - `tests/test_golden.py`（新規）＋ `tests/golden/*.json`（12ケース）：「現行実行 == golden」を assert。スナップショット構造 = `period / products / config{plugins} / forward{cap_hard_sealed, cap_soft_violation_count} / backward{cap_soft_envelope_count} / ppc{GM/Rev/Cost/tariff/trust} / psi{node:{P,S,I_sum,I_max,CO,series_md5}}`。**エンジンを触る前に "before" を凍結**するのが目的。
-- レガシー `iphone`（CNY FX 欠落で失敗）と `rice-…_BK…`（古いバックアップ）は golden 対象外。
+- レガシー `smartphone-legacy`（CNY FX 欠落で失敗。2026-10-09 削除済み）と `rice-…_BK…`（古いバックアップ）は golden 対象外。
 
 ### Phase 1b：cap_soft の復活（休眠の解消）
 cap_soft が死んでいた真因は §11.1 の通り2つ——(i) Backward の demand envelope 未実装、(ii) **CSV→ローダ→ノードのデータ経路欠落**（capacity_plan に列が無く、ローダが cap_hard しか読まない）。Forward の Step 0b（cap_soft 違反フラグ）は生きていた。
@@ -1432,15 +1432,7 @@ Management（`ask_global_allocation`）/ Demand（`lane_assignment.csv`）/ Supp
 
 **次回セッションでの検討候補**：`ev-europe-2026`のholiday_calendar.csv（value=0.0のまま）を今後修正する場合、同じ症状がFactory_Local_DE/Factory_Import_HUでも再現するはずなので、そこでの追加確認・修正着手時の参考ケースとして使える。
 
-**【2026-08-21追記】発生条件はholiday_calendar閉鎖に限らない、もっと広い不具合と判明**：
-
-`data/sample/india-ghee-2026`（新規、インド酪農ギー：国内 vs UAE輸出モデル）の構築中に、**上記条件2をholiday_calendar閉鎖なしでも満たしてしまう**ケースを発見した。Ghee_Domestic側（Gujarat集乳協同組合を2 leaf_in "Anand_Milk_Route"/"Kheda_Milk_Route"で表現、Ghee_Plant_Anandへ合流）に、holiday_calendar.csvの`demand_multiplier`（ディワリ需要スパイク、leaf_outにのみ作用しCapHardシーリングに一切触れない"安全"な仕組みのはず）を適用したところ、**閉鎖イベントが存在しないにもかかわらず同じ症状が再現した**（Ghee_Plant_AnandでCO=20,386固定、ディワリ前倒し生産週から発生し以降ずっと解消しない）。
-
-一方、同じ2 leaf_in構成でもディワリのような需要の不連続点を持たないGhee_Export側（Anand_Export_Route/Mehsana_Milk_Route → Ghee_Plant_Export、需要は滑らかに推移するのみ）は**完全にクリーン**（CO=0、cap_hard_sealed=0）だった。
-
-これにより、**真の発生条件は「holiday_calendar閉鎖」ではなく、より一般に「MOMノードの週次demand.Sに何らかの不連続（段差）が生じること」**だと判明した。demand_multiplierでもBackwardのLTオフセット経由でMOM自身のdemand.Sに段差が生じれば同じ経路（`_propagate_to_parent`の重複extend＋Step 0aのCapHardシーリング）を踏んでしまう。closure（cap_hard起点の段差）はこの一般条件の一例に過ぎなかった。
-
-**india-ghee-2026での回避策**：Ghee_Domestic側は2 leaf_inを`Gujarat_Milk_Collective`という単一leaf_inに統合（需要スパイクがあるチェーンは単一leaf_inで安全運用）。Ghee_Export側は2 leaf_in構成のまま維持（需要が滑らかなので安全）。結果、GM=20.0%・cap_hard_sealed=0・trust_events=0・CO=0（全ノード）を確認。
+**【2026-08-21追記】**（Owner の判断で削除。2026-10-09）
 
 **運用上の指針（次に多leaf_in構成を作るClaude君へ）**：MOMに2つ以上のleaf_inを持たせる場合、そのMOM側のチェーンには**閉鎖イベントだけでなく、需要側の段差（祭日デマンドスパイク、季節切替の急激な変化点等）も一切持ち込まないこと**。段差が必要なストーリーなら、その多leaf_inを持つMOMではなく、需要が滑らかな別チェーン側に多leaf_in構成を寄せるか、単一leaf_inに単純化すること。
 
@@ -1450,17 +1442,17 @@ Management（`ask_global_allocation`）/ Demand（`lane_assignment.csv`）/ Supp
 
 三つの構想を記録したもの。**仕様確定なし・コード変更なし。**
 
-- **A**：酪農の生乳生産者は `leaf_in` ではなく `MOM` として定義すべきではないか
+- **A**：（Owner の判断で削除。2026-10-09）
 - **B**：InBound の組立工程（全部材の Lot_ID が揃った時点で組み立て、Lot_ID を一つにして I に残す）
 - **C**：sweep loop → auto-debug → auto-tuning の三段階
 
 **整理された論点：**
 
-- **合流型と組立型は別物**。酪農は「同じものが集まる（揃う必要がない）」、製造は「異なるものが揃って一つになる（揃わないと作れない）」。現在の `_propagate_to_parent` は**合流としては正しく、組立としては誤り**。A1 の原因仮説（重複 extend で P が過大）は、合流型なら成立しない
+- **合流型と組立型は別物**。合流は「同じものが複数の調達源から集まる（揃う必要がない）」、製造は「異なるものが揃って一つになる（揃わないと作れない）」。現在の `_propagate_to_parent` は**合流としては正しく、組立としては誤り**。A1 の原因仮説（重複 extend で P が過大）は、合流型なら成立しない
 - **auto-debug は静的 lint とは別の層**。lint は実行前（CSV のみ）、auto-debug は実行後（結果の判定）。判定ルールは 2026-08-27 のスイープで見つかった症状から導出できる
 - **auto-tuning は「モデルが動くための設定」（`warmup_lt` 等、正しい値が一意）と「経営が決めるべき選択」（配分比率、decoupling 位置等、地形を渡すべき）を分ければ、「最適化しない」という WOM の思想と矛盾しない**
 
-**依存関係**：A1 の原因確定が A・B のボトルネック。**C は A1 と独立に進められる**（むしろ C② があれば A1 の検証が機械化できる）。
+**依存関係**：A1 の原因確定が B のボトルネック。**C は A1 と独立に進められる**（むしろ C② があれば A1 の検証が機械化できる）。
 
 ## Global Oil Model：三段階のモデル分割（設計判断・実装なし、2026-09-01）
 
@@ -1882,7 +1874,7 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 - **黙った既定値を作らない**：座標の無い拠点・描けない区間は「座標なし」の一覧。node_master の種類が色の表に無いときだけ、計画の木の役割の色（一覧に注記）。
 - **照合**：`tools/worldmap_flow_check.py`（vc_edge_flows.csv・LOVEM の観測と）、`tools/gui_worldmap_check.py`（全モデルの GUI の通し・描画時間・スクリーンショット）、`tests/test_worldmap_actual_flows.py`。
 - **試作の窓** `python -m wom.worldmap_ne` は描画の速さを測る道具として残す（流れは需要から作ったもので、窓に「需要の流れ（試作の計測用。計画の結果ではない）」と出す）。
-- **座標の規則**：座標は node_master の行だけから取る。例外は Stock Yard（`node_type = stockyard`）で、座標が無ければ親の組立工場の位置に置き「親の位置に合わせた」一覧に出す（node_master に書けばそちらを使う）。rice の node_master の node_id は計画の木の名前に揃えた。iphone は i15/i17 の DC・工場の行を足し、`Retail_*` は代表の地点（仮）（`data/sample/iphone_global/README.md`）。2026-10-06 時点で 15 モデルすべて「座標なし」0。
+- **座標の規則**：座標は node_master の行だけから取る。例外は Stock Yard（`node_type = stockyard`）で、座標が無ければ親の組立工場の位置に置き「親の位置に合わせた」一覧に出す（node_master に書けばそちらを使う）。rice の node_master の node_id は計画の木の名前に揃えた。smartphone は i15/i17 の DC・工場の行を足し、`Retail_*` は代表の地点（仮）（`data/sample/smartphone-global-2026-2029/README.md`）。2026-10-06 時点で 15 モデルすべて「座標なし」0。
 
 ---
 
@@ -1908,3 +1900,11 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 - **報告の開始週は一か所**：`vc_config.csv` の `report_start`（`wom/engine/report_start.py` が読む。World Map の帯・Value Chain・Flow Check・Rice の層が同じ値）。無ければ最初の非ゼロ需要週。Flow Check の表 2 は、報告の開始週を決めたモデルだけ「うち報告期間 当週出荷／注文残」の列を足す（無いモデルは前と同じ）。
 - **注意**：`HookBus.fire()` はプラグインの例外を表示して続けるが、`fatal_errors = True` を宣言したプラグイン（Rice Seasonal・Capacity Layer）は例外で計画を止める（配置の無い計画が黙って出ないように）。`copy_demand_to_supply` は需要のある週だけを書くので、一度計画した木で Forward をやり直すときは供給を空にしてから（テストの `reforward`）。
 
+
+## 公開の前のサンプルの見直し：実在の名前を一般名に（完了、2026-10-09）
+
+**報告**：`docs/development/WOM_SampleNames_PublicReview_Report.md`（依頼書 `requests/RequestLetter_SampleNames_PublicReview_to_CodeKun.md`）。
+
+- サンプル・コード・テスト・文書から実在の企業・ブランド・団体・製品の名前を除き、役割の分かる一般名にした（例：`EMS_A`、`Foundry_A`、`Sensor_A`、`Retailer_A`／`Retailer_B`、`Phone15`〜`Phone17`、`産地の集荷団体`）。計算の値は不変（全 16 モデルを前後で照合）。
+- スマートフォンのモデルは **`data/sample/smartphone-global-2026-2029/`**（golden も同名）。golden の無かった古いモデル（`smartphone-legacy`）は削除。`ev-thailand-2026_update`・`soysauce-jpy-2027-alloc` に golden を作った（golden の無いモデルは無くなった）。
+- **再発防止**：`tests/test_no_real_names.py` が、追跡するテキストのファイルの中身とファイル名に禁止の語が無いことを確かめる。公開の一覧 `tests/data/real_name_denylist.txt`（広く知られた名前だけ）と、Owner の手元の一覧 `private/real_name_denylist.txt`（git の対象外。当たったら番号だけを出す）。**新しいサンプル・文書に実名を書かない。元の名前と一般名の対応表もリポジトリに置かない**（対応表は `output/sample_names/`、git の対象外）。

@@ -27,7 +27,7 @@ import traceback
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
-MODELS = ["ev-thailand-2026", "iphone_global", "apparel-global-2028-2029", "oil-global-2027"]
+MODELS = ["ev-thailand-2026", "smartphone-global-2026-2029", "apparel-global-2028-2029", "oil-global-2027"]
 # the owner's screen: 1920x1080 at 125 % -> 1536x864 logical (python -m main is DPI-unaware)
 SIZES = [(1536, 824), (1280, 720), (1100, 640)]
 

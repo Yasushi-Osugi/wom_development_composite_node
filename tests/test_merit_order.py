@@ -20,7 +20,7 @@ def sample_suppliers():
     return [
         {
             "supplier_id": "SUP_001",
-            "supplier_name": "Samsung Electronics",
+            "supplier_name": "Supplier_KR_A",
             "unit_cost": 50,
             "max_supply": 10000,
             "lead_time_days": 14,
@@ -30,7 +30,7 @@ def sample_suppliers():
         },
         {
             "supplier_id": "SUP_002",
-            "supplier_name": "TSMC",
+            "supplier_name": "Foundry_A",
             "unit_cost": 48,
             "max_supply": 8000,
             "lead_time_days": 21,
@@ -40,7 +40,7 @@ def sample_suppliers():
         },
         {
             "supplier_id": "SUP_003",
-            "supplier_name": "MediaTek",
+            "supplier_name": "Supplier_TW_B",
             "unit_cost": 52,
             "max_supply": 5000,
             "lead_time_days": 14,
@@ -50,7 +50,7 @@ def sample_suppliers():
         },
         {
             "supplier_id": "SUP_004",
-            "supplier_name": "Qualcomm",
+            "supplier_name": "Supplier_US_A",
             "unit_cost": 55,
             "max_supply": 3000,
             "lead_time_days": 7,

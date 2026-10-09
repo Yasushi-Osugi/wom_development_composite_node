@@ -1,0 +1,43 @@
+# Real company / brand / product names that must not appear in tracked text files
+# (RequestLetter_SampleNames_PublicReview). Checked by tests/test_no_real_names.py.
+#
+# Only widely known names are listed here (this file is public). Names of
+# clients or other private names go in private/real_name_denylist.txt (git-ignored,
+# same format; its words are never printed, only their line numbers).
+#
+# Format: one word per line, matched case-insensitively. A word that starts or ends
+# with an ASCII letter is not matched inside a longer ASCII word ("Zara" is not
+# found in "Zaragoza"); digits and "_" may touch it ("Name16", "Name_TW" match).
+# A line starting with "!" is an allowed phrase: it is removed before matching
+# (a place or a CSS keyword that contains a listed word).
+Foxconn
+Hon Hai
+TSMC
+Samsung
+Bosch
+Tesla
+BYD
+CATL
+Apple
+iPhone
+MediaTek
+Qualcomm
+Zara
+Inditex
+H&M
+Hennes & Mauritz
+Oreo
+Gigafactory
+ExxonMobil
+Exxon
+エクソン
+ロッテ
+セブン-イレブン
+セブンイレブン
+ファミマ
+ファミリーマート
+ローソン
+JA全農
+JA北海道
+!ロッテルダム
+!-apple-system

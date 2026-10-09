@@ -1,0 +1,33 @@
+node_id,product_id,cost_type,basis,rate,fixed_amount,currency,note
+EMS_A_CN,Phone16,conversion_cost,per_lot,0,50,USD,Assembly labor + overhead per unit
+EMS_A_CN,Phone16,logistics_cost,per_lot,0,5,USD,Inbound logistics CN domestic
+EMS_A_IN,Phone16,conversion_cost,per_lot,0,52,USD,Assembly labor + overhead per unit India
+EMS_A_IN,Phone16,logistics_cost,per_lot,0,6,USD,Inbound logistics India domestic
+Foundry_A_TW,Phone16,conversion_cost,per_lot,0,7,USD,SoC fab processing cost A18
+Foundry_A_TW,Phone16,logistics_cost,per_lot,0,2,USD,Wafer logistics TW→CN
+DC_AMER,Phone16,logistics_cost,per_lot,0,10,USD,Ocean freight CN→AMER + port handling
+DC_AMER,Phone16,conversion_cost,per_lot,0,5,USD,DC picking packing labor AMER
+DC_EMEA,Phone16,logistics_cost,per_lot,0,12,USD,Air/ocean freight CN→EMEA + customs
+DC_EMEA,Phone16,conversion_cost,per_lot,0,5.5,USD,DC picking packing labor EMEA
+DC_APAC,Phone16,logistics_cost,per_lot,0,8,USD,Ocean freight CN→APAC Singapore
+DC_APAC,Phone16,conversion_cost,per_lot,0,4.5,USD,DC picking packing labor APAC
+EMS_A_CN_i15,Phone15,conversion_cost,per_lot,0,40,USD,Assembly labor + overhead per unit Phone15
+EMS_A_CN_i15,Phone15,logistics_cost,per_lot,0,4.5,USD,Inbound logistics CN domestic
+Foundry_A_TW_i15,Phone15,conversion_cost,per_lot,0,5,USD,SoC fab processing cost A16
+Foundry_A_TW_i15,Phone15,logistics_cost,per_lot,0,1.8,USD,Wafer logistics TW→CN Phone15
+DC_AMER_i15,Phone15,logistics_cost,per_lot,0,9.5,USD,Ocean freight CN→AMER Phone15
+DC_AMER_i15,Phone15,conversion_cost,per_lot,0,4.8,USD,DC picking packing labor AMER Phone15
+DC_EMEA_i15,Phone15,logistics_cost,per_lot,0,11,USD,Air/ocean freight CN→EMEA Phone15
+DC_EMEA_i15,Phone15,conversion_cost,per_lot,0,5.2,USD,DC picking packing labor EMEA Phone15
+DC_APAC_i15,Phone15,logistics_cost,per_lot,0,7.5,USD,Ocean freight CN→APAC Phone15
+DC_APAC_i15,Phone15,conversion_cost,per_lot,0,4.2,USD,DC picking packing labor APAC Phone15
+EMS_A_CN_i17,Phone17,conversion_cost,per_lot,0,55,USD,Assembly labor + overhead per unit Phone17
+EMS_A_CN_i17,Phone17,logistics_cost,per_lot,0,5.5,USD,Inbound logistics CN domestic Phone17
+Foundry_A_TW_i17,Phone17,conversion_cost,per_lot,0,8.5,USD,SoC fab processing cost A19 next-gen
+Foundry_A_TW_i17,Phone17,logistics_cost,per_lot,0,2.2,USD,Wafer logistics TW→CN Phone17
+DC_AMER_i17,Phone17,logistics_cost,per_lot,0,10.5,USD,Ocean freight CN→AMER Phone17
+DC_AMER_i17,Phone17,conversion_cost,per_lot,0,5.2,USD,DC picking packing labor AMER Phone17
+DC_EMEA_i17,Phone17,logistics_cost,per_lot,0,12.5,USD,Air/ocean freight CN→EMEA Phone17
+DC_EMEA_i17,Phone17,conversion_cost,per_lot,0,5.8,USD,DC picking packing labor EMEA Phone17
+DC_APAC_i17,Phone17,logistics_cost,per_lot,0,8.5,USD,Ocean freight CN→APAC Phone17
+DC_APAC_i17,Phone17,conversion_cost,per_lot,0,4.8,USD,DC picking packing labor APAC Phone17

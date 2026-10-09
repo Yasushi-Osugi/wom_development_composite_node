@@ -123,13 +123,13 @@ def test_stock_yard_is_drawn_at_its_plant():
     assert len(E.placed_at_parent) == 6 and E.missing_coords == []
 
 
-def test_rice_and_iphone_all_nodes_on_the_map():
+def test_rice_and_smartphone_all_nodes_on_the_map():
     R = MapLayout.load(os.path.join(SAMPLE, "rice-japan-2027-2028"))
     assert R.missing_coords == [] and R.undrawable_edges == []
     assert set().union(*R.tree_nodes.values()) <= set(R.nodes)
-    I = MapLayout.load(os.path.join(SAMPLE, "iphone_global"))
+    I = MapLayout.load(os.path.join(SAMPLE, "smartphone-global-2026-2029"))
     assert I.missing_coords == [] and I.undrawable_edges == []
-    for base in ("DC_AMER", "DC_EMEA", "DC_APAC", "Foxconn_CN"):
+    for base in ("DC_AMER", "DC_EMEA", "DC_APAC", "EMS_A_CN"):
         for suf in ("_i15", "_i17"):
             assert (I.nodes[base + suf].lat, I.nodes[base + suf].lon) == (I.nodes[base].lat, I.nodes[base].lon)
 

@@ -44,7 +44,7 @@ WOM の Planning Engine は、demand-allocation（Backward の Demand Envelope�
 - `wom/engine/backward_planner.py` `_apply_mom_cap_backward`：`psi4demand[w][P]` を **`cap_hard(w)` で clip**、超過を CO 前倒し。cap_soft は一切関与しない。
 
 **データ・ローダが cap_soft を埋めない：**
-- 全ケースの `capacity_plan.csv` は列が `sku_id, node_name, week, max_supply, source`（iphone系は region）で、**cap_soft 列が無い**。
+- 全ケースの `capacity_plan.csv` は列が `sku_id, node_name, week, max_supply, source`（smartphone系は region）で、**cap_soft 列が無い**。
 - `app.py` の能力ローダ（5097/5108行）は `max_supply → cap_hard` のみをマップ。
 
 **休日・収穫は plugin 代用：**

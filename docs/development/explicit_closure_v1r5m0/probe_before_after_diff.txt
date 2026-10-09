@@ -127,24 +127,24 @@
        2027-W32 P:500->0
        totals(before,after): {'I': (0, 1000)}
 
-######## iphone_global
+######## smartphone-global-2026-2029
   psi-signature nodes changed: 0
   diagnostics: none
-   * iPhone15|SiliconWafer_TW_i15 (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
+   * Phone15|SiliconWafer_TW_i15 (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
        2027-W06 is_open:True->False
        2027-W07 is_open:True->False
        2028-W05 is_open:True->False
        2028-W06 is_open:True->False
        2029-W04 is_open:True->False
        2029-W05 is_open:True->False
-   * iPhone16|SiliconWafer_TW (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
+   * Phone16|SiliconWafer_TW (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
        2027-W06 is_open:True->False
        2027-W07 is_open:True->False
        2028-W05 is_open:True->False
        2028-W06 is_open:True->False
        2029-W04 is_open:True->False
        2029-W05 is_open:True->False
-   * iPhone17|SiliconWafer_TW_i17 (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
+   * Phone17|SiliconWafer_TW_i17 (leaf_in/pull) series=['is_open'] weeks=6 [2027-W06..2029-W05]
        2027-W06 is_open:True->False
        2027-W07 is_open:True->False
        2028-W05 is_open:True->False

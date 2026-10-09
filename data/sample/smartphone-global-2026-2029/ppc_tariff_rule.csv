@@ -1,0 +1,13 @@
+edge_id,from_country,to_country,product_id,hs_code,tariff_rate,tariff_basis
+EMS_A_CN->SP_Phone16,CN,CN,Phone16,8517120000,0.00,transfer_price
+SP_Phone16->Retail_AMER,CN,US,Phone16,8517120000,0.25,transfer_price
+SP_Phone16->Retail_EMEA,CN,EU,Phone16,8517120000,0.075,transfer_price
+SP_Phone16->Retail_APAC,CN,SG,Phone16,8517120000,0.00,transfer_price
+EMS_A_CN_i15->SP_Phone15,CN,CN,Phone15,8517120000,0.00,transfer_price
+SP_Phone15->Retail_AMER_i15,CN,US,Phone15,8517120000,0.25,transfer_price
+SP_Phone15->Retail_EMEA_i15,CN,EU,Phone15,8517120000,0.075,transfer_price
+SP_Phone15->Retail_APAC_i15,CN,SG,Phone15,8517120000,0.00,transfer_price
+EMS_A_CN_i17->SP_Phone17,CN,CN,Phone17,8517120000,0.00,transfer_price
+SP_Phone17->Retail_AMER_i17,CN,US,Phone17,8517120000,0.25,transfer_price
+SP_Phone17->Retail_EMEA_i17,CN,EU,Phone17,8517120000,0.075,transfer_price
+SP_Phone17->Retail_APAC_i17,CN,SG,Phone17,8517120000,0.00,transfer_price

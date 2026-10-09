@@ -9,7 +9,7 @@ Usage:
 Options:
     --data-dir      DIR     PPC master CSV directory  [default: data/ppc]
     --sales-csv     FILE    Lot sales records CSV (see format below).
-                            If omitted, generates sample iphone-vs lots.
+                            If omitted, generates sample smartphone-vs lots.
     --output-dir    DIR     Output directory          [default: output/ppc]
     --base-currency CUR     Base currency             [default: JPY]
     --weeks         N       Number of weeks for sample generation [default: 156]
@@ -38,7 +38,7 @@ if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
 from wom.ppc.ppc_rules import PPCRuleSet
-from wom.ppc.ppc_engine import (PPCSimulationEngine, build_iphone_vs_paths,
+from wom.ppc.ppc_engine import (PPCSimulationEngine, build_smartphone_vs_paths,
                                   build_cookie_vs_paths, detect_scenario)
 from wom.ppc.ppc_export import export_results
 
@@ -48,7 +48,7 @@ def generate_sample_sales(
     n_weeks: int = 156,
     jp_lots_per_week: int = 10,
     us_lots_per_week: int = 5,
-    product_id: str = "IPHONE",
+    product_id: str = "SMARTPHONE",
 ) -> pd.DataFrame:
     """
     Generate synthetic sales_records using correct ISO 8601 week arithmetic.
@@ -260,7 +260,7 @@ def main(argv: List[str] = None) -> int:
         }
         print(f"[PPC] Scenario: COOKIE_JP")
     else:
-        sc_paths        = build_iphone_vs_paths()
+        sc_paths        = build_smartphone_vs_paths()
         mom_node        = "MOM_China"
         supplier_node   = "Supplier_CN"
         dad_node        = "DAD_Japan"

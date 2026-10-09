@@ -18,7 +18,7 @@ Any similarity to real global electronics supply chains is used only as a simpli
 Representative model folder:
 
 ```text
-data/sample/iphone-2027-2029/
+data/sample/smartphone-2027-2029/
 ```
 
 The folder name and SKU names should be verified against the repository.

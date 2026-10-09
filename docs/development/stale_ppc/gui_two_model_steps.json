@@ -306,13 +306,13 @@
    }
   },
   "3_second_loaded_before_plan": {
-   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：なし（Planning Engine 未実行）",
-   "status_line": "📂 C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global: 11 files loaded",
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の計画：なし（Planning Engine 未実行）",
+   "status_line": "📂 C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029: 11 files loaded",
    "ppc_ctx": {
     "state": "none",
     "run_id": "",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
    "plan_run": {
@@ -321,12 +321,12 @@
     "sc_tree_path": ""
    },
    "entries": {
-    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
-    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
-    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
-    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\push_config.csv"
    },
-   "mgmt_banner": "モデルを読み込みました：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　→　Planning Engine を実行してください（前の計画の表は消しました）",
+   "mgmt_banner": "モデルを読み込みました：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029　→　Planning Engine を実行してください（前の計画の表は消しました）",
    "pl_summary": [],
    "node_pl": [],
    "node_pl_count": 0,
@@ -366,27 +366,27 @@
    }
   },
   "4_second_planned_ppc_running": {
-   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-001103.958-708502__iphone_global",
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の計画：20261001-001103.958-708502__smartphone-global-2026-2029",
    "status_line": "Planning Engine complete. Products: 3  |  Nodes: 32  |  Planning: fill 90.1%, stockout 113,668（実出荷ベース）  |  Check Charts/KPI/Management tabs for 'Planning' scenario  |  💰 Running PPC …",
    "ppc_ctx": {
     "state": "running",
-    "run_id": "20261001-001103.958-708502__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-001103.958-708502__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
    "plan_run": {
-    "run_id": "20261001-001103.958-708502__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv"
+    "run_id": "20261001-001103.958-708502__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv"
    },
    "entries": {
-    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
-    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
-    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
-    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\push_config.csv"
    },
-   "mgmt_banner": "PPC：PPC 計算中　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "mgmt_banner": "PPC：PPC 計算中　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Planning",
@@ -418,7 +418,7 @@
    "ppc_tab_status": "PPC 計算中",
    "ppc_tab_shows_cockpit": false,
    "ppc_tab_placeholder": "PPC 計算中\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\ev-thailand-2026（計画 ID 20261001-001054.623-a69848__ev-thailand-2026、販売記録 psi）",
-   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "flow_check_summary": "表 1：ノード 32（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 470924 ＝ 当週出荷 414090 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 56834（検算の不一致 0 行）　cpu_size=1",
    "flow_check_table3": [
     [
@@ -449,11 +449,11 @@
    "at_risk_rows": 1574,
    "network_has_plan": true,
    "network_products": [
-    "iPhone16",
-    "iPhone15",
-    "iPhone17"
+    "Phone16",
+    "Phone15",
+    "Phone17"
    ],
-   "psi_list_node": "OUT:supply_point:SP_iPhone16:iPhone16  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_node": "OUT:supply_point:SP_Phone16:Phone16  │  PULL  │  lt=0w  │  supply_point",
    "psi_list_rows": 183,
    "gp_chart_text": [
     "PPC 計算中"
@@ -465,27 +465,27 @@
    "run_info_file": null
   },
   "5_second_ppc_done": {
-   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-001103.958-708502__iphone_global",
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の計画：20261001-001103.958-708502__smartphone-global-2026-2029",
    "status_line": "💰 PPC complete (PSI-linked) — Lots: 1,127  Margin: 41.2%  | PPC・Management tabs refreshed",
    "ppc_ctx": {
     "state": "done",
-    "run_id": "20261001-001103.958-708502__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-001103.958-708502__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
    "plan_run": {
-    "run_id": "20261001-001103.958-708502__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv"
+    "run_id": "20261001-001103.958-708502__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv"
    },
    "entries": {
-    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
-    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
-    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
-    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\push_config.csv"
    },
-   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-001103.958-708502__iphone_global",
+   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029　｜　計画 ID：20261001-001103.958-708502__smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Planning",
@@ -502,8 +502,8 @@
    ],
    "node_pl": [
     [
-     "Foxconn_CN_i15",
-     "iPhone15",
+     "EMS_A_CN_i15",
+     "Phone15",
      "0",
      "34,361,288,955,900",
      "-34,361,288,955,900",
@@ -512,7 +512,7 @@
     ],
     [
      "Retail_AMER_i15",
-     "iPhone15",
+     "Phone15",
      "37,079,557,882,200",
      "6,171,306,244,808",
      "30,908,251,637,392",
@@ -521,7 +521,7 @@
     ],
     [
      "Retail_APAC_i15",
-     "iPhone15",
+     "Phone15",
      "7,883,443,887,000",
      "161,555,937,900",
      "7,721,887,949,100",
@@ -530,7 +530,7 @@
     ],
     [
      "Retail_EMEA_i15",
-     "iPhone15",
+     "Phone15",
      "23,231,734,706,600",
      "1,403,535,511,835",
      "21,828,199,194,765",
@@ -538,8 +538,8 @@
      "874,352,067,955"
     ],
     [
-     "SP_iPhone15",
-     "iPhone15",
+     "SP_Phone15",
+     "Phone15",
      "0",
      "84,842,688,780",
      "-84,842,688,780",
@@ -547,8 +547,8 @@
      "0"
     ],
     [
-     "Foxconn_CN",
-     "iPhone16",
+     "EMS_A_CN",
+     "Phone16",
      "0",
      "170,274,272,789,000",
      "-170,274,272,789,000",
@@ -600,10 +600,10 @@
     ]
    ],
    "lc_narrative_head": "【Landed Cost シナリオ分析サマリー】",
-   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-001103.958-708502__iphone_global",
+   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029　｜　計画 ID：20261001-001103.958-708502__smartphone-global-2026-2029",
    "ppc_tab_shows_cockpit": true,
    "ppc_tab_placeholder": "",
-   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "flow_check_summary": "表 1：ノード 32（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 470924 ＝ 当週出荷 414090 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 56834（検算の不一致 0 行）　cpu_size=1",
    "flow_check_table3": [
     [
@@ -634,11 +634,11 @@
    "at_risk_rows": 1574,
    "network_has_plan": true,
    "network_products": [
-    "iPhone16",
-    "iPhone15",
-    "iPhone17"
+    "Phone16",
+    "Phone15",
+    "Phone17"
    ],
-   "psi_list_node": "OUT:supply_point:SP_iPhone16:iPhone16  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_node": "OUT:supply_point:SP_Phone16:Phone16  │  PULL  │  lt=0w  │  supply_point",
    "psi_list_rows": 183,
    "gp_chart_text": [
     "41.2%"
@@ -648,10 +648,10 @@
    ],
    "app_mgr_is_none": false,
    "run_info_file": {
-    "run_id": "20261001-001103.958-708502__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-001103.958-708502__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "sales_source": "psi",
-    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "base_currency": "JPY",
     "first_week": "2026-W28",
     "n_weeks": 182,
@@ -681,27 +681,27 @@
    ]
   },
   "6_second_ppc_failed": {
-   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-001146.083-6325c2__iphone_global",
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の計画：20261001-001146.083-6325c2__smartphone-global-2026-2029",
    "status_line": "Planning Engine complete. Products: 3  |  Nodes: 32  |  Planning: fill 90.1%, stockout 113,668（実出荷ベース）  |  Check Charts/KPI/Management tabs for 'Planning' scenario  |  ⚠ PPC engine error (see console)",
    "ppc_ctx": {
     "state": "failed",
-    "run_id": "20261001-001146.083-6325c2__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-001146.083-6325c2__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": "PPC を失敗させた（受入の確認用）"
    },
    "plan_run": {
-    "run_id": "20261001-001146.083-6325c2__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv"
+    "run_id": "20261001-001146.083-6325c2__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv"
    },
    "entries": {
-    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
-    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
-    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
-    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\push_config.csv"
    },
-   "mgmt_banner": "PPC：PPC 失敗　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "mgmt_banner": "PPC：PPC 失敗　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Planning",
@@ -732,8 +732,8 @@
    "lc_narrative_head": "PPC 失敗",
    "ppc_tab_status": "PPC 失敗",
    "ppc_tab_shows_cockpit": false,
-   "ppc_tab_placeholder": "PPC 失敗\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global（計画 ID 20261001-001103.958-708502__iphone_global、販売記録 psi）",
-   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "ppc_tab_placeholder": "PPC 失敗\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029（計画 ID 20261001-001103.958-708502__smartphone-global-2026-2029、販売記録 psi）",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "flow_check_summary": "表 1：ノード 32（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 470924 ＝ 当週出荷 414090 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 56834（検算の不一致 0 行）　cpu_size=1",
    "flow_check_table3": [
     [
@@ -764,11 +764,11 @@
    "at_risk_rows": 1574,
    "network_has_plan": true,
    "network_products": [
-    "iPhone16",
-    "iPhone15",
-    "iPhone17"
+    "Phone16",
+    "Phone15",
+    "Phone17"
    ],
-   "psi_list_node": "OUT:supply_point:SP_iPhone16:iPhone16  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_node": "OUT:supply_point:SP_Phone16:Phone16  │  PULL  │  lt=0w  │  supply_point",
    "psi_list_rows": 183,
    "gp_chart_text": [
     "PPC 失敗"
@@ -778,10 +778,10 @@
    ],
    "app_mgr_is_none": false,
    "run_info_file": {
-    "run_id": "20261001-001103.958-708502__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-001103.958-708502__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "sales_source": "psi",
-    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "base_currency": "JPY",
     "first_week": "2026-W28",
     "n_weeks": 182,
@@ -818,7 +818,7 @@
    "lc_narrative_head": "",
    "ppc_tab_status": "PPC 未実行",
    "ppc_tab_shows_cockpit": false,
-   "ppc_tab_placeholder": "PPC 未実行\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global（計画 ID 20261001-001103.958-708502__iphone_global、販売記録 psi）",
+   "ppc_tab_placeholder": "PPC 未実行\n\n今の計画の PPC の結果は、まだありません。\n出力フォルダにあるのは：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029（計画 ID 20261001-001103.958-708502__smartphone-global-2026-2029、販売記録 psi）",
    "flow_check_model": "モデル：—",
    "flow_check_summary": "Flow Check：Planning Engine を実行すると表示されます",
    "flow_check_table3": [],
@@ -838,10 +838,10 @@
    "ccc_chart_text": [],
    "app_mgr_is_none": true,
    "run_info_file": {
-    "run_id": "20261001-001103.958-708502__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-001103.958-708502__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "sales_source": "psi",
-    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "base_currency": "JPY",
     "first_week": "2026-W28",
     "n_weeks": 182,
@@ -1095,13 +1095,13 @@
    "first_run_id": "20261001-001234.125-7e0cb6__ev-thailand-2026"
   },
   "8a_second_loaded_while_first_ppc_runs": {
-   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：なし（Planning Engine 未実行）",
-   "status_line": "📂 C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global: 11 files loaded",
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の計画：なし（Planning Engine 未実行）",
+   "status_line": "📂 C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029: 11 files loaded",
    "ppc_ctx": {
     "state": "none",
     "run_id": "",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
    "plan_run": {
@@ -1110,12 +1110,12 @@
     "sc_tree_path": ""
    },
    "entries": {
-    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
-    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
-    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
-    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\push_config.csv"
    },
-   "mgmt_banner": "モデルを読み込みました：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　→　Planning Engine を実行してください（前の計画の表は消しました）",
+   "mgmt_banner": "モデルを読み込みました：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029　→　Planning Engine を実行してください（前の計画の表は消しました）",
    "pl_summary": [],
    "node_pl": [],
    "node_pl_count": 0,
@@ -1155,27 +1155,27 @@
    }
   },
   "8b_second_ppc_done_first_ppc_finished_late": {
-   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-001238.167-92d3eb__iphone_global",
+   "window_title": "WOM – Weekly Operation Model  v1r5m1_cap_trial  —  C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の計画：20261001-001238.167-92d3eb__smartphone-global-2026-2029",
    "status_line": "💰 PPC complete (PSI-linked) — Lots: 1,127  Margin: 41.2%  | PPC・Management tabs refreshed",
    "ppc_ctx": {
     "state": "done",
-    "run_id": "20261001-001238.167-92d3eb__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-001238.167-92d3eb__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
    "plan_run": {
-    "run_id": "20261001-001238.167-92d3eb__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
-    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv"
+    "run_id": "20261001-001238.167-92d3eb__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
+    "sc_tree_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv"
    },
    "entries": {
-    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\sc_tree_master.csv",
-    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\edge_cost_master.csv",
-    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\route_master.csv",
-    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\\push_config.csv"
+    "_f_sc_tree": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\sc_tree_master.csv",
+    "_f_edge_cost": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\edge_cost_master.csv",
+    "_f_route": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\route_master.csv",
+    "_f_push": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\\push_config.csv"
    },
-   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-001238.167-92d3eb__iphone_global",
+   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029　｜　計画 ID：20261001-001238.167-92d3eb__smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Planning",
@@ -1192,8 +1192,8 @@
    ],
    "node_pl": [
     [
-     "Foxconn_CN_i15",
-     "iPhone15",
+     "EMS_A_CN_i15",
+     "Phone15",
      "0",
      "34,361,288,955,900",
      "-34,361,288,955,900",
@@ -1202,7 +1202,7 @@
     ],
     [
      "Retail_AMER_i15",
-     "iPhone15",
+     "Phone15",
      "37,079,557,882,200",
      "6,171,306,244,808",
      "30,908,251,637,392",
@@ -1211,7 +1211,7 @@
     ],
     [
      "Retail_APAC_i15",
-     "iPhone15",
+     "Phone15",
      "7,883,443,887,000",
      "161,555,937,900",
      "7,721,887,949,100",
@@ -1220,7 +1220,7 @@
     ],
     [
      "Retail_EMEA_i15",
-     "iPhone15",
+     "Phone15",
      "23,231,734,706,600",
      "1,403,535,511,835",
      "21,828,199,194,765",
@@ -1228,8 +1228,8 @@
      "874,352,067,955"
     ],
     [
-     "SP_iPhone15",
-     "iPhone15",
+     "SP_Phone15",
+     "Phone15",
      "0",
      "84,842,688,780",
      "-84,842,688,780",
@@ -1237,8 +1237,8 @@
      "0"
     ],
     [
-     "Foxconn_CN",
-     "iPhone16",
+     "EMS_A_CN",
+     "Phone16",
      "0",
      "170,274,272,789,000",
      "-170,274,272,789,000",
@@ -1290,10 +1290,10 @@
     ]
    ],
    "lc_narrative_head": "【Landed Cost シナリオ分析サマリー】",
-   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-001238.167-92d3eb__iphone_global",
+   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029　｜　計画 ID：20261001-001238.167-92d3eb__smartphone-global-2026-2029",
    "ppc_tab_shows_cockpit": true,
    "ppc_tab_placeholder": "",
-   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "flow_check_model": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "flow_check_summary": "表 1：ノード 32（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 470924 ＝ 当週出荷 414090 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 56834（検算の不一致 0 行）　cpu_size=1",
    "flow_check_table3": [
     [
@@ -1324,11 +1324,11 @@
    "at_risk_rows": 1574,
    "network_has_plan": true,
    "network_products": [
-    "iPhone16",
-    "iPhone15",
-    "iPhone17"
+    "Phone16",
+    "Phone15",
+    "Phone17"
    ],
-   "psi_list_node": "OUT:supply_point:SP_iPhone16:iPhone16  │  PULL  │  lt=0w  │  supply_point",
+   "psi_list_node": "OUT:supply_point:SP_Phone16:Phone16  │  PULL  │  lt=0w  │  supply_point",
    "psi_list_rows": 183,
    "gp_chart_text": [
     "41.2%"
@@ -1338,10 +1338,10 @@
    ],
    "app_mgr_is_none": false,
    "run_info_file": {
-    "run_id": "20261001-001238.167-92d3eb__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-001238.167-92d3eb__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "sales_source": "psi",
-    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "data_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "base_currency": "JPY",
     "first_week": "2026-W28",
     "n_weeks": 182,
@@ -1355,7 +1355,7 @@
      "revenue": 319119580000.0
     },
     {
-     "run_id": "20261001-001238.167-92d3eb__iphone_global",
+     "run_id": "20261001-001238.167-92d3eb__smartphone-global-2026-2029",
      "accepted": true,
      "revenue": 641014134734200.0
     }
@@ -1375,16 +1375,16 @@
      ],
      "（PPC 計算中）",
      "PPC 計算中",
-     "67-92d3eb__iphone_global"
+     "67-92d3eb__smartphone-global-2026-2029"
     ],
     [
      49.5,
      [
       "641,014,134,734,200"
      ],
-     "Foxconn_CN_i15",
+     "EMS_A_CN_i15",
      "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\oh",
-     "67-92d3eb__iphone_global"
+     "67-92d3eb__smartphone-global-2026-2029"
     ]
    ],
    "ppc_calls": 2

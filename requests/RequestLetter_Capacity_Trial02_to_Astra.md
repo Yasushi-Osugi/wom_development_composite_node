@@ -40,7 +40,7 @@ Trial-01 が「業務判断」として残した項目のうち、**休業（閉
   3. `_apply_mom_cap_backward` の `demand_envelope == "soft" and cs > 0` が偽になる。
   4. `int(cap_hard) = int(0.1) = 0` の分岐に落ちる。
   - 補足：operating_calendar では W18 = 18直（開）。`is_closed` は op_shifts だけを見るため偽。explicit_closures は `_offset_week` でしか使われない。
-- **H2（効いていない休業）**：`supply_closure` の `value=0.0`（Cookie / ev-europe / ev-thailand / iphone_global / smartx）は `cap_hard=0`＝無制限として扱われる。MOM ノードでは、Backward の充填目標でも Forward の封印でも休業が効いていない。leaf_in ノードは `on_post_backward` の P シフトで一部効いている可能性がある。
+- **H2（効いていない休業）**：`supply_closure` の `value=0.0`（Cookie / ev-europe / ev-thailand / smartphone-global-2026-2029 / smartx）は `cap_hard=0`＝無制限として扱われる。MOM ノードでは、Backward の充填目標でも Forward の封印でも休業が効いていない。leaf_in ノードは `on_post_backward` の P シフトで一部効いている可能性がある。
 - **H3（value の多義）**：`supply_closure` の value が、モデルごとに異なる意味で使われている。
   - 完全休業：0.0 / 0.1
   - 絶対能力：150 / 700 / 1500 / 30

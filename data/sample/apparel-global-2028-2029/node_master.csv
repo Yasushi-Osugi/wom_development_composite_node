@@ -1,5 +1,5 @@
 node_id,node_name,node_type,lat,lon,sku_id,region,description
-SP_Apparel_Offshore,SP_Apparel_Offshore（H&M型オフショア多階層本部）,procurement,31.23,121.47,,CN,H&M型オフショア多階層の調達本部
+SP_Apparel_Offshore,SP_Apparel_Offshore（Retailer_A型オフショア多階層本部）,procurement,31.23,121.47,,CN,Retailer_A型オフショア多階層の調達本部
 Fabric_CN,生地サプライヤー（CN）,sku_supplier,31.23,121.47,Apparel_Offshore,CN,原料生地調達
 Dyeing_BD,染色工程（BD）,mother_plant,23.81,90.41,Apparel_Offshore,BD,中間加工: 染色
 Trim_VN,トリム・縫製付帯工程（VN）,mother_plant,21.03,105.85,Apparel_Offshore,VN,中間加工: トリム・付帯縫製
@@ -9,7 +9,7 @@ DC_US_Offshore,US向けDC,region_dc,38.9,-77.04,,US,US市場向け輸入DC
 Retail_US_Offshore,US店舗・EC,marketing,38.9,-77.04,,US,US市場向け小売
 DC_JP_Offshore,JP向けDC,region_dc,35.68,139.65,,JP,JP市場向け輸入DC
 Retail_JP_Offshore,JP店舗・EC,marketing,35.68,139.65,,JP,JP市場向け小売
-SP_Apparel_Vertical,SP_Apparel_Vertical（Zara型近接垂直統合本部）,procurement,40.42,-3.7,,ES,Zara型近接垂直統合の調達本部
+SP_Apparel_Vertical,SP_Apparel_Vertical（Retailer_B型近接垂直統合本部）,procurement,40.42,-3.7,,ES,Retailer_B型近接垂直統合の調達本部
 Fabric_ES,生地サプライヤー（ES）,sku_supplier,40.42,-3.7,Apparel_Vertical,ES,原料生地調達
 Dyeing_PT,染色工程（PT）,mother_plant,38.72,-9.14,Apparel_Vertical,PT,中間加工: 染色
 Trim_MA,トリム・縫製付帯工程（MA）,mother_plant,33.57,-7.59,Apparel_Vertical,MA,中間加工: トリム・付帯縫製

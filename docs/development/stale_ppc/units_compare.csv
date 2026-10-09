@@ -11,8 +11,8 @@ ev-europe-2026,identity,53140.0,106280.0,53140.0,2.0,True,1,True
 ev-europe-2026,legacy,53140.0,106280.0,53140.0,2.0,True,1,True
 ev-thailand-2026,identity,63240.0,126480.0,63240.0,2.0,True,1,True
 ev-thailand-2026,legacy,63240.0,126480.0,63240.0,2.0,True,1,True
-iphone_global,identity,414090.0,828180.0,414090.0,2.0,True,3,True
-iphone_global,legacy,470924.0,941848.0,470924.0,2.0,True,3,True
+smartphone-global-2026-2029,identity,414090.0,828180.0,414090.0,2.0,True,3,True
+smartphone-global-2026-2029,legacy,470924.0,941848.0,470924.0,2.0,True,3,True
 oil-global-2027,identity,191029.0,382058.0,191029.0,2.0,True,1,True
 oil-global-2027,legacy,191058.0,382116.0,191058.0,2.0,True,1,True
 rice-japan-2027-2028,identity,142914.0,627802.0,142914.0,4.3929,True,5,True

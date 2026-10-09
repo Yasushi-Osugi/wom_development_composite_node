@@ -20,7 +20,7 @@
 suppliers: List[Dict] = [
     {
         "supplier_id": "SUP_001",
-        "supplier_name": "Samsung Electronics",
+        "supplier_name": "Supplier_KR_A",
         "unit_cost": 50,                    # 単価（USD）
         "max_supply": 10000,                # 最大供給量/週
         "lead_time_days": 14,
@@ -48,7 +48,7 @@ merit_order_output: Dict = {
         {
             "rank": 1,
             "supplier_id": "SUP_001",
-            "supplier_name": "Samsung Electronics",
+            "supplier_name": "Supplier_KR_A",
             "unit_cost_usd": 50,
             "cumulative_supply": (0, 10000),
             "quality_score": 95,
@@ -325,10 +325,10 @@ def load_suppliers_from_csv(filepath: str) -> List[Dict]:
 ```
 # tests/fixtures/suppliers_master.csv
 supplier_id,supplier_name,unit_cost,max_supply,lead_time_days,quality_score,currency,exchange_rate
-SUP_001,Samsung Electronics,50,10000,14,95,KRW,0.00075
-SUP_002,TSMC,48,8000,21,94,TWD,0.031
-SUP_003,MediaTek,52,5000,14,92,TWD,0.031
-SUP_004,Qualcomm,55,3000,7,96,USD,1.0
+SUP_001,Supplier_KR_A,50,10000,14,95,KRW,0.00075
+SUP_002,Foundry_A,48,8000,21,94,TWD,0.031
+SUP_003,Supplier_TW_B,52,5000,14,92,TWD,0.031
+SUP_004,Supplier_US_A,55,3000,7,96,USD,1.0
 ```
 
 ---

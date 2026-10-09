@@ -55,7 +55,7 @@
 | bom-test-2026 | GENERIC_tree | 20 | 100 | 100 | 0 |
 | ev-europe-2026 | GENERIC_tree | 526 | 53,140 | 53,140 | 0 |
 | ev-thailand-2026 | GENERIC_tree | 624 | 63,240 | 63,240 | 0 |
-| iphone_global | iphone_global | 1170 | 470,924 | 470,924 | 0 |
+| smartphone-global-2026-2029 | smartphone-global-2026-2029 | 1170 | 470,924 | 470,924 | 0 |
 | oil-global-2027 | GENERIC_tree | 1408 | 191,058 | 191,058 | 0 |
 | rice-japan-2027-2028 | rice | 1240 | 235,316 | 235,316 | 1240 |
 | smartx-2027-2029 | GENERIC_tree | 1716 | 709,811 | 709,811 | 0 |
@@ -66,7 +66,7 @@
 | soysauce-jpy-2027-alloc__P_opt800 | GENERIC_tree | 624 | 83,200 | 83,200 | 0 |
 | ev-thailand-2026_update | GENERIC_tree | 624 | 63,240 | 63,240 | 0 |
 
-runnerのdetect_scenarioが返すラベルiphoneと、実際に選ばれたGENERIC_tree分岐は区別した。CaptureEngine生成時のrunnerローカル変数を読んで分岐を記録している。全モデルを「iphoneシナリオ」とは解釈しない。
+runnerのdetect_scenarioが返すラベルsmartphoneと、実際に選ばれたGENERIC_tree分岐は区別した。CaptureEngine生成時のrunnerローカル変数を読んで分岐を記録している。全モデルを「smartphoneシナリオ」とは解釈しない。
 
 riceの一対多写像はchannel_mapping.json、合成IDの4重出現はbridge.csvに保存。数量は235,316 unitを全件採用。P1で除外がないことは、上流供給のE2E成立や、合成ID追跡の完全性を保証しない。
 
@@ -355,22 +355,22 @@ GUI/cockpitの実行、riceのID衝突による下流金額影響、Cookieの変
 | `data/ev-thailand-2026_update/snapshot.json` | `4e1db5e29ce38bbca21af38db6376c997af2d0079cfc83c8d8ebbd031f0b8b22` |
 | `data/ev-thailand-2026_update.log` | `c58693e3def8188111b2fd8ce24279e292f9fda32c2f9f54ba6206ebd6a1a0ec` |
 | `data/independent_output_checks.json` | `de90c58c82f6e4a49449b07f0f1309502d32db9e7a54a4ce37355246824f2521` |
-| `data/iphone_global/backward.json` | `b1638f389f130ae54ba1abbdd9e49dea19eaca9ddfa5917c880bbd2744e3ef0c` |
-| `data/iphone_global/bridge.csv` | `b9be34b79dfc748dd2704b32707694a748b3678bc2662bfa13d108727f162134` |
-| `data/iphone_global/channel_mapping.json` | `fddcee76172af6cb1f8b3eb671eefceb54eb5a3d648772b073bbeeaee5de64b4` |
-| `data/iphone_global/engine_input.csv` | `b9be34b79dfc748dd2704b32707694a748b3678bc2662bfa13d108727f162134` |
-| `data/iphone_global/excluded.csv` | `8d679156996092e120d3d719dd10f93763e900f380d784927e0cebeb1f23dfc3` |
-| `data/iphone_global/existing_ppc/ppc_event_ledger.csv` | `de56ca352898f1ce64be42164266dcece9a0894fe7c8a0d67094b39fee2f4b3b` |
-| `data/iphone_global/existing_ppc/ppc_kpi_summary.json` | `18bcc59bec92e6934588c9f033d148d044e057c3fdeb72bd51cf1f119a4ad964` |
-| `data/iphone_global/existing_ppc/ppc_lot_reconciliation.csv` | `4e66ad9fa3a96d4765d52e891468d5f70ec4812fe90cfc0dd0954447cf5042ed` |
-| `data/iphone_global/existing_ppc/ppc_node_pl_summary.csv` | `2b4e16048de120034d33b973b8c9abc64a1e4093e21e84bb982a38f68836afce` |
-| `data/iphone_global/existing_ppc/ppc_node_week_summary.csv` | `47f876c8376971e7a334f7696650a81ce488469e623e102cb51cb59a2a35e24a` |
-| `data/iphone_global/existing_ppc/ppc_profit_zone_summary.csv` | `a7b1fc4397175753e00a290f13b38651665515a0e29f41cfdd7f12e95dbe8246` |
-| `data/iphone_global/input_hashes_after.json` | `338beac69e32dcf86b68df9d0c4db6b5efb84d96fdca14b24e8e3e52618e8863` |
-| `data/iphone_global/input_hashes_before.json` | `338beac69e32dcf86b68df9d0c4db6b5efb84d96fdca14b24e8e3e52618e8863` |
-| `data/iphone_global/p1.json` | `4380ce5c02a562c0407a39c47b095f4776bf3e3bd1cc8906a151ec15a879474f` |
-| `data/iphone_global/snapshot.json` | `6a00f2449dc98eb9fc746ece2a5cc7fe8a24d14abbb8660c058df70eef74b53c` |
-| `data/iphone_global.log` | `5464e8f18582759b1205a44ecde7fb96686c78b5ce5af61bf5428a94d93f39f3` |
+| `data/smartphone-global-2026-2029/backward.json` | `b1638f389f130ae54ba1abbdd9e49dea19eaca9ddfa5917c880bbd2744e3ef0c` |
+| `data/smartphone-global-2026-2029/bridge.csv` | `b9be34b79dfc748dd2704b32707694a748b3678bc2662bfa13d108727f162134` |
+| `data/smartphone-global-2026-2029/channel_mapping.json` | `fddcee76172af6cb1f8b3eb671eefceb54eb5a3d648772b073bbeeaee5de64b4` |
+| `data/smartphone-global-2026-2029/engine_input.csv` | `b9be34b79dfc748dd2704b32707694a748b3678bc2662bfa13d108727f162134` |
+| `data/smartphone-global-2026-2029/excluded.csv` | `8d679156996092e120d3d719dd10f93763e900f380d784927e0cebeb1f23dfc3` |
+| `data/smartphone-global-2026-2029/existing_ppc/ppc_event_ledger.csv` | `de56ca352898f1ce64be42164266dcece9a0894fe7c8a0d67094b39fee2f4b3b` |
+| `data/smartphone-global-2026-2029/existing_ppc/ppc_kpi_summary.json` | `18bcc59bec92e6934588c9f033d148d044e057c3fdeb72bd51cf1f119a4ad964` |
+| `data/smartphone-global-2026-2029/existing_ppc/ppc_lot_reconciliation.csv` | `4e66ad9fa3a96d4765d52e891468d5f70ec4812fe90cfc0dd0954447cf5042ed` |
+| `data/smartphone-global-2026-2029/existing_ppc/ppc_node_pl_summary.csv` | `2b4e16048de120034d33b973b8c9abc64a1e4093e21e84bb982a38f68836afce` |
+| `data/smartphone-global-2026-2029/existing_ppc/ppc_node_week_summary.csv` | `47f876c8376971e7a334f7696650a81ce488469e623e102cb51cb59a2a35e24a` |
+| `data/smartphone-global-2026-2029/existing_ppc/ppc_profit_zone_summary.csv` | `a7b1fc4397175753e00a290f13b38651665515a0e29f41cfdd7f12e95dbe8246` |
+| `data/smartphone-global-2026-2029/input_hashes_after.json` | `338beac69e32dcf86b68df9d0c4db6b5efb84d96fdca14b24e8e3e52618e8863` |
+| `data/smartphone-global-2026-2029/input_hashes_before.json` | `338beac69e32dcf86b68df9d0c4db6b5efb84d96fdca14b24e8e3e52618e8863` |
+| `data/smartphone-global-2026-2029/p1.json` | `4380ce5c02a562c0407a39c47b095f4776bf3e3bd1cc8906a151ec15a879474f` |
+| `data/smartphone-global-2026-2029/snapshot.json` | `6a00f2449dc98eb9fc746ece2a5cc7fe8a24d14abbb8660c058df70eef74b53c` |
+| `data/smartphone-global-2026-2029.log` | `5464e8f18582759b1205a44ecde7fb96686c78b5ce5af61bf5428a94d93f39f3` |
 | `data/manifest.json` | `a04f7410645271ad14917c41b5bb774a9f6fe1dc51ffd32d2d7ca50c1f5256a1` |
 | `data/oil-global-2027/backward.json` | `7f52c65b9a299ca5998b81656bcb17a1ca88b9a847d3fc51c512e1e06c49d298` |
 | `data/oil-global-2027/bridge.csv` | `4fc6d0448d3e5f01aec3a4cf70b624a686ff1e53cad94bfaf697bfd204d46ba2` |

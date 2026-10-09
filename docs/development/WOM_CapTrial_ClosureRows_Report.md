@@ -28,7 +28,7 @@
 |---|---:|---|
 | `data/sample/rice-japan-2027-2028/holiday_calendar.csv` | 16 | partial_capacity 0.2〜0.5 → supply_closure 0 |
 | `data/sample/rice-japan-2027-2028_BK260613_1515/holiday_calendar.csv` | 16 | 同上（`.gitignore` の対象なので diff には出ない） |
-| `data/sample/iphone_global/holiday_calendar.csv` | 3 | DIWALI_2027〜2029（BoschSensor_IN）0.5 → supply_closure 0 |
+| `data/sample/smartphone-global-2026-2029/holiday_calendar.csv` | 3 | DIWALI_2027〜2029（Sensor_A_IN）0.5 → supply_closure 0 |
 | `data/sample/smartx-2027-2029/holiday_calendar.csv` | 5 | DIWALI_2026〜2030（SensorIN）0.5 → supply_closure 0 |
 | `data/sample/holiday_calendar.csv`（旧 root sample） | 2 | GW_2027・GW_2028（DAD_Japan）0.3 → supply_closure 0 |
 | `data/sample/oil-global-2027/holiday_calendar.csv` | 1 | Hormuz_Strait_Closure_2027（Refinery_Local_H）1.0 → supply_closure 0 |
@@ -55,7 +55,7 @@ commit B と変更後のそれぞれで、モデルフォルダの**複写**に�
 | ev-europe-2026 | 一致 | 366,508,230,000／192,334,774,500 | なし |
 | ev-thailand-2026 | 一致 | 319,119,580,000／180,288,676,250 | なし |
 | **ev-thailand-2026_update** | **変化**（§3） | 319,119,580,000／180,288,676,250 | strategic_kpi |
-| iphone_global | 一致 | 713,310,634,579,400／296,225,445,796,167.4 | BoschSensor_IN の休業週：cap_hard 0.5 → 0、is_open → False。strategic_kpi |
+| smartphone-global-2026-2029 | 一致 | 713,310,634,579,400／296,225,445,796,167.4 | Sensor_A_IN の休業週：cap_hard 0.5 → 0、is_open → False。strategic_kpi |
 | oil-global-2027 | 一致 | 1,649,727,940,180／579,538,174,893 | Refinery_Local_H の 2027-W15〜2028-W26（64週）：cap_hard 1.0 → 8.0（capacity_plan の値）、is_open → False。strategic_kpi |
 | rice-japan-2027-2028 | 一致 | 1,829,200,000／705,096,313 | DC・精白の休業週：cap_hard 0.2〜0.5 → DC は 0（未設定）、精白は capacity_plan の値（900／700／400／300）。is_open → False。strategic_kpi |
 | rice-japan-2027-2028_BK260613_1515 | 一致 | 1,829,200,000／705,096,313 | rice と同じ |
@@ -104,8 +104,8 @@ Backward の past_due 件数は、全ケースで前後同じ。
 
 | 項目 | 内容 |
 |---|---|
-| どこで | rice（DC_Higashi・DC_Nishi・Seihaku_E・Seihaku_W）、iphone（BoschSensor_IN）、smartx（SensorIN）、oil（Refinery_Local_H）の休業週 |
-| 何が | cap_hard が、holiday の小数値から capacity_plan の値に戻る。capacity_plan に行が無いノード（rice の DC、iphone の BoschSensor_IN）は 0（未設定）になる。PSI List の CapHard 列は「0.3」などから「—」または設備能力の値に変わり、CapSoft 列は「0」、行は灰色（休業）になる。strategic_kpi：rice は n_constrained_nodes 10 → 6、avg_cap_utilization 0.4021 → 0.4266。iphone は 4 → 3、0.8849 → 0.8917。oil は avg_cap_utilization 0.3973 → 0.4188。smartx は 0.4938 → 0.4954。ev-thailand-2026_update は 0.3741 → 0.3687 |
+| どこで | rice（DC_Higashi・DC_Nishi・Seihaku_E・Seihaku_W）、smartphone（Sensor_A_IN）、smartx（SensorIN）、oil（Refinery_Local_H）の休業週 |
+| 何が | cap_hard が、holiday の小数値から capacity_plan の値に戻る。capacity_plan に行が無いノード（rice の DC、smartphone の Sensor_A_IN）は 0（未設定）になる。PSI List の CapHard 列は「0.3」などから「—」または設備能力の値に変わり、CapSoft 列は「0」、行は灰色（休業）になる。strategic_kpi：rice は n_constrained_nodes 10 → 6、avg_cap_utilization 0.4021 → 0.4266。smartphone は 4 → 3、0.8849 → 0.8917。oil は avg_cap_utilization 0.3973 → 0.4188。smartx は 0.4938 → 0.4954。ev-thailand-2026_update は 0.3741 → 0.3687 |
 | なぜ（推定） | E1（休業は週の状態であり、能力値を書き換えない）の直接の結果。以前は小数の cap_hard（P／0.3 など）が稼働率の集計に入っていたが、休業週は `processing_limit` で集計から外れる |
 | 実機での見方 | rice-japan-2027-2028 → Network → DC_Higashi（Koshihikari）→ PSI List の 2027-W18・W19：CapHard「—」、CapSoft「0」、行が灰色。Seihaku_E の同じ週は CapHard「900」 |
 | 期待との差 | PSI 不変という予測（§2.3）どおり。表示と KPI の変化は、予測に書かれていなかったので報告する |

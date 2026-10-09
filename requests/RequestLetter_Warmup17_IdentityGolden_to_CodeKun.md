@@ -42,12 +42,11 @@
 | Cookie-jp-2026 | なし | **17**（決定済み。試行の最小値 15、26 まで同じ結果） |
 | soysauce-jpy-2027 | 26 | 26 のまま（17 では足りないことを確かめて記録する） |
 | soysauce-jpy-2027-alloc | 26 | 同上。あわせて P_opt/800 の条件で、9,293 件がどう扱われるかを記録する |
-| apparel-global-2028-2029、ev-europe-2026、iphone_global、oil-global-2027、smartx-2027-2029、soysauce-eu-2027、soysauce-us-2027 | なし | 手順 1〜3 で決める |
+| apparel-global-2028-2029、ev-europe-2026、smartphone-global-2026-2029、oil-global-2027、smartx-2027-2029、soysauce-eu-2027、soysauce-us-2027 | なし | 手順 1〜3 で決める |
 | apparel-us-2026 | 52 | 手順 1〜3 で決める（17 や 26 で足りれば小さい方にそろえる） |
 | bom-test-2026 | 12 | 手順 1〜3 で決める（12 は暦の区切りでないので、17 にそろえられるか確かめる） |
 | ev-thailand-2026_update | 16 | 同上。Factory_Local_TH の保存差の NG（既知の不具合、Flow Check 報告書 §3.4）は、この依頼では直さない |
 | rice-japan-2027-2028 | なし（legacy） | **対象外**（決定記録 D5）。`planning_config.csv` はそのまま |
-| india-ghee-2026 | 12 | golden の対象外。試行の結果だけ記録し、原本は変えない |
 
 ### 2.2 原本への反映
 

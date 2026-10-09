@@ -169,7 +169,7 @@ class PlanNode:
     # has 2+ children in the InBound tree -- BackwardPlanner._in_propagate
     # groups children by this attribute before propagating demand downward:
     #   "confluence" : same-kind supply converging from multiple routes
-    #                  (e.g. milk from two collection circles). Siblings
+    #                  (e.g. one material from two collection routes). Siblings
     #                  marked "confluence" SPLIT the parent's demand between
     #                  them (equal + remainder), since either one satisfying
     #                  part of the need is physically correct.

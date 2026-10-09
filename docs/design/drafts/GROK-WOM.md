@@ -230,7 +230,7 @@ python -m tools.run_headless_from_folder --model-dir data/sample/<case> ...
 
 サンプル例:
 - `data/sample/rice-japan-2027-2028`
-- `data/sample/iphone-2027-2029`
+- `data/sample/smartphone-2027-2029`
 - `data/sample/soysauce-jpy-2027-alloc`（配分・利益地形図向け）
 
 ---

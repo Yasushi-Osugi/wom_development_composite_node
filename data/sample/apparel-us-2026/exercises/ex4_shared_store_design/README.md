@@ -11,7 +11,7 @@
 ## 模範解答（設計討議）
 
 ### 現状の構造
-現行モデルでは、Apparel_Outsourced（H&M型）と Apparel_Integrated（Zara型）は、
+現行モデルでは、Apparel_Outsourced（Retailer_A型）と Apparel_Integrated（Retailer_B型）は、
 `SP_Apparel_Outsourced` / `SP_Apparel_Integrated` という別々のSupply Pointから、
 別々のDC（`DC_Import_Buffer` / `DC_Local_US`）、別々の店舗ノード
 （`Sales_US_TX_I` / `Sales_US_TX_L` 等）へと、完全に独立した経路で流れています。

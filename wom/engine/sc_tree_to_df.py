@@ -23,7 +23,7 @@ Output columns (match inventory.py rows exactly):
 Extra Planning columns: co_qty, ship_qty, qty_basis, request_qty, on_time_qty,
 co_end_qty.
 
-Request vs actual shipment (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2)
+Request vs actual shipment (RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 C2)
 ----------------------------------------------------------------------------
 Supply S is the REQUEST placed at the node (Demand Position); the actual
 shipment is node._actual_ship (set by ForwardPlanner.run). Which of the two the

@@ -48,14 +48,7 @@
   "na": 1,
   "ng_examples": []
  },
- "india-ghee-2026": {
-  "nodes": 15,
-  "NG": 0,
-  "non_demand_rows": 0,
-  "na": 0,
-  "ng_examples": []
- },
- "iphone": {
+ "smartphone-legacy": {
   "error": "ValueError: No FX rate found for currency='CNY' on or before week='2024-W01'. Add a row to ppc_fx_rate.csv.",
   "nodes": 20,
   "NG": 0,
@@ -63,7 +56,7 @@
   "na": 0,
   "ng_examples": []
  },
- "iphone_global": {
+ "smartphone-global-2026-2029": {
   "nodes": 32,
   "NG": 0,
   "non_demand_rows": 0,

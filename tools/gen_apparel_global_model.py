@@ -387,7 +387,7 @@ def gen_node_master(path):
         }
         for brand in BRANDS:
             pid = product_id(brand)
-            label = "H&M型オフショア多階層" if brand["key"] == "Offshore" else "Zara型近接垂直統合"
+            label = "Retailer_A型オフショア多階層" if brand["key"] == "Offshore" else "Retailer_B型近接垂直統合"
             lat, lon = coords[brand["fabric_country"]]
             w.writerow([brand["sp"], f"{brand['sp']}（{label}本部）", "procurement",
                         lat, lon, "", brand["fabric_country"], f"{label}の調達本部"])

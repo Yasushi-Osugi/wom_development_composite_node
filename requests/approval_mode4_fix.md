@@ -30,7 +30,7 @@
 |---|---|---|
 | `τ = LT`（一致） | apparel-global-2028-2029（Offshore / Vertical の2製品） | **無変化** ✓ |
 | `τ ≠ LT`（不一致） | ev-europe-2026 / ev-thailand-2026 / smartx-2027-2029 / soysauce-eu・jpy・us-2027 | **変化** ✓ |
-| Mode4 不使用 | Cookie-jp-2026 / iphone_global / oil-global-2027 / rice-japan-2027-2028 | **無変化** ✓ |
+| Mode4 不使用 | Cookie-jp-2026 / smartphone-global-2026-2029 / oil-global-2027 / rice-japan-2027-2028 | **無変化** ✓ |
 
 判定表の「異常（過剰修正）」枠に該当なし。
 

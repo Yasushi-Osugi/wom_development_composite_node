@@ -126,7 +126,7 @@ soysauce-jpy-2027-alloc               800            1500      **逆に 87% 増�
 他モデルの規約も確認した。**閉鎖は下げる**が一貫している。
 
 ```
-Cookie-jp / ev-* / iphone / smartx   0.0 〜 0.5     閉鎖・春節・ディワリ
+Cookie-jp / ev-* / smartphone / smartx   0.0 〜 0.5     閉鎖・春節・ディワリ
 oil-global-2027                      1.0 〜 500     閉鎖・整備・スト・減産（通常より下）
 apparel-us-2026                      1500（通常 15000 の 1/10）
 apparel-global-2028-2029             700（通常 3500 の 1/5）／ 400（通常 2000 の 1/5）

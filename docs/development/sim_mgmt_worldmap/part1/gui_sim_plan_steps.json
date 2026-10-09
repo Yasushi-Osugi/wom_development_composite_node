@@ -2,17 +2,17 @@
  "errors": [],
  "steps": {
   "1_simulation_done": {
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
    "status_line": "✔ Simulation complete.  Scenarios: 3  |  Avg fill rate: 97.7%  |  Total stockout: 68,857 units  |  Revenue: $452,663,505  |  Margin: 55.5%  |  CCC: -6.2w",
    "shown_result": "sim",
    "display_source": "sim",
    "ppc_ctx": {
     "state": "none",
     "run_id": "",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
-   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Base",
@@ -226,17 +226,17 @@
    ]
   },
   "2_planning_done_ppc_running": {
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-061825.991-6772a5__iphone_global",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の計画：20261001-061825.991-6772a5__smartphone-global-2026-2029",
    "status_line": "Planning Engine complete. Products: 3  |  Nodes: 32  |  Planning: fill 90.2%, stockout 112,516（実出荷ベース）  |  Check Charts/KPI/Management tabs for 'Planning' scenario  |  💰 Running PPC …",
    "shown_result": "plan",
    "display_source": "plan",
    "ppc_ctx": {
     "state": "running",
-    "run_id": "20261001-061825.991-6772a5__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-061825.991-6772a5__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
-   "mgmt_banner": "PPC：PPC 計算中　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "mgmt_banner": "PPC：PPC 計算中　→　P&L Summary・Node P&L・Landed Cost・チャートは、今の計画の PPC の結果が出るまで表示しません　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Planning",
@@ -292,17 +292,17 @@
    ]
   },
   "3_planning_ppc_done": {
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の計画：20261001-061825.991-6772a5__iphone_global",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の計画：20261001-061825.991-6772a5__smartphone-global-2026-2029",
    "status_line": "💰 PPC complete (PSI-linked) — Lots: 1,127  Margin: 41.2%  | PPC・Management tabs refreshed",
    "shown_result": "plan",
    "display_source": "plan",
    "ppc_ctx": {
     "state": "done",
-    "run_id": "20261001-061825.991-6772a5__iphone_global",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "run_id": "20261001-061825.991-6772a5__smartphone-global-2026-2029",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
-   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-061825.991-6772a5__iphone_global",
+   "mgmt_banner": "PPC：PPC 台帳（今の計画）　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029　｜　計画 ID：20261001-061825.991-6772a5__smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Planning",
@@ -319,8 +319,8 @@
    ],
    "node_pl": [
     [
-     "Foxconn_CN_i15",
-     "iPhone15",
+     "EMS_A_CN_i15",
+     "Phone15",
      "0",
      "34,361,288,955,900",
      "-34,361,288,955,900",
@@ -329,7 +329,7 @@
     ],
     [
      "Retail_AMER_i15",
-     "iPhone15",
+     "Phone15",
      "37,079,557,882,200",
      "6,171,306,244,808",
      "30,908,251,637,392",
@@ -338,7 +338,7 @@
     ],
     [
      "Retail_APAC_i15",
-     "iPhone15",
+     "Phone15",
      "7,883,443,887,000",
      "161,555,937,900",
      "7,721,887,949,100",
@@ -411,7 +411,7 @@
      "41.2%"
     ]
    },
-   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global　｜　計画 ID：20261001-061825.991-6772a5__iphone_global",
+   "ppc_tab_status": "Loaded  output/ppc/　｜　計画のモデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029　｜　計画 ID：20261001-061825.991-6772a5__smartphone-global-2026-2029",
    "ppc_tab_shows_cockpit": true,
    "mgr_scenarios": [
     "Base",
@@ -421,17 +421,17 @@
    ]
   },
   "4_simulation_after_planning": {
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
    "status_line": "✔ Simulation complete.  Scenarios: 3  |  Avg fill rate: 97.7%  |  Total stockout: 68,857 units  |  Revenue: $452,663,505  |  Margin: 55.5%  |  CCC: -6.2w",
    "shown_result": "sim",
    "display_source": "sim",
    "ppc_ctx": {
     "state": "none",
     "run_id": "",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
-   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Base",
@@ -645,17 +645,17 @@
    ]
   },
   "5_simulation_while_ppc_running__ppc_finished_late": {
-   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
+   "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029\n表示中の結果：Run Simulation（money によるシナリオ比較。Planning Engine・PPC は未実行）",
    "status_line": "✔ Simulation complete.  Scenarios: 3  |  Avg fill rate: 97.7%  |  Total stockout: 68,857 units  |  Revenue: $452,663,505  |  Margin: 55.5%  |  CCC: -6.2w",
    "shown_result": "sim",
    "display_source": "sim",
    "ppc_ctx": {
     "state": "none",
     "run_id": "",
-    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+    "model_dir": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
     "error": ""
    },
-   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\iphone_global",
+   "mgmt_banner": "表示中：Run Simulation の結果　｜　出所：money によるシナリオ比較（PPC ではない）（Planning Engine・PPC は実行していません）　｜　モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartphone-global-2026-2029",
    "pl_summary": [
     [
      "Base",
@@ -869,7 +869,7 @@
    ],
    "ppc_callbacks": [
     {
-     "run_id": "20261001-061912.078-f85d13__iphone_global",
+     "run_id": "20261001-061912.078-f85d13__smartphone-global-2026-2029",
      "accepted": false,
      "revenue": 640773326445600.0
     }

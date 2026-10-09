@@ -105,7 +105,7 @@ python -m main --cli --start-week 2027-W01 --num-weeks 156
 | モデル | 業界 | 何を確認できるか |
 |---|---|---|
 | `rice-japan-2027-2028` | 国産米SC | 季節収穫（供給）と通年消費（需要）のギャップを在庫バッファで吸収する仕組み |
-| `iphone-2027-2029` | グローバル製造業 | Multi-MOM配分、PUSH/PULLブレークポイント（DBR設計） |
+| `smartphone-2027-2029` | グローバル製造業 | Multi-MOM配分、PUSH/PULLブレークポイント（DBR設計） |
 | `Cookie-jp-2026` | 食品（国内生産 vs 輸入） | Landed Cost比較、複数段DADチェーンでの安全在庫バッファ最適配置 |
 | `ev-thailand-2026` / `ev-europe-2026` | 自動車（現地生産 vs 越境輸入） | 複数Tier-1サプライヤーのコスト集計、拠点別損益（Node P&L） |
 

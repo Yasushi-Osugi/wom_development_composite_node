@@ -34,14 +34,14 @@
 | 起点 | **市場 leaf（`leaf_out`）の実出荷だけ**。`ppc_psi_bridge.psi_to_sales_records` が、各 leaf_out の `_actual_ship[w]` の Lot 数を、(製品, チャネル, 週) ごとに 1 行へまとめる（lot_id は `PSI-<製品>-<チャネル>-<週>` の合成 ID）。実出荷の記録が無い leaf は、identity では販売記録を作らず警告、legacy では計画の S を使う。中間ノードの出荷は起点にしない。◆ 15 条件とも、販売記録の数量の合計 ＝ leaf の実出荷 Lot 数（rice は合成 ID 310 種類が各 4 回重複。4 地域が `JP_Channel` に写像されるため） |
 | 数量 | `qty = Lot 数 × sc_tree.cpu_size`（`bom_qty` は leaf には掛けない）。事象（PPCEvent）の `amount_base` は **1 単位当たり**、集計（`ppc_kpi.py`）で `× qty`。◆ cpu_size ＝ 1 のため、どのモデルでも `qty ＝ Lot 数` |
 | 週 | **すべての費用・売上を、その販売記録の週（leaf の出荷週）に計上する。** 部材の仕入・加工・輸送・関税も、実際にその工程があった週ではなく販売週。◆ 15 条件の全事象で「事象の週 ＝ その販売記録の週」（`all_at_sale_week=True`）。例：Cookie の Factory_GP_CN は、自分の最初の出荷が 2025-W41、PPC の最初の計上は 2026-W02 |
-| ノード | 売上（`market_revenue`）は leaf_out にだけ立つ。中間ノードの費用は、**leaf の販売記録 1 行ごとに、経路をさかのぼって、そのノードの単価 × leaf の qty** で作る（中間ノード自身の出荷数量は使わない）。経路は、generic の場合 sc_tree の祖先をたどって作る。Cookie（`cookie`）・iphone_global（`iphone_global`）・rice（`rice`）は、`ppc_engine.py` に**固定で書かれた経路**を使う。◆ 数量の合計は、中間ノード自身の実出荷の合計と一致した（15 条件・全ノード）。**例外：iphone_global の Foxconn_CN**（PPC の qty 219,439、自身の出荷 119,133）。固定の経路が iPhone16 のすべてを Foxconn_CN に割り当て、Foxconn_IN（もう 1 つの MOM）を経路に持たないため |
+| ノード | 売上（`market_revenue`）は leaf_out にだけ立つ。中間ノードの費用は、**leaf の販売記録 1 行ごとに、経路をさかのぼって、そのノードの単価 × leaf の qty** で作る（中間ノード自身の出荷数量は使わない）。経路は、generic の場合 sc_tree の祖先をたどって作る。Cookie（`cookie`）・smartphone-global-2026-2029（`smartphone-global-2026-2029`）・rice（`rice`）は、`ppc_engine.py` に**固定で書かれた経路**を使う。◆ 数量の合計は、中間ノード自身の実出荷の合計と一致した（15 条件・全ノード）。**例外：smartphone-global-2026-2029 の EMS_A_CN**（PPC の qty 219,439、自身の出荷 119,133）。固定の経路が Phone16 のすべてを EMS_A_CN に割り当て、EMS_A_IN（もう 1 つの MOM）を経路に持たないため |
 | 区間 | ① 供給者 → MOM（中間の MOM を含む）：運賃（`ppc_edge_cost_rule`）。② MOM → 最初の DAD：関税・運賃・保険（ここが輸入の区間として扱われる）。③ DAD → DAD：運賃。④ 最後の DAD → チャネル：運賃と、関税の規則があれば関税。**supply_point は経路に入らない**（MOM から最初の DAD へ直接とぶ）。単価はすべて `rate × 1 + fixed_amount`（1 単位当たり）で、`× qty` は集計で行う。保険は `rate × 移転価格`（◆ 15 条件とも保険の事象は 0 件） |
-| 移転価格 | `ppc_transfer_price_rule.csv` の**終端の MOM** の規則だけを使う（cost_plus：MOM までの原価 × (1＋率)、fixed：固定値）。使い道は 3 つ：(a) `mom_profit`（移転価格 − MOM までの原価。Profit Zone の集計だけに入り、ノード別 P&L・総原価には入らない）、(b) 関税の課税標準、(c) 保険の基準。**どのノードの売上にも、どのノードの仕入にもならない**（総原価は供給者・加工・運賃などの実費の合計で、移転価格を含まない）。◆ 使われない規則：iphone の Foxconn_IN・TSMC_TW 系（4 行）、smartx の FoundryTW 系（3 行）、rice の MOM_China |
+| 移転価格 | `ppc_transfer_price_rule.csv` の**終端の MOM** の規則だけを使う（cost_plus：MOM までの原価 × (1＋率)、fixed：固定値）。使い道は 3 つ：(a) `mom_profit`（移転価格 − MOM までの原価。Profit Zone の集計だけに入り、ノード別 P&L・総原価には入らない）、(b) 関税の課税標準、(c) 保険の基準。**どのノードの売上にも、どのノードの仕入にもならない**（総原価は供給者・加工・運賃などの実費の合計で、移転価格を含まない）。◆ 使われない規則：smartphone の EMS_A_IN・Foundry_A_TW 系（4 行）、smartx の FoundryTW 系（3 行）、rice の MOM_China |
 | 通貨 | すべて**販売週の為替**で換算（部材の仕入も販売週の為替）。`ppc_fx_rate.csv` から、`base_currency` がこの実行の基準通貨の行だけを読み、「通貨 → 基準通貨」の 1 方向だけを持つ。その週が無ければ、それより前の最も近い週の為替を使う。基準通貨は、モデルの `ppc_fx_rate.csv` の `base_currency` 列が 1 種類ならそれ（無ければ JPY） |
 
 ### 1.2 そのほか、コードで確かめたこと
 
-- **使われないマスターの行**（◆ 事象の台帳と照合）：計画の木の上で supply_point をはさんで書かれた区間（`MOM->SP_…`、`SP_…->DC_…`）の運賃の行は、Cookie・ev-europe・ev-thailand（2 条件）・oil・smartx で読まれていない（計 40 行）。supply_point は inbound と outbound をつなぐ仮想のノード（グローバル需給センター）で、物理の輸送は発生しない。Cookie・ev-europe・ev-thailand・oil では、これらの行は `ppc_node_cost_rule` の運賃（MOM と DAD のノード費用）と同じ輸送・同じ金額の二重表記で、PPC はノード費用の側で 1 回計上している（Claude 確認、2026-10-01）。smartx は金額が一致せず、未確認。iphone の DC_AMER などのノード費用（固定の経路が DC を通らない）。soysauce-us の欧州の行（需要が無いため）。
+- **使われないマスターの行**（◆ 事象の台帳と照合）：計画の木の上で supply_point をはさんで書かれた区間（`MOM->SP_…`、`SP_…->DC_…`）の運賃の行は、Cookie・ev-europe・ev-thailand（2 条件）・oil・smartx で読まれていない（計 40 行）。supply_point は inbound と outbound をつなぐ仮想のノード（グローバル需給センター）で、物理の輸送は発生しない。Cookie・ev-europe・ev-thailand・oil では、これらの行は `ppc_node_cost_rule` の運賃（MOM と DAD のノード費用）と同じ輸送・同じ金額の二重表記で、PPC はノード費用の側で 1 回計上している（Claude 確認、2026-10-01）。smartx は金額が一致せず、未確認。smartphone の DC_AMER などのノード費用（固定の経路が DC を通らない）。soysauce-us の欧州の行（需要が無いため）。
 - **Cookie の同じ輸送の二重計上（推定）**：DC_Import_Main では、`DC_Import_Buffer->DC_Import_Main` の運賃 1,000 円（`ppc_edge_cost_rule`）と、DC_Import_Main のノード費用「国内陸送費（保税倉庫→国内DC）」1,000 円（`ppc_node_cost_rule`）の両方が、同じ 312 件の販売記録に計上されている（◆ 台帳で確認）。説明の文言からは同じ輸送に見える。
 - **関税の区間はモデルで違う**：Cookie・ev・apparel-us・oil・bom-test は MOM → 最初の DAD。soysauce（4 条件）と apparel-global は **DC → leaf（最後の区間）**。smartx は両方。
 - 中身が無いときの扱い（黙った既定値）：市場価格が無い → 0（通貨 "JPY"）。供給者の原価が無い → 0（通貨 "CNY"。CNY の為替が無いモデルでは止まる）。マスターの数値の欄が数値でない → 0（`pd.to_numeric(...).fillna(0.0)`、為替の `rate` も同じ）。移転価格の規則が無い → 移転価格＝MOM までの原価、通貨の表示は "JPY"。cost_plus で為替が 0 → 1.0 とみなす。最後の区間の関税の通貨は常に "USD"（規則の通貨を見ない）。
@@ -70,7 +70,7 @@
 | ev-thailand（2 条件） | 4.25 | sku_master は THB、PPC は JPY（THB→JPY 4.25）。money は換算しないので THB のまま |
 | ev-europe | 165 | sku_master は EUR、PPC は JPY（EUR→JPY 165） |
 | oil-global | 1〜163 | **同じモデルの中で sku_master の通貨が製品ごとに違う**（日本 JPY、欧州 EUR、米国 USD）。money はそれらを換算せずに足している |
-| iphone_global | 1,534,025〜1,545,784 | 価格の桁が 1 万倍違い（§3.3）、PPC は USD→JPY 換算 |
+| smartphone-global-2026-2029 | 1,534,025〜1,545,784 | 価格の桁が 1 万倍違い（§3.3）、PPC は USD→JPY 換算 |
 | rice | 比べられない | PPC はチャネル `JP_Channel` 1 つ（地域の区別なし）、money は地域ごと。PPC の価格は `data/ppc` の見本（8,000 円）、money は sku_master（320 万円／lot） |
 
 原価は、PPC ＝ 経路の実費の積み上げ、money ＝ `unit_cost` × 数量で、作り方が違う（例：Cookie の原価 PPC 35.7 億円、money 26.0 億円）。
@@ -97,7 +97,7 @@
 | bom-test | 100 | 1 | 32,000 USD | 同上 | `per_lot`。uom=EA | 1 lot ＝ 1 台（推測） | 合う |
 | ev-europe | 53,140 | 1 | 42,000 EUR | 同上 | 「EUR/台」。uom=EA | 1 lot ＝ 1 台 | 合う |
 | ev-thailand（2） | 63,240 | 1 | 1,659,000 THB | 同上 | 「THB/台」。uom=EA | 1 lot ＝ 1 台 | 合う |
-| iphone_global | 414,090 | 1 | **9,990,000 USD**（Retail_AMER） | 同上 | 市場価格に単位の記載なし。uom=EA。sku_master は 999 | 市場価格は 1 万台分の値、または桁の誤り（推測。どちらかは決められない） | **合わない**（§3.3） |
+| smartphone-global-2026-2029 | 414,090 | 1 | **9,990,000 USD**（Retail_AMER） | 同上 | 市場価格に単位の記載なし。uom=EA。sku_master は 999 | 市場価格は 1 万台分の値、または桁の誤り（推測。どちらかは決められない） | **合わない**（§3.3） |
 | oil-global（日本・輸入） | 191,029（全体） | 1 | 170,000 JPY | 同上 | ノード費用は `basis=per_lot` だが説明は「JPY/kL」。uom=KL | 1 lot ＝ 1 kL（推測） | 列（per_lot）と説明（/kL）が食い違う。cpu=1 なので数は合う |
 | oil-global（Hormuz・RedSea） | （上に含む） | 1 | 2,700,000,000 JPY | 同上 | uom=`KL100KBBL`（そのままの表記） | 1 lot ＝ 10 万バレル（CLAUDE.md の記載） | 同じモデルの中で 1 lot の大きさが製品ごとに違う |
 | rice | 235,316 | 1 | 8,000 JPY（`data/ppc`） | 同上 | sku_master の uom=`lot`、価格 3,200,000 JPY | PPC は見本のマスターで、rice 用ではない（推測） | 比べられない |
@@ -107,7 +107,7 @@
 - 供給者の原価・ノード費用・区間の費用は、コードではすべて「1 qty 当たり」として `× qty` される（`rate × 1 + fixed_amount`）。`bom_qty` が 1 でない場合だけ、供給者の原価に `× bom_qty` が加わる（◆ 今のモデルに該当なし）。
 - `basis` 列の値は、15 条件で `per_lot` だけ（チャネルの `revenue` 基準は、`ppc_profit_zone.py` のチャネル費用だけが読む）。
 
-### 3.3 iphone_global の 641 兆円
+### 3.3 smartphone-global-2026-2029 の 641 兆円
 
 ◆ PPC の売上 641,014,134,734,200 円 ＝ Σ（qty × 市場価格 × その週の USD→JPY）。
 
@@ -115,14 +115,14 @@
 |---|---|
 | 実出荷 lot（＝qty） | 34,580 |
 | 市場価格 | 6,990,000 USD（`ppc_market_price.csv`） |
-| 為替 | 150.92〜155.79 JPY/USD（`data/ppc/ppc_fx_rate.csv`。iphone_global に自分の為替の表は無く、見本の表を使う） |
+| 為替 | 150.92〜155.79 JPY/USD（`data/ppc/ppc_fx_rate.csv`。smartphone-global-2026-2029 に自分の為替の表は無く、見本の表を使う） |
 | PPC 売上 | 37,079,557,882,200 円 |
 | money 売上 | 34,580 × 699 ＝ 24,171,420（sku_master の `selling_price`、通貨の換算なし） |
 
 - 9 つのチャネルすべてで、**PPC の市場価格 ＝ sku_master の `selling_price` × 10,000**（9,990,000／999 など）。
 - したがって PPC ÷ money ＝ 10,000 × 為替（約 153〜155）＝ 約 153 万〜155 万倍（◆ leaf ごとに 1,534,025〜1,545,784）。
 - money の 4.16 億（416,331,210）は、qty 414,090 × 平均 1,005（USD の数値、通貨の表示なし）。
-- 1 台 1,000 USD 前後という sku_master の値は iPhone の実際の価格帯と合う。PPC の市場価格・供給者の原価（Foxconn_CN 4,500,000 USD など）は、同じ 1 万倍の桁にある（推測：PPC のマスターだけが 1 万倍の単位で書かれている）。どちらの単位が意図されたものかは、マスターにも文書にも書かれていない（**未確認**）。
+- 1 台 1,000 USD 前後という sku_master の値は Smartphone の実際の価格帯と合う。PPC の市場価格・供給者の原価（EMS_A_CN 4,500,000 USD など）は、同じ 1 万倍の桁にある（推測：PPC のマスターだけが 1 万倍の単位で書かれている）。どちらの単位が意図されたものかは、マスターにも文書にも書かれていない（**未確認**）。
 - 為替の表が 2028-W51 までしか無く、計画は 2029-W52 まで。2029 年の 53 週は、2028-W51 の為替をそのまま使っている（前の週への退避。警告は外に出ない、§6）。
 
 ## 4. S4　設計草案の割当での、今の価格の位置づけ
@@ -204,7 +204,7 @@
 | bom-test | モデル | USD | USD→USD（1 行） | 2026-W01 | 2025-W36 | — |
 | ev-europe | モデル | JPY | EUR・HUF・USD→JPY | 2026-W01〜2027-W51 | 2025-W37 | EUR：助走週 16 週が無い |
 | ev-thailand（2） | モデル | JPY | CNY・THB・USD→JPY | 2026-W01〜2027-W51 | 2025-W37 | THB：助走週 16 週が無い、1 週は退避 |
-| iphone_global | **`data/ppc` の見本** | JPY | CNY→JPY、USD→JPY | 2026-W01〜2028-W51 | 2026-W28 | USD：**2029 年の 53 週は退避** |
+| smartphone-global-2026-2029 | **`data/ppc` の見本** | JPY | CNY→JPY、USD→JPY | 2026-W01〜2028-W51 | 2026-W28 | USD：**2029 年の 53 週は退避** |
 | oil-global | モデル | JPY | EUR・USD→JPY | **3 週だけ**（2027-W01、W20、W31） | 2026-W28 | EUR・USD：助走週 26 週が無い。ほか 75〜77 週は退避（段階状の時系列として書かれている） |
 | rice | `data/ppc` の見本（全マスター） | JPY | CNY・USD→JPY | 2026-W01〜2028-W51 | 2026-W01 | JPY だけ |
 | smartx | モデル | USD | USD→USD | 2026-W01〜2030-W52 | 2025-W36 | — |
@@ -219,7 +219,7 @@
 - コード：`FXConverter` は「通貨 → 基準通貨」の方向だけを引く。基準通貨から他の通貨への換算（逆数）や、2 つの外貨の間の換算（EUR→USD など）の機能は無い。
 - データ：同じ週に両方の通貨の「→ 基準通貨」の行があれば、割り算で別の組を作れる。その意味で、soysauce-jpy・alloc（USD と EUR → JPY）は、評価通貨 USD・現地通貨 EUR の換算に必要な値を持っている（◆ 2027 年は EUR/USD ＝ 162／150 ＝ 1.08、2028 年も 216／200 ＝ 1.08）。
 - データに無いもの：
-  - iphone_global・smartx：市場は AMER・EMEA・APAC だが、現地通貨（EUR など）の為替が無い（市場価格もすべて USD）。
+  - smartphone-global-2026-2029・smartx：市場は AMER・EMEA・APAC だが、現地通貨（EUR など）の為替が無い（市場価格もすべて USD）。
   - apparel-global：JPY→USD だけ。
   - Cookie：E_CN の機能通貨とされる CNY の為替は見本の表にあるが、Cookie の価格・原価はすべて JPY 建て。
   - 助走週の為替（§6.1）。
@@ -228,7 +228,7 @@
 
 | 場所 | 為替が無いとき |
 |---|---|
-| `ppc_fx.py` | その週が無ければ前の週（◆ 実際に退避が起きている：iphone 53 週、oil 75〜77 週、ev-thailand 1 週）。どの週にも無ければ `ValueError` で止まる。**退避の警告は `FXConverter.fallback_warnings` に貯めるだけで、ファイルにもログにも出ない**（どこからも読まれていない） |
+| `ppc_fx.py` | その週が無ければ前の週（◆ 実際に退避が起きている：smartphone 53 週、oil 75〜77 週、ev-thailand 1 週）。どの週にも無ければ `ValueError` で止まる。**退避の警告は `FXConverter.fallback_warnings` に貯めるだけで、ファイルにもログにも出ない**（どこからも読まれていない） |
 | `ppc_rules.py` | 為替の `rate` が数値でなければ 0 にする（`fillna(0.0)`） |
 | `ppc_transfer.py` | cost_plus で為替が 0 → **1.0 とみなす**。移転価格の事象に書く為替の値が取れなければ 1.0 |
 | `ppc_tariff.py` | 最後の区間の関税の通貨を常に "USD" として換算する |
@@ -238,15 +238,15 @@
 
 ## 7. 設計草案と食い違う点・見落としている点
 
-1. **§5.4 の 4 の括弧書き「前の週の為替を使い、警告を残す」**：警告はメモリに貯めるだけで、どこにも出ていない（§6.3）。退避は計画の終わりの側（iphone の 2029 年、53 週）でも黙って起きている。
+1. **§5.4 の 4 の括弧書き「前の週の為替を使い、警告を残す」**：警告はメモリに貯めるだけで、どこにも出ていない（§6.3）。退避は計画の終わりの側（smartphone の 2029 年、53 週）でも黙って起きている。
 2. **§6 warmup・§5.4**：今の為替の表の多く（9 条件）が助走週を含まない。今は販売週だけに計上するので表に出ないが、発生週で記録すると、助走週の外貨の費用で止まる（推定）。
 3. **v0.1 §4 の「money：ノードごとの売上・原価」**：money が作るのは leaf_out と DAD の行だけで、DAD の行の金額は常に 0。**通貨の換算が無く**、sku_master の価格の通貨がモデルごと（ev-thailand は THB、ev-europe は EUR）、さらに同じモデルの中でも製品ごとに違う（oil）。money の合計は、一部のモデルでは通貨の違う数値の合計である。
-4. **§3.6 の「PPC の約束（単価は物量当たり、集計で qty）」**：コードはそのとおりだが、cpu_size が全モデルで 1 なので、今のマスターは「lot 当たり」と「物量当たり」を区別していない。oil では `basis=per_lot` と説明「JPY/kL」が並び、同じモデルの中で 1 lot の大きさが製品ごとに違う。iphone_global は PPC のマスターだけが sku_master の 1 万倍。
+4. **§3.6 の「PPC の約束（単価は物量当たり、集計で qty）」**：コードはそのとおりだが、cpu_size が全モデルで 1 なので、今のマスターは「lot 当たり」と「物量当たり」を区別していない。oil では `basis=per_lot` と説明「JPY/kL」が並び、同じモデルの中で 1 lot の大きさが製品ごとに違う。smartphone-global-2026-2029 は PPC のマスターだけが sku_master の 1 万倍。
 5. **§7.1 の「今の移転価格 18,000 JPY は E_CN → E_JP の法人間の価格」**：今の PPC では、移転価格は売上・仕入として計上されず、関税の課税標準と Profit Zone（`mom_profit`）にだけ使われる。JPY 建て（E_CN の機能通貨とされる CNY ではない）。
 6. **§7.2**：関税が、国境を越える区間（FG_WH_Noda → DC）ではなく、DC → 市場 leaf の区間に計上されている。§2.3（出荷時に支配が移転し、運賃・関税は在庫原価）で、どの区間の在庫原価に入れるかを決めるとき、今の区間とずれる。
 7. **§3.3 の「② の場合：親（DC など）から leaf_out への出荷がグループの外部売上」**：今の PPC に、DC から leaf への出荷の記録は無い（leaf の実出荷＝販売だけ）。ただし数量の PSI では、DC 自身の実出荷（`_actual_ship`）は記録されており、合計は leaf の実出荷と一致した。
 8. **§2.4 の Kitting**：「そろった週」と「P の週」は、今のモデルでは多くが同じだが、**需要週を待つために 1 週ずれる例がある**（ev-europe の Factory_Import_HU、全 8,815 lot）。能力待ちの記録は「件数」だけで lot_id を持たない。`kitting` の記録は需要週をキーにし、組立を実行した週を持たない。
-9. **題材のモデルが、PPC の汎用の経路で動いていない**：Cookie と iphone_global は `ppc_engine.py` に固定で書かれた経路（`cookie`・`iphone_global`）で動く。iphone は固定の経路のため、2 つ目の MOM（Foxconn_IN）の原価・数量が PPC に入らない（§1.1）。rice はモデルに PPC のマスターが無く、`data/ppc` の見本で動く。
+9. **題材のモデルが、PPC の汎用の経路で動いていない**：Cookie と smartphone-global-2026-2029 は `ppc_engine.py` に固定で書かれた経路（`cookie`・`smartphone-global-2026-2029`）で動く。smartphone は固定の経路のため、2 つ目の MOM（EMS_A_IN）の原価・数量が PPC に入らない（§1.1）。rice はモデルに PPC のマスターが無く、`data/ppc` の見本で動く。
 10. 設計草案が触れていない点：
     - Cookie の DC_Import_Buffer → DC_Import_Main の運賃が、区間の費用とノードの費用の両方に計上されている（同じ輸送の二重計上と推定。§1.2）。
     - 計画の木の上で supply_point をはさんで書かれた区間の運賃の行（40 行）が読まれていない。supply_point は仮想のノードで物理の輸送は無く、smartx 以外はノード費用と同じ輸送の二重表記（§1.2）。
@@ -255,8 +255,8 @@
 
 ## 8. 未確認の点
 
-- GUI の経路の PPC（プラグインの組が golden と違う場合、値が変わる。前回の GUI 自動確認では iphone の売上 640,773,326,445,600、今回の headless では 641,014,134,734,200）。本調査は headless の値だけを使った。
-- iphone_global の PPC のマスターの 1 万倍が、意図した単位（1 万台当たり）か、桁の誤りか。
+- GUI の経路の PPC（プラグインの組が golden と違う場合、値が変わる。前回の GUI 自動確認では smartphone の売上 640,773,326,445,600、今回の headless では 641,014,134,734,200）。本調査は headless の値だけを使った。
+- smartphone-global-2026-2029 の PPC のマスターの 1 万倍が、意図した単位（1 万台当たり）か、桁の誤りか。
 - oil の 1 lot の大きさ（kL）と、`KL100KBBL` の意味。
 - sku_master の価格が、どの通貨のつもりで書かれているか（列が無い）。
 - Kitting の能力待ち・休みの週での待ちが、実際にどの条件で起きるか。

@@ -49,7 +49,7 @@ VIEWS = {
     "Thailand": (97.0, 5.0, 106.0, 21.0),
     "Bangkok":  (100.15, 13.45, 100.95, 14.05),
 }
-MODELS = ["ev-thailand-2026", "iphone_global", "oil-global-2027"]
+MODELS = ["ev-thailand-2026", "smartphone-global-2026-2029", "oil-global-2027"]
 DEMAND_TAG = "需要の流れ（試作の計測用。計画の結果ではない）"
 DEMAND_BANNER = ("  " + DEMAND_TAG + "　｜　計画の実出荷の流れは WOM の World Map タブ"
                  "（Run Planning Engine の後）で見る")

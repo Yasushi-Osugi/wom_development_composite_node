@@ -57,20 +57,12 @@
   "node_not_found_by_key": {}
  },
  {
-  "model": "india-ghee-2026",
-  "rows": 812,
-  "run_error": null,
-  "max_supply:positive": 812,
-  "zero_open_by_node": {},
-  "node_not_found_by_key": {}
- },
- {
-  "model": "iphone",
+  "model": "smartphone-legacy",
   "rows": 104,
   "run_error": "ValueError: No FX rate found for currency='CNY' on or before week='2024-W01'. Add a row to ppc_fx_rate.csv."
  },
  {
-  "model": "iphone_global",
+  "model": "smartphone-global-2026-2029",
   "rows": 442,
   "run_error": null,
   "max_supply:positive": 442,

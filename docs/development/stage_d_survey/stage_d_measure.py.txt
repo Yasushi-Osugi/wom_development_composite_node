@@ -19,7 +19,7 @@ from wom.ppc.ppc_fx import FXConverter
 from wom.model.plan_node import NODE_TYPE_LEAF_OUT, NODE_TYPE_DAD, P, S, I
 
 GOLDEN = ["Cookie-jp-2026", "apparel-global-2028-2029", "apparel-us-2026", "bom-test-2026",
-          "ev-europe-2026", "ev-thailand-2026", "iphone_global", "oil-global-2027",
+          "ev-europe-2026", "ev-thailand-2026", "smartphone-global-2026-2029", "oil-global-2027",
           "rice-japan-2027-2028", "smartx-2027-2029", "soysauce-eu-2027", "soysauce-jpy-2027",
           "soysauce-us-2027"]
 EXTRA = {"soysauce-jpy-2027-alloc": "safe", "ev-thailand-2026_update": "safe"}

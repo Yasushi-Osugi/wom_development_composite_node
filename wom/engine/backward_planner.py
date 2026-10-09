@@ -231,7 +231,7 @@ class BackwardPlanner:
 
         # -- Phase 3b: MOM constrained demand allocation (v1r0m3) ----------
         # Must run BEFORE Phase 3 (_in_propagate) so that the cap-clipped S
-        # is what gets propagated to child nodes (TSMC_TW etc.).
+        # is what gets propagated to child nodes (Foundry_A_TW etc.).
         # After this pass:  MOM.S[w] = MOM.P[w] = within_cap (capped lots only)
         # _in_propagate will then propagate this capped S to child.S[w-LT].
         if self._mom_constrained:
@@ -392,8 +392,8 @@ class BackwardPlanner:
         correct for "assembly" (BOM) semantics; "confluence" siblings (same
         physical supply arriving via multiple routes) must instead SPLIT the
         demand, or the same Lot_ID is counted once per sibling downstream
-        (see India Ghee A1: Ghee_Plant_Anand P_sum inflated to ~2x with two
-        leaf_in children, later clipped by cap_hard into phantom CO).
+        (A1: a confluence MOM's P_sum inflated to ~2x with two leaf_in
+        children, later clipped by cap_hard into phantom CO).
         """
         for w in range(n_weeks):
             all_lots = list(node.psi4demand[w][S])

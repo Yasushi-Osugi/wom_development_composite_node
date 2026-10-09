@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-tests/test_ev_update_kitting.py — RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 B3・B4
+tests/test_ev_update_kitting.py — RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 B3・B4
 
 ev-thailand-2026_update の Factory_Local_TH（2 部材 → 1 完成品）を、既存の
 Stockyard／Kitting Gate の標準構成にしたことの回帰テスト。

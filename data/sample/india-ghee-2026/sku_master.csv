@@ -1,7 +1,0 @@
-sku_id,sku_name,region,uom,unit_cost,safety_stock_wks,lead_time_wks,order_multiple,max_order_qty,shelf_life_wks,active,selling_price,dso_wks,dpo_wks
-Ghee_Domestic,Ghee_Domestic (MUM),MUM,TIN15KG,460,3,2,10,0,52,True,640,6,5
-Ghee_Domestic,Ghee_Domestic (DEL),DEL,TIN15KG,465,3,2,10,0,52,True,650,6,5
-Ghee_Domestic,Ghee_Domestic (BLR),BLR,TIN15KG,458,3,2,10,0,52,True,635,6,5
-Ghee_Export,Ghee_Export (DXB),DXB,TIN15KG,6900,4,3,10,0,52,True,9300,8,5
-Ghee_Export,Ghee_Export (AUH),AUH,TIN15KG,6950,4,3,10,0,52,True,9350,8,5
-Ghee_Export,Ghee_Export (SHJ),SHJ,TIN15KG,6880,4,3,10,0,52,True,9250,8,5

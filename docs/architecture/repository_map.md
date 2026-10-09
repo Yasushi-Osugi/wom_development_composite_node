@@ -54,7 +54,7 @@ The `wom/gui` package contains the Tkinter GUI application. `wom/gui/app.py` inc
 
 The `wom/reports` package writes console, CSV, and Excel reports for the scenario manager results.
 
-The `data/sample` directory contains root sample CSVs plus multiple model folders such as `oil-global-2027`, `rice-japan-2027-2028`, `smartx-2027-2029`, `iphone`, `iphone_global`, `Cookie-jp-2026`, `ev-thailand-2026`, and `ev-europe-2026`. Many model folders include planning CSVs and PPC rule CSVs.
+The `data/sample` directory contains root sample CSVs plus multiple model folders such as `oil-global-2027`, `rice-japan-2027-2028`, `smartx-2027-2029`, `smartphone-global-2026-2029`, `Cookie-jp-2026`, `ev-thailand-2026`, and `ev-europe-2026`. Many model folders include planning CSVs and PPC rule CSVs.
 
 The `data/ppc` directory contains fallback PPC rule CSVs used by PPC rule loading when model-local files are not present.
 

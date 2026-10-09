@@ -1,0 +1,12 @@
+supplier_node,product_id,week,purchase_price,currency
+SiliconWafer_TW,Phone16,2027-W01,5,USD
+Foundry_A_TW,Phone16,2027-W01,38,USD
+Sensor_A_IN,Phone16,2027-W01,16,USD
+EMS_A_CN,Phone16,2027-W01,450,USD
+EMS_A_IN,Phone16,2027-W01,470,USD
+SiliconWafer_TW_i15,Phone15,2027-W01,4,USD
+Foundry_A_TW_i15,Phone15,2027-W01,28,USD
+EMS_A_CN_i15,Phone15,2027-W01,320,USD
+SiliconWafer_TW_i17,Phone17,2027-W01,5.5,USD
+Foundry_A_TW_i17,Phone17,2027-W01,42,USD
+EMS_A_CN_i17,Phone17,2027-W01,490,USD

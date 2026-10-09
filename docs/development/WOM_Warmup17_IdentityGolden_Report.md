@@ -6,7 +6,7 @@
 - 作業フォルダ／ブランチ：`wom-v1r5m1_cap_trial`
 - **着手時の SHA：`988f935`**（Flow Check の commit は `7604f64`）
 - **commit・push はしていない。** golden は作り直した（大杉さんの差分の確認待ち）。
-- **改訂（同日）**：初版の報告への大杉さんの判断（oil は 26、落ちた 3 件のテストは直す、iphone と alloc はそのまま）を反映した。反映した箇所は §0・§2.2・§3.2・§5 S4・S8・§6。
+- **改訂（同日）**：初版の報告への大杉さんの判断（oil は 26、落ちた 3 件のテストは直す、smartphone と alloc はそのまま）を反映した。反映した箇所は §0・§2.2・§3.2・§5 S4・S8・§6。
 - **エンジン・GUI のコードは変えていない。** 変えたのは、サンプルの入力（`planning_config.csv` と warmup の生成行）、golden、`tests/test_golden.py`（legacy のフォルダを読む部分）と、大杉さんの判断を受けて直した既存のテスト 2 本（`tests/test_lovem_observer.py`・`tests/test_stage3a1_stockyard.py`。§5 S8）だけ。
 
 ---
@@ -19,11 +19,11 @@
    |---|---|
    | 17 | ev-thailand-2026、Cookie-jp-2026、apparel-global-2028-2029、ev-europe-2026、smartx-2027-2029、apparel-us-2026（52 から）、bom-test-2026（12 から）、ev-thailand-2026_update（16 から） |
    | 26 | soysauce-eu-2027、soysauce-us-2027、**oil-global-2027**（新規）、soysauce-jpy-2027・soysauce-jpy-2027-alloc（今のまま）。oil は、手順では 52 になる（26 では 29 件が残る）が、**大杉さんの判断で 26 にした**（§2.2） |
-   | **決められない** | **iphone_global**（`capacity_plan.csv` に `node_name` 列が無く、warmup の助走行の生成がエラーで止まる。コードを変えない約束なので、warmup なしのまま。§2.3） |
-   | 対象外 | rice-japan-2027-2028（legacy のまま、入力は変えていない）、india-ghee-2026（試行だけ。原本は変えていない） |
+   | **決められない** | **smartphone-global-2026-2029**（`capacity_plan.csv` に `node_name` 列が無く、warmup の助走行の生成がエラーで止まる。コードを変えない約束なので、warmup なしのまま。§2.3） |
+   | 対象外 | rice-japan-2027-2028（legacy のまま、入力は変えていない） |
 
 2. **golden を作り直した**：13 件（rice は legacy、ほかの 12 件は identity）と、legacy の golden 3 件（`tests/golden/legacy/`：Cookie・ev-thailand・soysauce-jpy）。rice の golden は 1 バイトも変わっていない。
-3. **warmup を入れた identity の 11 モデルのうち 10 モデルは、期末注文残が 0 になり、PPC の売上・粗利が、これまでの legacy の golden と同じ値になった**（§3.2）。残るのは 2 モデル：oil は 29 件（すべて Gasoline_Local_RedSea。§2.2）、iphone は 97,834 件（能力 65,274、計画期間の端（開始）32,560）。
+3. **warmup を入れた identity の 11 モデルのうち 10 モデルは、期末注文残が 0 になり、PPC の売上・粗利が、これまでの legacy の golden と同じ値になった**（§3.2）。残るのは 2 モデル：oil は 29 件（すべて Gasoline_Local_RedSea。§2.2）、smartphone は 97,834 件（能力 65,274、計画期間の端（開始）32,560）。
 4. **Flow Check**：13 モデルの表 1 の NG は 0 件、表 2 の検算もすべて 0。ev-thailand-2026_update（golden の対象外）は、既知の NG が 1 件（Factory_Local_TH の保存差 52,400）のまま。
 5. テスト：**593 passed／3 skipped（失敗 0）**（全 596 件、8 分 59 秒）。golden の 13 件、legacy の golden の 3 件、直した 3 件のテストを含む。初版で落ちていた 3 件は、大杉さんの判断どおりに直した（§5 S8）。
 
@@ -39,7 +39,7 @@
 | golden | `tests/golden/*.json` の 12 件（rice 以外）を作り直した。`tests/golden/legacy/*.json` を 3 件、新しく作った |
 | テスト（判断を受けて直した分） | `tests/test_stage3a1_stockyard.py`：ev-europe の 2 件の期待値を書き換えた。`tests/test_lovem_observer.py`：`test_se2_168_is_reproduced` を、warmup を入れない入力のコピーで実行する形に変えた（§5 S8） |
 | テスト | `tests/test_golden.py`：比べ方を関数 `_check_golden` にまとめ、`test_legacy_golden_matches` を加えた。`tests/golden/legacy/` の golden は、`planning_config.csv` の指定によらず、必ず legacy で実行して比べる |
-| 変えていないもの | エンジン・GUI のコード。rice・soysauce-jpy-2027・soysauce-jpy-2027-alloc・iphone_global・india-ghee-2026 の入力 |
+| 変えていないもの | エンジン・GUI のコード。rice・soysauce-jpy-2027・soysauce-jpy-2027-alloc・smartphone-global-2026-2029 の入力 |
 
 ### 1.1 生成行の範囲（どのファイルのどの範囲が生成行か）
 
@@ -103,8 +103,7 @@
 | oil-global-2027 | 14,042 | 74 | **29** | 0 | **26**（大杉さんの判断。手順では 52） |
 | soysauce-jpy-2027-alloc（元の需要） | 43,046 | 31,384 | 25,210（今の値） | 7,374 | 26 のまま（依頼書の指定） |
 | soysauce-jpy-2027-alloc（P_opt/800） | 27,129 | 15,467 | **9,293**（今の値） | **0** | — |
-| india-ghee-2026（試行だけ） | 4,810 | 0 | 0 | 0 | 原本は 12 のまま |
-| iphone_global | 97,834 | エラー | エラー | エラー | 決められない |
+| smartphone-global-2026-2029 | 97,834 | エラー | エラー | エラー | 決められない |
 
 残った分の原因（件数の多い順）：
 
@@ -120,7 +119,7 @@
 | alloc（元の需要）w52 | 7,374 | 開始端 4,116／能力 2,572／ID の照合不能 686 |
 | alloc（P_opt/800）w17 | 15,467 | 能力 10,665／開始端 4,116／ID の照合不能 686 |
 | alloc（P_opt/800）w26 | 9,293 | 能力 4,491／開始端 4,116／ID の照合不能 686 |
-| iphone_global（warmup なし） | 97,834 | 能力 65,274（SP_iPhone16 38,007・SP_iPhone15 27,267。Backward が MOM の能力で押し戻して第 0 週を越えた分）／計画期間の端（開始）32,560 |
+| smartphone-global-2026-2029（warmup なし） | 97,834 | 能力 65,274（SP_Phone16 38,007・SP_Phone15 27,267。Backward が MOM の能力で押し戻して第 0 週を越えた分）／計画期間の端（開始）32,560 |
 | ev_update（warmup なし） | 3,581 | 開始端 3,330／ID の照合不能 210／能力 41 |
 
 - 経路の未割当・終わりの端・休業・未確認は、どの条件でも 0 件。
@@ -154,7 +153,7 @@
 - 金額の注意：この製品の 1 lot はタンカー 1 隻分（約 27.1 億円）なので、**件数では 0.015% だが、売上では 786 億円（全体の 4.8%）**にあたる。新しい golden の売上は 1 兆 5,711 億円（これまでの legacy の golden は 1 兆 6,497 億円）、粗利は 5,523 億円（同 5,795 億円）、粗利率 35.16%（同 35.13%）。
 - legacy は、この 29 件も出荷したことにしていた（warmup なしの legacy では、製油所の P は 335 しかないのに、市場では 494 を出荷）。identity では、作れた分だけを出荷する。
 
-### 2.3 iphone_global は決められなかった
+### 2.3 smartphone-global-2026-2029 は決められなかった
 
 - `materialize_warmup` が、`capacity_plan.csv` の助走行を作るところで止まる。
 
@@ -164,11 +163,11 @@
   ValueError: 'node_name' is not in list
   ```
 
-- iphone の `capacity_plan.csv` の見出しは `sku_id,region,week,max_supply,cap_pieces,source`（SKU 単位の古い書式）で、`node_name` 列が無い。ほかのモデルはすべて `node_name` 列を持つ。
-- エンジンのコード（`warmup.py`）も、`planning_config.csv` と生成行以外の入力も変えない約束なので、iphone には warmup を入れていない。
+- smartphone の `capacity_plan.csv` の見出しは `sku_id,region,week,max_supply,cap_pieces,source`（SKU 単位の古い書式）で、`node_name` 列が無い。ほかのモデルはすべて `node_name` 列を持つ。
+- エンジンのコード（`warmup.py`）も、`planning_config.csv` と生成行以外の入力も変えない約束なので、smartphone には warmup を入れていない。
 - identity の golden は、warmup なしで作った。期末注文残 97,834 件（能力 65,274、開始端 32,560）が残った状態を固定している。
-- 直すなら、(a) `warmup.py` を `node_name` 列の無い書式に対応させる、(b) iphone の `capacity_plan.csv` に `node_name` 列を加える、のどちらか。どちらも今回の範囲の外。
-- なお、iphone の「能力」の 65,274 件は、warmup を入れても消えない見込み（Backward の MOM の能力の押し戻しによるもので、LotIdentityFlow 報告書 §5.6）。
+- 直すなら、(a) `warmup.py` を `node_name` 列の無い書式に対応させる、(b) smartphone の `capacity_plan.csv` に `node_name` 列を加える、のどちらか。どちらも今回の範囲の外。
+- なお、smartphone の「能力」の 65,274 件は、warmup を入れても消えない見込み（Backward の MOM の能力の押し戻しによるもので、LotIdentityFlow 報告書 §5.6）。
 
 ### 2.4 soysauce-jpy-2027-alloc と 9,293 件
 
@@ -201,7 +200,7 @@
 | bom-test-2026 | 12→17 | 2025-W41・32 → 2025-W36・37 | 100／0 | 80／0／20 | 100／0／0 |
 | ev-europe-2026 | なし→17 | 2026-W02・88 → 2025-W37・105 | 53,140／0 | 49,420／0／3,720 | 53,140／0／0 |
 | ev-thailand-2026 | なし→17 | 2026-W02・104 → 2025-W37・121 | 63,240／0 | 58,220／0／5,020 | 63,240／0／0 |
-| iphone_global | なし→なし | 2027-W01・156（同じ） | 470,924／0 | 373,090／0／97,834 | 373,090／0／**97,834** |
+| smartphone-global-2026-2029 | なし→なし | 2027-W01・156（同じ） | 470,924／0 | 373,090／0／97,834 | 373,090／0／**97,834** |
 | oil-global-2027 | なし→26 | 2027-W01・78 → 2026-W28・104 | 191,058／0 | 177,016／0／14,042 | 191,029／0／**29** |
 | rice-japan-2027-2028 | なし（legacy） | 2026-W01・156（同じ） | 235,316／0 | （参考）0／142,914／92,402 | 235,316／0／0（legacy のまま） |
 | smartx-2027-2029 | なし→17 | 2026-W01・261 → 2025-W36・278 | 709,811／0 | 676,850／16,073／16,888 | 693,738／**16,073**／0 |
@@ -219,7 +218,7 @@ PPC（売上／粗利／粗利率。通貨は各モデルの基準通貨）：
 | bom-test-2026 | 3,200,000／2,393,000／74.78% | 2,560,000／1,914,400／74.78% | 3,200,000／2,393,000／74.78% |
 | ev-europe-2026 | 3,665.1 億／1,923.3 億／52.48% | 3,408.4 億／1,788.0 億／52.46% | 3,665.1 億／1,923.3 億／52.48% |
 | ev-thailand-2026 | 3,191.2 億／1,802.9 億／56.50% | 2,929.9 億／1,657.4 億／56.57% | 3,191.2 億／1,802.9 億／56.50% |
-| iphone_global | 713.3 兆／296.2 兆／41.53% | 583.3 兆／239.7 兆／41.09% | **583.3 兆／239.7 兆／41.09%** |
+| smartphone-global-2026-2029 | 713.3 兆／296.2 兆／41.53% | 583.3 兆／239.7 兆／41.09% | **583.3 兆／239.7 兆／41.09%** |
 | oil-global-2027 | 1.650 兆／5,795 億／35.13% | 1.100 兆／3,847 億／34.99% | **1.571 兆／5,523 億／35.16%** |
 | rice-japan-2027-2028 | 1,829,200,000／705,096,313／38.55% | （参考）1,122,629,300／425,038,777／37.86% | 1,829,200,000／705,096,313／38.55% |
 | smartx-2027-2029 | 702,250,439／634,628,760／90.37% | 690,212,627／623,762,050／90.37% | 702,250,439／634,628,760／90.37% |
@@ -227,14 +226,14 @@ PPC（売上／粗利／粗利率。通貨は各モデルの基準通貨）：
 | soysauce-jpy-2027 | 614,988,400／172,459,616／28.04% | 530,632,900／148,853,881／28.05% | 614,988,400／172,459,616／28.04% |
 | soysauce-us-2027 | 3,585,879／963,595／26.87% | 3,036,915／811,939／26.74% | 3,585,879／963,595／26.87% |
 
-- **warmup を入れた identity の 10 モデルと rice は、新しい golden の PPC（売上・原価・粗利・粗利率・lot 数・trust event の件数）が、これまでの golden と一致する。** 違うのは oil（lot 数 1,408 → 1,399、trust event 742 → 733。§2.2）と iphone（lot 数 1,170 → 1,047、trust event 390 → 366）。
+- **warmup を入れた identity の 10 モデルと rice は、新しい golden の PPC（売上・原価・粗利・粗利率・lot 数・trust event の件数）が、これまでの golden と一致する。** 違うのは oil（lot 数 1,408 → 1,399、trust event 742 → 733。§2.2）と smartphone（lot 数 1,170 → 1,047、trust event 390 → 366）。
 - これは、「legacy が例外 1・2 で覆い隠していた立ち上がり期の不足」を、identity では warmup で実際に作って埋めた、と読める。
 
 `forward`・`backward`：
 
 | モデル | forward（前 → 後） | backward |
 |---|---|---|
-| iphone_global | `cap_hard_sealed` 1,230 → `cap_hard_deferred_lots` 55,413・`lot_weeks` 55,413 | 変化なし（0） |
+| smartphone-global-2026-2029 | `cap_hard_sealed` 1,230 → `cap_hard_deferred_lots` 55,413・`lot_weeks` 55,413 | 変化なし（0） |
 | smartx-2027-2029 | `cap_hard_sealed` 1,647 → `cap_hard_deferred_lots` 19,887・`lot_weeks` 19,887 | 変化なし（0） |
 | rice-japan-2027-2028 | `cap_hard_sealed` 8,572（変化なし、legacy） | 変化なし（0） |
 | ほかの 10 モデル | `cap_hard_sealed` 0 → `cap_hard_deferred_lots` 0・`lot_weeks` 0（項目名だけが変わる） | 変化なし（0） |
@@ -251,7 +250,7 @@ psi（変わったノードの数／全ノードの数）と代表例：
 | bom-test-2026 | 8／8 | Battery_Supply：P・S 100 は同じ。週の並びだけが変わる |
 | ev-europe-2026 | 24／24 | Battery_HU：P・S 7,945 → 8,815。Battery_HU_Yard：I_sum 15,890 → 17,630 |
 | ev-thailand-2026 | 14／14 | Components_CN：P・S 9,370 → 10,540。DC_EV_Import：P 9,370・S 10,386・CO（のべ）100,142 → P 10,540・S 10,540・CO 0 |
-| iphone_global | 14／32 | Retail_AMER_i15：P 34,580・CO 0 → P 28,180・CO（のべ）944,000・I_max 400 |
+| smartphone-global-2026-2029 | 14／32 | Retail_AMER_i15：P 34,580・CO 0 → P 28,180・CO（のべ）944,000・I_max 400 |
 | oil-global-2027 | 53／53 | Import_Hub_EU：P 11,320・S 11,757・CO（のべ）33,176 → P 12,093・S 12,093・CO 0。Refinery_Local_R：P 335・S 360 → P 465・S 490（29 件が残る） |
 | rice-japan-2027-2028 | 0／24 | 変化なし |
 | smartx-2027-2029 | 34／34 | AssemblyCN_g1：P 132,257・S 144,881・CO（のべ）3,225,909 → P 149,145・S 149,145・CO 0 |
@@ -265,7 +264,7 @@ Flow Check（新しい入力・各モデルの方式）：
 
 | モデル | 表 1 の NG | 表 1 の対象外 | 表 2 の検算の不一致 |
 |---|---:|---:|---:|
-| Cookie・apparel-global・apparel-us・ev-thailand・iphone・oil・smartx・soysauce-eu／jpy／us | 0 | 0 | 0 |
+| Cookie・apparel-global・apparel-us・ev-thailand・smartphone・oil・smartx・soysauce-eu／jpy／us | 0 | 0 | 0 |
 | bom-test-2026 | 0 | 1（Kitting） | 0 |
 | ev-europe-2026 | 0 | 2（Kitting） | 0 |
 | rice-japan-2027-2028（legacy） | 0 | 18（P はコピー、需要に無い ID） | 0 |
@@ -290,7 +289,7 @@ Flow Check（新しい入力・各モデルの方式）：
 | 条件 | 結果 |
 |---|---|
 | 1. 全テスト緑（新しい golden 13 件＋legacy の golden 3 件） | **達成**：593 passed／3 skipped、失敗 0（初版では 3 件が落ちていた。§5 S8 のとおりに直した） |
-| 2. identity の 12 モデルの期末注文残と原因の内訳 | 10 モデルは 0。oil は 29（計画期間の端（開始）25、能力 4。§2.2）。iphone は 97,834（能力 65,274、計画期間の端（開始）32,560）。§2.1・§3.2 |
+| 2. identity の 12 モデルの期末注文残と原因の内訳 | 10 モデルは 0。oil は 29（計画期間の端（開始）25、能力 4。§2.2）。smartphone は 97,834（能力 65,274、計画期間の端（開始）32,560）。§2.1・§3.2 |
 | 3. Flow Check の NG は ev-thailand-2026_update の既知の 1 件だけ | そのとおり（§3.2） |
 | 4. legacy の golden 3 件が、同じ入力の legacy の実行と一致 | 一致（`test_legacy_golden_matches` の 3 件が緑） |
 
@@ -298,13 +297,13 @@ Flow Check（新しい入力・各モデルの方式）：
 
 ## 5. 副作用（どこで／何が／なぜ／実機での見方／期待との差）
 
-### S1　iphone_global に warmup を入れられない
+### S1　smartphone-global-2026-2029 に warmup を入れられない
 
-- どこで：`wom/engine/warmup.py` の `_build_warm_lines`、`data/sample/iphone_global/capacity_plan.csv`。
+- どこで：`wom/engine/warmup.py` の `_build_warm_lines`、`data/sample/smartphone-global-2026-2029/capacity_plan.csv`。
 - 何が：`planning_config.csv` に `warmup_lt` を書くと、計画の実行が `ValueError: 'node_name' is not in list` で止まる（§2.3）。
 - なぜ：`capacity_plan.csv` が `node_name` 列の無い古い書式のため。
-- 実機での見方：iphone のフォルダに `planning_config.csv`（`warmup_lt,17`）を置いて `python -m main` で読み込むと、期間の自動検出のところでエラーになるはず（GUI では確かめていない）。
-- 期待との差：依頼書 2.1 は iphone を「手順 1〜3 で決める」としていたが、決められなかった。identity の golden は、期末注文残 97,834 件が残った状態を固定している。
+- 実機での見方：smartphone のフォルダに `planning_config.csv`（`warmup_lt,17`）を置いて `python -m main` で読み込むと、期間の自動検出のところでエラーになるはず（GUI では確かめていない）。
+- 期待との差：依頼書 2.1 は smartphone を「手順 1〜3 で決める」としていたが、決められなかった。identity の golden は、期末注文残 97,834 件が残った状態を固定している。
 
 ### S2　apparel-global の原本の 4 週分の行が、生成行に置き換わった
 
@@ -364,7 +363,7 @@ Flow Check（新しい入力・各モデルの方式）：
 
 ## 6. 本書と変えた点
 
-1. **iphone_global の値を決めなかった**（§2.3、S1）。エンジンのコードを変えない約束を優先した。
+1. **smartphone-global-2026-2029 の値を決めなかった**（§2.3、S1）。エンジンのコードを変えない約束を優先した。
 2. **oil-global-2027 を 26 にした**（§2.2）。手順では 52 になるが、大杉さんの判断で、29 件の期末注文残を残して 26 にした。
 3. **legacy の golden の入力は「変わった後」にした**（依頼書は「前でも後でもよい」）。warmup を入れた後の入力でも、legacy の解き方が壊れていないことを守れるため。
 4. **golden の作り直しのプラグイン指定**：CLAUDE.md の手順は「rice 以外は `safe`」だが、今回は、各 golden に記録されているプラグインの一覧をそのまま渡した（`config` の変化を、方式の記録だけにするため）。
@@ -385,7 +384,7 @@ Flow Check（新しい入力・各モデルの方式）：
 2. **Cookie-jp-2026**
    - 同じ手順で、Flow Check の要約行が「需要 141990 ＝ 当週出荷 141990 ＋ … ＋ 期末注文残 **0**」になる。
    - PSI List で `OUT:dad:DC_Import_Main:Cookie_Import` を選ぶと、Σ 行の S（要求）と Ship（実出荷）が、どちらも 78,930 になる（warmup なしでは 78,142 と 67,274）。
-3. **iphone_global**：Flow Check の要約行に、期末注文残 97,834 が出る（warmup なしのため）。
+3. **smartphone-global-2026-2029**：Flow Check の要約行に、期末注文残 97,834 が出る（warmup なしのため）。
    **oil-global-2027**：計画の開始が 2026-W28（104 週）になり、Flow Check の要約行に、期末注文残 29 が出る。表 2 で、残りが Gasoline_Local_RedSea の Retail_Local_R_KANSAI（9）と Retail_Local_R_CHUBU（20）にあることを確かめられる。
 4. **legacy と見比べる**：モデルのフォルダをコピーし、コピーの `planning_config.csv` に `lot_flow_mode,legacy` を 1 行足して読み込む（原本は変えない）。
 5. **golden の差分の確認**：`git diff --stat`、`git diff tests/golden/<モデル>.json`。入力の生成行は `git diff --stat -- data/sample`。

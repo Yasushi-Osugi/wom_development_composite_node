@@ -15,8 +15,8 @@ import pandas as pd
 from .ppc_psi_bridge import psi_to_sales_records, summarize_psi_records
 from .ppc_rules import PPCRuleSet
 from .ppc_engine import (PPCSimulationEngine,
-                          build_iphone_vs_paths,
-                          build_iphone_global_vs_paths,
+                          build_smartphone_vs_paths,
+                          build_smartphone_global_vs_paths,
                           build_rice_vs_paths,
                           build_cookie_vs_paths,
                           detect_scenario)
@@ -117,11 +117,11 @@ def run_ppc_from_psi(
     scenario = detect_scenario(sales)
 
     # dad_nodes_chain: ordered list of all DAD nodes per product (MOM-side first).
-    # None for rice / iphone_global (single-DAD chains).
+    # None for rice / smartphone_global (single-DAD chains).
     dad_nodes_chain = None
     # mom_nodes_chain: InBound counterpart of dad_nodes_chain (Problem B fix,
     # wom-v1r1m7-fix4all_case). Only populated by the GENERIC branch below;
-    # the named scenarios (rice/cookie/iphone_global) have no multi-tier
+    # the named scenarios (rice/cookie/smartphone_global) have no multi-tier
     # InBound chains in their hardcoded sc_paths.
     mom_nodes_chain = None
     # bom_qty_map: Letter B (request_letter_b_bom_qty.md, "1 set rule").
@@ -133,7 +133,7 @@ def run_ppc_from_psi(
 
     if scenario == "rice":
         sc_paths      = build_rice_vs_paths()
-        mom_node      = "JA_Seihaku"
+        mom_node      = "Coop_Seihaku"
         supplier_node = "Farm_JP"
         dad_node      = "DC_Rice"
 
@@ -150,22 +150,22 @@ def run_ppc_from_psi(
             print("[PPC Runner] Scenario: COOKIE_JP  "
                   "(Factory_GP_CN/DP_JP -> DC_Import_Buffer/DC_Import_Main/DC_Local_JP -> Retail_JP_*)")
 
-    elif scenario == "iphone_global":
-        sc_paths      = build_iphone_global_vs_paths()
+    elif scenario == "smartphone_global":
+        sc_paths      = build_smartphone_global_vs_paths()
         mom_node = {
-            "iPhone16": "Foxconn_CN",
-            "iPhone15": "Foxconn_CN_i15",
-            "iPhone17": "Foxconn_CN_i17",
+            "Phone16": "EMS_A_CN",
+            "Phone15": "EMS_A_CN_i15",
+            "Phone17": "EMS_A_CN_i17",
         }
         supplier_node = mom_node
         dad_node = {
-            "iPhone16": "SP_iPhone16",
-            "iPhone15": "SP_iPhone15",
-            "iPhone17": "SP_iPhone17",
+            "Phone16": "SP_Phone16",
+            "Phone15": "SP_Phone15",
+            "Phone17": "SP_Phone17",
         }
         if verbose:
-            print("[PPC Runner] Scenario: IPHONE_GLOBAL  "
-                  "(Foxconn_CN/i15/i17 -> SP_iPhone16/15/17 -> Retail_*)")
+            print("[PPC Runner] Scenario: SMARTPHONE_GLOBAL  "
+                  "(EMS_A_CN/i15/i17 -> SP_Phone16/15/17 -> Retail_*)")
 
     else:
         # Generic: auto-detect mom/supplier/dad from SCTree structure.
@@ -284,20 +284,20 @@ def run_ppc_from_psi(
                       f"dad_chain_by_channel={_dad_chain_by_channel}  "
                       f"mom_chain_by_leaf={_mom_chain_by_leaf}")
         else:
-            # Final fallback: legacy iphone (JP_Channel / US_Channel)
-            sc_paths      = build_iphone_vs_paths()
+            # Final fallback: legacy smartphone (JP_Channel / US_Channel)
+            sc_paths      = build_smartphone_vs_paths()
             mom_node      = "MOM_China"
             supplier_node = "Supplier_CN"
             dad_node      = "DAD_Japan"
             dad_nodes_chain = None
             mom_nodes_chain = None
             if verbose:
-                print("[PPC Runner] Scenario: IPHONE (legacy)  "
+                print("[PPC Runner] Scenario: SMARTPHONE (legacy)  "
                       f"mom={mom_node}  "
                       f"supplier={supplier_node}  "
                       f"dad={dad_node}")
 
-    if verbose and scenario != "iphone_global":
+    if verbose and scenario != "smartphone_global":
         print(f"[PPC Runner] Scenario: {scenario.upper()}  "
               f"mom={mom_node}  supplier={supplier_node}  dad={dad_node}")
 

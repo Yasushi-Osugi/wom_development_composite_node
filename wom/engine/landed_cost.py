@@ -266,7 +266,7 @@ def compute_landed_cost_kpi(
         # (sum of demand_fulfilled across the scenario). Falls back to the old
         # revenue/1000 proxy only if an older caller doesn't provide "units"
         # (that proxy assumed ~$1000 revenue per lot, which only happens to
-        # hold for the iPhone model and silently breaks for any other
+        # hold for the Smartphone model and silently breaks for any other
         # currency/price scale — e.g. it inflated a ~300-lot EV scenario into
         # 75 million "lots").
         lot_count = float(kpi_row.get("units", 0) or 0)

@@ -111,7 +111,7 @@ class PushConfig:
     mode_only              : True = set plan_mode flags ONLY; skip P-schedule.
     mom_ref_node_id        : demand signal node for Mode 2/4 replenishment.
                              Default "" = decoupling node itself (staircase).
-                             Set to Foxconn_CN for raw-demand signal (pre-v1r0m2).
+                             Set to EMS_A_CN for raw-demand signal (pre-v1r0m2).
     pre_build_qty_per_week : Mode 3 Phase-1 fixed qty (lots/week).
     pre_build_end_week     : Mode 3 Phase-1 end week label (e.g. "2026-W52").
     push_lead_time_weeks   : Mode 4 — LT offset (weeks).
@@ -250,7 +250,7 @@ class PushProductionPlanner:
                 node.plan_mode = PUSH_SUB_MODE
 
         # Nodes ABOVE decoupling (toward MOM root) -> PUSH_SUB (PUSH forward pass)
-        # Buffer_Wafer_TW.S drives TSMC_TW.P -> Foxconn_CN.P as pass-through.
+        # Buffer_Wafer_TW.S drives Foundry_A_TW.P -> EMS_A_CN.P as pass-through.
         _up = decoupling_node.parent
         while _up is not None:
             _up.plan_mode = PUSH_SUB_MODE

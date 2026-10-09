@@ -2,7 +2,7 @@
 """
 段階 D 第 1 回 Part 0（RequestLetter_StageD_Phase1）
 
-0-1  iphone の単位：cpu_size 1000、PPC の市場価格は 1 台当たり
+0-1  smartphone の単位：cpu_size 1000、PPC の市場価格は 1 台当たり
 0-2  Cookie の運賃は物理の区間だけ（ノード費用に運賃なし、supply point の行なし）
 0-3  ev・oil の supply point の運賃の行を消した
 0-4  DAD → DAD の区間の関税を PPC が読む（alloc：国境の区間 FG_WH_Noda → DC_*）
@@ -30,11 +30,11 @@ def _run(model, tmp_path, plugins="safe"):
 
 
 # ── 0-1 / 0-2 / 0-3: masters ─────────────────────────────────────────
-def test_iphone_cpu_size_and_unit_prices():
+def test_smartphone_cpu_size_and_unit_prices():
     from wom.engine.warmup import read_cpu_size
-    assert read_cpu_size(os.path.join(SAMPLE, "iphone_global")) == 1000
-    mp = pd.read_csv(os.path.join(SAMPLE, "iphone_global", "ppc_market_price.csv"))
-    sku = pd.read_csv(os.path.join(SAMPLE, "iphone_global", "sku_master.csv"))
+    assert read_cpu_size(os.path.join(SAMPLE, "smartphone-global-2026-2029")) == 1000
+    mp = pd.read_csv(os.path.join(SAMPLE, "smartphone-global-2026-2029", "ppc_market_price.csv"))
+    sku = pd.read_csv(os.path.join(SAMPLE, "smartphone-global-2026-2029", "sku_master.csv"))
     prices = set(sku["selling_price"].astype(float))
     assert set(mp["market_price"].astype(float)) <= prices         # 1 台当たり（sku_master と同じ値）
 

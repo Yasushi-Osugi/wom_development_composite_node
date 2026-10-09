@@ -8,7 +8,7 @@ tree (ported from original WOM pysi/network/tree.py  create_tree_set_attribute).
 
 CSV schema (required)
 ---------------------
-    node_name    : str   — unique name within this product (e.g. "Foxconn_CN")
+    node_name    : str   — unique name within this product (e.g. "EMS_A_CN")
     parent_node  : str   — parent's node_name; empty / NaN means this is a root
     product_name : str   — SKU / product key (matches demand_forecast sku_id)
     node_type    : str   — supply_point | dad | leaf_out | mom | leaf_in

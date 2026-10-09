@@ -1,7 +1,0 @@
-sku_id,region,src_region,dst_region,hs_code,product_type,assembly_cost_usd_per_lot
-Ghee_Domestic,MUM,IN,IN,0405900000,finished_goods,0
-Ghee_Domestic,DEL,IN,IN,0405900000,finished_goods,0
-Ghee_Domestic,BLR,IN,IN,0405900000,finished_goods,0
-Ghee_Export,DXB,IN,AE,0405900000,finished_goods,0
-Ghee_Export,AUH,IN,AE,0405900000,finished_goods,0
-Ghee_Export,SHJ,IN,AE,0405900000,finished_goods,0

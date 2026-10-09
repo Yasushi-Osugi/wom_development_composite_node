@@ -24,12 +24,12 @@
 
 | # | 論点 | 判断 |
 |---|---|---|
-| a | iphone の 1 lot は何台か | **1 lot ＝ 1,000 台**（需要の規模：年 1.3〜1.8 億台、売上 年 約 1,600 億ドル。現実の規模に合う） |
+| a | smartphone の 1 lot は何台か | **1 lot ＝ 1,000 台**（需要の規模：年 1.3〜1.8 億台、売上 年 約 1,600 億ドル。現実の規模に合う） |
 | b | 設定が無い価格 | 台帳では **NaN（未評価）** にし、「未設定価格」の一覧に出す。値は後で大杉さんがマスターに入れる |
 | c | 関税を計上する区間 | **国境を越える区間**に置く |
 | d | 助走週の為替 | 為替の表の**最初の週のレート**を使い、使ったことを記録する |
 | e | 区間とノードの両方に書かれた運賃 | **物理の区間の側を正**とし、ノードの側からは運賃を除く |
-| — | iphone のチャネルを各国の ①直販・②間接・③ネットに作り直す | **第 1 回の後**（今回は対象外） |
+| — | smartphone のチャネルを各国の ①直販・②間接・③ネットに作り直す | **第 1 回の後**（今回は対象外） |
 
 ### 0.3 supply point の扱い（大杉さん、2026-10-01）
 
@@ -41,16 +41,16 @@
 
 ## Part 0　マスターと PPC の小さな修正
 
-### 0-1　iphone の単位（判断 a）
+### 0-1　smartphone の単位（判断 a）
 
-- `data/sample/iphone_global/planning_config.csv` に `cpu_size,1000` を加える（1 lot ＝ 1,000 台）。
-- iphone の PPC のマスター（`ppc_market_price`、`ppc_supplier_cost`、`ppc_node_cost_rule`、`ppc_edge_cost_rule`、`ppc_transfer_price_rule` の固定価格）は、今「1 万台当たり」の桁で書かれている（調査 §3.3）。**1 台当たり**の値（÷ 10,000）に直す。PPC は `qty ＝ lot 数 × cpu_size` を掛けるので、1 台当たりが正しい。
+- `data/sample/smartphone-global-2026-2029/planning_config.csv` に `cpu_size,1000` を加える（1 lot ＝ 1,000 台）。
+- smartphone の PPC のマスター（`ppc_market_price`、`ppc_supplier_cost`、`ppc_node_cost_rule`、`ppc_edge_cost_rule`、`ppc_transfer_price_rule` の固定価格）は、今「1 万台当たり」の桁で書かれている（調査 §3.3）。**1 台当たり**の値（÷ 10,000）に直す。PPC は `qty ＝ lot 数 × cpu_size` を掛けるので、1 台当たりが正しい。
   - 1 行ずつ、`sku_master` の 1 台当たりの値と比べ、「ちょうど 1 万倍」になっている行だけを直す。当てはまらない行は直さずに報告する（推測で直さない）。
 - 期待値（headless）：
   - 数量の PSI（golden の `period/products/config/forward/backward/psi`）は変わらない。
   - PPC の売上は **64,101,413,473,420 円**（今の 641,014,134,734,200 円のちょうど 1/10）。
   - money の売上は **416,331,210,000**（今の 416,331,210 × 1,000。money は通貨を換算しない数値のまま）。
-- `cpu_size` を 1 以外にするのは iphone が初めてになる。表示（Units、Flow Check の `*_qty`）が 1,000 倍になることを確かめ、ほかに `cpu_size` を掛け忘れ・二重に掛けている箇所が無いかを報告する。
+- `cpu_size` を 1 以外にするのは smartphone が初めてになる。表示（Units、Flow Check の `*_qty`）が 1,000 倍になることを確かめ、ほかに `cpu_size` を掛け忘れ・二重に掛けている箇所が無いかを報告する。
 
 ### 0-2　Cookie の運賃を物理の区間に寄せる（判断 e）
 
@@ -71,7 +71,7 @@
 ### 0-3　ほかのモデルの supply point の運賃の行
 
 - ev-europe、ev-thailand、ev-thailand-2026_update、oil の `SP_` の行は、ノード費用の運賃と同じ金額の写しである（Claude君が確認）。**読まれていないので消す**（golden は変わらないはず。変わったら止めて報告）。これらのモデルの運賃を物理の区間へ寄せるのは、そのモデルを段階 D の題材にするときに行う。
-- smartx と india-ghee-2026 は、金額がノード費用と一致しない行がある（smartx の `SP_SmartX->Retail_*`、india-ghee の `SP_Ghee_Export->DC_Ghee_Export` 700 とノード 500）。**消さずに、違いを報告書に書く。**
+- smartx は、金額がノード費用と一致しない行がある（`SP_SmartX->Retail_*`）。**消さずに、違いを報告書に書く。**
 
 ### 0-4　soysauce-jpy-2027-alloc の関税を国境の区間へ（判断 c）
 
@@ -100,7 +100,7 @@
 ### 1-1　題材
 
 - **Cookie-jp-2026** と **soysauce-jpy-2027-alloc**（設計 D-6）。どちらも identity で計画する。
-- iphone は Part 0-1 の単位の修正だけ。台帳の題材にしない。
+- smartphone は Part 0-1 の単位の修正だけ。台帳の題材にしない。
 
 ### 1-2　新しいマスター（題材の 2 モデルのフォルダに置く）
 
@@ -199,7 +199,7 @@
 
 設計 §8 を、次のとおり具体化する。
 
-1. **数量の PSI が変わらない**：台帳を作っても、13 の golden の `period/products/config/forward/backward/psi` が変わらない。Part 0 で変わってよいのは、**Cookie と iphone の `ppc` だけ**（理由は Part 0-1・0-2）。
+1. **数量の PSI が変わらない**：台帳を作っても、13 の golden の `period/products/config/forward/backward/psi` が変わらない。Part 0 で変わってよいのは、**Cookie と smartphone の `ppc` だけ**（理由は Part 0-1・0-2）。
 2. **記録の照合**：Cookie と alloc で LOVEM の観測（`tools.lovem_observe`）を作り、出荷の記録と LOVEM の実出荷が、計画 ID・出荷イベント ID・品目・ノード・週・数量で 1 対 1 に対応し、欠けも重複も無い。LOVEM の観測の既知の穴（ev-thailand で確かめた、inline の push decoupling と Inbound の P コピー）に当たるものは、件数と理由を分けて報告する。
 3. **原価の保存**：法人ごと・週ごとに、期首 ＋ 受け入れ ＋ 在庫原価の費用 − 払い出し ＝ 期末。組立の振替と、輸送中→到着の振替で、原価が増えも減りもしない。
 4. **外部売上の照合**：連結対象の法人の売上の合計 − 連結対象の法人どうしの売上 ＝ V3 の外部売上 ＝ 連結範囲から外部の相手への出荷の記録 × 価格。
@@ -250,7 +250,7 @@ V1 の合計 62 ＝ V2 ＝ V3。第 2 回も同じ（法人内なので消すも
 ## 守ること
 
 - 保護対象のコア（`backward_planner.py`、`forward_planner.py`、`plan_copy.py`、`plan_node.py`、`sc_tree.py`、`push_pull.py`）を変えない。
-- 計画（Forward／Backward）を変えない。golden の再生成は Cookie と iphone の `ppc` だけ（CLAUDE.md の手順。差分を報告書に載せる）。
+- 計画（Forward／Backward）を変えない。golden の再生成は Cookie と smartphone の `ppc` だけ（CLAUDE.md の手順。差分を報告書に載せる）。
 - 黙った既定値（0、1、前の週）を新しく作らない。
 - Part 0 → Part 1 → Part 2 の順に進める。クレジットが足りなくなりそうなら、Part 1 まで終えて報告する。
 - commit・push はしない。
@@ -259,7 +259,7 @@ V1 の合計 62 ＝ V2 ＝ V3。第 2 回も同じ（法人内なので消すも
 ## 成果物
 
 1. Part 0〜2 のコード・マスターの変更とテスト（単体・CSV からの結合・golden の 3 層）
-2. Cookie と iphone の golden（`ppc` だけ）の再生成
+2. Cookie と smartphone の golden（`ppc` だけ）の再生成
 3. 報告書 `docs/development/WOM_StageD_Phase1_Report.md`
    - 着手時の SHA、条件
    - Part 0 の変更の一覧（直した行・直さなかった行と理由）、golden の差分の説明、黙った扱いの件数

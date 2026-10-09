@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-tests/test_s2_actual_shipment_eval.py — RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2・C3
+tests/test_s2_actual_shipment_eval.py — RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 C2・C3
 
 S2：identity の充足・販売実績の計算を、実出荷（node._actual_ship）に合わせる。
 要求（supply S）とは別の量として扱う。legacy の評価は変えない。

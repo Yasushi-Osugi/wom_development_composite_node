@@ -16,7 +16,7 @@ git add wom/engine/backward_planner.py wom/engine/forward_planner.py
 git add wom/engine/push_pull.py wom/engine/sc_tree_builder.py wom/engine/lane_assignment.py
 git add wom/model/sc_tree.py wom/plugins/__init__.py wom/reports/output.py
 git add "data/sample/rice-japan-2027-2028/"
-git add data/sample/iphone/edge_cost_master.csv data/sample/iphone/node_master.csv data/sample/iphone/route_master.csv
+git add data/sample/smartphone-legacy/edge_cost_master.csv data/sample/smartphone-legacy/node_master.csv data/sample/smartphone-legacy/route_master.csv
 
 REM ステップ3: 確認（内容を見てからEnterで続行）
 git status

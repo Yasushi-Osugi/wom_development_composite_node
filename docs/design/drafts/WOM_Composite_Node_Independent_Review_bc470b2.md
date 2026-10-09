@@ -29,7 +29,7 @@
 
 特に、以下の四点は設計着手前に訂正したい。
 
-1. **Stock Yard＋Kitting Gateの具体的な参照モデルは、確認した基準ではSmartPhoneではなく `bom-test-2026` と `ev-europe-2026`。** SmartX／iPhoneには組立という名称のMOMがあるが、それだけでYard連携の実装例とはいえない。
+1. **Stock Yard＋Kitting Gateの具体的な参照モデルは、確認した基準ではSmartPhoneではなく `bom-test-2026` と `ev-europe-2026`。** SmartX／Smartphoneには組立という名称のMOMがあるが、それだけでYard連携の実装例とはいえない。
 2. **TW Bufferの現在の方式はMode 4による需要Lotの39週前倒し配置。** 払出結果を観測して上流へ補充イベントを返す閉ループ制御とは異なる。
 3. **Lot_IDは必ずしも一つの物理部材を識別しない。** 組立では同じ需要Lot_IDがタイヤ側・バッテリー側にそれぞれ存在する。裸のLot_IDに「物理場所は一つ」を課すと、既存の1 set ruleと衝突する。
 4. **既存設計にはKanbanを対象外にした明示的な判断がある。** 新ドラフトのKanban導入は、単なる既存構造の文書化ではなく、スコープ変更の検討を含む。
@@ -64,7 +64,7 @@
 | DBR／Kanbanは同じBuffer Pullの派生 | 未確認 | Mode 4にDBR lifecycleという説明はあるが、一般的なDBR／Kanban共通制御基盤は確認できない。名称で同等性を証明できない。E3 |
 | Kanbanは既存WOMの機能として正典化できる | 矛盾あり | 既存設計の §6で明示的に対象外。方針再検討は可能だが承認が必要。E7 |
 | Stocker＋Assemblyの協調PSIが存在する | コードで確認 | `stockyard`の在庫積集合から、各YardのSと組立Pへ記録する専用処理。E1、E5、E6 |
-| その具体例がSmartPhoneである | 矛盾あり：確認した基準では | サンプルのstockyard行はEV Europeの6ノード、BOM testの2ノード。SmartX／iphone／iphone_globalには該当行なし。E4、E5 |
+| その具体例がSmartPhoneである | 矛盾あり：確認した基準では | サンプルのstockyard行はEV Europeの6ノード、BOM testの2ノード。SmartX／smartphone／smartphone-global-2026-2029には該当行なし。E4、E5 |
 | Pはどこでも生産完了 | 矛盾あり | Pは入庫、計画供給、kit成立結果など、書込経路が違う。E1～E3 |
 | Sはどこでも実出荷 | 矛盾あり | 通常／pushは予定Sと `_actual_s` が別。push_sub／YardはSを実出荷・実払出へ上書きする。E1 |
 | COはどこでも需要週を過ぎた未充足 | 矛盾あり | Backward COは前倒し配置のoverflow記録。Forward通常は翌週CO、pushはCOを空にしてshortfallを別記録する。E1、E2 |
@@ -119,7 +119,7 @@ Yardごとの候補検査は、境界を固定して次のようにする。
 
 `WaferFab_TW → Buffer_Chip_TW → FoundryTW → AssemblyCN → SP_SmartXPro_CN → DC → Retail`
 
-`AssemblyCN`には、このSKUではFoundryTWが一つ接続されている。Stock Yard兄弟の積集合による複数部材の待合せは、この経路の実装例ではない。iphone／iphone_globalの該当組立経路にもstockyard行は確認できなかった。別の未公開モデル・別コミットにSmartPhoneのYard実装がある可能性は否定しない。
+`AssemblyCN`には、このSKUではFoundryTWが一つ接続されている。Stock Yard兄弟の積集合による複数部材の待合せは、この経路の実装例ではない。smartphone／smartphone-global-2026-2029の該当組立経路にもstockyard行は確認できなかった。別の未公開モデル・別コミットにSmartPhoneのYard実装がある可能性は否定しない。
 
 したがって、Factory Compositeの実装traceは、確認可能な `bom-test-2026` を補助参照として以下に示す。
 

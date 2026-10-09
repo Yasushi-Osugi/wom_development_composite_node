@@ -5,7 +5,7 @@
 作成者: Claude (Cowork)
 ステータス: **実装完了・検証済み**。`tools/gen_apparel_global_model.py`で全20 CSVを生成し、`data/sample/apparel-global-2028-2029/verify/`のヘッドレス検証(PSI/PPC/Management/Landed Cost/FXシナリオ)がすべてパス。ユーザー側GUI動作確認は未実施(次のステップ)。
 準拠: `docs/design/scenario_modeling_principles.md`のRecommended scenario document structure、`AGENTS.md`のScenario workflow(手順1〜8がこのレターの範囲、9〜11は実装フェーズ)
-出自: 別AI(Grok)との対話で発案された「オフショア多階層 vs 近接垂直統合」という題材(H&M型/Zara型、2028-2029、単一SKU)を、WOM v1r1m8で実際に動くケースとして再設計する。Grokが生成したCSVは列構成・必須列がWOMの実エンジンと非互換だったため(検証済み)、ゼロから設計し直す。
+出自: 別AI(Grok)との対話で発案された「オフショア多階層 vs 近接垂直統合」という題材(Retailer_A型/Retailer_B型、2028-2029、単一SKU)を、WOM v1r1m8で実際に動くケースとして再設計する。Grokが生成したCSVは列構成・必須列がWOMの実エンジンと非互換だったため(検証済み)、ゼロから設計し直す。
 
 ---
 
@@ -27,7 +27,7 @@ apparel-us-2026(第6回)は「同一市場(米国3州)向けに異なる調達�
 
 This model is fictional and educational, consistent with `docs/design/wom_canonical_concepts.md`のCanonical concept 11。
 
-Company names, factories, distribution centers, prices, costs, and capacities are simplified or fictionalized. The scenario is informed by publicly reported characteristics of the fast-fashion industry (multi-tier offshore sourcing footprint, near-shore vertical integration, 2028-2029 tariff/FX environment as a forward-looking illustrative assumption) but should not be interpreted as a factual statement about H&M Hennes & Mauritz AB, Inditex/Zara, or any other specific real company. `sku_id`は`Apparel_Offshore`/`Apparel_Vertical`という匿名名を使用する(実在ブランド名は使わない、apparel-us-2026の命名規則を踏襲)。
+Company names, factories, distribution centers, prices, costs, and capacities are simplified or fictionalized. The scenario is informed by publicly reported characteristics of the fast-fashion industry (multi-tier offshore sourcing footprint, near-shore vertical integration, 2028-2029 tariff/FX environment as a forward-looking illustrative assumption) but should not be interpreted as a factual statement about Retailer_A, Retailer_B, or any other specific real company. `sku_id`は`Apparel_Offshore`/`Apparel_Vertical`という匿名名を使用する(実在ブランド名は使わない、apparel-us-2026の命名規則を踏襲)。
 
 ## 3. SKU structure
 
@@ -45,7 +45,7 @@ Apparel_Vertical  AW_Jacket相当、単一SKU、2028-W01〜2029-W52(104週)
 両ブランンドとも「原料 → 染色 → 縫製・仕上げ(Trim) → 完成品縫製」の3段階中間加工を持つ多階層InBoundとし、apparel-us-2026では見送った構成(単純なFabric→Factoryの1段階)を、smartx-2027-2029で確立済みの多階層MOMチェーンパターン(`parent_node`が終端の`mom`ノードに向かって連なる方式)で表現する。
 
 ```text
-[Apparel_Offshore] (H&M型オフショア多階層)
+[Apparel_Offshore] (Retailer_A型オフショア多階層)
 Inbound:
   Fabric_CN (leaf_in, CN, lt_wks=3)
     -> Dyeing_BD (mom, BD, lt_wks=3)
@@ -58,7 +58,7 @@ Outbound:
     -> DC_US_Offshore (dad, US, lt_wks=6) -> Retail_US_Offshore (leaf_out)
     -> DC_JP_Offshore (dad, JP, lt_wks=4) -> Retail_JP_Offshore (leaf_out)
 
-[Apparel_Vertical] (Zara型近接垂直統合)
+[Apparel_Vertical] (Retailer_B型近接垂直統合)
 Inbound:
   Fabric_ES (leaf_in, ES, lt_wks=1)
     -> Dyeing_PT (mom, PT, lt_wks=1)

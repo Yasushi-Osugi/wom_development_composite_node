@@ -1,0 +1,4 @@
+﻿warmup_lt,plan_start,plan_weeks,demand,on_time,late,backlog_end,cause_capacity,cause_horizon_edge_start,of_which_pushed_back_by_MOM_capacity,backlog_Phone16,backlog_Phone15,backlog_Phone17,warmup_production_at_MOM_roots,stock_at_real_start,report_period_leaf_shipments,ppc_revenue_base,ppc_gross_profit_base,ppc_gross_margin_pct,ppc_total_lots,ppc_trust_events,ppc_events_dated_in_warmup,flow_check_ng,cap_hard_deferred_lots
+0,2027-W01,156,470924,373090,0,97834,65274,32560,0,59787,38047,0,0,0,373090,583304347994200.0,239671166835787.5,0.410885,1047,366,0,0,55413
+17,2026-W37,173,470924,402390,0,68534,55834,12700,12700,38987,29547,0,15200,7020,402390,625668239165200.0,257170751189510.0,0.411034,1118,390,0,0,55413
+26,2026-W28,182,470924,414090,0,56834,44134,12700,12700,31787,25047,0,26900,16240,414090,641014134734200.0,264062890895022.5,0.411946,1127,390,0,0,55413

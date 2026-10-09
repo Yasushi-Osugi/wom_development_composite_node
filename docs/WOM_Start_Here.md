@@ -67,7 +67,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | R4 | **能力の値**：空欄 ＝ 未設定（上限なし）、`0` ＝ 能力ゼロ、正の数 ＝ 上限、負・数値でない ＝ 読み込みで止める。計画の木に無いノード名の行も止める | `CLAUDE.md`「能力の値の意味」、`WOM_CapacityZeroBlank_Report.md` |
 | R5 | **能力の行が無い週は「上限なし」**。発売前・生産終了後など作れない週は、行を省かず `0` を書く（省くと Backward がそこへ作り溜める） | 同上 §4 |
 | R6 | **休業と能力ゼロは別の状態**。設備・拠点が止まる週は休業（`holiday_calendar.csv` の supply_closure・操業カレンダー）、「その週は作れない」だけなら能力 0 | `CLAUDE.md`「能力の値の意味」、`docs/design/holiday_calendar_and_capacity_semantics.md` |
-| R7 | **`cpu_size`** は 1 lot の物量（例：iphone_global は 1,000 台）。PPC のマスターの単価は**物量当たり**（PPC が lot 数 × cpu_size を掛ける） | `WOM_StageD_Phase1_Report.md` §2・§12 |
+| R7 | **`cpu_size`** は 1 lot の物量（例：smartphone-global-2026-2029 は 1,000 台）。PPC のマスターの単価は**物量当たり**（PPC が lot 数 × cpu_size を掛ける） | `WOM_StageD_Phase1_Report.md` §2・§12 |
 | R8 | **運賃は物理の区間だけに書く**（`ppc_edge_cost_rule.csv`）。ノード費用（`ppc_node_cost_rule.csv`）に運賃を書かない。同じ輸送を 2 か所に書くと二重計上になる。Cookie は対応済み。ev・oil などはノード費用に運賃が残っており、Value Chain の題材にするときに寄せる（Value Chain のローダは、ノードに運賃があると止まる） | 同上 §2、`data/sample/Cookie-jp-2026/README.md` |
 | R9 | **関税は国境を越える区間**に置く（soysauce-jpy-2027-alloc は対応済み。ほかの soysauce と apparel-global は最後の区間に残っており、題材にするときに移す） | 段階 D の決定 c |
 | R10 | **販売チャネル**は、各国・各地域の中に ①自社 ②外部 ③自社ネット の 3 種類が並ぶ（PySI の時代から変わらない定義）。自社か外部かを名前から推測しない（割当表で明示） | `docs/design/drafts/WOM_ValueChain_Model_StageD_Design_v1.0.md` §3 |
@@ -108,11 +108,12 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 3. 需要 CSV の週を抜かす → 今は 0 で埋めて報告される（前は計画の終わりが切れていた）。
 4. 同じ運賃を区間とノードの両方に書く → 二重計上（R8）。
 5. supply point に運賃や在庫を持たせる → 仮想のノードなので持たない（§2.1）。
-6. 単価の単位を lot と物量で取り違える → `cpu_size` と PPC のマスターの単位を揃える（R7。iphone の「1 万倍」の件）。
+6. 単価の単位を lot と物量で取り違える → `cpu_size` と PPC のマスターの単位を揃える（R7。smartphone の「1 万倍」の件）。
 7. `node_master.csv` に座標が無い → World Map に描けない（一覧に出る）。Stock Yard は座標が無ければ親の組立工場の位置に描かれる。
 8. 価格を 0 で埋める → 未評価として扱うべきもの（R12）。
 9. 報告の開始週を二か所に書く → `vc_config.csv` の `report_start` だけに書く（`wom/engine/report_start.py`。World Map・Flow Check・Value Chain・Rice が読む）。無ければ最初の非ゼロ需要週。Rice の設定に残すと止まる。
 10. プラグインの組を GUI と headless で別々に選ぶ → 同じモデルで値が変わる（rice で Holiday Calendar を忘れると 139,554、正しくは 141,210）。モデルの `planning_config.csv` の `recommended_plugins` に golden と同じ組を書く。GUI は読み込みでチェックを合わせ、headless は `--plugins` を省けばこの組を使う。知らないプラグイン名は止まる。
+11. 実在の企業・団体・製品の名前をサンプルや文書に書く → 公開のリポジトリなので一般名（`EMS_A`、`Retailer_A` など）にする。`tests/test_no_real_names.py` が止める。元の名前との対応表はリポジトリに入れない。
 
 ### 4.4 確かめ方
 
@@ -134,7 +135,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | 計画エンジン（PSI） | Backward・Forward、identity | 決定記録、`WOM_LotIdentityFlow_Report.md` |
 | 能力・休業 | cap_hard・cap_soft、休業、能力ゼロ | `holiday_calendar_and_capacity_semantics.md`、`WOM_CapacityZeroBlank_Report.md` |
 | warmup・計画期間 | 助走、期間の検出 | `planning_warmup_and_reporting_horizon.md`、`WOM_Warmup17_IdentityGolden_Report.md`、`WOM_PeriodDetection_Fix_Report.md` |
-| Kitting・Stock Yard | 組立の部材の揃い | `kitting_list_assembly.md`、`WOM_iPhoneWarmup_EVUpdateKitting_S2_Report.md` |
+| Kitting・Stock Yard | 組立の部材の揃い | `kitting_list_assembly.md`、`WOM_SmartphoneWarmup_EVUpdateKitting_S2_Report.md` |
 | PPC（金額の旧方式） | 市場 leaf を起点にした価格・原価・利益 | `psi_ppc_separation.md`、`WOM_StageD_Survey_Report.md` |
 | Value Chain（段階 D） | 実出荷の記録からの台帳、V1・V2・V3、連結、未実現利益の消去 | 設計 v1.0、`WOM_StageD_Phase1_Report.md`、`WOM_StageD_Phase2_Report.md` |
 | LOVEM | Lot の観測と表示 | `docs/design/drafts/LOVEM_on_WOM_Observation_Visualization_Design_v0.2.md`、`WOM_LOVEM_StageAB_EVThailand_Report.md`、`WOM_LOVEM_StageC_Report.md` |
@@ -160,10 +161,9 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | 課題 | 状態 |
 |---|---|
 | rice の残り | rice は identity に移った（`WOM_RiceLegacyRetire_Report.md`）。残り：年産上限の業務値、収穫年ごとの価格と古い在庫の評価損、ぬか等の金額、rice の PPC の価格表（今は `data/ppc` の見本の規則）、大きな run での LOVEM `verify_run` のメモリ（`tools/lovem_interval_check.py` で照合） |
-| 公開の前のサンプルの見直し | golden の無い 4 モデル（ev-thailand-2026_update・india-ghee-2026・iphone・soysauce-jpy-2027-alloc）を golden で守るか、サンプルから外すか。iphone（`iphone_global` とは別）は PPC が CNY の為替が無くて止まる。固有の団体名（rice の `node_master.csv` の説明など）の点検 |
+| 公開の前のサンプルの見直し | 済み（2026-10-09、`docs/development/WOM_SampleNames_PublicReview_Report.md`）。実在の企業・団体・製品の名前を一般名にした（値は不変）。スマートフォンのモデルは `smartphone-global-2026-2029`、古い方は削除。全モデルに golden。`tests/test_no_real_names.py`（公開の一覧＋手元だけの `private/real_name_denylist.txt`）。残り：画像の中に写った実名、git の履歴（書き換えるかは Owner の判断） |
 | 需要の出どころ（4P） | 需要は `demand_forecast.csv` として外から与えられている。製品・価格・チャネル・販促（コトラーの 4P）から需要の ID を作り、出どころを ID の属性として持つ「需要の層」を、上位の層と同じくエンジンの外に置く構想（Owner、2026-10-09）。rice では「不足のとき、配分・価格・品目の誘導のどれで対応するか」を比べる題材になる |
 | Backward の前倒しの上限 | 上位の層が OFF のとき上限が無い（`WOM_GenerationLine_UpperLayer_Report.md` §11.1） |
 | 世代間の需要の移行 | 旧世代の残りの需要を新世代へ振り替える規則が無い |
 | 在庫の保有費用・陳腐化の金額 | `vc_config.csv` の `holding_rate_weekly` を設定し、smartx などに Value Chain のマスターを用意してから |
 | Cookie の CVS・soysauce の卸価格 | 仮の値（各モデルの README に根拠と損益分岐） |
-| india-ghee-2026 の warmup | 12 週（R3 の 17・26 と揃っていない） |

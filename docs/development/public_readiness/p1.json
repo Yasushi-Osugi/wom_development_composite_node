@@ -119,30 +119,13 @@
   "seconds": 12.2
  },
  {
-  "model": "india-ghee-2026",
-  "plugins_source": "recommended_plugins",
-  "plugins": "BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin",
-  "compared_with": "explicit safe (no golden)",
-  "plugins_equal": true,
-  "lot_flow_mode_equal": true,
-  "psi_equal": true,
-  "ppc_equal": true,
-  "forward_equal": true,
-  "period_equal": true,
-  "products_equal": true,
-  "revenue_base": 668585520.0,
-  "gross_margin_pct": 0.199992,
-  "all_equal": true,
-  "seconds": 11.1
- },
- {
-  "model": "iphone",
+  "model": "smartphone-legacy",
   "error": "ValueError: No FX rate found for currency='CNY' on or before week='2024-W01'. Add a row to ppc_fx_rate.csv.",
   "all_equal": false,
   "seconds": 1.4
  },
  {
-  "model": "iphone_global",
+  "model": "smartphone-global-2026-2029",
   "plugins_source": "recommended_plugins",
   "plugins": "BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin",
   "compared_with": "golden",

@@ -4,7 +4,6 @@
 **起票者**：大杉
 **種別**：**禁足コア変更**（`wom/engine/backward_planner.py`、場合により `wom/engine/forward_planner.py`）
 **対象ブランチ**：`wom-v1r3m0`
-**先行調査**：`tools/sweep_specs/india_ghee_a1.yaml` による再現スイープ（2026-08-30）
 
 ---
 
@@ -45,29 +44,9 @@ parent.psi4supply[target_w][P].extend(confirmed_s)
 
 **結果：同一 Lot_ID が物理的に2本のモノとして数えられる。**
 
-### 1.2 実測（india-ghee-2026 / Ghee_Domestic、2 leaf_in に戻した状態）
+### 1.2 実測
 
-| ノード | base_single | A_multi_spike | B_multi_smooth |
-|---|---|---|---|
-| Anand_Milk_Route P_sum | — | 48,532 | 47,520 |
-| Kheda_Milk_Route P_sum | — | 48,532 | 47,520 |
-| **2 leaf_in 合計** | — | **97,064** | **95,040** |
-| Ghee_Plant_Anand P_sum | 48,532 | **87,210** | **87,167** |
-| forward.cap_hard_sealed | 0 | 9,854 | 7,873 |
-| Ghee_Plant_Anand CO_sum | 0 | **505,979** | **429,299** |
-
-**「2 leaf_in 合計 − cap_hard_sealed」が寸分違わず MOM の P_sum と一致する。**
-
-```
-97,064 − 9,854 = 87,210
-95,040 − 7,873 = 87,167
-```
-
-すなわち：
-
-1. 各 leaf_in が単独で**フルの需要を丸ごと**受け取っている（分割されていない）
-2. MOM の P に両 leaf_in の実出荷が**そのまま加算**される（同一 Lot_ID の二重計上）
-3. 水増し分のうち cap_hard を超えた分が `cap_hard_sealed` として切り落とされ、CO に転化する
+（Owner の判断で削除。2026-10-09）
 
 ### 1.3 CLAUDE.md の記録の訂正
 
@@ -81,28 +60,9 @@ CLAUDE.md 末尾の A1 記録には「発生条件は **MOM の週次 demand.S �
 **真の条件は「multi-leaf_in（→ 常に P_sum が構造的に子の数だけ倍になる）×
 その水増し後の P が MOM 自身の cap_hard を超えること」。需要段差の有無は無関係。**
 
-### 1.4 Ghee_Export がクリーンだった理由
+### 1.4
 
-対照群の `Ghee_Export`（元から 2 leaf_in、需要は滑らか）は全ケースで CO=0 だが、
-**同じ重複は起きている。**
-
-| ノード | 値 |
-|---|---|
-| Anand_Export_Route P_sum | 27,976 |
-| Mehsana_Milk_Route P_sum | 27,976 |
-| 2 leaf_in 合計 | **55,952** |
-| Ghee_Plant_Export P_sum | **55,952**（sealed ゼロ、丸ごと素通り） |
-
-`capacity_plan.csv` の該当行に注記がある：
-
-> `Ghee_Domestic,Ghee_Plant_Export,2026-W02,1215,...※複数leaf_in合算後のPを基準に設定`
-
-**モデル構築時点で重複が認識されており、cap_hard を「重複後の値」に嵩上げして
-回避されていた。**`Ghee_Plant_Anand` 側は単一需要ベースの値で据え置かれていたため、
-2 leaf_in に戻すと超過する。
-
-**すなわち、2 leaf_in 構成があれば重複は常に発生しており、
-cap_hard に余裕があるかどうかで「見えるか見えないか」が決まるだけ。**
+（Owner の判断で削除。2026-10-09）
 
 ---
 
@@ -201,11 +161,8 @@ cap_hard に余裕があるかどうかで「見えるか見えないか」が�
 
 ### 4.1 Unit
 
-`tools/sweep_specs/india_ghee_a1.yaml` の観測を固定するテストを追加する。
+（Owner の判断で削除。2026-10-09）
 
-- india-ghee-2026 の `Ghee_Domestic` を 2 leaf_in にした状態で、
-  **各 leaf_in の P_sum の合計が、単一 leaf_in の場合（48,532）と一致すること**
-- **`Ghee_Plant_Anand` の CO_sum が 0 であること**
 - 同一 Lot_ID が複数の子の `psi4demand[w][S]` に現れないこと
 - 子が1つの場合、挙動が変わらないこと
 
@@ -213,8 +170,6 @@ cap_hard に余裕があるかどうかで「見えるか見えないか」が�
 
 ### 4.2 Integration
 
-- `Ghee_Export`（元から 2 leaf_in）の P_sum が 55,952 → **27,976** に戻ること
-  （重複が解消される。cap_hard の嵩上げが不要になる）
 - 全 leaf_in の P_sum 合計 = MOM の P_sum（cap_hard_sealed を除く）となること
 - 単一 leaf_in のケース（apparel-us-2026 等）が無変化であること
 
@@ -287,7 +242,6 @@ cap_hard に余裕があるかどうかで「見えるか見えないか」が�
 - `docs/design/three_layer_production_allocation.md` §2（Demand 層の配分）
 - `docs/design/design_memo_confluence_assembly_autotuning.md` §A（合流と組立の区別）
 - `CLAUDE.md` 末尾の A1 記録（**§1.3 の通り訂正が必要**）
-- `tools/sweep_specs/india_ghee_a1.yaml`（再現手段）
 - `requests/request_fix_mode4_double_count.md`（先行する同種の修正。手順の参考）
 
 ---

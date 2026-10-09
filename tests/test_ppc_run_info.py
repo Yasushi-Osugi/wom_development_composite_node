@@ -29,9 +29,9 @@ MODEL = os.path.join(REPO, "data", "sample", "bom-test-2026")
 # ---------------------------------------------------------------------------
 
 def test_run_id_is_unique_and_names_the_model():
-    a = R.new_run_id(r"C:\x\data\sample\iphone_global")
-    b = R.new_run_id(r"C:\x\data\sample\iphone_global")
-    assert a != b and a.endswith("__iphone_global") and b.endswith("__iphone_global")
+    a = R.new_run_id(r"C:\x\data\sample\smartphone-global-2026-2029")
+    b = R.new_run_id(r"C:\x\data\sample\smartphone-global-2026-2029")
+    assert a != b and a.endswith("__smartphone-global-2026-2029") and b.endswith("__smartphone-global-2026-2029")
     assert R.new_run_id("").endswith("__no-model")
 
 
@@ -273,11 +273,11 @@ def test_outside_work_root_is_flagged(tmp_path):
     pytest.importorskip("tkinter")
     from wom.gui.app import is_outside_work_root, describe_model_dir, work_root
     assert os.path.normcase(work_root()) == os.path.normcase(REPO)
-    inside = os.path.join(REPO, "data", "sample", "iphone_global")
+    inside = os.path.join(REPO, "data", "sample", "smartphone-global-2026-2029")
     assert not is_outside_work_root(inside)
     assert describe_model_dir(inside) == os.path.abspath(inside)          # フルパス
     # 別のフォルダにある同じ名前のモデル（古いコピーなど）
-    other = str(tmp_path / "old_copy" / "data" / "sample" / "iphone_global")
+    other = str(tmp_path / "old_copy" / "data" / "sample" / "smartphone-global-2026-2029")
     assert is_outside_work_root(other)
     assert describe_model_dir(other).startswith("⚠ 作業フォルダの外：") and other in describe_model_dir(other)
     # 名前が作業フォルダで始まるだけの別のフォルダは、外
@@ -323,20 +323,20 @@ def test_management_panel_reads_ppc_only_for_the_current_plan(tmp_path):
 
         # 計画なし：読まない
         assert panel._ledger_pl_for_sku(None) is None and panel._base_ccy() == ("", "")
-        # iphone を読み込んで計画した直後（iphone の PPC は計算中）：ev-thailand の値を読まない
-        iphone = R.make_context(R.STATE_RUNNING, "RUN-IPHONE", r"C:\m\iphone_global")
-        panel.set_ppc_context(iphone)
+        # smartphone を読み込んで計画した直後（smartphone の PPC は計算中）：ev-thailand の値を読まない
+        smartphone = R.make_context(R.STATE_RUNNING, "RUN-SMARTPHONE", r"C:\m\smartphone-global-2026-2029")
+        panel.set_ppc_context(smartphone)
         panel._refresh_node_pl_table()
         assert panel._ledger_pl_for_sku(None) is None
         assert panel._ledger_pl_for_sku("EVmaker_Local") is None
         assert node_rows() == [["（PPC 計算中）", "", "", "", "", "", ""]]
         assert "PPC 計算中" in panel._ppc_banner_var.get()
         assert "表示しません" in panel._ppc_banner_var.get()
-        # iphone の PPC が「終わった」ことになっても、フォルダの出力が ev-thailand のものなら読まない
-        panel.set_ppc_context(R.make_context(R.STATE_DONE, "RUN-IPHONE", r"C:\m\iphone_global"))
+        # smartphone の PPC が「終わった」ことになっても、フォルダの出力が ev-thailand のものなら読まない
+        panel.set_ppc_context(R.make_context(R.STATE_DONE, "RUN-SMARTPHONE", r"C:\m\smartphone-global-2026-2029"))
         assert panel._ledger_pl_for_sku(None) is None
         # PPC 失敗
-        panel.set_ppc_context(R.make_context(R.STATE_FAILED, "RUN-IPHONE", r"C:\m\iphone_global"))
+        panel.set_ppc_context(R.make_context(R.STATE_FAILED, "RUN-SMARTPHONE", r"C:\m\smartphone-global-2026-2029"))
         assert panel._ledger_pl_for_sku(None) is None and "PPC 失敗" in panel._ppc_banner_var.get()
         # 出力が今の計画のもの：読む
         panel.set_ppc_context(R.make_context(R.STATE_DONE, "RUN-EV", r"C:\m\ev-thailand-2026"))
@@ -366,7 +366,7 @@ def test_management_panel_reads_ppc_only_for_the_current_plan(tmp_path):
         lc_rows = lambda: [panel._lc_tree.item(i)["values"] for i in panel._lc_tree.get_children()]
         for state, label in ((R.STATE_RUNNING, "PPC 計算中"), (R.STATE_FAILED, "PPC 失敗"),
                              (R.STATE_NONE, "PPC 未実行")):
-            panel.set_ppc_context(R.make_context(state, "RUN-IPHONE", r"C:\m\iphone_global"))
+            panel.set_ppc_context(R.make_context(state, "RUN-SMARTPHONE", r"C:\m\smartphone-global-2026-2029"))
             panel.load(_Mgr())
             assert pl_rows() == [["Planning"] + [""] * 8 + [label]]          # money の値を出さない
             assert lc_rows() == []
@@ -381,7 +381,7 @@ def test_management_panel_reads_ppc_only_for_the_current_plan(tmp_path):
         assert len(lc_rows()) == 1
 
         # モデルを読み込み直す：前の計画の表を消す
-        panel.on_model_loaded(r"C:\m\iphone_global")
+        panel.on_model_loaded(r"C:\m\smartphone-global-2026-2029")
         assert node_rows() == [] and panel._ledger_pl_for_sku(None) is None
         assert "Planning Engine を実行してください" in panel._ppc_banner_var.get()
     finally:

@@ -23,7 +23,7 @@ import traceback
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 GOLDEN = ["Cookie-jp-2026", "apparel-global-2028-2029", "apparel-us-2026", "bom-test-2026",
-          "ev-europe-2026", "ev-thailand-2026", "iphone_global", "oil-global-2027",
+          "ev-europe-2026", "ev-thailand-2026", "smartphone-global-2026-2029", "oil-global-2027",
           "rice-japan-2027-2028", "smartx-2027-2029", "soysauce-eu-2027", "soysauce-jpy-2027",
           "soysauce-us-2027"]
 ALL_MODELS = GOLDEN + ["soysauce-jpy-2027-alloc", "ev-thailand-2026_update"]
@@ -34,7 +34,7 @@ SHOTS = [
     ("Cookie-jp-2026", "cookie_import_beijing_japan", "Cookie_Import", (112.0, 28.0, 145.0, 44.0), "ship", 20),
     ("soysauce-jpy-2027-alloc", "alloc_world_ship", "All", (-130.0, 20.0, 150.0, 62.0), "ship", 30),
     ("soysauce-jpy-2027-alloc", "alloc_world_transit", "All", (-130.0, 20.0, 150.0, 62.0), "transit", 30),
-    ("iphone_global", "iphone_world", "All", (-180.0, -40.0, 180.0, 70.0), "ship", 20),
+    ("smartphone-global-2026-2029", "smartphone_world", "All", (-180.0, -40.0, 180.0, 70.0), "ship", 20),
     ("oil-global-2027", "oil_middleeast_japan", "Gasoline_Local", (40.0, 10.0, 148.0, 46.0), "transit", 20),
     ("ev-thailand-2026", "ev_thailand", "All", None, "ship", 20),
     ("rice-japan-2027-2028", "rice_japan", "All", None, "ship", 30),

@@ -10,7 +10,7 @@
 ## 1. 結果の要約
 
 1. **H1は支持。** 休業適用時にsoft=686を保持すると、2027/2028-W18ともBackward S/P=686、Forward実出荷=686になる。現状のW18=0はexplicit closureを充填目標に適用した結果ではなく、softを0に上書きし、hard=0.1を整数化する経路に依存する。
-2. **H2は一部支持、全モデルへの一般化は不可。** Cookie・EVのvalue=0休業週で処理が残る。SmartXのWaferFab_TWでもPが残る。iPhone等は対象週に処理・需要自体がなく、休業の効力を判定できない。
+2. **H2は一部支持、全モデルへの一般化は不可。** Cookie・EVのvalue=0休業週で処理が残る。SmartXのWaferFab_TWでもPが残る。Smartphone等は対象週に処理・需要自体がなく、休業の効力を判定できない。
 3. **H3は数値の混在を確認。** エンジンはsupply_closure.valueをcap_hardの絶対数値として読む。割合として解釈する分岐はない。各行の業務意図は未分類のまま保持した。
 4. **H4の「全Lotがd−1出荷」は不成立。** -alloc/P_optでは観測された73,907 IDは全件d−1入庫だが、出荷は24,696 IDがd−1、49,211 IDがd。文書の7=6+1は「物理LT＋Bottlingバッファ」という説明であり、own ltを機械的に足す汎用契約ではない。
 5. PPCの83,200 lotのうちBottling実出荷に一度も現れないIDは**9,293**。対応する計上売上は**73,461,824.00円**、粗利は**24,625,145.04円**。金額の評価変更提案は行わない。
@@ -176,18 +176,18 @@ Bottlingの期末I/COは全条件0。shortfall期間合計4,802も変わらな�
 | sample/CNY_2028 | MOM_China// | 春節2028（工場閉鎖） / 0.0 | / | 未測定 | 未測定 | 未確認 | 判定不能 |
 | sample/CNY_2028 | Supplier_CN// | 春節2028（工場閉鎖） / 0.0 | / | 未測定 | 未測定 | 未確認 | 判定不能 |
 | sample/GW_2028 | DAD_Japan// | GW2028（物流停滞） / 0.3 | / | 未測定 | 未測定 | 未確認 | 判定不能 |
-| iphone_global/CNY_2027 | SiliconWafer_TW/leaf_in/pull | 春節2027（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/CNY_2027 | SiliconWafer_TW_i15/leaf_in/pull | 春節2027（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/CNY_2027 | SiliconWafer_TW_i17/leaf_in/pull | 春節2027（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/CNY_2028 | SiliconWafer_TW/leaf_in/pull | 春節2028（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/CNY_2028 | SiliconWafer_TW_i15/leaf_in/pull | 春節2028（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/CNY_2028 | SiliconWafer_TW_i17/leaf_in/pull | 春節2028（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/CNY_2029 | SiliconWafer_TW/leaf_in/pull | 春節2029（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/CNY_2029 | SiliconWafer_TW_i15/leaf_in/pull | 春節2029（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/CNY_2029 | SiliconWafer_TW_i17/leaf_in/pull | 春節2029（TSMC工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/DIWALI_2027 | BoschSensor_IN/leaf_in/pull | ディワリ2027（インド工場閉鎖） / 0.5 | 0.5/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/DIWALI_2028 | BoschSensor_IN/leaf_in/pull | ディワリ2028（インド工場閉鎖） / 0.5 | 0.5/0.0 | 0/0 | 0/0 | False | 判定不能 |
-| iphone_global/DIWALI_2029 | BoschSensor_IN/leaf_in/pull | ディワリ2029（インド工場閉鎖） / 0.5 | 0.5/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2027 | SiliconWafer_TW/leaf_in/pull | 春節2027（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2027 | SiliconWafer_TW_i15/leaf_in/pull | 春節2027（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2027 | SiliconWafer_TW_i17/leaf_in/pull | 春節2027（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2028 | SiliconWafer_TW/leaf_in/pull | 春節2028（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2028 | SiliconWafer_TW_i15/leaf_in/pull | 春節2028（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2028 | SiliconWafer_TW_i17/leaf_in/pull | 春節2028（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2029 | SiliconWafer_TW/leaf_in/pull | 春節2029（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2029 | SiliconWafer_TW_i15/leaf_in/pull | 春節2029（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/CNY_2029 | SiliconWafer_TW_i17/leaf_in/pull | 春節2029（Foundry_A工場閉鎖） / 0.0 | 0.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/DIWALI_2027 | Sensor_A_IN/leaf_in/pull | ディワリ2027（インド工場閉鎖） / 0.5 | 0.5/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/DIWALI_2028 | Sensor_A_IN/leaf_in/pull | ディワリ2028（インド工場閉鎖） / 0.5 | 0.5/0.0 | 0/0 | 0/0 | False | 判定不能 |
+| smartphone-global-2026-2029/DIWALI_2029 | Sensor_A_IN/leaf_in/pull | ディワリ2029（インド工場閉鎖） / 0.5 | 0.5/0.0 | 0/0 | 0/0 | False | 判定不能 |
 | oil-global-2027/Refinery_Local_Maint_2027 | Refinery_Local/mom/pull | Refinery Local Scheduled Maintenance 2027 / 30.0 | 30.0/0.0 | 60/60 | 60/60 | False | 効いていない |
 | oil-global-2027/Hormuz_Strait_Closure_2027 | Refinery_Local_H/mom/pull | Hormuz Strait Closure - Permanent Route Diversion / 1.0 | 1.0/0.0 | 0/0 | 0/0 | False | 判定不能 |
 | oil-global-2027/Refinery_EU_Strike_2027 | Refinery_EU/mom/pull | Refinery EU Labor Strike 2027 / 25.0 | 25.0/0.0 | 75/75 | 75/75 | False | 効いていない |
@@ -244,7 +244,7 @@ Bottlingの期末I/COは全条件0。shortfall期間合計4,802も変わらな�
 
 - CookieのFactory_GP_CNはvalue=0でも対象期間P=1,500 / 1,538。EV Europe・Thailandにも0値のMOM休業週で非ゼロ処理が残る。
 - SmartXのWaferFab_TW（leaf_in）はvalue=0でも、2026/2027/2028/2029春節対象期間P=2,700 / 2,298 / 1,802 / 755。対応するBackward Pは0でpost-hook移動差分も0。`push_pull.py:304–355`でpost-copy後にMode4がleaf Pを作り直す経路と整合する。post_backwardのP処理だけで最終Forward Pの閉鎖を保証できない。
-- iPhoneの対象leaf等はP=0だが当該週に活動がなく、閉鎖による効果とは認定しない。今回対象行でpost_backwardの非ゼロP移動は観測されなかった。「leafなら一部効く」は静的に可能でも、この測定で実証したとはしない。
+- Smartphoneの対象leaf等はP=0だが当該週に活動がなく、閉鎖による効果とは認定しない。今回対象行でpost_backwardの非ゼロP移動は観測されなかった。「leafなら一部効く」は静的に可能でも、この測定で実証したとはしない。
 - Riceの0.3等は浮動小数の絶対hardとして入り、通常P封印ならintで0になる。ただし対象週の実測処理がもともと0であるため、数値だけから「0.3倍操業」を実装している／正しく機能しているとは判定しない。
 - H3で列挙された以外に0.2、0.4、0.5、5、25、45、400、500、1000も存在する。値の全一覧は入力CSVの列挙を保持し、用途の分類はしていない。
 
@@ -502,47 +502,26 @@ priority=8 run、survey=15 run。summarizeは保存済み出力から集計・�
 | raw/ev-thailand-2026_update__original__baseline/weekly.csv | 892071fdfe731be8d6556b876cf0c5b2ab5844f381b45364c316add9e8e89b33 |
 | raw/final_repository_checks.json | 653a72a63e9a4a7d2eb7e51b1fa8c3021a59656bec31b5906228c259f1cbe207 |
 | raw/git_fsck.txt | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
-| raw/india-ghee-2026__original__baseline/closure_weeks.csv | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
-| raw/india-ghee-2026__original__baseline/completion.json | ef5a66ecad1877ae8cc6531e2fbc816c7ce09d1a6a63bf34a06efbc90227eaee |
-| raw/india-ghee-2026__original__baseline/copy_hashes.json | 6dbb0242b302cc37278126c2880e4ccc4dc14b68578256fb816280b5ffad74f3 |
-| raw/india-ghee-2026__original__baseline/events.json | 4d37cac8acf16b9d2ea09f8a76d856b7fb7a3386c5b501c2f674c6928fed9ac5 |
-| raw/india-ghee-2026__original__baseline/fill_targets.csv | e6e559ed495f95f3d7d613d5ce3dc429268bb1ed5986657584c20d52233a89e7 |
-| raw/india-ghee-2026__original__baseline/holiday_calendar.csv | 7767bd04341a6aa46444c94f7114a5d4b3f29d570fc6edec521e1c1a205bf3c2 |
-| raw/india-ghee-2026__original__baseline/lot_timing.csv | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
-| raw/india-ghee-2026__original__baseline/paths.json | 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945 |
-| raw/india-ghee-2026__original__baseline/planning_config.csv | bd82db314584db96dc3f0258cbdef8a72dc38dba46b06823428b0c0f983a9469 |
-| raw/india-ghee-2026__original__baseline/ppc/ppc_event_ledger.csv | 6fa7b34270af7e671cde834f6fe2402fe9ce5887adec3fa4906006552142b38f |
-| raw/india-ghee-2026__original__baseline/ppc/ppc_kpi_summary.json | 228c4733efbd2ada8d51c2ecb5fa3fad37202a27c5c239b89b009a18016417db |
-| raw/india-ghee-2026__original__baseline/ppc/ppc_lot_reconciliation.csv | cdf75504413c7bd439c38ae89311cb2e531c3136f0fbd904c11061584fb0ca7c |
-| raw/india-ghee-2026__original__baseline/ppc/ppc_node_pl_summary.csv | 4c402e2b8673b539142c9d2ab47d6b3fe39d30d9007517e51017d27453d019df |
-| raw/india-ghee-2026__original__baseline/ppc/ppc_node_week_summary.csv | 2082f5d03bf7a576e5b04250db5d0bbdb1bb19332cf268f5353c845c31bbe4ad |
-| raw/india-ghee-2026__original__baseline/ppc/ppc_profit_zone_summary.csv | 957765b73db27e3ad0093b10de4865c94188346c74f1ed4c085ffde7cfbc5364 |
-| raw/india-ghee-2026__original__baseline/push_config.csv | bdeb581e04b54f3d769963fffde6b78280535ec72c0e28485153acc4159b7871 |
-| raw/india-ghee-2026__original__baseline/run.log | 1da3c8a5ed6178db8dbd3b0c77c18dbb56c205b3ab992b6839e73983f021e75c |
-| raw/india-ghee-2026__original__baseline/sc_tree_master.csv | 0aa461d9f690e9a45e38e628165500fd404df0a01c681c1792ec3418dabec54c |
-| raw/india-ghee-2026__original__baseline/snapshot.json | ef7378bf3e722d76dde5850875b5d8db5a6fe04063dbfc939cd5bb6eed0a1e91 |
-| raw/india-ghee-2026__original__baseline/source_hashes.json | 6dbb0242b302cc37278126c2880e4ccc4dc14b68578256fb816280b5ffad74f3 |
-| raw/india-ghee-2026__original__baseline/weekly.csv | 4472a2a65f7c12c16e787c6263306bc404e13a55898e9a4f6152c8966dff76dc |
-| raw/iphone_global__original__baseline/closure_weeks.csv | fbfd576f6610adb12a49785f24867dd8fb8a285051041387cfdf571148808d1b |
-| raw/iphone_global__original__baseline/completion.json | 9b06c526d045552fdfba4ca4a560b571fd94ce92fb6f9c7bd5a1eebf2d96ff72 |
-| raw/iphone_global__original__baseline/copy_hashes.json | 189402947c567abb68caf6897502a495e722f850712a6c4a494fc7cb549048c2 |
-| raw/iphone_global__original__baseline/events.json | 17aa33625af1f8dbdc07523319bb90e8f04641740e9c380801b934c22f2d8c3c |
-| raw/iphone_global__original__baseline/fill_targets.csv | 3753580c5aebddd2d9cd7f28ed603d7ec7f6a9e344ffbc758b257a72c8b4d100 |
-| raw/iphone_global__original__baseline/holiday_calendar.csv | 58eb77452a79931d149b76276e3d82ff4a90c843fbcbc951d3fb0672d55899e7 |
-| raw/iphone_global__original__baseline/lot_timing.csv | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
-| raw/iphone_global__original__baseline/paths.json | 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945 |
-| raw/iphone_global__original__baseline/ppc/ppc_event_ledger.csv | de56ca352898f1ce64be42164266dcece9a0894fe7c8a0d67094b39fee2f4b3b |
-| raw/iphone_global__original__baseline/ppc/ppc_kpi_summary.json | 18bcc59bec92e6934588c9f033d148d044e057c3fdeb72bd51cf1f119a4ad964 |
-| raw/iphone_global__original__baseline/ppc/ppc_lot_reconciliation.csv | 4e66ad9fa3a96d4765d52e891468d5f70ec4812fe90cfc0dd0954447cf5042ed |
-| raw/iphone_global__original__baseline/ppc/ppc_node_pl_summary.csv | 2b4e16048de120034d33b973b8c9abc64a1e4093e21e84bb982a38f68836afce |
-| raw/iphone_global__original__baseline/ppc/ppc_node_week_summary.csv | 47f876c8376971e7a334f7696650a81ce488469e623e102cb51cb59a2a35e24a |
-| raw/iphone_global__original__baseline/ppc/ppc_profit_zone_summary.csv | a7b1fc4397175753e00a290f13b38651665515a0e29f41cfdd7f12e95dbe8246 |
-| raw/iphone_global__original__baseline/push_config.csv | f9bb5b6296792c822fc5dbf4484aa6037be613c36103dcd0921ae355227db621 |
-| raw/iphone_global__original__baseline/run.log | dcb96f6eb6e89928151c7c8924be1d8ebef1eba8cdd3c37dd57206a0f4e73771 |
-| raw/iphone_global__original__baseline/sc_tree_master.csv | 4954ff1dd5db99eda317782a6b4630b6c82817f8cb88427ce6bad58ff657630a |
-| raw/iphone_global__original__baseline/snapshot.json | 06ee89cfc1069a34c87e90d5f060fa8985007a200ef412fd42b8c49988410893 |
-| raw/iphone_global__original__baseline/source_hashes.json | 189402947c567abb68caf6897502a495e722f850712a6c4a494fc7cb549048c2 |
-| raw/iphone_global__original__baseline/weekly.csv | f3f99051f50226f14c8a0a919fa0eb99976e38144fff6ea1be6ac91ba2702966 |
+| raw/smartphone-global-2026-2029__original__baseline/closure_weeks.csv | fbfd576f6610adb12a49785f24867dd8fb8a285051041387cfdf571148808d1b |
+| raw/smartphone-global-2026-2029__original__baseline/completion.json | 9b06c526d045552fdfba4ca4a560b571fd94ce92fb6f9c7bd5a1eebf2d96ff72 |
+| raw/smartphone-global-2026-2029__original__baseline/copy_hashes.json | 189402947c567abb68caf6897502a495e722f850712a6c4a494fc7cb549048c2 |
+| raw/smartphone-global-2026-2029__original__baseline/events.json | 17aa33625af1f8dbdc07523319bb90e8f04641740e9c380801b934c22f2d8c3c |
+| raw/smartphone-global-2026-2029__original__baseline/fill_targets.csv | 3753580c5aebddd2d9cd7f28ed603d7ec7f6a9e344ffbc758b257a72c8b4d100 |
+| raw/smartphone-global-2026-2029__original__baseline/holiday_calendar.csv | 58eb77452a79931d149b76276e3d82ff4a90c843fbcbc951d3fb0672d55899e7 |
+| raw/smartphone-global-2026-2029__original__baseline/lot_timing.csv | e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 |
+| raw/smartphone-global-2026-2029__original__baseline/paths.json | 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945 |
+| raw/smartphone-global-2026-2029__original__baseline/ppc/ppc_event_ledger.csv | de56ca352898f1ce64be42164266dcece9a0894fe7c8a0d67094b39fee2f4b3b |
+| raw/smartphone-global-2026-2029__original__baseline/ppc/ppc_kpi_summary.json | 18bcc59bec92e6934588c9f033d148d044e057c3fdeb72bd51cf1f119a4ad964 |
+| raw/smartphone-global-2026-2029__original__baseline/ppc/ppc_lot_reconciliation.csv | 4e66ad9fa3a96d4765d52e891468d5f70ec4812fe90cfc0dd0954447cf5042ed |
+| raw/smartphone-global-2026-2029__original__baseline/ppc/ppc_node_pl_summary.csv | 2b4e16048de120034d33b973b8c9abc64a1e4093e21e84bb982a38f68836afce |
+| raw/smartphone-global-2026-2029__original__baseline/ppc/ppc_node_week_summary.csv | 47f876c8376971e7a334f7696650a81ce488469e623e102cb51cb59a2a35e24a |
+| raw/smartphone-global-2026-2029__original__baseline/ppc/ppc_profit_zone_summary.csv | a7b1fc4397175753e00a290f13b38651665515a0e29f41cfdd7f12e95dbe8246 |
+| raw/smartphone-global-2026-2029__original__baseline/push_config.csv | f9bb5b6296792c822fc5dbf4484aa6037be613c36103dcd0921ae355227db621 |
+| raw/smartphone-global-2026-2029__original__baseline/run.log | dcb96f6eb6e89928151c7c8924be1d8ebef1eba8cdd3c37dd57206a0f4e73771 |
+| raw/smartphone-global-2026-2029__original__baseline/sc_tree_master.csv | 4954ff1dd5db99eda317782a6b4630b6c82817f8cb88427ce6bad58ff657630a |
+| raw/smartphone-global-2026-2029__original__baseline/snapshot.json | 06ee89cfc1069a34c87e90d5f060fa8985007a200ef412fd42b8c49988410893 |
+| raw/smartphone-global-2026-2029__original__baseline/source_hashes.json | 189402947c567abb68caf6897502a495e722f850712a6c4a494fc7cb549048c2 |
+| raw/smartphone-global-2026-2029__original__baseline/weekly.csv | f3f99051f50226f14c8a0a919fa0eb99976e38144fff6ea1be6ac91ba2702966 |
 | raw/oil-global-2027__original__baseline/closure_weeks.csv | 3a0204af31ae018e0b0b05684013d0aee9f346a76fed899d00af0431d1e3891b |
 | raw/oil-global-2027__original__baseline/completion.json | 1ac16a2194994766a4fa717eb83d56df7b5ca2122b03922d36a8f66bbcac6fdd |
 | raw/oil-global-2027__original__baseline/copy_hashes.json | 49d5d89328ac07f5de6c4061b46030254e8b6e78450c85acf366c805932949ff |

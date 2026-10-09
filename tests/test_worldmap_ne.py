@@ -81,7 +81,7 @@ def test_converter_is_deterministic(tmp_path):
             assert np.array_equal(a[k], b[k]), (s, k)
 
 
-@pytest.mark.parametrize("model", ["ev-thailand-2026", "iphone_global", "oil-global-2027"])
+@pytest.mark.parametrize("model", ["ev-thailand-2026", "smartphone-global-2026-2029", "oil-global-2027"])
 def test_model_nodes_edges_and_weekly_flows(model):
     import pandas as pd
     mm = load_model(model)
@@ -90,7 +90,7 @@ def test_model_nodes_edges_and_weekly_flows(model):
     assert (mm.edge_flow >= 0).all() and mm.edge_flow.sum() > 0
     assert mm.edge_outbound.any() and (~mm.edge_outbound).any()      # both sides drawn
     # each market leaf on the map carries exactly its own demand
-    # (iphone_global's Retail_* nodes have no lat/lon in node_master.csv, so they
+    # (smartphone-global-2026-2029's Retail_* nodes have no lat/lon in node_master.csv, so they
     # are not on the map -- the same as in the World Map tab)
     d = os.path.join(D.REPO, "data", "sample", model)
     dem = pd.read_csv(os.path.join(d, "demand_forecast.csv"))
@@ -106,7 +106,7 @@ def test_model_nodes_edges_and_weekly_flows(model):
                      ["quantity"].clip(lower=0).sum())
         assert mm.edge_flow[:, ks[0]].sum() == pytest.approx(want), leaf
         checked += 1
-    assert checked > 0 or model == "iphone_global"
+    assert checked > 0 or model == "smartphone-global-2026-2029"
 
 
 @NEED

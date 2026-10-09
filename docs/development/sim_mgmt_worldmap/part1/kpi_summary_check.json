@@ -443,11 +443,11 @@
     "hidden_channels": null
    }
   },
-  "iphone_global": {
+  "smartphone-global-2026-2029": {
    "channels_per_sku": {
-    "iPhone15": 3,
-    "iPhone16": 3,
-    "iPhone17": 3
+    "Phone15": 3,
+    "Phone16": 3,
+    "Phone17": 3
    },
    "channels_all": 9,
    "after__1536x824__All": {
@@ -464,7 +464,7 @@
     "shown_channels": 5,
     "hidden_channels": 4
    },
-   "after__1536x824__iPhone15": {
+   "after__1536x824__Phone15": {
     "panel_px": [
      270,
      135
@@ -492,7 +492,7 @@
     "shown_channels": 0,
     "hidden_channels": 9
    },
-   "after__1280x720__iPhone15": {
+   "after__1280x720__Phone15": {
     "panel_px": [
      218,
      118
@@ -520,7 +520,7 @@
     "shown_channels": 0,
     "hidden_channels": 9
    },
-   "after__1100x640__iPhone15": {
+   "after__1100x640__Phone15": {
     "panel_px": [
      181,
      105
@@ -587,7 +587,7 @@
     "shown_channels": null,
     "hidden_channels": null
    },
-   "before__1536x824__iPhone15": {
+   "before__1536x824__Phone15": {
     "panel_px": [
      270,
      135
@@ -698,7 +698,7 @@
     "shown_channels": null,
     "hidden_channels": null
    },
-   "before__1280x720__iPhone15": {
+   "before__1280x720__Phone15": {
     "panel_px": [
      218,
      118
@@ -814,7 +814,7 @@
     "shown_channels": null,
     "hidden_channels": null
    },
-   "before__1100x640__iPhone15": {
+   "before__1100x640__Phone15": {
     "panel_px": [
      181,
      105

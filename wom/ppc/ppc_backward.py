@@ -128,7 +128,7 @@ def _tariff_base(
     """Compute tariff on edge_id → base currency (0 if no rule).
 
     tp_currency must match the transfer-price currency used in ppc_tariff.py
-    (e.g. "JPY" for Cookie-jp-2026, "USD" for iphone).
+    (e.g. "JPY" for Cookie-jp-2026, "USD" for smartphone).
     Defaults to "USD" for backward-compatibility with existing unit tests.
     """
     t = rules.get_tariff(edge_id, product)
@@ -169,7 +169,7 @@ def run_backward_propagation(
       = backward_allowable @ MOM
 
     If dad_nodes_chain is None or empty, falls back to single dad_node
-    (legacy rice / iphone behavior unchanged).
+    (legacy rice / smartphone behavior unchanged).
     """
     events: List[PPCEvent] = []
     _ctr = itertools.count(1)

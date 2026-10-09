@@ -1,0 +1,13 @@
+edge_id,product_id,cost_type,basis,rate,fixed_amount,currency
+EMS_A_CN->SP_Phone16,Phone16,logistics_cost,per_lot,0.0,1,USD
+EMS_A_CN_i15->SP_Phone15,Phone15,logistics_cost,per_lot,0.0,0.9,USD
+EMS_A_CN_i17->SP_Phone17,Phone17,logistics_cost,per_lot,0.0,1.2,USD
+SP_Phone16->Retail_AMER,Phone16,logistics_cost,per_lot,0.0,17,USD
+SP_Phone16->Retail_EMEA,Phone16,logistics_cost,per_lot,0.0,19.7,USD
+SP_Phone16->Retail_APAC,Phone16,logistics_cost,per_lot,0.0,14.3,USD
+SP_Phone15->Retail_AMER_i15,Phone15,logistics_cost,per_lot,0.0,16.1,USD
+SP_Phone15->Retail_EMEA_i15,Phone15,logistics_cost,per_lot,0.0,18.2,USD
+SP_Phone15->Retail_APAC_i15,Phone15,logistics_cost,per_lot,0.0,13.3,USD
+SP_Phone17->Retail_AMER_i17,Phone17,logistics_cost,per_lot,0.0,17.9,USD
+SP_Phone17->Retail_EMEA_i17,Phone17,logistics_cost,per_lot,0.0,20.8,USD
+SP_Phone17->Retail_APAC_i17,Phone17,logistics_cost,per_lot,0.0,15.3,USD

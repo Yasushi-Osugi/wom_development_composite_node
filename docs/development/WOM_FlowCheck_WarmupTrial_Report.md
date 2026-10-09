@@ -127,7 +127,7 @@
 | `wom/cockpit/s3_view_model.py` | S3 の結論の 2 行目：identity のときは「上限に張り付き（翌週へ繰り延べ）」、legacy は従来どおり「（需要が溢れた）」。コメントも |
 | `wom/cockpit/s3_run.py` | コメントのみ |
 
-identity の値（例）：iphone は `cap_hard_deferred_lots` 55,413・lot 週 55,413。smartx は 19,887・19,887。rice（参考）は 183,888・1,913,694。ev_update は 1,166・1,166。
+identity の値（例）：smartphone は `cap_hard_deferred_lots` 55,413・lot 週 55,413。smartx は 19,887・19,887。rice（参考）は 183,888・1,913,694。ev_update は 1,166・1,166。
 
 ### 1.5 テスト
 
@@ -232,7 +232,7 @@ identity の値（例）：iphone は `cap_hard_deferred_lots` 55,413・lot 週 
 | bom-test-2026 | 0 | 1（Kitting） | 100 = 100 + 0 + 0 | 0 | 2 |
 | ev-europe-2026 | 0 | 2（Kitting） | 53,140 = 49,420 + 0 + 3,720 | 0 | 8 |
 | ev-thailand-2026 | 0 | 0 | 63,240 = 58,220 + 0 + 5,020 | 0 | 6 |
-| iphone_global | 0 | 0 | 470,924 = 373,090 + 0 + 97,834 | 0 | 9 |
+| smartphone-global-2026-2029 | 0 | 0 | 470,924 = 373,090 + 0 + 97,834 | 0 | 9 |
 | oil-global-2027 | 0 | 0 | 191,058 = 177,016 + 0 + 14,042 | 0 | 21 |
 | rice-japan-2027-2028（参考。実運用は legacy） | 0 | 2（需要に無い ID） | 235,316 = 0 + 142,914 + 92,402 | 0 | 16 |
 | smartx-2027-2029 | 0 | 0 | 709,811 = 676,850 + 16,073 + 16,888 | 0 | 8 |
@@ -269,7 +269,7 @@ identity の値（例）：iphone は `cap_hard_deferred_lots` 55,413・lot 週 
 
 ## 4. Part 2 の受け入れ
 
-- identity のスナップショット（例：iphone_global）：`"forward": {"cap_hard_deferred_lots": 55413, "cap_hard_deferred_lot_weeks": 55413, "cap_soft_violation_count": 0}`（`cap_hard_sealed` は無い）。
+- identity のスナップショット（例：smartphone-global-2026-2029）：`"forward": {"cap_hard_deferred_lots": 55413, "cap_hard_deferred_lot_weeks": 55413, "cap_soft_violation_count": 0}`（`cap_hard_sealed` は無い）。
 - legacy のスナップショット：`{"cap_hard_sealed": 1230, "cap_soft_violation_count": 0}`。HEAD と一致（§2）。
 - テスト `test_headless_snapshot_forward_naming_and_flow_check_csv` で、両方式の項目名を確かめている。
 
@@ -371,7 +371,7 @@ identity の値（例）：iphone は `cap_hard_deferred_lots` 55,413・lot 週 
 | ev-thailand-2026 | **14** | §13.1 の式の値で、期末注文残が 0 になり、push の Mode 4 の立ち上がり期の 200 件も消えた。28 にしても何も変わらない |
 | Cookie-jp-2026 | **15**（余裕を見るなら 16） | 式の値の 13 では、Backward の能力の押し戻しで 1,256 件が残る。15 で 0。16〜26 でも同じ結果 |
 | soysauce-jpy-2027 | **26 のまま**（変えない） | 外すと 14,926 件が現れる。26 で 0 |
-| ほかの identity で期末注文残が出るモデル（apparel-global、ev-europe、iphone、oil、smartx、soysauce-eu/us） | 未試行 | 同じ方法で試す価値がある。能力の制約が強いモデル（iphone は期末注文残の 65,274 件が「能力」）では、warmup で消えない分が残る見込み |
+| ほかの identity で期末注文残が出るモデル（apparel-global、ev-europe、smartphone、oil、smartx、soysauce-eu/us） | 未試行 | 同じ方法で試す価値がある。能力の制約が強いモデル（smartphone は期末注文残の 65,274 件が「能力」）では、warmup で消えない分が残る見込み |
 | rice-japan-2027-2028 | 入れない（legacy のまま） | identity の対象外（決定記録 D5） |
 
 - 式の値は下限の目安であり、能力の押し戻しがあるモデルでは足りない。モデルごとに試行して決めるのがよい。
@@ -403,7 +403,7 @@ identity の値（例）：iphone は `cap_hard_deferred_lots` 55,413・lot 週 
 - 期待との差：依頼書 V1 は名前と説明の修正で、計算は変えないとした。
   - 今回は、実出荷を別の列（`ship_qty`）として加え、`demand_fulfilled` を使う箇所に注記を入れるにとどめた。
   - 計算を実出荷に切り替えると legacy の DAD 行の値が変わるので、別の依頼で判断してほしい。
-- **追記（2026-09-30）**：`RequestLetter_iPhoneWarmup_EVUpdateKitting_S2` の C で対応した。identity の計画では、充足・売上の計算が実出荷ベースになった（legacy は要求ベースのまま、値は変えていない）。Harvest Input は需要（要求）のまま、図に「需要」と書いた。詳しくは `docs/development/WOM_iPhoneWarmup_EVUpdateKitting_S2_Report.md` §4。
+- **追記（2026-09-30）**：`RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2` の C で対応した。identity の計画では、充足・売上の計算が実出荷ベースになった（legacy は要求ベースのまま、値は変えていない）。Harvest Input は需要（要求）のまま、図に「需要」と書いた。詳しくは `docs/development/WOM_SmartphoneWarmup_EVUpdateKitting_S2_Report.md` §4。
 
 ### S3　identity の `cap_hard_sealed` が 0 になる
 

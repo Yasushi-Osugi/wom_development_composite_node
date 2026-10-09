@@ -16,9 +16,9 @@ Key = leaf_node_name (finest granularity)
   Each leaf_out node represents one sales channel in one market.
   Using leaf_node_name as the key allows per-channel MOM assignment,
   which is impossible with region-based keys.  Examples:
-    - Retail_AMER  → Foxconn_IN  (AMER physical retail)
-    - Online_AMER  → Foxconn_VN  (AMER e-commerce, different lane)
-    - Online_GLOBAL → Foxconn_VN  (cross-region channel, no region tag)
+    - Retail_AMER  → EMS_A_IN  (AMER physical retail)
+    - Online_AMER  → EMS_A_VN  (AMER e-commerce, different lane)
+    - Online_GLOBAL → EMS_A_VN  (cross-region channel, no region tag)
 
 Fallback hierarchy (BackwardPlanner Phase 2)
 --------------------------------------------
@@ -27,9 +27,9 @@ Fallback hierarchy (BackwardPlanner Phase 2)
   3. Default:      primary MOM (first registered)
 
 This allows mixing fine-grained overrides with coarse region defaults:
-  iPhone16, Retail_AMER,  IN:mom:Foxconn_IN:iPhone16, 1   ← leaf override
-  iPhone16, EMEA,         IN:mom:Foxconn_CN:iPhone16, 1   ← region default
-  iPhone16, APAC,         IN:mom:Foxconn_CN:iPhone16, 1   ← region default
+  Phone16, Retail_AMER,  IN:mom:EMS_A_IN:Phone16, 1   ← leaf override
+  Phone16, EMEA,         IN:mom:EMS_A_CN:Phone16, 1   ← region default
+  Phone16, APAC,         IN:mom:EMS_A_CN:Phone16, 1   ← region default
 
 Usage in BackwardPlanner Phase 2
 ---------------------------------
@@ -51,10 +51,10 @@ sku_id, leaf_node_name, mom_node_id, priority
 
 Example
 -------
-iPhone16,Retail_AMER,IN:mom:Foxconn_IN:iPhone16,1
-iPhone16,Online_AMER,IN:mom:Foxconn_VN:iPhone16,1
-iPhone16,EMEA,IN:mom:Foxconn_CN:iPhone16,1
-iPhone16,APAC,IN:mom:Foxconn_CN:iPhone16,1
+Phone16,Retail_AMER,IN:mom:EMS_A_IN:Phone16,1
+Phone16,Online_AMER,IN:mom:EMS_A_VN:Phone16,1
+Phone16,EMEA,IN:mom:EMS_A_CN:Phone16,1
+Phone16,APAC,IN:mom:EMS_A_CN:Phone16,1
 """
 
 from __future__ import annotations

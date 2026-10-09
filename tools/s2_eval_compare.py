@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 tools/s2_eval_compare.py — S2（実出荷ベースの評価）の前後比較（測定だけ）
-（RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C）
+（RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 C）
 
-    python -m tools.s2_eval_compare --out output/iphone_evupdate_s2/C [--base-ref 979cf7a]
+    python -m tools.s2_eval_compare --out output/smartphone_evupdate_s2/C [--base-ref 979cf7a]
                                     [--models all|<case>,<case>]
 
 モデルごと・方式ごと（identity／legacy）に、モデルのコピーで headless 実行し、同じ計画結果に
@@ -64,7 +64,7 @@ def _jobs():
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--out", default=os.path.join("output", "iphone_evupdate_s2", "C"))
+    ap.add_argument("--out", default=os.path.join("output", "smartphone_evupdate_s2", "C"))
     ap.add_argument("--base-ref", default="979cf7a")
     ap.add_argument("--models", default="all")
     a = ap.parse_args(argv)

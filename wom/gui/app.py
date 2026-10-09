@@ -1517,7 +1517,7 @@ class ManagementCockpitPanel(tk.Frame):
             # Owner decision (2026-09-30): without the current plan's PPC result
             # the row is left EMPTY and only says why -- money values are not
             # shown instead (their scale can differ from PPC by orders of
-            # magnitude, e.g. iphone_global).
+            # magnitude, e.g. smartphone-global-2026-2029).
             _why = _ppc_label if not _ppc_ok else "PPC の台帳にこの SKU が無い"
             for _, row in kpi.iterrows():
                 self._pl_tree.insert("", "end", values=[row.get(Cols.SCENARIO, "")] + [""] * 8 + [_why])
@@ -3155,7 +3155,7 @@ class SCNetworkPanel(tk.Frame):
         COGS         = quantity x unit_cost_per_lot
         Gross Profit = Revenue - COGS
 
-        Quantity (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2):
+        Quantity (RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 C2):
           identity plan  the node's ACTUAL shipment, len(node._actual_ship[w])
                          (any node, not only the market leaf). Without a
                          shipment record nothing is drawn ("unknown") -- the

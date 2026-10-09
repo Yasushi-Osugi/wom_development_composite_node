@@ -1,8 +1,0 @@
-node_id,product_id,cost_type,basis,rate,fixed_amount,currency,note
-Ghee_Plant_Anand,Ghee_Domestic,conversion_cost,per_lot,0,1700,INR,加工・充填費 INR/tin
-Ghee_Plant_Anand,Ghee_Domestic,logistics_cost,per_lot,0,100,INR,工場→DC 国内輸送 INR/tin
-DC_Ghee_Domestic,Ghee_Domestic,logistics_cost,per_lot,0,300,INR,DC→小売 配送費 INR/tin
-Ghee_Plant_Export,Ghee_Export,conversion_cost,per_lot,0,2000,INR,輸出認証加工・充填費 INR/tin
-Ghee_Plant_Export,Ghee_Export,logistics_cost,per_lot,0,150,INR,工場→ムンドラ港 陸送 INR/tin
-DC_Ghee_Export,Ghee_Export,logistics_cost,per_lot,0,500,INR,ムンドラ→ジェベルアリ 海上運賃（$6×83INR） INR/tin
-DC_Ghee_Export,Ghee_Export,conversion_cost,per_lot,0,200,INR,通関・保税倉庫取扱費 INR/tin

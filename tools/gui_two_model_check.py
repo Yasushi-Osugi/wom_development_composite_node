@@ -11,13 +11,13 @@ tools/gui_two_model_check.py — 実アプリの窓で、モデルを続けて�
 
   1  起動直後（既定のサンプルが読み込まれた状態）
   2  ev-thailand-2026 を読み込む → Run Planning Engine → PPC の完了まで待つ
-  3  iphone_global を読み込む（まだ計画しない）
-  4  Run Planning Engine → 計画が終わった直後（iphone の PPC は計算中）
-  5  iphone の PPC の完了後
+  3  smartphone-global-2026-2029 を読み込む（まだ計画しない）
+  4  Run Planning Engine → 計画が終わった直後（smartphone の PPC は計算中）
+  5  smartphone の PPC の完了後
   6  PPC を失敗させて（PPC の入口を一時的に差し替える）もう一度計画する
   7  作業フォルダの外に置いたコピー（ev-thailand-2026_update）を読み込んで計画する（表 3 の確認）
   8  2 つの計画を、PPC が終わる前に続けて実行する：ev-thailand-2026 を計画し、その PPC を
-     わざと遅らせ（12 秒）、終わる前に iphone_global を読み込んで計画する。その間、画面の
+     わざと遅らせ（12 秒）、終わる前に smartphone-global-2026-2029 を読み込んで計画する。その間、画面の
      P&L Summary の Revenue・Node P&L の先頭・PPC タブの状態を 0.2 秒ごとに記録する
      （前の計画＝ev-thailand の PPC の値が、一度も画面に出ないことを確かめる）
 
@@ -41,7 +41,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--out", default=os.path.join("output", "stale_ppc", "gui"))
     ap.add_argument("--first", default="ev-thailand-2026")
-    ap.add_argument("--second", default="iphone_global")
+    ap.add_argument("--second", default="smartphone-global-2026-2029")
     ap.add_argument("--kitting", default="ev-thailand-2026_update")
     a = ap.parse_args(argv)
     os.chdir(REPO)

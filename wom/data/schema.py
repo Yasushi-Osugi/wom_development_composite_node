@@ -98,7 +98,7 @@ class Cols:
     DEMAND_FCST     = "demand_fcst"
     # Planning DataFrame (sc_tree_to_planning_df) -- the meaning of
     # demand_fulfilled depends on QTY_BASIS
-    # (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2):
+    # (RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 C2):
     #   "request"      legacy / mode not given: len(supply S) x cpu, i.e. the
     #                  REQUEST (Demand Position). The old evaluation, unchanged.
     #   "actual_ship"  identity: the actual shipment of the week (= SHIP_QTY,

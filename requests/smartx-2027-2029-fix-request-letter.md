@@ -12,7 +12,7 @@
 
 過去に定義した5(+1)個のWOM sample model(Rice/Smart Phone/Cookie/EV/Oil、EVはeurope/thailandの2ケース)について、最新版WOM v1r1m7のPythonモジュールとの互換性を調査した。結果、Rice・Cookie・ev-europe・ev-thailandは問題なし、Oilの高いtrust event件数は既存記事の記述と整合する意図された挙動(バグではない)と確認した。
 
-**smartx-2027-2029(Smart Phone Case)のみ、3つの異なる根本原因を持つ非互換が見つかった。** 本レターはこれらを整理し、修正方針を確定した上で実装計画をまとめるものである。スコープは本ケースのみとし、`iphone`/`iphone_global`(旧世代)と`rice-japan-2027-2028_BK260613_1515`(バックアップ)は対象外とする。
+**smartx-2027-2029(Smart Phone Case)のみ、3つの異なる根本原因を持つ非互換が見つかった。** 本レターはこれらを整理し、修正方針を確定した上で実装計画をまとめるものである。スコープは本ケースのみとし、`smartphone-legacy`/`smartphone-global-2026-2029`(旧世代)と`rice-japan-2027-2028_BK260613_1515`(バックアップ)は対象外とする。
 
 オーナーからは、調査の過程で以下の重要な実務的知見の共有があった:
 
@@ -134,34 +134,34 @@ SmartXProはtree上で`SP_SmartXPro`から`DC_AMER`/`DC_EMEA`/`DC_APAC`という
 
 Cookieのような真の直列多段チェーンでも、この方式は自然に`["DC_Import_Buffer", "DC_Import_Main"]`を再現でき、既存ケースを壊さない(DC_Import_Mainのparentを辿るとDC_Import_Buffer、さらに辿るとsupply_point、という実際の親子関係がそのままチェーンになるため)。
 
-## 4.5. Problem E(実装中に新規発見): detect_scenarioのiphone_global誤判定
+## 4.5. Problem E(実装中に新規発見): detect_scenarioのsmartphone-global-2026-2029誤判定
 
 Step2/3実装後の回帰テストで、smartx-2027-2029のPPC結果が実装前と全く変わらない(margin=100%、cost=0)ことが判明し、調査の結果、Problem A/B/C+Dとは独立な第5の問題が見つかった。
 
 ### 根本原因
 
-`wom/ppc/ppc_engine.py`の`detect_scenario()`は、`sales_records`のchannel_node集合と`_IPHONE_GLOBAL_CHANNELS`(`{"Retail_AMER", "Retail_EMEA", "Retail_APAC", ...}`、旧世代iPhone_Globalサンプル専用のチャネル名)の**共通部分の有無だけ**でシナリオを判定していた。
+`wom/ppc/ppc_engine.py`の`detect_scenario()`は、`sales_records`のchannel_node集合と`_SMARTPHONE_GLOBAL_CHANNELS`(`{"Retail_AMER", "Retail_EMEA", "Retail_APAC", ...}`、旧世代Smartphone_Globalサンプル専用のチャネル名)の**共通部分の有無だけ**でシナリオを判定していた。
 
 ```python
 channels = set(sales_records["channel_node"].unique())
-if channels & _IPHONE_GLOBAL_CHANNELS:
-    return "iphone_global"
+if channels & _SMARTPHONE_GLOBAL_CHANNELS:
+    return "smartphone-global-2026-2029"
 ```
 
-smartx-2027-2029のSmartXProが使用するleaf_outノード名(`Retail_AMER`/`Retail_EMEA`/`Retail_APAC`)が、たまたま旧iPhone_Globalサンプルと完全一致するため、product_idを一切見ずに`"iphone_global"`と誤判定され、`build_iphone_global_vs_paths()`(Foxconn_CN→SP_iPhone16という、SmartXProには存在しないノード名のハードコードされたパス)が使われてしまう。この結果、smartx-2027-2029のPSIレコード全体(SmartXPro/SmartX/SmartXNextの3製品すべて)が、**Problem A/B/C+Dの修正が実装されているGENERIC分岐に一度も到達しない**まま処理され、コストが一切計上されない(mom_node="Foxconn_CN"がsmartx側のどのCSVにも存在しないため)。
+smartx-2027-2029のSmartXProが使用するleaf_outノード名(`Retail_AMER`/`Retail_EMEA`/`Retail_APAC`)が、たまたま旧Smartphone_Globalサンプルと完全一致するため、product_idを一切見ずに`"smartphone-global-2026-2029"`と誤判定され、`build_smartphone-global-2026-2029_vs_paths()`(EMS_A_CN→SP_Phone16という、SmartXProには存在しないノード名のハードコードされたパス)が使われてしまう。この結果、smartx-2027-2029のPSIレコード全体(SmartXPro/SmartX/SmartXNextの3製品すべて)が、**Problem A/B/C+Dの修正が実装されているGENERIC分岐に一度も到達しない**まま処理され、コストが一切計上されない(mom_node="EMS_A_CN"がsmartx側のどのCSVにも存在しないため)。
 
 この問題は、事前のSCTree構造診断(GENERIC分岐のロジックを直接呼び出して`dad_chain`を確認したスクリプト)では`detect_scenario()`自体を経由していなかったため、これまで発見されていなかった。
 
 ### 決定した修正方針(オーナー承認済み、2026-07-11)
 
-`_IPHONE_GLOBAL_PRODUCTS = {"iPhone16", "iPhone15", "iPhone17"}`を新設し、channel一致に加えてproduct_id一致も必須化する。
+`_SMARTPHONE_GLOBAL_PRODUCTS = {"Phone16", "Phone15", "Phone17"}`を新設し、channel一致に加えてproduct_id一致も必須化する。
 
 ```python
-if (products & _IPHONE_GLOBAL_PRODUCTS) and (channels & _IPHONE_GLOBAL_CHANNELS):
-    return "iphone_global"
+if (products & _SMARTPHONE_GLOBAL_PRODUCTS) and (channels & _SMARTPHONE_GLOBAL_CHANNELS):
+    return "smartphone-global-2026-2029"
 ```
 
-これにより、旧iPhone_Globalサンプル(product_id="iPhone16"等)の判定は変えずに、smartx-2027-2029の誤判定のみを解消する。低リスク・影響範囲の狭い修正のため、Step2/3の一部として即時実装した。
+これにより、旧Smartphone_Globalサンプル(product_id="Phone16"等)の判定は変えずに、smartx-2027-2029の誤判定のみを解消する。低リスク・影響範囲の狭い修正のため、Step2/3の一部として即時実装した。
 
 ## 5. 共通の実装方針: Lot/Leaf単位のtree祖先探索ヘルパーの共有化
 

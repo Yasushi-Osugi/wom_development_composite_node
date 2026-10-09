@@ -6,7 +6,7 @@
   - 決定記録 `docs/design/WOM_Forward_LotID_Decision_Record_2026-09-29.md`（基本ルール、§1.4 販売数量は実出荷）
   - LOVEM 設計 `docs/design/drafts/LOVEM_on_WOM_Observation_Visualization_Design_v0.2.md`（段階 D、Q10・Q11）
   - `docs/development/WOM_PPC_Entry_Measurement_Report.md`（P4：中間ノードの数量は leaf から導出）
-  - `docs/development/WOM_iPhoneWarmup_EVUpdateKitting_S2_Report.md`（S2：評価を実出荷ベースに）
+  - `docs/development/WOM_SmartphoneWarmup_EVUpdateKitting_S2_Report.md`（S2：評価を実出荷ベースに）
 
 ---
 
@@ -83,7 +83,7 @@ LOVEM の数量の線（どの Lot が、どこから来て、どこで待ち、
 
 ### 3.6 単位と桁の検証（段階 D の入口）
 
-iphone_global の PPC の売上 641 兆円は、現実の規模から大きく外れている。原因を「単位の問題」と決めつけず、次の積を 1 つずつ追う。
+smartphone-global-2026-2029 の PPC の売上 641 兆円は、現実の規模から大きく外れている。原因を「単位の問題」と決めつけず、次の積を 1 つずつ追う。
 
 ```
 実出荷 lot 数 × 物量／lot（cpu_size など） × 物量当たり単価 × 通貨換算
@@ -136,7 +136,7 @@ iphone_global の PPC の売上 641 兆円は、現実の規模から大きく�
 
 最初の二回から外すもの：税金、完全な貸借対照表・キャッシュフロー、為替換算差額、非支配持分。最初は「指定した 100％子会社群」の簡略モデルとする。
 
-題材のモデル（案）：Cookie-jp-2026（中国の工場 → 日本の DC、2 製品）と soysauce-jpy-2027-alloc（LOVEM v0.2 で段階 D の題材とした）。単位の検証（§3.6）には iphone_global を加える。
+題材のモデル（案）：Cookie-jp-2026（中国の工場 → 日本の DC、2 製品）と soysauce-jpy-2027-alloc（LOVEM v0.2 で段階 D の題材とした）。単位の検証（§3.6）には smartphone-global-2026-2029 を加える。
 
 ## 7. 大杉さんに決めていただきたいこと
 
@@ -147,7 +147,7 @@ iphone_global の PPC の売上 641 兆円は、現実の規模から大きく�
 | D-3 | 区間の費用：仕入の運賃・関税など「物を今の場所にするための費用」は在庫原価に含め、販売時に費用にする。販売のための運賃などはその週の費用 | IAS 2 の考え方に合わせる |
 | D-4 | 通貨：第 1 回は、報告通貨への換算を今の PPC の為替（週ごと）で行い、為替換算差額は扱わない | 簡略化して進める |
 | D-5 | 在庫の保有費用：管理上の保有費（Lot・週あたり）を独立した項目として持つ | 第 1 回で項目を用意し、単価はモデルごとに設定 |
-| D-6 | 題材のモデル：Cookie と soysauce-jpy-alloc。iphone は単位の検証だけ | この 3 つで始める |
+| D-6 | 題材のモデル：Cookie と soysauce-jpy-alloc。smartphone は単位の検証だけ | この 3 つで始める |
 | D-7 | サンプルモデルの法人の割り当て：題材のモデルについて、どのノードをどの法人にするか | Claude君が案を作り、大杉さんが確かめる |
 
 ## 8. 次の手順

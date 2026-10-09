@@ -1,8 +1,8 @@
 """
 wom/ppc — PPC (Profit / Price / Cost) Simulation Engine
 
-Vertical Slice: iphone-vs scenario
-    1 product (IPHONE)
+Vertical Slice: smartphone-vs scenario
+    1 product (SMARTPHONE)
     1 supplier (Supplier_CN, CNY)
     1 MOM (MOM_China, CN)
     1 DAD (DAD_Japan, JP)
@@ -20,7 +20,7 @@ Processing order (D2 — no circular reference):
     Step 7. KPI summary (base currency, D1)
 """
 
-from .ppc_engine import PPCSimulationEngine, build_iphone_vs_paths
+from .ppc_engine import PPCSimulationEngine, build_smartphone_vs_paths
 from .ppc_models import PPCEvent, PPCTrustEvent, LotCostAccumulator, PPCSimulationResult
 from .ppc_rules import PPCRuleSet
 from .ppc_fx import FXConverter
@@ -28,7 +28,7 @@ from .ppc_export import export_results
 
 __all__ = [
     "PPCSimulationEngine",
-    "build_iphone_vs_paths",
+    "build_smartphone_vs_paths",
     "PPCEvent",
     "PPCTrustEvent",
     "LotCostAccumulator",

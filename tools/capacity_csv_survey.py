@@ -20,7 +20,7 @@ tools/capacity_csv_survey.py — 能力の CSV の「0・空欄・読めない�
   node_not_found  計画の木に無いノード名（製品×ノード）。新しい規則では止まる
   week_out     計画期間の外の週（新しい規則では警告だけ）
 
-旧書式（node_name 列なし。iphone）は、(製品, 週) で合計して MOM に入る。この場合は
+旧書式（node_name 列なし。smartphone）は、(製品, 週) で合計して MOM に入る。この場合は
 製品の InBound root に入るとして数える。
 """
 from __future__ import annotations

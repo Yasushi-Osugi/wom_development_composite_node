@@ -11,7 +11,7 @@ Owner rationale (2026-07-10, multiple revisions same day):
      window and near-zero outside it -- not one SKU with a mild year-round
      sinusoidal wobble. Expressed as 8 distinct product_name values per
      brand (S1..S8).
-  2. While verifying Phase 1 (Apparel_Import / H&M-inspired, offshore
+  2. While verifying Phase 1 (Apparel_Import / Retailer_A-inspired, offshore
      fabless), a qty-scaling bug was found and fixed in the core PPC engine
      (wom/ppc/*.py) -- unrelated to this script, see git history / the
      Coding Request Letters for details.
@@ -22,7 +22,7 @@ Owner rationale (2026-07-10, multiple revisions same day):
      Fabric_CN's PPC-side cost and adding ppc_node_cost_rule.csv (which
      did not exist yet for this scenario) with Factory_Import_CN's full
      CIF value as a conversion_cost line + DC_Import_Buffer's warehouse fee.
-  4. While designing Phase 2 (Apparel_Local / Zara-inspired), a further
+  4. While designing Phase 2 (Apparel_Local / Retailer_B-inspired), a further
      bug was found in THIS script's own Phase-1-era edge_cost_rule.csv:
      the inbound freight rows were keyed to edge_id
      "Factory_Import_CN->SP_Apparel_Import" / "SP_Apparel_Import->DC_Import_Buffer",
@@ -33,7 +33,7 @@ Owner rationale (2026-07-10, multiple revisions same day):
      NEVER matched -- freight cost was silently $0 for the whole Phase 1
      verification. Fixed here for both brands by using the correct
      "{FACTORY}->{DC}" edge_id.
-  5. Phase 2 (Apparel_Local) is modeled on Zara/Inditex's ACTUAL operating
+  5. Phase 2 (Apparel_Local) is modeled on Retailer_B's ACTUAL operating
      model (vertically-integrated Spain-based production, Arteixo
      distribution hub, twice-weekly air-freighted store replenishment) per
      owner instruction, NOT a fictional Western-Hemisphere nearshoring
@@ -279,7 +279,7 @@ def gen_node_master(path):
             country = brand["factory_country"]
             lat, lon = coords[country]
             first_pid = product_id(brand, SEASONS[0][0])
-            brand_label = "H&M型 輸入調達" if brand["key"] == "Import" else "Zara型 垂直統合"
+            brand_label = "Retailer_A型 輸入調達" if brand["key"] == "Import" else "Retailer_B型 垂直統合"
             w.writerow([brand["sp"], f"{brand['sp']}（{brand_label}本部）",
                         "procurement", lat, lon, "", country,
                         f"{brand_label}の調達本部"])

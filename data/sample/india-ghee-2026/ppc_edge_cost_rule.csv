@@ -1,5 +1,0 @@
-edge_id,product_id,cost_type,basis,rate,fixed_amount,currency
-Ghee_Plant_Anand->SP_Ghee_Domestic,Ghee_Domestic,logistics_cost,per_lot,0.0,100,INR
-SP_Ghee_Domestic->DC_Ghee_Domestic,Ghee_Domestic,logistics_cost,per_lot,0.0,300,INR
-Ghee_Plant_Export->SP_Ghee_Export,Ghee_Export,logistics_cost,per_lot,0.0,150,INR
-SP_Ghee_Export->DC_Ghee_Export,Ghee_Export,logistics_cost,per_lot,0.0,700,INR

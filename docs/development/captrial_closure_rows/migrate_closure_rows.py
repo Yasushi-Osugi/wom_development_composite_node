@@ -21,8 +21,8 @@ RICE = ([(h, n) for h in ("GW_2027_supply", "GW_2028_supply")
 TARGETS = {
     os.path.join(S, "rice-japan-2027-2028", "holiday_calendar.csv"): RICE,
     os.path.join(S, "rice-japan-2027-2028_BK260613_1515", "holiday_calendar.csv"): RICE,
-    os.path.join(S, "iphone_global", "holiday_calendar.csv"):
-        [(f"DIWALI_{y}", "BoschSensor_IN") for y in (2027, 2028, 2029)],
+    os.path.join(S, "smartphone-global-2026-2029", "holiday_calendar.csv"):
+        [(f"DIWALI_{y}", "Sensor_A_IN") for y in (2027, 2028, 2029)],
     os.path.join(S, "smartx-2027-2029", "holiday_calendar.csv"):
         [(f"DIWALI_{y}", "SensorIN") for y in (2026, 2027, 2028, 2029, 2030)],
     os.path.join(S, "holiday_calendar.csv"):

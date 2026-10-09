@@ -7,7 +7,7 @@ BackwardPlanner._in_propagate / _propagate_to_children.
 
 Request Letter: requests/request_fix_a1_supply_role_rev2.md
 Investigation trail: requests/request_fix_a1_multi_child_duplication.md (Rev 1,
-superseded), tools/sweep_specs/india_ghee_a1.yaml.
+superseded).
 
 Background
 ----------
@@ -15,15 +15,14 @@ Before this fix, `_in_propagate` copied the FULL weekly demand-S lot list to
 EVERY child of a node, unconditionally (`for lot_id in all_lots: for child in
 node.children: child.psi4demand[child_w][S].append(lot_id)`). That is correct
 for "assembly" semantics (a battery AND a motor AND an ECU per vehicle -- each
-needs the full unit count) but wrong for "confluence" semantics (milk from
-two collection routes -- the total need is SPLIT between them, not each
+needs the full unit count) but wrong for "confluence" semantics (the same
+material from two collection routes -- the total need is SPLIT between them, not each
 route independently sourcing the full amount). The Forward side then
 `extend()`s each child's actual shipment into the parent's P, so a
 confluence-typed MOM ended up with the same Lot_ID counted once per child --
-inflating P_sum until cap_hard sealed the excess into phantom CO (see
-india-ghee-2026 / Ghee_Plant_Anand, CO_sum 429,299-505,979 with two leaf_in
-children and smooth demand -- CLAUDE.md's "demand step required" theory was
-wrong).
+inflating P_sum until cap_hard sealed the excess into phantom CO (two
+leaf_in children with smooth demand were enough -- CLAUDE.md's "demand step
+required" theory was wrong).
 
 The fix adds a `supply_role` column (edge attribute, read on the CHILD's
 sc_tree_master.csv row): "confluence" siblings split the parent's demand

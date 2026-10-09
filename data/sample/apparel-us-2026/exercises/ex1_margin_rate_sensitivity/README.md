@@ -2,7 +2,7 @@
 
 ## 課題文
 `ppc_transfer_price_rule.csv` の `margin_rate`（現在0.10）を変化させ、Apparel_Integrated
-の Management Gross Margin% が Zara/Inditex の実績値（58.3%）にどこまで近づけられるか
+の Management Gross Margin% が Retailer_B の実績値（58.3%）にどこまで近づけられるか
 試算してみましょう。
 
 ## 模範解答
@@ -48,11 +48,11 @@ Transfer Price（工場出荷価格）は `mom_margin_rate` を使って
 「Managementエンジンが使う固定原価」には一切波及しない — という、第6回記事の
 おわりに・第3章で解説した"二重スコープ"設計そのものが、この演習でも実証されます。
 
-### Zara実績58.3%に近づけるには
+### Retailer_B実績58.3%に近づけるには
 - Management(狭義)は現状65.3%で**すでに実績値を上回っており**、margin_rateではこれ以上
   下げられません（そもそもmargin_rateの影響を受けない）。
 - PPC(広義)は0%でも43.8%までしか届かず、58.3%とは14.5pt以上の開きがあります。
-- **結論**: margin_rateの調整だけでは58.3%に到達しません。Zara/Inditexの開示する
+- **結論**: margin_rateの調整だけでは58.3%に到達しません。Retailer_Bの開示する
   「売上総利益率」がWOMのどちらのスコープにも厳密には一致しない（実企業のGAAP開示は
   さらに別の按分ルールを持つ）ことを示す、良いリアリティチェックです。定義を厳密に
   揃えたい場合は `unit_cost` の生成ロジック自体（`gen_sku_master()`）を変更する必要が

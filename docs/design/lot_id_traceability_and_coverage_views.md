@@ -73,7 +73,7 @@ lot_id の `week` は**需要週**である。したがって任意のノード�
 | 各ロットの複数ノード・複数バケット・二層（demand/supply）への出現 | **同一文字列オブジェクトへの参照（8バイト/箇所）**。20〜30箇所でも +200バイト程度 |
 | 合計 | **数十 MB のオーダー** |
 
-Local-First（ローカル PC / Tkinter）アーキテクチャで十分扱える。iPhone や oil-global の 8 SKU でも桁は変わらない。
+Local-First（ローカル PC / Tkinter）アーキテクチャで十分扱える。Smartphone や oil-global の 8 SKU でも桁は変わらない。
 
 本質は「重い仕組み」ではなく **「ロット数は `qty / cpu_size` で決まり、モデル定義者が `cpu_size` で制御できる量」**である。醤油=1ケース、Hormuz/RedSea 原油=100,000 bbl のように業種ごとに物理的意味のある粒度を選ぶ限り破綻しない。危険なのは単位が「本」「個」のまま `cpu_size=1` でモデルを組んだ場合で、これは lint の検出項目とする（想定ロット数の事前見積り警告）。
 
@@ -170,7 +170,7 @@ WOM に置き換えると、**Planning Engine を回さずに CSV を読むだ�
 
 **なぜ必要か**：WOM の事故のほとんどは「エンジンは正常に動くが、モデルが間違っている」という形をとり、**エラーを出さずに静かに間違った結果を返す**。CLAUDE.md に記録済みの実例：
 
-- `holiday_calendar.csv` が存在しないノード名（`Sales_US_iPhone16`）を参照 → 無言で無視
+- `holiday_calendar.csv` が存在しないノード名（`Sales_US_Phone16`）を参照 → 無言で無視
 - `capacity_plan.csv` に cap_soft 列がなくローダが読まない → 機能が休眠、無言
 - `sc_tree_builder.py` が `init_stock_days` を読む配線を欠く → 同じく休眠、無言
 - リネーム後に `detect_scenario()` が不一致 → 別シナリオへフォールバック、無言

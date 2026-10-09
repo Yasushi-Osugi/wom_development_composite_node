@@ -123,10 +123,7 @@ supply_role != "confluence" の子   → 全量を各子へ（複製）
 **`capacity_plan.csv` の `max_supply` が現在の 1/n を前提に設定されていると、
 修正後に CO が大量発生する。**
 
-`india-ghee-2026` で同じ構図が確認されている。`capacity_plan.csv` に
-「※複数leaf_in合算後のPを基準に設定」という注記があり、
-**モデル構築時点で重複を認識して cap_hard を嵩上げしていた**
-（`requests/request_fix_a1_supply_role_rev2.md` §1.4）。
+（Owner の判断で削除。2026-10-09）
 
 **調べてほしいこと：**
 

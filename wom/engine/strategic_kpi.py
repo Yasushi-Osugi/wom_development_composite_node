@@ -203,7 +203,7 @@ def compute_strategic_kpi(
         instead of the all-products blend.
     lot_flow_mode : "identity" / "legacy" / None (then sc_tree.lot_flow_mode,
         set by the planning pipeline). Decides the Fill Rate only
-        (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 C2):
+        (RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 C2):
           legacy / not given: supply S (request) / demand S -- the old value.
           identity: market requests shipped in their own request week /
                     market requests (by Lot_ID; a late shipment does not count

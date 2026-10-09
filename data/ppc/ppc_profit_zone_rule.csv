@@ -1,8 +1,8 @@
 profit_zone_role,product_id,profit_type,basis,rate,fixed_amount
-OUTBOUND_CHANNEL_PROFIT,IPHONE,channel_margin,market_price,0.1,0
-MOM_PLANT_PROFIT,IPHONE,mom_margin,transfer_price,0.1,0
-GLOBAL_HQ_PROFIT,IPHONE,brand_royalty,market_price,0.03,0
-GLOBAL_HQ_PROFIT,IPHONE,global_marketing,revenue,0.02,0
+OUTBOUND_CHANNEL_PROFIT,SMARTPHONE,channel_margin,market_price,0.1,0
+MOM_PLANT_PROFIT,SMARTPHONE,mom_margin,transfer_price,0.1,0
+GLOBAL_HQ_PROFIT,SMARTPHONE,brand_royalty,market_price,0.03,0
+GLOBAL_HQ_PROFIT,SMARTPHONE,global_marketing,revenue,0.02,0
 OUTBOUND_CHANNEL_PROFIT,Koshihikari,channel_margin,market_price,0.12,0
 OUTBOUND_CHANNEL_PROFIT,Yumepirika,channel_margin,market_price,0.1,0
 MOM_PLANT_PROFIT,Koshihikari,mom_margin,transfer_price,0.12,0

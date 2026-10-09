@@ -1,8 +1,0 @@
-mom_node,product_id,method,margin_rate,fixed_price,currency
-Foxconn_CN,iPhone16,cost_plus,0.10,,USD
-Foxconn_IN,iPhone16,cost_plus,0.08,,USD
-TSMC_TW,iPhone16,cost_plus,0.15,,USD
-Foxconn_CN_i15,iPhone15,cost_plus,0.10,,USD
-TSMC_TW_i15,iPhone15,cost_plus,0.15,,USD
-Foxconn_CN_i17,iPhone17,cost_plus,0.10,,USD
-TSMC_TW_i17,iPhone17,cost_plus,0.15,,USD

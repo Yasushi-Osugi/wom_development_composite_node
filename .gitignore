@@ -28,3 +28,6 @@ data/sample/*/demand_forecast_A*.csv
 
 # Obsidian Vault: WOM の機能の整合性を優先するため当面は検討対象外。backup としてリポジトリの外へ移動した（2026-10-01）
 /WOM_Knowledge_Vault*/
+
+# owner-only list of private names (RequestLetter_SampleNames_PublicReview)
+/private/

@@ -168,7 +168,7 @@ def test_warmup_lt_zero_strips_existing_warmup(tmp_path):
 
 # ---------------------------------------------------------------------------
 # 旧書式の capacity_plan（node_name 列なし）
-# RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 A1・A3
+# RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 A1・A3
 # ---------------------------------------------------------------------------
 _OLD_HEADER = "sku_id,region,week,max_supply,cap_pieces,source\n"
 

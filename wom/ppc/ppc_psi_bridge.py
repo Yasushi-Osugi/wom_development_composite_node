@@ -120,7 +120,7 @@ def psi_to_sales_records(
     lot_flow_mode : str, optional
         "identity" / "legacy" / None (then ``sc_tree.lot_flow_mode``, set by
         the planning pipeline). Only decides what happens when a leaf_out has
-        NO actual-shipment record (RequestLetter_iPhoneWarmup_EVUpdateKitting_S2
+        NO actual-shipment record (RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2
         C3-3): legacy / not given -> the planned S count is used (the old
         behaviour, unchanged); identity -> the node gets no sales record and a
         warning is printed (unknown is not replaced by the request).

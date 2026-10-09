@@ -199,9 +199,9 @@ class PPCSimulationEngine:
 # Convenience factory functions
 # ---------------------------------------------------------------------------
 
-def build_iphone_vs_paths() -> Dict[str, List[Tuple[str, str, str]]]:
+def build_smartphone_vs_paths() -> Dict[str, List[Tuple[str, str, str]]]:
     """
-    Legacy iphone Vertical Slice paths (old node names).
+    Legacy smartphone Vertical Slice paths (old node names).
     topology: Supplier_CN → MOM_China → DAD_Japan → JP_Channel / US_Channel
     """
     return {
@@ -220,79 +220,79 @@ def build_iphone_vs_paths() -> Dict[str, List[Tuple[str, str, str]]]:
     }
 
 
-def build_iphone_global_vs_paths() -> Dict[str, List[Tuple[str, str, str]]]:
+def build_smartphone_global_vs_paths() -> Dict[str, List[Tuple[str, str, str]]]:
     """
-    iPhone Global Supply Chain sc_paths.
+    Smartphone Global Supply Chain sc_paths.
 
     Topology per product:
-        iPhone16:  Foxconn_CN → SP_iPhone16 → Retail_AMER/EMEA/APAC
-        iPhone15:  Foxconn_CN_i15 → SP_iPhone15 → Retail_AMER_i15/EMEA_i15/APAC_i15
-        iPhone17:  Foxconn_CN_i17 → SP_iPhone17 → Retail_AMER_i17/EMEA_i17/APAC_i17
+        Phone16:  EMS_A_CN → SP_Phone16 → Retail_AMER/EMEA/APAC
+        Phone15:  EMS_A_CN_i15 → SP_Phone15 → Retail_AMER_i15/EMEA_i15/APAC_i15
+        Phone17:  EMS_A_CN_i17 → SP_Phone17 → Retail_AMER_i17/EMEA_i17/APAC_i17
 
-    DAD node per product = SP_iPhone16 / SP_iPhone15 / SP_iPhone17
-    Tariff is looked up on edge  SP_iPhoneXX -> Retail_YYY
+    DAD node per product = SP_Phone16 / SP_Phone15 / SP_Phone17
+    Tariff is looked up on edge  SP_SmartphoneXX -> Retail_YYY
     """
     return {
-        # ── iPhone 16 ──────────────────────────────────────────────────
+        # ── Phone16 ──────────────────────────────────────────────────
         "Retail_AMER": [
-            ("Foxconn_CN",   "",                              "CN"),
-            ("SP_iPhone16",  "Foxconn_CN->SP_iPhone16",       "CN"),
-            ("Retail_AMER",  "SP_iPhone16->Retail_AMER",      "US"),
+            ("EMS_A_CN",   "",                              "CN"),
+            ("SP_Phone16",  "EMS_A_CN->SP_Phone16",       "CN"),
+            ("Retail_AMER",  "SP_Phone16->Retail_AMER",      "US"),
         ],
         "Retail_EMEA": [
-            ("Foxconn_CN",   "",                              "CN"),
-            ("SP_iPhone16",  "Foxconn_CN->SP_iPhone16",       "CN"),
-            ("Retail_EMEA",  "SP_iPhone16->Retail_EMEA",      "EU"),
+            ("EMS_A_CN",   "",                              "CN"),
+            ("SP_Phone16",  "EMS_A_CN->SP_Phone16",       "CN"),
+            ("Retail_EMEA",  "SP_Phone16->Retail_EMEA",      "EU"),
         ],
         "Retail_APAC": [
-            ("Foxconn_CN",   "",                              "CN"),
-            ("SP_iPhone16",  "Foxconn_CN->SP_iPhone16",       "CN"),
-            ("Retail_APAC",  "SP_iPhone16->Retail_APAC",      "SG"),
+            ("EMS_A_CN",   "",                              "CN"),
+            ("SP_Phone16",  "EMS_A_CN->SP_Phone16",       "CN"),
+            ("Retail_APAC",  "SP_Phone16->Retail_APAC",      "SG"),
         ],
-        # ── iPhone 15 ──────────────────────────────────────────────────
+        # ── Phone15 ──────────────────────────────────────────────────
         "Retail_AMER_i15": [
-            ("Foxconn_CN_i15",  "",                                    "CN"),
-            ("SP_iPhone15",     "Foxconn_CN_i15->SP_iPhone15",         "CN"),
-            ("Retail_AMER_i15", "SP_iPhone15->Retail_AMER_i15",        "US"),
+            ("EMS_A_CN_i15",  "",                                    "CN"),
+            ("SP_Phone15",     "EMS_A_CN_i15->SP_Phone15",         "CN"),
+            ("Retail_AMER_i15", "SP_Phone15->Retail_AMER_i15",        "US"),
         ],
         "Retail_EMEA_i15": [
-            ("Foxconn_CN_i15",  "",                                    "CN"),
-            ("SP_iPhone15",     "Foxconn_CN_i15->SP_iPhone15",         "CN"),
-            ("Retail_EMEA_i15", "SP_iPhone15->Retail_EMEA_i15",        "EU"),
+            ("EMS_A_CN_i15",  "",                                    "CN"),
+            ("SP_Phone15",     "EMS_A_CN_i15->SP_Phone15",         "CN"),
+            ("Retail_EMEA_i15", "SP_Phone15->Retail_EMEA_i15",        "EU"),
         ],
         "Retail_APAC_i15": [
-            ("Foxconn_CN_i15",  "",                                    "CN"),
-            ("SP_iPhone15",     "Foxconn_CN_i15->SP_iPhone15",         "CN"),
-            ("Retail_APAC_i15", "SP_iPhone15->Retail_APAC_i15",        "SG"),
+            ("EMS_A_CN_i15",  "",                                    "CN"),
+            ("SP_Phone15",     "EMS_A_CN_i15->SP_Phone15",         "CN"),
+            ("Retail_APAC_i15", "SP_Phone15->Retail_APAC_i15",        "SG"),
         ],
-        # ── iPhone 17 ──────────────────────────────────────────────────
+        # ── Phone17 ──────────────────────────────────────────────────
         "Retail_AMER_i17": [
-            ("Foxconn_CN_i17",  "",                                    "CN"),
-            ("SP_iPhone17",     "Foxconn_CN_i17->SP_iPhone17",         "CN"),
-            ("Retail_AMER_i17", "SP_iPhone17->Retail_AMER_i17",        "US"),
+            ("EMS_A_CN_i17",  "",                                    "CN"),
+            ("SP_Phone17",     "EMS_A_CN_i17->SP_Phone17",         "CN"),
+            ("Retail_AMER_i17", "SP_Phone17->Retail_AMER_i17",        "US"),
         ],
         "Retail_EMEA_i17": [
-            ("Foxconn_CN_i17",  "",                                    "CN"),
-            ("SP_iPhone17",     "Foxconn_CN_i17->SP_iPhone17",         "CN"),
-            ("Retail_EMEA_i17", "SP_iPhone17->Retail_EMEA_i17",        "EU"),
+            ("EMS_A_CN_i17",  "",                                    "CN"),
+            ("SP_Phone17",     "EMS_A_CN_i17->SP_Phone17",         "CN"),
+            ("Retail_EMEA_i17", "SP_Phone17->Retail_EMEA_i17",        "EU"),
         ],
         "Retail_APAC_i17": [
-            ("Foxconn_CN_i17",  "",                                    "CN"),
-            ("SP_iPhone17",     "Foxconn_CN_i17->SP_iPhone17",         "CN"),
-            ("Retail_APAC_i17", "SP_iPhone17->Retail_APAC_i17",        "SG"),
+            ("EMS_A_CN_i17",  "",                                    "CN"),
+            ("SP_Phone17",     "EMS_A_CN_i17->SP_Phone17",         "CN"),
+            ("Retail_APAC_i17", "SP_Phone17->Retail_APAC_i17",        "SG"),
         ],
     }
 
 
 def build_rice_vs_paths() -> Dict[str, List[Tuple[str, str, str]]]:
     """
-    Japanese Rice Vertical Slice: Farm_JP -> JA_Seihaku -> DC_Rice -> JP_Channel
+    Japanese Rice Vertical Slice: Farm_JP -> Coop_Seihaku -> DC_Rice -> JP_Channel
     """
     return {
         "JP_Channel": [
             ("Farm_JP",    "",                          "JP"),
-            ("JA_Seihaku", "Farm_JP->JA_Seihaku",      "JP"),
-            ("DC_Rice",    "JA_Seihaku->DC_Rice",       "JP"),
+            ("Coop_Seihaku", "Farm_JP->Coop_Seihaku",      "JP"),
+            ("DC_Rice",    "Coop_Seihaku->DC_Rice",       "JP"),
             ("JP_Channel", "DC_Rice->JP_Channel",       "JP"),
         ],
     }
@@ -300,24 +300,24 @@ def build_rice_vs_paths() -> Dict[str, List[Tuple[str, str, str]]]:
 
 # Products that map to the Rice scenario
 _RICE_PRODUCTS = {"Koshihikari", "Yumepirika", "KOSHIHIKARI", "YUMEPIRIKA"}
-# Channels that identify iPhone Global model
-_IPHONE_GLOBAL_CHANNELS = {
+# Channels that identify Smartphone Global model
+_SMARTPHONE_GLOBAL_CHANNELS = {
     "Retail_AMER", "Retail_EMEA", "Retail_APAC",
     "Retail_AMER_i15", "Retail_EMEA_i15", "Retail_APAC_i15",
     "Retail_AMER_i17", "Retail_EMEA_i17", "Retail_APAC_i17",
 }
-# Products that identify iPhone Global model (2026-07-11 fix, Problem E /
+# Products that identify Smartphone Global model (2026-07-11 fix, Problem E /
 # wom-v1r1m7-fix4all_case Coding Request Letter smartx-2027-2029-fix-request-
 # letter.md): channel-name overlap alone is NOT sufficient to detect this
 # scenario -- smartx-2027-2029's SmartXPro happens to reuse the exact same
 # "Retail_AMER"/"Retail_EMEA"/"Retail_APAC" leaf_out node names, which
-# previously caused it to be misdetected as "iphone_global" (routing it into
-# the hardcoded Foxconn_CN/SP_iPhone16 paths, which don't exist for
+# previously caused it to be misdetected as "smartphone_global" (routing it into
+# the hardcoded EMS_A_CN/SP_Phone16 paths, which don't exist for
 # SmartXPro/SmartX/SmartXNext, silently producing $0 cost / 100% margin and
 # never reaching the GENERIC branch where Problems A/B/C+D are fixed).
 # Requiring BOTH product_id AND channel overlap disambiguates this while
-# leaving the real legacy iphone_global sample data's detection unchanged.
-_IPHONE_GLOBAL_PRODUCTS = {"iPhone16", "iPhone15", "iPhone17"}
+# leaving the real legacy smartphone_global sample data's detection unchanged.
+_SMARTPHONE_GLOBAL_PRODUCTS = {"Phone16", "Phone15", "Phone17"}
 # Products / channels that identify the Cookie JP scenario
 _COOKIE_PRODUCTS  = {"Cookie_Import", "Cookie_Local"}
 _COOKIE_CHANNELS  = {"Retail_JP_CVS", "Retail_JP_SM", "Retail_JP_EC"}
@@ -358,18 +358,18 @@ def detect_scenario(sales_records) -> str:
     Returns
     -------
     "rice"          - if any product is a known rice variety
-    "iphone_global" - if channels match iPhone Global SC node names
+    "smartphone_global" - if channels match Smartphone Global SC node names
     "cookie"        - if products include Cookie_Import / Cookie_Local
-    "iphone"        - legacy iphone (default)
+    "smartphone_vs"        - legacy smartphone (default)
     """
     if sales_records is None or len(sales_records) == 0:
-        return "iphone"
+        return "smartphone_vs"
     products = set(sales_records["product_id"].unique())
     if products & _RICE_PRODUCTS:
         return "rice"
     channels = set(sales_records["channel_node"].unique())
-    if (products & _IPHONE_GLOBAL_PRODUCTS) and (channels & _IPHONE_GLOBAL_CHANNELS):
-        return "iphone_global"
+    if (products & _SMARTPHONE_GLOBAL_PRODUCTS) and (channels & _SMARTPHONE_GLOBAL_CHANNELS):
+        return "smartphone_global"
     if (products & _COOKIE_PRODUCTS) or (channels & _COOKIE_CHANNELS):
         return "cookie"
-    return "iphone"
+    return "smartphone_vs"

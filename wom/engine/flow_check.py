@@ -46,7 +46,7 @@ Table 1
   status / reason  OK / NG / 対象外 (see _judge)
 
 Table 3 (Kitting; one row per assembly node and per component yard --
-         RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 B3)
+         RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 B3)
   An assembly node whose children are all stockyards is 対象外 for the arrival
   check of table 1 (N components become 1 product, so "shipped towards" and
   "received" are different things by design). Table 3 checks that boundary

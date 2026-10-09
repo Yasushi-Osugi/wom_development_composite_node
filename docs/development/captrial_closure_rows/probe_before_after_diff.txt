@@ -46,13 +46,13 @@
    * EVmaker_Import|SP_EV_Import (supply_point/pull) series=['I', 'P'] weeks=101 [2025-W46..2027-W41]
        totals(before,after): {'I': (12310, 13253)}
 
-######## iphone_global
+######## smartphone-global-2026-2029
   psi-signature nodes changed: 0
   diagnostics: none
-  backward past_due: before={'iPhone16': 59787, 'iPhone15': 38047, 'iPhone17': 0} after={'iPhone16': 59787, 'iPhone15': 38047, 'iPhone17': 0}
+  backward past_due: before={'Phone16': 59787, 'Phone15': 38047, 'Phone17': 0} after={'Phone16': 59787, 'Phone15': 38047, 'Phone17': 0}
   ppc revenue/GP: before=713310634579400.0/296225445796167.4 after=713310634579400.0/296225445796167.4
   strategic_kpi changed: {'fixed_cost_coverage': (0.8913743425867522, 0.8913802197802198), 'avg_cap_utilization': (0.8849376320722661, 0.8917448446266681), 'n_constrained_nodes': (4, 3)}
-   * iPhone16|BoschSensor_IN (leaf_in/pull) series=['cap_hard', 'is_open'] weeks=3 [2027-W42..2029-W41]
+   * Phone16|Sensor_A_IN (leaf_in/pull) series=['cap_hard', 'is_open'] weeks=3 [2027-W42..2029-W41]
        2027-W42 cap_hard:0.5->0.0 is_open:True->False
        2028-W40 cap_hard:0.5->0.0 is_open:True->False
        2029-W41 cap_hard:0.5->0.0 is_open:True->False

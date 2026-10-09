@@ -1,0 +1,8 @@
+mom_node,product_id,method,margin_rate,fixed_price,currency
+EMS_A_CN,Phone16,cost_plus,0.10,,USD
+EMS_A_IN,Phone16,cost_plus,0.08,,USD
+Foundry_A_TW,Phone16,cost_plus,0.15,,USD
+EMS_A_CN_i15,Phone15,cost_plus,0.10,,USD
+Foundry_A_TW_i15,Phone15,cost_plus,0.15,,USD
+EMS_A_CN_i17,Phone17,cost_plus,0.10,,USD
+Foundry_A_TW_i17,Phone17,cost_plus,0.15,,USD

@@ -25,7 +25,7 @@
 
 - PPC タブ（`wom/ppc/ppc_cockpit_app.py` の Panel 1）で、「Base currency」と「Lots」、チャネルごとの売上の行などの文字が重なって読めない（大杉さんの画面、2026-10-01。ev-thailand-2026 の EVmaker_Import）。
 - 行数（チャネルの数など）が増えても重ならないように、行の高さ・文字の大きさ・行数に応じた配置を直す。行数が多すぎるときは、スクロールか「ほか N 件」で省略する。
-- 受入：チャネルの多いモデル（ev-thailand、iphone、apparel-global など）のスクリーンショットで、重なりが無いこと。
+- 受入：チャネルの多いモデル（ev-thailand、smartphone、apparel-global など）のスクリーンショットで、重なりが無いこと。
 
 ## Part 2　World Map の試作と計測
 
@@ -61,7 +61,7 @@
 | 週の再生（1 週あたり） | blitting あり・なし |
 | メモリ | 起動時、読み込み後 |
 
-- 対象のモデル：ev-thailand-2026（拠点が近い）、iphone_global（世界に広がる）、oil-global-2027。
+- 対象のモデル：ev-thailand-2026（拠点が近い）、smartphone-global-2026-2029（世界に広がる）、oil-global-2027。
 - 画面の条件（解像度、表示倍率）を記録する。
 
 ### 2.4　判断の材料

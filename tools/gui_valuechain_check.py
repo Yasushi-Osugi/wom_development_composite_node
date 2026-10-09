@@ -10,7 +10,7 @@ tools/gui_valuechain_check.py — Management の「Value Chain」を実アプリ
 3  未設定価格・為替・未評価の一覧を開いて撮る
 4  soysauce-jpy-2027-alloc を読み込み → 計画。台帳の作成中・作成後に、Cookie の台帳が出ないこと
    （0.2 秒ごとに帯と表の行数を記録）
-5  Run Simulation の後は「台帳がありません」になること（iphone_global）
+5  Run Simulation の後は「台帳がありません」になること（smartphone-global-2026-2029）
 窓は DPI を意識しない（python -m main と同じ）。窓の画像は PrintWindow。
 """
 from __future__ import annotations
@@ -166,7 +166,7 @@ def main(argv=None) -> int:
             vc._view_var.set("V2"); vc._ent_var.set("E_US"); vc._on_entity()
             vc._cur_var.set("現地"); vc._refresh()
             snap("10_alloc_v2_EUS_local_cum")
-            load("iphone_global")
+            load("smartphone-global-2026-2029")
             app._run_simulation()
             wait(lambda: getattr(app, "_shown_result", "") == "sim", after_sim, 300)
         wait(lambda: st["vc"] is not None and st["ppc"] is not None, after_alloc)

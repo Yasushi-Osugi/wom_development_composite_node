@@ -170,7 +170,7 @@ def set_capacity(self, week, cap_hard=None, cap_soft=None):
 | `data/sample/holiday_calendar.csv`（旧 root sample） | 2 | GW_2027・GW_2028 の DAD_Japan（0.3）を同上 |
 | value = 0.0 の supply_closure 行 | 34（モデル配下）＋4（root） | 変更しない。**今回から休業として効き始める** |
 
-43行の内訳：apparel-global 4、apparel-us 4、ev-thailand-2026_update 4、iphone_global 3、oil-global-2027 7、rice-japan-2027-2028 16、smartx-2027-2029 5。
+43行の内訳：apparel-global 4、apparel-us 4、ev-thailand-2026_update 4、smartphone-global-2026-2029 3、oil-global-2027 7、rice-japan-2027-2028 16、smartx-2027-2029 5。
 
 ### 4.9 文書
 
@@ -203,7 +203,7 @@ def set_capacity(self, week, cap_hard=None, cap_soft=None):
 - **soysauce-jpy-2027-alloc（golden なし）**：headless の P_opt／800 で、Bottling_Noda の 2027・2028 年の W16–W19 について P／S／実出荷／I の前後比較表を出し、一致すること。
   - 基準値は Trial-02 §3 の baseline：W17 = P0/S686/実出荷0/I0、W18 = P686/S0/実出荷0/I686、W19 = P686/S686/実出荷686/I686。
 - **apparel-global、apparel-us、oil-global-2027、rice-japan-2027-2028（golden あり）**：一致すること（`partial_capacity` の互換）。
-- **iphone_global（golden あり）**：一致すること。Trial-02 §5.1 で、value=0.0 の休業行はすべて休業週に活動がなかった（判定不能）ため、変化は見込まない。変化した場合も実装は最後まで行い、§6.4 の形式で報告する。
+- **smartphone-global-2026-2029（golden あり）**：一致すること。Trial-02 §5.1 で、value=0.0 の休業行はすべて休業週に活動がなかった（判定不能）ため、変化は見込まない。変化した場合も実装は最後まで行い、§6.4 の形式で報告する。
 
 ### 6.2 結果が変わってよいもの（意図した変更）
 

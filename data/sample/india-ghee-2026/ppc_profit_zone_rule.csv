@@ -1,7 +1,0 @@
-profit_zone_role,product_id,profit_type,basis,rate,fixed_amount
-OUTBOUND_CHANNEL_PROFIT,Ghee_Domestic,channel_margin,market_price,0.05,0
-MOM_PLANT_PROFIT,Ghee_Domestic,mom_margin,transfer_price,0.06,0
-SUPPLIER_COST_BASE,Ghee_Domestic,supplier_cost,transfer_price,1.0,0
-OUTBOUND_CHANNEL_PROFIT,Ghee_Export,channel_margin,market_price,0.05,0
-MOM_PLANT_PROFIT,Ghee_Export,mom_margin,transfer_price,0.06,0
-SUPPLIER_COST_BASE,Ghee_Export,supplier_cost,transfer_price,1.0,0

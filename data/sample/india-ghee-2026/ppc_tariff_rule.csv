@@ -1,3 +1,0 @@
-edge_id,from_country,to_country,product_id,hs_code,tariff_rate,tariff_basis
-Ghee_Plant_Anand->DC_Ghee_Domestic,IN,IN,Ghee_Domestic,0405900000,0.0,transfer_price
-Ghee_Plant_Export->DC_Ghee_Export,IN,AE,Ghee_Export,0405900000,0.05,transfer_price

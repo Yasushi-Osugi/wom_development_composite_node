@@ -1,0 +1,13 @@
+profit_zone_role,product_id,profit_type,basis,rate,fixed_amount
+OUTBOUND_CHANNEL_PROFIT,Phone16,channel_margin,market_price,0.15,0
+MOM_PLANT_PROFIT,Phone16,mom_margin,transfer_price,0.10,0
+GLOBAL_HQ_PROFIT,Phone16,brand_royalty,market_price,0.05,0
+GLOBAL_HQ_PROFIT,Phone16,global_marketing,revenue,0.02,0
+OUTBOUND_CHANNEL_PROFIT,Phone15,channel_margin,market_price,0.15,0
+MOM_PLANT_PROFIT,Phone15,mom_margin,transfer_price,0.10,0
+GLOBAL_HQ_PROFIT,Phone15,brand_royalty,market_price,0.05,0
+GLOBAL_HQ_PROFIT,Phone15,global_marketing,revenue,0.02,0
+OUTBOUND_CHANNEL_PROFIT,Phone17,channel_margin,market_price,0.15,0
+MOM_PLANT_PROFIT,Phone17,mom_margin,transfer_price,0.10,0
+GLOBAL_HQ_PROFIT,Phone17,brand_royalty,market_price,0.05,0
+GLOBAL_HQ_PROFIT,Phone17,global_marketing,revenue,0.02,0

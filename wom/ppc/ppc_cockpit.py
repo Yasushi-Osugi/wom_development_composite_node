@@ -313,7 +313,7 @@ def show_cockpit(
 
     # ── Subtitle line ────────────────────────────────────────────────────
     subtitle = (
-        f"Scenario: IPHONE  |  Supplier_CN(CNY) → MOM_China → DAD_Japan → JP/US_Channel  "
+        f"Scenario: SMARTPHONE  |  Supplier_CN(CNY) → MOM_China → DAD_Japan → JP/US_Channel  "
         f"|  CN→JP tariff 5%  JP→US tariff 10%  |  Base: {cur}"
     )
     fig.text(0.5, 0.965, subtitle, ha="center", fontsize=8, color="#78909C")

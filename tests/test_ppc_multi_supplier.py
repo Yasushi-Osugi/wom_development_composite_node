@@ -19,7 +19,7 @@ run_forward_propagation() loops over every resolved supplier node, summing
 into acc.supplier_cost_base and emitting one supplier_cost PPCEvent per
 supplier (tagged with that supplier's own node_id) -- so per-node P&L
 (build_node_pl_summary) can attribute cost to each Tier-1 supplier
-correctly. Single-supplier scenarios (cookie/iphone/rice) are unaffected:
+correctly. Single-supplier scenarios (cookie/smartphone/rice) are unaffected:
 _resolve_node_list() wraps a bare str/dict[str,str] into a 1-item list.
 
 These tests use small, in-memory PPCRuleSet fixtures (no CSV files) so
@@ -176,7 +176,7 @@ class TestMultiSupplierForwardPropagation:
         assert acc.supplier_cost_base == pytest.approx(14000.0 * 165.0, rel=1e-6)
 
     def test_legacy_single_supplier_string_unaffected(self, rules, fx):
-        """Cookie/iPhone/Rice-style single-supplier call still works as before."""
+        """Cookie/Smartphone/Rice-style single-supplier call still works as before."""
         acc = _acc()
         events = run_forward_propagation(
             [acc], rules, fx, sc_paths={},

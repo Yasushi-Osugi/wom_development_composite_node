@@ -61,8 +61,8 @@ def test_management_simulation_then_planning_never_mixes_sources(tmp_path):
                    "gross_margin_pct": 0.412}, f)
     with open(os.path.join(out, "ppc_node_pl_summary.csv"), "w", encoding="utf-8") as f:
         f.write("node_id,product_id,revenue_base,cost_base,tariff_base,gross_profit_base,"
-                "gross_margin_pct,lot_events\nRetail_AMER,iPhone16,100,40,0,60,0.6,1\n")
-    R.write_run_info(out, {"run_id": "RUN-P", "model_dir": r"C:\m\iphone_global",
+                "gross_margin_pct,lot_events\nRetail_AMER,Phone16,100,40,0,60,0.6,1\n")
+    R.write_run_info(out, {"run_id": "RUN-P", "model_dir": r"C:\m\smartphone-global-2026-2029",
                            "sales_source": R.SALES_PSI})
 
     root = _new_tk_root(tk)
@@ -76,7 +76,7 @@ def test_management_simulation_then_planning_never_mixes_sources(tmp_path):
 
         # ── Run Simulation：3 シナリオの money の値と出所 ──
         sim = _Mgr([("Base", 452663505.0), ("Upside", 499937882.0), ("Downside", 369928534.0)])
-        panel.show_simulation(sim, r"C:\m\iphone_global")
+        panel.show_simulation(sim, r"C:\m\smartphone-global-2026-2029")
         assert [r[0] for r in pl()] == ["Base", "Upside", "Downside"]
         assert pl()[0][1] == "452,663,505" and all(r[-1] == SIM for r in pl())
         assert "Run Simulation" in panel._ppc_banner_var.get() and SIM in panel._ppc_banner_var.get()
@@ -92,11 +92,11 @@ def test_management_simulation_then_planning_never_mixes_sources(tmp_path):
         # ── 続けて Run Planning Engine（Simulation のシナリオに Planning が足される）──
         plan = _Mgr([("Base", 452663505.0), ("Upside", 499937882.0), ("Downside", 369928534.0),
                      ("Planning", 416331210.0)])
-        panel.set_ppc_context(R.make_context(R.STATE_RUNNING, "RUN-P", r"C:\m\iphone_global"))
+        panel.set_ppc_context(R.make_context(R.STATE_RUNNING, "RUN-P", r"C:\m\smartphone-global-2026-2029"))
         panel.load(plan)
         assert pl() == [["Planning"] + [""] * 8 + ["PPC 計算中"]]       # no simulation number stays
         assert lc() == []
-        panel.set_ppc_context(R.make_context(R.STATE_DONE, "RUN-P", r"C:\m\iphone_global"))
+        panel.set_ppc_context(R.make_context(R.STATE_DONE, "RUN-P", r"C:\m\smartphone-global-2026-2029"))
         panel.load(plan)
         assert [r[0] for r in pl()] == ["Planning"]
         assert pl()[0][1] == "640,773,326,445,600" and pl()[0][-1] == "PPC 台帳（今の計画）"
@@ -106,10 +106,10 @@ def test_management_simulation_then_planning_never_mixes_sources(tmp_path):
         assert not any(t.get_text().startswith("出所") for t in panel._gp_fig.axes[0].texts)
 
         # ── Planning の後に Run Simulation：money の値だけに戻る ──
-        panel.show_simulation(sim, r"C:\m\iphone_global")
+        panel.show_simulation(sim, r"C:\m\smartphone-global-2026-2029")
         assert [r[-1] for r in pl()] == [SIM] * 3 and "640" not in str(pl())
         # モデルを読み込み直すと、Simulation の表示も消えて計画の規則に戻る
-        panel.on_model_loaded(r"C:\m\iphone_global")
+        panel.on_model_loaded(r"C:\m\smartphone-global-2026-2029")
         assert panel._display_source == panel.SOURCE_PLAN and pl() == []
     finally:
         root.destroy()

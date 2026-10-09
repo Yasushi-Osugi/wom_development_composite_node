@@ -102,7 +102,7 @@ Outbound のデカップリング点より下流のノードでは、Demand Laye
 | 中間ノードの金額 | PPC の中間ノードの数量は、自ノードの実出荷ではなく leaf の販売数量から導出されている（PPC 入口の実測 P4）。LOVEM 段階 D で扱う |
 | rice の合成 ID の重複 | PPC の入口で、4地域が同じ channel に写像され、合成 ID が各4回重複する（PPC 入口の実測 P1）。**（2026-10-09 解消：HarvestBatch の削除で合成 ID は無くなった）** |
 | identity でのデカップリング点の意味 | identity では、Outbound のデカップリング点の位置を変えても計画が変わらない（LotIdentityFlow の中間報告）。今の実装では、配置の効果が例外2（P のコピー）だけに依存していた。補充の指示・在庫の目標・投入の時期など、デカップリング点が本来変えるべきものを、identity でどう表すかを設計する |
-| legacy の Step 0a の CO の重複 | legacy では、cap_hard を超えた生産の lot を CO に入れるため、同じ ID の要求が二重になり、CO に残り続ける（iphone、smartx、ev_update、rice）。legacy は変えないので、既知の欠陥として残す。**（2026-10-09 追記：rice は identity に移ったので、rice についてはこの欠陥の対象外になった）** |
+| legacy の Step 0a の CO の重複 | legacy では、cap_hard を超えた生産の lot を CO に入れるため、同じ ID の要求が二重になり、CO に残り続ける（smartphone、smartx、ev_update、rice）。legacy は変えないので、既知の欠陥として残す。**（2026-10-09 追記：rice は identity に移ったので、rice についてはこの欠陥の対象外になった）** |
 
 ## 7. 追加の決定（2026-09-29、LotIdentityFlow の中間報告を受けて）
 
@@ -112,7 +112,7 @@ Outbound のデカップリング点より下流のノードでは、Demand Laye
 | D5 | rice は、収穫在庫に需要の Lot_ID を付ける設計（§6 Buffering Stock）が決まるまで、legacy で動かす。暫定措置であり、rice の整合性を確かめたものではない。方式は計画の結果と LOVEM の manifest に記録する。**（2026-10-09 に解消。rice は Rice Seasonal〔収穫週と精米週を選ぶ上位の層〕で identity に移った。`data/sample/` に legacy で動くモデルは無い。legacy の方式と `tests/golden/legacy/` は D3 のとおり残す。`docs/development/WOM_RiceLegacyRetire_Report.md`）** |
 | D6 | decouple の配置最適化は、legacy で参考候補を選び、選んだ配置を identity で評価し直して本計画を行う。legacy の評価値を identity の成果や最適性の証明として扱わない |
 | D7 | （2026-09-30）期首在庫は warmup（`planning_config.csv` の `warmup_lt`）で作る（§4）。`warmup_lt` は、業務で分かりやすい暦の区切りにそろえる：13 週＝3 か月（四半期）を基本に、**標準は 17 週（約 4 か月の先行生産）**、17 週で足りないモデルは **26 週（半年）**。ev-thailand-2026・Cookie-jp-2026 は 17（試行での最小値は 14・15。16〜28 でも結果は同じ）、soysauce-jpy-2027 は今の 26 のまま（`docs/development/WOM_FlowCheck_WarmupTrial_Report.md` §5） |
-| D7a | （2026-09-30）D7 の段階は **17 週と 26 週の2つだけ**とし、26 週で足りないモデルも 26 週にとどめる。26 週でも残る期末注文残は、能力の押し戻しが半年より深いことを示す情報として残す（先行生産で隠さない）。適用：oil-global-2027 は 26（残り 29 件：開始端 25・能力 4。52 週なら 0。観測結果：29 件はすべて Gasoline_Local_RedSea（当週出荷 465）。モデルの設定：製油所の能力 5 lot／週に対して需要 8 lot／週。業務上の解釈：モデルが意図した供給不足が見えている（29 件すべてを恒常的な能力不足だけに帰属させる意味ではない）。件数では 0.015% だが、1 lot がタンカー 1 隻分のため**売上では約 786 億円・4.8%**）、soysauce-jpy-2027-alloc は 26（P_opt/800 の 9,293 件は期末注文残として残す）、iphone_global は `capacity_plan.csv` の書式の都合で warmup 未適用（別の依頼で扱う）。各モデルの値は `docs/development/WOM_Warmup17_IdentityGolden_Report.md` |
+| D7a | （2026-09-30）D7 の段階は **17 週と 26 週の2つだけ**とし、26 週で足りないモデルも 26 週にとどめる。26 週でも残る期末注文残は、能力の押し戻しが半年より深いことを示す情報として残す（先行生産で隠さない）。適用：oil-global-2027 は 26（残り 29 件：開始端 25・能力 4。52 週なら 0。観測結果：29 件はすべて Gasoline_Local_RedSea（当週出荷 465）。モデルの設定：製油所の能力 5 lot／週に対して需要 8 lot／週。業務上の解釈：モデルが意図した供給不足が見えている（29 件すべてを恒常的な能力不足だけに帰属させる意味ではない）。件数では 0.015% だが、1 lot がタンカー 1 隻分のため**売上では約 786 億円・4.8%**）、soysauce-jpy-2027-alloc は 26（P_opt/800 の 9,293 件は期末注文残として残す）、smartphone-global-2026-2029 は `capacity_plan.csv` の書式の都合で warmup 未適用（別の依頼で扱う）。各モデルの値は `docs/development/WOM_Warmup17_IdentityGolden_Report.md` |
 
 ---
 

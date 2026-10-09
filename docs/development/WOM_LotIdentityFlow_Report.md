@@ -13,7 +13,7 @@
 ## 0. 要約
 
 1. **`lot_flow_mode` を新設した。既定は `identity`、`legacy` は変更前の動きを1ビットも変えずに残す。** legacy は、16ケース（13 golden＋alloc 元フォルダ＋P_opt/800＋ev-thailand-2026_update）で、全ノード・全バケット・全週の Lot_ID 列、`_actual_s`、Forward/Backward の結果、headless のスナップショット、**PPC の出力ファイル6種まで、HEAD `ac47d2f` とバイト単位で一致**した（ハッシュシード固定、§2）。
-2. **identity では K1・K2・K4・K5・K6 が15ケースすべてで 0 件。** K4（CO の重複）は、中間報告の時点では iphone・rice・smartx・ev_update に残っていたが、原因が **100% Step 0a（cap_hard の封印）** と確かめられたので（追補1 A1）、identity でだけ Step 0a を「翌週の P の先頭へ繰り延べ」に変えて 0 件にした（決定記録 D4）。legacy の重複は既知の欠陥として残した。
+2. **identity では K1・K2・K4・K5・K6 が15ケースすべてで 0 件。** K4（CO の重複）は、中間報告の時点では smartphone・rice・smartx・ev_update に残っていたが、原因が **100% Step 0a（cap_hard の封印）** と確かめられたので（追補1 A1）、identity でだけ Step 0a を「翌週の P の先頭へ繰り延べ」に変えて 0 件にした（決定記録 D4）。legacy の重複は既知の欠陥として残した。
 3. **identity にすると、上流の不足が市場に届くようになる。** 13 golden のうち **11 モデルで golden が変わる**（変わらないのは apparel-us-2026 と bom-test-2026）。期末注文残は、ほとんどが「計画期間の端（開始）」に分類される（期首に在庫がなく、立ち上がり期の需要に供給が間に合わない）。
 4. **9,293（P_opt/800）：** legacy では、Bottling が一度も出荷していない 9,293 ID が、市場で「予定どおり出荷された」ことになっていた。identity では 9,293 ID すべてが**期末注文残**として残り、市場に届かない。
 5. **rice は identity の対象外とし、`planning_config.csv` で legacy に固定した**（追補1 A2、決定記録 D5）。identity にすると、HarvestBatch の合成 ID（`OI_…`）が需要と照合できず、市場実績が 235,316 → 142,914 に落ちる（A1 の修正後。修正前は 35,266）。
@@ -105,7 +105,7 @@
 | bom-test-2026 | 200 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ev-europe-2026 | 98,840 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ev-thailand-2026 | 116,440 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| iphone_global | 746,180 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| smartphone-global-2026-2029 | 746,180 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | oil-global-2027 | 354,032 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | rice-japan-2027-2028（参考） | 670,390 | 0 | 0 | 5,286 | 0 | 0 | 58,729（すべて `OI_`） | 0 | 0 | 0 |
 | smartx-2027-2029 | 1,385,846 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -129,7 +129,7 @@
 | bom-test-2026 | 20 | 0 | 0 |
 | ev-europe-2026 | 163 | 0 | 0 |
 | ev-thailand-2026 | 190 | 0 | 3,581 |
-| iphone_global | 1,047 | 60,333 | 0 |
+| smartphone-global-2026-2029 | 1,047 | 60,333 | 0 |
 | oil-global-2027 | 501 | 0 | 0 |
 | rice-japan-2027-2028 | 1,207 | 451,309 | 0 |
 | smartx-2027-2029 | 1,469 | 220,452 | 0 |
@@ -162,7 +162,7 @@
 |---|---|---:|---:|---|
 | rice | identity（A1 前） | 9,029,146 | 100% | Seihaku_E・Seihaku_W（dad） |
 | rice | legacy | 451,309 | 100% | 同上 |
-| iphone | 両方式 | 60,333 | 100% | Foxconn_CN_i17（mom） |
+| smartphone | 両方式 | 60,333 | 100% | EMS_A_CN_i17（mom） |
 | smartx | 両方式 | 220,452 | 100% | SensorIN（leaf_in）、AssemblyIN（mom） |
 | ev_update | 両方式 | 4,632 | 100% | DC_EV_Import（dad） |
 
@@ -176,8 +176,8 @@
 
 | モデル | 方式 | 生産の繰り延べ（mom） | 入庫の処理待ち（leaf_in・dad など） | Kitting 組立ノード |
 |---|---|---:|---:|---:|
-| iphone | legacy | 1,230 | 0 | 0 |
-| iphone | identity | 55,413（55,413） | 0 | 0 |
+| smartphone | legacy | 1,230 | 0 | 0 |
+| smartphone | identity | 55,413（55,413） | 0 | 0 |
 | rice | legacy | 0 | 8,572 | 0 |
 | rice | identity（参考） | 0 | 183,888（1,913,694） | 0 |
 | smartx | legacy | 190 | 1,457 | 0 |
@@ -186,10 +186,10 @@
 | ev_update | identity | 300（300） | 866（866） | 0 |
 | ほか11ケース | 両方式 | 0 | 0 | 0 |
 
-- 生産の繰り延べ：Foxconn_CN_i17（iphone）、AssemblyIN（smartx）、Factory_Local_TH（ev_update）。
+- 生産の繰り延べ：EMS_A_CN_i17（smartphone）、AssemblyIN（smartx）、Factory_Local_TH（ev_update）。
 - 入庫の処理待ち：Seihaku_E/W（rice、dad）、SensorIN（smartx、leaf_in）、DC_EV_Import（ev_update、dad）。動きは同じ実装だが、業務上の意味は「入庫した物の処理が翌週にずれる」であり、生産の延期ではない。
 - **Kitting の組立ノード（子がすべて stockyard）では、Step 0a はどのモデル・どちらの方式でも起きていない。** Kitting Gate が能力を部材の払出の前に適用しているため（追補1 の見込みどおり）。
-- identity で数が増える理由：legacy では、封印された lot は P から消え、それきりになる。identity では翌週の先頭に回るので、能力超過が続く週には、毎週その週の末尾がはみ出し、**行列全体が少しずつ後ろへずれる**（iphone：1 週だけ遅れる lot が 55,413 件。のべと重複なしが一致）。rice のように何週も続けて処理しきれない場合は、同じ lot が何週も持ち越される（のべ 1,913,694 件、重複なし 183,888 件）。
+- identity で数が増える理由：legacy では、封印された lot は P から消え、それきりになる。identity では翌週の先頭に回るので、能力超過が続く週には、毎週その週の末尾がはみ出し、**行列全体が少しずつ後ろへずれる**（smartphone：1 週だけ遅れる lot が 55,413 件。のべと重複なしが一致）。rice のように何週も続けて処理しきれない場合は、同じ lot が何週も持ち越される（のべ 1,913,694 件、重複なし 183,888 件）。
 - `forward.cap_hard_sealed`（golden とスナップショットの項目）は、identity では「のべ lot 週」を数える。legacy の「封印された lot の数」とは意味が違う（§7 S4）。
 
 ### 4.3 E2 の lot の置き場所（先頭か末尾か、追補1 A1-3）
@@ -204,7 +204,7 @@
 | モデル | K4（A1 前） | K4（A1 後） | 市場実績（A1 前） | 市場実績（A1 後） | legacy の市場実績 |
 |---|---:|---:|---:|---:|---:|
 | rice（参考） | 9,029,146 | **0** | 35,266 | 142,914 | 235,316 |
-| iphone | 60,333 | **0** | 371,860 | 373,090 | 470,924 |
+| smartphone | 60,333 | **0** | 371,860 | 373,090 | 470,924 |
 | smartx | 220,452 | **0** | 691,276 | 692,923 | 709,811 |
 | ev_update | 4,632 | **0** | 63,127 | 63,240 | 63,240 |
 | ほか11ケース | 0 | 0 | 変化なし | 変化なし | — |
@@ -230,7 +230,7 @@
 | bom-test-2026 | 100 | 変化なし | 0 | 0 | 変化なし | 変化なし | 74.78% |
 | ev-europe-2026 | 53,140 | 53,140 → 49,420 | 3,720 | 0 | 3,665.1億 → 3,408.4億 | 1,923.3億 → 1,788.0億 | 52.48% → 52.46% |
 | ev-thailand-2026 | 63,240 | 63,240 → 58,220 | 5,020 | 0 | 3,191.2億 → 2,929.9億 | 1,802.9億 → 1,657.4億 | 56.50% → 56.57% |
-| iphone_global | 470,924 | 470,924 → 373,090 | 97,834 | 0 | 713.3兆 → 583.3兆 | 296.2兆 → 239.7兆 | 41.53% → 41.09% |
+| smartphone-global-2026-2029 | 470,924 | 470,924 → 373,090 | 97,834 | 0 | 713.3兆 → 583.3兆 | 296.2兆 → 239.7兆 | 41.53% → 41.09% |
 | oil-global-2027 | 191,058 | 191,058 → 177,016 | 14,042 | 0 | 1.650兆 → 1.100兆 | 5,795億 → 3,847億 | 35.13% → 34.99% |
 | rice（参考。実運用は legacy） | 235,316 | 235,316 → 142,914 | 92,402 | 142,914 | 18.29億 → 11.23億 | 7.051億 → 4.250億 | 38.55% → 37.86% |
 | smartx-2027-2029 | 709,811 | 709,811 → 692,923 | 16,888 | 16,073 | 7.023億 → 6.902億 | 6.346億 → 6.238億 | 90.37% → 90.37% |
@@ -300,7 +300,7 @@
 | bom-test-2026 | **変わらない** | | |
 | ev-europe-2026 | ppc・psi | — | Factory_Import_HU、Sales_DE_* |
 | ev-thailand-2026 | ppc・psi | — | Factory_Import_CN、SP_EV_Import、Sales_TH_* |
-| iphone_global | forward・ppc・psi | cap_hard_sealed 1,230 → 55,413 | Retail_*、Foxconn_CN_i17、DC_*_i17、SP_iPhone17 |
+| smartphone-global-2026-2029 | forward・ppc・psi | cap_hard_sealed 1,230 → 55,413 | Retail_*、EMS_A_CN_i17、DC_*_i17、SP_Phone17 |
 | oil-global-2027 | ppc・psi | — | Retail_* |
 | rice-japan-2027-2028 | （legacy に固定したので変わらない。identity にした場合は forward・ppc・psi） | cap_hard_sealed 8,572 → 1,913,694 | Seihaku_E/W、DC_*、Retail_* |
 | smartx-2027-2029 | forward・ppc・psi | cap_hard_sealed 1,647 → 19,887 | Retail_*_g1、AssemblyIN、SensorIN |
@@ -323,7 +323,7 @@
 
 | モデル | 期末注文残 | 原因（件数の多い順、上位3） | 止まったノード（上位） |
 |---|---:|---|---|
-| iphone_global | 97,834 | 能力 65,274／計画期間の端（開始）32,560 | SP_iPhone16 38,007・SP_iPhone15 27,267（能力、Backward の押し戻し）、Foxconn_CN 5,600（開始端） |
+| smartphone-global-2026-2029 | 97,834 | 能力 65,274／計画期間の端（開始）32,560 | SP_Phone16 38,007・SP_Phone15 27,267（能力、Backward の押し戻し）、EMS_A_CN 5,600（開始端） |
 | rice（参考） | 92,402 | 能力 42,588／ID の照合不能 34,471／計画期間の端（開始）10,057（ほか 終わり 5,286） | Sanchiku_Niigata 34,471（照合不能＝`OI_`）、Seihaku_E 23,171・Seihaku_W 11,229（能力） |
 | smartx | 16,888 | 計画期間の端（開始）16,888 | AssemblyCN_g1 10,145、FoundryTW_g1 2,479 |
 | soysauce-eu | 14,926 | 計画期間の端（開始）13,926／ID の照合不能 1,000 | Bottling_Noda 5,962（開始端）、FG_WH_Noda 3,475、Bottling_Noda 1,000（照合不能） |
@@ -384,7 +384,7 @@
 | bom-test | 0.29s | 0.31s | soysauce-jpy | 6.46s | 13.59s |
 | ev-europe | 4.95s | 5.69s | soysauce-us | 4.23s | 4.26s |
 | ev-thailand | 3.46s | 4.17s | P_opt/800 | 6.02s | 5.39s |
-| iphone | 16.12s | 20.15s | ev_update | 3.83s | 3.85s |
+| smartphone | 16.12s | 20.15s | ev_update | 3.83s | 3.85s |
 | oil | 10.36s | 10.09s | | | |
 
 - 多くは 1〜2 割の増加。rice は約2倍（A1 の修正前の測定で、CO の重複が 900万件あった時点）。soysauce-jpy の約2倍は、Outbound の下流で `_propagate_to_child` と照合が増えたため（推定）。
@@ -457,7 +457,7 @@ python -m tools.lovem_observe --model-dir data/sample/ev-thailand-2026 --out out
 
 ### S2　legacy の CO の重複（既知の欠陥として残す）
 
-- どこで：legacy の iphone（Foxconn_CN_i17）・smartx（SensorIN、AssemblyIN）・rice（Seihaku_E/W）・ev_update（DC_EV_Import）。
+- どこで：legacy の smartphone（EMS_A_CN_i17）・smartx（SensorIN、AssemblyIN）・rice（Seihaku_E/W）・ev_update（DC_EV_Import）。
 - 何が：同じ ID が CO に2件あり、1件は計画の終わりまで消えない（のべ 60,333／220,452／451,309／4,632）。
 - なぜ：Step 0a が、作れなかった生産の lot を要求（CO）に入れる。要求はすでに S にあるので二重になる（§4.1、100% 由来を確認）。
 - 実機での見方：Network タブの PSI List で、該当ノードの CO が能力超過の後も下がらない。
@@ -474,8 +474,8 @@ python -m tools.lovem_observe --model-dir data/sample/ev-thailand-2026 --out out
 ### S4　`cap_hard_sealed` の意味が identity で変わる／繰り延べが行列全体をずらす
 
 - どこで：ForwardPlanResult の `cap_hard_sealed`・`cap_hard_events`、golden の `forward.cap_hard_sealed`、画面の封印件数の表示。
-- 何が：identity では「のべ lot 週」（同じ lot が2週続けて能力を超えれば2と数える）。iphone は 1,230 → 55,413、smartx は 1,647 → 19,887、rice（参考）は 8,572 → 1,913,694。
-- なぜ：封印した lot を捨てずに翌週の先頭へ回すので、能力超過が続くと、毎週その週の末尾がはみ出し、行列全体が少しずつ後ろへずれる（iphone：1週だけ遅れる lot が 55,413 件で、のべと重複なしが一致）。何週も処理しきれない場合は、同じ lot が何週も数えられる（rice：重複なし 183,888 件）。
+- 何が：identity では「のべ lot 週」（同じ lot が2週続けて能力を超えれば2と数える）。smartphone は 1,230 → 55,413、smartx は 1,647 → 19,887、rice（参考）は 8,572 → 1,913,694。
+- なぜ：封印した lot を捨てずに翌週の先頭へ回すので、能力超過が続くと、毎週その週の末尾がはみ出し、行列全体が少しずつ後ろへずれる（smartphone：1週だけ遅れる lot が 55,413 件で、のべと重複なしが一致）。何週も処理しきれない場合は、同じ lot が何週も数えられる（rice：重複なし 183,888 件）。
 - 実機での見方：Network → PSI List の「P vs Capacity Limits」で、能力線にぴったり張り付く週が続く。
 - 期待との差：`co_generated` には入れていない（新しい要求ではないため）。「のべ」か「重複なし」か、どちらを golden の指標にするかは大杉さんの判断を仰ぎたい（今は「のべ」）。
 
@@ -489,7 +489,7 @@ python -m tools.lovem_observe --model-dir data/sample/ev-thailand-2026 --out out
 
 ### S6　期末注文残の大半は「計画期間の端（開始）」
 
-- どこで：identity の ev-thailand・ev-europe・Cookie・smartx・soysauce-eu/us・apparel-global・oil・iphone。
+- どこで：identity の ev-thailand・ev-europe・Cookie・smartx・soysauce-eu/us・apparel-global・oil・smartphone。
 - 何が：期首在庫が無く、立ち上がり期の需要に、計画期間の中で供給が間に合わない（§5.6）。
 - なぜ（推定）：legacy では、デカップリング点より下流の需要 P のコピー（例外2）と push の早出し（例外1）が、この不足を覆い隠していた。
 - 実機での見方：該当する DC・工場の PSI で、計画の始めの数週に CO が立ち、以後その件数が下がらずに残る（例：ev-thailand の Factory_Import_CN の CO が全期間 400）。
@@ -554,7 +554,7 @@ python -m tools.lovem_observe --model-dir data/sample/ev-thailand-2026 --out out
 | 立ち上がり期の 400 件 | ev-thailand-2026 | 同上 | Factory_Import_CN、2026-W02〜 | CO が 400 のまま全期間残る（S6・S7） |
 | 上流の不足が市場に届く | Cookie-jp-2026 | Network → PSI | DC_Import_Main、Retail_JP_*（Cookie_Import） | identity：DC_Import_Main の実出荷が DC_Import_Buffer と同じ 67,274。市場に CO が残る |
 | 9,293 | soysauce-jpy-2027-alloc（P_opt/800） | GUI ではなく `python -m tools.lot_identity_checks --out output/lot_identity --models soysauce-jpy-2027-alloc__P_opt800`（需要ファイルの作成まで自動） | 市場 leaf 全体 | `output/lot_identity/identity/soysauce-jpy-2027-alloc__P_opt800.json` の `specifics` と `market`：期末注文残 9,293、売上 4.751億（legacy 5.486億） |
-| 能力の繰り延べ | iphone_global | Network → PSI List の「P vs Capacity Limits」 | Foxconn_CN_i17 | P が cap_hard に張り付く週が続く。CO の重複が無くなる |
+| 能力の繰り延べ | smartphone-global-2026-2029 | Network → PSI List の「P vs Capacity Limits」 | EMS_A_CN_i17 | P が cap_hard に張り付く週が続く。CO の重複が無くなる |
 | DC に在庫が立つ | soysauce-jpy-2027 | Network → PSI | DC_EU_RTM、DC_US_NY、DC_US_SF | I の帯が出る（最大 1,050／525／525） |
 | push の処理量 | soysauce-eu-2027 | cockpit の S3、Network → PSI List の「P vs Capacity Limits」 | Bottling_Noda | 処理量の系列が実出荷の件数（`len(_actual_s)`） |
 | rice は legacy | rice-japan-2027-2028 | どの画面も | — | 従来どおり（`planning_config.csv` で legacy） |

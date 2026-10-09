@@ -2,8 +2,8 @@
 """
 tools/warmup_trial.py — warm-up の試行と、期末注文残の原因の分類（測定だけ。計画は変えない）
 
-    python -m tools.warmup_trial --model iphone_global --weeks 0,17,26 \
-        --out output/iphone_evupdate_s2/A [--mode identity] [--plugins safe]
+    python -m tools.warmup_trial --model smartphone-global-2026-2029 --weeks 0,17,26 \
+        --out output/smartphone_evupdate_s2/A [--mode identity] [--plugins safe]
 
 モデルのフォルダを <out>/<model>__w<N>/ へコピーし、コピーの planning_config.csv の
 warmup_lt を N にして（ほかのキーは保つ。N=0 は助走行を取り除く）、headless で実行する。
@@ -15,7 +15,7 @@ warmup_lt を N にして（ほかのキーは保つ。N=0 は助走行を取り
   <model>__w<N>__leaf_lots.csv.gz    市場 leaf の全要求 ID と、その結果（当週出荷／遅配／期末注文残）
   <model>__summary.json              条件ごとの集計
 
-期末注文残の分類（RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 A2）
+期末注文残の分類（RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 A2）
 ------------------------------------------------------------------
 市場 leaf で期末に出荷されていない要求 ID ごとに、供給の向きを上流へたどる
 （OutBound の子→親→supply_point→InBound の MOM root→子）。「その ID を要求していて、

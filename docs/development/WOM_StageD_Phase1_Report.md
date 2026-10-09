@@ -11,7 +11,7 @@
 
 | | 結果 |
 |---|---|
-| Part 0 | 0-1〜0-5 を実施。golden は Cookie と iphone の `ppc` だけが変わり、再生成した |
+| Part 0 | 0-1〜0-5 を実施。golden は Cookie と smartphone の `ppc` だけが変わり、再生成した |
 | Part 1 | `wom/valuechain/`（台帳・3 つの視点・為替・費用の分け方の表）と `tools/valuechain_run.py` |
 | Part 2 | Management タブの中に「Value Chain」を追加（既存の画面は「Overview」として不変） |
 | 受入 1〜10 | すべて満たした（§6）。6 の変化 (3) の数字だけ判断待ち。10 は Tk の不安定な 1 件を再実行して緑（§10） |
@@ -36,13 +36,13 @@
 
 | # | ファイル | 直した行 | 直さなかった行と理由 |
 |---|---|---|---|
-| 0-1 | `iphone_global/planning_config.csv` | `cpu_size,1000` を追加 | — |
-| 0-1 | `iphone_global/ppc_market_price.csv` | 9 行を 1 台当たりへ（÷10,000。例 9,990,000 → 999 USD。`sku_master.selling_price` と同じ値） | — |
-| 0-1 | `iphone_global/ppc_supplier_cost.csv` | `Foxconn_CN` 450・`Foxconn_CN_i15` 320・`Foxconn_CN_i17` 490（1 台当たり） | `Foxconn_IN` 4,700,000、`SiliconWafer`・`TSMC`・`Bosch` の行、ノード・区間の `per_lot` の行（説明に「per lot (100 units)」）。**単位の根拠がファイルの中で一致しておらず、1 台当たりに直す係数が決められない**。このため iphone の PPC は GM −813%（§3）。iphone を題材にするときに、行ごとの単位を決めて直す |
+| 0-1 | `smartphone-global-2026-2029/planning_config.csv` | `cpu_size,1000` を追加 | — |
+| 0-1 | `smartphone-global-2026-2029/ppc_market_price.csv` | 9 行を 1 台当たりへ（÷10,000。例 9,990,000 → 999 USD。`sku_master.selling_price` と同じ値） | — |
+| 0-1 | `smartphone-global-2026-2029/ppc_supplier_cost.csv` | `EMS_A_CN` 450・`EMS_A_CN_i15` 320・`EMS_A_CN_i17` 490（1 台当たり） | `EMS_A_IN` 4,700,000、`SiliconWafer`・`Foundry_A`・`Sensor_A` の行、ノード・区間の `per_lot` の行（説明に「per lot (100 units)」）。**単位の根拠がファイルの中で一致しておらず、1 台当たりに直す係数が決められない**。このため smartphone の PPC は GM −813%（§3）。smartphone を題材にするときに、行ごとの単位を決めて直す |
 | 0-2 | `Cookie-jp-2026/ppc_node_cost_rule.csv` | `logistics_cost` の 5 行を削除 | — |
 | 0-2 | `Cookie-jp-2026/ppc_edge_cost_rule.csv` | 物理の区間だけに：`Factory_GP_CN->DC_Import_Buffer` 2,500、`DC_Import_Buffer->DC_Import_Main` 1,000、`Factory_DP_JP->DC_Local_JP` 200、`DC_Local_JP->Retail_JP_SM/CVS/EC` 各 300。supply point を通る 4 行を削除 | — |
 | 0-2 | `Cookie-jp-2026/README.md`（新規） | 運賃の内訳（区間・金額・元の置き場所） | — |
-| 0-3 | `ev-europe-2026`・`ev-thailand-2026`・`ev-thailand-2026_update`・`oil-global-2027` の `ppc_edge_cost_rule.csv` | supply point を通る行を削除（4・4・4・16 行。**28 行すべて、同じ金額がノード費用にもあることを確認**） | `smartx-2027-2029`（8 行）：ノード費用と金額が一致しない行ばかりで、写しかどうか判断できない。`india-ghee-2026`：`SP_Ghee_Export->DC_Ghee_Export` 700 がノード費用 500 と一致しない。どちらも、そのモデルを題材にするときに確かめる |
+| 0-3 | `ev-europe-2026`・`ev-thailand-2026`・`ev-thailand-2026_update`・`oil-global-2027` の `ppc_edge_cost_rule.csv` | supply point を通る行を削除（4・4・4・16 行。**28 行すべて、同じ金額がノード費用にもあることを確認**） | `smartx-2027-2029`（8 行）：ノード費用と金額が一致しない行ばかりで、写しかどうか判断できない。そのモデルを題材にするときに確かめる |
 | 0-4 | `soysauce-jpy-2027-alloc/ppc_tariff_rule.csv` | 関税を国境の区間へ：`FG_WH_Noda->DC_US_SF` 0.125、`->DC_US_NY` 0.125、`->DC_EU_RTM` 0.08（JP→EU）、`->DC_JP` 0.0 | — |
 | 0-4 | `wom/ppc/ppc_tariff.py`・`ppc_backward.py` | DAD → DAD の区間の関税を読む（`rules.get_tariff(edge)`、TARIFF のイベントは受け手の DAD に） | — |
 | 0-5 | `wom/ppc/ppc_fx.py`・`ppc_transfer.py`・`ppc_engine.py`・`ppc_models.py`・`ppc_export.py`・`ppc_runner.py`、`wom/engine/landed_cost.py` | 黙った扱いを記録して `ppc_warnings.csv` に出す（**値は変えない**）：前の週の為替（`fx_fallback_prior_week`）、移転価格の為替 0 → 1.0（`transfer_fx_zero_as_1`・`transfer_event_fx_missing_as_1`）、Landed Cost の `fx_rate` 0 → 1.0（`landed_cost_fx_zero_as_1`）。列：`kind, location, currency, requested_week, used_week, count, detail` | Landed Cost の `fx_rate` の空欄は、調べると 1.0 ではなく **NaN になる**（`landed_cost_fx_blank_as_nan` として記録） |
@@ -52,23 +52,23 @@
 
 ### 2.2 golden の差分（`ppc` だけ）
 
-再生成の前の `test_golden` は、**Cookie（本体と legacy）と iphone の 3 件だけ**が失敗し、13 件は通った。再生成後、すべて通る。
+再生成の前の `test_golden` は、**Cookie（本体と legacy）と smartphone の 3 件だけ**が失敗し、13 件は通った。再生成後、すべて通る。
 
 | golden | 項目 | 前 | 後 | 理由 |
 |---|---|---:|---:|---|
 | Cookie-jp-2026（本体・legacy） | cost_base | 3,573,471,000 | 3,494,541,000 | −78,930,000 ＝ 78,930 lot × 1,000（`DC_Import_Buffer→DC_Import_Main` の 1,000 が区間とノードの両方にあった二重計上の解消） |
 | | gross_profit | 686,229,000 | 765,159,000 | 同上 |
 | | GM | 16.11% | 17.96% | 同上 |
-| iphone_global | revenue_base | 641,014,134,734,200 | 64,101,413,473,420 | 市場価格を 1 台当たりへ（÷10,000）、cpu_size 1,000 |
+| smartphone-global-2026-2029 | revenue_base | 641,014,134,734,200 | 64,101,413,473,420 | 市場価格を 1 台当たりへ（÷10,000）、cpu_size 1,000 |
 | | cost_base | — | 5.219×10¹⁶ | 直さなかった行（§2.1）が lot 当たりのまま 1,000 倍に |
-| | GM | — | −813.2% | 同上。**iphone は単位がまだ揃っていない**ことの表れ |
+| | GM | — | −813.2% | 同上。**smartphone は単位がまだ揃っていない**ことの表れ |
 | | tariff | — | 5.24×10¹⁵ | 同上 |
 | | trust | 390 | 2,644 | NEGATIVE_MARGIN 等の検知が増えた |
 
 `period/products/config/forward/backward/psi` は全 golden で不変。
 
-- iphone の money（Run Simulation）は 416,331,210,000 で、依頼の想定どおり。
-- **Landed Cost の運賃は iphone で 1,000 倍になる**。`freight_usd_per_lot` に money の数量を掛けるが、cpu_size 1,000 によって、その数量は台の単位になっている。今回は直していない。
+- smartphone の money（Run Simulation）は 416,331,210,000 で、依頼の想定どおり。
+- **Landed Cost の運賃は smartphone で 1,000 倍になる**。`freight_usd_per_lot` に money の数量を掛けるが、cpu_size 1,000 によって、その数量は台の単位になっている。今回は直していない。
 
 ### 2.3 副作用：配分モジュールの経路（直した）
 
@@ -95,7 +95,7 @@ oil の supply point の運賃の行（0-3）を消すと、`tests/test_allocati
 |---|---:|---:|---|
 | ev-thailand-2026 | 5 | 72 | `fx_fallback_prior_week`（THB）、Step 1〜5 に 18／12／15／6／21 |
 | ev-thailand-2026_update | 5 | 75 | 同上（Step 1 が 21） |
-| iphone_global | 265 | 7,632 | `fx_fallback_prior_week`（USD）、53 週 × Step 1〜5 |
+| smartphone-global-2026-2029 | 265 | 7,632 | `fx_fallback_prior_week`（USD）、53 週 × Step 1〜5 |
 | oil-global-2027 | 760 | 8,948 | `fx_fallback_prior_week`（USD 75 週・EUR 77 週）× Step 1〜5 |
 | ほかの 12 モデル | 0 | 0 | — |
 
@@ -368,14 +368,14 @@ Cookie の台帳が出た瞬間は無い。台帳には作ったときの計画 
 - **データ**：
   - `Cookie-jp-2026`：`ppc_edge_cost_rule.csv`、`ppc_node_cost_rule.csv`、`README.md`（新規）、`vc_*.csv` 4 つ（新規）
   - `ev-europe-2026`・`ev-thailand-2026`・`ev-thailand-2026_update`・`oil-global-2027`：`ppc_edge_cost_rule.csv`
-  - `iphone_global`：`planning_config.csv`、`ppc_market_price.csv`、`ppc_supplier_cost.csv`
+  - `smartphone-global-2026-2029`：`planning_config.csv`、`ppc_market_price.csv`、`ppc_supplier_cost.csv`
   - `soysauce-jpy-2027-alloc`：`ppc_tariff_rule.csv`、`vc_*.csv` 4 つ（新規）
 - **PPC**：`wom/ppc/` の `ppc_tariff.py`、`ppc_backward.py`、`ppc_fx.py`、`ppc_transfer.py`、`ppc_models.py`、`ppc_engine.py`、`ppc_export.py`、`ppc_runner.py`。`wom/engine/landed_cost.py`
 - **配分**：`wom/allocation/cost_block.py`（supply point → MOM の橋、§2.3）
 - **新規**：`wom/valuechain/`（`__init__`・`policy`・`fx`・`masters`・`records`・`ledger`・`views`・`run`）、`wom/gui/valuechain_panel.py`、`tools/valuechain_run.py`、`tools/gui_valuechain_check.py`
 - **GUI**：`wom/gui/app.py`。Management を「Overview」と「Value Chain」のサブタブに分けた。計画の完了で台帳を作り、モデルの読み込みと Run Simulation で消す。
 - **画面の道具**：`tools/gui_two_model_check.py`・`tools/gui_sim_plan_check.py` を、Management のサブタブに合わせて更新した。
-- **golden**：`tests/golden/Cookie-jp-2026.json`、`tests/golden/legacy/Cookie-jp-2026.json`、`tests/golden/iphone_global.json`（いずれも `ppc` だけ）
+- **golden**：`tests/golden/Cookie-jp-2026.json`、`tests/golden/legacy/Cookie-jp-2026.json`、`tests/golden/smartphone-global-2026-2029.json`（いずれも `ppc` だけ）
 - **テスト**：
   - 新規 3 ファイル（§6-10）
   - `tests/test_s1_view_model.py`・`tests/test_allocation_hierarchical.py` の期待値（§2.3）
@@ -395,7 +395,7 @@ FAILED tests/test_merit_order_plot.py::test_plot_parallel_coordinates
 
 - 落ちた 1 件は Tk の初期化の失敗で、依頼が挙げている `test_plot_regime_matrix` と同じ種類の不安定さ。**このファイルだけを再実行すると `10 passed`**。`test_plot_regime_matrix` はこの回は通った。
 - skip 6 件：このうち 3 件は第 2 回（消去後）の期待値。xfail 1 件は変化 (3) の依頼の数字（§7.1）。
-- golden 13 件は通った（Cookie・iphone は `ppc` を再生成した後の値）。
+- golden 13 件は通った（Cookie・smartphone は `ppc` を再生成した後の値）。
 - **並べて実行したときの失敗（参考）**：最初の全体の実行は、GUI の確認の道具と同時に動かしたため、24 件が落ちた。
   - `output/ppc/ppc_warnings.csv` の書き換えが重なった（PermissionError）
   - ページングファイルが足りなくなった（WinError 1455）
@@ -446,11 +446,11 @@ python -m tools.valuechain_run --model-dir data/sample/Cookie-jp-2026 --out outp
 
 ## 12. Claude君の確認と修正（2026-10-01）
 
-### 12.1 iphone の残りの行を 1 台当たりへ（§2.1・§2.2 の更新）
+### 12.1 smartphone の残りの行を 1 台当たりへ（§2.1・§2.2 の更新）
 
 - 直さなかった行（供給者の原価 8 行、ノード費用 32 行、区間の費用 12 行）も、**すべて「1 万台当たり」の桁**だった。÷10,000 で 1 台当たりにすると、組立 50 USD、SoC 38 USD、ウェハー 5 USD、海上運賃 10 USD、DC の作業 5 USD、区間の運賃 17 USD など、どれも 1 台当たりとして筋の通る値になる。ノード費用の説明「per lot (100 units)」は誤りだった（100 台当たりなら組立が 1 台 5,000 USD になる）。
 - 3 つのファイルの残りの行を ÷10,000 にし、説明の「per lot」を「per unit」に直した。
-- これで iphone の PPC は、**すべての金額が修正前の 1/10、GM は修正前と同じ 41.19%** になるはず（市場価格・原価とも ÷10,000、数量 ×1,000）。期待値：売上 64,101,413,473,420、原価 約 37,695,124,383,918、関税 約 4,720,497,327,978、GM 41.1946%、trust 390。**確認済み**（大杉さんが Windows で golden を再生成、2026-10-01）：売上 64,101,413,473,420、原価 37,695,124,383,917.75、関税 4,720,497,327,977.75、GM 0.411946、trust 390。修正前の値のちょうど 1/10 で、GM と trust は修正前と同じ。
+- これで smartphone の PPC は、**すべての金額が修正前の 1/10、GM は修正前と同じ 41.19%** になるはず（市場価格・原価とも ÷10,000、数量 ×1,000）。期待値：売上 64,101,413,473,420、原価 約 37,695,124,383,918、関税 約 4,720,497,327,978、GM 41.1946%、trust 390。**確認済み**（大杉さんが Windows で golden を再生成、2026-10-01）：売上 64,101,413,473,420、原価 37,695,124,383,917.75、関税 4,720,497,327,977.75、GM 0.411946、trust 390。修正前の値のちょうど 1/10 で、GM と trust は修正前と同じ。
 - 申し送り：Landed Cost の `freight_usd_per_lot` は、cpu_size が 1 でないと「台」の数量に掛かる（§2.2）。列名と単位の扱いは、Landed Cost を台帳の為替・運賃に揃えるときに決める。
 
 ### 12.2 手計算の変化 (3)（§7.1）

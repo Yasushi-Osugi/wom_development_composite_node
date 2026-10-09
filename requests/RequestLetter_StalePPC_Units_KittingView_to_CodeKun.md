@@ -6,7 +6,7 @@
 - 作業フォルダ：`C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r5m1_cap_trial`
 - ブランチ：`wom-v1r5m1_cap_trial`（起草時の先頭 `5c58cfb`。着手時の SHA を報告書に記録する）
 - 種別：GUI・評価（money）の修正と表示の追加。計画（Forward／Backward）は変えない。
-- 前提：`docs/development/WOM_iPhoneWarmup_EVUpdateKitting_S2_Report.md`（途中で見つけたこと、判断を仰いだ点）
+- 前提：`docs/development/WOM_SmartphoneWarmup_EVUpdateKitting_S2_Report.md`（途中で見つけたこと、判断を仰いだ点）
 
 ---
 
@@ -14,10 +14,10 @@
 
 大杉さんが `python -m main` で確かめた画面（2026-09-30）で、次の 2 つが見つかりました。
 
-1. **Management の P&L Summary と Landed Cost の Revenue が、iphone_global を読み込んでいるのに、前に読み込んだモデルの PPC の値を出していた。**
-   - 画面の値：Revenue 319,119,580,000、Gross Margin 56.5%。これは ev-thailand（または ev_update）の PPC の値（3,191.2 億、56.50%）と一致する。iphone の PPC の売上は 641.0 兆円（報告書 A）。
-   - 同じ画面の Node P&L（拠点別損益）は iphone のノードを出している。1 枚の画面に、2 つのモデルの数字が混ざっていた。
-   - コードの読み（Claude君）：`wom/gui/app.py` の P&L Summary は、`output/ppc/ppc_kpi_summary.json` があればその値で上書きする（l.1205 付近）。このファイルには、どのモデル・どの計画の結果かを確かめる仕組みが無い。PPC は計画の後に別スレッドで動く（l.5930 付近）ので、iphone の PPC が終わる前、または失敗したときに、前のモデルのファイルが読まれた可能性がある。
+1. **Management の P&L Summary と Landed Cost の Revenue が、smartphone-global-2026-2029 を読み込んでいるのに、前に読み込んだモデルの PPC の値を出していた。**
+   - 画面の値：Revenue 319,119,580,000、Gross Margin 56.5%。これは ev-thailand（または ev_update）の PPC の値（3,191.2 億、56.50%）と一致する。smartphone の PPC の売上は 641.0 兆円（報告書 A）。
+   - 同じ画面の Node P&L（拠点別損益）は smartphone のノードを出している。1 枚の画面に、2 つのモデルの数字が混ざっていた。
+   - コードの読み（Claude君）：`wom/gui/app.py` の P&L Summary は、`output/ppc/ppc_kpi_summary.json` があればその値で上書きする（l.1205 付近）。このファイルには、どのモデル・どの計画の結果かを確かめる仕組みが無い。PPC は計画の後に別スレッドで動く（l.5930 付近）ので、smartphone の PPC が終わる前、または失敗したときに、前のモデルのファイルが読まれた可能性がある。
 2. **ev-thailand-2026_update の Flow Check が、置場（Stockyard）の無い古い構成で表示された。** 原因は、大杉さんが別のフォルダ（古いコピー）のモデルを読み込んでいたことで、最新のフォルダを読み込み直すと NG は消えた（2026-09-30 確認）。コードの不具合ではないが、**どのフォルダのモデルを読み込んでいるかが画面から分かりにくい**ことは、同じ見誤りを招く。
 
 どちらも「画面の数字を見誤る」種類の問題なので、先に直します。
@@ -30,7 +30,7 @@
 - Management・PPC タブ・Landed Cost が PPC の出力を読むときは、今読み込んでいるモデルと今の計画の識別子に一致するかを確かめる。一致しない場合は、**前の値を出さずに**、「PPC 計算中」「PPC 未実行」「PPC 失敗」のどれかを表示する。money の値で代用する場合は、「money による値（PPC ではない）」と分かるように表示する。
 - モデルを読み込み直したとき、前のモデルの PPC の表示を消す。
 - PPC が別スレッドで終わったとき、Management の P&L Summary と Landed Cost も更新する（今は PPC タブと Node P&L だけが更新されている可能性がある。確かめて報告する）。
-- 受入：ev-thailand-2026 を読み込んで計画 → iphone_global を読み込んで計画、の順に操作したとき、iphone の PPC が終わるまで ev-thailand の値が出ない。終わった後は iphone の値（報告書 A の 641.0 兆円）が出る。自動の GUI 操作で確かめ、手順を報告書に書く。
+- 受入：ev-thailand-2026 を読み込んで計画 → smartphone-global-2026-2029 を読み込んで計画、の順に操作したとき、smartphone の PPC が終わるまで ev-thailand の値が出ない。終わった後は smartphone の値（報告書 A の 641.0 兆円）が出る。自動の GUI 操作で確かめ、手順を報告書に書く。
 
 ### P2　どのフォルダのモデルを読み込んでいるかを、画面から分かるようにする
 

@@ -258,9 +258,9 @@ def _build_warm_lines(kind: str, hf: List[str], first_week_rows: List[List[str]]
                 f"{_CAPACITY}: required column(s) missing for warm-up: {missing} "
                 f"(header: {hf})")
         if "node_name" not in hf:
-            # 旧書式（node_name 列なし。例 iphone_global:
+            # 旧書式（node_name 列なし。例 smartphone-global-2026-2029:
             #   sku_id,region,week,max_supply,cap_pieces,source）
-            # RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 A1。
+            # RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 A1。
             # 実ローダ（capacity_sealer.load_capacity_dataframe の "sku-aggregate" 経路）は、
             # この書式を「(sku_id, week) ごとに max_supply を合計し、その製品の InBound root
             # （MOM）の能力とする」と読む。能力の帰属は「行」そのもの（sku_id と、region・

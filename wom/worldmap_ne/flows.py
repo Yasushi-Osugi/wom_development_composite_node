@@ -35,7 +35,7 @@ NODE_STYLE = {
     "region_dc":    ("#2196F3", "#0D47A1"),
     "marketing":    ("#F44336", "#B71C1C"),
 }
-# a node_master type outside the table (e.g. iphone's "retail", "supply_point") takes the
+# a node_master type outside the table (e.g. smartphone's "retail", "supply_point") takes the
 # colour of the same role in the plan tree (sc_tree_master node_type). Listed in the info.
 TREE_TYPE_TO_STYLE = {"leaf_in": "sku_supplier", "mom": "mother_plant", "dad": "region_dc",
                       "leaf_out": "marketing", "stockyard": "sku_supplier"}

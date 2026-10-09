@@ -1,7 +1,0 @@
-holiday_id,holiday_name,start_week,end_week,node_name,effect,value
-DIWALI_2026,Diwali gifting demand 2026,2026-W45,2026-W46,Retail_Mumbai,demand_multiplier,1.4
-DIWALI_2026,Diwali gifting demand 2026,2026-W45,2026-W46,Retail_Delhi,demand_multiplier,1.4
-DIWALI_2026,Diwali gifting demand 2026,2026-W45,2026-W46,Retail_Bangalore,demand_multiplier,1.4
-DIWALI_2027,Diwali gifting demand 2027,2027-W43,2027-W44,Retail_Mumbai,demand_multiplier,1.4
-DIWALI_2027,Diwali gifting demand 2027,2027-W43,2027-W44,Retail_Delhi,demand_multiplier,1.4
-DIWALI_2027,Diwali gifting demand 2027,2027-W43,2027-W44,Retail_Bangalore,demand_multiplier,1.4

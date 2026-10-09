@@ -8,6 +8,6 @@ SP_Cookie_Local,SP_Cookie_Local（国内調達本部）,procurement,36.0248,138.
 Factory_DP_JP,国内クッキー工場（Domestic_Player）,mother_plant,36.5888,140.3968,Cookie_Local,JP,Saitama Factory — PULL生産起点
 Ingredients_JP,原料調達（国内）,sku_supplier,36.8854,140.2055,Cookie_Local,JP,小麦粉・植物油脂 国内調達
 DC_Local_JP,Domestic_Player DC（パン便相乗り）,region_dc,34.8335,140.0135,,JP,パン配送ルート活用・超短LT DC
-Retail_JP_CVS,コンビニ チャネル,marketing,36.5714,139.7749,,CVS,全国コンビニ（セブン・ファミマ等）
+Retail_JP_CVS,コンビニ チャネル,marketing,36.5714,139.7749,,CVS,全国コンビニ（大手チェーン等）
 Retail_JP_SM,スーパー チャネル,marketing,36.5488,140.0241,,SM,全国スーパー・量販店
 Retail_JP_EC,EC・ドラッグ チャネル,marketing,36.0454,138.7443,,EC,EC通販・ドラッグストア

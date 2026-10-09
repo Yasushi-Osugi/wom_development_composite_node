@@ -135,7 +135,7 @@ def run_case(repo, out, case, plugins, popt=False, golden=None):
             assert not a
             caller=inspect.currentframe().f_back.f_locals
             label=caller.get('scenario')
-            cap['scenario_branch']=label if label in ('rice','cookie','iphone_global') else ('GENERIC_tree' if caller.get('_mom_map') else 'legacy_iphone_fallback')
+            cap['scenario_branch']=label if label in ('rice','cookie','smartphone_global') else ('GENERIC_tree' if caller.get('_mom_map') else 'legacy_smartphone_fallback')
             cap['engine_kwargs']=kw.copy()
             super().__init__(**kw)
         def run(self):

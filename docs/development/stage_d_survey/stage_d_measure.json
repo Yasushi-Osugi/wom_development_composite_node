@@ -3883,8 +3883,8 @@
     }
    ]
   },
-  "iphone_global": {
-   "model": "iphone_global",
+  "smartphone-global-2026-2029": {
+   "model": "smartphone-global-2026-2029",
    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
    "lot_flow_mode": "identity",
    "cpu_size": 1,
@@ -3941,9 +3941,9 @@
      "JPY": 3381
     },
     "nodes": [
-     "Foxconn_CN",
-     "Foxconn_CN_i15",
-     "Foxconn_CN_i17",
+     "EMS_A_CN",
+     "EMS_A_CN_i15",
+     "EMS_A_CN_i17",
      "Retail_AMER",
      "Retail_AMER_i15",
      "Retail_AMER_i17",
@@ -3953,14 +3953,14 @@
      "Retail_EMEA",
      "Retail_EMEA_i15",
      "Retail_EMEA_i17",
-     "SP_iPhone15",
-     "SP_iPhone16",
-     "SP_iPhone17"
+     "SP_Phone15",
+     "SP_Phone16",
+     "SP_Phone17"
     ]
    },
    "revenue_decomp": [
     {
-     "product": "iPhone15",
+     "product": "Phone15",
      "channel": "Retail_AMER_i15",
      "ship_lots": 34580,
      "qty": 34580.0,
@@ -3972,7 +3972,7 @@
      "revenue_base": 37079557882200.0
     },
     {
-     "product": "iPhone15",
+     "product": "Phone15",
      "channel": "Retail_APAC_i15",
      "ship_lots": 7895,
      "qty": 7895.0,
@@ -3984,7 +3984,7 @@
      "revenue_base": 7883443887000.0
     },
     {
-     "product": "iPhone15",
+     "product": "Phone15",
      "channel": "Retail_EMEA_i15",
      "ship_lots": 18926,
      "qty": 18926.0,
@@ -3996,7 +3996,7 @@
      "revenue_base": 23231734706600.0
     },
     {
-     "product": "iPhone16",
+     "product": "Phone16",
      "channel": "Retail_AMER",
      "ship_lots": 100306,
      "qty": 100306.0,
@@ -4008,7 +4008,7 @@
      "revenue_base": 153903789352800.0
     },
     {
-     "product": "iPhone16",
+     "product": "Phone16",
      "channel": "Retail_APAC",
      "ship_lots": 48397,
      "qty": 48397.0,
@@ -4020,7 +4020,7 @@
      "revenue_base": 70675739546100.0
     },
     {
-     "product": "iPhone16",
+     "product": "Phone16",
      "channel": "Retail_EMEA",
      "ship_lots": 70736,
      "qty": 70736.0,
@@ -4032,7 +4032,7 @@
      "revenue_base": 119400878848300.0
     },
     {
-     "product": "iPhone17",
+     "product": "Phone17",
      "channel": "Retail_AMER_i17",
      "ship_lots": 53300,
      "qty": 53300.0,
@@ -4044,7 +4044,7 @@
      "revenue_base": 90546913324000.0
     },
     {
-     "product": "iPhone17",
+     "product": "Phone17",
      "channel": "Retail_APAC_i17",
      "ship_lots": 42640,
      "qty": 42640.0,
@@ -4056,7 +4056,7 @@
      "revenue_base": 69141917101600.0
     },
     {
-     "product": "iPhone17",
+     "product": "Phone17",
      "channel": "Retail_EMEA_i17",
      "ship_lots": 37310,
      "qty": 37310.0,
@@ -4070,8 +4070,8 @@
    ],
    "intermediate_nodes": [
     {
-     "product": "iPhone16",
-     "node": "SP_iPhone16",
+     "product": "Phone16",
+     "node": "SP_Phone16",
      "type": "supply_point",
      "ppc_qty": 219439.0,
      "own_actual_ship_qty": 219439,
@@ -4079,8 +4079,8 @@
      "own_first_ship_week": "2026-W48"
     },
     {
-     "product": "iPhone16",
-     "node": "Foxconn_CN",
+     "product": "Phone16",
+     "node": "EMS_A_CN",
      "type": "mom",
      "ppc_qty": 219439.0,
      "own_actual_ship_qty": 119133,
@@ -4088,8 +4088,8 @@
      "own_first_ship_week": "2026-W37"
     },
     {
-     "product": "iPhone15",
-     "node": "SP_iPhone15",
+     "product": "Phone15",
+     "node": "SP_Phone15",
      "type": "supply_point",
      "ppc_qty": 61401.0,
      "own_actual_ship_qty": 61401,
@@ -4097,8 +4097,8 @@
      "own_first_ship_week": "2026-W48"
     },
     {
-     "product": "iPhone15",
-     "node": "Foxconn_CN_i15",
+     "product": "Phone15",
+     "node": "EMS_A_CN_i15",
      "type": "mom",
      "ppc_qty": 61401.0,
      "own_actual_ship_qty": 61401,
@@ -4106,8 +4106,8 @@
      "own_first_ship_week": "2026-W39"
     },
     {
-     "product": "iPhone17",
-     "node": "SP_iPhone17",
+     "product": "Phone17",
+     "node": "SP_Phone17",
      "type": "supply_point",
      "ppc_qty": 133250.0,
      "own_actual_ship_qty": 133250,
@@ -4115,8 +4115,8 @@
      "own_first_ship_week": "2028-W21"
     },
     {
-     "product": "iPhone17",
-     "node": "Foxconn_CN_i17",
+     "product": "Phone17",
+     "node": "EMS_A_CN_i17",
      "type": "mom",
      "ppc_qty": 133250.0,
      "own_actual_ship_qty": 133250,
@@ -4138,55 +4138,55 @@
    },
    "money_per_leaf": [
     {
-     "sku": "iPhone15",
+     "sku": "Phone15",
      "region": "AMER",
      "revenue": 24171420.0,
      "units": 34580.0
     },
     {
-     "sku": "iPhone15",
+     "sku": "Phone15",
      "region": "APAC",
      "revenue": 5123855.0,
      "units": 7895.0
     },
     {
-     "sku": "iPhone15",
+     "sku": "Phone15",
      "region": "EMEA",
      "revenue": 15121874.0,
      "units": 18926.0
     },
     {
-     "sku": "iPhone16",
+     "sku": "Phone16",
      "region": "AMER",
      "revenue": 100205694.0,
      "units": 100306.0
     },
     {
-     "sku": "iPhone16",
+     "sku": "Phone16",
      "region": "APAC",
      "revenue": 45928753.0,
      "units": 48397.0
     },
     {
-     "sku": "iPhone16",
+     "sku": "Phone16",
      "region": "EMEA",
      "revenue": 77738864.0,
      "units": 70736.0
     },
     {
-     "sku": "iPhone17",
+     "sku": "Phone17",
      "region": "AMER",
      "revenue": 58576700.0,
      "units": 53300.0
     },
     {
-     "sku": "iPhone17",
+     "sku": "Phone17",
      "region": "APAC",
      "revenue": 44729360.0,
      "units": 42640.0
     },
     {
-     "sku": "iPhone17",
+     "sku": "Phone17",
      "region": "EMEA",
      "revenue": 44734690.0,
      "units": 37310.0
@@ -4194,63 +4194,63 @@
    ],
    "sku_master_price": [
     {
-     "sku_id": "iPhone16",
+     "sku_id": "Phone16",
      "region": "AMER",
      "selling_price": 999,
      "unit_cost": 450,
      "uom": "EA"
     },
     {
-     "sku_id": "iPhone16",
+     "sku_id": "Phone16",
      "region": "EMEA",
      "selling_price": 1099,
      "unit_cost": 450,
      "uom": "EA"
     },
     {
-     "sku_id": "iPhone16",
+     "sku_id": "Phone16",
      "region": "APAC",
      "selling_price": 949,
      "unit_cost": 450,
      "uom": "EA"
     },
     {
-     "sku_id": "iPhone15",
+     "sku_id": "Phone15",
      "region": "AMER",
      "selling_price": 699,
      "unit_cost": 320,
      "uom": "EA"
     },
     {
-     "sku_id": "iPhone15",
+     "sku_id": "Phone15",
      "region": "EMEA",
      "selling_price": 799,
      "unit_cost": 320,
      "uom": "EA"
     },
     {
-     "sku_id": "iPhone15",
+     "sku_id": "Phone15",
      "region": "APAC",
      "selling_price": 649,
      "unit_cost": 320,
      "uom": "EA"
     },
     {
-     "sku_id": "iPhone17",
+     "sku_id": "Phone17",
      "region": "AMER",
      "selling_price": 1099,
      "unit_cost": 490,
      "uom": "EA"
     },
     {
-     "sku_id": "iPhone17",
+     "sku_id": "Phone17",
      "region": "EMEA",
      "selling_price": 1199,
      "unit_cost": 490,
      "uom": "EA"
     },
     {
-     "sku_id": "iPhone17",
+     "sku_id": "Phone17",
      "region": "APAC",
      "selling_price": 1049,
      "unit_cost": 490,
@@ -4287,10 +4287,10 @@
    },
    "kitting": [
     {
-     "product": "iPhone16",
-     "node": "Foxconn_CN",
+     "product": "Phone16",
+     "node": "EMS_A_CN",
      "children": [
-      "TSMC_TW"
+      "Foundry_A_TW"
      ],
      "child_types": [
       "mom"
@@ -4302,8 +4302,8 @@
      "examples": []
     },
     {
-     "product": "iPhone16",
-     "node": "TSMC_TW",
+     "product": "Phone16",
+     "node": "Foundry_A_TW",
      "children": [
       "SiliconWafer_TW"
      ],
@@ -4317,10 +4317,10 @@
      "examples": []
     },
     {
-     "product": "iPhone16",
-     "node": "Foxconn_IN",
+     "product": "Phone16",
+     "node": "EMS_A_IN",
      "children": [
-      "BoschSensor_IN"
+      "Sensor_A_IN"
      ],
      "child_types": [
       "leaf_in"
@@ -4332,10 +4332,10 @@
      "examples": []
     },
     {
-     "product": "iPhone15",
-     "node": "Foxconn_CN_i15",
+     "product": "Phone15",
+     "node": "EMS_A_CN_i15",
      "children": [
-      "TSMC_TW_i15"
+      "Foundry_A_TW_i15"
      ],
      "child_types": [
       "mom"
@@ -4347,8 +4347,8 @@
      "examples": []
     },
     {
-     "product": "iPhone15",
-     "node": "TSMC_TW_i15",
+     "product": "Phone15",
+     "node": "Foundry_A_TW_i15",
      "children": [
       "SiliconWafer_TW_i15"
      ],
@@ -4362,10 +4362,10 @@
      "examples": []
     },
     {
-     "product": "iPhone17",
-     "node": "Foxconn_CN_i17",
+     "product": "Phone17",
+     "node": "EMS_A_CN_i17",
      "children": [
-      "TSMC_TW_i17"
+      "Foundry_A_TW_i17"
      ],
      "child_types": [
       "mom"
@@ -4377,31 +4377,31 @@
      },
      "examples": [
       {
-       "lot": "iPhone17:AMER:2028-W33:00027",
+       "lot": "Phone17:AMER:2028-W33:00027",
        "demand_w": "2028-W28",
        "complete": "2028-W27",
        "p": "2028-W28"
       },
       {
-       "lot": "iPhone17:AMER:2028-W33:00028",
+       "lot": "Phone17:AMER:2028-W33:00028",
        "demand_w": "2028-W28",
        "complete": "2028-W27",
        "p": "2028-W28"
       },
       {
-       "lot": "iPhone17:AMER:2028-W33:00029",
+       "lot": "Phone17:AMER:2028-W33:00029",
        "demand_w": "2028-W28",
        "complete": "2028-W27",
        "p": "2028-W28"
       },
       {
-       "lot": "iPhone17:AMER:2028-W33:00030",
+       "lot": "Phone17:AMER:2028-W33:00030",
        "demand_w": "2028-W28",
        "complete": "2028-W27",
        "p": "2028-W28"
       },
       {
-       "lot": "iPhone17:AMER:2028-W33:00031",
+       "lot": "Phone17:AMER:2028-W33:00031",
        "demand_w": "2028-W28",
        "complete": "2028-W27",
        "p": "2028-W28"
@@ -4409,8 +4409,8 @@
      ]
     },
     {
-     "product": "iPhone17",
-     "node": "TSMC_TW_i17",
+     "product": "Phone17",
+     "node": "Foundry_A_TW_i17",
      "children": [
       "SiliconWafer_TW_i17"
      ],
@@ -5509,7 +5509,7 @@
     "nodes": [
      "DC_Rice",
      "Farm_JP",
-     "JA_Seihaku",
+     "Coop_Seihaku",
      "JP_Channel"
     ]
    },

@@ -13,7 +13,7 @@
 
 | ID | 検査 | 結果 |
 |---|---|---|
-| P-1 | 全サンプルで GUI の既定＝headless（`--plugins` なし）＝golden | **合**（`iphone` を除く。§1.3）。headless は 16 モデルすべてで golden（または明示の safe）と psi・ppc・forward・period・products・プラグインの組が一致。GUI は rice・Cookie・smartx で、読み込んだまま計画した PSI が golden と一致 |
+| P-1 | 全サンプルで GUI の既定＝headless（`--plugins` なし）＝golden | **合**（`smartphone-legacy` を除く。§1.3）。headless は 16 モデルすべてで golden（または明示の safe）と psi・ppc・forward・period・products・プラグインの組が一致。GUI は rice・Cookie・smartx で、読み込んだまま計画した PSI が golden と一致 |
 | P-2 | rice を GUI で読み込んで既定のまま計画すると 141,210／95,727、World Map の帯 2027-W01 | **合** |
 | P-3 | 知らないプラグイン名で headless・GUI の読み込みが止まり、使える名前が出る | **合**（§2） |
 | P-4 | 需要の無い ID が Flow Check・lot_identity_checks で NG（テスト）。全サンプルの NG は 0 | **合**（§3） |
@@ -33,12 +33,12 @@ recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,Capacit
 
 | モデル | 組 | 出所 |
 |---|---|---|
-| Cookie-jp-2026・apparel-global-2028-2029・apparel-us-2026・bom-test-2026・ev-europe-2026・ev-thailand-2026・iphone_global・oil-global-2027・smartx-2027-2029・soysauce-eu-2027・soysauce-jpy-2027・soysauce-us-2027 | Holiday Calendar・Buffering Stock・Capacity Override | golden の組 |
+| Cookie-jp-2026・apparel-global-2028-2029・apparel-us-2026・bom-test-2026・ev-europe-2026・ev-thailand-2026・smartphone-global-2026-2029・oil-global-2027・smartx-2027-2029・soysauce-eu-2027・soysauce-jpy-2027・soysauce-us-2027 | Holiday Calendar・Buffering Stock・Capacity Override | golden の組 |
 | rice-japan-2027-2028 | 上の 3 つ＋**Rice Seasonal** | golden の組 |
-| ev-thailand-2026_update・india-ghee-2026・iphone・soysauce-jpy-2027-alloc | Holiday Calendar・Buffering Stock・Capacity Override | **golden なし**。Owner の決定（2026-10-09）で safe の 3 つ |
+| ev-thailand-2026_update・smartphone・soysauce-jpy-2027-alloc | Holiday Calendar・Buffering Stock・Capacity Override | **golden なし**。Owner の決定（2026-10-09）で safe の 3 つ |
 
-- golden の無いモデルについて：依頼書は「今の GUI の既定の組」を書くとしていたが、GUI の既定は**全部 OFF**だった（チェックは `BooleanVar(value=False)` で作られ、前の画面のチェックは手で付けたもの）。空の組だと headless の既定（safe）からも外れ、india-ghee のディワリの需要の倍率などが入らなくなるため、確認のうえ safe の 3 つにした。
-- `iphone` には `planning_config.csv` が無かったので、この 1 行だけのファイルを作った（`warmup_lt`・`planning_start` が無いので、助走の生成は前と同じく何もしない）。ほかのモデルの `warmup_lt`・`cpu_size`・`lot_flow_mode` の読み込みと助走の結果は変わらないことを確かめた。
+- golden の無いモデルについて：依頼書は「今の GUI の既定の組」を書くとしていたが、GUI の既定は**全部 OFF**だった（チェックは `BooleanVar(value=False)` で作られ、前の画面のチェックは手で付けたもの）。空の組だと headless の既定（safe）からも外れるため、確認のうえ safe の 3 つにした。
+- `smartphone-legacy` には `planning_config.csv` が無かったので、この 1 行だけのファイルを作った（`warmup_lt`・`planning_start` が無いので、助走の生成は前と同じく何もしない）。ほかのモデルの `warmup_lt`・`cpu_size`・`lot_flow_mode` の読み込みと助走の結果は変わらないことを確かめた。
 - smartx の Capacity Layer は golden で OFF なので、組に入れていない（既定 OFF のまま）。
 
 ### 1.2 GUI と headless
@@ -62,9 +62,8 @@ recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,Capacit
 | ev-europe-2026 | golden | recommended_plugins | ✓ |
 | ev-thailand-2026 | golden | recommended_plugins | ✓ |
 | ev-thailand-2026_update | 明示の safe（golden なし） | recommended_plugins | ✓ |
-| india-ghee-2026 | 明示の safe（golden なし） | recommended_plugins | ✓ |
-| iphone | — | — | **計画の後の PPC で止まる**（下記） |
-| iphone_global | golden | recommended_plugins | ✓ |
+| smartphone | — | — | **計画の後の PPC で止まる**（下記） |
+| smartphone-global-2026-2029 | golden | recommended_plugins | ✓ |
 | oil-global-2027 | golden | recommended_plugins | ✓ |
 | rice-japan-2027-2028 | golden | recommended_plugins | ✓（Rice Seasonal を含む） |
 | smartx-2027-2029 | golden | recommended_plugins | ✓ |
@@ -75,7 +74,7 @@ recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,Capacit
 
 「一致」＝psi・ppc・forward・period・products・プラグインの組・lot_flow_mode がすべて同じ（付表 `p1.csv`）。
 
-- **`iphone`**：PPC が「No FX rate found for currency='CNY'」で止まる。前からの既知の事象（旧サンプルの為替表に CNY が無い。golden の対象外、CLAUDE.md の golden の節）。プラグインの組とは関係なく、`--plugins safe` でも同じ。計画そのもの（Flow Check）は最後まで動く（§3）。
+- **`smartphone-legacy`**（2026-10-09 削除済み）：PPC が「No FX rate found for currency='CNY'」で止まる。前からの既知の事象（旧サンプルの為替表に CNY が無い。golden の対象外、CLAUDE.md の golden の節）。プラグインの組とは関係なく、`--plugins safe` でも同じ。計画そのもの（Flow Check）は最後まで動く（§3）。
 
 **GUI**（`python -m main` と同じ窓、モデルのコピーを読み込み、チェックは読み込みで決まったまま＝`tools/gui_generation_line_check.py --plugins auto`）：
 
@@ -140,7 +139,7 @@ recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,Capacit
 wom/plugins/selection.py
 tools/plugin_defaults_check.py
 tests/test_public_readiness.py
-data/sample/iphone/planning_config.csv
+data/sample/smartphone-legacy/planning_config.csv
 docs/development/WOM_PublicReadiness_Plugins_Report.md
 docs/development/public_readiness/ （付表・画像）
 ```
@@ -148,9 +147,9 @@ docs/development/public_readiness/ （付表・画像）
 ### 変更
 
 ```
-data/sample/*/planning_config.csv（16 モデル、recommended_plugins の 1 行）
+data/sample/*/planning_config.csv（15 モデル、recommended_plugins の 1 行）
   Cookie-jp-2026, apparel-global-2028-2029, apparel-us-2026, bom-test-2026, ev-europe-2026,
-  ev-thailand-2026, ev-thailand-2026_update, india-ghee-2026, iphone_global, oil-global-2027,
+  ev-thailand-2026, ev-thailand-2026_update, smartphone-global-2026-2029, oil-global-2027,
   rice-japan-2027-2028, smartx-2027-2029, soysauce-eu-2027, soysauce-jpy-2027,
   soysauce-jpy-2027-alloc, soysauce-us-2027
 data/sample/rice-japan-2027-2028/README.md

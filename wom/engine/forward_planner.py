@@ -196,7 +196,7 @@ class ForwardPlanResult:
     p_copied_node_ids:  List[str]   = field(default_factory=list)
     opening_inv_counts: Dict[str, int] = field(default_factory=dict)
 
-    # RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 B4 -- recorded in BOTH modes,
+    # RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 B4 -- recorded in BOTH modes,
     # the plan is not changed by recording them:
     #   supply_duplicate_ids (node_id, week_label, lot_id, count): the supply
     #       side of a node-week (previous I + this week's P, after Step 0) holds
@@ -376,7 +376,7 @@ class ForwardPlanner:
                 if node.is_decoupling and node.plan_mode == "push":
                     # PUSH decoupling node: propagate ACTUAL lots (not display S) to parent.
                     # psi4supply[w][S] = demand_staircase (maintained for display/CO visibility).
-                    # actual_s = min(available, demand) -- physically shipped to TSMC_TW etc.
+                    # actual_s = min(available, demand) -- physically shipped to Foundry_A_TW etc.
                     #
                     # Kitting List stage 1 (request_kitting_stage1.md): NOT recorded here.
                     # This inline extend is a second, separate propagation path from

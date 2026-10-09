@@ -34,7 +34,7 @@ import time
 T_START = time.perf_counter()
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-MODELS = ["ev-thailand-2026", "iphone_global", "oil-global-2027"]
+MODELS = ["ev-thailand-2026", "smartphone-global-2026-2029", "oil-global-2027"]
 WINDOW = "1400x860+20+20"
 
 

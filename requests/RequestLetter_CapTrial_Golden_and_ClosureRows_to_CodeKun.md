@@ -48,7 +48,7 @@ value だけを 0 にすると `partial_capacity` の「能力0＝未設定」�
 |---|---|---|---|
 | `data/sample/rice-japan-2027-2028/holiday_calendar.csv` | GW・OBON・NEWYEAR の全16行（DC_Higashi、DC_Nishi、Seihaku_E、Seihaku_W） | partial_capacity, 0.2〜0.5 | supply_closure, 0 |
 | `data/sample/rice-japan-2027-2028_BK260613_1515/holiday_calendar.csv` | 同じ16行 | 同上 | 同上（`.gitignore` の対象なので diff には出ない） |
-| `data/sample/iphone_global/holiday_calendar.csv` | DIWALI_2027〜2029（BoschSensor_IN）3行 | partial_capacity, 0.5 | supply_closure, 0 |
+| `data/sample/smartphone-global-2026-2029/holiday_calendar.csv` | DIWALI_2027〜2029（Sensor_A_IN）3行 | partial_capacity, 0.5 | supply_closure, 0 |
 | `data/sample/smartx-2027-2029/holiday_calendar.csv` | DIWALI_2026〜2030（SensorIN）5行 | partial_capacity, 0.5 | supply_closure, 0 |
 | `data/sample/holiday_calendar.csv`（旧 root sample） | GW_2027・GW_2028（DAD_Japan）2行 | partial_capacity, 0.3 | supply_closure, 0 |
 | `data/sample/oil-global-2027/holiday_calendar.csv` | Hormuz_Strait_Closure_2027（Refinery_Local_H）1行 | partial_capacity, 1.0 | supply_closure, 0 |
@@ -60,7 +60,7 @@ value だけを 0 にすると `partial_capacity` の「能力0＝未設定」�
 
 ### 2.3 見込み（予測。確認は実測で）
 
-GPT-6 Astra君の Trial-02 §5.1 では、rice・iphone・smartx の上記の行は、休業週に活動がありませんでした。そのため PSI は変わらない見込みです。変わる可能性が高いのは次の2つです。
+GPT-6 Astra君の Trial-02 §5.1 では、rice・smartphone・smartx の上記の行は、休業週に活動がありませんでした。そのため PSI は変わらない見込みです。変わる可能性が高いのは次の2つです。
 
 - **ev-thailand-2026_update の Factory_Import_CN（mom / push）**：これまで cap 5 だった週の実出荷が 0 になり、前回の ev-thailand の SE2 と同じ型の動き（休業前の出荷不足と、休業後の在庫の積み上がり）が出る可能性がある。
 - **oil の Refinery_Local_H（mom / pull、60週）**：Backward の充填目標が 0 になる。

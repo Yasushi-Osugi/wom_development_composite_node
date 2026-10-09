@@ -67,7 +67,7 @@ def _resolve_chain(
         DC_AMER/DC_EMEA/DC_APAC) that must not be conflated into one
         chain shared by every channel.
       dict[product_id -> list]                   -- legacy, per-product flat
-        chain (still used by the "cookie"/"iphone_global" named scenarios
+        chain (still used by the "cookie"/"smartphone_global" named scenarios
         in wom/ppc/ppc_engine.py, which only ever have a single DAD branch
         per product_id so the distinction is moot for them).
       list[str] / str / None                     -- legacy, single value

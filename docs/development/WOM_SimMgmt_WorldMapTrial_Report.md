@@ -21,7 +21,7 @@
 | 全テスト | **658 passed／3 skipped、失敗 0**（1 回の実行、9 分 54 秒） | 636 → 658 件（Part 1：14、Part 2：8） |
 | golden | 変わっていない | 計画・PPC の計算に触れていない。全テストに含まれる golden が緑 |
 
-副作用・気づいたこと（§6）：Run Simulation は、`capacity_plan.csv` に `region` 列のあるモデル（iphone・iphone_global・smartx）でしか動かない（前からの制約）。Simulation の失敗の詳細が「NoneType: None」になって消えていたのを直した。
+副作用・気づいたこと（§6）：Run Simulation は、`capacity_plan.csv` に `region` 列のあるモデル（smartphone・smartphone-global-2026-2029・smartx）でしか動かない（前からの制約）。Simulation の失敗の詳細が「NoneType: None」になって消えていたのを直した。
 
 ---
 
@@ -47,7 +47,7 @@
 
 ### 1.3 受入（観測結果）
 
-`python -m tools.gui_sim_plan_check`：実アプリの窓（`WOMApp`、1536×824。大杉さんの画面で最大化したときの大きさ）で、iphone_global を読み込み、画面のボタンと同じ処理で動かして、部品の値を読んだ。エラー 0 件。値は `docs/development/sim_mgmt_worldmap/part1/gui_sim_plan_steps.json`、画像は同じフォルダ。
+`python -m tools.gui_sim_plan_check`：実アプリの窓（`WOMApp`、1536×824。大杉さんの画面で最大化したときの大きさ）で、smartphone-global-2026-2029 を読み込み、画面のボタンと同じ処理で動かして、部品の値を読んだ。エラー 0 件。値は `docs/development/sim_mgmt_worldmap/part1/gui_sim_plan_steps.json`、画像は同じフォルダ。
 
 | 段階 | P&L Summary（シナリオ／Revenue／出所） | Landed Cost の WOM Scen | チャートの横軸 | 上の帯 |
 |---|---|---|---|---|
@@ -59,7 +59,7 @@
 
 - 段階 2・3 で、Management に渡る `ScenarioManager` には Base・Upside・Downside・Planning の 4 シナリオがある（Simulation の後の Planning）。表に出るのは Planning だけであることを確かめた（受入の「Simulation の数字が残らない」）。
 - 段階 5：画面の記録（0.2 秒ごと）は「Simulation の値 → PPC 計算中（Planning の結果）→ Simulation の値」の 3 つだけ。遅れて終わった PPC の結果（売上 640,773,326,445,600）は**受け取らない**（`accepted: False`）。
-- 自動の確認は iphone_global で行った。依頼書の例の ev-thailand-2026 は、Run Simulation そのものが動かない（§6.1）。
+- 自動の確認は smartphone-global-2026-2029 で行った。依頼書の例の ev-thailand-2026 は、Run Simulation そのものが動かない（§6.1）。
 
 テスト（`tests/test_sim_mgmt_display.py`）：Management のパネル（Tk）で、Simulation → Planning（PPC 計算中・完了）→ Simulation → モデルの読み込み直し、の順に、表・Landed Cost・Node P&L・チャート・帯の値を確かめる。前回のテスト（`tests/test_ppc_run_info.py`）も変えずに緑。
 
@@ -92,13 +92,13 @@
 | モデル（チャネル数） | 窓 1536×824（大杉さんの最大化） | 1280×720 | 1100×640 | 直す前（同じ 3 通り） |
 |---|---|---|---|---|
 | ev-thailand-2026（6） | 重なり 0・2 列・6 行とも表示 | 0・2 列・6 行 | 0・詰めた 1 列 | 7〜8 組 |
-| iphone_global（9） | 0・2 列・5 行＋「+4 more」 | 0・詰めた 1 列 | 0・詰めた 1 列 | 7〜8 組 |
+| smartphone-global-2026-2029（9） | 0・2 列・5 行＋「+4 more」 | 0・詰めた 1 列 | 0・詰めた 1 列 | 7〜8 組 |
 | apparel-global-2028-2029（4） | 0・2 列・4 行 | 0・2 列 | 0・詰めた 1 列 | 6〜8 組 |
 | oil-global-2027（21） | 0・2 列・5 行＋「+16 more」 | 0・詰めた 1 列 | 0・詰めた 1 列 | 7〜8 組 |
 
 - 各モデルで SKU＝All と 1 つの SKU の 2 通り、計 24 通り。**直した後は 24 通りとも重なり 0**。
 - 1100×640 は、パネルが 1 つの窓の中で特に小さい場合の確認（最後の手段「縁で切る」が出る。重なりはない）。
-- 実アプリの中の PPC タブ（`part1/3_planning_ppc_done__ppc_tab.png`、iphone_global）は、左に WOM のサイドバーがある分パネルが小さく、「詰めた 1 列」で「+9 more channel(s)」になる。文字は小さいが重ならない。**未確認**：大杉さんの画面で、実際の ev-thailand の EVmaker_Import を開いたときの見え方（自動の確認は同じ大きさの窓で行った）。
+- 実アプリの中の PPC タブ（`part1/3_planning_ppc_done__ppc_tab.png`、smartphone-global-2026-2029）は、左に WOM のサイドバーがある分パネルが小さく、「詰めた 1 列」で「+9 more channel(s)」になる。文字は小さいが重ならない。**未確認**：大杉さんの画面で、実際の ev-thailand の EVmaker_Import を開いたときの見え方（自動の確認は同じ大きさの窓で行った）。
 
 テスト（`tests/test_sim_mgmt_display.py`）：4 つのパネルの大きさ×チャネル 0・3・21 本で、各列の行が前の行の高さより下から始まること、値の行が切られないこと、「+N more」があること、2 列のとき列どうしが離れていること。長いチャネル名は末尾が残ること。
 
@@ -129,7 +129,7 @@
 
 ### 3.2 試作の画面
 
-`python -m wom.worldmap_ne [--model ev-thailand-2026|iphone_global|oil-global-2027] [--lod auto|110m|50m|10m] [--no-blit]`
+`python -m wom.worldmap_ne [--model ev-thailand-2026|smartphone-global-2026-2029|oil-global-2027] [--lod auto|110m|50m|10m] [--no-blit]`
 
 - 独立した窓（今の World Map タブとは別）。上の帯：モデル、細かさ（auto／固定）、範囲のボタン（World・Asia・Thailand・Bangkok・Nodes）、▶ ⏸ ⏹、blit の切り替え、直前の描画の時間。ホイールでズーム、左ドラッグで移動。
 - 地図：陸地の塗り、海岸線、国境線（破線）。投影は Web メルカトル（今のタイルの地図と同じ見え方）で、numpy で読み込み時に 1 回だけ計算する。cartopy などは使わない。
@@ -140,7 +140,7 @@
   - 線は、変換のときに最大 256 点ずつの部分に分けてあり、表示範囲（と、その周り半画面分）に入る部分だけを描く。
   - 地図は起動時に一度読み込み、層ごとに 1 つの LineCollection／PolyCollection で描く。
   - 週の再生は blitting（地図と動かない線を一度描いて画像として取っておき、週ごとには流れの線・拠点・週の文字だけを描き直す）。
-- 画面の画像：`docs/development/sim_mgmt_worldmap/screens/`（iphone の世界全体、oil のアジア、ev-thailand のタイ・バンコク・週の再生の途中、案 B の 3 枚）。
+- 画面の画像：`docs/development/sim_mgmt_worldmap/screens/`（smartphone の世界全体、oil のアジア、ev-thailand のタイ・バンコク・週の再生の途中、案 B の 3 枚）。
 
 ## 4. 計測（大杉さんの Windows PC）
 
@@ -187,7 +187,7 @@
 | モデル | 拠点の範囲・blitting あり | 拠点の範囲・なし | 世界全体・あり | 世界全体・なし |
 |---|---|---|---|---|
 | ev-thailand-2026（拠点 14・線 12） | 32.7（34.1）ms | 46.8（50.6）ms | 30.8（33.0）ms | 51.6（55.8）ms |
-| iphone_global（拠点 15・線 10） | 32.9（38.1）ms | 51.9（55.7）ms | 30.7（32.5）ms | 52.1（54.2）ms |
+| smartphone-global-2026-2029（拠点 15・線 10） | 32.9（38.1）ms | 51.9（55.7）ms | 30.7（32.5）ms | 52.1（54.2）ms |
 | oil-global-2027（拠点 53・線 45） | 34.2（38.7）ms | 54.7（56.8）ms | 32.4（34.8）ms | 54.4（57.6）ms |
 
 - blitting で 3〜4 割速くなる。どちらでも 1 秒に 15 週以上は描ける（今の World Map の▶の既定の間隔は 1,000 ms）。
@@ -234,12 +234,12 @@
 
 ## 6. 副作用・気づいたこと
 
-1. **Run Simulation は、ev-thailand-2026 など多くのモデルで動かない**（前からの制約）。`WOMInputs.from_files` の `load_capacity_plan` が `capacity_plan.csv` に `region` 列を求めるが、`region` 列があるのは iphone・iphone_global・smartx-2027-2029 だけ（ほかは `node_name`）。エラーは「[capacity_plan] Missing required columns: ['region']」。今回は直していない（Simulation の入力の形を決める話のため）。1.1 の自動の確認は iphone_global で行った。
+1. **Run Simulation は、ev-thailand-2026 など多くのモデルで動かない**（前からの制約）。`WOMInputs.from_files` の `load_capacity_plan` が `capacity_plan.csv` に `region` 列を求めるが、`region` 列があるのは smartphone・smartphone-global-2026-2029・smartx-2027-2029 だけ（ほかは `node_name`）。エラーは「[capacity_plan] Missing required columns: ['region']」。今回は直していない（Simulation の入力の形を決める話のため）。1.1 の自動の確認は smartphone-global-2026-2029 で行った。
 2. Simulation の失敗の窓の中身が「NoneType: None」になっていたのを直した（§1.2 の 7）。
 3. Planning Engine が Simulation の `ScenarioManager` にシナリオを**足す**作りは変えていない。Charts・KPI Table・Scenario Delta などのタブには、Simulation の後の Planning で、Base/Upside/Downside と Planning が並んで出る（Management だけ、Planning の行に絞った）。
 4. Management の「Management Issues & Risks」（シナリオ間の比較の文章）は、依頼書の対象（P&L・Landed Cost・CCC・GP）に入っていないので変えていない。Simulation の後に Planning を実行すると、ここには Simulation の money の比較が残る。
 5. 既存の GUI の自動確認の道具（`tools/gui_two_model_check.py` など）は DPI を意識する動作で窓を開く。WOM の本体（意識しない）とは窓の中の大きさが違う。今回の 2 つの道具（`tools/gui_sim_plan_check.py`・`tools/ppc_kpi_summary_check.py`）は本体と同じ、意識しない動作にした。
-6. iphone_global の `node_master.csv` は、`Retail_*` の 9 拠点に緯度・経度が無い（今の World Map タブでも描かれない）。試作でも描かれない。
+6. smartphone-global-2026-2029 の `node_master.csv` は、`Retail_*` の 9 拠点に緯度・経度が無い（今の World Map タブでも描かれない）。試作でも描かれない。
 
 ## 7. テスト
 
@@ -255,7 +255,7 @@
 
 ### Part 1
 
-1. `python -m main` → Load Model Folder で `data\sample\iphone_global` を選ぶ（ev-thailand では Run Simulation が動かない。§6.1）。
+1. `python -m main` → Load Model Folder で `data\sample\smartphone-global-2026-2029` を選ぶ（ev-thailand では Run Simulation が動かない。§6.1）。
 2. **Run Simulation**。Management：帯が水色「表示中：Run Simulation の結果」。P&L Summary に Base・Downside・Upside の 3 行と数字、出所の欄に「money によるシナリオ比較（PPC ではない）」。Landed Cost・CCC・GP のチャートも 3 シナリオ。窓の上の帯に「表示中の結果：Run Simulation」。
 3. **Run Planning Engine**。計画が終わると、P&L Summary は **Planning の 1 行だけ**（PPC 計算中は空欄）。PPC が終わると、PPC の台帳の値。
 4. もう一度 **Run Simulation** → 3 シナリオの money の値だけに戻る。
@@ -269,7 +269,7 @@ python -m wom.worldmap_ne --model ev-thailand-2026
 
 - 上の帯のボタンで World／Asia／Thailand／Bangkok／Nodes。ホイールでズーム、左ドラッグで移動。帯の右に「LOD・描いた部分の数・描画の時間」。
 - ▶ で週の再生。「blit」を外すと、週ごとに地図ごと描き直す（遅くなるのを比べられる）。
-- モデルは上の帯で iphone_global・oil-global-2027 に替えられる。
+- モデルは上の帯で smartphone-global-2026-2029・oil-global-2027 に替えられる。
 
 計測をやり直す：`python -m wom.worldmap_ne.bench`（約 3 分。結果は `docs\development\sim_mgmt_worldmap\bench.json` を上書き）。地図データを作り直す：`python -m tools.build_worldmap_ne`（cartopy のキャッシュから。ネットワークに出ない）。
 

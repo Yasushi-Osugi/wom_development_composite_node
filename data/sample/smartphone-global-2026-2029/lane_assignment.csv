@@ -1,0 +1,10 @@
+sku_id,leaf_node_name,mom_node_id,priority
+Phone16,Retail_AMER,IN:mom:EMS_A_IN:Phone16,1
+Phone16,Retail_EMEA,IN:mom:EMS_A_CN:Phone16,1
+Phone16,Retail_APAC,IN:mom:EMS_A_CN:Phone16,1
+Phone15,Retail_AMER,IN:mom:EMS_A_CN_i15:Phone15,1
+Phone15,Retail_EMEA,IN:mom:EMS_A_CN_i15:Phone15,1
+Phone15,Retail_APAC,IN:mom:EMS_A_CN_i15:Phone15,1
+Phone17,Retail_AMER,IN:mom:EMS_A_CN_i17:Phone17,1
+Phone17,Retail_EMEA,IN:mom:EMS_A_CN_i17:Phone17,1
+Phone17,Retail_APAC,IN:mom:EMS_A_CN_i17:Phone17,1

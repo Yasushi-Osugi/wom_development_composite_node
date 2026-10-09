@@ -48,7 +48,7 @@
   "status": "💰 PPC complete (sample data) — Lots: 624  Margin: 56.5%  | PPC tab refreshed",
   "title": "WOM – Weekly Operation Model  base_e575042"
  },
- "B_iphone_planned_ppc_running": {
+ "B_smartphone_planned_ppc_running": {
   "pl_summary": [
    [
     "Planning",
@@ -97,7 +97,7 @@
   "status": "Planning Engine complete. Products: 3  |  Nodes: 32  |  Planning: fill 90.1%, stockout 113,668（実出荷ベース）  |  Check Charts/KPI/Management tabs for 'Planning' scenario  |  💰 Running PPC …",
   "title": "WOM – Weekly Operation Model  base_e575042"
  },
- "C_iphone_ppc_done": {
+ "C_smartphone_ppc_done": {
   "pl_summary": [
    [
     "Planning",
@@ -113,8 +113,8 @@
   ],
   "node_pl_first": [
    [
-    "Foxconn_CN_i15",
-    "iPhone15",
+    "EMS_A_CN_i15",
+    "Phone15",
     "0",
     "34,361,288,955,900",
     "-34,361,288,955,900",
@@ -123,7 +123,7 @@
    ],
    [
     "Retail_AMER_i15",
-    "iPhone15",
+    "Phone15",
     "37,079,557,882,200",
     "6,171,306,244,808",
     "30,908,251,637,392",

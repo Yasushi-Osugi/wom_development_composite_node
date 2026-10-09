@@ -1,7 +1,0 @@
-sku_id,leaf_node_name,mom_node_id,priority
-Ghee_Domestic,Retail_Mumbai,IN:mom:Ghee_Plant_Anand:Ghee_Domestic,1
-Ghee_Domestic,Retail_Delhi,IN:mom:Ghee_Plant_Anand:Ghee_Domestic,1
-Ghee_Domestic,Retail_Bangalore,IN:mom:Ghee_Plant_Anand:Ghee_Domestic,1
-Ghee_Export,Retail_Dubai,IN:mom:Ghee_Plant_Export:Ghee_Export,1
-Ghee_Export,Retail_AbuDhabi,IN:mom:Ghee_Plant_Export:Ghee_Export,1
-Ghee_Export,Retail_Sharjah,IN:mom:Ghee_Plant_Export:Ghee_Export,1

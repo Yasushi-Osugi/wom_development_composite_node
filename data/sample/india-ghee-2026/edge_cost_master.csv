@@ -1,7 +1,0 @@
-scenario,src_region,dst_region,tariff_rate,fx_rate,src_currency,dst_currency,freight_usd_per_lot,notes
-Base,IN,IN,0.0,1.0,INR,INR,6,国内輸送：標準
-Base,IN,AE,0.05,22.6,INR,AED,42,GCC共通対外関税5%（CEPA未適用時の参照値）
-CEPA_Preferential,IN,IN,0.0,1.0,INR,INR,6,国内変化なし
-CEPA_Preferential,IN,AE,0.0,22.6,INR,AED,42,2022年 印UAE CEPA によりギー含む多数の農産品で関税ゼロ化（実際の運用値）
-MFN_Restore,IN,IN,0.0,1.0,INR,INR,6,国内変化なし
-MFN_Restore,IN,AE,0.05,22.6,INR,AED,42,CEPA停止・GCC共通対外関税5%へ復帰する想定シナリオ

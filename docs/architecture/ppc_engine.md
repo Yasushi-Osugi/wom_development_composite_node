@@ -75,7 +75,7 @@ The engine input is a `sales_records` DataFrame with visible columns `lot_id`, `
 
 `ppc_runner.py` is the GUI/planning bridge. It loads rules, converts PSI to sales records, filters to PPC-known products/channels, falls back to sample sales if no compatible PSI records exist, detects scenario type, builds engine parameters, runs `PPCSimulationEngine`, and exports results.
 
-Scenario detection is implemented in `detect_scenario()` with visible branches for rice, iPhone global, cookie, and legacy iPhone. Generic mode in `ppc_runner.py` can infer MOM, supplier, DAD, and DAD chain from an SCTree when the scenario is not one of the named cases.
+Scenario detection is implemented in `detect_scenario()` with visible branches for rice, Smartphone global, cookie, and legacy Smartphone. Generic mode in `ppc_runner.py` can infer MOM, supplier, DAD, and DAD chain from an SCTree when the scenario is not one of the named cases.
 
 PPC export writes:
 

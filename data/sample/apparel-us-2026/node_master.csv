@@ -1,12 +1,12 @@
 node_id,node_name,node_type,lat,lon,sku_id,region,description
-SP_Apparel_Outsourced,SP_Apparel_Outsourced（H&M型 輸入調達本部）,procurement,31.23,121.47,,CN,H&M型 輸入調達の調達本部
+SP_Apparel_Outsourced,SP_Apparel_Outsourced（Retailer_A型 輸入調達本部）,procurement,31.23,121.47,,CN,Retailer_A型 輸入調達の調達本部
 Factory_Import_CN,契約工場（中国）,mother_plant,31.23,121.47,Apparel_Outsourced_S1,CN,ファブレス契約工場（8季節共通）
 Fabric_CN,生地サプライヤー（中国）,sku_supplier,31.23,121.47,Apparel_Outsourced_S1,CN,委託先向け生地調達（8季節共通）
 DC_Import_Buffer,輸入バッファDC（米国内）,region_dc,33.75,-118.19,,CA,輸入バッファ倉庫 LT長め（8季節共通）
 Sales_US_TX_I,TX店舗（輸入品）,marketing,32.78,-96.8,,TX,輸入品小売（8季節共通）
 Sales_US_CA_I,CA店舗（輸入品）,marketing,34.05,-118.24,,CA,輸入品小売（8季節共通）
 Sales_US_NY_I,NY店舗（輸入品）,marketing,40.71,-74.01,,NY,輸入品小売（8季節共通）
-SP_Apparel_Integrated,SP_Apparel_Integrated（Zara型 垂直統合本部）,procurement,43.36,-8.41,,ES,Zara型 垂直統合の調達本部
+SP_Apparel_Integrated,SP_Apparel_Integrated（Retailer_B型 垂直統合本部）,procurement,43.36,-8.41,,ES,Retailer_B型 垂直統合の調達本部
 Factory_Local_ES,自社工場（スペイン）,mother_plant,43.36,-8.41,Apparel_Integrated_S1,ES,垂直統合・自社工場（8季節共通）
 Fabric_ES,生地サプライヤー（スペイン）,sku_supplier,43.36,-8.41,Apparel_Integrated_S1,ES,自社/系列向け生地調達（8季節共通）
 DC_Local_US,航空輸送受入DC（米国内）,region_dc,33.75,-118.19,,CA,航空輸送受入DC LT短め（8季節共通）

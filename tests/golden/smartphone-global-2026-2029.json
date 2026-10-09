@@ -1,0 +1,302 @@
+{
+  "backward": {
+    "cap_soft_envelope_count": 0
+  },
+  "case": "smartphone-global-2026-2029",
+  "config": {
+    "lot_flow_mode": "identity",
+    "plugins": [
+      "BufferingStockOptimizerPlugin",
+      "CapacityOverridePlugin",
+      "HolidayCalendarPlugin"
+    ]
+  },
+  "forward": {
+    "cap_hard_deferred_lot_weeks": 55413,
+    "cap_hard_deferred_lots": 55413,
+    "cap_soft_violation_count": 0
+  },
+  "period": {
+    "start": "2026-W28",
+    "weeks": 182
+  },
+  "ppc": {
+    "base_currency": "JPY",
+    "cost_base": 37695124383917.75,
+    "gross_margin_pct": 0.411946,
+    "gross_profit_base": 26406289089502.25,
+    "revenue_base": 64101413473420.0,
+    "tariff_base": 4720497327977.75,
+    "total_lots": 1127,
+    "trust_event_count": 390
+  },
+  "products": [
+    "Phone16",
+    "Phone15",
+    "Phone17"
+  ],
+  "psi": {
+    "Phone15": {
+      "DC_AMER_i15": {
+        "CO": 0,
+        "I_max": 400,
+        "I_sum": 34580,
+        "P": 34580,
+        "S": 34580,
+        "series_md5": "a26a597a9c16"
+      },
+      "DC_APAC_i15": {
+        "CO": 2192616,
+        "I_max": 320,
+        "I_sum": 7895,
+        "P": 7895,
+        "S": 27664,
+        "series_md5": "402b257bf406"
+      },
+      "DC_EMEA_i15": {
+        "CO": 689840,
+        "I_max": 280,
+        "I_sum": 18926,
+        "P": 18926,
+        "S": 24204,
+        "series_md5": "54f8e4cd4ea2"
+      },
+      "EMS_A_CN_i15": {
+        "CO": 968000,
+        "I_max": 500,
+        "I_sum": 61401,
+        "P": 61401,
+        "S": 66901,
+        "series_md5": "dff02d3d9908"
+      },
+      "Foundry_A_TW_i15": {
+        "CO": 180500,
+        "I_max": 1000,
+        "I_sum": 5655,
+        "P": 61401,
+        "S": 62401,
+        "series_md5": "f4d329d2edc3"
+      },
+      "Retail_AMER_i15": {
+        "CO": 0,
+        "I_max": 400,
+        "I_sum": 34580,
+        "P": 34580,
+        "S": 34580,
+        "series_md5": "3c4601f93389"
+      },
+      "Retail_APAC_i15": {
+        "CO": 2153078,
+        "I_max": 320,
+        "I_sum": 7895,
+        "P": 7895,
+        "S": 27664,
+        "series_md5": "63e9cc590a98"
+      },
+      "Retail_EMEA_i15": {
+        "CO": 679284,
+        "I_max": 280,
+        "I_sum": 18926,
+        "P": 18926,
+        "S": 24204,
+        "series_md5": "4ba063646935"
+      },
+      "SP_Phone15": {
+        "CO": 2962875,
+        "I_max": 4720,
+        "I_sum": 47200,
+        "P": 61401,
+        "S": 86448,
+        "series_md5": "29e5dc2a5ed7"
+      },
+      "SiliconWafer_TW_i15": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 61401,
+        "S": 61401,
+        "series_md5": "a22fdc336fa3"
+      }
+    },
+    "Phone16": {
+      "DC_AMER": {
+        "CO": 0,
+        "I_max": 1009,
+        "I_sum": 100306,
+        "P": 100306,
+        "S": 100306,
+        "series_md5": "6a328778b64c"
+      },
+      "DC_APAC": {
+        "CO": 3323087,
+        "I_max": 720,
+        "I_sum": 48397,
+        "P": 48397,
+        "S": 80184,
+        "series_md5": "b268eecc8ff4"
+      },
+      "DC_EMEA": {
+        "CO": 0,
+        "I_max": 678,
+        "I_sum": 70736,
+        "P": 70736,
+        "S": 70736,
+        "series_md5": "bd937289a6c5"
+      },
+      "EMS_A_CN": {
+        "CO": 1274400,
+        "I_max": 800,
+        "I_sum": 119133,
+        "P": 119133,
+        "S": 126333,
+        "series_md5": "c1567002522a"
+      },
+      "EMS_A_IN": {
+        "CO": 0,
+        "I_max": 1002,
+        "I_sum": 5628,
+        "P": 100306,
+        "S": 100306,
+        "series_md5": "e85102670227"
+      },
+      "Foundry_A_TW": {
+        "CO": 288800,
+        "I_max": 1600,
+        "I_sum": 11005,
+        "P": 119133,
+        "S": 120733,
+        "series_md5": "04e50ca569bb"
+      },
+      "Retail_AMER": {
+        "CO": 0,
+        "I_max": 1009,
+        "I_sum": 100306,
+        "P": 100306,
+        "S": 100306,
+        "series_md5": "838b170712ae"
+      },
+      "Retail_APAC": {
+        "CO": 3259513,
+        "I_max": 720,
+        "I_sum": 48397,
+        "P": 48397,
+        "S": 80184,
+        "series_md5": "0998b7fb148e"
+      },
+      "Retail_EMEA": {
+        "CO": 0,
+        "I_max": 678,
+        "I_sum": 70736,
+        "P": 70736,
+        "S": 70736,
+        "series_md5": "20470b455f86"
+      },
+      "SP_Phone16": {
+        "CO": 3418448,
+        "I_max": 8970,
+        "I_sum": 130490,
+        "P": 219439,
+        "S": 251226,
+        "series_md5": "929ae6e3a841"
+      },
+      "Sensor_A_IN": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 100306,
+        "S": 100306,
+        "series_md5": "d96ab3ce072b"
+      },
+      "SiliconWafer_TW": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 119133,
+        "S": 119133,
+        "series_md5": "225655d36735"
+      }
+    },
+    "Phone17": {
+      "DC_AMER_i17": {
+        "CO": 0,
+        "I_max": 1093,
+        "I_sum": 53300,
+        "P": 53300,
+        "S": 53300,
+        "series_md5": "9d1bb4c084e6"
+      },
+      "DC_APAC_i17": {
+        "CO": 0,
+        "I_max": 874,
+        "I_sum": 42640,
+        "P": 42640,
+        "S": 42640,
+        "series_md5": "eb4b48e911d8"
+      },
+      "DC_EMEA_i17": {
+        "CO": 0,
+        "I_max": 765,
+        "I_sum": 37310,
+        "P": 37310,
+        "S": 37310,
+        "series_md5": "13bb5f06caa3"
+      },
+      "EMS_A_CN_i17": {
+        "CO": 0,
+        "I_max": 75306,
+        "I_sum": 77837,
+        "P": 133250,
+        "S": 133250,
+        "series_md5": "793ed33d3387"
+      },
+      "Foundry_A_TW_i17": {
+        "CO": 0,
+        "I_max": 1771,
+        "I_sum": 4405,
+        "P": 133250,
+        "S": 133250,
+        "series_md5": "0be3b6303a8d"
+      },
+      "Retail_AMER_i17": {
+        "CO": 0,
+        "I_max": 1093,
+        "I_sum": 53300,
+        "P": 53300,
+        "S": 53300,
+        "series_md5": "48d074032d2f"
+      },
+      "Retail_APAC_i17": {
+        "CO": 0,
+        "I_max": 874,
+        "I_sum": 42640,
+        "P": 42640,
+        "S": 42640,
+        "series_md5": "f2be51b86338"
+      },
+      "Retail_EMEA_i17": {
+        "CO": 0,
+        "I_max": 765,
+        "I_sum": 37310,
+        "P": 37310,
+        "S": 37310,
+        "series_md5": "18e3ee6e344a"
+      },
+      "SP_Phone17": {
+        "CO": 0,
+        "I_max": 75013,
+        "I_sum": 3217648,
+        "P": 133250,
+        "S": 133250,
+        "series_md5": "9672fdff16d7"
+      },
+      "SiliconWafer_TW_i17": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 133250,
+        "S": 133250,
+        "series_md5": "1ffd645e3ab7"
+      }
+    }
+  }
+}

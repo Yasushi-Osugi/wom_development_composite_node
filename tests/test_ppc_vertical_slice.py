@@ -4,7 +4,7 @@ tests/test_ppc_vertical_slice.py
 PPC Simulation Engine — Vertical Slice Tests.
 
 Scenario:
-    1 product: IPHONE
+    1 product: SMARTPHONE
     Supplier: Supplier_CN (CNY)
     MOM: MOM_China (CN)
     DAD: DAD_Japan (JP)
@@ -48,7 +48,7 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
-from wom.ppc import PPCSimulationEngine, PPCRuleSet, build_iphone_vs_paths
+from wom.ppc import PPCSimulationEngine, PPCRuleSet, build_smartphone_vs_paths
 from wom.ppc.ppc_fx import FXConverter
 from wom.ppc.ppc_models import LotCostAccumulator
 
@@ -75,7 +75,7 @@ def fx(rules) -> FXConverter:
 
 @pytest.fixture
 def sc_paths():
-    return build_iphone_vs_paths()
+    return build_smartphone_vs_paths()
 
 
 def _sales(lots: list) -> pd.DataFrame:
@@ -107,7 +107,7 @@ class TestT1_ForwardPropagation:
 
     def test_supplier_cost_present(self, rules, sc_paths):
         """Supplier cost event is generated for the lot."""
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         result = eng._result
         supplier_events = [
@@ -118,7 +118,7 @@ class TestT1_ForwardPropagation:
 
     def test_supplier_cost_amount(self, rules, fx, sc_paths):
         """Supplier cost matches ppc_supplier_cost.csv value × FX rate."""
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         result = eng._result
         ev = next(
@@ -134,7 +134,7 @@ class TestT1_ForwardPropagation:
 
     def test_conversion_cost_accumulated(self, rules, sc_paths):
         """Conversion cost (MOM) is also present and non-zero."""
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         result = eng._result
         conv_events = [
@@ -149,7 +149,7 @@ class TestT1_ForwardPropagation:
 
     def test_supplier_plus_conversion_in_accumulator(self, rules, sc_paths):
         """Accumulator supplier_cost_base + conversion_cost_base match events."""
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         acc = eng._result.lot_accumulators[0]
         expected_supplier = 1437.09 * 21.144  # 30,385.83 JPY
@@ -173,7 +173,7 @@ class TestT2_TransferPrice:
         Note: acc.logistics_in_base at test-time also includes MOM→DAD logistics
         added in Step 3, so we use supplier+conversion only (Supplier→MOM logistics=0).
         """
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         acc = eng._result.lot_accumulators[0]
 
@@ -187,8 +187,8 @@ class TestT2_TransferPrice:
     def test_transfer_price_event_fired_once(self, rules, sc_paths):
         """Exactly one transfer_price_set event per lot."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         for lot_id in ["L-JP-001", "L-US-001"]:
@@ -201,8 +201,8 @@ class TestT2_TransferPrice:
     def test_transfer_price_same_for_same_week_and_product(self, rules, sc_paths):
         """Two lots in same week, same product, same MOM → same transfer_price."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         accs = eng._result.lot_accumulators
@@ -220,7 +220,7 @@ class TestT3_TariffCrossBorder:
 
     def test_tariff_on_cn_jp_edge(self, rules, sc_paths):
         """tariff_cost event exists for MOM_China→DAD_Japan (CN→JP)."""
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         tariff_events = [
             e for e in eng._result.ppc_events
@@ -238,7 +238,7 @@ class TestT3_TariffCrossBorder:
 
     def test_no_tariff_on_domestic_jp_edge(self, rules, sc_paths):
         """No tariff event for DAD_Japan→JP_Channel (domestic JP)."""
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         domestic_tariff = [
             e for e in eng._result.ppc_events
@@ -249,7 +249,7 @@ class TestT3_TariffCrossBorder:
 
     def test_tariff_on_jp_us_edge(self, rules, sc_paths):
         """tariff_cost event exists for DAD_Japan→US_Channel (JP→US)."""
-        sales = _sales([("L-US-001", "2026-W01", "US_Channel", "IPHONE")])
+        sales = _sales([("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         us_tariff = [
             e for e in eng._result.ppc_events
@@ -274,7 +274,7 @@ class TestT4_LandedCost:
         landed_cost = transfer_price + logistics(CN→JP) + insurance + tariff(CN→JP)
         Verified via accumulator fields.
         """
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         acc = eng._result.lot_accumulators[0]
 
@@ -305,7 +305,7 @@ class TestT4_LandedCost:
         Concrete sanity: landed cost in JPY must be less than JP market price.
         JP market price W01 = 120,000 JPY.
         """
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         landed_ev = next(
             e for e in eng._result.ppc_events
@@ -323,8 +323,8 @@ class TestT5_FX:
     def test_all_events_have_fx_fields(self, rules, sc_paths):
         """Every PPCEvent (except base-currency ones) has non-zero fx_rate."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         for ev in eng._result.ppc_events:
@@ -337,7 +337,7 @@ class TestT5_FX:
         US revenue: 1024 USD × 150.0 (W01 rate) = 153,600 JPY.
         (ppc_market_price.csv 2026-W01 US_Channel = 1024 USD)
         """
-        sales = _sales([("L-US-001", "2026-W01", "US_Channel", "IPHONE")])
+        sales = _sales([("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         rev_ev = next(
             e for e in eng._result.ppc_events
@@ -349,7 +349,7 @@ class TestT5_FX:
 
     def test_jp_revenue_is_native_jpy(self, rules, sc_paths):
         """JP revenue is already JPY → fx_rate = 1.0."""
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         rev_ev = next(
             e for e in eng._result.ppc_events
@@ -373,8 +373,8 @@ class TestT5_FX:
     def test_kpi_revenue_in_base_currency(self, rules, sc_paths):
         """KPI total_revenue_base is sum of per-lot revenues in JPY."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         kpi = eng._result.kpi_summary
@@ -397,8 +397,8 @@ class TestT6_BackwardLotBased:
             - US channel has additional JP→US tariff deducted
         """
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         accs = eng._result.lot_accumulators
@@ -411,7 +411,7 @@ class TestT6_BackwardLotBased:
 
     def test_backward_allowable_positive_for_jp(self, rules, sc_paths):
         """JP lot backward allowable cost should be positive (market covers MOM costs)."""
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = _run_engine(sales, rules, sc_paths)
         acc = eng._result.lot_accumulators[0]
         assert acc.backward_allowable_base > 0
@@ -419,8 +419,8 @@ class TestT6_BackwardLotBased:
     def test_backward_event_per_lot(self, rules, sc_paths):
         """One backward_allowable event generated per lot."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         for lot_id in ["L-JP-001", "L-US-001"]:
@@ -445,15 +445,15 @@ class TestT7_Reconciliation:
         We'll test by checking that normal scenario has NO NEGATIVE_MARGIN.
         """
         return _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
 
     def test_no_trust_events_normal_scenario(self, rules, sc_paths):
         """Base scenario (JP+US W01) should have no NEGATIVE_MARGIN trust events."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         negative_margin = [
@@ -486,8 +486,8 @@ class TestT7_Reconciliation:
             node_profit_zone=rules.node_profit_zone,
         )
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = PPCSimulationEngine(
             sales_records=sales,
@@ -502,9 +502,9 @@ class TestT7_Reconciliation:
     def test_lot_reconciliation_df_has_all_lots(self, rules, sc_paths):
         """lot_reconciliation DataFrame has one row per lot."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
-            ("L-JP-002", "2026-W02", "JP_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
+            ("L-JP-002", "2026-W02", "JP_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         df = eng._result.lot_reconciliation
@@ -520,8 +520,8 @@ class TestT8_ProfitZone:
     def test_profit_zones_all_present(self, rules, sc_paths):
         """Profit zone summary contains expected zones."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         zones = set(eng._result.profit_zone_summary["profit_zone"])
@@ -532,8 +532,8 @@ class TestT8_ProfitZone:
     def test_channel_zones_have_revenue(self, rules, sc_paths):
         """OUTBOUND_CHANNEL_PROFIT zone has positive revenue."""
         sales = _sales([
-            ("L-JP-001", "2026-W01", "JP_Channel", "IPHONE"),
-            ("L-US-001", "2026-W01", "US_Channel", "IPHONE"),
+            ("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE"),
+            ("L-US-001", "2026-W01", "US_Channel", "SMARTPHONE"),
         ])
         eng = _run_engine(sales, rules, sc_paths)
         pz = eng._result.profit_zone_summary
@@ -561,7 +561,7 @@ class TestT9_TariffScenarioChange:
             fx_rate=rules.fx_rate,
             node_profit_zone=rules.node_profit_zone,
         )
-        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "IPHONE")])
+        sales = _sales([("L-JP-001", "2026-W01", "JP_Channel", "SMARTPHONE")])
         eng = PPCSimulationEngine(
             sales_records=sales, sc_paths=sc_paths,
             rules=modified_rules, base_currency="JPY"

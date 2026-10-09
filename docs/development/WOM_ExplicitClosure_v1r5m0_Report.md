@@ -11,7 +11,7 @@
 ## 0. 要約
 
 1. 休業は `op_shifts[w]=0`（週の状態）で表すようにした。`supply_closure` は能力値を書き換えない。
-2. **変わってはいけないもの（§6.1）はすべて一致。** soysauce 4モデル＋alloc（原需要・P_opt/800）、apparel ×2、oil、rice、iphone_global は PSI・forward・backward・PPC とも完全一致。
+2. **変わってはいけないもの（§6.1）はすべて一致。** soysauce 4モデル＋alloc（原需要・P_opt/800）、apparel ×2、oil、rice、smartphone-global-2026-2029 は PSI・forward・backward・PPC とも完全一致。
 3. **変わったのは §6.2 の4モデルだけ**（Cookie・ev-europe・ev-thailand・smartx）。4モデルとも PPC の売上・粗利は1円も変わっていない。
 4. テスト：**539 passed / 3 skipped / 5 failed**。失敗5件はすべて上記4モデルの golden 比較（PSI signature drift。forward/backward/ppc は一致）。新規テスト21件は全て緑。GUI Gate 0（`test_gui_panel_invariants.py`）も緑。
 5. 副作用（§6.4）は5件。うち要注意は **Cookie の 1,450 lot 未供給**（休業が計画開始の直後にあり、前倒し先が足りない）。
@@ -42,7 +42,7 @@
 | 対象 | 行数 | 変更 |
 |---|---:|---|
 | soysauce-eu / jpy / jpy-alloc / us-2027 | 8 | value `0.1` → `0` |
-| モデル配下の value≠0,0.1 の supply_closure | 43 | effect → `partial_capacity`（apparel-global 4、apparel-us 4、ev-thailand-2026_update 4、iphone_global 3、oil 7、rice 16、smartx 5） |
+| モデル配下の value≠0,0.1 の supply_closure | 43 | effect → `partial_capacity`（apparel-global 4、apparel-us 4、ev-thailand-2026_update 4、smartphone-global-2026-2029 3、oil 7、rice 16、smartx 5） |
 | `rice-japan-2027-2028_BK260613_1515` | 16 | 同上。**`.gitignore`（`data/sample/*_BK*/`）の対象なので git diff には出ない** |
 | `data/sample/holiday_calendar.csv` | 2 | GW_2027・GW_2028 の DAD_Japan（0.3）を同上 |
 
@@ -92,7 +92,7 @@ value / effect の欄の文字だけを置き換え、他のバイト（改行�
 |---|---|
 | soysauce-eu / jpy / us-2027 | PSI・forward・backward・ppc 一致。変わったのは W18 の **cap 値と is_open だけ**（下表） |
 | apparel-global、apparel-us、oil-global-2027、rice-japan-2027-2028 | 完全一致（`partial_capacity` 互換） |
-| iphone_global | PSI 一致。SiliconWafer_TW 系3ノードの休業週の `is_open` が False になっただけ（活動なし） |
+| smartphone-global-2026-2029 | PSI 一致。SiliconWafer_TW 系3ノードの休業週の `is_open` が False になっただけ（活動なし） |
 | bom-test-2026 | 完全一致 |
 
 cap／sealed 件数を含むフィールドの変化：forward・backward の値は全モデル変化なし（soysauce 4＋alloc は `cap_hard_sealed=0, cap_soft_violation_count=0, cap_soft_envelope_count=0` のまま）。cap の週次値だけが次のように変わった：

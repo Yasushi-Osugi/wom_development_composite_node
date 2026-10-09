@@ -1,0 +1,10 @@
+sku_id,region,src_region,dst_region,hs_code,product_type,assembly_cost_usd_per_lot
+Phone16,AMER,CN,AMER,8517,finished_goods,0
+Phone16,EMEA,CN,EMEA,8517,finished_goods,0
+Phone16,APAC,CN,APAC,8517,finished_goods,0
+Phone15,AMER,CN,AMER,8517,finished_goods,0
+Phone15,EMEA,CN,EMEA,8517,finished_goods,0
+Phone15,APAC,CN,APAC,8517,finished_goods,0
+Phone17,AMER,CN,AMER,8517,finished_goods,0
+Phone17,EMEA,CN,EMEA,8517,finished_goods,0
+Phone17,APAC,CN,APAC,8517,finished_goods,0

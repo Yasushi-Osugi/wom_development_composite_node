@@ -39,18 +39,9 @@ for lot_id in all_lots:
 
 **結果：同一 Lot_ID が子の数だけ物理的なモノとして数えられる。**
 
-### 1.2 実測（india-ghee-2026 / Ghee_Domestic、2 leaf_in に戻した状態）
+### 1.2 実測
 
-| ノード | base_single | A_multi_spike | B_multi_smooth |
-|---|---|---|---|
-| Anand_Milk_Route P_sum | — | 48,532 | 47,520 |
-| Kheda_Milk_Route P_sum | — | 48,532 | 47,520 |
-| **2 leaf_in 合計** | — | **97,064** | **95,040** |
-| Ghee_Plant_Anand P_sum | 48,532 | **87,210** | **87,167** |
-| forward.cap_hard_sealed | 0 | 9,854 | 7,873 |
-| Ghee_Plant_Anand CO_sum | 0 | **505,979** | **429,299** |
-
-**「2 leaf_in 合計 − cap_hard_sealed」が寸分違わず MOM の P_sum と一致する。**
+（Owner の判断で削除。2026-10-09）
 
 ### 1.3 CLAUDE.md の記録の訂正
 
@@ -63,13 +54,9 @@ CLAUDE.md 末尾の A1 記録「発生条件は MOM の週次 demand.S に段差
 **真の条件は「複数子への複製で P が倍化 × その P が MOM の cap_hard を超えること」。
 需要段差は無関係。**
 
-### 1.4 Ghee_Export がクリーンだった理由
+### 1.4
 
-`capacity_plan.csv` の注記：
-> `※複数leaf_in合算後のPを基準に設定`
-
-**モデル構築時点で重複が認識され、cap_hard を嵩上げして回避されていた。**
-複数子があれば重複は常に発生しており、cap_hard の余裕で見えるか否かが決まるだけ。
+（Owner の判断で削除。2026-10-09）
 
 ---
 
@@ -77,19 +64,18 @@ CLAUDE.md 末尾の A1 記録「発生条件は MOM の週次 demand.S に段差
 
 ### 2.1 事前調査の結果
 
-`data/sample/` 全モデルで、InBound 側に子を2つ以上持つノードは4件。
+`data/sample/` 全モデルで、InBound 側に子を2つ以上持つノードは3件。
 
 | モデル | golden | ノード | 子 | 性質 |
 |---|---|---|---|---|
 | **ev-europe-2026** | **対象** | Factory_Import_HU | Battery_HU, Motor_HU, ECU_HU | **組立** |
 | **ev-europe-2026** | **対象** | Factory_Local_DE | Battery_DE, Motor_DE, ECU_DE | **組立** |
 | ev-thailand-2026_update | 対象外 | Factory_Local_TH | Platform_Unit_Assy, Motor_Unit_Assy | **組立** |
-| india-ghee-2026 | 対象外 | Ghee_Plant_Export | Anand_Export_Route, Mehsana_Milk_Route | **合流** |
 
 ### 2.2 均等割りを一律に適用してはならない
 
 ```
-合流   生乳100 を Anand 50 / Kheda 50 に分ける         ← 分割が正しい
+合流   同じ品目100 を 経路A 50 / 経路B 50 に分ける      ← 分割が正しい
 組立   EV 100台に Battery 33 / Motor 33 / ECU 34       ← 誤り
        正しくは Battery 100 / Motor 100 / ECU 100      ← 複製が正しい
 ```
@@ -132,9 +118,9 @@ ev-europe が動いているのは、BOM 必要数が全て1だから。
 同じ親の子に `confluence` と `assembly` が混在してよい。
 
 ```
-Anand_Milk_Route,Ghee_Plant_Anand,...,confluence
-Kheda_Milk_Route,Ghee_Plant_Anand,...,confluence
-Packaging_Supply,Ghee_Plant_Anand,...,assembly
+Route_A,Plant_A,...,confluence
+Route_B,Plant_A,...,confluence
+Packaging_Supply,Plant_A,...,assembly
 ```
 
 このとき：
@@ -222,21 +208,9 @@ if confluence_children:
 列を追加しない選択肢もあるが、**スキーマの一貫性のため全モデルに列を追加し、
 値は空欄とすること**を推奨する。判断は任せるので、選んだ方針を報告すること。
 
-### 4.2 india-ghee-2026
+### 4.2
 
-`Ghee_Export` 側の2 leaf_in に `confluence` を設定する。
-
-```
-Anand_Export_Route,Ghee_Plant_Export,...,confluence
-Mehsana_Milk_Route,Ghee_Plant_Export,...,confluence
-```
-
-**これにより `Ghee_Plant_Export` の P_sum が 55,952 → 27,976 に戻るはず。**
-そして `capacity_plan.csv` の「※複数leaf_in合算後のPを基準に設定」という
-cap_hard の嵩上げが不要になる。
-
-**ただし capacity_plan.csv の修正は本件では行わないこと。**
-嵩上げされたままでも CO は出ない（余裕が増えるだけ）。別途整理する。
+（Owner の判断で削除。2026-10-09）
 
 ### 4.3 ev-europe / ev-thailand
 
@@ -257,12 +231,9 @@ cap_hard の嵩上げが不要になる。
 - `confluence` と `assembly` が混在するとき、それぞれ正しく処理されること
 - 子が1つのとき、`confluence` / `assembly` のどちらでも挙動が変わらないこと
 
-### 5.2 Integration（india-ghee-2026）
+### 5.2 Integration
 
-- `Ghee_Export` の 2 leaf_in の P_sum が各 27,976、合計 55,952
-- **`Ghee_Plant_Export` の P_sum が 27,976 になること**（現状 55,952 から半減）
-- CO_sum が 0 のままであること
-- `Ghee_Domestic`（単一 leaf_in）が無変化であること
+（Owner の判断で削除。2026-10-09）
 
 ### 5.3 golden（12ケース）
 
@@ -281,11 +252,11 @@ cap_hard の嵩上げが不要になる。
 
 ## 6. 報告してほしいこと
 
-1. `supply_role` 列を全モデルに追加したか、india-ghee のみか（選んだ方針と理由）
+1. `supply_role` 列を全モデルに追加したか、一部のモデルのみか（選んだ方針と理由）
 2. `assembly` を「N=1 固定」として実装した箇所（§3.4）と、将来 N を可変にする方法
 3. 修正の差分（`git diff`）
 4. §5.1 の Unit テストが**修正前に赤・修正後に緑**であること
-5. §5.2 の Integration 結果（特に `Ghee_Plant_Export` の P_sum）
+5. （Owner の判断で削除。2026-10-09）
 6. §5.3 の golden 結果（**全件無変化であること**）
 7. 判定
 8. `git status`（`data/sample/` に意図した変更のみ）
@@ -299,7 +270,7 @@ cap_hard の嵩上げが不要になる。
 ① supply_role 列の追加方針を決め、報告する
 ② Backward のみを修正する（assembly は N=1 固定の構造で）
 ③ §5.1 Unit テストを追加し、修正前後で赤→緑を確認
-④ india-ghee の CSV に confluence を設定
+④ （Owner の判断で削除。2026-10-09）
 ⑤ §5.2 Integration を実施
 ⑥ §5.3 golden 12ケースを実行（全件無変化を確認）
 ⑦ 大杉の差分レビュー
@@ -325,7 +296,6 @@ cap_hard の嵩上げが不要になる。
 - `docs/design/three_layer_production_allocation.md` §2
 - `docs/design/design_memo_confluence_assembly_autotuning.md` §A/§B（合流と組立の区別）
 - `CLAUDE.md` 末尾の A1 記録（**§1.3 の通り訂正が必要**）
-- `tools/sweep_specs/india_ghee_a1.yaml`（再現手段）
 - `requests/request_fix_mode4_double_count.md`（先行する同種の修正）
 - `cpu_size` 調査（2026-08-30）：**`cpu_size` は実質的に死んでいる列**。
   全17モデル・全ノードで値1、Planning Engine は一切参照しない、

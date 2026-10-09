@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 tools/ev_update_kitting_trial.py — ev-thailand-2026_update の組立（2 部材 → 1 完成品）の測定
-（RequestLetter_iPhoneWarmup_EVUpdateKitting_S2 B1・B3。測定だけ。原本には書かない）
+（RequestLetter_SmartphoneWarmup_EVUpdateKitting_S2 B1・B3。測定だけ。原本には書かない）
 
-    python -m tools.ev_update_kitting_trial --out output/iphone_evupdate_s2/B
+    python -m tools.ev_update_kitting_trial --out output/smartphone_evupdate_s2/B
 
 モデルのコピーで、次の 3 つの構成を実行する（identity と legacy）:
 
@@ -78,7 +78,7 @@ def _first_week(node, bucket, n):
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--out", default=os.path.join("output", "iphone_evupdate_s2", "B"))
+    ap.add_argument("--out", default=os.path.join("output", "smartphone_evupdate_s2", "B"))
     a = ap.parse_args(argv)
     from tools.warmup_trial import run_trial, _Hooks
     os.makedirs(a.out, exist_ok=True)

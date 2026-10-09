@@ -32,7 +32,7 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--out", default=os.path.join("output", "sim_mgmt", "gui"))
-    ap.add_argument("--model", default="iphone_global")   # Run Simulation needs a region-keyed capacity_plan
+    ap.add_argument("--model", default="smartphone-global-2026-2029")   # Run Simulation needs a region-keyed capacity_plan
     a = ap.parse_args(argv)
     os.chdir(REPO)
     os.makedirs(a.out, exist_ok=True)

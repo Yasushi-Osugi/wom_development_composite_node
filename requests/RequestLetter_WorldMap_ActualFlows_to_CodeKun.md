@@ -25,7 +25,7 @@
 - 地図：試作と同じ（陸地の塗り、海岸線、国境線。細かさはズームで 110m・50m・10m を切り替え。表示範囲の分だけ描く）。
 - 拠点：`node_master.csv` の緯度・経度。色は今の `_MAP_NODE_STYLE` と同じ。名前は `node_master` の名前を出す（ズームに応じて重ならないように数を絞ってよい）。
 - **supply point は仮想のノード**（グローバル需給センター）として、ほかの拠点と見分けのつく印（例：中抜きのひし形）で描く。物の流れの線は supply point を通さない（下の 1.2）。
-- 緯度・経度の無い拠点は描かず、その一覧を画面の隅（押すと一覧）と報告書に出す。iphone_global の `Retail_*` 9 拠点は今は座標が無い。代表の地点（例：各地域の代表都市）を案として `node_master.csv` に入れ、どの地点にしたかを `data/sample/iphone_global/README.md`（無ければ作る）に書く。**代表の地点（仮）**と明記する。
+- 緯度・経度の無い拠点は描かず、その一覧を画面の隅（押すと一覧）と報告書に出す。smartphone-global-2026-2029 の `Retail_*` 9 拠点は今は座標が無い。代表の地点（例：各地域の代表都市）を案として `node_master.csv` に入れ、どの地点にしたかを `data/sample/smartphone-global-2026-2029/README.md`（無ければ作る）に書く。**代表の地点（仮）**と明記する。
 
 ### 1.2 区間（物理の区間だけ）
 
@@ -88,12 +88,12 @@
 ## 5. 成果物
 
 1. World Map タブの置き換え（コード）とテスト
-2. iphone_global の `Retail_*` の代表の地点（`node_master.csv`）と README
+2. smartphone-global-2026-2029 の `Retail_*` の代表の地点（`node_master.csv`）と README
 3. CLAUDE.md の World Map の節の更新（tkintermapview の記述を新しい描画に置き換える）
 4. 報告書 `docs/development/WOM_WorldMap_ActualFlows_Report.md`
    - 着手時の SHA、条件
    - 受入 1〜7 の結果、モデルごとの表（§3 の 3）
-   - スクリーンショット：Cookie（日本全体と、北京→日本の線）、alloc（日本→米国・欧州、「出荷」と「輸送中」の比較）、iphone_global（世界全体）、oil-global-2027（中東→日本）、ev-thailand-2026（タイ）。置き場所 `docs/development/worldmap_actual_flows/`
+   - スクリーンショット：Cookie（日本全体と、北京→日本の線）、alloc（日本→米国・欧州、「出荷」と「輸送中」の比較）、smartphone-global-2026-2029（世界全体）、oil-global-2027（中東→日本）、ev-thailand-2026（タイ）。置き場所 `docs/development/worldmap_actual_flows/`
    - 大杉さんが画面で確かめる手順
 
 ## 申し送り（今回は扱わない）
