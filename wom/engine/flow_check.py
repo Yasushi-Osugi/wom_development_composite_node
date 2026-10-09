@@ -218,8 +218,6 @@ def _judge(row, node, flags) -> None:
         row["status"], row["reason"] = STATUS_NA, "対象外（Kitting）"
     elif flags.get("p_copied"):
         row["status"], row["reason"] = STATUS_NA, "対象外（P はコピー。出所なし）"
-    elif flags.get("non_demand"):
-        row["status"], row["reason"] = STATUS_NA, "対象外（需要に無い ID）"
     elif node.plan_mode == "push_sub" or flags.get("source"):
         # no supplier to reconcile with: the arrival difference is meaningless
         row["arrival_diff"] = None
@@ -380,24 +378,32 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None,
                 "closing_CO": closing_co,
                 "dup_supply_ids": len(dups.get(nd.node_id, ())),
             }
-            # supply built with Lot_IDs that no market demand owns. This was the
-            # opening inventory of the former HarvestBatchPlugin (OI_ lots); since it
-            # was removed (2026-10-09) nothing creates such lots -- kept as a guard.
-            non_demand = bool(demand_ids) and (
-                any(lot not in demand_ids for w in range(n) for lot in sup[w][P])
-                or any(lot not in demand_ids for w in range(n) for lot in sup[w][I])
-                or any(lot not in demand_ids
-                       for lots in (ship_map or {}).values() for lot in lots))
+            # Lot_IDs that no market demand owns, received / held / shipped at this
+            # node (RequestLetter_PublicReadiness_Plugins 3). Formerly these rows were
+            # 対象外 (for the anonymous OI_ opening lots of the removed HarvestBatch);
+            # now any such ID, whatever its name, is NG.
+            non_demand = []
+            if demand_ids:
+                seen_nd = set()
+                for lots in ([sup[w][P] for w in range(n)] + [sup[w][I] for w in range(n)]
+                             + list((ship_map or {}).values())):
+                    for lot in lots:
+                        if lot not in demand_ids and lot not in seen_nd:
+                            seen_nd.add(lot)
+                            non_demand.append(lot)
             flags = {
                 "no_record": res is None or ship_map is None,
                 "kitting": _is_kitting_assembly(nd),
                 "p_copied": nd.node_id in p_copied,
-                "non_demand": non_demand,
                 "source": not ups and nd.node_type == "leaf_in" and not nd.children,
             }
             if flags["no_record"]:
                 row["conservation_diff"] = 0 if ship_map is None else row["conservation_diff"]
             _judge(row, nd, flags)
+            if non_demand:
+                msg = f"需要に無い ID（{len(non_demand)} 件。例 {non_demand[0]}）"
+                row["reason"] = (row["reason"] + "／" + msg) if row["status"] == STATUS_NG else msg
+                row["status"] = STATUS_NG
             if row["dup_supply_ids"]:
                 wl_, lot, cnt = dups[nd.node_id][0]
                 msg = (f"同じ ID が供給側に 2 件以上（{row['dup_supply_ids']} 件。"

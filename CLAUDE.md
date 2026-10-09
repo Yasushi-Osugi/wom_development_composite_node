@@ -146,6 +146,8 @@ HOOK\_POST\_PLAN     \# 全製品計画完了後
 
 新プラグインは `plugin_base.py` の `WOMPlugin` を継承し、`ALL_BUILTIN_PLUGINS` に追加する。
 
+**モデルごとの推奨のプラグインの組（2026-10-09、`docs/development/WOM_PublicReadiness_Plugins_Report.md`）**：各モデルの `planning_config.csv` の `recommended_plugins`（クラス名の comma 区切り。値に comma があるので `"…"` で囲む）＝その golden の組。**GUI は Load Model Folder でチェックをこの組に合わせ**（組に無いものは OFF、後で手で変えられる）、**headless は `--plugins` を省略するとこの組**（キーが無いモデルは `safe`。使った組の出所を snapshot の `config.plugins_source` に記録）。これで GUI の既定＝headless の既定＝golden。golden の無いモデル（ev-thailand-2026_update・india-ghee-2026・iphone・soysauce-jpy-2027-alloc）は `safe` の 3 つ（Owner の決定）。**知らないプラグインの名前**（`--plugins`・`recommended_plugins`。例：削除した `HarvestBatchPlugin`）は、実行・読み込みの前に止まり、使える名前の一覧を出す（`wom/plugins/selection.py`）。
+
 ### PPC（Profit Price Cost）エンジン（`wom/ppc/`）
 
 Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
@@ -278,9 +280,10 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
   ```powershell
   Get-ChildItem tests\golden -Filter *.json | ForEach-Object {
     $c=$_.BaseName
-    $pl= if ($c -like "rice-japan*") {"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin"} else {"safe"}
+    $pl= python -c "from wom.plugins.selection import read_recommended_plugins as r; print(','.join(r(r'data\sample\$c')) or 'none')"
     python -m tools.run_headless_from_folder --model-dir "data\sample\$c" --plugins $pl --out "tests\golden\$c.json" --quiet }
   ```
+  ※ プラグインの組は各モデルの `planning_config.csv` の `recommended_plugins`（＝その golden の組。rice は Rice Seasonal を含む）。**`--plugins` は必ず明示する**（省略すると snapshot の config に `plugins_source` が入り、golden の config と一致しなくなる）。
   ※ レガシー `iphone`（旧サンプル・CNY FX 欠落で失敗）と `rice-…_BK…`（古いバックアップ）は golden 対象外。
 
 ---
@@ -1898,7 +1901,7 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 
 - **報告書（正典）**：`docs/development/WOM_RiceSeasonal_Implementation_Report.md`（付表 `docs/development/rice_seasonal/`）。Sol 君の設計・試作：`docs/design/drafts/WOM_Rice_Seasonal_Model_Design_v0.1.md`、`wom/capacity_layer/rice_trial.py`（試作、そのまま残す）。
 - **上位の層**：`wom/capacity_layer/rice_seasonal.py`。市場の需要 ID ごとに**収穫週 h と精米週 p の二つの日付**を選ぶ（試作の一般化）。経路は計画の木から読む（市場→DC→精米→玄米倉庫→SP、集荷→田）。休業の週の受入れは Forward と同じく次に開いている週。要求は（品目×市場×要求週）に集約して整数で解き、元の ID の順に展開する。5 段の MILP：割当数 → 要求週の早い順 → 週内は市場の要求量に比例（最大剰余法）→ 精米の前倒し → 玄米 kg 週。
-- **プラグイン**：`wom/plugins/rice_seasonal.py`（POST_BACKWARD、**既定 OFF**、`ALL_BUILTIN_PLUGINS` の最後）。**最初の品目の POST_BACKWARD で全品目を一度に解く**（品目共用の精米を一度だけ制約するため）。各品目ではその品目の内部の位置だけを書き、市場の要求が共同問題と同じかを照合する。lot_flow_mode=identity が必要。`rice_seasonal_config.csv` の無いモデルで ON にすると「このモデルには Rice の設定がありません」で止まる。**GUI は Load Model Folder のとき、`rice_seasonal_config.csv` があれば自動で ON、無ければ OFF**（読み込んだ後に手で OFF にできる）。
+- **プラグイン**：`wom/plugins/rice_seasonal.py`（POST_BACKWARD、**既定 OFF**、`ALL_BUILTIN_PLUGINS` の最後）。**最初の品目の POST_BACKWARD で全品目を一度に解く**（品目共用の精米を一度だけ制約するため）。各品目ではその品目の内部の位置だけを書き、市場の要求が共同問題と同じかを照合する。lot_flow_mode=identity が必要。`rice_seasonal_config.csv` の無いモデルで ON にすると「このモデルには Rice の設定がありません」で止まる。**rice の `recommended_plugins` に含まれるので、GUI は読み込みで ON、headless は `--plugins` 省略で使う**（2026-10-09、Rice 専用の自動 ON は推奨の組の仕組みに置き換えた）。
 - **入力**（モデルフォルダ、6 本）：`rice_seasonal_config.csv`（遡及の窓＝これ＋経路の LT、玄米の保存の上限、精米の前倒し。**report_start はここに書かない**＝止まる）、`rice_recipe.csv`（精米 kg／lot・歩留まり）、`rice_resources.csv`（資源の種類と単位。既定値の空欄は不可、`unlimited` を明示）、`rice_resource_map.csv`（品目×ノード×役割→資源。**共用設備は同じ resource_id**）、`rice_resource_capacity.csv`（週の能力、`crop_season` が収穫週の印）、`rice_crop_limit.csv`（作期の年産上限）。
 - **rice のサンプル**（2026-10-09 に置き換え済み、`docs/development/WOM_RiceLegacyRetire_Report.md`）：`data/sample/rice-japan-2027-2028/` が正本（移行用コピーと、それを作った `tools/gen_rice_seasonal_migration.py` は 5361206 の後に削除）。lot_flow_mode=identity。golden は `HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin` で作る。`data/sample/` に legacy で動くモデルは無い（`tests/test_rice_retire.py` が守る）。Rice DAL の試行（`rice-japan-2027-2028-dal`）も削除。
 - **rice の結果**（精米の前倒し 1 週まで、2026-10-09）：元の要求 236,937 ID のうち当週出荷 141,210、遅配・早出し 0、注文残 95,727（2026 年の助走 67,169＝2026 年産の収穫前で候補なし、報告期間 コシヒカリ 28,556＝収穫量不足・ゆめぴりか 2）。前倒しは解き方の 4 段目だが、2・3 段目（要求週の早い順・週内の比例）のためにも使われる（約 19,400 lot、Owner の決定でこの順番のまま）。照合 `tools/rice_seasonal_check.py`（実出荷から数え直し）、`tools/rice_seasonal_lovem_check.py`（観測 ON/OFF・actual_ship 1 対 1）、`tools/lovem_interval_check.py`（LOVEM の区間を元の PSI とセルごとに独立照合。**Rice のような大きな run では `wom.lovem.verify.verify_run` は全セルを週×ID に展開してメモリが足りない**）。

@@ -1,3 +1,4 @@
 key,value
 cpu_size,1
 warmup_lt,17
+recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin"

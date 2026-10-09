@@ -240,7 +240,7 @@ def analyse(store, snap, runtime):
             if not nd.children:
                 for w in range(n):
                     demand_ids.update(nd.psi4demand[w][S])
-    k3 = {"ids_without_demand": 0, "rice_harvest_like": 0, "examples": []}
+    k3 = {"ids_without_demand": 0, "examples": []}
     seen = set()
     for prod in t.products:
         for nd in t.iter_all_nodes(prod):
@@ -251,14 +251,11 @@ def analyse(store, snap, runtime):
                             if lot in demand_ids or lot in seen:
                                 continue
                             seen.add(lot)
-                            # Opening inventory of the former HarvestBatchPlugin
-                            # (f"OI_{node_id}_{i}"). Nothing creates OI_ lots now
-                            # (removed 2026-10-09); kept so old runs are still read.
-                            if lot.startswith("OI_"):
-                                k3["rice_harvest_like"] += 1
-                            else:
-                                k3["ids_without_demand"] += 1
-                                _ex(k3["examples"], [nd.node_name, prod, wl[w], lot])
+                            # RequestLetter_PublicReadiness_Plugins 3: every ID that no
+                            # market demand owns counts, whatever its name (the OI_
+                            # exemption of the removed HarvestBatchPlugin is gone)
+                            k3["ids_without_demand"] += 1
+                            _ex(k3["examples"], [nd.node_name, prod, wl[w], lot])
     out["K3"] = k3
 
     # ---------------- C6: InBound demand-P copy path ----------------------
@@ -403,7 +400,7 @@ def main(argv=None) -> int:
             k = {kk: {x: y for x, y in res[kk].items() if not str(x).startswith("examples")}
                  for kk in ("K1", "K2", "K4", "K5", "K6")}
             print(f"[{mode}] {case} runtime={res['runtime_s']}s K={json.dumps(k, ensure_ascii=False)} "
-                  f"K3={res['K3']['ids_without_demand']}/{res['K3']['rice_harvest_like']}", flush=True)
+                  f"K3={res['K3']['ids_without_demand']}", flush=True)
     return 0
 
 

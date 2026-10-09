@@ -94,7 +94,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 
 | 区分 | ファイル | 要否 |
 |---|---|---|
-| 計画 | `sc_tree_master.csv`（木）、`node_master.csv`（拠点と座標）、`demand_forecast.csv`（`sku_id, region, week, quantity`）、`capacity_plan.csv`、`planning_config.csv`（`warmup_lt`、`lot_flow_mode`、`cpu_size` など） | 必須 |
+| 計画 | `sc_tree_master.csv`（木）、`node_master.csv`（拠点と座標）、`demand_forecast.csv`（`sku_id, region, week, quantity`）、`capacity_plan.csv`、`planning_config.csv`（`warmup_lt`、`lot_flow_mode`、`cpu_size`、`recommended_plugins` など） | 必須 |
 | 計画（任意） | `holiday_calendar.csv`、`push_config.csv`（push のバッファ）、`operating_calendar.csv`、`inventory_master.csv`、`lane_assignment.csv`、`route_master.csv`、`sku_master.csv` | モデルに応じて |
 | 金額（PPC） | `ppc_market_price.csv`、`ppc_supplier_cost.csv`、`ppc_node_cost_rule.csv`、`ppc_edge_cost_rule.csv`、`ppc_tariff_rule.csv`、`ppc_transfer_price_rule.csv`、`ppc_fx_rate.csv`（無ければ `data/ppc` の見本） | PPC を見るなら |
 | 金額（Value Chain） | `vc_config.csv`、`vc_entity.csv`、`vc_node_assignment.csv`、`vc_price_rule.csv` | 法人・連結を見るなら |
@@ -112,6 +112,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 7. `node_master.csv` に座標が無い → World Map に描けない（一覧に出る）。Stock Yard は座標が無ければ親の組立工場の位置に描かれる。
 8. 価格を 0 で埋める → 未評価として扱うべきもの（R12）。
 9. 報告の開始週を二か所に書く → `vc_config.csv` の `report_start` だけに書く（`wom/engine/report_start.py`。World Map・Flow Check・Value Chain・Rice が読む）。無ければ最初の非ゼロ需要週。Rice の設定に残すと止まる。
+10. プラグインの組を GUI と headless で別々に選ぶ → 同じモデルで値が変わる（rice で Holiday Calendar を忘れると 139,554、正しくは 141,210）。モデルの `planning_config.csv` の `recommended_plugins` に golden と同じ組を書く。GUI は読み込みでチェックを合わせ、headless は `--plugins` を省けばこの組を使う。知らないプラグイン名は止まる。
 
 ### 4.4 確かめ方
 
@@ -148,7 +149,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 - **役割**：大杉さん（Owner：判断・実機確認・git）、Claude君（設計・依頼書・検証）、Code君（Claude Code：実装）、GPT-6 Astra君・GPT-6.1 Sol君（独立の調査・検証）。
 - **流れ**：依頼書（`requests/`）→ 実装 → 報告書（`docs/development/`）→ 検証（「止める理由」と「申し送り」を分ける）→ commit。依頼書と実装は別の commit にする。
 - **保護対象のコア**（`AGENTS.md` §10）：`backward_planner.py`、`forward_planner.py`、`plan_copy.py`、`plan_node.py`、`sc_tree.py`、`push_pull.py`。依頼書が無ければ変えない。変えるときは 3 層のテスト（単体・CSV からの結合・golden）を緑にし、大杉さんが diff を確かめる。
-- **golden**：`tests/golden/*.json`（13 件）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。rice は Holiday Calendar・Buffering Stock・Capacity Override・Rice Seasonal の 4 プラグインで作る（`tests/test_golden.py` の説明）。
+- **golden**：`tests/golden/*.json`（13 件）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。プラグインの組はモデルの `recommended_plugins` と同じ（rice 以外は Holiday Calendar・Buffering Stock・Capacity Override、rice はこれに Rice Seasonal）。作るときは `--plugins` を明示する（`CLAUDE.md`、`tests/test_golden.py` の説明）。
 - **git**：Windows 側で行う。リモートは `composite_node`（`wom_development_composite_node`、default branch `wom-v1r5m1_cap_trial`）。commit メッセージの下書きは `commit_msg*.txt`（git の対象外）。
 - **誤読を招く名前**は見つけ次第、関連する資料をまとめて直す。黙った既定値（0・1・前の週）を作らない。
 
@@ -159,6 +160,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | 課題 | 状態 |
 |---|---|
 | rice の残り | rice は identity に移った（`WOM_RiceLegacyRetire_Report.md`）。残り：年産上限の業務値、収穫年ごとの価格と古い在庫の評価損、ぬか等の金額、rice の PPC の価格表（今は `data/ppc` の見本の規則）、大きな run での LOVEM `verify_run` のメモリ（`tools/lovem_interval_check.py` で照合） |
+| 公開の前のサンプルの見直し | golden の無い 4 モデル（ev-thailand-2026_update・india-ghee-2026・iphone・soysauce-jpy-2027-alloc）を golden で守るか、サンプルから外すか。iphone（`iphone_global` とは別）は PPC が CNY の為替が無くて止まる。固有の団体名（rice の `node_master.csv` の説明など）の点検 |
 | 需要の出どころ（4P） | 需要は `demand_forecast.csv` として外から与えられている。製品・価格・チャネル・販促（コトラーの 4P）から需要の ID を作り、出どころを ID の属性として持つ「需要の層」を、上位の層と同じくエンジンの外に置く構想（Owner、2026-10-09）。rice では「不足のとき、配分・価格・品目の誘導のどれで対応するか」を比べる題材になる |
 | Backward の前倒しの上限 | 上位の層が OFF のとき上限が無い（`WOM_GenerationLine_UpperLayer_Report.md` §11.1） |
 | 世代間の需要の移行 | 旧世代の残りの需要を新世代へ振り替える規則が無い |

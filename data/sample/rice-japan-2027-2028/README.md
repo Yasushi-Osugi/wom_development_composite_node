@@ -12,8 +12,9 @@
 これを計画するのが上位の層 **Rice Seasonal（収穫・玄米保管・精米）**（`wom/plugins/rice_seasonal.py`）で、ID ごとに**収穫週と精米週の二つの日付**を選び、両品目を一度に解く（精米センターは品目共用）。
 割り当てられない ID は、元の要求のまま市場の注文残として残る（匿名の期首在庫は作らない）。
 
-- **GUI**：このフォルダを読み込むと、`rice_seasonal_config.csv` があるので **Rice Seasonal が自動で ON** になる（比較したいときは、読み込んだ後に手で OFF にできる。OFF では過去の収穫に割り当てられず、ほとんどの需要が注文残になる）。
-- **headless**：`--plugins HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin`（golden と同じ組）。
+- **推奨のプラグインの組**（`planning_config.csv` の `recommended_plugins`、golden と同じ組）：Holiday Calendar・Buffering Stock・Capacity Override・**Rice Seasonal**。
+- **GUI**：このフォルダを読み込むと、チェックがこの組に合う（Rice Seasonal も ON）。そのまま Run Planning Engine すれば golden と同じ値になる。比較したいときは、読み込んだ後に手で変えられる（Rice Seasonal を OFF にすると過去の収穫に割り当てられず、ほとんどの需要が注文残になる）。
+- **headless**：`--plugins` を省略すればこの組（明示するなら `--plugins HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin`）。
 
 ## 値（Owner の決定、元の依頼書 §8.1・§8.2）
 

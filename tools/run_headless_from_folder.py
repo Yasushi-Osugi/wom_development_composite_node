@@ -20,11 +20,15 @@ GUI 抜きで「モデルフォルダ → Planning Engine（SCTree＋プラグ�
   #       --out "tests/golden/$(basename $d).json" ; done
 
 プラグイン（--plugins）：
-  safe（既定）= HolidayCalendarPlugin, BufferingStockOptimizerPlugin, CapacityOverridePlugin
-              （いずれもデータ/設定が無ければ no-op。DemandSmoothing は需要を変えるため既定で除外）
-  all  = 全ビルトイン / none = 無効 / それ以外 = クラス名の comma 区切りで明示
-  rice は：--plugins HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin
-  （2026-10-09 に HarvestBatchPlugin を削除。rice は Rice Seasonal で identity に移った）
+  省略時 = モデルの planning_config.csv の recommended_plugins（モデルの推奨の組＝golden と同じ組）。
+           キーが無いモデルは safe。どちらを使ったかを snapshot の config.plugins_source に記録する
+           （--plugins を指定したときは記録しない＝golden の config は今のまま）
+  safe   = HolidayCalendarPlugin, BufferingStockOptimizerPlugin, CapacityOverridePlugin
+           （いずれもデータ/設定が無ければ no-op。DemandSmoothing は需要を変えるため除外）
+  all  = 全ビルトイン / none = 無効 / それ以外 = クラス名（または短い名前）の comma 区切りで明示
+  知らない名前（例：2026-10-09 に削除した HarvestBatchPlugin）は、実行の前に止まる（使える名前を出す）
+  rice は：HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin
+  （recommended_plugins に書いてあるので、--plugins を省略すればこの組になる）
 
 忠実性の検証：本ランナーの出力（GM・trust events 等）が GUI の実値と一致する事を人手で確認してから
 golden として採用する（＝ハーネス自体が正しい事の担保）。
@@ -82,6 +86,7 @@ def _select_plugins(spec: str):
     HarvestBatch は 2026-10-09 に削除した（RequestLetter_RiceLegacyRetire）ので、常に None。
     呼び出し側（run・tools/sweep_flags.py）の形を変えないために残している。"""
     from wom.plugins import ALL_BUILTIN_PLUGINS
+    from wom.plugins.selection import to_class_names
     spec = (spec or "safe").strip()
     active, harvest = [], None
     if spec == "none":
@@ -91,7 +96,9 @@ def _select_plugins(spec: str):
     elif spec == "safe":
         names = SAFE_DEFAULT
     else:
-        names = {s.strip() for s in spec.split(",") if s.strip()}
+        # RequestLetter_PublicReadiness_Plugins 2: an unknown name stops (it was
+        # silently skipped before, e.g. the removed HarvestBatchPlugin)
+        names = set(to_class_names([s.strip() for s in spec.split(",") if s.strip()], "--plugins"))
     for cls in ALL_BUILTIN_PLUGINS:
         inst = cls()
         cn = cls.__name__
@@ -102,7 +109,7 @@ def _select_plugins(spec: str):
 
 
 # ──────────────────────────────────────────────────────────────────────
-def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "output/ppc",
+def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/ppc",
         verbose: bool = True, demand_file: str = "demand_forecast.csv",
         planning_state: bool = False, lot_flow_mode: str = None,
         flow_check_dir: str = None, extra_plugins: list = None) -> dict:
@@ -143,6 +150,19 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
 
     def _p(name):  # model-local file path
         return os.path.join(model_dir, name)
+
+    # ── プラグインの組（RequestLetter_PublicReadiness_Plugins 1・2）─────
+    #   plugins_spec を省略したら、モデルの recommended_plugins（無ければ safe）。
+    #   名前の検査は、ファイルに触れる前に行う（知らない名前は実行の前に止まる）。
+    plugins_source = None
+    if plugins_spec is None:
+        from wom.plugins.selection import read_recommended_plugins
+        _rec = read_recommended_plugins(model_dir)
+        if _rec is not None:
+            plugins_spec, plugins_source = (",".join(_rec) or "none"), "recommended_plugins"
+        else:
+            plugins_spec, plugins_source = "safe", "safe"
+    active_plugins, _no_opening_plugin = _select_plugins(plugins_spec)
 
     # ── Planning warm-up（Phase 2, opt-in）─────────────────────────
     #   planning_config.csv があれば助走行を materialize（demand=0 / cap・opcal コピー）。
@@ -196,7 +216,6 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
            "holiday_cal_path": _p("holiday_calendar.csv"),
            # read by plugins that trial-run ForwardPlanner (BufferingStockOptimizer)
            "lot_flow_mode": lot_flow_mode}
-    active_plugins, _no_opening_plugin = _select_plugins(plugins_spec)
     active_plugins = active_plugins + list(extra_plugins or [])
     for pl in active_plugins:
         pl.register(bus)
@@ -322,7 +341,9 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     snap = {
         "case": os.path.basename(model_dir.rstrip("/\\")),
         "config": {"plugins": sorted(type(p).__name__ for p in active_plugins),
-                   **({} if lot_flow_mode == LOT_FLOW_LEGACY else {"lot_flow_mode": lot_flow_mode})},
+                   **({} if lot_flow_mode == LOT_FLOW_LEGACY else {"lot_flow_mode": lot_flow_mode}),
+                   # only when --plugins was not given (the golden runs give it explicitly)
+                   **({"plugins_source": plugins_source} if plugins_source else {})},
         "period": dict({"start": start, "weeks": n_weeks},
                        # only when the demand CSV skips weeks (they are planned with demand 0)
                        **({"filled_weeks": list(period.filled_weeks)} if period.filled_weeks else {})),
@@ -564,8 +585,9 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--model-dir", required=True, help="モデルフォルダ（sc_tree_master.csv 等）")
-    ap.add_argument("--plugins", default="safe",
-                    help="safe(既定)/all/none/クラス名 comma 区切り")
+    ap.add_argument("--plugins", default=None,
+                    help="省略時＝モデルの recommended_plugins（無ければ safe）／safe／all／none／"
+                         "クラス名 comma 区切り（知らない名前は止まる）")
     ap.add_argument("--out", default="", help="スナップショット JSON 出力先（省略時 stdout）")
     ap.add_argument("--ppc-out", default="output/ppc", help="PPC 出力先")
     ap.add_argument("--quiet", action="store_true")

@@ -1,0 +1,11 @@
+{
+ "dialog": [
+  [
+   "Load Model Folder",
+   "C:\\Users\\ohsug\\AppData\\Local\\Temp\\claude\\C--Users-ohsug-WOM-V0R2M1-new-cockpit-wom-development\\8c8aec65-e54e-4ddf-838e-d5cdd1af1769\\scratchpad\\p3_bad\\Cookie-jp-2026\\planning_config.csv recommended_plugins: 知らないプラグインの名前があります：HarvestBatchPlugin。使える名前：DemandSmoothingPlugin (demand_smoothing), CapacityOverridePlugin (capacity_override), BufferingStockOptimizerPlugin (buffering_stock_optimizer), HolidayCalendarPlugin (holiday_calendar), CapacityLayerPlugin (capacity_layer), RiceSeasonalPlugin (rice_seasonal)"
+  ]
+ ],
+ "status": "⚠ 読み込みを止めました：C:\\Users\\ohsug\\AppData\\Local\\Temp\\claude\\C--Users-ohsug-WOM-V0R2M1-new-cockpit-wom-development\\8c8aec65-e54e-4ddf-838e-d5cdd1af1769\\scratchpad\\p3_bad\\Cookie-jp-2026\\planning_config.csv recommended_plugins: 知らないプラグインの名前があります：HarvestBatchPlugin。使える名前：DemandSmoothingPlugin (demand_smoothing), CapacityOverridePlugin (capacity_override), BufferingStockOptimizerPlugin (buffering_stock_optimizer), HolidayCalendarPlugin (holiday_calendar), CapacityLayerPlugin (capacity_layer), RiceSeasonalPlugin (rice_seasonal)",
+ "plugins_unchanged": true,
+ "model_label": "モデル：C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r5m1_cap_trial\\data\\sample\\smartx-2027-2029\n表示中の計画：なし（Planning Engine 未実行）"
+}

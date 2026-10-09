@@ -133,6 +133,15 @@ def main(argv=None) -> int:
                                 out["on_time" if s == d else "late" if s is not None and s > d
                                     else "early" if s is not None else "backlog_end"] += 1
                 st["market_outcome"] = out
+            # GUI plan vs the model's golden (RequestLetter_PublicReadiness_Plugins P-1):
+            # the same PSI signature as tools/run_headless_from_folder (_psi_signature)
+            import tools.run_headless_from_folder as _rh
+            _g = os.path.join(REPO, "tests", "golden", os.path.basename(folder.rstrip("/\\")) + ".json")
+            if os.path.exists(_g):
+                with open(_g, encoding="utf-8") as _f:
+                    _gold = json.load(_f)
+                st["psi_equal_golden"] = _rh._psi_signature(tree, tree.num_weeks()) == _gold["psi"]
+                st["golden_plugins"] = _gold["config"]["plugins"]
             # Flow Check table 2 as the GUI shows it (RequestLetter_RiceSeasonal_PolishAdvance1
             # work 6): the summary line, the visible columns and the model total row
             fcp = net._flow_check_panel

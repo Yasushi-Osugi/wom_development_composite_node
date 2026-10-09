@@ -1,0 +1,50 @@
+{
+ "state": {
+  "plan": true,
+  "ppc": true,
+  "plan_err": null,
+  "plugins_after_load": [
+   "buffering_stock_optimizer",
+   "capacity_override",
+   "holiday_calendar"
+  ],
+  "status_after_load": "📂 ⚠ 作業フォルダの外：C:\\Users\\ohsug\\AppData\\Local\\Temp\\claude\\C--Users-ohsug-WOM-V0R2M1-new-cockpit-wom-development\\8c8aec65-e54e-4ddf-838e-d5cdd1af1769\\scratchpad\\pr_gui\\Cookie-jp-2026: 11 files loaded　｜　推奨のプラグインの組を適用：Holiday Calendar, Buffering Stock Optimized Allocation, Capacity Override (cap_override.csv)",
+  "plugins_on": [
+   "buffering_stock_optimizer",
+   "capacity_override",
+   "holiday_calendar"
+  ],
+  "psi_list_nodes": 15,
+  "capacity_layer": null,
+  "psi_equal_golden": true,
+  "golden_plugins": [
+   "BufferingStockOptimizerPlugin",
+   "CapacityOverridePlugin",
+   "HolidayCalendarPlugin"
+  ],
+  "flow_check_summary": "表 1：ノード 15（NG 0・対象外 0・同一ID重複 0）　表 2（モデル全体、lot）：需要 141990 ＝ 当週出荷 141990 ＋ 早出し 0 ＋ 遅配 0 ＋ 期末注文残 0（検算の不一致 0 行）　cpu_size=1",
+  "flow_check_columns": [
+   "product",
+   "leaf",
+   "demand",
+   "on_time",
+   "early",
+   "late",
+   "backlog_end",
+   "check"
+  ],
+  "flow_check_total": {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 141990,
+   "on_time": 141990,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0,
+   "check": 0
+  },
+  "worldmap_band": "World Map（Natural Earth・手元のデータだけ）　｜　計画 ID：20261009-113513.668-21b7fc__Cookie-jp-2026　｜　流れ：実出荷（出荷の記録 788,880 件）　｜　報告の開始週 2026-W02（最初の非ゼロ需要週）　｜　lot_flow_mode identity"
+ },
+ "errors": [],
+ "capacity_cells": {}
+}

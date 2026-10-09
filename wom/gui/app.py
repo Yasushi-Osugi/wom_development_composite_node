@@ -5083,6 +5083,16 @@ class WOMApp(tk.Tk):
         folder = filedialog.askdirectory(title="モデルフォルダを選択 (CSVファイルが入ったフォルダ)")
         if not folder:
             return
+        # RequestLetter_PublicReadiness_Plugins 1・2: the model's recommended plugin set
+        # (planning_config.csv recommended_plugins). An unknown name stops the load
+        # here, before anything of the model is applied.
+        from wom.plugins.selection import UnknownPluginError, read_recommended_plugins
+        try:
+            _recommended = read_recommended_plugins(folder)
+        except UnknownPluginError as exc:
+            messagebox.showerror("Load Model Folder", str(exc))
+            self._status(f"⚠ 読み込みを止めました：{exc}", warn=True)
+            return
         # P2: every entry now belongs to this folder (missing files are cleared,
         # not left pointing at the previous model).
         loaded, missing = self._apply_model_folder(folder)
@@ -5104,27 +5114,31 @@ class WOMApp(tk.Tk):
         msg = f"📂 {describe_model_dir(folder)}: {len(loaded)} files loaded"
         if missing:
             msg += f"  (not found → 欄を空にしました: {', '.join(missing)})"
-        # RequestLetter_RiceLegacyRetire 1.4: a model with Rice inputs needs Rice
-        # Seasonal (without it most of the demand ends as backlog), so the checkbox
-        # follows the model on every load; the user may still switch it off after
-        # loading (for a comparison). No other plugin is set automatically.
-        _rice_var = getattr(self, "_plugin_vars", {}).get("rice_seasonal")
-        _rice_note = ""
-        if _rice_var is not None:
-            _has_rice = os.path.exists(os.path.join(folder, "rice_seasonal_config.csv"))
-            _rice_var.set(_has_rice)
-            _rice_note = ("　｜　Rice Seasonal：このモデルの設定（rice_seasonal_config.csv）があるので ON"
-                          if _has_rice else
-                          "　｜　Rice Seasonal：このモデルの設定が無いので OFF")
-        self._status(msg + _rice_note, warn=is_outside_work_root(folder))
-        if _rice_note:
+        # RequestLetter_PublicReadiness_Plugins 1 (replaces the Rice-only switch of
+        # RequestLetter_RiceLegacyRetire 1.4): the plugin checkboxes follow the model's
+        # recommended set (= the set of its golden), so the GUI default plan is the
+        # golden plan. Plugins not in the set are switched OFF. The user may still
+        # change them after loading (for a comparison). A model without the key
+        # leaves the checkboxes as they are.
+        _plugin_note = ""
+        if _recommended is not None and getattr(self, "_plugin_vars", None):
+            from wom.plugins.selection import catalog
+            _short = {cn: sn for cn, sn, _c in catalog()}
+            _on = {_short[c] for c in _recommended}
+            for _name, _var in self._plugin_vars.items():
+                _var.set(_name in _on)
+            _plugin_note = ("　｜　推奨のプラグインの組を適用：" +
+                            (", ".join(self._plugin_instances[_short[c]].label for c in _recommended)
+                             or "（なし）"))
+        self._status(msg + _plugin_note, warn=is_outside_work_root(folder))
+        if _plugin_note:
             # the planning-period check may post its own warning just after this
-            # (self.after(0, ...)); append the Rice note to whatever is shown then
-            def _keep_rice_note(note=_rice_note):
+            # (self.after(0, ...)); append the note to whatever is shown then
+            def _keep_plugin_note(note=_plugin_note):
                 cur = self._status_var.get()
                 if note not in cur:
                     self._status(cur + note, warn=cur.startswith("⚠") or "⚠" in cur[:4])
-            self.after(0, _keep_rice_note)
+            self.after(0, _keep_plugin_note)
 
         # Load node_master into WorldMap immediately on folder selection
         node_path = os.path.join(folder, "node_master.csv")

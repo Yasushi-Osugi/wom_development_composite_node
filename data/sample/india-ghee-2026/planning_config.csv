@@ -1,2 +1,3 @@
 key,value
 warmup_lt,12
+recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin"

@@ -12,9 +12,10 @@ test_golden.py — E2E ゴールデン回帰テスト（Anti-Degrade / Phase 1a�
   - エンジン改修（cap_soft / 操業カレンダー等）が既存ケースを**意図せず**変えた瞬間に赤くなる。
 
 golden の作り方（オーナーが Windows で実行して commit）:
-  python -m tools.run_headless_from_folder --model-dir data/sample/<case> --out tests/golden/<case>.json --quiet
-  ※ rice は --plugins HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin
-    （2026-10-09 に HarvestBatchPlugin を削除し、rice は Rice Seasonal で identity に移った）。
+  python -m tools.run_headless_from_folder --model-dir data/sample/<case> --plugins <組> --out tests/golden/<case>.json --quiet
+  ※ <組> はモデルの planning_config.csv の recommended_plugins（＝その golden の組。rice は RiceSeasonalPlugin を含む）。
+    --plugins は必ず明示する（省略すると config に plugins_source が入り、この比較の config と一致しない）。
+    tests/test_public_readiness.py が「recommended_plugins＝golden の組」を確かめる。
 
 意図的に挙動を変えたときは、golden を**意識的に再生成して commit**（差分が監査証跡）。
 golden が1つも無ければ本テストは skip される（ハーネスだけ先に入れても CI が赤にならない）。

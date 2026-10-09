@@ -1,0 +1,18 @@
+model,plugins_source,plugins,compared_with,plugins_equal,lot_flow_mode_equal,psi_equal,ppc_equal,forward_equal,period_equal,products_equal,revenue_base,gross_margin_pct,all_equal,seconds,error
+Cookie-jp-2026,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,4259700000.0,0.179627,True,6.8,
+apparel-global-2028-2029,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,10387986.16,0.384552,True,9.5,
+apparel-us-2026,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,17493784.0,0.424439,True,8.7,
+bom-test-2026,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,3200000.0,0.747812,True,0.5,
+ev-europe-2026,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,366508230000.0,0.524776,True,6.2,
+ev-thailand-2026,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,319119580000.0,0.564956,True,5.4,
+ev-thailand-2026_update,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,explicit safe (no golden),True,True,True,True,True,True,True,319119580000.0,0.564956,True,12.2,
+india-ghee-2026,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,explicit safe (no golden),True,True,True,True,True,True,True,668585520.0,0.199992,True,11.1,
+iphone,,,,,,,,,,,,,False,1.4,ValueError: No FX rate found for currency='CNY' on or before week='2024-W01'. Add a row to ppc_fx_rate.csv.
+iphone_global,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,64101413473420.0,0.411946,True,24.1,
+oil-global-2027,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,1571097940180.0,0.351563,True,14.0,
+rice-japan-2027-2028,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin+RiceSeasonalPlugin,golden,True,True,True,True,True,True,True,1103303400.0,0.387182,True,20.7,
+smartx-2027-2029,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,700825463.0,0.90368,True,34.0,
+soysauce-eu-2027,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,3622500.59,0.271994,True,9.2,
+soysauce-jpy-2027,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,614988400.0,0.280427,True,8.2,
+soysauce-jpy-2027-alloc,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,explicit safe (no golden),True,True,True,True,True,True,True,427957532.0,0.260865,True,17.5,
+soysauce-us-2027,recommended_plugins,BufferingStockOptimizerPlugin+CapacityOverridePlugin+HolidayCalendarPlugin,golden,True,True,True,True,True,True,True,3585878.59,0.268719,True,5.9,
