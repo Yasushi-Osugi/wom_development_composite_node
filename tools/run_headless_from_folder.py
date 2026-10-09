@@ -23,7 +23,8 @@ GUI 抜きで「モデルフォルダ → Planning Engine（SCTree＋プラグ�
   safe（既定）= HolidayCalendarPlugin, BufferingStockOptimizerPlugin, CapacityOverridePlugin
               （いずれもデータ/設定が無ければ no-op。DemandSmoothing は需要を変えるため既定で除外）
   all  = 全ビルトイン / none = 無効 / それ以外 = クラス名の comma 区切りで明示
-  rice 等 収穫ケースは：--plugins HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,HarvestBatchPlugin
+  rice は：--plugins HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin
+  （2026-10-09 に HarvestBatchPlugin を削除。rice は Rice Seasonal で identity に移った）
 
 忠実性の検証：本ランナーの出力（GM・trust events 等）が GUI の実値と一致する事を人手で確認してから
 golden として採用する（＝ハーネス自体が正しい事の担保）。
@@ -75,7 +76,11 @@ def _build_week_labels(start: str, n_weeks: int):
 
 
 def _select_plugins(spec: str):
-    """--plugins 指定から (active_instances, harvest_instance) を返す。"""
+    """--plugins 指定から (active_instances, None) を返す。
+
+    2 つ目は以前の HarvestBatchPlugin（期首在庫を渡すプラグイン）の実体だった。
+    HarvestBatch は 2026-10-09 に削除した（RequestLetter_RiceLegacyRetire）ので、常に None。
+    呼び出し側（run・tools/sweep_flags.py）の形を変えないために残している。"""
     from wom.plugins import ALL_BUILTIN_PLUGINS
     spec = (spec or "safe").strip()
     active, harvest = [], None
@@ -93,8 +98,6 @@ def _select_plugins(spec: str):
         take = (names is None) or (cn in names) or (getattr(inst, "name", "") in names)
         if take:
             active.append(inst)
-            if "Harvest" in cn:
-                harvest = inst
     return active, harvest
 
 
@@ -193,7 +196,7 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
            "holiday_cal_path": _p("holiday_calendar.csv"),
            # read by plugins that trial-run ForwardPlanner (BufferingStockOptimizer)
            "lot_flow_mode": lot_flow_mode}
-    active_plugins, harvest_plugin = _select_plugins(plugins_spec)
+    active_plugins, _no_opening_plugin = _select_plugins(plugins_spec)
     active_plugins = active_plugins + list(extra_plugins or [])
     for pl in active_plugins:
         pl.register(bus)
@@ -274,7 +277,7 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
                         )
             if cfgs:
                 PushProductionPlanner(sc_tree).setup_all(cfgs)
-        opening_inv = getattr(harvest_plugin, "opening_inv", {}) if harvest_plugin else {}
+        opening_inv = {}   # no plugin supplies an opening inventory (HarvestBatch removed)
         _fres = ForwardPlanner(sc_tree, opening_inv=opening_inv,
                                lot_flow_mode=lot_flow_mode).run(prod_nm)
         _fres_all.append(_fres)

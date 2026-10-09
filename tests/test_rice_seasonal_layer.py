@@ -391,10 +391,10 @@ def test_plugin_is_off_by_default_and_registered_last():
 
 
 # ── K-R10: the migration copy of Rice ──────────────────────────────────────
-MIG = os.path.join(REPO, "data", "trial", "rice-japan-2027-2028-seasonal")
+MIG = os.path.join(REPO, "data", "sample", "rice-japan-2027-2028")
 
 
-@pytest.mark.skipif(not os.path.isdir(MIG), reason="migration copy not generated")
+@pytest.mark.skipif(not os.path.isdir(MIG), reason="rice sample missing")
 def test_k_r10_migration_copy_regression():
     from tools.rice_seasonal_check import plan, flow_identities
     snap, tree, fres = plan(MIG)

@@ -30,7 +30,8 @@ def main(argv=None) -> int:
     ap.add_argument("--out", required=True)
     ap.add_argument("--layer", choices=("on", "off"), default="off")
     ap.add_argument("--plugins", default="holiday_calendar,capacity_override,buffering_stock_optimizer",
-                    help="ON にするプラグイン（name、カンマ区切り。既定は smartx の golden と同じ 3 つ）")
+                    help="ON にするプラグイン（name、カンマ区切り。既定は smartx の golden と同じ 3 つ）。"
+                         "auto＝モデルの読み込みで決まったまま（変えない）")
     ap.add_argument("--nodes", default="AssemblyCN_g1,AssemblyCN_g3,AssemblyCN",
                     help="画像を取るノード（node_name、カンマ区切り）")
     a = ap.parse_args(argv)
@@ -184,10 +185,20 @@ def main(argv=None) -> int:
     def start():
         app._load_model_folder()
         app.update()
-        on = {x for x in a.plugins.split(",") if x}
-        for name, var in app._plugin_vars.items():
-            var.set(name in on)
-        app._plugin_vars["capacity_layer"].set(a.layer == "on")
+        app.update()
+        st["plugins_after_load"] = sorted(k for k, v in app._plugin_vars.items() if v.get())
+        st["status_after_load"] = app._status_var.get() if hasattr(app, "_status_var") else ""
+        names = [x for x in a.plugins.split(",") if x]
+        if "auto" in names:
+            # "auto[,name...]": keep what the model load set (RequestLetter_RiceLegacyRetire
+            # 1.4) and switch the named plugins ON in addition
+            for name in names:
+                if name != "auto":
+                    app._plugin_vars[name].set(True)
+        else:
+            for name, var in app._plugin_vars.items():
+                var.set(name in names)
+            app._plugin_vars["capacity_layer"].set(a.layer == "on")
         st["plugins_on"] = sorted(k for k, v in app._plugin_vars.items() if v.get())
         shot("loaded")
         app.after(1500, lambda: (app._run_planning_engine(), poll()))

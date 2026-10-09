@@ -346,7 +346,7 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
     cfg = {"n_weeks": n_weeks, "start_week": start,
            "cap_path": _p("capacity_plan.csv"),
            "holiday_cal_path": _p("holiday_calendar.csv")}
-    active_plugins, harvest_plugin = _select_plugins(plugins_spec)
+    active_plugins, _no_opening_plugin = _select_plugins(plugins_spec)
     for pl in active_plugins:
         pl.register(bus)
     print(f"[Sweep] plugins: {[type(p).__name__ for p in active_plugins]}")
@@ -446,7 +446,7 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
             if prod_nm == target_sku:
                 push_pull_status = {"status": "file_not_found", "detail": None}
 
-        opening_inv = getattr(harvest_plugin, "opening_inv", {}) if harvest_plugin else {}
+        opening_inv = {}   # no plugin supplies an opening inventory (HarvestBatch removed 2026-10-09)
         fres = ForwardPlanner(sc_tree, opening_inv=opening_inv,
                               lot_flow_mode=lot_flow_mode).run(prod_nm)
         fwd_mode = getattr(fres, "lot_flow_mode", None)

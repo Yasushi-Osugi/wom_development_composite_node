@@ -24,8 +24,8 @@ the ones the joint problem used; any difference stops the run.
 Registered last in ALL_BUILTIN_PLUGINS, so its positions are the last word
 after the other POST_BACKWARD plugins. Default OFF. Needs the lot flow mode
 "identity" and the rice_*.csv inputs (wom/capacity_layer/rice_seasonal.py
-load_inputs); missing inputs stop the run. Do not combine with
-HarvestBatchPlugin (that is the legacy way of forming the harvest).
+load_inputs); missing inputs stop the run. (The legacy HarvestBatchPlugin,
+which made anonymous OI_ opening lots, was removed on 2026-10-09.)
 """
 from __future__ import annotations
 
@@ -63,6 +63,11 @@ class RiceSeasonalPlugin(WOMPlugin):
 
     def _solve_all(self, sc_tree):
         from wom.capacity_layer import rice_seasonal as rs
+        if not os.path.exists(os.path.join(self._model_dir, "rice_seasonal_config.csv")):
+            raise rs.RiceInputError(
+                "このモデルには Rice の設定（rice_seasonal_config.csv）がありません。"
+                "Plugins の Rice Seasonal を OFF にして計画してください "
+                f"(model folder: {self._model_dir or '(unknown)'})")
         if self._mode != "identity":
             raise rs.RiceInputError("Rice Seasonal needs lot_flow_mode=identity "
                                     "(planning_config.csv); the plan is in " + str(self._mode))

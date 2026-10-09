@@ -1,0 +1,17 @@
+{
+ "snapshot_equal": {
+  "psi": true,
+  "ppc": true,
+  "forward": true,
+  "products": true,
+  "period": true
+ },
+ "actual_ship": {
+  "lovem_events": 988470,
+  "tree_shipments": 988470,
+  "all_nodes_one_to_one": true,
+  "market_events": 141210,
+  "market_one_to_one": true
+ },
+ "seconds_1_2": 43.2
+}

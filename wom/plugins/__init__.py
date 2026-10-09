@@ -2,7 +2,6 @@
 from wom.plugins.demand_smoothing         import DemandSmoothingPlugin
 from wom.plugins.capacity_override        import CapacityOverridePlugin
 from wom.plugins.buffering_stock_optimizer import BufferingStockOptimizerPlugin
-from wom.engine.harvest_batch_plugin      import HarvestBatchPlugin
 from wom.engine.holiday_calendar_plugin   import HolidayCalendarPlugin
 from wom.plugins.capacity_layer           import CapacityLayerPlugin
 from wom.plugins.rice_seasonal            import RiceSeasonalPlugin
@@ -11,7 +10,6 @@ ALL_BUILTIN_PLUGINS = [
     DemandSmoothingPlugin,
     CapacityOverridePlugin,
     BufferingStockOptimizerPlugin,
-    HarvestBatchPlugin,
     HolidayCalendarPlugin,
     CapacityLayerPlugin,      # default OFF (RequestLetter_GenerationLine_UpperLayer)
     RiceSeasonalPlugin,       # default OFF, last (RequestLetter_RiceSeasonal_Implementation)

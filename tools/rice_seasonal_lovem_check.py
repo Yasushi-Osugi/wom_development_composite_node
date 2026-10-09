@@ -3,7 +3,7 @@
 tools/rice_seasonal_lovem_check.py — Rice の LOVEM の照合を、観測済みの run フォルダに対して段階ごとに行う
 （RequestLetter_RiceSeasonal_Implementation K-R8）
 
-    python -m tools.rice_seasonal_lovem_check --model-dir data/trial/rice-japan-2027-2028-seasonal \
+    python -m tools.rice_seasonal_lovem_check --model-dir data/sample/rice-japan-2027-2028 \
         --run-dir output/rice_seasonal/C/lovem_on [--skip-restore]
 
 run フォルダは `python -m tools.rice_seasonal_check ... --lovem` が作る（観測つきの計画）。

@@ -83,6 +83,7 @@ Outbound のデカップリング点より下流のノードでは、Demand Laye
 ## 4. 期首在庫
 
 - 事実（2026-09-29 確認）：PSI Planning エンジンは `inventory_master.csv` を読んでいない。`on_hand_qty` を使うのは、数量ベースの旧 Simulation の経路（`wom/engine/inventory.py`）だけである。Forward の期首在庫（`opening_inv`）に lot を入れているのは、rice の収穫プラグイン（`harvest_batch_plugin`、合成した ID）だけである。
+  - **（2026-10-09 追記）解消**：rice は Rice Seasonal（収穫週と精米週を選ぶ上位の層）で identity に移り、`harvest_batch_plugin` は削除した。期首在庫に lot を入れるものは無くなった（`docs/development/WOM_RiceLegacyRetire_Report.md`）。
 - **決定**：期首在庫を PSI で表す場合は、先行生産分を需要 Lot から計画して流し、期首に Lot_ID 付きの在庫として置く。受け皿は既存の warmup（計画準備期間。`docs/design/planning_warmup_and_reporting_horizon.md`）とする。需要に紐づかない匿名の期首在庫 lot は作らない。
 
 ## 5. push の Mode 1〜3
@@ -95,20 +96,20 @@ Outbound のデカップリング点より下流のノードでは、Demand Laye
 | 項目 | 内容 |
 |---|---|
 | Inbound のデカップリング（push 以外）での P のコピー | `forward_planner` Phase 1 の「is_decoupling または in_pull_mode のノードで `psi4supply[w][P] = psi4demand[w][P]`」は、例外2と同じ形をしている。今回の決定の対象外。該当するモデルと影響の有無を先に測る |
-| Buffering Stock（モデル1）の詳細 | rice の収穫プラグインが作る合成 ID の期首在庫も、ここで扱う（収穫期に作って在庫で持つという点で、同じ構造） |
+| Buffering Stock（モデル1）の詳細 | rice の収穫プラグインが作る合成 ID の期首在庫も、ここで扱う（収穫期に作って在庫で持つという点で、同じ構造）。**（2026-10-09 解消：rice は Rice Seasonal で、収穫在庫に需要の Lot_ID を付けて計画する。合成 ID は作らない。`docs/development/WOM_RiceLegacyRetire_Report.md`）** |
 | Backward の前倒しの上限 | 休業分を約1年前まで前倒しする（SE-A）、前倒しできずに past_due になる（SE1）。モデル4（ボトルネックを上位で解く）によって起きにくくなる見込み。上限の要否は後で判断 |
 | partial_capacity を cap_soft へ | Explicit Closure の D6。部分操業は cap_soft を動かすのが正 |
 | 中間ノードの金額 | PPC の中間ノードの数量は、自ノードの実出荷ではなく leaf の販売数量から導出されている（PPC 入口の実測 P4）。LOVEM 段階 D で扱う |
-| rice の合成 ID の重複 | PPC の入口で、4地域が同じ channel に写像され、合成 ID が各4回重複する（PPC 入口の実測 P1） |
+| rice の合成 ID の重複 | PPC の入口で、4地域が同じ channel に写像され、合成 ID が各4回重複する（PPC 入口の実測 P1）。**（2026-10-09 解消：HarvestBatch の削除で合成 ID は無くなった）** |
 | identity でのデカップリング点の意味 | identity では、Outbound のデカップリング点の位置を変えても計画が変わらない（LotIdentityFlow の中間報告）。今の実装では、配置の効果が例外2（P のコピー）だけに依存していた。補充の指示・在庫の目標・投入の時期など、デカップリング点が本来変えるべきものを、identity でどう表すかを設計する |
-| legacy の Step 0a の CO の重複 | legacy では、cap_hard を超えた生産の lot を CO に入れるため、同じ ID の要求が二重になり、CO に残り続ける（iphone、smartx、ev_update、rice）。legacy は変えないので、既知の欠陥として残す |
+| legacy の Step 0a の CO の重複 | legacy では、cap_hard を超えた生産の lot を CO に入れるため、同じ ID の要求が二重になり、CO に残り続ける（iphone、smartx、ev_update、rice）。legacy は変えないので、既知の欠陥として残す。**（2026-10-09 追記：rice は identity に移ったので、rice についてはこの欠陥の対象外になった）** |
 
 ## 7. 追加の決定（2026-09-29、LotIdentityFlow の中間報告を受けて）
 
 | # | 決定 |
 |---|---|
 | D4 | identity では、cap_hard を超えて作れなかった生産の lot を CO に入れない。ID を保ったまま翌週の生産の先頭に回す（休業週の E2 と同じ考え方）。そのノードの要求週に間に合えば遅配ではない |
-| D5 | rice は、収穫在庫に需要の Lot_ID を付ける設計（§6 Buffering Stock）が決まるまで、legacy で動かす。暫定措置であり、rice の整合性を確かめたものではない。方式は計画の結果と LOVEM の manifest に記録する |
+| D5 | rice は、収穫在庫に需要の Lot_ID を付ける設計（§6 Buffering Stock）が決まるまで、legacy で動かす。暫定措置であり、rice の整合性を確かめたものではない。方式は計画の結果と LOVEM の manifest に記録する。**（2026-10-09 に解消。rice は Rice Seasonal〔収穫週と精米週を選ぶ上位の層〕で identity に移った。`data/sample/` に legacy で動くモデルは無い。legacy の方式と `tests/golden/legacy/` は D3 のとおり残す。`docs/development/WOM_RiceLegacyRetire_Report.md`）** |
 | D6 | decouple の配置最適化は、legacy で参考候補を選び、選んだ配置を identity で評価し直して本計画を行う。legacy の評価値を identity の成果や最適性の証明として扱わない |
 | D7 | （2026-09-30）期首在庫は warmup（`planning_config.csv` の `warmup_lt`）で作る（§4）。`warmup_lt` は、業務で分かりやすい暦の区切りにそろえる：13 週＝3 か月（四半期）を基本に、**標準は 17 週（約 4 か月の先行生産）**、17 週で足りないモデルは **26 週（半年）**。ev-thailand-2026・Cookie-jp-2026 は 17（試行での最小値は 14・15。16〜28 でも結果は同じ）、soysauce-jpy-2027 は今の 26 のまま（`docs/development/WOM_FlowCheck_WarmupTrial_Report.md` §5） |
 | D7a | （2026-09-30）D7 の段階は **17 週と 26 週の2つだけ**とし、26 週で足りないモデルも 26 週にとどめる。26 週でも残る期末注文残は、能力の押し戻しが半年より深いことを示す情報として残す（先行生産で隠さない）。適用：oil-global-2027 は 26（残り 29 件：開始端 25・能力 4。52 週なら 0。観測結果：29 件はすべて Gasoline_Local_RedSea（当週出荷 465）。モデルの設定：製油所の能力 5 lot／週に対して需要 8 lot／週。業務上の解釈：モデルが意図した供給不足が見えている（29 件すべてを恒常的な能力不足だけに帰属させる意味ではない）。件数では 0.015% だが、1 lot がタンカー 1 隻分のため**売上では約 786 億円・4.8%**）、soysauce-jpy-2027-alloc は 26（P_opt/800 の 9,293 件は期末注文残として残す）、iphone_global は `capacity_plan.csv` の書式の都合で warmup 未適用（別の依頼で扱う）。各モデルの値は `docs/development/WOM_Warmup17_IdentityGolden_Report.md` |

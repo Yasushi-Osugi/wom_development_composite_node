@@ -1,0 +1,12 @@
+﻿product,leaf,demand,on_time,early,late,backlog_end,check,demand_qty,on_time_qty,early_qty,late_qty,backlog_end_qty
+Koshihikari,Retail_KANTO,73009,73009,0,0,0,0,73009,73009,0,0,0
+Koshihikari,Retail_TOHOKU,45554,45554,0,0,0,0,45554,45554,0,0,0
+Koshihikari,Retail_KANSAI,45554,45554,0,0,0,0,45554,45554,0,0,0
+Koshihikari,Retail_KYUSHU,18216,18216,0,0,0,0,18216,18216,0,0,0
+Koshihikari,Σ（製品）,182333,182333,0,0,0,0,182333,182333,0,0,0
+Yumepirika,Retail_KANTO,13633,13633,0,0,0,0,13633,13633,0,0,0
+Yumepirika,Retail_TOHOKU,10948,10948,0,0,0,0,10948,10948,0,0,0
+Yumepirika,Retail_KANSAI,21807,21807,0,0,0,0,21807,21807,0,0,0
+Yumepirika,Retail_KYUSHU,8216,8216,0,0,0,0,8216,8216,0,0,0
+Yumepirika,Σ（製品）,54604,54604,0,0,0,0,54604,54604,0,0,0
+Σ（モデル全体）,,236937,236937,0,0,0,0,236937,236937,0,0,0

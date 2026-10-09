@@ -1,9 +1,0 @@
-sku_id,leaf_node_name,mom_node_id,priority
-Koshihikari,Retail_KANTO,IN:mom:Sanchiku_Niigata:Koshihikari,1
-Koshihikari,Retail_TOHOKU,IN:mom:Sanchiku_Niigata:Koshihikari,1
-Koshihikari,Retail_KANSAI,IN:mom:Sanchiku_Niigata:Koshihikari,1
-Koshihikari,Retail_KYUSHU,IN:mom:Sanchiku_Niigata:Koshihikari,1
-Yumepirika,Retail_KANTO,IN:mom:Sanchiku_Hokkaido:Yumepirika,1
-Yumepirika,Retail_TOHOKU,IN:mom:Sanchiku_Hokkaido:Yumepirika,1
-Yumepirika,Retail_KANSAI,IN:mom:Sanchiku_Hokkaido:Yumepirika,1
-Yumepirika,Retail_KYUSHU,IN:mom:Sanchiku_Hokkaido:Yumepirika,1

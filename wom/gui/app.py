@@ -4146,7 +4146,7 @@ class DebugPanel(tk.Frame):
 
         # Step 1: HOOK_PRE_PLAN
         steps.append(OperatorStep("HOOK_PRE_PLAN", "hook_pre_plan",
-            "Plugins: HarvestBatch, HolidayCalendar cap_hard setup"))
+            "Plugins: HolidayCalendar cap_hard setup and other PRE_PLAN plugins"))
         calls.append(lambda: bus.fire(HOOK_PRE_PLAN, sc_tree=sc_tree,
                                       weeks=weeks, config=cfg))
 
@@ -5104,7 +5104,27 @@ class WOMApp(tk.Tk):
         msg = f"📂 {describe_model_dir(folder)}: {len(loaded)} files loaded"
         if missing:
             msg += f"  (not found → 欄を空にしました: {', '.join(missing)})"
-        self._status(msg, warn=is_outside_work_root(folder))
+        # RequestLetter_RiceLegacyRetire 1.4: a model with Rice inputs needs Rice
+        # Seasonal (without it most of the demand ends as backlog), so the checkbox
+        # follows the model on every load; the user may still switch it off after
+        # loading (for a comparison). No other plugin is set automatically.
+        _rice_var = getattr(self, "_plugin_vars", {}).get("rice_seasonal")
+        _rice_note = ""
+        if _rice_var is not None:
+            _has_rice = os.path.exists(os.path.join(folder, "rice_seasonal_config.csv"))
+            _rice_var.set(_has_rice)
+            _rice_note = ("　｜　Rice Seasonal：このモデルの設定（rice_seasonal_config.csv）があるので ON"
+                          if _has_rice else
+                          "　｜　Rice Seasonal：このモデルの設定が無いので OFF")
+        self._status(msg + _rice_note, warn=is_outside_work_root(folder))
+        if _rice_note:
+            # the planning-period check may post its own warning just after this
+            # (self.after(0, ...)); append the Rice note to whatever is shown then
+            def _keep_rice_note(note=_rice_note):
+                cur = self._status_var.get()
+                if note not in cur:
+                    self._status(cur + note, warn=cur.startswith("⚠") or "⚠" in cur[:4])
+            self.after(0, _keep_rice_note)
 
         # Load node_master into WorldMap immediately on folder selection
         node_path = os.path.join(folder, "node_master.csv")
@@ -5507,15 +5527,11 @@ class WOMApp(tk.Tk):
         # ── Push config path ────────────────────────────────────────
         _push_path = self._f_push.get() if hasattr(self, "_f_push") else ""
 
-        # ── Opening inventory (from HarvestBatchPlugin if active) ───
-        _harvest_plugin = getattr(self, "_plugin_instances", {}).get("harvest_batch")
-        _opening_inv = (
-            _harvest_plugin.opening_inv
-            if _harvest_plugin is not None
-            and self._plugin_vars.get(
-                "harvest_batch", __import__("tkinter").BooleanVar(value=False)).get()
-            else {}
-        )
+        # ── Opening inventory ───────────────────────────────────────
+        # No plugin supplies one: HarvestBatchPlugin (anonymous OI_ opening lots)
+        # was removed (RequestLetter_RiceLegacyRetire, 2026-10-09). Kept as an
+        # empty dict so the Forward call and the Debug runner stay as they are.
+        _opening_inv = {}
 
         # ── Forward lot flow solver (RequestLetter_LotIdentityFlow C1) ─
         #   planning_config.csv の lot_flow_mode（無ければ既定 "identity"）。
@@ -5644,15 +5660,6 @@ class WOMApp(tk.Tk):
                         PushProductionPlanner(sc_tree).setup_all(_push_cfgs)
                     else:
                         print(f"[PushPull] push_config.csv loaded but no rows matched sku_id={prod_nm}")
-                # Collect opening_inv from HarvestBatchPlugin if active
-                _harvest_plugin = getattr(self, '_plugin_instances', {}).get('harvest_batch')
-                _opening_inv = (
-                    _harvest_plugin.opening_inv
-                    if _harvest_plugin is not None
-                    and self._plugin_vars.get('harvest_batch',
-                        __import__('tkinter').BooleanVar(value=False)).get()
-                    else {}
-                )
                 # RequestLetter_FlowCheck V3: keep each product's result for the
                 # Flow Check tab (read-only afterwards).
                 _fwd_results[prod_nm] = ForwardPlanner(

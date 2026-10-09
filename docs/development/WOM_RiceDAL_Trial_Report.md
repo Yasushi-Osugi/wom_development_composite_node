@@ -1,5 +1,7 @@
 # WOM Rice DAL Trial Report
 
+> 試行のデータ（`data/sample/rice-japan-2027-2028-dal/`）と道具（`tools/probe_rice_dal_trial.py`・`tools/analyze_rice_dal_trial.py`）は 5361206 まで。git の履歴で見られる（2026-10-09 削除、`docs/development/WOM_RiceLegacyRetire_Report.md`）。
+
 - 依頼: `requests/RequestLetter_RiceDAL_Trial_to_CodeKun.md`
 - 測定基準: **`d848c5fa0565d70f6817c1a0257341067712deca`**、`wom-v1r5m1_cap_trial`
 - 測定日: 2026-10-06 UTC

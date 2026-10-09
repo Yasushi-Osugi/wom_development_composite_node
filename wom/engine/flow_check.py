@@ -380,9 +380,9 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None,
                 "closing_CO": closing_co,
                 "dup_supply_ids": len(dups.get(nd.node_id, ())),
             }
-            # supply built with Lot_IDs that no market demand owns (e.g. rice
-            # HarvestBatch OI_ lots, given as opening inventory: they may stay
-            # in I unmatched, or be received / shipped)
+            # supply built with Lot_IDs that no market demand owns. This was the
+            # opening inventory of the former HarvestBatchPlugin (OI_ lots); since it
+            # was removed (2026-10-09) nothing creates such lots -- kept as a guard.
             non_demand = bool(demand_ids) and (
                 any(lot not in demand_ids for w in range(n) for lot in sup[w][P])
                 or any(lot not in demand_ids for w in range(n) for lot in sup[w][I])

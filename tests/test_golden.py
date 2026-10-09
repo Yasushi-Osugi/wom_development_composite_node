@@ -13,7 +13,8 @@ test_golden.py — E2E ゴールデン回帰テスト（Anti-Degrade / Phase 1a�
 
 golden の作り方（オーナーが Windows で実行して commit）:
   python -m tools.run_headless_from_folder --model-dir data/sample/<case> --out tests/golden/<case>.json --quiet
-  ※ rice 等 収穫ケースは --plugins に HarvestBatchPlugin を含める。
+  ※ rice は --plugins HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin
+    （2026-10-09 に HarvestBatchPlugin を削除し、rice は Rice Seasonal で identity に移った）。
 
 意図的に挙動を変えたときは、golden を**意識的に再生成して commit**（差分が監査証跡）。
 golden が1つも無ければ本テストは skip される（ハーネスだけ先に入れても CI が赤にならない）。

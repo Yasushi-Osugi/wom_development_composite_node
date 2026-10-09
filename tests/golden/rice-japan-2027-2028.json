@@ -4,15 +4,17 @@
   },
   "case": "rice-japan-2027-2028",
   "config": {
+    "lot_flow_mode": "identity",
     "plugins": [
       "BufferingStockOptimizerPlugin",
       "CapacityOverridePlugin",
-      "HarvestBatchPlugin",
-      "HolidayCalendarPlugin"
+      "HolidayCalendarPlugin",
+      "RiceSeasonalPlugin"
     ]
   },
   "forward": {
-    "cap_hard_sealed": 8658,
+    "cap_hard_deferred_lot_weeks": 0,
+    "cap_hard_deferred_lots": 0,
     "cap_soft_violation_count": 0
   },
   "period": {
@@ -24,12 +26,12 @@
   },
   "ppc": {
     "base_currency": "JPY",
-    "cost_base": 1132460983.0,
-    "gross_margin_pct": 0.385199,
-    "gross_profit_base": 709534817.0,
-    "revenue_base": 1841995800.0,
+    "cost_base": 676123819.0,
+    "gross_margin_pct": 0.387182,
+    "gross_profit_base": 427179581.0,
+    "revenue_base": 1103303400.0,
     "tariff_base": 0.0,
-    "total_lots": 1248,
+    "total_lots": 791,
     "trust_event_count": 0
   },
   "products": [
@@ -42,97 +44,97 @@
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 117440,
-        "S": 117440,
-        "series_md5": "4c752e0010c1"
+        "P": 66657,
+        "S": 66657,
+        "series_md5": "e833ce267a69"
       },
       "DC_Nishi": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 63208,
-        "S": 63208,
-        "series_md5": "fa79cc372e65"
+        "P": 34957,
+        "S": 34957,
+        "series_md5": "9150d7191e6f"
       },
       "Genmai_Souko_Niigata": {
-        "CO": 5657603,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 139500,
-        "S": 177715,
-        "series_md5": "9a3dc8f40b5a"
+        "CO": 0,
+        "I_max": 42878,
+        "I_sum": 1663104,
+        "P": 101614,
+        "S": 101614,
+        "series_md5": "b4212a7fac50"
       },
       "Retail_KANSAI": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 45554,
+        "CO": 2025913,
+        "I_max": 624,
+        "I_sum": 4639,
+        "P": 25214,
         "S": 45554,
-        "series_md5": "7adf90ec6ff6"
+        "series_md5": "cb703b53d9ff"
       },
       "Retail_KANTO": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 73009,
+        "CO": 3167971,
+        "I_max": 982,
+        "I_sum": 11512,
+        "P": 41761,
         "S": 73009,
-        "series_md5": "c6a8deffab03"
+        "series_md5": "f68c8c4b4ca1"
       },
       "Retail_KYUSHU": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 18216,
+        "CO": 829574,
+        "I_max": 250,
+        "I_sum": 2045,
+        "P": 9743,
         "S": 18216,
-        "series_md5": "8cc60300b1bb"
+        "series_md5": "8c8961b80c98"
       },
       "Retail_TOHOKU": {
+        "CO": 2041501,
+        "I_max": 490,
+        "I_sum": 5425,
+        "P": 24896,
+        "S": 45554,
+        "series_md5": "c97fdefa0690"
+      },
+      "SP_Kome": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 45554,
-        "S": 45554,
-        "series_md5": "7adf90ec6ff6"
-      },
-      "SP_Kome": {
-        "CO": 5499882,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 139500,
-        "S": 176467,
-        "series_md5": "bc653fd80448"
+        "P": 101614,
+        "S": 101614,
+        "series_md5": "81670200ce54"
       },
       "Sanchiku_Niigata": {
-        "CO": 5499882,
-        "I_max": 46297,
-        "I_sum": 7268629,
-        "P": 139500,
-        "S": 176467,
-        "series_md5": "325724b2f290"
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 101614,
+        "S": 101614,
+        "series_md5": "81670200ce54"
       },
       "Seihaku_E": {
-        "CO": 684916,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 110126,
-        "S": 116629,
-        "series_md5": "8a4bdeaeeee5"
+        "P": 66657,
+        "S": 66657,
+        "series_md5": "d07e5be32bc6"
       },
       "Seihaku_W": {
-        "CO": 143340,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 61456,
-        "S": 62771,
-        "series_md5": "746f4270f60f"
+        "P": 34957,
+        "S": 34957,
+        "series_md5": "81a0971c10ac"
       },
       "Tanbo_Niigata": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 139500,
-        "S": 139500,
-        "series_md5": "29f543d13a2a"
+        "P": 101614,
+        "S": 101614,
+        "series_md5": "075d5c85c22a"
       }
     },
     "Yumepirika": {
@@ -140,97 +142,97 @@
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 24338,
-        "S": 24338,
-        "series_md5": "2dcbc14bae78"
+        "P": 17897,
+        "S": 17897,
+        "series_md5": "ee055cd1646f"
       },
       "DC_Nishi": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 29762,
-        "S": 29762,
-        "series_md5": "64f48139c95a"
+        "P": 21699,
+        "S": 21699,
+        "series_md5": "a0afae3c0306"
       },
       "Genmai_Souko_Hokkaido": {
-        "CO": 921323,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 51661,
-        "S": 52776,
-        "series_md5": "a599e7f1c00e"
+        "CO": 0,
+        "I_max": 15676,
+        "I_sum": 808310,
+        "P": 39596,
+        "S": 39596,
+        "series_md5": "fb3cb884473e"
       },
       "Retail_KANSAI": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 21807,
+        "CO": 810315,
+        "I_max": 393,
+        "I_sum": 3211,
+        "P": 15801,
         "S": 21807,
-        "series_md5": "bba213ae5164"
+        "series_md5": "1f8084f58823"
       },
       "Retail_KANTO": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 13633,
+        "CO": 496976,
+        "I_max": 186,
+        "I_sum": 2103,
+        "P": 9963,
         "S": 13633,
-        "series_md5": "52b8fc209724"
+        "series_md5": "75e8d4aa336a"
       },
       "Retail_KYUSHU": {
-        "CO": 0,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 8216,
+        "CO": 311258,
+        "I_max": 140,
+        "I_sum": 1116,
+        "P": 5898,
         "S": 8216,
-        "series_md5": "0e4fc5acf543"
+        "series_md5": "800a99862f8c"
       },
       "Retail_TOHOKU": {
+        "CO": 406667,
+        "I_max": 150,
+        "I_sum": 1572,
+        "P": 7934,
+        "S": 10948,
+        "series_md5": "60836f2269e5"
+      },
+      "SP_Kome": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 10948,
-        "S": 10948,
-        "series_md5": "abcb784df072"
-      },
-      "SP_Kome": {
-        "CO": 806058,
-        "I_max": 0,
-        "I_sum": 0,
-        "P": 51661,
-        "S": 52030,
-        "series_md5": "50cf120c59ff"
+        "P": 39596,
+        "S": 39596,
+        "series_md5": "0a5ad203fc08"
       },
       "Sanchiku_Hokkaido": {
-        "CO": 806058,
-        "I_max": 16045,
-        "I_sum": 1995304,
-        "P": 51661,
-        "S": 52030,
-        "series_md5": "bb61d0437a37"
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 39596,
+        "S": 39596,
+        "series_md5": "0a5ad203fc08"
       },
       "Seihaku_E": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 24170,
-        "S": 24170,
-        "series_md5": "d1fc5ed1fc47"
+        "P": 17897,
+        "S": 17897,
+        "series_md5": "566e14a2f8ce"
       },
       "Seihaku_W": {
-        "CO": 92022,
+        "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 28717,
-        "S": 29557,
-        "series_md5": "577213a45f65"
+        "P": 21699,
+        "S": 21699,
+        "series_md5": "cd0e3a5035bd"
       },
       "Tanbo_Hokkaido": {
         "CO": 0,
         "I_max": 0,
         "I_sum": 0,
-        "P": 51661,
-        "S": 51661,
-        "series_md5": "9e7afe0fd8dc"
+        "P": 39596,
+        "S": 39596,
+        "series_md5": "4add1c525040"
       }
     }
   }

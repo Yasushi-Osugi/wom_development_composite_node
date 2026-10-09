@@ -22,7 +22,7 @@ from test_rice_seasonal_layer import _w, headless, make_model  # noqa: E402
 from wom.engine.report_start import configured_report_start, read_report_start  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, ".."))
-MIG = os.path.join(REPO, "data", "trial", "rice-japan-2027-2028-seasonal")
+MIG = os.path.join(REPO, "data", "sample", "rice-japan-2027-2028")
 
 
 def test_vc_config_is_the_one_place(tmp_path):
@@ -34,7 +34,7 @@ def test_vc_config_is_the_one_place(tmp_path):
     assert configured_report_start(model, ["2026-W53", "2027-W01"]) is None
 
 
-@pytest.mark.skipif(not os.path.isdir(MIG), reason="migration copy not generated")
+@pytest.mark.skipif(not os.path.isdir(MIG), reason="rice sample missing")
 def test_world_map_band_reads_2027_w01_for_the_migration_copy():
     from wom.worldmap_ne.flows import report_start_index
     weeks = ["2026-W52", "2026-W53", "2027-W01", "2027-W02"]

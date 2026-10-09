@@ -3,7 +3,7 @@
 tools/rice_seasonal_check.py — Rice の移行用コピーを上位の層つきで計画し、実出荷から独立に照合する
 （RequestLetter_RiceSeasonal_Implementation 受入 K-R2・K-R3・K-R6・K-R8・K-R10）
 
-    python -m tools.rice_seasonal_check --model-dir data/trial/rice-japan-2027-2028-seasonal \
+    python -m tools.rice_seasonal_check --model-dir data/sample/rice-japan-2027-2028 \
         --out output/rice_seasonal/C [--lovem]
 
 計画（headless、モデルのコピー）の後、上位の層の「割当」ではなく Forward の**実出荷**から数え直す：

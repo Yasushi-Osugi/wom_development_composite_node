@@ -251,7 +251,9 @@ def analyse(store, snap, runtime):
                             if lot in demand_ids or lot in seen:
                                 continue
                             seen.add(lot)
-                            # HarvestBatchPlugin opening inventory: f"OI_{node_id}_{i}"
+                            # Opening inventory of the former HarvestBatchPlugin
+                            # (f"OI_{node_id}_{i}"). Nothing creates OI_ lots now
+                            # (removed 2026-10-09); kept so old runs are still read.
                             if lot.startswith("OI_"):
                                 k3["rice_harvest_like"] += 1
                             else:

@@ -52,7 +52,8 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 ### 2.3 計画の方式（`planning_config.csv` の `lot_flow_mode`）
 
 - **identity（既定）**：Lot_ID の基本ルールで計画する。
-- **legacy**：前の方式。今は rice だけ。rice の legacy の結果は、下流で需要の P をコピーする経路のため、上流の不足が市場に見えない（`docs/development/WOM_RiceDAL_Trial_Report.md` §4）。**rice の数字を正解として扱わない。**
+- **legacy**：前の方式。**`data/sample/` に legacy で動くモデルは無い**（2026-10-09、rice が identity に移った。`tests/test_rice_retire.py` が全サンプルの identity を確かめる）。方式のコードは決定記録 D3 のとおり残し、`tests/golden/legacy/`（3 件）が守る。
+- 前の rice（legacy＋HarvestBatch）は 236,937 ID の全部が当週出荷に見えたが、それは HarvestBatch の匿名の期首在庫（`OI_`）が助走の年の不足と収穫量の不足を隠していたため。identity では当週 141,210・注文残 95,727（`docs/development/WOM_RiceLegacyRetire_Report.md`）。**出どころの無い在庫は、不足を見えなくする。**
 
 ---
 
@@ -75,6 +76,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | R13 | **金額の三つの視点**：V1（ノード・区間の管理評価）、V2（法人別）、V3（連結。内部取引の消去と、内部の未実現利益の消去） | 段階 D 設計 v1.0、`WOM_StageD_Phase2_Report.md` |
 | R14 | **能力を上位で扱う層**：市場の要求（週と Lot_ID）は変えず、内部の計画の位置だけを渡す。前倒しの窓（例 17 週）を設定する。プラグインで既定は OFF | `WOM_GenerationLine_UpperLayer_Report.md`、決定記録 §3（モデル 4） |
 | R15 | **世代の切り替えのライン**：混流しない。空き期間（例 4 週）は両世代とも能力 0。切り替えの週は上位の層で候補を並べて選ぶ | 同上、`data/sample/smartx-2027-2029/README.md` |
+| R16 | **季節の供給（rice）**：市場の要求（週と Lot_ID）は変えず、上位の層が ID ごとに収穫週と精米週を別々に選ぶ。週の設備の上限・収穫の週・年産の上限・保管の上限・歩留まりは別々の入力。匿名の期首在庫を作らず、報告の期首在庫は計画の中の先の収穫から作る。助走の年の不足は報告期間と分けて数える。不足のときは要求週の早い順、同じ週は市場の要求量に比例して配る（精米の前倒しの少なさより優先） | `docs/development/WOM_RiceSeasonal_Implementation_Report.md`、`data/sample/rice-japan-2027-2028/README.md`、依頼書 §8 |
 
 ---
 
@@ -86,7 +88,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 - **soysauce-jpy-2027-alloc**：3 法人・3 通貨、法人間の価格・卸価格、関税は国境の区間。
 - **smartx-2027-2029**：能力のボトルネック、世代の切り替えのライン、上位の層。
 - **ev-europe-2026**：組立と Stock Yard（Kitting）。
-- rice は今、手本にしない（§2.3）。
+- **rice-japan-2027-2028**：季節の供給（収穫・玄米保管・精米）、品目共用の設備、不足の配分。Rice Seasonal のプラグインが要る（GUI はモデルを読むと自動で ON。Holiday Calendar は手で ON）。
 
 ### 4.2 フォルダの中身（`data/sample/<モデル>/`）
 
@@ -146,7 +148,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 - **役割**：大杉さん（Owner：判断・実機確認・git）、Claude君（設計・依頼書・検証）、Code君（Claude Code：実装）、GPT-6 Astra君・GPT-6.1 Sol君（独立の調査・検証）。
 - **流れ**：依頼書（`requests/`）→ 実装 → 報告書（`docs/development/`）→ 検証（「止める理由」と「申し送り」を分ける）→ commit。依頼書と実装は別の commit にする。
 - **保護対象のコア**（`AGENTS.md` §10）：`backward_planner.py`、`forward_planner.py`、`plan_copy.py`、`plan_node.py`、`sc_tree.py`、`push_pull.py`。依頼書が無ければ変えない。変えるときは 3 層のテスト（単体・CSV からの結合・golden）を緑にし、大杉さんが diff を確かめる。
-- **golden**：`tests/golden/*.json`（13 件）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。rice は HarvestBatch を含む 4 プラグインで作る（`CLAUDE.md`「禁足ルール」の節の手順）。
+- **golden**：`tests/golden/*.json`（13 件）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。rice は Holiday Calendar・Buffering Stock・Capacity Override・Rice Seasonal の 4 プラグインで作る（`tests/test_golden.py` の説明）。
 - **git**：Windows 側で行う。リモートは `composite_node`（`wom_development_composite_node`、default branch `wom-v1r5m1_cap_trial`）。commit メッセージの下書きは `commit_msg*.txt`（git の対象外）。
 - **誤読を招く名前**は見つけ次第、関連する資料をまとめて直す。黙った既定値（0・1・前の週）を作らない。
 
@@ -156,7 +158,8 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 
 | 課題 | 状態 |
 |---|---|
-| rice の再定義（HarvestBatch をやめ、Demand Anchored Lots に揃える） | 移行用コピー `data/trial/rice-japan-2027-2028-seasonal/` で実装済み（上位の層 `wom/capacity_layer/rice_seasonal.py`、プラグイン Rice Seasonal・既定 OFF。報告 `docs/development/WOM_RiceSeasonal_Implementation_Report.md`）。236,937 ID のうち当週 141,210、注文残 95,727（助走の2026年 67,169、報告期間のコシヒカリ 28,556＝収穫量不足）。精米の前倒しは1週まで、不足のときは比例配分を前倒しの少なさより優先する。元の `rice-japan-2027-2028`（legacy）と golden の置き換えは Owner の受入の後。そのとき §3 に季節供給の規則を足す。残り：年産上限の業務値、収穫年ごとの価格と古い在庫の評価損、ぬか等の金額、大きな run での LOVEM `verify_run` のメモリ |
+| rice の残り | rice は identity に移った（`WOM_RiceLegacyRetire_Report.md`）。残り：年産上限の業務値、収穫年ごとの価格と古い在庫の評価損、ぬか等の金額、rice の PPC の価格表（今は `data/ppc` の見本の規則）、大きな run での LOVEM `verify_run` のメモリ（`tools/lovem_interval_check.py` で照合） |
+| 需要の出どころ（4P） | 需要は `demand_forecast.csv` として外から与えられている。製品・価格・チャネル・販促（コトラーの 4P）から需要の ID を作り、出どころを ID の属性として持つ「需要の層」を、上位の層と同じくエンジンの外に置く構想（Owner、2026-10-09）。rice では「不足のとき、配分・価格・品目の誘導のどれで対応するか」を比べる題材になる |
 | Backward の前倒しの上限 | 上位の層が OFF のとき上限が無い（`WOM_GenerationLine_UpperLayer_Report.md` §11.1） |
 | 世代間の需要の移行 | 旧世代の残りの需要を新世代へ振り替える規則が無い |
 | 在庫の保有費用・陳腐化の金額 | `vc_config.csv` の `holding_rate_weekly` を設定し、smartx などに Value Chain のマスターを用意してから |
