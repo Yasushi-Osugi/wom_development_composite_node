@@ -1,0 +1,55 @@
+{
+ "as_is": {
+  "served": 141188,
+  "Koshihikari|warmup": 52163,
+  "Koshihikari|report": 28578,
+  "Yumepirika|warmup": 15006,
+  "Yumepirika|report": 2
+ },
+ "mills_unlimited": {
+  "served": 141210,
+  "Koshihikari|warmup": 52163,
+  "Koshihikari|report": 28556,
+  "Yumepirika|warmup": 15006,
+  "Yumepirika|report": 2
+ },
+ "crop_unlimited": {
+  "served": 141188,
+  "Koshihikari|warmup": 52163,
+  "Koshihikari|report": 28578,
+  "Yumepirika|warmup": 15006,
+  "Yumepirika|report": 2
+ },
+ "both_unlimited": {
+  "served": 141210,
+  "Koshihikari|warmup": 52163,
+  "Koshihikari|report": 28556,
+  "Yumepirika|warmup": 15006,
+  "Yumepirika|report": 2
+ },
+ "no_option_lots": {
+  "Koshihikari|warmup": 52163,
+  "Yumepirika|warmup": 15006
+ },
+ "field_weekly_unlimited": {
+  "served": 141188,
+  "Koshihikari|warmup": 52163,
+  "Koshihikari|report": 28578,
+  "Yumepirika|warmup": 15006,
+  "Yumepirika|report": 2
+ },
+ "field_and_crop_unlimited": {
+  "served": 159615,
+  "Koshihikari|warmup": 52163,
+  "Koshihikari|report": 8101,
+  "Yumepirika|warmup": 15006,
+  "Yumepirika|report": 2052
+ },
+ "everything_unlimited": {
+  "served": 169768,
+  "Koshihikari|warmup": 52163,
+  "Koshihikari|report": 0,
+  "Yumepirika|warmup": 15006,
+  "Yumepirika|report": 0
+ }
+}

@@ -1,0 +1,34 @@
+{
+ "False": {
+  "served": 141210,
+  "objective": {
+   "served": 141210,
+   "sum_due_of_served": 13787648.0,
+   "proportional_deviation": 2992.0,
+   "milling_advance_lot_weeks": 31623.0,
+   "brown_kg_weeks": 8238046666.662922
+  },
+  "unallocated": {
+   "Koshihikari|report": 28556,
+   "Koshihikari|warmup": 52163,
+   "Yumepirika|report": 2,
+   "Yumepirika|warmup": 15006
+  }
+ },
+ "True": {
+  "served": 141210,
+  "objective": {
+   "served": 141210,
+   "sum_due_of_served": 13940370.0,
+   "proportional_deviation": 7542.0,
+   "milling_advance_lot_weeks": 4913.0,
+   "brown_kg_weeks": 8828349999.99667
+  },
+  "unallocated": {
+   "Koshihikari|report": 28556,
+   "Koshihikari|warmup": 52163,
+   "Yumepirika|report": 2,
+   "Yumepirika|warmup": 15006
+  }
+ }
+}

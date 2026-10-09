@@ -1,0 +1,143 @@
+{
+ "0": {
+  "served": 141188,
+  "objective": {
+   "served": 141188,
+   "sum_due_of_served": 13927435.0,
+   "proportional_deviation": 5367.999999999983,
+   "milling_advance_lot_weeks": 6591.0,
+   "brown_kg_weeks": 8809906666.663334
+  },
+  "options": 4400,
+  "stage_seconds": {
+   "served": 0.76,
+   "earliest_due": 0.9,
+   "proportional": 1.36,
+   "milling_advance": 1.72,
+   "brown_kg_weeks": 1.93
+  },
+  "market": {
+   "Koshihikari|report|backlog": 28578,
+   "Koshihikari|report|on_time": 93852,
+   "Koshihikari|warmup|backlog": 52163,
+   "Koshihikari|warmup|on_time": 7740,
+   "Yumepirika|report|backlog": 2,
+   "Yumepirika|report|on_time": 36662,
+   "Yumepirika|warmup|backlog": 15006,
+   "Yumepirika|warmup|on_time": 2934
+  },
+  "advanced_lots": {},
+  "advanced_detail": {},
+  "inventory_lot_weeks_after_milling": {
+   "Koshihikari|DC": 0,
+   "Koshihikari|market": 1696,
+   "Yumepirika|DC": 0,
+   "Yumepirika|market": 4895
+  },
+  "forward": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_soft_violation_count": 0
+  }
+ },
+ "1": {
+  "served": 141210,
+  "objective": {
+   "served": 141210,
+   "sum_due_of_served": 13787648.0,
+   "proportional_deviation": 2992.0,
+   "milling_advance_lot_weeks": 31623.0,
+   "brown_kg_weeks": 8238046666.662922
+  },
+  "options": 8600,
+  "stage_seconds": {
+   "served": 1.62,
+   "earliest_due": 1.9,
+   "proportional": 4.11,
+   "milling_advance": 4.63,
+   "brown_kg_weeks": 5.02
+  },
+  "market": {
+   "Koshihikari|report|backlog": 28556,
+   "Koshihikari|report|on_time": 93874,
+   "Koshihikari|warmup|backlog": 52163,
+   "Koshihikari|warmup|on_time": 7740,
+   "Yumepirika|report|backlog": 2,
+   "Yumepirika|report|on_time": 36662,
+   "Yumepirika|warmup|backlog": 15006,
+   "Yumepirika|warmup|on_time": 2934
+  },
+  "advanced_lots": {
+   "Koshihikari": 15230,
+   "Yumepirika": 4170
+  },
+  "advanced_detail": {
+   "Koshihikari|Seihaku_E|2027-W11|2027-W12": 9,
+   "Koshihikari|Seihaku_E|2027-W12|2027-W13": 235,
+   "Koshihikari|Seihaku_E|2027-W13|2027-W14": 624,
+   "Koshihikari|Seihaku_E|2027-W14|2027-W15": 842,
+   "Koshihikari|Seihaku_E|2027-W15|2027-W16": 1100,
+   "Koshihikari|Seihaku_E|2027-W44|2027-W45": 262,
+   "Koshihikari|Seihaku_E|2027-W45|2027-W46": 702,
+   "Koshihikari|Seihaku_E|2027-W46|2027-W47": 920,
+   "Koshihikari|Seihaku_E|2027-W47|2027-W48": 982,
+   "Koshihikari|Seihaku_E|2027-W48|2027-W49": 986,
+   "Koshihikari|Seihaku_E|2027-W49|2027-W50": 1285,
+   "Koshihikari|Seihaku_E|2027-W52|2028-W01": 811,
+   "Koshihikari|Seihaku_E|2028-W12|2028-W13": 318,
+   "Koshihikari|Seihaku_E|2028-W13|2028-W14": 644,
+   "Koshihikari|Seihaku_E|2028-W14|2028-W15": 769,
+   "Koshihikari|Seihaku_E|2028-W15|2028-W16": 1227,
+   "Koshihikari|Seihaku_E|2028-W47|2028-W48": 22,
+   "Koshihikari|Seihaku_W|2027-W14|2027-W15": 126,
+   "Koshihikari|Seihaku_W|2027-W15|2027-W16": 527,
+   "Koshihikari|Seihaku_W|2027-W46|2027-W47": 226,
+   "Koshihikari|Seihaku_W|2027-W47|2027-W48": 395,
+   "Koshihikari|Seihaku_W|2027-W48|2027-W49": 472,
+   "Koshihikari|Seihaku_W|2027-W49|2027-W50": 777,
+   "Koshihikari|Seihaku_W|2027-W52|2028-W01": 437,
+   "Koshihikari|Seihaku_W|2028-W13|2028-W14": 56,
+   "Koshihikari|Seihaku_W|2028-W14|2028-W15": 344,
+   "Koshihikari|Seihaku_W|2028-W15|2028-W16": 132,
+   "Yumepirika|Seihaku_E|2027-W12|2027-W13": 169,
+   "Yumepirika|Seihaku_E|2027-W13|2027-W14": 103,
+   "Yumepirika|Seihaku_E|2027-W14|2027-W15": 99,
+   "Yumepirika|Seihaku_E|2027-W15|2027-W16": 127,
+   "Yumepirika|Seihaku_E|2027-W33|2027-W34": 155,
+   "Yumepirika|Seihaku_E|2027-W44|2027-W45": 75,
+   "Yumepirika|Seihaku_E|2027-W46|2027-W47": 103,
+   "Yumepirika|Seihaku_E|2027-W47|2027-W48": 227,
+   "Yumepirika|Seihaku_E|2027-W48|2027-W49": 201,
+   "Yumepirika|Seihaku_E|2027-W49|2027-W50": 15,
+   "Yumepirika|Seihaku_E|2027-W52|2028-W01": 168,
+   "Yumepirika|Seihaku_E|2028-W11|2028-W12": 9,
+   "Yumepirika|Seihaku_E|2028-W12|2028-W13": 86,
+   "Yumepirika|Seihaku_E|2028-W13|2028-W14": 83,
+   "Yumepirika|Seihaku_E|2028-W14|2028-W15": 172,
+   "Yumepirika|Seihaku_E|2028-W33|2028-W34": 155,
+   "Yumepirika|Seihaku_W|2027-W13|2027-W14": 56,
+   "Yumepirika|Seihaku_W|2027-W14|2027-W15": 218,
+   "Yumepirika|Seihaku_W|2027-W15|2027-W16": 138,
+   "Yumepirika|Seihaku_W|2027-W30|2027-W31": 10,
+   "Yumepirika|Seihaku_W|2027-W33|2027-W34": 190,
+   "Yumepirika|Seihaku_W|2027-W46|2027-W47": 76,
+   "Yumepirika|Seihaku_W|2027-W47|2027-W48": 201,
+   "Yumepirika|Seihaku_W|2027-W48|2027-W49": 257,
+   "Yumepirika|Seihaku_W|2027-W49|2027-W50": 149,
+   "Yumepirika|Seihaku_W|2027-W52|2028-W01": 205,
+   "Yumepirika|Seihaku_W|2028-W15|2028-W16": 533,
+   "Yumepirika|Seihaku_W|2028-W33|2028-W34": 190
+  },
+  "inventory_lot_weeks_after_milling": {
+   "Koshihikari|DC": 0,
+   "Koshihikari|market": 23621,
+   "Yumepirika|DC": 0,
+   "Yumepirika|market": 8002
+  },
+  "forward": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_soft_violation_count": 0
+  }
+ }
+}

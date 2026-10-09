@@ -1892,3 +1892,16 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 - **注意：golden は上位の層 OFF**。OFF のとき Backward の能力の押し戻しには**前倒しの上限が無い**ので、smartx の golden の SmartX は切り替えの後の需要を全部作りだめる（`SP_SmartX` の在庫 971,956 lot・週）。窓 17 週の計画は ON で見る（SmartX 未割当 14,426、SmartXNext 1,274、SmartXPro_CN 1,202〔2030-W14 の生産終了、データは今のまま〕、SmartXPro_IN の遅配 16,073 → 0）。
 - **照合の道具**：`tools/generation_line_compare.py`（OFF／ON、市場の要求の同一性、LOVEM の actual_ship との 1 対 1、混流なし）、`tools/gui_generation_line_check.py`（実アプリの窓で Network の図と**全ノードの PSI List** を描かせる）。headless の `run()` に `extra_plugins`（既定 None）を足した。
 
+---
+
+## Rice の季節供給・玄米保管・精米（RequestLetter_RiceSeasonal_Implementation、2026-10-08）
+
+- **報告書（正典）**：`docs/development/WOM_RiceSeasonal_Implementation_Report.md`（付表 `docs/development/rice_seasonal/`）。Sol 君の設計・試作：`docs/design/drafts/WOM_Rice_Seasonal_Model_Design_v0.1.md`、`wom/capacity_layer/rice_trial.py`（試作、そのまま残す）。
+- **上位の層**：`wom/capacity_layer/rice_seasonal.py`。市場の需要 ID ごとに**収穫週 h と精米週 p の二つの日付**を選ぶ（試作の一般化）。経路は計画の木から読む（市場→DC→精米→玄米倉庫→SP、集荷→田）。休業の週の受入れは Forward と同じく次に開いている週。要求は（品目×市場×要求週）に集約して整数で解き、元の ID の順に展開する。5 段の MILP：割当数 → 要求週の早い順 → 週内は市場の要求量に比例（最大剰余法）→ 精米の前倒し → 玄米 kg 週。
+- **プラグイン**：`wom/plugins/rice_seasonal.py`（POST_BACKWARD、**既定 OFF**、`ALL_BUILTIN_PLUGINS` の最後）。**最初の品目の POST_BACKWARD で全品目を一度に解く**（品目共用の精米を一度だけ制約するため）。各品目ではその品目の内部の位置だけを書き、市場の要求が共同問題と同じかを照合する。lot_flow_mode=identity が必要。HarvestBatch と一緒に使わない。
+- **入力**（モデルフォルダ、6 本）：`rice_seasonal_config.csv`（遡及の窓＝これ＋経路の LT、玄米の保存の上限、精米の前倒し。**report_start はここに書かない**＝止まる）、`rice_recipe.csv`（精米 kg／lot・歩留まり）、`rice_resources.csv`（資源の種類と単位。既定値の空欄は不可、`unlimited` を明示）、`rice_resource_map.csv`（品目×ノード×役割→資源。**共用設備は同じ resource_id**）、`rice_resource_capacity.csv`（週の能力、`crop_season` が収穫週の印）、`rice_crop_limit.csv`（作期の年産上限）。
+- **移行用コピー**：`data/trial/rice-japan-2027-2028-seasonal/`（`tools/gen_rice_seasonal_migration.py` で作る。手で直さない）。**元の `data/sample/rice-japan-2027-2028`（legacy）と golden は変えていない**。置き換えは Owner の受入の後（そのとき README・決定記録・CLAUDE.md・`docs/WOM_Start_Here.md` §3・§7 を同時に更新）。
+- **移行用コピーの結果**（精米の前倒し 1 週まで、2026-10-09）：元の要求 236,937 ID のうち当週出荷 141,210、遅配・早出し 0、注文残 95,727（2026 年の助走 67,169＝2026 年産の収穫前で候補なし、報告期間 コシヒカリ 28,556＝収穫量不足・ゆめぴりか 2）。前倒しは解き方の 4 段目だが、2・3 段目（要求週の早い順・週内の比例）のためにも使われる（約 19,400 lot、Owner の決定でこの順番のまま）。照合 `tools/rice_seasonal_check.py`（実出荷から数え直し）、`tools/rice_seasonal_lovem_check.py`（観測 ON/OFF・actual_ship 1 対 1）、`tools/lovem_interval_check.py`（LOVEM の区間を元の PSI とセルごとに独立照合。**Rice のような大きな run では `wom.lovem.verify.verify_run` は全セルを週×ID に展開してメモリが足りない**）。
+- **報告の開始週は一か所**：`vc_config.csv` の `report_start`（`wom/engine/report_start.py` が読む。World Map の帯・Value Chain・Flow Check・Rice の層が同じ値）。無ければ最初の非ゼロ需要週。Flow Check の表 2 は、報告の開始週を決めたモデルだけ「うち報告期間 当週出荷／注文残」の列を足す（無いモデルは前と同じ）。
+- **注意**：`HookBus.fire()` はプラグインの例外を表示して続けるが、`fatal_errors = True` を宣言したプラグイン（Rice Seasonal・Capacity Layer）は例外で計画を止める（配置の無い計画が黙って出ないように）。`copy_demand_to_supply` は需要のある週だけを書くので、一度計画した木で Forward をやり直すときは供給を空にしてから（テストの `reforward`）。
+

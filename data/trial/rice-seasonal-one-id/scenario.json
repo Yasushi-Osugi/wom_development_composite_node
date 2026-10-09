@@ -1,0 +1,41 @@
+{
+  "base_sha": "26a1e8eb7bc2f899246168a60c8f480857a0b614",
+  "hypothetical_values": true,
+  "start_week": "2026-W41",
+  "end_week": "2027-W01",
+  "white_kg_per_lot": "10",
+  "milling_yield": "9/10",
+  "harvest_weeks": [
+    "2026-W41",
+    "2026-W42",
+    "2026-W43"
+  ],
+  "harvest_capacity_raw_kg": "100/9",
+  "crop_yield_raw_kg": "100/3",
+  "storage_capacity_raw_kg": "100/9",
+  "other_raw_capacity_kg_week": "100/9",
+  "white_capacity_kg_week": "10",
+  "policy": {
+    "max_harvest_advance_weeks": 13,
+    "max_brown_storage_weeks": 10,
+    "max_polish_advance_weeks": 0
+  },
+  "report_start": "2027-W01",
+  "expected": {
+    "lot_id": "Koshihikari:KANSAI:2027-W01:00001",
+    "harvest": "2026-W43",
+    "collection": "2026-W44",
+    "store_arrival": "2026-W45",
+    "store_departure": "2026-W50",
+    "polish": "2026-W52",
+    "dc": "2026-W53",
+    "market": "2027-W01",
+    "brown_inventory_weeks": [
+      "2026-W45",
+      "2026-W46",
+      "2026-W47",
+      "2026-W48",
+      "2026-W49"
+    ]
+  }
+}

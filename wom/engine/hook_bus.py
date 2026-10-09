@@ -73,12 +73,17 @@ class HookBus:
     def fire(self, hook: str, **ctx) -> None:
         """
         Fire *hook*, calling each registered listener with **ctx as keyword args.
-        Exceptions in listeners are caught and printed (non-fatal).
+        Exceptions in listeners are caught and printed (non-fatal), except for
+        a plugin that declares ``fatal_errors = True``: its exception stops the
+        run (RequestLetter_RiceSeasonal_Implementation -- a plugin that replaces
+        the plan must not fail silently and leave the plain plan in its place).
         """
         for fn in list(self._listeners.get(hook, [])):
             try:
                 fn(**ctx)
             except Exception as exc:  # noqa: BLE001
+                if getattr(getattr(fn, "__self__", None), "fatal_errors", False):
+                    raise
                 import traceback
                 print(f"[HookBus] Error in {hook!r} listener {fn!r}: {exc}")
                 traceback.print_exc()

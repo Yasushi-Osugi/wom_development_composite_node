@@ -76,6 +76,11 @@ Table 2 (leaf_out; per leaf, product total, model total)
   late             shipped after the request week
   backlog_end      never shipped within the horizon
   check            demand - (on_time + early + late + backlog_end)  (0 = OK)
+  When the model sets a reporting period (vc_config.csv report_start; see
+  wom/engine/report_start.py), the same rows also count the Lot_IDs whose request
+  week is in the reporting period: demand_report, on_time_report,
+  backlog_end_report (RequestLetter_RiceSeasonal_PolishAdvance1 work 6). Without
+  it these columns are absent and the table is as before.
 """
 
 from __future__ import annotations
@@ -107,6 +112,7 @@ QTY_SUFFIX = "_qty"
 _NODE_QTY_COLS = ["opening_I", "receipt_sum", "ship_sum", "closing_I",
                   "upstream_ship_sum", "in_transit_end", "closing_CO"]
 _MARKET_QTY_COLS = ["demand", "on_time", "early", "late", "backlog_end"]
+MARKET_REPORT_COLUMNS = ["demand_report", "on_time_report", "backlog_end_report"]
 
 STATUS_OK, STATUS_NG, STATUS_NA = "OK", "NG", "対象外"
 
@@ -307,11 +313,16 @@ def compute_kitting_check(sc_tree) -> List[dict]:
     return rows
 
 
-def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> dict:
+def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None,
+                       report_start_index: Optional[int] = None) -> dict:
     """Build Flow Check tables 1 and 2.
 
     results: {product: ForwardPlanResult}. When missing for a product, the
-    arrival columns cannot be reconciled (status 対象外（計画の記録なし）)."""
+    arrival columns cannot be reconciled (status 対象外（計画の記録なし）).
+    report_start_index: the first week of the reporting period when the model sets
+    one (wom.engine.report_start.configured_report_start); table 2 then also counts
+    the Lot_IDs requested in the reporting period (*_report columns)."""
+    rsi = report_start_index
     results = results or {}
     n = sc_tree.num_weeks()
     cpu = getattr(sc_tree, "cpu_size", 1) or 1
@@ -398,7 +409,9 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
             node_rows.append(row)
 
         # Table 2
-        prod_tot = {k: 0 for k in ("demand", "on_time", "early", "late", "backlog_end")}
+        _keys = ("demand", "on_time", "early", "late", "backlog_end") + (
+            tuple(MARKET_REPORT_COLUMNS) if rsi is not None else ())
+        prod_tot = {k: 0 for k in _keys}
         for leaf in ot_root.walk_preorder():
             if leaf.children:
                 continue
@@ -413,12 +426,21 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
                     first_ship.setdefault(lot, w)
             r = {"product": prod, "leaf": leaf.node_name, "demand": len(s_week),
                  "on_time": 0, "early": 0, "late": 0, "backlog_end": 0}
+            if rsi is not None:
+                r.update({k: 0 for k in MARKET_REPORT_COLUMNS})
             for lot, sw in s_week.items():
                 w = first_ship.get(lot)
+                rep = rsi is not None and sw >= rsi
+                if rep:
+                    r["demand_report"] += 1
                 if w is None:
                     r["backlog_end"] += 1
+                    if rep:
+                        r["backlog_end_report"] += 1
                 elif w == sw:
                     r["on_time"] += 1
+                    if rep:
+                        r["on_time_report"] += 1
                 elif w < sw:
                     r["early"] += 1
                 else:
@@ -450,12 +472,13 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
                              f"期末に置場で待つ部材 {kv['waiting_components_end']}）")
 
     model = {k: sum(r[k] for r in market_rows if r["leaf"] == "Σ（製品）")
-             for k in ("demand", "on_time", "early", "late", "backlog_end")}
+             for k in ("demand", "on_time", "early", "late", "backlog_end") + (
+                 tuple(MARKET_REPORT_COLUMNS) if rsi is not None else ())}
     mt = {"product": "Σ（モデル全体）", "leaf": "", **model}
     mt["check"] = mt["demand"] - (mt["on_time"] + mt["early"] + mt["late"] + mt["backlog_end"])
     market_rows.append(mt)
     for r in market_rows:
-        for c in _MARKET_QTY_COLS:
+        for c in _MARKET_QTY_COLS + (MARKET_REPORT_COLUMNS if rsi is not None else []):
             r[c + QTY_SUFFIX] = r[c] * cpu
 
     summary = {
@@ -468,6 +491,8 @@ def compute_flow_check(sc_tree, results: Optional[Dict[str, object]] = None) -> 
         "kitting_ng": sum(1 for r in kitting_rows if r["status"] == STATUS_NG),
         "cpu_size": cpu,
     }
+    if rsi is not None:
+        summary["report_start"] = sc_tree.week_labels[rsi]
     return {"nodes": node_rows, "market": market_rows, "kitting": kitting_rows,
             "summary": summary}
 
@@ -481,7 +506,8 @@ def write_flow_check_csv(fc: dict, out_dir: str) -> List[str]:
             ("flow_check_nodes.csv",
              NODE_COLUMNS + [c + QTY_SUFFIX for c in _NODE_QTY_COLS], fc["nodes"]),
             ("flow_check_market.csv",
-             MARKET_COLUMNS + [c + QTY_SUFFIX for c in _MARKET_QTY_COLS], fc["market"]),
+             MARKET_COLUMNS + (MARKET_REPORT_COLUMNS if fc["summary"].get("report_start") else [])
+             + [c + QTY_SUFFIX for c in _MARKET_QTY_COLS], fc["market"]),
             ("flow_check_kitting.csv", KITTING_COLUMNS, fc.get("kitting") or [])):
         if name == "flow_check_kitting.csv" and not rows:
             stale = os.path.join(out_dir, name)

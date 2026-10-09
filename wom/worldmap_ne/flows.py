@@ -349,18 +349,7 @@ def records_problem(records) -> Optional[str]:
 
 def report_start_index(model_dir: str, week_labels: List[str]) -> Tuple[int, str]:
     """The first week of the reporting period (vc_config.csv report_start, else the first
-    nonzero demand week). Returns (index, source)."""
-    rs, src = None, ""
-    cfg = os.path.join(model_dir, "vc_config.csv")
-    if os.path.exists(cfg):
-        c = pd.read_csv(cfg, dtype=str).fillna("")
-        v = dict(zip(c["key"], c["value"])).get("report_start", "").strip()
-        if v:
-            rs, src = v, "vc_config.csv"
-    if rs is None:
-        from wom.engine.warmup import first_nonzero_demand_week
-        rs = first_nonzero_demand_week(os.path.join(model_dir, "demand_forecast.csv"))
-        src = "最初の非ゼロ需要週"
-    if rs in week_labels:
-        return week_labels.index(rs), src
-    return 0, "（報告の開始週が計画の週に無いので、最初の週から）"
+    nonzero demand week). Returns (index, source). The reading lives in
+    wom/engine/report_start.py (one place for World Map, Rice and Flow Check)."""
+    from wom.engine.report_start import report_start_index as _rsi
+    return _rsi(model_dir, week_labels)

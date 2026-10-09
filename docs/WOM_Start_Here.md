@@ -109,6 +109,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 6. 単価の単位を lot と物量で取り違える → `cpu_size` と PPC のマスターの単位を揃える（R7。iphone の「1 万倍」の件）。
 7. `node_master.csv` に座標が無い → World Map に描けない（一覧に出る）。Stock Yard は座標が無ければ親の組立工場の位置に描かれる。
 8. 価格を 0 で埋める → 未評価として扱うべきもの（R12）。
+9. 報告の開始週を二か所に書く → `vc_config.csv` の `report_start` だけに書く（`wom/engine/report_start.py`。World Map・Flow Check・Value Chain・Rice が読む）。無ければ最初の非ゼロ需要週。Rice の設定に残すと止まる。
 
 ### 4.4 確かめ方
 
@@ -142,7 +143,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 
 ## 6. 開発の進め方
 
-- **役割**：大杉さん（Owner：判断・実機確認・git）、Claude君（設計・依頼書・検証）、Code君（Claude Code：実装）、GPT-6 Astra君（独立の調査・検証）。
+- **役割**：大杉さん（Owner：判断・実機確認・git）、Claude君（設計・依頼書・検証）、Code君（Claude Code：実装）、GPT-6 Astra君・GPT-6.1 Sol君（独立の調査・検証）。
 - **流れ**：依頼書（`requests/`）→ 実装 → 報告書（`docs/development/`）→ 検証（「止める理由」と「申し送り」を分ける）→ commit。依頼書と実装は別の commit にする。
 - **保護対象のコア**（`AGENTS.md` §10）：`backward_planner.py`、`forward_planner.py`、`plan_copy.py`、`plan_node.py`、`sc_tree.py`、`push_pull.py`。依頼書が無ければ変えない。変えるときは 3 層のテスト（単体・CSV からの結合・golden）を緑にし、大杉さんが diff を確かめる。
 - **golden**：`tests/golden/*.json`（13 件）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。rice は HarvestBatch を含む 4 プラグインで作る（`CLAUDE.md`「禁足ルール」の節の手順）。
@@ -151,11 +152,11 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 
 ---
 
-## 7. 今開いている課題（2026-10-08）
+## 7. 今開いている課題（2026-10-09）
 
 | 課題 | 状態 |
 |---|---|
-| rice の再定義（HarvestBatch をやめ、Demand Anchored Lots に揃える） | 試行済み（`WOM_RiceDAL_Trial_Report.md`）。収穫への割り当て・玄米保管・精白を上位の層の上に作る方針。1 品目・1 つの需要 ID での手計算の合意から始める |
+| rice の再定義（HarvestBatch をやめ、Demand Anchored Lots に揃える） | 移行用コピー `data/trial/rice-japan-2027-2028-seasonal/` で実装済み（上位の層 `wom/capacity_layer/rice_seasonal.py`、プラグイン Rice Seasonal・既定 OFF。報告 `docs/development/WOM_RiceSeasonal_Implementation_Report.md`）。236,937 ID のうち当週 141,210、注文残 95,727（助走の2026年 67,169、報告期間のコシヒカリ 28,556＝収穫量不足）。精米の前倒しは1週まで、不足のときは比例配分を前倒しの少なさより優先する。元の `rice-japan-2027-2028`（legacy）と golden の置き換えは Owner の受入の後。そのとき §3 に季節供給の規則を足す。残り：年産上限の業務値、収穫年ごとの価格と古い在庫の評価損、ぬか等の金額、大きな run での LOVEM `verify_run` のメモリ |
 | Backward の前倒しの上限 | 上位の層が OFF のとき上限が無い（`WOM_GenerationLine_UpperLayer_Report.md` §11.1） |
 | 世代間の需要の移行 | 旧世代の残りの需要を新世代へ振り替える規則が無い |
 | 在庫の保有費用・陳腐化の金額 | `vc_config.csv` の `holding_rate_weekly` を設定し、smartx などに Value Chain のマスターを用意してから |

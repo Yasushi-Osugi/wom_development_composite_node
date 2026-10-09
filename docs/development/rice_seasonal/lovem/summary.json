@@ -1,0 +1,142 @@
+{
+ "started": "2026-10-09T07:49:23",
+ "ended": "2026-10-09T07:53:50",
+ "seconds": 267.3,
+ "only": null,
+ "snapshots_in_run": [
+  "Koshihikari/final",
+  "Koshihikari/post_backward",
+  "Koshihikari/post_backward_hooks",
+  "Koshihikari/post_copy",
+  "Koshihikari/pre_backward",
+  "Yumepirika/final",
+  "Yumepirika/post_backward",
+  "Yumepirika/post_backward_hooks",
+  "Yumepirika/post_copy",
+  "Yumepirika/pre_backward"
+ ],
+ "snapshots_checked": [
+  "Koshihikari/final",
+  "Koshihikari/post_backward",
+  "Koshihikari/post_backward_hooks",
+  "Koshihikari/post_copy",
+  "Koshihikari/pre_backward",
+  "Yumepirika/final",
+  "Yumepirika/post_backward",
+  "Yumepirika/post_backward_hooks",
+  "Yumepirika/post_copy",
+  "Yumepirika/pre_backward"
+ ],
+ "snapshots_not_checked": [],
+ "cells": 264,
+ "bad_cells": 0,
+ "intervals": 12069376,
+ "occurrences": 24417855,
+ "timing": {
+  "psi_runs_s": 75.89,
+  "compare_s": 26.97
+ },
+ "snapshots": [
+  {
+   "snapshot": "Koshihikari/pre_backward",
+   "start": "2026-10-09T07:49:23",
+   "end": "2026-10-09T07:49:27",
+   "cells": 4,
+   "empty_cells_checked": 44,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 3.4
+  },
+  {
+   "snapshot": "Koshihikari/post_backward",
+   "start": "2026-10-09T07:49:28",
+   "end": "2026-10-09T07:50:13",
+   "cells": 23,
+   "empty_cells_checked": 25,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 45.8
+  },
+  {
+   "snapshot": "Koshihikari/post_backward_hooks",
+   "start": "2026-10-09T07:50:19",
+   "end": "2026-10-09T07:50:50",
+   "cells": 24,
+   "empty_cells_checked": 24,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 31.3
+  },
+  {
+   "snapshot": "Koshihikari/post_copy",
+   "start": "2026-10-09T07:50:50",
+   "end": "2026-10-09T07:51:21",
+   "cells": 24,
+   "empty_cells_checked": 24,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 30.8
+  },
+  {
+   "snapshot": "Yumepirika/pre_backward",
+   "start": "2026-10-09T07:51:23",
+   "end": "2026-10-09T07:51:24",
+   "cells": 4,
+   "empty_cells_checked": 44,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 0.9
+  },
+  {
+   "snapshot": "Yumepirika/post_backward",
+   "start": "2026-10-09T07:51:24",
+   "end": "2026-10-09T07:51:38",
+   "cells": 23,
+   "empty_cells_checked": 25,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 13.6
+  },
+  {
+   "snapshot": "Yumepirika/post_backward_hooks",
+   "start": "2026-10-09T07:51:38",
+   "end": "2026-10-09T07:51:50",
+   "cells": 24,
+   "empty_cells_checked": 24,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 11.5
+  },
+  {
+   "snapshot": "Yumepirika/post_copy",
+   "start": "2026-10-09T07:51:50",
+   "end": "2026-10-09T07:52:01",
+   "cells": 24,
+   "empty_cells_checked": 24,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 11.6
+  },
+  {
+   "snapshot": "Koshihikari/final",
+   "start": "2026-10-09T07:52:04",
+   "end": "2026-10-09T07:53:23",
+   "cells": 57,
+   "empty_cells_checked": 39,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 78.7
+  },
+  {
+   "snapshot": "Yumepirika/final",
+   "start": "2026-10-09T07:53:23",
+   "end": "2026-10-09T07:53:50",
+   "cells": 57,
+   "empty_cells_checked": 39,
+   "bad": 0,
+   "anomalies": {},
+   "seconds": 26.7
+  }
+ ],
+ "all_match": true
+}

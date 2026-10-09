@@ -82,6 +82,7 @@ def read_push_leads(model_dir: str) -> dict:
 
 class CapacityLayerPlugin(WOMPlugin):
     name = "capacity_layer"
+    fatal_errors = True   # an error stops the run (wom/engine/hook_bus.py), never a silent plain plan
     label = "Capacity Layer（上位の能力の層）"
     description = ("After Backward, allocates each market lot to a feasible internal plan "
                    "week under the capacities (LP), keeping the market Lot_IDs and request "

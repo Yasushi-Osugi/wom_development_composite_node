@@ -298,7 +298,11 @@ def run(model_dir: str, plugins_spec: str = "safe", output_ppc_dir: str = "outpu
     # ── Flow Check（RequestLetter_FlowCheck V3、指定時のみ）──────────
     if flow_check_dir:
         from wom.engine.flow_check import compute_flow_check, write_flow_check_csv
-        write_flow_check_csv(compute_flow_check(sc_tree, _fres_by_prod), flow_check_dir)
+        from wom.engine.report_start import configured_report_start
+        _crs = configured_report_start(model_dir, list(sc_tree.week_labels))
+        write_flow_check_csv(compute_flow_check(sc_tree, _fres_by_prod,
+                                                report_start_index=_crs[0] if _crs else None),
+                             flow_check_dir)
 
     # ── PPC（app.py _run_ppc_from_planning と同じ）─────────────────
     ppc_kpi = _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose)

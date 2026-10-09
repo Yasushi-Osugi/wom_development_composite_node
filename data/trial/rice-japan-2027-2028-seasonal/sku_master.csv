@@ -1,0 +1,9 @@
+sku_id,sku_name,region,uom,unit_cost,safety_stock_wks,lead_time_wks,order_multiple,max_order_qty,shelf_life_wks,active,selling_price,dso_wks,dpo_wks,note
+Koshihikari,新潟県産コシヒカリ,KANTO,lot,1200000,4,3,100,0,52,True,1500000,30,45,1 lot＝精米 3 t、2026年産の店頭 約500円/kg から逆算（仮置き）
+Koshihikari,新潟県産コシヒカリ,TOHOKU,lot,1200000,4,3,100,0,52,True,1410000,30,45,1 lot＝精米 3 t、2026年産の店頭 約500円/kg から逆算（仮置き）
+Koshihikari,新潟県産コシヒカリ,KANSAI,lot,1230000,4,3,100,0,52,True,1550000,30,45,1 lot＝精米 3 t、2026年産の店頭 約500円/kg から逆算（仮置き）
+Koshihikari,新潟県産コシヒカリ,KYUSHU,lot,1230000,4,3,100,0,52,True,1450000,30,45,1 lot＝精米 3 t、2026年産の店頭 約500円/kg から逆算（仮置き）
+Yumepirika,北海道産ユメピリカ,KANTO,lot,1100000,4,3,100,0,52,True,1310000,30,45,1 lot＝精米 3 t、2026年産の店頭 約500円/kg から逆算（仮置き）
+Yumepirika,北海道産ユメピリカ,TOHOKU,lot,1100000,4,3,100,0,52,True,1220000,30,45,1 lot＝精米 3 t、2026年産の店頭 約500円/kg から逆算（仮置き）
+Yumepirika,北海道産ユメピリカ,KANSAI,lot,1120000,4,3,100,0,52,True,1360000,30,45,1 lot＝精米 3 t、2026年産の店頭 約500円/kg から逆算（仮置き）
+Yumepirika,北海道産ユメピリカ,KYUSHU,lot,1120000,4,3,100,0,52,True,1270000,30,45,1 lot＝精米 3 t、2026年産の店頭 約500円/kg から逆算（仮置き）

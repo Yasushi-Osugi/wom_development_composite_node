@@ -1,0 +1,201 @@
+{
+ "market": {
+  "Koshihikari|report|backlog_end": 28578,
+  "Koshihikari|report|on_time": 93852,
+  "Koshihikari|warmup|backlog_end": 52163,
+  "Koshihikari|warmup|on_time": 7740,
+  "Yumepirika|report|backlog_end": 2,
+  "Yumepirika|report|on_time": 36662,
+  "Yumepirika|warmup|backlog_end": 15006,
+  "Yumepirika|warmup|on_time": 2934
+ },
+ "route_trace_mismatch": {},
+ "flow_identity_errors": {},
+ "flow_identity_examples": {},
+ "ids_shipped_not_in_demand": 0,
+ "synthetic_opening_ids": 0,
+ "opening_inv": {
+  "Koshihikari": {},
+  "Yumepirika": {}
+ },
+ "forward": {
+  "cap_hard_deferred_lots": 0,
+  "cap_hard_deferred_lot_weeks": 0,
+  "cap_soft_violation_count": 0
+ },
+ "supply_duplicate_ids": {
+  "Koshihikari": 0,
+  "Yumepirika": 0
+ },
+ "early_ids": 0,
+ "resource_over_capacity": [],
+ "crop_year": [
+  {
+   "resource_id": "FIELD_HOKKAIDO",
+   "product": "Yumepirika",
+   "crop_season": "2026",
+   "limit_raw_kg": 60666666.666666664,
+   "limit_lots": 18200.0,
+   "harvested_lots": 18200,
+   "harvested_raw_kg": 60666666.666666664,
+   "to_warmup_demand_lots": 2934,
+   "to_report_demand_lots": 15266,
+   "unharvested_lots": 0.0
+  },
+  {
+   "resource_id": "FIELD_HOKKAIDO",
+   "product": "Yumepirika",
+   "crop_season": "2027",
+   "limit_raw_kg": 60666666.666666664,
+   "limit_lots": 18200.0,
+   "harvested_lots": 18200,
+   "harvested_raw_kg": 60666666.666666664,
+   "to_warmup_demand_lots": 0,
+   "to_report_demand_lots": 18200,
+   "unharvested_lots": 0.0
+  },
+  {
+   "resource_id": "FIELD_HOKKAIDO",
+   "product": "Yumepirika",
+   "crop_season": "2028",
+   "limit_raw_kg": 60666666.666666664,
+   "limit_lots": 18200.0,
+   "harvested_lots": 3196,
+   "harvested_raw_kg": 10653333.333333334,
+   "to_warmup_demand_lots": 0,
+   "to_report_demand_lots": 3196,
+   "unharvested_lots": 15004.0
+  },
+  {
+   "resource_id": "FIELD_NIIGATA",
+   "product": "Koshihikari",
+   "crop_season": "2026",
+   "limit_raw_kg": 155000000.0,
+   "limit_lots": 46500.0,
+   "harvested_lots": 46500,
+   "harvested_raw_kg": 155000000.0,
+   "to_warmup_demand_lots": 7740,
+   "to_report_demand_lots": 38760,
+   "unharvested_lots": 0.0
+  },
+  {
+   "resource_id": "FIELD_NIIGATA",
+   "product": "Koshihikari",
+   "crop_season": "2027",
+   "limit_raw_kg": 155000000.0,
+   "limit_lots": 46500.0,
+   "harvested_lots": 46500,
+   "harvested_raw_kg": 155000000.0,
+   "to_warmup_demand_lots": 0,
+   "to_report_demand_lots": 46500,
+   "unharvested_lots": 0.0
+  },
+  {
+   "resource_id": "FIELD_NIIGATA",
+   "product": "Koshihikari",
+   "crop_season": "2028",
+   "limit_raw_kg": 155000000.0,
+   "limit_lots": 46500.0,
+   "harvested_lots": 8592,
+   "harvested_raw_kg": 28640000.0,
+   "to_warmup_demand_lots": 0,
+   "to_report_demand_lots": 8592,
+   "unharvested_lots": 37908.0
+  }
+ ],
+ "opening_stock_week": "2026-W53",
+ "opening_stock": [
+  {
+   "product": "Koshihikari",
+   "crop_season": "2026",
+   "state": "brown_in_transit_to_mill",
+   "lots": 1685,
+   "kg": 5616666.666666667
+  },
+  {
+   "product": "Koshihikari",
+   "crop_season": "2026",
+   "state": "brown_in_warehouse",
+   "lots": 34142,
+   "kg": 113806666.66666667
+  },
+  {
+   "product": "Koshihikari",
+   "crop_season": "2026",
+   "state": "white_after_milling",
+   "lots": 2933,
+   "kg": 8799000.0
+  },
+  {
+   "product": "Yumepirika",
+   "crop_season": "2026",
+   "state": "brown_in_transit_to_mill",
+   "lots": 951,
+   "kg": 3170000.0
+  },
+  {
+   "product": "Yumepirika",
+   "crop_season": "2026",
+   "state": "brown_in_warehouse",
+   "lots": 13438,
+   "kg": 44793333.333333336
+  },
+  {
+   "product": "Yumepirika",
+   "crop_season": "2026",
+   "state": "white_after_milling",
+   "lots": 877,
+   "kg": 2631000.0
+  }
+ ],
+ "mass_balance": {
+  "harvested_raw_kg": 470626666.6666667,
+  "white_kg": 423564000.0,
+  "other_output_kg": 47062666.666666664,
+  "balanced": true
+ },
+ "layer": {
+  "stats": {
+   "requests": 1248,
+   "lots": 236937,
+   "options": 4400,
+   "nonzeros": 149350,
+   "requests_without_option": 360,
+   "build_seconds": 0.277
+  },
+  "solver": {
+   "variables": 4400,
+   "capacity_rows": 243,
+   "stage_seconds": {
+    "served": 0.38,
+    "earliest_due": 0.45,
+    "proportional": 0.66,
+    "milling_advance": 0.84,
+    "brown_kg_weeks": 0.95
+   },
+   "proportional_groups": 130
+  },
+  "objective": {
+   "served": 141188,
+   "sum_due_of_served": 13927435.0,
+   "proportional_deviation": 5367.999999999983,
+   "milling_advance_lot_weeks": 6591.0,
+   "brown_kg_weeks": 8809906666.663334
+  },
+  "lp_upper_bound": 141187.99999999994,
+  "served": 141188,
+  "unallocated": 95749,
+  "unallocated_by_product_period": {
+   "Koshihikari|report": 28578,
+   "Koshihikari|warmup": 52163,
+   "Yumepirika|report": 2,
+   "Yumepirika|warmup": 15006
+  },
+  "report_start": "2027-W01",
+  "elapsed_seconds": 2.37
+ },
+ "plan_vs_actual_resource_load": {
+  "planned_mill_kg": 470626666.6666667,
+  "actual_mill_kg": 470626666.6666667
+ }
+}

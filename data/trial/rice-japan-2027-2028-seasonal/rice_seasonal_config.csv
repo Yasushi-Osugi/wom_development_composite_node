@@ -1,0 +1,4 @@
+key,value,note
+harvest_lookback_weeks,52,収穫への遡及＝52 週＋経路の LT（§8.1-5）
+max_brown_storage_weeks,52,玄米の保存は最長 52 週（§8.1-5）
+max_polish_advance_weeks,1,精米の前倒し 1 週まで（§8.1-5、2026-10-09 変更）

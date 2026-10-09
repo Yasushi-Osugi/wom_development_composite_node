@@ -1,0 +1,943 @@
+sku_id,node_name,week,max_supply,cap_pieces,source
+Koshihikari,Tanbo_Niigata,2026-W01,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W01,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W01,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W01,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W01,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W01,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W02,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W02,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W02,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W02,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W02,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W02,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W03,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W03,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W03,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W03,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W03,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W03,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W04,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W04,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W04,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W04,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W04,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W04,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W05,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W05,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W05,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W05,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W05,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W05,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W06,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W06,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W06,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W06,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W06,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W06,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W07,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W07,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W07,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W07,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W07,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W07,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W08,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W08,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W08,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W08,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W08,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W08,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W09,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W09,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W09,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W09,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W09,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W09,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W10,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W10,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W10,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W10,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W10,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W10,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W11,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W11,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W11,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W11,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W11,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W11,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W12,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W12,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W12,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W12,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W12,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W12,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W13,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W13,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W13,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W13,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W13,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W13,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W14,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W14,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W14,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W14,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W14,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W14,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W15,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W15,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W15,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W15,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W15,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W15,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W16,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W16,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W16,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W16,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W16,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W16,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W17,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W17,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W17,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W17,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W17,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W17,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W18,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W18,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W18,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W18,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W18,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W18,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W19,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W19,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W19,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W19,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W19,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W19,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W20,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W20,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W20,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W20,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W20,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W20,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W21,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W21,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W21,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W21,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W21,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W21,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W22,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W22,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W22,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W22,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W22,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W22,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W23,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W23,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W23,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W23,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W23,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W23,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W24,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W24,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W24,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W24,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W24,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W24,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W25,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W25,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W25,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W25,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W25,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W25,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W26,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W26,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W26,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W26,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W26,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W26,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W27,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W27,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W27,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W27,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W27,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W27,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W28,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W28,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W28,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W28,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W28,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W28,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W29,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W29,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W29,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W29,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W29,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W29,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W30,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W30,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W30,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W30,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W30,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W30,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W31,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W31,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W31,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W31,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W31,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W31,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W32,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W32,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W32,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W32,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W32,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W32,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W33,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W33,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W33,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W33,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W33,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W33,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W34,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W34,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W34,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W34,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W34,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W34,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W35,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W35,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W35,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W35,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W35,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W35,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W36,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W36,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W36,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W36,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W36,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W36,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W37,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W37,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2026-W37,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W37,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W37,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W37,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W38,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W38,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2026-W38,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W38,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W38,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W38,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W39,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W39,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2026-W39,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W39,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W39,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W39,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W40,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W40,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2026-W40,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W40,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W40,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W40,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W41,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2026-W41,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2026-W41,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W41,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W41,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W41,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W42,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2026-W42,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2026-W42,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W42,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W42,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W42,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W43,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2026-W43,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2026-W43,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W43,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W43,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W43,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W44,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W44,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W44,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W44,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W44,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W44,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W45,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W45,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W45,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W45,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W45,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W45,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W46,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W46,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W46,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W46,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W46,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W46,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W47,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W47,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W47,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W47,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W47,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W47,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W48,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W48,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W48,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W48,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W48,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W48,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W49,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W49,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W49,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W49,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W49,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W49,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W50,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W50,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W50,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W50,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W50,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W50,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W51,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W51,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W51,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W51,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W51,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W51,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W52,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W52,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W52,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W52,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W52,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W52,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2026-W53,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2026-W53,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2026-W53,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2026-W53,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2026-W53,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2026-W53,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W01,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W01,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W01,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W01,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W01,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W01,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W02,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W02,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W02,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W02,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W02,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W02,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W03,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W03,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W03,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W03,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W03,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W03,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W04,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W04,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W04,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W04,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W04,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W04,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W05,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W05,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W05,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W05,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W05,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W05,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W06,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W06,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W06,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W06,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W06,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W06,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W07,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W07,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W07,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W07,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W07,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W07,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W08,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W08,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W08,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W08,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W08,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W08,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W09,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W09,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W09,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W09,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W09,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W09,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W10,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W10,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W10,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W10,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W10,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W10,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W11,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W11,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W11,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W11,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W11,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W11,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W12,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W12,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W12,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W12,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W12,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W12,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W13,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W13,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W13,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W13,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W13,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W13,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W14,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W14,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W14,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W14,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W14,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W14,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W15,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W15,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W15,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W15,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W15,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W15,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W16,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W16,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W16,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W16,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W16,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W16,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W17,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W17,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W17,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W17,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W17,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W17,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W18,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W18,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W18,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W18,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W18,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W18,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W19,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W19,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W19,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W19,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W19,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W19,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W20,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W20,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W20,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W20,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W20,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W20,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W21,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W21,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W21,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W21,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W21,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W21,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W22,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W22,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W22,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W22,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W22,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W22,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W23,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W23,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W23,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W23,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W23,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W23,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W24,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W24,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W24,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W24,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W24,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W24,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W25,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W25,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W25,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W25,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W25,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W25,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W26,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W26,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W26,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W26,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W26,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W26,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W27,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W27,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W27,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W27,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W27,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W27,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W28,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W28,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W28,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W28,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W28,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W28,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W29,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W29,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W29,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W29,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W29,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W29,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W30,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W30,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W30,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W30,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W30,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W30,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W31,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W31,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W31,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W31,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W31,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W31,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W32,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W32,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W32,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W32,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W32,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W32,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W33,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W33,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W33,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W33,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W33,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W33,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W34,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W34,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W34,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W34,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W34,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W34,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W35,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W35,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W35,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W35,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W35,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W35,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W36,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W36,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W36,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W36,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W36,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W36,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W37,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W37,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2027-W37,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W37,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W37,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W37,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W38,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W38,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2027-W38,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W38,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W38,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W38,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W39,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W39,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2027-W39,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W39,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W39,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W39,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W40,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W40,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2027-W40,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W40,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W40,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W40,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W41,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2027-W41,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2027-W41,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W41,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W41,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W41,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W42,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2027-W42,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2027-W42,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W42,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W42,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W42,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W43,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2027-W43,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2027-W43,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W43,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W43,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W43,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W44,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W44,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W44,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W44,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W44,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W44,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W45,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W45,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W45,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W45,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W45,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W45,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W46,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W46,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W46,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W46,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W46,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W46,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W47,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W47,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W47,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W47,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W47,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W47,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W48,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W48,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W48,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W48,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W48,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W48,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W49,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W49,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W49,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W49,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W49,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W49,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W50,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W50,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W50,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W50,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W50,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W50,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W51,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W51,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W51,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W51,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W51,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W51,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2027-W52,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2027-W52,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2027-W52,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2027-W52,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2027-W52,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2027-W52,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W01,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W01,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W01,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W01,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W01,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W01,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W02,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W02,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W02,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W02,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W02,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W02,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W03,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W03,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W03,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W03,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W03,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W03,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W04,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W04,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W04,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W04,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W04,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W04,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W05,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W05,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W05,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W05,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W05,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W05,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W06,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W06,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W06,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W06,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W06,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W06,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W07,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W07,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W07,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W07,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W07,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W07,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W08,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W08,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W08,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W08,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W08,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W08,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W09,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W09,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W09,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W09,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W09,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W09,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W10,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W10,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W10,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W10,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W10,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W10,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W11,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W11,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W11,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W11,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W11,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W11,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W12,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W12,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W12,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W12,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W12,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W12,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W13,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W13,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W13,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W13,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W13,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W13,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W14,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W14,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W14,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W14,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W14,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W14,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W15,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W15,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W15,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W15,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W15,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W15,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W16,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W16,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W16,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W16,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W16,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W16,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W17,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W17,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W17,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W17,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W17,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W17,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W18,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W18,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W18,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W18,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W18,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W18,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W19,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W19,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W19,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W19,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W19,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W19,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W20,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W20,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W20,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W20,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W20,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W20,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W21,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W21,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W21,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W21,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W21,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W21,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W22,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W22,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W22,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W22,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W22,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W22,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W23,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W23,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W23,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W23,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W23,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W23,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W24,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W24,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W24,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W24,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W24,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W24,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W25,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W25,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W25,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W25,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W25,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W25,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W26,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W26,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W26,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W26,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W26,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W26,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W27,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W27,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W27,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W27,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W27,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W27,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W28,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W28,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W28,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W28,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W28,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W28,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W29,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W29,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W29,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W29,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W29,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W29,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W30,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W30,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W30,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W30,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W30,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W30,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W31,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W31,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W31,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W31,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W31,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W31,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W32,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W32,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W32,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W32,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W32,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W32,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W33,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W33,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W33,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W33,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W33,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W33,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W34,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W34,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W34,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W34,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W34,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W34,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W35,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W35,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W35,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W35,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W35,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W35,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W36,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W36,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W36,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W36,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W36,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W36,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W37,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W37,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2028-W37,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W37,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W37,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W37,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W38,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W38,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2028-W38,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W38,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W38,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W38,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W39,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W39,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2028-W39,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W39,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W39,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W39,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W40,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W40,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2028-W40,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W40,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W40,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W40,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W41,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2028-W41,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2028-W41,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W41,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W41,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W41,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W42,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2028-W42,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2028-W42,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W42,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W42,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W42,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W43,15500.0,,稲作田_収穫期
+Yumepirika,Tanbo_Hokkaido,2028-W43,2600.0,,稲作田_収穫期
+Koshihikari,Seihaku_E,2028-W43,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W43,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W43,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W43,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W44,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W44,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W44,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W44,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W44,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W44,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W45,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W45,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W45,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W45,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W45,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W45,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W46,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W46,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W46,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W46,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W46,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W46,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W47,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W47,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W47,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W47,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W47,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W47,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W48,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W48,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W48,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W48,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W48,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W48,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W49,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W49,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W49,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W49,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W49,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W49,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W50,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W50,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W50,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W50,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W50,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W50,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W51,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W51,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W51,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W51,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W51,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W51,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Tanbo_Niigata,2028-W52,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Yumepirika,Tanbo_Hokkaido,2028-W52,0,,稲作田_非収穫期（能力ゼロ。元の 0.1 は legacy の回避策）
+Koshihikari,Seihaku_E,2028-W52,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_E,2028-W52,1300,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Koshihikari,Seihaku_W,2028-W52,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）
+Yumepirika,Seihaku_W,2028-W52,1000,,精米センター（品目共用の設備の値。品目の合計は上位の層が守る）

@@ -1,0 +1,17 @@
+resource_id,kind,capacity_unit,default_capacity,note
+FIELD_NIIGATA,raw_kg_week,lot,0,収穫（非収穫週は 0）。週の値は rice_resource_capacity.csv
+COLLECT_NIIGATA,raw_kg_week,unlimited,,集荷（今のデータに能力が無い。上限なしを明示）
+STORE_RECEIPT_NIIGATA,raw_kg_week,unlimited,,玄米倉庫の受入れ（上限なしを明示）
+BROWN_STORE_NIIGATA,brown_stock_kg,unlimited,,玄米倉庫（上限なしを明示、§8.1-7）
+FIELD_HOKKAIDO,raw_kg_week,lot,0,収穫（非収穫週は 0）。週の値は rice_resource_capacity.csv
+COLLECT_HOKKAIDO,raw_kg_week,unlimited,,集荷（今のデータに能力が無い。上限なしを明示）
+STORE_RECEIPT_HOKKAIDO,raw_kg_week,unlimited,,玄米倉庫の受入れ（上限なしを明示）
+BROWN_STORE_HOKKAIDO,brown_stock_kg,unlimited,,玄米倉庫（上限なしを明示、§8.1-7）
+MILL_E,raw_kg_week,lot,1300,精米センター東（品目共用、品目別の値 900+400 の合計、§8.1-7）
+MILL_W,raw_kg_week,lot,1000,精米センター西（品目共用、700+300 の合計、§8.1-7）
+DC_HIGASHI,white_kg_week,unlimited,,今のデータに能力が無い。上限なしを明示
+DC_NISHI,white_kg_week,unlimited,,同上
+MARKET_KANTO,white_kg_week,unlimited,,市場（上限なしを明示）
+MARKET_TOHOKU,white_kg_week,unlimited,,市場（上限なしを明示）
+MARKET_KANSAI,white_kg_week,unlimited,,市場（上限なしを明示）
+MARKET_KYUSHU,white_kg_week,unlimited,,市場（上限なしを明示）

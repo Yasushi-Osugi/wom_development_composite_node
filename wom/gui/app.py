@@ -2391,7 +2391,12 @@ class FlowCheckPanel(tk.Frame):
         ("product", "製品", 130), ("leaf", "市場（leaf_out）", 160), ("demand", "需要", 70),
         ("on_time", "当週出荷", 70), ("early", "早出し", 60), ("late", "遅配", 60),
         ("backlog_end", "期末注文残", 80), ("check", "検算", 55),
+        # RequestLetter_RiceSeasonal_PolishAdvance1 work 6: shown only when the model sets
+        # a reporting period (vc_config.csv report_start); otherwise hidden (table as before)
+        ("on_time_report", "うち報告期間 当週出荷", 140),
+        ("backlog_end_report", "うち報告期間 注文残", 130),
     ]
+    _MARKET_REPORT_KEYS = ("on_time_report", "backlog_end_report")
     _KITTING_COLS = [
         ("product", "製品", 110), ("assembly", "組立ノード", 140), ("row", "行", 95),
         ("node", "置場／組立", 170), ("receipt_sum", "入庫 Σ", 70), ("payout_sum", "払出 Σ", 70),
@@ -2404,7 +2409,7 @@ class FlowCheckPanel(tk.Frame):
     ]
     _QTY_COLS = {"opening_I", "receipt_sum", "ship_sum", "closing_I", "upstream_ship_sum",
                  "in_transit_end", "closing_CO", "demand", "on_time", "early", "late",
-                 "backlog_end"}
+                 "backlog_end", "on_time_report", "backlog_end_report"}
 
     def __init__(self, parent, **kw):
         super().__init__(parent, bg=BG_DARK, **kw)
@@ -2492,8 +2497,14 @@ class FlowCheckPanel(tk.Frame):
         self._model_var.set(f"モデル：{describe_model_dir(self._model_dir)}")
         self._model_lbl.configure(
             fg=("#FF8A80" if is_outside_work_root(self._model_dir) else "#B0BEC5"))
+        from wom.engine.report_start import configured_report_start
+        _crs = (configured_report_start(self._model_dir, list(sc_tree.week_labels))
+                if self._model_dir else None)
+        self._market_tree.configure(displaycolumns=[
+            c for c, _h, _w in self._MARKET_COLS if _crs or c not in self._MARKET_REPORT_KEYS])
         try:
-            self._fc = compute_flow_check(sc_tree, forward_results or {})
+            self._fc = compute_flow_check(sc_tree, forward_results or {},
+                                          report_start_index=_crs[0] if _crs else None)
         except Exception as exc:
             import traceback
             traceback.print_exc()
@@ -2547,7 +2558,9 @@ class FlowCheckPanel(tk.Frame):
             f"表 2（モデル全体、{unit}）：需要 {self._val(tot, 'demand')} ＝ 当週出荷 {self._val(tot, 'on_time')}"
             f" ＋ 早出し {self._val(tot, 'early')} ＋ 遅配 {self._val(tot, 'late')}"
             f" ＋ 期末注文残 {self._val(tot, 'backlog_end')}（検算の不一致 {s['market_check_nonzero']} 行）"
-            f"　cpu_size={s['cpu_size']}")
+            + (f"　うち報告期間（{s['report_start']}〜）：当週出荷 {self._val(tot, 'on_time_report')}"
+               f"・期末注文残 {self._val(tot, 'backlog_end_report')}" if s.get("report_start") else "")
+            + f"　cpu_size={s['cpu_size']}")
 
     def _export_csv(self):
         if not self._fc:

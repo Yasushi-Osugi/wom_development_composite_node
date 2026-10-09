@@ -115,6 +115,52 @@ def main(argv=None) -> int:
             st["capacity_layer"] = ({p: {k: v for k, v in r.items()
                                          if k not in ("assignments", "unallocated_lots")}
                                      for p, r in res.items()} if res else None)
+            # Rice Seasonal (RequestLetter_RiceSeasonal_Implementation): the joint
+            # result and the market outcome of the GUI plan, for the GUI/headless match
+            rice = getattr(tree, "rice_seasonal_results", None)
+            if rice and "_joint" in rice:
+                st["rice_seasonal"] = {k: v for k, v in rice["_joint"].items() if k != "stats"}
+                out = {"on_time": 0, "late": 0, "early": 0, "backlog_end": 0}
+                for p in tree.products:
+                    for nd in tree.iter_all_nodes(p):
+                        if nd.node_type != "leaf_out":
+                            continue
+                        ship = {l: w for w, ls in nd._actual_ship.items() for l in ls}
+                        for d in range(tree.num_weeks()):
+                            for l in nd.psi4demand[d][0]:
+                                s = ship.get(l)
+                                out["on_time" if s == d else "late" if s is not None and s > d
+                                    else "early" if s is not None else "backlog_end"] += 1
+                st["market_outcome"] = out
+            # Flow Check table 2 as the GUI shows it (RequestLetter_RiceSeasonal_PolishAdvance1
+            # work 6): the summary line, the visible columns and the model total row
+            fcp = net._flow_check_panel
+            sub_nb.select([t for t in sub_nb.tabs() if "Flow Check" in sub_nb.tab(t, "text")][0])
+            st["flow_check_summary"] = fcp._summary_var.get()
+            st["flow_check_columns"] = list(fcp._market_tree.cget("displaycolumns"))
+            if fcp._fc:
+                st["flow_check_total"] = {k: v for k, v in fcp._fc["market"][-1].items()
+                                          if not k.endswith("_qty")}
+            shot("flow_check")
+        except Exception:
+            errors.append(traceback.format_exc())
+        app.after(500, check_worldmap)
+
+    def check_worldmap(n=[0]):
+        # World Map band (work 5): wait until the plan's flows are drawn
+        try:
+            wm = app._worldmap_panel
+            main_nb = [nb for nb in find_nb(app)
+                       if str(wm) in [str(nb.nametowidget(t)) for t in nb.tabs()]][0]
+            main_nb.select(wm)
+            app.update()
+            band = wm._band_var.get()
+            n[0] += 1
+            if "報告の開始週" not in band and n[0] < 120:
+                app.after(500, check_worldmap)
+                return
+            st["worldmap_band"] = band
+            shot("worldmap")
         except Exception:
             errors.append(traceback.format_exc())
         finish()
@@ -148,7 +194,7 @@ def main(argv=None) -> int:
 
     app.after(1500, start)
     app.mainloop()
-    print(json.dumps({"state": {k: v for k, v in st.items() if k != "capacity_layer"},
+    print(json.dumps({"state": {k: v for k, v in st.items() if k not in ("capacity_layer", "rice_seasonal")},
                       "errors": len(errors)}, ensure_ascii=False))
     for e in errors:
         print(e)

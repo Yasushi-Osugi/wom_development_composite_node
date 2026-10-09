@@ -1,0 +1,9 @@
+sku_id,region,on_hand_qty,on_order_qty,week
+Koshihikari,KANTO,18464,0,2027-W01
+Koshihikari,TOHOKU,11540,0,2027-W01
+Koshihikari,KANSAI,11540,0,2027-W01
+Koshihikari,KYUSHU,4616,0,2027-W01
+Yumepirika,KANTO,3633,0,2027-W01
+Yumepirika,KANSAI,5813,0,2027-W01
+Yumepirika,TOHOKU,2906,0,2027-W01
+Yumepirika,KYUSHU,2180,0,2027-W01
