@@ -58,6 +58,7 @@
 | 保護対象のコア 6 ファイル（`backward_planner.py`・`forward_planner.py`・`plan_copy.py`・`plan_node.py`・`sc_tree.py`・`push_pull.py`） | smoke・`core`・`golden`。**「full と 3 層テストが必要」と表示**（full は自動では回さない） |
 | `wom/capacity_layer/rice_*`・`wom/plugins/rice_*` | `rice`・`capacity` |
 | `tools/rice_*` | `rice` |
+| `tools/lesson000_variants.py`・`docs/lessons/*` | `rice`・`public` |
 | `wom/capacity_layer/*` | `capacity` |
 | `wom/plugins/capacity_layer.py` | `capacity`・`plugins` |
 | `wom/plugins/*` | `plugins` |

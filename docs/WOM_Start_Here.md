@@ -143,6 +143,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | World Map | Natural Earth ＋ 実出荷 | `WOM_WorldMap_ActualFlows_Report.md` |
 | 生産配分（`ask_global_allocation`） | 市場ごとの配分の利益地形 | `ask_global_allocation_spec.md`、`wom_model_typology.md`、`three_layer_production_allocation.md` |
 | 上位の能力の層 | ボトルネック、世代の切り替え | `WOM_SmartxBottleneck_Report.md`、`WOM_GenerationLine_UpperLayer_Report.md` |
+| 授業の教材 | Lesson 000「お米が足りない」：台本と、rice から比較モデル（収穫・精米 +30%）を作る道具 `tools/lesson000_variants.py` | `docs/lessons/lesson000/`、`WOM_Lesson000_Public_Report.md` |
 
 ---
 

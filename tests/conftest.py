@@ -54,6 +54,7 @@ AREAS = {
     "test_generation_line_upper_layer.py": ("capacity",),
     # rice
     "test_rice_retire.py": ("rice",),
+    "test_lesson000_variants.py": ("rice", "public"),
     "test_rice_seasonal_layer.py": ("rice", "capacity"),
     "test_rice_seasonal_trial.py": ("rice", "capacity"),
     # plugins
@@ -137,6 +138,7 @@ SMOKE = (
     "test_cpu_size_plan_wide.py",
     "test_rice_seasonal_trial.py",
     "test_rice_retire.py",
+    "test_lesson000_variants.py",
     "test_step10_hooks.py",
     "test_buffering_stock_optimizer_plugin.py",
     "test_decouple_optimizer.py",

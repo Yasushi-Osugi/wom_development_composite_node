@@ -49,6 +49,8 @@ PATH_RULES = (
     ("wom/capacity_layer/rice_*",              ("rice", "capacity")),
     ("wom/plugins/rice_*",                     ("rice", "capacity")),
     ("tools/rice_*",                           ("rice",)),
+    ("tools/lesson000_variants.py",            ("rice", "public")),
+    ("docs/lessons/*",                         ("rice", "public")),
     ("wom/capacity_layer/*",                   ("capacity",)),
     ("wom/plugins/capacity_layer.py",          ("capacity", "plugins")),
     ("wom/plugins/*",                          ("plugins",)),

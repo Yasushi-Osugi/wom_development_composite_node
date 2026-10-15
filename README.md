@@ -190,6 +190,8 @@ python -m tools.run_headless_from_folder --model-dir data/sample/rice-japan-2027
 
 各モデルの背景・分析結果は note記事で解説しています（下記「関連記事」参照）。
 
+**授業の教材**：`rice-japan-2027-2028` を使った 90 分の授業「お米が足りない」の台本と、比較モデル（収穫 +30%・精米 +30%・両方）を作る道具を `docs/lessons/lesson000/` に置いています（`python -m tools.lesson000_variants --run`）。
+
 ---
 
 ## アーキテクチャ概要
