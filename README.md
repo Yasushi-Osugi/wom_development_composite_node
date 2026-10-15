@@ -2,7 +2,7 @@
 
 **週次PSIで、サプライチェーンの意思決定を「見える化」し、動かして確かめる。**
 
-[![DOI](https://zenodo.org/badge/1263648763.svg)](https://doi.org/10.5281/zenodo.21431264)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21431264.svg)](https://doi.org/10.5281/zenodo.21431264)
 
 > **English (Summary)**
 >
