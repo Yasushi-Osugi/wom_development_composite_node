@@ -16,9 +16,6 @@ data/worldmap_cache.db
 /*.jpeg
 /*.png
 
-# keep these explicitly, even though they match the patterns above
-!/WOM_*.docx
-!/Oil_Global_SC_design_draft.md
 
 # commit message drafts (local-only; passed to `git commit -F`)
 /commit_msg*.txt
@@ -31,3 +28,5 @@ data/sample/*/demand_forecast_A*.csv
 
 # owner-only list of private names (RequestLetter_SampleNames_PublicReview)
 /private/
+/WOM_BUSINESS_CLAUDE.md
+/docs/business/

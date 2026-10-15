@@ -15,7 +15,9 @@ authors:
   - family-names: "Ohsugi"
     given-names: "Yasushi"
     affiliation: "Independent"
-repository-code: "https://github.com/Yasushi-Osugi/wom_v1r0m0"
+# The DOI (Zenodo 10.5281/zenodo.21431264) archives version wom-v1r1m8 of the
+# original repository. Current development continues in the repository below.
+repository-code: "https://github.com/Yasushi-Osugi/wom_development_composite_node"
 url: "https://yasushi-osugi.github.io/wom_v1r0m0/"
 keywords:
   - supply chain management

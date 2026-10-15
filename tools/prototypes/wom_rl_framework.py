@@ -12,7 +12,8 @@ WOM (Weekly Operation Model) v1r0m3 に対応した Q-learning エージェン�
   WOMRLAgent   ← Resolver（将来のRL実装の原型）
 
 依存ライブラリ: Python標準ライブラリのみ（numpy不要）
-実行方法: python wom_rl_framework.py
+実行方法: python tools/prototypes/wom_rl_framework.py
+（2026-10-15 にリポジトリの直下から移した。WOM 本体からは使っていない試作）
 """
 
 import random
