@@ -16,23 +16,31 @@
 > shows up in P&L. It is not a solver that hands you "the optimal answer"; it is
 > a model you run, watch, and reason about.
 >
-> Built as an ongoing AI-assisted "vibe coding" collaboration. For AI coding
-> agents, the common entry point is `AGENTS.md`. Claude Code may also read
-> `CLAUDE.md` for Claude-specific historical context, but canonical WOM knowledge
-> is maintained under `docs/`.
+> Every product is planned as **demand-anchored lots**: each lot carries the ID of
+> the market demand it serves, so every shipment, stock and shortage can be traced
+> back to its origin (inspect it with the LOVEM viewer).
+>
+> All sample data is **fictional** and uses role names (e.g. `EMS_A`,
+> `Retailer_A`); no real company data is included.
+>
+> Built as an ongoing collaboration between one domain expert and several AI
+> agents. New people and AI agents start with **`docs/WOM_Start_Here.md`**
+> (`AGENTS.md` points there). Licensed under the MIT License (see `LICENSE`).
 
 ---
 
 ## AI coding agents / Vibe Coding entry point
 
-If you are an AI coding agent working on WOM, start by reading **`AGENTS.md`** at the repository root.
+If you are an AI coding agent (or a new person) working on WOM, start by reading **`docs/WOM_Start_Here.md`**. It gives the reading order, the business rules in force, how to build a new model, and the open issues. **`AGENTS.md`** at the repository root points there as well.
 
 `AGENTS.md` is the AI-neutral entry point for Claude Code, ChatGPT Codex, Grok, Gemini, and other AI-assisted development environments. It explains what to read before editing, how to distinguish implementation facts from design intent, and how to keep WOM knowledge in the repository rather than only in chat logs.
 
 Recommended starting path:
 
 ```text
-AGENTS.md
+docs/WOM_Start_Here.md
+  -> docs/design/WOM_Forward_LotID_Decision_Record_2026-09-29.md   (planning canon)
+  -> AGENTS.md
   -> docs/development/README.md
   -> docs/architecture/README.md
   -> docs/design/README.md
@@ -56,6 +64,8 @@ WOMは、**「週次」というリズムで経営の意思決定とサプライ
 ---
 
 ## 画面イメージ
+
+> 下の画面は v1r0m3 の頃のものです。現在の World Map は Natural Earth の地図データ（手元のデータだけ、実行時にネットワークへ出ない）で、実出荷の流れを週ごとに再生します。
 
 **起動〜モデルロード**
 
@@ -106,7 +116,11 @@ WOMは、**「週次」というリズムで経営の意思決定とサプライ
 | 機能 | 概要 |
 |---|---|
 | 週次PSI計画エンジン | BackwardPlanner（需要逆伝播）→ ForwardPlanner（供給制約適用）で、原材料〜販売チャネルまでの週次PSIを一気通貫で計算 |
-| World Map | 拠点の実位置を地図上に表示（tkintermapview） |
+| Demand Anchored Lots | 1 つの lot ＝ 1 つの市場需要。lot の ID で、出荷・在庫・不足を需要まで追える。売上は実際に出荷した lot で数える |
+| World Map | Natural Earth の地図（オフライン）の上で、実出荷の流れを週ごとに再生 |
+| LOVEM Viewer | lot を拠点・週ごとに観測し、実出荷と 1 対 1 で照合して表示 |
+| Value Chain | 実出荷の記録から台帳を作り、拠点・区間（V1）、法人（V2）、連結（V3、内部の未実現利益の消去）の 3 つの視点で損益を見る |
+| 上位の能力の層 | ボトルネックや世代の切り替えを、市場の要求（週と lot）を変えずに解く。Rice では収穫週と精米週を lot ごとに選ぶ |
 | Network | SCTree構造をNetworkXでHammockグラフ表示 |
 | PPC（Profit Price Cost）エンジン | サプライヤー原価→関税/為替→転送価格→市場売価→粗利をロットレベルで計算 |
 | Landed Cost / Tariff & FX | 関税・為替・輸送費シナリオを比較（現地生産 vs 越境輸入の判断材料に） |
@@ -130,18 +144,19 @@ WOMは、**「週次」というリズムで経営の意思決定とサプライ
 
 ### 前提
 - Python 3.10+
-- 本リポジトリをclone済み（**`wom-v1r4m0` ブランチを推奨**・最新機能を含む）
+- 本リポジトリを clone 済み（既定のブランチ **`wom-v1r5m1_cap_trial`** が最新）
 
 ```bash
-git clone https://github.com/Yasushi-Osugi/wom_v1r0m0.git
-cd wom_v1r0m0
-git checkout wom-v1r4m0
+git clone https://github.com/Yasushi-Osugi/wom_development_composite_node.git
+cd wom_development_composite_node
 ```
 
 ### 1) 依存パッケージのインストール
 
 ```bash
-pip install tkintermapview pandas numpy matplotlib openpyxl networkx pytest
+pip install -r requirements.txt
+# テストも回すなら
+pip install pytest
 ```
 
 ### 2) GUI起動
@@ -150,13 +165,15 @@ pip install tkintermapview pandas numpy matplotlib openpyxl networkx pytest
 python -m main
 ```
 
-起動後、メニューから **「Load Model Folder...」** を選び、`data/sample/` 配下のいずれかのサンプルモデル（例：`rice-japan-2027-2028`）を指定 → **Run Planning** を実行すると、World Map / Network / Management / PPC の各タブに結果が表示されます。
+起動後、**「Load Model Folder...」** で `data/sample/` 配下のサンプルモデル（例：`rice-japan-2027-2028`）を選びます。モデルごとの推奨のプラグインが自動でチェックされるので（`planning_config.csv` の `recommended_plugins`）、そのまま **Run Planning Engine** を実行すると、World Map / Network / Management / PPC の各タブに結果が表示されます。この既定の結果は、回帰テストの golden と同じ値です。
 
 ### 3) CLI（ヘッドレス）で回す場合
 
 ```bash
-python -m main --cli --start-week 2027-W01 --num-weeks 156
+python -m tools.run_headless_from_folder --model-dir data/sample/rice-japan-2027-2028
 ```
+
+`--plugins` を省略すると、GUI と同じ推奨のプラグインの組で計画します。
 
 ---
 
@@ -164,7 +181,7 @@ python -m main --cli --start-week 2027-W01 --num-weeks 156
 
 | モデル | 業界 | 何を確認できるか |
 |---|---|---|
-| `rice-japan-2027-2028` | 国産米SC | 季節収穫（供給）と通年消費（需要）のギャップを在庫バッファで吸収する仕組み |
+| `rice-japan-2027-2028` | 国産米SC | 年 1 回の収穫を将来の需要の lot に割り当て、玄米で保管し、需要の直前に精米する。収穫が足りないときに、どの市場にどれだけ配るか（要求週の早い順、同じ週は要求量に比例） |
 | `smartphone-global-2026-2029` | グローバル製造業 | Multi-MOM配分、PUSH/PULLブレークポイント（DBR設計） |
 | `Cookie-jp-2026` | 食品（国内生産 vs 輸入） | Landed Cost比較、複数段DADチェーンでの安全在庫バッファ最適配置 |
 | `ev-thailand-2026` / `ev-europe-2026` | 自動車（現地生産 vs 越境輸入） | 複数Tier-1サプライヤーのコスト集計、拠点別損益（Node P&L） |
@@ -223,7 +240,8 @@ WOMの設計思想や、実際の業界モデルを使った分析事例を記�
 | 第2回 | スマートフォンの例 |https://note.com/osuosu1123/n/nc88e8cd0192e |
 | 第3回 | クッキー事例（国内生産 vs 輸入、Landed Cost） | https://note.com/osuosu1123/n/n11c413ea31d5 |
 | 第4回 | 現地生産 vs 越境輸入 — 欧州EV市場の例 | https://note.com/osuosu1123/n/n665ddf3b2609 |
-| 最新 | **利益地形図で読み解く事業計画**（v1r4m0：配分の利益地形、メリットオーダー、レジーム地図、関税の崖） | https://note.com/osuosu1123/n/nde1d9b686a6e |
+| 第5回 | **利益地形図で読み解く事業計画**（v1r4m0：配分の利益地形、メリットオーダー、レジーム地図、関税の崖） | https://note.com/osuosu1123/n/nde1d9b686a6e |
+| 最新 | **複数AIとの対話によるアプリ開発の進め方**（WOM開発で実践している、役割分担・知識共有・作業依頼の方法） | https://note.com/osuosu1123/n/n225c3abf986e |
 
 ---
 
@@ -249,10 +267,14 @@ WOMの設計思想や、実際の業界モデルを使った分析事例を記�
 
 ## ライセンス
 
-MIT License
+MIT License（`LICENSE` を参照）。
+
+## データについて
+
+`data/sample/` のモデルとデータは、すべて説明と教育のための**架空のもの**です。実在の企業・団体・製品の名前は使わず、役割を表す一般名（`EMS_A`、`Retailer_A` など）にしています（`tests/test_no_real_names.py` が確かめます）。
 
 ---
 
 ## 開発の背景
 
-WOMは、著者（大杉泰司）とAIとの継続的な「vibe coding」セッションを通じて開発されています。初期の設計・実装文脈はClaude Code向けの `CLAUDE.md` に多く蓄積されましたが、v1r1m5以降は `AGENTS.md` と `docs/` 配下にAI-neutralな開発知識を整理しています。1人のドメインエキスパートが、複数のAI開発支援環境と協働しながら、サプライチェーン・シミュレーションツールを継続的に拡張できることも、このプロジェクトが示している価値の一つです。
+WOMは、著者（大杉泰司）とAIとの継続的な「vibe coding」セッションを通じて開発されています。初期の設計・実装文脈はClaude Code向けの `CLAUDE.md` に多く蓄積されましたが、v1r1m5以降は `AGENTS.md` と `docs/` 配下にAI-neutralな開発知識を整理しています。1人のドメインエキスパートが、複数のAI開発支援環境と協働しながら、サプライチェーン・シミュレーションツールを継続的に拡張できることも、このプロジェクトが示している価値の一つです。役割分担・知識共有（`docs/WOM_Start_Here.md`）・作業依頼（`requests/` の Request Letter）の進め方は、note 記事「[複数AIとの対話によるアプリ開発の進め方](https://note.com/osuosu1123/n/n225c3abf986e)」で紹介しています。

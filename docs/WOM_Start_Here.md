@@ -156,12 +156,12 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 
 ---
 
-## 7. 今開いている課題（2026-10-09）
+## 7. 今開いている課題（2026-10-15）
 
 | 課題 | 状態 |
 |---|---|
 | rice の残り | rice は identity に移った（`WOM_RiceLegacyRetire_Report.md`）。残り：年産上限の業務値、収穫年ごとの価格と古い在庫の評価損、ぬか等の金額、rice の PPC の価格表（今は `data/ppc` の見本の規則）、大きな run での LOVEM `verify_run` のメモリ（`tools/lovem_interval_check.py` で照合） |
-| 公開の前のサンプルの見直し | 済み（2026-10-09、`docs/development/WOM_SampleNames_PublicReview_Report.md`）。実在の企業・団体・製品の名前を一般名にした（値は不変）。スマートフォンのモデルは `smartphone-global-2026-2029`、古い方は削除。全モデルに golden。`tests/test_no_real_names.py`（公開の一覧＋手元だけの `private/real_name_denylist.txt`）。残り：画像の中に写った実名、git の履歴（書き換えるかは Owner の判断） |
+| 公開の前のサンプルの見直し | 済み（2026-10-09、`docs/development/WOM_SampleNames_PublicReview_Report.md`）。実在の企業・団体・製品の名前を一般名にした（値は不変）。スマートフォンのモデルは `smartphone-global-2026-2029`、古い方は削除。全モデルに golden。`tests/test_no_real_names.py`（公開の一覧＋手元だけの `private/real_name_denylist.txt`）。画像も確認済み（実名の写った画面 9 枚を削除、`docs/images/` の 12 枚は問題なし）。サンプルの 1 モデルは Owner の判断で削除。git の履歴は書き換えない（Owner の判断） |
 | 需要の出どころ（4P） | 需要は `demand_forecast.csv` として外から与えられている。製品・価格・チャネル・販促（コトラーの 4P）から需要の ID を作り、出どころを ID の属性として持つ「需要の層」を、上位の層と同じくエンジンの外に置く構想（Owner、2026-10-09）。rice では「不足のとき、配分・価格・品目の誘導のどれで対応するか」を比べる題材になる |
 | Backward の前倒しの上限 | 上位の層が OFF のとき上限が無い（`WOM_GenerationLine_UpperLayer_Report.md` §11.1） |
 | 世代間の需要の移行 | 旧世代の残りの需要を新世代へ振り替える規則が無い |
