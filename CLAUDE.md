@@ -27,13 +27,18 @@ python \-m main
 
 python \-m main \--cli \--start-week 2027-W01 \--num-weeks 156
 
-\# テスト実行
+\# テスト実行（3 つの段。詳しくは `tests/README.md`）
 
-python \-m pytest tests/ \-v
+| 段 | 使う場面 | コマンド | 実測（2026-10-15、Windows） |
+| :---- | :---- | :---- | :---- |
+| smoke | 作業の途中に何度でも | `python -m tools.quick_check --smoke` | 497 件・約 1 分 |
+| 領域別 | 直した所に関係する領域だけ | `python -m tools.quick_check --area rice,capacity`／`--changed`（変えたファイルから選ぶ）／`--golden <モデル>` | 1 領域 2 分前後（lovem だけ約 5 分） |
+| full | 依頼書ごとに最後に 1 回。保護対象のコアを直したときは必須（＋3 層テスト） | `python -m tools.quick_check --full` | 892 件（889 passed・3 skipped）・約 15〜18 分 |
 
-\# 単一テスト
-
-python \-m pytest tests/test\_ppc\_vertical\_slice.py \-v
+- 領域：core・capacity・rice・plugins・ppc・allocation・lovem・gui・worldmap・golden・public。ファイルと領域の対応表は `tests/conftest.py` の一か所（新しいテストのファイルは、そこに 1 行足す。足さないと `tests/test_test_areas.py` が落ちる）。
+- `--dry-run` で回す pytest のコマンドだけを表示する。`--changed` は保護対象のコアを変えたとき「full と 3 層テストが必要」と表示する（full は自動では回さない）。
+- **golden を含む pytest は並行させない**（warm-up の CSV の書き込みが競合して落ちる。下の「テスト実行時の注意」）。`quick_check` は一つずつ順に回す。
+- 単一テスト：`python -m pytest tests/test_ppc_vertical_slice.py -q -p no:cacheprovider`
 
 \# PPC CLIスタンドアロン
 
@@ -1684,7 +1689,7 @@ golden 12ケース（13件）         : 全PASS（不変、Planning Engine 無�
 
 新規テスト1件（`test_weeks_label_singular_plural`）追加、既存338件は無変更で全PASS——**リポジトリ全体339件全PASS**。golden 13件も不変（本修正はPlanning Engineに一切触れない）。`--demo`再生成6枚を目視確認し、F1〜F3すべて意図通り反映、他4枚（curve/pareto_scatter/parallel_coordinates/regime_matrixの配置）に意図しない変化がないことを確認済み。
 
-**テスト実行時の注意（次のClaude君へ）**：`tests/test_golden.py`を含む複数のpytestプロセスを**並行して**同一リポジトリに対して実行すると、`apparel-us-2026`のwarm-up materialize（write-if-needed、CSV再生成）が競合し、`test_golden_matches[apparel-us-2026]`が一時的にFAILすることがある（本セッションで実際に再現）。単独実行・逐次実行では再現せず13件common全PASSに戻る。**golden系テストは他のpytest実行と並行させず、常に単独で（または`tests/`全体を1プロセスで）実行すること。**
+**テスト実行時の注意（次のClaude君へ）**：`tests/test_golden.py`を含む複数のpytestプロセスを**並行して**同一リポジトリに対して実行すると、`apparel-us-2026`のwarm-up materialize（write-if-needed、CSV再生成）が競合し、`test_golden_matches[apparel-us-2026]`が一時的にFAILすることがある（本セッションで実際に再現）。単独実行・逐次実行では再現せず13件common全PASSに戻る。**golden系テストは他のpytest実行と並行させず、常に単独で（または`tests/`全体を1プロセスで）実行すること。**（2026-10-15：テストの段と `tools/quick_check.py` は冒頭「Commands」のテスト実行を参照）
 
 **追加の微調整（大杉さんの目視QAで発見、2026-09-06）**：F2-2でタイトルを`fig.suptitle()`へ移した際、上部の余白が図全体の高さの約15%（133px/910px）にまで間延びする副作用があった。`fig.suptitle(..., y=0.995)` ＋ `fig.tight_layout(rect=(0, 0, 1, 0.99))`（`y`と`rect`上端をともに1.0へ寄せる）に調整し、ピクセル計測で約50px（5.5%）まで圧縮——タイトル・凡例・`supply_risk`ピークいずれも重ならない範囲で詰められる限界値に近い（`rect`上端を0.99超にしてもtight_layoutの効果が頭打ちになることを確認済み）。
 
