@@ -47,7 +47,7 @@
 
 ### 1.3 受入（観測結果）
 
-`python -m tools.gui_sim_plan_check`：実アプリの窓（`WOMApp`、1536×824。大杉さんの画面で最大化したときの大きさ）で、smartphone-global-2026-2029 を読み込み、画面のボタンと同じ処理で動かして、部品の値を読んだ。エラー 0 件。値は `docs/development/sim_mgmt_worldmap/part1/gui_sim_plan_steps.json`、画像は同じフォルダ。
+`python -m tools.gui_sim_plan_check`：実アプリの窓（`WOMApp`、1536×824。大杉さんの画面で最大化したときの大きさ）で、smartphone-global-2026-2029 を読み込み、画面のボタンと同じ処理で動かして、部品の値を読んだ。エラー 0 件。値は `docs/development/sim_mgmt_worldmap/part1/gui_sim_plan_steps.json`、画像は同じフォルダ（手順 1〜4 の画像 `1_simulation_done.png`・`2_planning_done_ppc_running.png`・`3_planning_ppc_done.png`・`4_simulation_after_planning.png` は 2026-10-09 に削除。実在の名前が写っていたため）。
 
 | 段階 | P&L Summary（シナリオ／Revenue／出所） | Landed Cost の WOM Scen | チャートの横軸 | 上の帯 |
 |---|---|---|---|---|
@@ -98,7 +98,7 @@
 
 - 各モデルで SKU＝All と 1 つの SKU の 2 通り、計 24 通り。**直した後は 24 通りとも重なり 0**。
 - 1100×640 は、パネルが 1 つの窓の中で特に小さい場合の確認（最後の手段「縁で切る」が出る。重なりはない）。
-- 実アプリの中の PPC タブ（`part1/3_planning_ppc_done__ppc_tab.png`、smartphone-global-2026-2029）は、左に WOM のサイドバーがある分パネルが小さく、「詰めた 1 列」で「+9 more channel(s)」になる。文字は小さいが重ならない。**未確認**：大杉さんの画面で、実際の ev-thailand の EVmaker_Import を開いたときの見え方（自動の確認は同じ大きさの窓で行った）。
+- 実アプリの中の PPC タブ（`part1/3_planning_ppc_done__ppc_tab.png`（画像は 2026-10-15 に削除。実在の名前が写っていたため）、smartphone-global-2026-2029）は、左に WOM のサイドバーがある分パネルが小さく、「詰めた 1 列」で「+9 more channel(s)」になる。文字は小さいが重ならない。**未確認**：大杉さんの画面で、実際の ev-thailand の EVmaker_Import を開いたときの見え方（自動の確認は同じ大きさの窓で行った）。
 
 テスト（`tests/test_sim_mgmt_display.py`）：4 つのパネルの大きさ×チャネル 0・3・21 本で、各列の行が前の行の高さより下から始まること、値の行が切られないこと、「+N more」があること、2 列のとき列どうしが離れていること。長いチャネル名は末尾が残ること。
 
@@ -140,7 +140,7 @@
   - 線は、変換のときに最大 256 点ずつの部分に分けてあり、表示範囲（と、その周り半画面分）に入る部分だけを描く。
   - 地図は起動時に一度読み込み、層ごとに 1 つの LineCollection／PolyCollection で描く。
   - 週の再生は blitting（地図と動かない線を一度描いて画像として取っておき、週ごとには流れの線・拠点・週の文字だけを描き直す）。
-- 画面の画像：`docs/development/sim_mgmt_worldmap/screens/`（smartphone の世界全体、oil のアジア、ev-thailand のタイ・バンコク・週の再生の途中、案 B の 3 枚）。
+- 画面の画像：`docs/development/sim_mgmt_worldmap/screens/`（smartphone の世界全体（画像は 2026-10-09 に削除。実在の名前が写っていたため）、oil のアジア、ev-thailand のタイ・バンコク・週の再生の途中、案 B の 3 枚）。
 
 ## 4. 計測（大杉さんの Windows PC）
 

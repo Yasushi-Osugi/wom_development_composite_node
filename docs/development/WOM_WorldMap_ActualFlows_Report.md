@@ -215,7 +215,7 @@
 | `cookie_japan_all.png` | Cookie・日本全体・All・出荷。supply point（中抜きのひし形）を押した情報 |
 | `cookie_import_beijing_japan.png` | Cookie_Import・北京 → 日本。北京の工場 → `DC_Import_Buffer` の直接の線を押した情報（LT 5 週、その週の出荷 675・輸送中 3,375 lot） |
 | `alloc_world_ship.png`・`alloc_world_transit.png` | alloc・日本 → 米国（太平洋を渡る線）・欧州。同じ週の「出荷」と「輸送中」の比較。海上の長い区間は輸送中で太くなる |
-| `smartphone_world.png` | smartphone・世界全体（中国・インド → 米州・欧州・アジアの DC → 代表の地点（仮）の販売） |
+| `smartphone_world.png`（画像は 2026-10-09 に削除。実在の名前が写っていたため） | smartphone・世界全体（中国・インド → 米州・欧州・アジアの DC → 代表の地点（仮）の販売） |
 | `oil_middleeast_japan.png` | oil・Gasoline_Local・中東 → 日本・輸送中（タンカーの区間が最も太い） |
 | `ev_thailand.png` | ev-thailand・タイ（中国の電池・部品の工場 → タイ） |
 | `Cookie-jp-2026__0_loaded.png` | 計画の前（静止した線だけ。再生のボタンは押せない） |
@@ -258,7 +258,7 @@ Stock Yard の区間（部材 → Yard → 組立）は、Yard に座標が無�
 
 - smartphone の静止の区間 28 と実出荷のある区間 25 の差の 3 本は、この計画で実出荷の無い区間。
 - この回の描画時間は、§3-3 の回より 5〜12 ms 長い。同じパソコンで別の処理が動いていた可能性があり、描画のコードは変えていない。いずれも 1 週 ＝ 1,000 ms の再生に対して十分に小さい。
-- 画像：`rice_japan.png`（rice の区間が描けた）、`smartphone_world.png`（Phone15・17 の流れを含む）、`ev_europe_yards.png`（部材の工場 → 組立工場。Yard は組立工場の位置）、`bom_test_yards.png`。
+- 画像：`rice_japan.png`（rice の区間が描けた）、`smartphone_world.png`（Phone15・17 の流れを含む）（画像は 2026-10-09 に削除。実在の名前が写っていたため）、`ev_europe_yards.png`（部材の工場 → 組立工場。Yard は組立工場の位置）、`bom_test_yards.png`。
 - テスト：`test_stock_yard_is_drawn_at_its_plant`、`test_rice_and_smartphone_all_nodes_on_the_map` を追加。`test_missing_coordinates_are_listed_not_guessed` は、DC の座標を消したモデルで「推測せずに一覧に出す」を確かめる形に書き換えた。
 
 ## 6. 大杉さんが画面で確かめる手順

@@ -343,7 +343,7 @@ alloc の費用の差は「為替の週の違い」だと推定しているが�
 | `5_missing.png`・`6_fx.png`・`7_unvalued.png` | 隅のボタンを押して出る一覧（未設定価格、為替の記録、未評価の明細） |
 | `8_alloc_loaded.png` | 別のモデル（alloc）を読み込んだ直後：Cookie の台帳は消えている |
 | `9_alloc_v3_hq_cum.png`・`10_alloc_v2_EUS_local_cum.png` | alloc の V3、E_US の現地通貨（USD） |
-| `11_after_simulation.png` | Run Simulation の後：「Run Simulation の結果には台帳がありません」 |
+| `11_after_simulation.png`（画像は 2026-10-15 に削除。実在の名前が写っていたため） | Run Simulation の後：「Run Simulation の結果には台帳がありません」 |
 
 **古い結果を出さない（受入 7・前回の P1 の規則）**：alloc の計画中、0.2 秒ごとに帯・行数・台帳の計画 ID・画面の計画 ID を記録した（`output/valuechain/gui/steps.json` の history）。
 

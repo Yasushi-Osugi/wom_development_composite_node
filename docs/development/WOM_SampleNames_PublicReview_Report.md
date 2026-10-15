@@ -54,7 +54,7 @@
 - `docs/development/WOM_SmartphoneWarmup_EVUpdateKitting_S2_Report.md`
 - `docs/development/smartphone_evupdate_s2/`（13 ファイル。うち `A_smartphone_backlog_nodes.csv`・`A_smartphone_warmup_trial.csv` はファイル名も変更）
 - `requests/apparel-us-2026-retailer-a-request-letter.md`・`requests/apparel-us-2026-retailer-b-request-letter.md`
-- 画像 3 件：`docs/development/worldmap_actual_flows/smartphone_world.png`、`docs/development/sim_mgmt_worldmap/screens/smartphone-global-2026-2029__World.png`、`docs/development/sim_mgmt_worldmap/part1/kpi__smartphone-global-2026-2029__after__1280x720__All.png`
+- 画像 3 件：`docs/development/worldmap_actual_flows/smartphone_world.png`、`docs/development/sim_mgmt_worldmap/screens/smartphone-global-2026-2029__World.png`、`docs/development/sim_mgmt_worldmap/part1/kpi__smartphone-global-2026-2029__after__1280x720__All.png`（画像は 2026-10-09 に削除。実在の名前が写っていたため。§10）
 
 参照しているところ（道具・テスト・文書）は §2.1 の規則で同時に直した。
 
@@ -319,3 +319,28 @@
 - `tests/test_backward_supply_role.py`
 - `wom/engine/backward_planner.py`
 - `wom/model/plan_node.py`
+
+## 10. 画像の中の実名（追加の依頼）
+
+- 依頼書：`requests/RequestLetter_SampleNames_Images_to_CodeKun.md`（範囲を絞った版：削除 7 枚＋`docs/images/` の 12 枚の目視。ほかのフォルダは Owner が確認済み）。2026-10-09。
+- 着手時の SHA：`81254d95d85d581ec7236f1f4f7e524c727f87af`（branch `wom-v1r5m1_cap_trial`。前の依頼の作業は未 commit のまま、その上で作業）。
+
+| ID | 検査 | 結果 |
+|---|---|---|
+| I-1 | 確かめた画像と、写っていた画像 | `docs/images/` の 12 枚を目で確かめた：**写っていない**（2 枚の World Map はラベルが重なって読めない箇所があるが、OCR でも実名は出ない）。削除した 7 枚は、元の名前が写っていると分かっていたもの（目で確かめ直さずに削除、依頼書のとおり）：`docs/development/sim_mgmt_worldmap/part1/1_simulation_done.png`、`…/part1/2_planning_done_ppc_running.png`、`…/part1/3_planning_ppc_done.png`、`…/part1/4_simulation_after_planning.png`、`docs/development/worldmap_actual_flows/smartphone_world.png`、`docs/development/sim_mgmt_worldmap/screens/smartphone-global-2026-2029__World.png`、`docs/development/sim_mgmt_worldmap/part1/kpi__smartphone-global-2026-2029__after__1280x720__All.png` |
+| I-2 | 削除した画像の参照に注記、壊れたリンクなし | 注記 5 か所：`WOM_WorldMap_ActualFlows_Report.md`（表の行・§5 の画像の列挙）、`WOM_SimMgmt_WorldMapTrial_Report.md`（§1.3 の「画像は同じフォルダ」・§4 の画面の画像）、本書 §2.2。どれも `![](…)` の埋め込みではなく文中の名前だけで、壊れたリンクは無い |
+| I-3 | `docs/images/` の撮り直し | 無し（写っていなかった） |
+| I-4 | `tests/test_no_real_names.py` | **合**：20 passed（全テストは依頼書のとおり実行していない。変更は画像の削除と文書の注記だけ） |
+
+**範囲の外で気づいたこと（Owner の判断待ち、手を付けていない）**：絞る前の版で全体を見ていた途中、次の 3 枚にも元の名前が写っているのを目で確かめた。
+- `docs/development/sim_mgmt_worldmap/part1/3_planning_ppc_done__ppc_tab.png`（タイトル帯・モデルのパス） → 2026-10-15 に削除（Owner の判断）。参照の所に注記
+- `docs/development/stage_d_phase1/11_after_simulation.png`（タイトル帯・モデルのパス） → 2026-10-15 に削除（Owner の判断）。参照の所に注記
+- `data/sample/apparel-us-2026/exercises/ex1_margin_rate_sensitivity/chart.png`（凡例の 1 行）
+  - → 2026-10-15、Claude 君が `result.csv` の値（README の表と同じ）から描き直した。凡例の名前は `Retailer_B`（README の本文と同じ一般名）。数値・線・題は元の図と同じ。
+
+削除したファイル（7）：上の I-1 の 7 枚。
+変更したファイル：
+- `docs/development/WOM_SampleNames_PublicReview_Report.md`
+- `docs/development/WOM_WorldMap_ActualFlows_Report.md`
+- `docs/development/WOM_SimMgmt_WorldMapTrial_Report.md`
+追加したファイル：無し（OCR の結果 `output/sample_names/ocr_before.txt` は git の対象外）。
