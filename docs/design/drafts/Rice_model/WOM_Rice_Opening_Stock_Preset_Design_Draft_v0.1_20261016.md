@@ -7,6 +7,7 @@
 - 作成：ChatGPT Sol 検討内容の整理
 - 用途：業務定義と実装方針の引継ぎ。Claude君による詳細設計とCode君向けRequest Letterの作成に使用する。
 - 状態：設計ドラフト。実装済みの機能や、実測済みの効果を示す資料ではない。
+- **2026-10-16 追記（Claude君）：この案（固定配置モード）は採らなかった。** 代わりに、計画の始まりを 2025 年の収穫の前（2025-W33）に延ばし、2025 年産を普通の年産としてデータに足す方法を試し（`requests/RequestLetter_RiceOpeningCrop2025_Trial_to_CodeKun.md`）、コードを変えずに同じ姿（2025 年末の玄米倉庫に、2026 年の需要 ID が付いた 2025 年産）になることを確かめた。正式なサンプルへの適用は `requests/RequestLetter_RiceOpeningCrop2025_Apply_to_CodeKun.md`。本ドラフトの業務の定義（§4）と、将来の〈その2〉・複数供給源（§11）は、今後の検討の材料として残す。
 - 参照リポジトリ：Yasushi-Osugi/wom_development_composite_node
 - 参照ブランチ：wom-v1r5m1_cap_trial
 - 現行実装の確認基準：146a191259de989c53f0a445997b9c82e94098a0
