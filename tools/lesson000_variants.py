@@ -43,21 +43,29 @@ FACTOR = Fraction(13, 10)
 # ── the one table of changes ─────────────────────────────────────────────
 # group, file, row condition (column -> value), base value (column, value),
 # expected number of matching rows, column for the note, label
+# A condition value that is a tuple means "one of". The key "year" is the first
+# four characters of the "week" column (capacity_plan.csv has no crop_season).
+# The harvest +30% is for the 2026-2028 crops only: the 2025 crop is the fact
+# before the plan and is not changed (RequestLetter_RiceOpeningCrop2025_Apply).
+PLAN_CROPS = ("2026", "2027", "2028")
 CHANGES = (
-    ("harvest", "rice_resource_capacity.csv", {"resource_id": "FIELD_NIIGATA"}, ("capacity", 15500), 9, "note",
-     "FIELD_NIIGATA の収穫週（各年 W41〜W43）"),
-    ("harvest", "rice_crop_limit.csv", {"resource_id": "FIELD_NIIGATA"}, ("limit", 46500), 3, "note",
-     "FIELD_NIIGATA の年産上限（2026・2027・2028）"),
-    ("harvest", "capacity_plan.csv", {"sku_id": "Koshihikari", "node_name": "Tanbo_Niigata"}, ("max_supply", 15500), 9, "source",
-     "Koshihikari,Tanbo_Niigata の収穫週"),
+    ("harvest", "rice_resource_capacity.csv", {"resource_id": "FIELD_NIIGATA", "crop_season": PLAN_CROPS},
+     ("capacity", 15500), 9, "note",
+     "FIELD_NIIGATA の収穫週（2026〜2028 年の W41〜W43。2025 年産は変えない）"),
+    ("harvest", "rice_crop_limit.csv", {"resource_id": "FIELD_NIIGATA", "crop_season": PLAN_CROPS},
+     ("limit", 46500), 3, "note",
+     "FIELD_NIIGATA の年産上限（2026・2027・2028。2025 年産は変えない）"),
+    ("harvest", "capacity_plan.csv", {"sku_id": "Koshihikari", "node_name": "Tanbo_Niigata", "year": PLAN_CROPS},
+     ("max_supply", 15500), 9, "source",
+     "Koshihikari,Tanbo_Niigata の収穫週（2026〜2028 年）"),
     ("mill", "rice_resources.csv", {"resource_id": "MILL_E"}, ("default_capacity", 1300), 1, "note",
      "MILL_E（精米センター東、二品目で共用）"),
     ("mill", "rice_resources.csv", {"resource_id": "MILL_W"}, ("default_capacity", 1000), 1, "note",
      "MILL_W（精米センター西、二品目で共用）"),
-    ("mill", "capacity_plan.csv", {"node_name": "Seihaku_E"}, ("max_supply", 1300), 314, "source",
-     "Seihaku_E の全行（両品目）"),
-    ("mill", "capacity_plan.csv", {"node_name": "Seihaku_W"}, ("max_supply", 1000), 314, "source",
-     "Seihaku_W の全行（両品目）"),
+    ("mill", "capacity_plan.csv", {"node_name": "Seihaku_E"}, ("max_supply", 1300), 354, "source",
+     "Seihaku_E の全行（両品目、2025 年の週を含む）"),
+    ("mill", "capacity_plan.csv", {"node_name": "Seihaku_W"}, ("max_supply", 1000), 354, "source",
+     "Seihaku_W の全行（両品目、2025 年の週を含む）"),
     # The upper layer has no weekly mill rows in the base model. If they appear, this stops.
     ("mill", "rice_resource_capacity.csv", {"resource_id": "MILL_E"}, ("capacity", None), 0, "note",
      "精米の週ごとの行（基準には無い）"),
@@ -83,9 +91,17 @@ def _new_value(old_text):
     return f"{int(v)}.0" if "." in old_text else str(int(v))
 
 
+def _cond_value(row, key):
+    if key == "year":
+        return (row.get("week") or "")[:4]
+    return row.get(key)
+
+
 def _matches(row, cond, base):
-    if any(row.get(k) != v for k, v in cond.items()):
-        return False
+    for k, v in cond.items():
+        got = _cond_value(row, k)
+        if (got not in v) if isinstance(v, tuple) else (got != v):
+            return False
     col, val = base
     return val is None or float(row[col]) == val
 

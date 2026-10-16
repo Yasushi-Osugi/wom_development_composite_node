@@ -60,12 +60,13 @@ def test_a_label_that_is_not_an_iso_week_stops(tmp_path):
 
 
 def test_sample_models():
-    """apparel-us: 30 weeks were missing (period 91 -> 121); rice: 2026-W53 (156 -> 157)."""
+    """apparel-us: 30 weeks were missing (period 91 -> 121); rice: 2026-W53 (176 -> 177;
+    the rice sample starts at 2025-W33 since the 2025 crop was added, 2026-10-16)."""
     a = detect_plan_period(os.path.join(REPO, "data", "sample", "apparel-us-2026", "demand_forecast.csv"))
     assert (a.start, a.end, a.n_weeks, len(a.filled_weeks)) == ("2025-W37", "2027-W52", 121, 30)
     assert {"2026-W07", "2026-W08", "2026-W53", "2027-W46", "2027-W47"} <= set(a.filled_weeks)
     r = detect_plan_period(os.path.join(REPO, "data", "sample", "rice-japan-2027-2028", "demand_forecast.csv"))
-    assert (r.start, r.end, r.n_weeks, r.filled_weeks) == ("2026-W01", "2028-W52", 157, ["2026-W53"])
+    assert (r.start, r.end, r.n_weeks, r.filled_weeks) == ("2025-W33", "2028-W52", 177, ["2026-W53"])
 
 
 def test_headless_and_gui_use_the_same_function():

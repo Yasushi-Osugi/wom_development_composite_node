@@ -401,12 +401,14 @@ def test_k_r10_migration_copy_regression():
     # milling advance up to 1 week (RequestLetter_RiceSeasonal_PolishAdvance1, 2026-10-09).
     # Before (0 weeks): served 141,188, unallocated 95,749, Koshihikari report 28,578 --
     # the 22 lots short at the shared mills are now allocated.
+    # 2025 crop in the sample, plan from 2025-W33 (RequestLetter_RiceOpeningCrop2025_Apply, 2026-10-16).
+    # Before: served 141,210, unallocated 95,727 (Koshihikari report 28,556 / warmup 52,163,
+    # Yumepirika report 2 / warmup 15,006) -- the 2026 demand had no crop before the 2026 harvest.
     j = tree.rice_seasonal_results["_joint"]
-    assert j["served"] == 141210 and j["unallocated"] == 95727
-    assert j["unallocated_by_product_period"] == {"Koshihikari|report": 28556, "Koshihikari|warmup": 52163,
-                                                  "Yumepirika|report": 2, "Yumepirika|warmup": 15006}
+    assert j["served"] == 212003 and j["unallocated"] == 24934
+    assert j["unallocated_by_product_period"] == {"Koshihikari|report": 24934}
     assert j["report_start"] == "2027-W01"                      # from vc_config.csv
     out = market_outcome(tree)
-    assert out == {"on_time": 141210, "late": 0, "early": 0, "backlog_end": 95727}
+    assert out == {"on_time": 212003, "late": 0, "early": 0, "backlog_end": 24934}
     assert flow_identities(tree, fres)[0] == {}
     assert snap["forward"]["cap_hard_deferred_lots"] == 0

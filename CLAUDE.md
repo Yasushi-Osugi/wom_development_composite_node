@@ -1913,3 +1913,13 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 - サンプル・コード・テスト・文書から実在の企業・ブランド・団体・製品の名前を除き、役割の分かる一般名にした（例：`EMS_A`、`Foundry_A`、`Sensor_A`、`Retailer_A`／`Retailer_B`、`Phone15`〜`Phone17`、`産地の集荷団体`）。計算の値は不変（全 16 モデルを前後で照合）。
 - スマートフォンのモデルは **`data/sample/smartphone-global-2026-2029/`**（golden も同名）。golden の無かった古いモデル（`smartphone-legacy`）は削除。`ev-thailand-2026_update`・`soysauce-jpy-2027-alloc` に golden を作った（golden の無いモデルは無くなった）。
 - **再発防止**：`tests/test_no_real_names.py` が、追跡するテキストのファイルの中身とファイル名に禁止の語が無いことを確かめる。公開の一覧 `tests/data/real_name_denylist.txt`（広く知られた名前だけ）と、Owner の手元の一覧 `private/real_name_denylist.txt`（git の対象外。当たったら番号だけを出す）。**新しいサンプル・文書に実名を書かない。元の名前と一般名の対応表もリポジトリに置かない**（対応表は `output/sample_names/`、git の対象外）。
+
+## Rice：2025 年産をサンプルに入れた（RequestLetter_RiceOpeningCrop2025_Apply、2026-10-16）
+
+**報告**：`docs/development/WOM_RiceOpeningCrop2025_Report.md`（試行 `requests/RequestLetter_RiceOpeningCrop2025_Trial_to_CodeKun.md` → 適用 `requests/RequestLetter_RiceOpeningCrop2025_Apply_to_CodeKun.md`）。
+
+- **何を変えたか**：`data/sample/rice-japan-2027-2028/` に 2025 年産を**普通の年産として**足した（行を足すだけ、既存の行は不変）。計画は **2025-W33 から**（北海道の収穫 W37 の 4 週前）、177 週。2025-W33〜W52 の需要は 0。新潟の 2025 年産は 18,595 lot／週 × 3 週＝**55,785**（他の年の 1.2 倍、前年産に余剰があった**仮定**）、北海道は他の年と同じ 18,200（使うのは 15,008）。`report_start` は 2027-W01 のまま。**コード（`wom/`）は不変**。
+- **試行と決定**：データだけの写し 3 つ（T1 他の年と同じ／T2 十分に大きい／T3 T2 で使った量）を `output/rice_crop2025_trial/` で比べ、Owner が T3 を採った。期首在庫の固定配置モード（Sol 君の設計ドラフト）は採らない（決定記録 D7：期首在庫は計画の中で作る）。
+- **結果**：2026 年の需要は全品目で届かない量 0（前は助走の注文残 67,169）。2025-W52 の週末に新潟の玄米倉庫に 2026 年の需要 ID が付いた 2025 年産 51,167 lot。報告期間のコシヒカリは 97,496／**24,934**（前 93,874／28,556）：2026 年産を 2026 年の需要に使う量が 7,740 → 4,118 に減り、3,622 lot が 2027 年へ回った。
+- **golden**：`tests/golden/rice-japan-2027-2028.json` だけ作り直した（ほかの golden は不変）。rice の結果・計画期間を期待値に持つテスト（`test_rice_seasonal_layer.py::test_k_r10_migration_copy_regression`、`test_plan_period.py::test_sample_models`）の期待値を更新。
+- **Lesson 000**：`tools/lesson000_variants.py` の収穫 +30% は 2026〜2028 年産だけ（条件に `crop_season`／週の年）、精米 +30% は 2025 年の週を含む全週（行数 314 → 354）。4 つを作り直した：報告期間のコシヒカリの届かない量は 基準 24,934・収穫 +30% 312・精米 +30% 24,934・両方 **0**（前 28,556・656・28,556・656）。台本 `Lesson000_Rice.md` の数字は未更新（Claude 君が直す）。
