@@ -1266,6 +1266,8 @@ LT_offset(D2S) = B + X1 + X2
 
 単位を日数にしたのは `ss_days` と揃えるため。列を持たない既存ケースは挙動完全不変。
 
+**`yield_rate`（2026-10-25、RequestLetter_YieldRate_PartA）**：`sc_tree_master.csv` の列。完成品の出荷時点の歩留まり（0 < y ≦ 1、空欄・列なし＝1.0）。**MOM の行だけ**に書く。`cap_hard`／`cap_soft` は物理の投入能力のまま、エンジンが lot を置く・封じる上限だけが floor（能力 × y）になる。詳細は末尾の節。
+
 ### 運用（手動調整を主機構とする）
 
 1. `init_stock_days=0` で 1st run → PSI Graph で buffer node の CO を目視
@@ -1923,3 +1925,14 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 - **結果**：2026 年の需要は全品目で届かない量 0（前は助走の注文残 67,169）。2025-W52 の週末に新潟の玄米倉庫に 2026 年の需要 ID が付いた 2025 年産 51,167 lot。報告期間のコシヒカリは 97,496／**24,934**（前 93,874／28,556）：2026 年産を 2026 年の需要に使う量が 7,740 → 4,118 に減り、3,622 lot が 2027 年へ回った。
 - **golden**：`tests/golden/rice-japan-2027-2028.json` だけ作り直した（ほかの golden は不変）。rice の結果・計画期間を期待値に持つテスト（`test_rice_seasonal_layer.py::test_k_r10_migration_copy_regression`、`test_plan_period.py::test_sample_models`）の期待値を更新。
 - **Lesson 000**：`tools/lesson000_variants.py` の収穫 +30% は 2026〜2028 年産だけ（条件に `crop_season`／週の年）、精米 +30% は 2025 年の週を含む全週（行数 314 → 354）。4 つを作り直した：報告期間のコシヒカリの届かない量は 基準 24,934・収穫 +30% 312・精米 +30% 24,934・両方 **0**（前 28,556・656・28,556・656）。台本 `Lesson000_Rice.md` の数字は未更新（Claude 君が直す）。
+
+## 完成品の出荷時点の歩留まり `yield_rate` — Part A：計画の数量（RequestLetter_YieldRate_PartA、2026-10-25）
+
+**報告**：`docs/development/WOM_YieldRate_PartA_Report.md`（依頼書 `requests/RequestLetter_YieldRate_PartA_to_CodeKun.md`、設計 `requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.2.md` §3.2・§7）。**保護対象コアの変更**（`plan_node.py`・`backward_planner.py`・`forward_planner.py`）。
+
+- **規則**：Ship_Qty ＝ Production_Qty × yield_rate。`sc_tree_master.csv` の `yield_rate` 列（MOM の行だけ、0 < y ≦ 1、空欄・列なし＝1.0）。`cap_hard`／`cap_soft` と能力の CSV の意味は**変えない**（物理の投入能力）。不良の分の Lot_ID は作らない・消さない（Lot_ID はすべて良品）。
+- **読み出し**：`PlanNode.shippable_of(value)`／`shippable_limit(w)`／`shippable_planned(w)` ＝ floor（物理の値 × y ＋ 1e-9）。None は None、0 は 0。**y＝1.0 のときは値をそのまま返す**（今の `int(...)` と完全に同じ）。物理の読み出し（`cap_hard()`・`cap_soft()`・`processing_limit()`・`planned_capacity()`）は不変。
+- **切り替えた箇所**：Backward `_apply_mom_cap_backward`（hard／soft の充填目標と cap_soft の記録）、Forward Step 0a・Step 0b・Kitting Gate の回復、HolidayCalendar の再配置（leaf_in だけが対象なので CSV からは届かない）、`serial_adapter`、`capacity_sealer` の負荷の報告、`strategic_kpi` の稼働率、LOVEM `capacity.csv` の `effective_limit`／`planned_capacity`。**変えない**：画面の能力の線、headless の snapshot（物理のまま）、操業カレンダーからの cap_soft の導出、money・PPC・Value Chain（Part B）。
+- **止める条件**（`wom/engine/yield_rate.py`、`YieldRateError`、ファイル・行・ノード・製品・値と直し方を出す）：数値でない・0 以下・1 超（builder）／MOM 以外に 1.0 以外（builder）／`lot_flow_mode=legacy`・`RiceSeasonalPlugin` ON（headless・GUI・sweep の計画の入口）／push の MOM・legacy（`ForwardPlanner.run` の先頭）。**GUI は builder の例外を Demo tree に落とす作りなので、`YieldRateError` だけは再送出する**。
+- **テスト**：`tests/test_yield_rate_part_a.py`（Unit 8・Integration 10）。golden は全件不変。試行（Cookie の写し、`output/yield_trial/`）：y＝1.0 明示は元と一致。`Factory_DP_JP` 能力 600 × 0.90 は、能力 540・y なしと **snapshot が完全に一致**（歩留まりが良品の上限としてだけ効く）。
+- **Part B へ**：投入の物量の解釈（1／y）と良品 1 lot 当たりの原価。

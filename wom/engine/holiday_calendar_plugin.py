@@ -230,7 +230,8 @@ class HolidayCalendarPlugin(WOMPlugin):
             lot_iter = iter(displaced)
             placed   = 0
             for w in pre_open:
-                ch        = node.cap_hard(w)
+                # good-product limit (YieldRate Part A); unchanged when yield = 1.0
+                ch        = node.shippable_of(node.cap_hard(w))
                 current_p = len(node.psi4demand[w][P_IDX])
                 # None = no ceiling; 0 = zero capacity (RequestLetter_CapacityZeroBlank)
                 space     = max(0, int(ch) - current_p) if ch is not None else len(displaced)

@@ -30,6 +30,11 @@ CSV schema (optional)
                            forced to 1 for "confluence" children regardless
                            of the CSV value. See PlanNode.bom_qty / Letter B
                            (request_letter_b_bom_qty.md, "1 set rule").
+    yield_rate   : float — finished-product yield at the factory's shipment
+                           point, in (0, 1] (default 1.0 = blank / no column).
+                           MOM rows only; an invalid value, or a value other
+                           than 1.0 on another node type, stops the build
+                           (wom/engine/yield_rate.py, RequestLetter_YieldRate_PartA).
 
 NOT read from this CSV: `cpu_size` moved to planning_config.csv (Request
 Letter A: request_letter_a_cpu_size_to_plan.md) -- it is a plan-wide value
@@ -62,6 +67,7 @@ downstream KPI engines work unchanged.
 
 from __future__ import annotations
 
+import numbers
 from typing import Dict, List, Optional
 
 import pandas as pd
@@ -75,6 +81,7 @@ from wom.model.plan_node import (
     NODE_TYPE_LEAF_IN,
 )
 from wom.model.sc_tree import SCTree
+from wom.engine.yield_rate import parse_yield_rate
 
 
 # ──────────────────────────────────────────────────────────────────────────
@@ -206,7 +213,7 @@ def _build_product_tree(
     nodes: Dict[str, PlanNode] = {}
 
     # ── Step 1: Create all PlanNode objects ──────────────────────────────
-    for _, row in prod_df.iterrows():
+    for _idx, row in prod_df.iterrows():
         node_name = str(row["node_name"]).strip()
         node_type = str(row["node_type"]).strip()
         side      = str(row["side"]).strip()
@@ -252,6 +259,13 @@ def _build_product_tree(
         # not silently honored here).
         if supply_role == "confluence":
             bom_qty = 1
+        # RequestLetter_YieldRate_PartA: no silent default for a bad value
+        # (unlike bom_qty) -- parse_yield_rate stops the build. _line = CSV line
+        # (header = 1), valid when the frame keeps read_csv's RangeIndex.
+        _line = int(_idx) + 2 if isinstance(_idx, numbers.Integral) else None
+        yield_rate = parse_yield_rate(row.get("yield_rate", ""), node_name=node_name,
+                                      product=str(prod_nm), node_type=node_type,
+                                      line=_line)
 
         node_id = _make_node_id(node_type, side, node_name, region, prod_nm)
 
@@ -270,6 +284,8 @@ def _build_product_tree(
             demand_envelope = demand_envelope,
             supply_role    = supply_role,
             bom_qty        = bom_qty,
+            yield_rate     = yield_rate,
+            yield_rate_line = _line,
         )
         nodes[node_name] = pnode
 

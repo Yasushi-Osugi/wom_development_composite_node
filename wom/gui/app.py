@@ -40,6 +40,7 @@ from wom.engine.simulator import WOMSimulator
 from wom.engine.scenario import ScenarioManager
 from wom.reports.output import write_csv, write_excel
 from wom.engine.management import ManagementAnalysisResult
+from wom.engine.yield_rate import YieldRateError, check_yield_rate_context
 
 # NetworkX – optional (graceful fallback if not installed)
 try:
@@ -5458,6 +5459,8 @@ class WOMApp(tk.Tk):
                 sc_tree = build_sc_tree_from_master(sc_tree_df, weeks)
                 print(f"[SCTreeBuilder] Loaded multi-tier tree from {sc_tree_path}")
                 print(f"  Products: {sc_tree.products}")
+            except YieldRateError:
+                raise   # stop the planning run (no demo-tree fallback): YieldRate Part A
             except Exception as _stb_exc:
                 import traceback
                 print(f"[SCTreeBuilder] Failed: {_stb_exc}")
@@ -5558,6 +5561,10 @@ class WOMApp(tk.Tk):
         # The evaluation (planning DataFrame, Strategic KPI, PPC bridge, node
         # Cost/Revenue chart) reads the mode from the tree -- S2 C2.
         sc_tree.lot_flow_mode = _cfg["lot_flow_mode"]
+        # RequestLetter_YieldRate_PartA: yield_rate cannot meet legacy / Rice Seasonal.
+        check_yield_rate_context(
+            sc_tree, lot_flow_mode=_cfg["lot_flow_mode"],
+            plugin_names=[type(p).__name__ for p in getattr(self, "_active_plugins", [])])
         # weeks the demand CSV does not list (planned with demand 0; plan_period.py)
         sc_tree.period_filled_weeks = list(getattr(self, "_period_filled_weeks", []))
 

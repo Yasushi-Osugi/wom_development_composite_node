@@ -53,6 +53,7 @@ ss_days usage:
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
@@ -205,6 +206,20 @@ class PlanNode:
     # supplier-cost lines only) the PPC engine, per
     #     S_Qty[w] = len(psi[w]["S"]) * cpu_size * bom_qty
     bom_qty: int = 1
+
+    # -- Yield rate (RequestLetter_YieldRate_PartA, 2026-10-25) ─────────────
+    # Yield of the finished product at the factory's shipment point, in
+    # (0, 1]. Read from sc_tree_master.csv's yield_rate column; blank or no
+    # column = 1.0 (no defects, the former meaning). Only a MOM may carry a
+    # value other than 1.0 (sc_tree_builder stops otherwise).
+    #
+    # cap_hard / cap_soft stay the PHYSICAL input capacity. The engine places
+    # and seals lots against the GOOD-PRODUCT limit floor(capacity * yield)
+    # returned by shippable_of / shippable_limit / shippable_planned. Every
+    # Lot_ID is a good finished lot: no lot is created or removed for defects.
+    yield_rate: float = 1.0
+    # sc_tree_master.csv line of the yield_rate value (for error messages only)
+    yield_rate_line: Optional[int] = field(default=None, repr=False)
 
     # -- Week index lookup (set after init_psi) ────────────────────────────
     # week_labels[week_idx] = ISO week string, e.g. "2026-W01"
@@ -402,6 +417,32 @@ class PlanNode:
         if not self.is_open(week):
             return 0.0
         return self.cap_soft(week)
+
+    # ----------------------------------------------------------------------
+    # Good-product (shippable) limits (RequestLetter_YieldRate_PartA)
+    #
+    # The readers above return PHYSICAL capacity and are unchanged. These
+    # return the number of GOOD finished lots the capacity can ship:
+    # floor(value * yield_rate). The meaning of the value is kept: None (not
+    # set) stays None, 0 stays 0. With yield_rate == 1.0 the value is returned
+    # as it is, so every caller's int(...) gives exactly the former result.
+    # ----------------------------------------------------------------------
+
+    def shippable_of(self, value: Optional[float]) -> Optional[float]:
+        """Good-product lots for a physical capacity value: None -> None,
+        else floor(value * yield_rate). 1e-9 is added before flooring so that
+        float error (100 * 0.29 = 28.999...) does not lose a lot."""
+        if value is None or self.yield_rate == 1.0:
+            return value
+        return float(math.floor(value * self.yield_rate + 1e-9))
+
+    def shippable_limit(self, week: int) -> Optional[float]:
+        """processing_limit(week) in good-product lots (closed = 0, unset = None)."""
+        return self.shippable_of(self.processing_limit(week))
+
+    def shippable_planned(self, week: int) -> Optional[float]:
+        """planned_capacity(week) in good-product lots (closed = 0, unset = None)."""
+        return self.shippable_of(self.planned_capacity(week))
 
     def is_zero_capacity(self, week: int) -> bool:
         """True in an OPEN week whose cap_hard is explicitly 0 (zero capacity,

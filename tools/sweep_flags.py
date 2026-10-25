@@ -350,6 +350,11 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
     for pl in active_plugins:
         pl.register(bus)
     print(f"[Sweep] plugins: {[type(p).__name__ for p in active_plugins]}")
+    # RequestLetter_YieldRate_PartA: yield_rate cannot meet legacy / Rice Seasonal.
+    from wom.engine.yield_rate import check_yield_rate_context
+    from wom.engine.forward_planner import resolve_lot_flow_mode
+    check_yield_rate_context(sc_tree, lot_flow_mode=resolve_lot_flow_mode(lot_flow_mode),
+                             plugin_names=[type(p).__name__ for p in active_plugins])
     hol_plugin = next((p for p in active_plugins
                         if type(p).__name__ == "HolidayCalendarPlugin"), None)
 

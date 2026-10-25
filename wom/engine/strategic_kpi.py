@@ -262,7 +262,8 @@ def compute_strategic_kpi(
                 i_count = len(node.psi4supply[w][I])
                 # processing_limit: closed week -> 0.0, unset -> None. Both are
                 # excluded from utilisation (Explicit Closure v1r5m0 §4.6).
-                ch = node.processing_limit(w)
+                # Good-product limit (YieldRate Part A; = processing_limit at y=1.0)
+                ch = node.shippable_limit(w)
 
                 # Buffer retention: every (node, week)
                 total_node_weeks += 1

@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-16（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-10-25（ブランチ `wom-v1r5m1_cap_trial`）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -77,6 +77,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | R14 | **能力を上位で扱う層**：市場の要求（週と Lot_ID）は変えず、内部の計画の位置だけを渡す。前倒しの窓（例 17 週）を設定する。プラグインで既定は OFF | `WOM_GenerationLine_UpperLayer_Report.md`、決定記録 §3（モデル 4） |
 | R15 | **世代の切り替えのライン**：混流しない。空き期間（例 4 週）は両世代とも能力 0。切り替えの週は上位の層で候補を並べて選ぶ | 同上、`data/sample/smartx-2027-2029/README.md` |
 | R16 | **季節の供給（rice）**：市場の要求（週と Lot_ID）は変えず、上位の層が ID ごとに収穫週と精米週を別々に選ぶ。週の設備の上限・収穫の週・年産の上限・保管の上限・歩留まりは別々の入力。匿名の期首在庫を作らず、報告の期首在庫は計画の中の先の収穫から作る。助走の年の不足は報告期間と分けて数える。**前年産は、計画の始まりを前年の収穫の前に延ばし、普通の年産としてデータで持つ**（rice は 2025-W33 から、2025 年産は仮定の量。期首在庫を外から置く機能は作らない。決定記録 D7 と同じ考え、`WOM_RiceOpeningCrop2025_Report.md`）。不足のときは要求週の早い順、同じ週は市場の要求量に比例して配る（精米の前倒しの少なさより優先） | `docs/development/WOM_RiceSeasonal_Implementation_Report.md`、`data/sample/rice-japan-2027-2028/README.md`、依頼書 §8 |
+| R17 | **歩留まり**（`sc_tree_master.csv` の `yield_rate`、工場＝MOM の行だけ）：完成品の出荷時点に一本化した歩留まり。工程別の不良は見ない。`cap_hard`（Sealing_Qty）・`cap_soft`（Production_Qty）は物理の投入の能力のまま、エンジンは **floor（能力 × yield_rate）＝引当て可能な良品の lot 数**で lot を置き・封じる（`PlanNode.shippable_*`）。不良の分の Lot_ID は作らない。空欄・列なし＝1.0。不正な値、MOM 以外、push の MOM、legacy、Rice Seasonal ON では止まる。投入の物量（1／y）と金額は Part B（未実装） | `docs/development/WOM_YieldRate_PartA_Report.md`、`requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.2.md` §7 |
 
 ---
 
@@ -168,5 +169,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | 需要の出どころ（4P） | 需要は `demand_forecast.csv` として外から与えられている。製品・価格・チャネル・販促（コトラーの 4P）から需要の ID を作り、出どころを ID の属性として持つ「需要の層」を、上位の層と同じくエンジンの外に置く構想（Owner、2026-10-09）。rice では「不足のとき、配分・価格・品目の誘導のどれで対応するか」を比べる題材になる |
 | Backward の前倒しの上限 | 上位の層が OFF のとき上限が無い（`WOM_GenerationLine_UpperLayer_Report.md` §11.1） |
 | 世代間の需要の移行 | 旧世代の残りの需要を新世代へ振り替える規則が無い |
+| 歩留まり Part B | 投入の物量（良品 1 lot の裏に投入 1／y）、良品 1 lot 当たりの原価、画面の良品の上限の線（`WOM_YieldRate_PartA_Report.md` §6） |
+| supply point の作り置きの在庫 | MOM の能力で前倒しが起きると、作り置きが supply point（仮想のノード）の I に現れる（歩留まりの試行 T2・T3、`SP_Cookie_Local` で最大 6,900 lot）。§2.1「supply point は在庫を持たない」と食い違う。調べる |
 | 在庫の保有費用・陳腐化の金額 | `vc_config.csv` の `holding_rate_weekly` を設定し、smartx などに Value Chain のマスターを用意してから |
 | Cookie の CVS・soysauce の卸価格 | 仮の値（各モデルの README に根拠と損益分岐） |

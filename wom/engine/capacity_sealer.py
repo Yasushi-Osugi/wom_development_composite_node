@@ -247,8 +247,11 @@ def build_capacity_load_report(
             # Closure-aware limits (Explicit Closure v1r5m0 §4.6):
             # closed week -> 0.0, unset -> None. The raw values are still
             # reported in cap_hard / cap_soft (cap_hard = physical ceiling).
-            lim = node.processing_limit(w)
-            pc = node.planned_capacity(w)
+            # RequestLetter_YieldRate_PartA: utilisation and the over flags use
+            # the GOOD-product limits (what the engine sealed against); the
+            # physical cap_hard / cap_soft are still reported as they are.
+            lim = node.shippable_limit(w)
+            pc = node.shippable_planned(w)
             if lim is None and pc is None:
                 continue   # no capacity set for this (open) week
 

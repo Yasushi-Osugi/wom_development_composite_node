@@ -605,7 +605,9 @@ def write_nodes_weeks_capacity(obs: Observer, model_dir: str) -> dict:
         for prod in t.products:
             for nd in t.iter_all_nodes(prod):
                 for w in range(obs.n_weeks):
-                    lim, pc = nd.processing_limit(w), nd.planned_capacity(w)
+                    # effective = the limit the engine actually used (good
+                    # product, YieldRate Part A); raw_* stay physical.
+                    lim, pc = nd.shippable_limit(w), nd.shippable_planned(w)
                     sh = nd.operating_shifts(w)
                     _rh, _rs = nd.cap_hard(w), nd.cap_soft(w)   # None = not set
                     wr.writerow([prod, nd.node_id, w, "" if _rh is None else _rh,

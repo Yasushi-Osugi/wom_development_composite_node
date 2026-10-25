@@ -527,7 +527,11 @@ class BackwardPlanner:
                 continue  # unconstrained week (cap not set)
 
             s_lots  = list(node.psi4demand[w][S])
-            cs = node.cap_soft(w)
+            # RequestLetter_YieldRate_PartA: fill and seal against the GOOD-
+            # product limit floor(capacity * yield_rate). cap_hard/cap_soft stay
+            # physical; with yield_rate == 1.0 the values are unchanged.
+            cap_w = node.shippable_of(cap_w)
+            cs = node.shippable_of(node.cap_soft(w))
             # Fill target (Phase 2 Fork B, per-node demand_envelope):
             #   closed week       => 0  (holiday: produce nothing, carry back)
             #   "soft" + cap_soft => cap_soft  (leveled production; the excess is

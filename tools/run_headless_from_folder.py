@@ -221,6 +221,10 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
         pl.register(bus)
     if verbose:
         print(f"[Headless] plugins: {[type(p).__name__ for p in active_plugins]}")
+    # RequestLetter_YieldRate_PartA: yield_rate cannot meet legacy / Rice Seasonal.
+    from wom.engine.yield_rate import check_yield_rate_context
+    check_yield_rate_context(sc_tree, lot_flow_mode=lot_flow_mode,
+                             plugin_names=[type(p).__name__ for p in active_plugins])
 
     # ── 需要 → ロット ──────────────────────────────────────────────
     demand_dict = {}

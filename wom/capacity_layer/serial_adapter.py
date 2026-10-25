@@ -133,7 +133,9 @@ class SerialLineAdapter:
                               "lt_wks": int(nd.lt_wks), "transit_lt_wks": int(nd.transit_lt_wks or 0),
                               "ss_wks": int(nd.ss_wks), "bom_qty": int(nd.bom_qty)}
                 for w in range(len(weeks)):
-                    state[nid, w] = {"processing_limit": nd.processing_limit(w),
+                    # good-product limit (YieldRate Part A): the layer solves
+                    # against what the engine actually seals. Key name kept.
+                    state[nid, w] = {"processing_limit": nd.shippable_limit(w),
                                      "is_open": bool(nd.is_open(w))}
                 if (prod, nd.node_name) in push_leads_by_name:
                     leads[nid] = int(push_leads_by_name[prod, nd.node_name])

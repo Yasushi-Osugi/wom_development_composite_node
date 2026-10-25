@@ -48,6 +48,7 @@ AREAS = {
     "test_step7_capacity.py": ("core",),
     "test_step8_push_pull.py": ("core",),
     "test_warmup_materialize.py": ("core",),
+    "test_yield_rate_part_a.py": ("core", "capacity"),
     # capacity: the upper (capacity) layer
     "test_capacity_layer_trial.py": ("capacity",),
     "test_cpu_size_plan_wide.py": ("capacity",),

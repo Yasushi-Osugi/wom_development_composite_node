@@ -67,6 +67,7 @@ from typing import Dict, List, Optional
 from wom.model.plan_node import PlanNode, S, CO, I, P, NODE_TYPE_LEAF_IN, NODE_TYPE_STOCKYARD
 from wom.model.sc_tree   import SCTree
 from wom.model.lot_generator import LotIDGenerator
+from wom.engine.yield_rate import check_forward_yield
 
 
 # Kitting Gate switch (request_kitting_stage1.md §3.7; enabled by
@@ -301,6 +302,9 @@ class ForwardPlanner:
     def run(self, prod_nm: str) -> ForwardPlanResult:
         result  = ForwardPlanResult(prod_nm=prod_nm)
         result.lot_flow_mode = self.lot_flow_mode    # Addendum1 A2 / D5: record the mode
+        # RequestLetter_YieldRate_PartA: a yield_rate on a push MOM (P = receipt,
+        # not sealed) or in legacy mode would silently not apply -- stop instead.
+        check_forward_yield(self.sc_tree, prod_nm, lot_flow_mode=self.lot_flow_mode)
         n_weeks = self.sc_tree.num_weeks()
 
         ot_root  = self.sc_tree.get_ot_root(prod_nm)
@@ -699,7 +703,9 @@ class ForwardPlanner:
             # not production at this node. Surplus P flows to I via PUSH_MODE logic.
             # RequestLetter_CapacityZeroBlank: None = not set (no sealing);
             # 0.0 = zero capacity -> the whole P is over the ceiling.
-            ch = node.cap_hard(w)
+            # RequestLetter_YieldRate_PartA: seal at the GOOD-product limit
+            # floor(cap_hard * yield_rate) (unchanged when yield_rate == 1.0).
+            ch = node.shippable_of(node.cap_hard(w))
             if not is_push_mode and ch is not None and len(node.psi4supply[w][P]) > int(ch):
                 excess = node.psi4supply[w][P][int(ch):]
                 node.psi4supply[w][P] = node.psi4supply[w][P][:int(ch)]
@@ -728,7 +734,7 @@ class ForwardPlanner:
             # capacity is compared. Push nodes are compared on what they actually
             # PROCESSED (shipped), not on P (= receipt): that check runs in the
             # push branch below, after the shipment is known (§4.5).
-            pc = node.planned_capacity(w)
+            pc = node.shippable_planned(w)     # good-product limit (YieldRate Part A)
             if (not is_push_mode and pc is not None
                     and len(node.psi4supply[w][P]) > int(pc)):
                 result.record_cap_soft_violation(
@@ -972,7 +978,8 @@ class ForwardPlanner:
                 candidates = list(pending)
                 # processing_limit: closed week = 0 (kits wait, components kept
                 # in their yards by the recovery logic), unset = no limit.
-                lim = node.processing_limit(w)
+                # Good-product limit (YieldRate Part A): kits completed <= floor(lim * y).
+                lim = node.shippable_limit(w)
                 remaining = int(lim) if lim is not None else len(candidates)
             else:
                 candidates = list(node.psi4demand[w][S])
