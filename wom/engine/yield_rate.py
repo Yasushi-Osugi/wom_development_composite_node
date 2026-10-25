@@ -29,11 +29,14 @@ from __future__ import annotations
 import math
 from typing import Iterable, Optional
 
+from wom.engine.tree_attrs import TreeAttributeError
+
 SOURCE = "sc_tree_master.csv"
 
 
-class YieldRateError(ValueError):
-    """A yield_rate the engine cannot use. The planning run stops."""
+class YieldRateError(TreeAttributeError):
+    """A yield_rate the engine cannot use. The planning run stops.
+    (A TreeAttributeError, so the GUI's re-raise covers both.)"""
 
 
 def _where(node_name, product, line, source=SOURCE) -> str:

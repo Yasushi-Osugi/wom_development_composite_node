@@ -1936,3 +1936,16 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
 - **止める条件**（`wom/engine/yield_rate.py`、`YieldRateError`、ファイル・行・ノード・製品・値と直し方を出す）：数値でない・0 以下・1 超（builder）／MOM 以外に 1.0 以外（builder）／`lot_flow_mode=legacy`・`RiceSeasonalPlugin` ON（headless・GUI・sweep の計画の入口）／push の MOM・legacy（`ForwardPlanner.run` の先頭）。**GUI は builder の例外を Demo tree に落とす作りなので、`YieldRateError` だけは再送出する**。
 - **テスト**：`tests/test_yield_rate_part_a.py`（Unit 8・Integration 10）。golden は全件不変。試行（Cookie の写し、`output/yield_trial/`）：y＝1.0 明示は元と一致。`Factory_DP_JP` 能力 600 × 0.90 は、能力 540・y なしと **snapshot が完全に一致**（歩留まりが良品の上限としてだけ効く）。
 - **Part B へ**：投入の物量の解釈（1／y）と良品 1 lot 当たりの原価。
+
+## warmup の cap_soft・木の属性の空欄・残存期間の判定（先入れ先出し）（RequestLetter_WarmupSoft_BlankAttrs_ShelfLifeFIFO、2026-10-25）
+
+**報告**：`docs/development/WOM_WarmupSoft_BlankAttrs_ShelfLifeFIFO_Report.md`（依頼書 `requests/RequestLetter_WarmupSoft_BlankAttrs_ShelfLifeFIFO_to_CodeKun.md`、設計 `requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.4.md`）。保護対象コアは変えていない。golden は全件不変。
+
+- **warmup の cap_soft**（`wom/engine/warmup.py`）：新書式の `capacity_plan.csv` の助走行に、最初の実週の能力の値を写す列を一か所の一覧 `_CAPACITY_COPY_COLS`（`max_supply`・`cap_soft`）にした。以前は `max_supply` だけで、soft の工場が助走週に平準化されなかった（化粧品の試行 2 で発見）。列が無ければ作らない、空欄は空欄のまま。能力の列を足したらこの一覧に足す。`cap_pieces`（エンジンが読まない）は写さない。
+- **木の属性の空欄**（`wom/engine/tree_attrs.py`、`sc_tree_builder.py` が使う。大杉さんの決定 d）：`ss_days`・`init_stock_days` は**空欄＝未設定（計画は 0 と同じ）、0＝明示の 0**、0 以上の整数以外は止める。`demand_envelope` は空欄＝hard、`hard`／`soft`（大文字・空白可）以外は止める（以前は黙って hard）。止めるときは `TreeAttributeError`（ファイル・行・列・ノード・製品・値と直し方）。`YieldRateError` はその子クラスで、GUI は `TreeAttributeError` を Demo tree に落とさず再送出する。`supply_role`・`bom_qty` は今回変えていない（黙った既定値のまま）。
+- **残存期間の判定** `tools/shelf_life_check.py`：
+  ```
+  python -m tools.shelf_life_check --model-dir <モデル> --max-age-weeks 52 [--plugins …] [--out <フォルダ>]
+  ```
+  `--max-age-weeks` は必須（黙った既定値を作らない）。出力 `shelf_life_deliveries.csv`（納品ごと）・`shelf_life_summary.csv`（SKU・チャネル別の最小・最大・分布・許容超え）、既定の出力先 `output/shelf_life/<モデル名>/`。
+- **先入れ先出しの年齢の定義**：市場への納品（leaf_out の実出荷）ごとに、納品週 − 製造週（工場＝MOM の実出荷週）。物の在る所（supply point＝工場の完成品倉庫、DAD、leaf_out の店頭）ごと・SKU ごとの待ち行列に製造週の札を付けて並べ、出ていく物は一番古い札から出す。入力は `wom/valuechain/records.py` の `build_records`（週の中は上流から）。**Lot_ID は需要の単位で物の個体ではない**ので、Lot_ID で数えた滞留（max（需要週、市場の出荷週）− その Lot_ID の工場の出荷週）は参考の列。作り置きがあると Lot_ID の滞留は物の年齢より大きく出る（化粧品 B3：Lot_ID で最大 165 週・52 週超 195、先入れ先出しで最大 17・21 週・0）。週の差は計画の週の番号で数える。

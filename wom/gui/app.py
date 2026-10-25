@@ -40,7 +40,8 @@ from wom.engine.simulator import WOMSimulator
 from wom.engine.scenario import ScenarioManager
 from wom.reports.output import write_csv, write_excel
 from wom.engine.management import ManagementAnalysisResult
-from wom.engine.yield_rate import YieldRateError, check_yield_rate_context
+from wom.engine.tree_attrs import TreeAttributeError
+from wom.engine.yield_rate import check_yield_rate_context
 
 # NetworkX – optional (graceful fallback if not installed)
 try:
@@ -5459,8 +5460,10 @@ class WOMApp(tk.Tk):
                 sc_tree = build_sc_tree_from_master(sc_tree_df, weeks)
                 print(f"[SCTreeBuilder] Loaded multi-tier tree from {sc_tree_path}")
                 print(f"  Products: {sc_tree.products}")
-            except YieldRateError:
-                raise   # stop the planning run (no demo-tree fallback): YieldRate Part A
+            except TreeAttributeError:
+                # stop the planning run (no demo-tree fallback): yield_rate (YieldRate
+                # Part A) and blank / bad day or envelope cells (WarmupSoft..FIFO B)
+                raise
             except Exception as _stb_exc:
                 import traceback
                 print(f"[SCTreeBuilder] Failed: {_stb_exc}")

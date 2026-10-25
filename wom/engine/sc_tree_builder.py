@@ -18,7 +18,11 @@ CSV schema (required)
 CSV schema (optional)
 ---------------------
     ss_days      : int   — safety stock days (default 0); backward planner adds
-                           ceil(ss_days/7) extra offset weeks on top of lt_wks
+                           ceil(ss_days/7) extra offset weeks on top of lt_wks.
+                           ss_days / init_stock_days: blank = not set (plans as
+                           0), 0 = explicit 0, anything but a whole number >= 0
+                           stops. demand_envelope: blank = hard, hard / soft,
+                           anything else stops (wom/engine/tree_attrs.py).
     region       : str   — geographic region; REQUIRED on leaf_out nodes for
                            demand-lot assignment to work (e.g. "AMER")
     supply_role  : str   — "confluence" | "assembly" | "" (default "assembly").
@@ -82,6 +86,7 @@ from wom.model.plan_node import (
 )
 from wom.model.sc_tree import SCTree
 from wom.engine.yield_rate import parse_yield_rate
+from wom.engine.tree_attrs import parse_days, parse_envelope
 
 
 # ──────────────────────────────────────────────────────────────────────────
@@ -235,16 +240,23 @@ def _build_product_tree(
         # Falls back to lt_wks if not specified (empty/0) in CSV
         _tlt          = row.get("transit_lt_wks", None)
         transit_lt_wks = int(float(_tlt)) if (_tlt is not None and str(_tlt).strip() not in ("", "0", "nan")) else lt_wks
-        ss_days       = int(row.get("ss_days", 0) or 0)
+        # _line = CSV line (header = 1), valid when the frame keeps read_csv's
+        # RangeIndex; used in the stop messages below (yield_rate, days, envelope).
+        _line = int(_idx) + 2 if isinstance(_idx, numbers.Integral) else None
+        _who = dict(node_name=node_name, product=str(prod_nm), line=_line)
+        # RequestLetter_WarmupSoft_BlankAttrs_ShelfLifeFIFO B (decision d): blank =
+        # not set, 0 = explicit 0, a bad value stops (formerly a blank cell stopped
+        # with a bare int(NaN) error). Not set plans like 0 -- the node keeps 0.
+        ss_days       = parse_days(row.get("ss_days"), column="ss_days", **_who) or 0
         # X2: warm-up / initial stock coverage [days] (OutBound only; default 0).
         # Column may be absent in existing models -> 0 = unchanged behaviour.
-        init_stock_days = int(row.get("init_stock_days", 0) or 0)
+        init_stock_days = parse_days(row.get("init_stock_days"), column="init_stock_days",
+                                     **_who) or 0
         region        = str(row.get("region", "") or "").strip()
         is_decoupling = bool(int(row.get("buffering_stock_flag", 0) or 0))
         # Phase 2 Fork B: per-node demand-envelope mode (hard/soft, default hard).
-        demand_envelope = str(row.get("demand_envelope", "hard") or "hard").strip().lower()
-        if demand_envelope not in ("hard", "soft"):
-            demand_envelope = "hard"
+        # Blank = hard; a misspelt value stops (formerly it became hard silently).
+        demand_envelope = parse_envelope(row.get("demand_envelope"), **_who)
         # A1 fix (request_fix_a1_supply_role_rev2.md): blank/unspecified/typo'd
         # values all default to "assembly" (safe default, existing behaviour).
         supply_role = str(row.get("supply_role", "") or "").strip().lower()
@@ -260,9 +272,7 @@ def _build_product_tree(
         if supply_role == "confluence":
             bom_qty = 1
         # RequestLetter_YieldRate_PartA: no silent default for a bad value
-        # (unlike bom_qty) -- parse_yield_rate stops the build. _line = CSV line
-        # (header = 1), valid when the frame keeps read_csv's RangeIndex.
-        _line = int(_idx) + 2 if isinstance(_idx, numbers.Integral) else None
+        # (unlike bom_qty) -- parse_yield_rate stops the build.
         yield_rate = parse_yield_rate(row.get("yield_rate", ""), node_name=node_name,
                                       product=str(prod_nm), node_type=node_type,
                                       line=_line)

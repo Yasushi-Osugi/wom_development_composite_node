@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-25（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-10-25 改（ブランチ `wom-v1r5m1_cap_trial`）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -79,6 +79,8 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | R15 | **世代の切り替えのライン**：混流しない。空き期間（例 4 週）は両世代とも能力 0。切り替えの週は上位の層で候補を並べて選ぶ | 同上、`data/sample/smartx-2027-2029/README.md` |
 | R16 | **季節の供給（rice）**：市場の要求（週と Lot_ID）は変えず、上位の層が ID ごとに収穫週と精米週を別々に選ぶ。週の設備の上限・収穫の週・年産の上限・保管の上限・歩留まりは別々の入力。匿名の期首在庫を作らず、報告の期首在庫は計画の中の先の収穫から作る。助走の年の不足は報告期間と分けて数える。**前年産は、計画の始まりを前年の収穫の前に延ばし、普通の年産としてデータで持つ**（rice は 2025-W33 から、2025 年産は仮定の量。期首在庫を外から置く機能は作らない。決定記録 D7 と同じ考え、`WOM_RiceOpeningCrop2025_Report.md`）。不足のときは要求週の早い順、同じ週は市場の要求量に比例して配る（精米の前倒しの少なさより優先） | `docs/development/WOM_RiceSeasonal_Implementation_Report.md`、`data/sample/rice-japan-2027-2028/README.md`、依頼書 §8 |
 | R17 | **歩留まり**（`sc_tree_master.csv` の `yield_rate`、工場＝MOM の行だけ）：完成品の出荷時点に一本化した歩留まり。工程別の不良は見ない。`cap_hard`（Sealing_Qty）・`cap_soft`（Production_Qty）は物理の投入の能力のまま、エンジンは **floor（能力 × yield_rate）＝引当て可能な良品の lot 数**で lot を置き・封じる（`PlanNode.shippable_*`）。不良の分の Lot_ID は作らない。空欄・列なし＝1.0。不正な値、MOM 以外、push の MOM、legacy、Rice Seasonal ON では止まる。投入の物量（1／y）と金額は Part B（未実装） | `docs/development/WOM_YieldRate_PartA_Report.md`、`requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.2.md` §7 |
+| R18 | **製品の年齢（残存期間）は先入れ先出しで数える**。物の在る所（工場の完成品倉庫＝supply point の I、DAD、店頭）ごと・SKU ごとに製造週（工場の実出荷週）の札を並べ、古い札から出す。年齢＝納品週 − 製造週（計画の週の番号で数える）。**Lot_ID は需要の単位なので、物の年齢を Lot_ID で数えない**（作り置きのとき需要の単位と物が離れ、年齢を大きく数える。化粧品の B3：Lot_ID で最大 165 週、先入れ先出しで最大 21 週）。道具 `python -m tools.shelf_life_check --model-dir <モデル> --max-age-weeks <週>`（許容は必須） | `docs/development/WOM_WarmupSoft_BlankAttrs_ShelfLifeFIFO_Report.md`、`requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.4.md` §8.3 |
+| R19 | **木の属性の空欄**（`sc_tree_master.csv`）：`ss_days`・`init_stock_days` の空欄は N/A（未設定。計画は 0 と同じ）、0 は明示の 0、0 以上の整数以外は止まる。`demand_envelope` の空欄は hard、hard・soft 以外は止まる（綴りの誤りを推測で直さない。直すのはモデルの CSV）。warmup の行には、能力の値の列（`max_supply`・`cap_soft`）を最初の実週から写す | 同上（`wom/engine/tree_attrs.py`、`wom/engine/warmup.py` の `_CAPACITY_COPY_COLS`） |
 
 ---
 

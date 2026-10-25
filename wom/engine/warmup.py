@@ -16,7 +16,8 @@ wom/engine/warmup.py — Planning Warm-up 行の materialize（案B-safe）
                          warmup_lt>0          : real_start − warmup_lt
                          それ以外              : real_start（助走なし）
        capacity_plan の書式は2つ（実ローダ capacity_sealer.load_capacity_dataframe と同じ）:
-         新書式（node_name 列あり）: (sku_id, node_name) ごとに、最初の実週の max_supply をコピー。
+         新書式（node_name 列あり）: (sku_id, node_name) ごとに、最初の実週の能力の値
+                                     （_CAPACITY_COPY_COLS：max_supply・cap_soft）をコピー。
          旧書式（node_name 列なし）: 最初の実週の各行を、week だけ替えてそのままコピー
                                      （(sku_id, week) の合計＝MOM の能力、が保たれる）。
   - D3 materialize：CSV に書く。生成物と原本の区別は「最初の“非ゼロ”需要週(real_start)より前の週の行」。
@@ -50,6 +51,19 @@ _OPCAL = "operating_calendar.csv"     # 助走週 = node の最初の実週 shif
 _CONFIG = "planning_config.csv"
 
 _WARMUP_TAG = "warmup"                # capacity_plan.source に入れる可読マーカー（任意）
+
+# capacity_plan（新書式）の助走行に、最初の実週から写す能力の値の列の一覧（一か所）。
+# 能力の列を足したら、ここに足す（RequestLetter_WarmupSoft_BlankAttrs_ShelfLifeFIFO A.2：
+# 以前は max_supply だけを写し、cap_soft が助走週で未設定になっていた＝soft の工場が
+# 助走週に平準化されなかった）。列がファイルに無ければ写さない（列も作らない）。
+# 写す値は文字列のまま（空欄＝未設定、0＝能力ゼロ、の意味を変えない。Start Here R4）。
+# 写さない列：
+#   sku_id・node_name・week … 行のキー（助走行ごとに設定する）
+#   source                 … 助走行の印（_WARMUP_TAG）を入れる
+#   cap_pieces             … エンジンが読まない記録用の列。写すと全サンプルの能力の CSV が
+#                            書き換わる（write-if-needed で差分が出る）ので写さない
+#   region（smartx 等）    … 記録用。能力の帰属は sku_id・node_name で決まる
+_CAPACITY_COPY_COLS = ("max_supply", "cap_soft")
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -281,17 +295,20 @@ def _build_warm_lines(kind: str, hf: List[str], first_week_rows: List[List[str]]
                     out.append(_fmt(row))
             return out
         wi = _col(hf, "week")
-        si, ni, mi = _col(hf, "sku_id"), _col(hf, "node_name"), _col(hf, "max_supply")
+        si, ni = _col(hf, "sku_id"), _col(hf, "node_name")
+        copy_idx = [_col(hf, c) for c in _CAPACITY_COPY_COLS if c in hf]
         srci = hf.index("source") if "source" in hf else None
-        # (sku, node) -> max_supply（最初の実週値）
+        # (sku, node) -> 能力の値の列（最初の実週値）
         snap = {}
         for r in first_week_rows:
-            snap[(r[si], r[ni])] = r[mi]
+            snap[(r[si], r[ni])] = [r[i] for i in copy_idx]
         out = []
         for wk in warm_weeks:
             for (sku, node) in sorted(snap):
                 row = [""] * len(hf)
-                row[si], row[ni], row[wi], row[mi] = sku, node, wk, snap[(sku, node)]
+                row[si], row[ni], row[wi] = sku, node, wk
+                for i, v in zip(copy_idx, snap[(sku, node)]):
+                    row[i] = v
                 if srci is not None:
                     row[srci] = _WARMUP_TAG
                 out.append(",".join(row))

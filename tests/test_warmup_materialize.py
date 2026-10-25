@@ -234,8 +234,10 @@ def test_old_format_idempotent_and_strip(tmp_path):
     assert _read(os.path.join(d, "capacity_plan.csv")) == original
 
 
-def test_new_format_multi_node_unchanged_behaviour(tmp_path):
-    """新書式（node_name あり）の挙動は変えない：(sku, node) ごとに最初の実週値、source=warmup。"""
+def test_new_format_multi_node_copies_capacity_values(tmp_path):
+    """新書式（node_name あり）：(sku, node) ごとに最初の実週値、source=warmup。
+    cap_soft も写す（RequestLetter_WarmupSoft_BlankAttrs_ShelfLifeFIFO A.2。以前の期待値は
+    cap_soft を空欄にしていた＝その欠けを固定していた）。空欄の cap_soft は空欄のまま。"""
     d = str(tmp_path)
     _write(os.path.join(d, "demand_forecast.csv"),
            "sku_id,region,week,quantity\nA,JP,2027-W01,1\nB,JP,2027-W01,1\n")
@@ -245,8 +247,8 @@ def test_new_format_multi_node_unchanged_behaviour(tmp_path):
     _write(os.path.join(d, "planning_config.csv"), "key,value\nwarmup_lt,2\n")
     materialize_warmup(d)
     assert _rows(os.path.join(d, "capacity_plan.csv"))[:6] == [
-        "A,Plant,2026-W52,100,,warmup", "A,Supplier,2026-W52,900,,warmup", "B,Plant_B,2026-W52,50,,warmup",
-        "A,Plant,2026-W53,100,,warmup", "A,Supplier,2026-W53,900,,warmup", "B,Plant_B,2026-W53,50,,warmup"]
+        "A,Plant,2026-W52,100,80,warmup", "A,Supplier,2026-W52,900,,warmup", "B,Plant_B,2026-W52,50,,warmup",
+        "A,Plant,2026-W53,100,80,warmup", "A,Supplier,2026-W53,900,,warmup", "B,Plant_B,2026-W53,50,,warmup"]
 
 
 def test_capacity_missing_required_column_is_a_clear_error(tmp_path):
