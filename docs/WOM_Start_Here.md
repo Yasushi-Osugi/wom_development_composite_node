@@ -40,6 +40,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 ```
 
 - **supply_point は仮想のノード**（グローバル需給センター、仮想の HQ 機能）。物理の輸送・在庫・運賃を持たない。物理の区間は supply point を飛ばして「MOM → 最初の DAD」と結ぶ。
+  - ただし、Backward が MOM の能力で lot を前倒しすると、MOM はその週に実出荷として記録し、作り置きは **supply point の I に現れる**（supply point の要求週は前倒しされないため）。これは**物理的には工場の完成品在庫**であり、エンジンの誤りではない。在庫の所在を読むときは「supply point の I ＝ 工場の完成品倉庫」と読み替える。使用期限・滞留を数えるときは、工場の出荷週を起点にする（`docs/development/WOM_BSSEAF_Cosmetics_Trial_Report.md` Q5）。
 - `node_master.csv` の `node_type`（procurement・mother_plant・sku_supplier・region_dc・marketing）は地図の色の分類で、上の木の用語とは別の体系。`node_id` は木の `node_name` と同じ名前にする。
 
 ### 2.2 Lot_ID は需要の単位
@@ -108,7 +109,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 2. 作れない週の能力の行を省く → 「上限なし」になり、何年も前から作り溜める（R5）。
 3. 需要 CSV の週を抜かす → 今は 0 で埋めて報告される（前は計画の終わりが切れていた）。
 4. 同じ運賃を区間とノードの両方に書く → 二重計上（R8）。
-5. supply point に運賃や在庫を持たせる → 仮想のノードなので持たない（§2.1）。
+5. supply point に運賃や在庫を持たせる → 仮想のノードなので持たない（§2.1）。計画の結果として supply point の I に現れる作り置きは、工場の完成品在庫と読む（§2.1）。
 6. 単価の単位を lot と物量で取り違える → `cpu_size` と PPC のマスターの単位を揃える（R7。smartphone の「1 万倍」の件）。
 7. `node_master.csv` に座標が無い → World Map に描けない（一覧に出る）。Stock Yard は座標が無ければ親の組立工場の位置に描かれる。
 8. 価格を 0 で埋める → 未評価として扱うべきもの（R12）。
@@ -170,6 +171,6 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | Backward の前倒しの上限 | 上位の層が OFF のとき上限が無い（`WOM_GenerationLine_UpperLayer_Report.md` §11.1） |
 | 世代間の需要の移行 | 旧世代の残りの需要を新世代へ振り替える規則が無い |
 | 歩留まり Part B | 投入の物量（良品 1 lot の裏に投入 1／y）、良品 1 lot 当たりの原価、画面の良品の上限の線（`WOM_YieldRate_PartA_Report.md` §6） |
-| supply point の作り置きの在庫 | MOM の能力で前倒しが起きると、作り置きが supply point（仮想のノード）の I に現れる（歩留まりの試行 T2・T3、`SP_Cookie_Local` で最大 6,900 lot）。§2.1「supply point は在庫を持たない」と食い違う。調べる |
+| supply point の作り置きの在庫の表示 | 理由は分かった（§2.1、化粧品の試行 Q5）：工場の完成品在庫が supply point の I に表示される。表示（所在の名前）を工場に寄せるかは未決 |
 | 在庫の保有費用・陳腐化の金額 | `vc_config.csv` の `holding_rate_weekly` を設定し、smartx などに Value Chain のマスターを用意してから |
 | Cookie の CVS・soysauce の卸価格 | 仮の値（各モデルの README に根拠と損益分岐） |
