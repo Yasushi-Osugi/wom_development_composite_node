@@ -1,10 +1,10 @@
 # 供給配分：ALC-Q01〜Q09 の対応表と、三層設計 MD・化粧品設計書 v0.5 への反映案
 
-- 版：v0.1（2026-10-26）
+- 版：v0.1（2026-10-26）。**v0.2 で置き換えた**（[BSSEAF_SupplyAllocation_ALC_Mapping_v0.2.md](BSSEAF_SupplyAllocation_ALC_Mapping_v0.2.md)）。Q05 の「最終週の CO で数える」「供給不足で `attach_realized()` が止まる」は誤り（v0.2 §0）。本書は当時の記録として残す
 - 作成：Claude君（設計・Knowledge Curator）。レビュー：GPT君。判断：大杉さん
 - 前提：
   - 意味体系 `docs/semantics/supply_allocation.md`（WOM-SEM-SUPPLY-ALLOCATION-001、提案）
-  - 三層設計 MD `docs/design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md`（WOM-KB-ALLOCATION-001、`91d011c`）
+  - 三層設計 MD `docs/design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md`（WOM-KB-ALLOCATION-001、`91d011c`）
   - 化粧品の試行：`docs/development/WOM_BSSEAF_Cosmetics_ChangeTasks123_Report.md`（`b120fdb`）、写し `output/bsseaf_cosmetics/`
 - 根拠の版：`91d011c`。**確かめ方はコードを読んだだけ**（静的）。実行して確かめた所は「実行済み」と書く。それ以外は実行していない。
 - 記号：**事実**＝コードまたは報告書で確かめた。**提案**＝Claude君の案。**判断**＝大杉さんに決めてほしいこと。

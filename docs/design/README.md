@@ -7,7 +7,7 @@ They are AI-neutral and should be usable by Claude Code, ChatGPT Codex, and futu
 
 ## Production allocation and priority supply
 
-Start with [WOM production allocation and priority supply](./WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)
+Start with [WOM production allocation and priority supply](./WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md)
 (knowledge ID `WOM-KB-ALLOCATION-001`, 2026-10-26). It maps the existing
 Management / Demand / Supply functions, allocation-to-demand CSV handoff,
 planning-loop CLI, and the conditions to check before reusing them in a new case.

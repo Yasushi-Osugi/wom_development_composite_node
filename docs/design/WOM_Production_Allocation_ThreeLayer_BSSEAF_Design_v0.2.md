@@ -1,9 +1,11 @@
 ---
 knowledge_id: WOM-KB-ALLOCATION-001
 title: WOM 生産配分と優先供給の三層構造
-version: "0.1"
+version: "0.2"
 updated: "2026-10-26"
 evidence_commit: "b120fdb4679878005e94f2e2cffec94fcce65009"
+evidence_commit_v0_2: "6a577604e5a04ca8fa7237da332a77e985820bfc"
+semantics: docs/semantics/supply_allocation.md
 verification_scope: "repository documents and static code inspection"
 cosmetics_activation: "not yet verified"
 keywords: [生産配分, 優先供給, 市場優先, 需給調整, 親心, Demand Allocation, Supply Allocation, Capacity Envelope, Backward PSI Planning, Forward PSI Planning, allocation_id, planning_state, BS-SEAF]
@@ -20,11 +22,13 @@ keywords: [生産配分, 優先供給, 市場優先, 需給調整, 親心, Deman
 - 作成日：2026-10-26（日本時間）
 - 作成：ChatGPT Codex。依頼・業務方針：大杉さん。引き継ぎ先：Claude君（設計）
 - 確認対象：`Yasushi-Osugi/wom_development_composite_node`、`wom-v1r5m1_cap_trial`
-- 根拠の固定版：`b120fdb4679878005e94f2e2cffec94fcce65009`
+- 根拠の固定版：`b120fdb4679878005e94f2e2cffec94fcce65009`（v0.1）。v0.2 で足した記述（§6 の Q04・Q05・Q09、§7）の根拠は `6a577604e5a04ca8fa7237da332a77e985820bfc` のコード確認（Claude君、2026-10-26）
 - 確認方法：資料・コード・既存テストの記述を静的に確認。今回、新たなシミュレーション・pytest・GUI検証は実施していない
 - 文書の範囲：役割分担、既存機能へのポインタ、化粧品への適用調査、知識の記録方法。エンジン変更の依頼書や、化粧品の新しい採用決定そのものではない
 
 ## 1 最初に理解すること
+
+配分・未配分・納期延期・注文残・実納品の**業務の意味**は[供給配分の意味体系](../semantics/supply_allocation.md)（WOM-SEM-SUPPLY-ALLOCATION-001）を正とする。本書は、その意味を WOM のどの機能・入力・記録で表すかを書く。
 
 | 段階 | 業務として決めること | 既存の仕組み | 主な出力 |
 |---|---|---|---|
@@ -48,6 +52,7 @@ Global HQの「親心」は、利益やサービス方針を踏まえて、供�
 | WOM-ALLOC-04 | DemandからSupplyへの計画引き継ぎ | [plan_copy.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/b120fdb4679878005e94f2e2cffec94fcce65009/wom/engine/plan_copy.py)の`copy_demand_to_supply()` | 実装あり。各ノード・各週のS・Pをコピーし、SupplyのI・COはForwardで計算する |
 | WOM-ALLOC-05 | 供給制約下の実現結果の計算 | [forward_planner.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/b120fdb4679878005e94f2e2cffec94fcce65009/wom/engine/forward_planner.py) | 実装あり。要求Sと実出荷を区別する。identityモードのLot_ID照合を確認する |
 | WOM-ALLOC-06 | 三層連携の実行と計画案の記録 | [run_planning_loop.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/b120fdb4679878005e94f2e2cffec94fcce65009/tools/run_planning_loop.py)、[planning_state](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/b120fdb4679878005e94f2e2cffec94fcce65009/wom/planning_state/__init__.py) | 明示的に利用する既存CLI経路あり。すべての通常実行がこの経路を通るわけではない |
+| WOM-ALLOC-07（v0.2） | 能力の層：数量だけで、要求ごとに計画週を割り当てる（元の要求週までに割り当てられる lot を最大化、その中で前倒しを最小化） | `wom/capacity_layer/`（`solver.py`・`serial_adapter.py`）、`wom/plugins/capacity_layer.py` の `CapacityLayerPlugin`。報告書 `docs/development/WOM_SmartxBottleneck_Report.md` | 実装あり。**既定 OFF**、`capacity_layer_config.csv` の `max_advance_weeks` が必須。金額を使わない。市場の要求（Lot_ID・要求週）を変えず、内部の計画位置だけを渡す。直列の inbound の木に限る。**その `unallocated` は、計画週に割り当てられず市場に注文残として残る lot で、意味体系の ⑤ に当たる（③ 未配分ではない）**。市場の優先は目的に入っていない |
 
 補助資料：
 
@@ -89,8 +94,8 @@ python -m tools.run_planning_loop --model-dir output/allocation_review/soysauce-
 | PA-R02 | Backwardは配分済み需要を生産・調達の位置へ展開する | LT offset、集約結果、MOMの配置、能力設定 |
 | PA-R03 | ForwardはBackwardの配置を受け、時間を遡らず供給を計算する | コピー結果、部材・入荷・能力・休業、実出荷 |
 | PA-R04 | 要求Sと実出荷は別の情報として扱う | `psi4supply[S]`と`_actual_ship`等の出荷記録の照合 |
-| PA-R05 | 元需要、配分済み需要、実納品を分ける | 元需要の保存、配分前後の対応表、実納品の記録 |
-| PA-R06 | 未配分需要と、配分したが供給できなかった需要を分ける | 配分時の数量差、計画末の未充足ID、遅配 |
+| PA-R05 | 元需要、配分済み需要、実納品を分ける | 意味体系 §3 の ①元の需要・②供給対象の需要・④実納品を、同じ需要の集合・判定時点・単位で記録する。元需要の保存、配分前後の対応表、受渡点での引渡しの記録 |
+| PA-R06 | 未配分需要と、配分したが供給できなかった需要を分ける | 意味体系 §3 の ③未配分（配分時の数量差。扱い U1 の判断を待たずに量を記録する）と ⑤配分後の未充足（判定時点の未引渡しの需要ID）、遅配 |
 | PA-R07 | 能力の定義と、制約を守る方式を明記する | hard／soft、投入／良品、歩留まり、`demand_envelope` |
 | PA-R08 | 利益の評価基準を明記する | 利益率、単位マージン、資源当たり利益等のどれを採るか |
 | PA-R09 | 機能の存在と、対象ケースでの有効化・接続・検証を別々に記録する | コード参照、設定、実行経路、試行結果 |
@@ -133,13 +138,14 @@ warmupに関しても「能力不足には使用しない」を一般則とし�
 | ALC-Q01 | 実行経路 | 実際の`gen_models.py`・`run_trial.py`、モデル設定、呼び出し引数を確認する。これらの試行用ファイルは`output/`にあり、今回のGit確認対象には含まれない |
 | ALC-Q02 | 元需要と配分済み需要 | `demand_file`に何を渡したか、どの`allocation_id`・配分方針を採ったか。元需要を残したか |
 | ALC-Q03 | 3年間の計画期間 | 既存配分コードは`WEEKS=104`を使う箇所があり、ハンドオフにも`weeks`の既定値がある。3年間とwarmup・報告期間に対して、能力総量と需要集計の期間をそろえる |
-| ALC-Q04 | 2 SKUと能力プール | 化粧品はSKU別能力。既存ハンドオフはregion・weekで数量を扱う箇所があり、SKUをキーに含めない。同じregion・weekに複数SKU行がある場合の保持を確認する。単位が同じだけでSKU別能力を一つに合算しない。原価導出の単一SKU前提も仕様書で確認する |
-| ALC-Q05 | 実納品の観測 | 現行`_planning_state_extras()`の`leaf_out_S`・週次Sは要求Sを集計し、`leaf_out_CO`は週次COを合計している。これを実出荷や計画末の未充足数量と同一視せず、実出荷記録・最終週COと照合する |
+| ALC-Q04 | 2 SKUと能力プール | 化粧品はSKU別能力。既存ハンドオフはregion・weekで数量を扱う箇所があり、SKUをキーに含めない。同じregion・weekに複数SKU行がある場合の保持を確認する。単位が同じだけでSKU別能力を一つに合算しない。原価導出の単一SKU前提も仕様書で確認する。**v0.2（コード確認、`6a57760`）**：地域×週の重みを全SKUの行の合計で作り、その地域・週の各行に同じ数量を入れる（`new_q = new_qty_by_region_week[region][week]`）。化粧品は2 SKUが同じ地域名（`SG_Store` 等）を使うため、各行に地域の合計が入り、数量が二重になる。合計の検算（`total_after > total_before`）に当たらない配分では黙って通る。実行では未確認 |
+| ALC-Q05 | 実納品の観測 | 現行`_planning_state_extras()`の`leaf_out_S`・週次Sは要求Sを集計し、`leaf_out_CO`は週次COを合計している。これを実出荷や計画末の未充足数量と同一視しない。**v0.2 で訂正**：⑤を最終週のCOで数えない。identityでは、CO[w]はその週へ繰り越された要求で、当週に出荷してもバケットを書き換えない。また最終週に新しく出た未充足は、次の週のバケットが無いため入らない。**④・⑤は要求のLot_IDと実出荷のLot_IDを照合して数える**。既存の Flow Check 表2（`wom/engine/flow_check.py` の `compute_flow_check()`、`run(flow_check_dir=…)` で CSV）が、leaf_out ごとに demand（S の Lot_ID）・on_time・early・late・backlog_end（期間内に一度も出荷されない ID）をこの方法で数え、`report_start` があれば要求週で絞った列も持つ。新しい計測を作る前にこれを再利用する。`attach_realized()` の数量一致の検査は、`plan_eval.lots`（配分の目標）と `leaf_out_S`（要求）の比較なので、配分後の供給不足では止まらず、ハンドオフ・入力の不整合で止まる。その代わり `realized.allocation` は要求の比率であり、実納品の比率ではない |
 | ALC-Q06 | 利益基準と金額入力 | 利益率か単位マージンか、通貨・物量単位・歩留まりによる良品原価を定義する。D8と歩留まりPart Bの状態を確認し、未整備の金額で化粧品の利益優先を検証済みにしない |
 | ALC-Q07 | 配置時の優先の保持 | Managementの配分数量が前倒し・能力クリップを通過した後も意図どおりか。配分CSVを作っただけで、すべての週の優先順も保証されるとしない |
 | ALC-Q08 | 期限・在庫と再計画 | FIFOで測る製品年齢、店頭在庫、warmup、休業の影響を一緒に確認する。変える条件と固定する条件を記録する |
+| ALC-Q09 | 配分の経路ごとの必須の入力（v0.2） | 経路ごとに、事例のSKU・単位・期間に入力がそろうかを問う。`ga_*.csv` を一括して必須とはしない。**ハンドオフ**は配分を明示しても最初に `derive_cost_blocks()` を呼び、`ga_market_aggregation.csv`・`ppc_*.csv`・`sc_tree_master.csv`・`sku_master.csv` を読む。**`run_planning_loop`** は加えて `ga_scenario_master.csv`（`--scenario`）と `--cap-wk` が必須で、配分を明示しても利益の評価を先に回す。**`run_headless()`** は計画の後に PPC を無条件に呼ぶ。業務として数量を人が指定する配分には金額が要らない（意味体系 §6）が、今の実装は数量の決定・受け渡し・保存が金額の評価から分かれていない。化粧品の試行用モデルには `ga_*.csv` が無く、`ppc_*.csv` は見出しの行だけ |
 
-ALC-Q05は、静的確認で見つかった記録の意味を確認する課題である。実行結果の欠陥を今回再現したという主張ではない。`attach_realized()`には数量一致の検査もあるため、不足時にどこまで結果を記録できるかを確かめる。
+ALC-Q05は、静的確認で見つかった記録の意味を確認する課題である。実行結果の欠陥を今回再現したという主張ではない。v0.2 のコード確認では、`attach_realized()` の数量一致の検査は要求どうしの比較であり、配分後の供給不足では止まらない（上の表）。「入力・記録の不整合」と「供給制約による未充足」は、別の結果として扱う。
 
 ALC-Q03・04は、既存機能の適用範囲の差である。まず設定・データの分離や既存APIの引数で対応できるかを調べる。足りない場合も、ハンドオフや観測アダプターの変更とPSIエンジンCoreの変更を分けて設計する。
 
@@ -147,7 +153,7 @@ ALC-Q03・04は、既存機能の適用範囲の差である。まず設定・�
 
 ### 7.1 最初に作る対応表
 
-Claude君はALC-Q01〜08について、入力ファイル、設定、呼び出し、出力、根拠のcommit、確認状態を記録する。最初の成果物は「既存機能で対応できる範囲」「対象ケースへの接続に必要な作業」「なお不足する表現」の対応表とする。
+Claude君はALC-Q01〜09について、入力ファイル、設定、呼び出し、出力、根拠のcommit、確認状態を記録する。最初の成果物は「既存機能で対応できる範囲」「対象ケースへの接続に必要な作業」「なお不足する表現」の対応表とする。
 
 現在の化粧品モデルへの適用状況を確認する前に、新しい優先供給機能をCoreへ追加する依頼書を作らない。必要性が分かった場合は、実装箇所・代替案・意味を保つ理由を示して次の依頼書にする。
 
@@ -158,7 +164,7 @@ Claude君はALC-Q01〜08について、入力ファイル、設定、呼び出�
 | 試行 | 変えるもの | 確認すること |
 |---|---|---|
 | P0 | C3a相当を再現 | 元需要・能力不足・実出荷・期末注文残を再確認し、現在の処理順による結果を基準にする |
-| P1 | 明示した市場別配分を、既存ハンドオフ経路で渡す | 元需要→採用配分→Backward配置→Forward納品の対応を追えるか |
+| P1 | 明示した市場別配分を、既存ハンドオフ経路で渡す | 元需要→採用配分→Backward配置→Forward納品の対応を追えるか。**前提（v0.2）**：ALC-Q09 の入力がそろうこと。そろわない事例（化粧品）は、数量だけで配分を渡し、金額なしで結果を保存する経路を先に用意する（`requests/RequestLetter_QuantityAllocationMode_to_CodeKun.md`） |
 | P2 | 配分方針を変える | 同じ能力と元需要の下で、意図した市場の配分量が変わり、その効果が実納品に現れるか |
 | P3 | 入力の行順・ノード登録順だけを変える | 業務判断と無関係な順序が結果に影響するか。影響する場合、同順位の扱いを含めて説明できるか |
 | P4 | 配分後に供給制約を厳しくする | 配分したが供給できない数量・遅配が残り、実出荷を過大計上しないか |
@@ -175,7 +181,7 @@ Claude君はALC-Q01〜08について、入力ファイル、設定、呼び出�
 - 配分済み需要に対する納期内出荷、遅配出荷、計画末の未充足
 - 能力制限による生産の繰延べ、在庫、製品年齢
 
-同じ需要のCOを毎週足すと「lot×週」の滞留量になる場合がある。これを期末注文残のlot数として使わない。計画末の未充足は最終状態の需要IDと実出荷から照合する。
+同じ需要のCOを毎週足すと「lot×週」の滞留量になる場合がある。これを期末注文残のlot数として使わない。最終週のCOも期末注文残ではない（§6 の ALC-Q05）。計画末の未充足は需要IDと実出荷から照合する（Flow Check 表2 の backlog_end）。数量は意味体系 §3.1 のとおり、同じ需要の集合・判定時点・単位で数える。
 
 ハンドオフは需要CSVの数量を変えてから需要Lotを生成するため、配分前後のLot_IDがそのまま一致するとは仮定しない。SKU・leaf_out・要求週・元需要参照・数量対応を残し、生成後のDemand→SupplyではIDの同一性を確認する。
 
@@ -229,7 +235,7 @@ owner_decision: pending_case_application
 
 本書と知識索引の整備の完了条件は、Start Hereから本書を開け、根拠コード・設計・既存テストへ辿れること、履歴の記述と現行の実装を区別できることである。
 
-化粧品への適用調査の完了条件は、ALC-Q01〜08の確認結果、試行P0〜P4の実施範囲、元需要・採用配分・配置・納品の対応、残った差分をClaude君が報告できることである。未実施項目は未実施として残す。
+化粧品への適用調査の完了条件は、ALC-Q01〜09の確認結果、試行P0〜P4の実施範囲、元需要・採用配分・配置・納品の対応、残った差分をClaude君が報告できることである。未実施項目は未実施として残す。
 
 既存テストの参照先：
 
@@ -243,3 +249,4 @@ owner_decision: pending_case_application
 | 版 | 日付 | 内容 |
 |---|---|---|
 | 0.1 | 2026-10-26 | 既存三層機能、CSVハンドオフ・CLI、適用条件、化粧品の接続調査、Start Hereからの知識索引を整理 |
+| 0.2 | 2026-10-26 | Claude君（`requests/BSSEAF_SupplyAllocation_ALC_Mapping_v0.2.md` の T1〜T8）。WOM-ALLOC-07（能力の層）と語の衝突、意味体系への案内、PA-R05・R06 を ①〜⑤ に合わせる、ALC-Q04 の二重計上、ALC-Q05 の訂正（最終週の CO ではなく Flow Check 表2 の ID 照合。数量一致の検査は供給不足では止まらない）、ALC-Q09、P1 の前提。ファイル名を v0.2 に変更 |
