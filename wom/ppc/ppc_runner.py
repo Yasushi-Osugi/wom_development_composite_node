@@ -13,7 +13,7 @@ from typing import Dict, List, Optional
 import pandas as pd
 
 from .ppc_psi_bridge import psi_to_sales_records, summarize_psi_records
-from .ppc_rules import PPCRuleSet
+from .ppc_rules import PPCRuleSet, PPCRuleSources, resolve_ppc_rules
 from .ppc_engine import (PPCSimulationEngine,
                           build_smartphone_vs_paths,
                           build_smartphone_global_vs_paths,
@@ -21,6 +21,37 @@ from .ppc_engine import (PPCSimulationEngine,
                           build_cookie_vs_paths,
                           detect_scenario)
 from .ppc_export import export_results
+
+# Valuation status of a PPC result (RequestLetter_PPC_NoSilentFallback B.2, D8)
+VAL_DONE = "評価済み"         # every sales record valued with the model's rules
+VAL_PARTIAL = "一部未評価"    # some product x market records had no rule: excluded
+VAL_NONE = "未評価"           # rule files missing, or no record could be valued
+
+# files a PPC run writes (ppc_export.export_results); removed at the start of a run
+# so that a run that ends "未評価" leaves no previous plan's amounts behind
+PPC_OUTPUT_FILES = ["ppc_event_ledger.csv", "ppc_node_week_summary.csv",
+                    "ppc_profit_zone_summary.csv", "ppc_lot_reconciliation.csv",
+                    "ppc_node_pl_summary.csv", "ppc_kpi_summary.json", "ppc_warnings.csv"]
+
+
+def clear_ppc_outputs(output_dir: str) -> None:
+    for name in PPC_OUTPUT_FILES:
+        try:
+            os.remove(os.path.join(output_dir, name))
+        except OSError:
+            pass
+
+
+def _excluded_rows(sales: pd.DataFrame, cpu_size: float, reason: str) -> List[dict]:
+    """Excluded product x market: PPC record count, WOM lot count, physical qty."""
+    out = []
+    for (p, c), g in sales.groupby(["product_id", "channel_node"]):
+        qty = float(g["qty"].sum())
+        out.append({"product_id": p, "channel_node": c, "reason": reason,
+                    "ppc_records": int(len(g)),
+                    "wom_lots": int(round(qty / cpu_size)) if cpu_size else None,
+                    "qty": qty})
+    return out
 
 
 def run_ppc_from_psi(
@@ -34,9 +65,20 @@ def run_ppc_from_psi(
     verbose: bool = False,
     use_node_name: bool = False,
     run_info: Optional[dict] = None,
+    rule_sources: Optional[PPCRuleSources] = None,
 ) -> dict:
     """
     Run the full PPC Simulation pipeline using PSI leaf-out quantities.
+
+    rule_sources (RequestLetter_PPC_NoSilentFallback B.1): where each rule file
+        comes from (`resolve_ppc_rules(model_dir)`). When None, `data_dir` is
+        resolved the same way (its own files, plus a shared folder only if it
+        declares one) -- nothing is read from data/ppc silently.
+    The result carries `valuation_status` (B.2): 評価済み / 一部未評価 (records of
+    a product x market without a price, or a product without a supplier cost,
+    are excluded and listed) / 未評価 (rule files missing, or nothing valued:
+    no amounts are written). Sample sales data are never used here (K4; the
+    demo `python -m wom.ppc` keeps them).
 
     run_info (RequestLetter_StalePPC P1): {"run_id": ..., "model_dir": ...} of
         the planning run this PPC run belongs to. When given, the output folder
@@ -46,26 +88,67 @@ def run_ppc_from_psi(
         written and the output files are exactly as before.
 
     Returned dict (P3): the KPI summary plus
-        "_psi_mode"     True when the sales records came from the plan (PSI),
-                        False when they were replaced by SAMPLE sales data
-        "sales_source"  "psi" / "sample"
+        "_psi_mode"     True when amounts were computed from the plan's records
+        "sales_source"  "psi" (sample data are no longer substituted)
     (these two keys are not written to ppc_kpi_summary.json).
     """
-    from .ppc_run_info import (clear_run_info, write_run_info, SALES_PSI, SALES_SAMPLE)
+    from .ppc_run_info import (clear_run_info, write_run_info, SALES_PSI)
+    import datetime as _dt
+    import json as _json
     clear_run_info(output_dir)      # the folder is about to be overwritten
+    clear_ppc_outputs(output_dir)   # no previous plan's amounts may remain (B.2)
     warnings.filterwarnings("ignore")
+    src = rule_sources if rule_sources is not None else resolve_ppc_rules(data_dir)
+    cpu = float(getattr(sc_tree, "cpu_size", 1) or 1) if sc_tree is not None else 1.0
 
-    # ── Step 1: Load PPC rules ─────────────────────────────────────────────
+    def _mark(status, extra):
+        if run_info:
+            write_run_info(output_dir, {
+                "run_id": run_info.get("run_id", ""),
+                "model_dir": run_info.get("model_dir", ""),
+                "sales_source": SALES_PSI,
+                "valuation_status": status,
+                "reason": extra.get("reason", ""),
+                "rule_sources": src.record(),
+                "data_dir": src.rule_dir_for("ppc_market_price.csv"),
+                "base_currency": base_currency,
+                "first_week": weeks[0] if weeks else "",
+                "n_weeks": len(weeks),
+                "lot_flow_mode": getattr(sc_tree, "lot_flow_mode", None),
+                "finished_at": _dt.datetime.now().isoformat(timespec="seconds"),
+            })
+
+    def _not_valued(reason, excluded=None):
+        """未評価: no amounts. ppc_kpi_summary.json carries the status only."""
+        body = {"valuation_status": VAL_NONE, "reason": reason, "base_currency": base_currency,
+                "rule_sources": src.record(), "excluded": excluded or []}
+        os.makedirs(output_dir, exist_ok=True)
+        with open(os.path.join(output_dir, "ppc_kpi_summary.json"), "w", encoding="utf-8") as f:
+            _json.dump(body, f, ensure_ascii=False, indent=2)
+        _mark(VAL_NONE, body)
+        if verbose:
+            print(f"[PPC Runner] 財務：未評価（{reason}）")
+        return dict(body, _psi_mode=False, sales_source=SALES_PSI)
+
+    # ── Step 1: Load PPC rules (B.1: one resolver, no silent switch) ──────
     if verbose:
-        print(f"[PPC Runner] Loading rules from: {data_dir}")
-    rules = PPCRuleSet.load(data_dir)
+        print(f"[PPC Runner] Rules: {src.sources}  missing: {src.missing}")
+    if src.missing:
+        reason = "規則のファイルが無い（共有の規則の宣言も無い）: " + ", ".join(src.missing)
+        # also say which planned products the rules that ARE there do not know
+        if sc_tree is not None and "ppc_supplier_cost.csv" in src.paths:
+            try:
+                known = set(pd.read_csv(src.paths["ppc_supplier_cost.csv"], dtype=str)["product_id"].dropna())
+                unknown = [p for p in sc_tree.products if p not in known]
+                if unknown:
+                    reason += "；製品が規則に無い: " + ", ".join(unknown)
+            except Exception:
+                pass
+        return _not_valued(reason)
+    rules = PPCRuleSet.load_from_sources(src)
+    data_dir = src.rule_dir_for("ppc_market_price.csv")
 
     known_products = {p for p in rules.supplier_cost["product_id"].unique() if isinstance(p, str)}
-    known_channels = {c for c in rules.market_price["market_node"].unique() if isinstance(c, str)}
-
-    if verbose:
-        print(f"[PPC Runner] Known products: {sorted(known_products)}")
-        print(f"[PPC Runner] Known channels: {sorted(known_channels)}")
 
     # ── Step 2: PSI → sales_records ───────────────────────────────────────
     sales = psi_to_sales_records(
@@ -76,43 +159,91 @@ def run_ppc_from_psi(
     )
     if verbose:
         print(f"[PPC Runner] PSI bridge: {summarize_psi_records(sales)}")
+    if sales.empty:
+        return _not_valued("計画に販売記録が無い")
 
-    # ── Step 3: Filter to PPC-known products & channels ───────────────────
-    psi_mode = False
-    if not sales.empty:
-        valid = (
-            sales["product_id"].isin(known_products) &
-            sales["channel_node"].isin(known_channels)
+    # ── Step 3: keep records whose product x market has the rules (B.2) ───
+    # Each record needs a price row for ITS (market, product) combination and a
+    # supplier cost for its product. Records without them are excluded and listed
+    # (formerly product and market were checked separately and the missing price
+    # was valued as 0; the excluded records were dropped silently -- S3).
+    no_cost = ~sales["product_id"].isin(known_products)
+    no_price = ~sales.apply(lambda r: rules.has_market_price(str(r["channel_node"]),
+                                                             str(r["product_id"])), axis=1)
+    excluded = (_excluded_rows(sales[no_cost], cpu, "仕入れの原価が規則に無い製品")
+                + _excluded_rows(sales[~no_cost & no_price], cpu, "製品 × 市場の価格が規則に無い"))
+    sales = sales[~(no_cost | no_price)].copy()
+    if sales.empty:
+        return _not_valued("評価できる販売記録が無い（製品・市場が規則に無い）", excluded)
+    if verbose and excluded:
+        print(f"[PPC Runner] excluded (no rule): {excluded}")
+
+    # ── Step 4 (removed, K4): sample sales are never substituted here ─────
+
+    result, rules = _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency)
+    # a supplier the engine asked for has no cost rule (formerly valued as 0):
+    # exclude that product's records and value the rest once more
+    miss = {p for (k, _n, p) in rules.lookup_log if k in ("supplier_cost_missing",
+                                                          "market_price_missing")}
+    if miss:
+        excluded += _excluded_rows(sales[sales["product_id"].isin(miss)], cpu,
+                                   "仕入れの原価・価格の規則が見つからない組合せがある製品")
+        sales = sales[~sales["product_id"].isin(miss)].copy()
+        if sales.empty:
+            return _not_valued("評価できる販売記録が無い（原価・価格の規則が無い）", excluded)
+        rules.lookup_log.clear()
+        result, rules = _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency)
+
+    status = VAL_PARTIAL if excluded else VAL_DONE
+    before_first = [{"kind": k.replace("_before_first_rule_week", ""), "node": n, "product_id": p,
+                     "lookups": c}
+                    for (k, n, p), c in sorted(rules.lookup_log.items())
+                    if k.endswith("_before_first_rule_week")]
+    result.kpi_summary["valuation_status"] = status
+    result.kpi_summary["rule_sources"] = src.record()
+    if excluded:
+        result.kpi_summary["reason"] = "規則の無い製品・市場の販売記録を除いて評価した"
+        result.kpi_summary["excluded"] = excluded
+    if before_first:
+        # owner decision 2026-10-26 (a): valued with the first rule row, recorded
+        result.kpi_summary["price_before_first_rule_week"] = before_first
+        result.warnings = list(result.warnings or []) + [
+            {"kind": "price_before_first_rule_week", "location": f"{b['kind']} {b['node']} x {b['product_id']}",
+             "currency": "", "requested_week": "", "used_week": "first rule row",
+             "count": b["lookups"], "detail": "week before the rule's first row: the first row's value used"}
+            for b in before_first]
+
+    # RequestLetter_StageD_Phase1 0-5: the Landed Cost engine's silent fx_rate
+    # defaults of this model's edge_cost_master.csv go to the same warnings file.
+    _ecm = os.path.join(data_dir, "edge_cost_master.csv")
+    if os.path.exists(_ecm):
+        try:
+            from wom.engine.landed_cost import fx_rate_substitutions
+            result.warnings = list(result.warnings or []) + fx_rate_substitutions(pd.read_csv(_ecm))
+        except Exception as _exc:
+            print(f"[PPC Runner] edge_cost_master fx_rate check failed: {_exc}")
+
+    if verbose:
+        kpi = result.kpi_summary
+        print(
+            f"[PPC Runner] Done -- {status}  lots={kpi['total_lots']:,}  "
+            f"events={len(result.ppc_events):,}  "
+            f"margin={kpi['gross_margin_pct']:.1%}  "
+            f"trust_events={kpi['trust_event_count']}"
         )
-        sales_filtered = sales[valid].copy()
-        if not sales_filtered.empty:
-            psi_mode = True
-            sales = sales_filtered
-            if verbose:
-                print(
-                    f"[PPC Runner] After filter: {len(sales)} records "
-                    f"({int(sales['qty'].sum()):,} total units)"
-                )
 
-    # ── Step 4: Fallback to sample data ───────────────────────────────────
-    if not psi_mode:
-        if verbose:
-            print(
-                "[PPC Runner] No PSI<->PPC-compatible records found.\n"
-                "             Falling back to sample data."
-            )
-        from wom.ppc.__main__ import generate_sample_sales
-        start_week = weeks[0] if weeks else "2026-W01"
-        sales = generate_sample_sales(
-            start_week=start_week,
-            n_weeks=len(weeks),
-        )
-        if verbose:
-            print(
-                f"[PPC Runner] Sample data: {len(sales)} records "
-                f"(weeks {sales['week'].min()}..{sales['week'].max()})"
-            )
+    # ── Step 6: Export ────────────────────────────────────────────────────
+    export_results(result, output_dir)
+    _mark(status, result.kpi_summary)
+    out = dict(result.kpi_summary)
+    out["_psi_mode"] = True
+    out["sales_source"] = SALES_PSI
+    return out
 
+
+def _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency):
+    """Scenario detection + engine run on the (rule-covered) sales records.
+    Returns (result, rules). Unchanged logic of the former Step 5."""
     # ── Step 5: Auto-detect scenario and build engine parameters ─────────
     scenario = detect_scenario(sales)
 
@@ -318,45 +449,4 @@ def run_ppc_from_psi(
         verbose=False,
     )
     result = eng.run()
-    # RequestLetter_StageD_Phase1 0-5: the Landed Cost engine's silent fx_rate
-    # defaults of this model's edge_cost_master.csv go to the same warnings file.
-    _ecm = os.path.join(data_dir, "edge_cost_master.csv")
-    if os.path.exists(_ecm):
-        try:
-            from wom.engine.landed_cost import fx_rate_substitutions
-            result.warnings = list(result.warnings or []) + fx_rate_substitutions(pd.read_csv(_ecm))
-        except Exception as _exc:
-            print(f"[PPC Runner] edge_cost_master fx_rate check failed: {_exc}")
-
-    if verbose:
-        kpi = result.kpi_summary
-        print(
-            f"[PPC Runner] Done -- lots={kpi['total_lots']:,}  "
-            f"events={len(result.ppc_events):,}  "
-            f"margin={kpi['gross_margin_pct']:.1%}  "
-            f"trust_events={kpi['trust_event_count']}"
-        )
-        if not psi_mode:
-            print("[PPC Runner] WARNING: Results based on SAMPLE data (PSI->PPC mapping missing)")
-
-    # ── Step 6: Export ────────────────────────────────────────────────────
-    sales_source = SALES_PSI if psi_mode else SALES_SAMPLE
-    export_results(result, output_dir)
-    if run_info:
-        import datetime as _dt
-        write_run_info(output_dir, {
-            "run_id": run_info.get("run_id", ""),
-            "model_dir": run_info.get("model_dir", ""),
-            "sales_source": sales_source,
-            "data_dir": data_dir,
-            "base_currency": base_currency,
-            "first_week": weeks[0] if weeks else "",
-            "n_weeks": len(weeks),
-            "lot_flow_mode": getattr(sc_tree, "lot_flow_mode", None),
-            "finished_at": _dt.datetime.now().isoformat(timespec="seconds"),
-        })
-
-    out = dict(result.kpi_summary)
-    out["_psi_mode"] = psi_mode          # P3: was read by the GUI but never set
-    out["sales_source"] = sales_source
-    return out
+    return result, rules

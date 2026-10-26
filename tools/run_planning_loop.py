@@ -276,6 +276,10 @@ def _format_conclusion(state: dict, markets) -> str:
                   if fx_eff else "—")
         lines.append(f"  実績   {pct_row(real_x)}    実現利益   {profit_ppc:,.0f} 円"
                     f"（為替 実効 {fx_str}）")
+    elif ppc.get("valuation_status"):
+        # RequestLetter_PPC_NoSilentFallback B.3: no amount, no comparison
+        lines.append(f"  実績   {pct_row(real_x)}    財務：{ppc['valuation_status']}"
+                    f"（{ppc.get('reason', '')}）  計画の利益との比較：保留")
     if gap is not None:
         lines.append(f"  差 {gap['total']:+,.0f} の内訳:  "
                     f"為替前提 {gap['fx_assumption']:+,.0f} ／ "

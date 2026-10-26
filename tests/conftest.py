@@ -68,6 +68,7 @@ AREAS = {
     "test_money_units.py": ("ppc",),
     "test_ppc_bom_qty.py": ("ppc",),
     "test_ppc_multi_supplier.py": ("ppc",),
+    "test_ppc_no_silent_fallback.py": ("ppc",),
     "test_ppc_run_info.py": ("ppc", "gui"),
     "test_ppc_vertical_slice.py": ("ppc",),
     "test_valuechain_handcalc.py": ("ppc",),

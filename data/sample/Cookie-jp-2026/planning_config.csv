@@ -1,3 +1,4 @@
 key,value
 warmup_lt,17
 recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin"
+ppc_shared_rules_dir,data/ppc

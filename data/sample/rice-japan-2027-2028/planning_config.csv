@@ -1,3 +1,4 @@
 key,value
 lot_flow_mode,identity
 recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin,RiceSeasonalPlugin"
+ppc_shared_rules_dir,data/ppc

@@ -108,7 +108,7 @@ def build_ledger(sc_tree, model_dir: str, plan_id: str, sink=None, records=None)
     elif records.plan_id != plan_id:
         raise ValueError(f"the records belong to another plan ({records.plan_id} != {plan_id})")
     masters = load_masters(model_dir, records.terminal_moms(), records.physical_edges())
-    fx = FxTable.load(model_dir, os.path.join(REPO, "data", "ppc"))
+    fx = FxTable.load(model_dir, masters.hq_currency)     # no silent data/ppc (D8)
     labels = records.week_labels
     rs = masters.report_start or first_nonzero_demand_week(os.path.join(model_dir, "demand_forecast.csv"))
     report_idx = labels.index(rs) if rs in labels else 0
@@ -139,7 +139,7 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
     plugins = ",".join(sorted(type(p).__name__ for p in _select_plugins(plugins)[0]))
     records = build_records(sc_tree, plan_id)
     masters = load_masters(model_dir, records.terminal_moms(), records.physical_edges())
-    fx = FxTable.load(model_dir, os.path.join(REPO, "data", "ppc"))
+    fx = FxTable.load(model_dir, masters.hq_currency)     # no silent data/ppc (D8)
     labels = records.week_labels
 
     rs = masters.report_start or first_nonzero_demand_week(os.path.join(model_dir, "demand_forecast.csv"))
@@ -177,7 +177,18 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
     ext = check_external_sales(led, views, records)
     edge_flows(records.shipments, labels).to_csv(os.path.join(out_dir, "vc_edge_flows.csv"), index=False)
     pd.DataFrame(POL.policy_table_rows()).to_csv(os.path.join(out_dir, "vc_cost_policy.csv"), index=False)
-    ppc_cmp = compare_with_ppc(views, os.path.join(out_dir, "ppc"), masters)
+    # RequestLetter_PPC_NoSilentFallback B.3: compare only with a 評価済み PPC result;
+    # otherwise record "比較不可" and finish (Value Chain does not depend on PPC).
+    _ppc = snap.get("ppc") or {}
+    _ppc_status = _ppc.get("valuation_status", "評価済み")
+    if _ppc_status == "評価済み":
+        ppc_cmp = compare_with_ppc(views, os.path.join(out_dir, "ppc"), masters)
+        ppc_comparison_status = "比較した"
+    else:
+        ppc_comparison_status = f"比較不可（PPC が{_ppc_status}：{_ppc.get('reason', '')}）"
+        ppc_cmp = pd.DataFrame([{"item": "PPC との比較", "ppc": None, "ledger_v3": None,
+                                 "difference_ledger_minus_ppc": None, "ledger_unvalued_lines": None,
+                                 "explanation": ppc_comparison_status}])
     ppc_cmp.to_csv(os.path.join(out_dir, "vc_ppc_comparison.csv"), index=False)
 
     checks = {
@@ -195,6 +206,7 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
                         if masters.holding_rate_weekly is None else masters.holding_rate_weekly,
         "unvalued_lines": int(views["agg"]["n_unvalued"].sum()),
         "unrealized": unreal_check,
+        "ppc_comparison": ppc_comparison_status,
     }
     if lovem_run:
         checks["lovem"] = compare_with_lovem(records, lovem_run, gs, hashes_before, plugins)

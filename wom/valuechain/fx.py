@@ -3,8 +3,10 @@
 為替（RequestLetter_StageD_Phase1 §1-6、設計 §5.4、判断 d）
 
 - 表は `ppc_fx_rate.csv`（week, currency, base_currency, rate：currency 1 単位 = rate 基準通貨）。
-  モデルに無ければ `data/ppc/ppc_fx_rate.csv`（どちらを使ったかを記録）。Landed Cost の
-  `edge_cost_master.csv` の fx_rate は使わない。
+  モデルに無ければ、モデルが `planning_config.csv` の `ppc_shared_rules_dir` で宣言した共有の
+  規則の場所から読む（どちらを使ったかを記録）。宣言が無ければ `data/ppc` は読まず、表は空
+  （基準通貨＝本社の通貨。他の通貨の金額は未評価）。RequestLetter_PPC_NoSilentFallback B.1。
+  Landed Cost の `edge_cost_master.csv` の fx_rate は使わない。
 - 2 つの通貨の間は基準通貨を経由する：X→Y = (X→基準) ÷ (Y→基準)。これで同じ週の
   EUR→USD→JPY と EUR→JPY が一致する。同じ通貨どうしは 1（換算ではない）。
 - 表の最初の週より前（助走週）：最初の週のレートを使い、記録する（判断 d）。
@@ -14,7 +16,6 @@
 from __future__ import annotations
 
 import math
-import os
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
@@ -28,9 +29,11 @@ M_MISSING = "missing_unvalued"
 
 
 class FxTable:
-    def __init__(self, df: pd.DataFrame, source: str):
+    def __init__(self, df: pd.DataFrame, source: str, base: Optional[str] = None):
         self.source = source
         bases = sorted({str(b) for b in df["base_currency"].dropna()})
+        if not bases and base:
+            bases = [base]          # empty table (no FX file): only the base currency
         if len(bases) != 1:
             raise ValueError(f"ppc_fx_rate.csv ({source}) must have exactly one base_currency, got {bases}")
         self.base = bases[0]
@@ -48,14 +51,23 @@ class FxTable:
         self.log: Dict[tuple, dict] = {}     # aggregated log rows
 
     @classmethod
-    def load(cls, model_dir: str, fallback_dir: str = os.path.join("data", "ppc")) -> "FxTable":
-        p = os.path.join(model_dir, "ppc_fx_rate.csv")
-        src = "model"
-        if not os.path.exists(p):
-            p = os.path.join(fallback_dir, "ppc_fx_rate.csv")
-            src = "data/ppc (fallback)"
-        t = cls(pd.read_csv(p, dtype={"week": str, "currency": str, "base_currency": str}), f"{src}: {p}")
-        return t
+    def load(cls, model_dir: str, base_currency: Optional[str] = None) -> "FxTable":
+        """The model's ppc_fx_rate.csv, else the declared shared rules' one (the same
+        resolver as PPC, FX file only -- Value Chain does not need the other PPC
+        files). Neither: an empty table on `base_currency` (the HQ currency), so
+        every other currency is unvalued (NaN, logged) -- never data/ppc silently."""
+        from wom.ppc.ppc_rules import resolve_ppc_rules
+        rs = resolve_ppc_rules(model_dir, ["ppc_fx_rate.csv"])
+        p = rs.paths.get("ppc_fx_rate.csv")
+        if p is None:
+            if not base_currency:
+                raise ValueError(f"{model_dir}: no ppc_fx_rate.csv (and no shared rules declared); "
+                                 f"the base currency must be given")
+            return cls(pd.DataFrame(columns=["week", "currency", "base_currency", "rate"]),
+                       "未設定（モデルに ppc_fx_rate.csv が無く、共有の規則の宣言も無い）",
+                       base=base_currency)
+        return cls(pd.read_csv(p, dtype={"week": str, "currency": str, "base_currency": str}),
+                   f"{rs.sources['ppc_fx_rate.csv']}: {p}")
 
     def currencies(self) -> List[str]:
         return sorted(set(self._weeks) | {self.base})

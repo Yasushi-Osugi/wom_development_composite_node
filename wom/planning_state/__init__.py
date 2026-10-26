@@ -317,14 +317,30 @@ def attach_realized(state: dict, snapshot: dict, mgmt_result=None,
     realized_allocation = {m: (v / grand_total if grand_total else 0.0)
                            for m, v in totals.items()}
 
-    ppc_block = {
-        "basis": "ppc_ledger",
-        "profit": float(ppc.get("gross_profit_base", 0.0) or 0.0),
-        "revenue": float(ppc.get("revenue_base", 0.0) or 0.0),
-        "cost": float(ppc.get("cost_base", 0.0) or 0.0),
-        "lots": grand_total,                        # PSI bridge の数量（leaf_out_S 合計）
-        "lot_records": int(ppc.get("total_lots", 0) or 0),
-    }
+    # RequestLetter_PPC_NoSilentFallback B.3: a PPC result that is not 評価済み
+    # carries no amounts to compare (未評価: none at all; 一部未評価: only the
+    # valued records). Never read the missing amounts as 0, and do not build the
+    # profit comparison with the plan (gap_decomposition) -- it is held back.
+    valuation = ppc.get("valuation_status", "評価済み")
+    if valuation != "評価済み":
+        ppc_block = {"basis": "ppc_ledger", "valuation_status": valuation,
+                     "reason": ppc.get("reason", ""), "excluded": ppc.get("excluded", []),
+                     "lots": grand_total,
+                     "comparison": "保留（PPC が評価済みでないため、計画の利益との差・比率を作らない）"}
+        if valuation == "一部未評価":
+            ppc_block.update({
+                "profit_valued_part": float(ppc.get("gross_profit_base", 0.0) or 0.0),
+                "revenue_valued_part": float(ppc.get("revenue_base", 0.0) or 0.0),
+                "cost_valued_part": float(ppc.get("cost_base", 0.0) or 0.0)})
+    else:
+        ppc_block = {
+            "basis": "ppc_ledger",
+            "profit": float(ppc.get("gross_profit_base", 0.0) or 0.0),
+            "revenue": float(ppc.get("revenue_base", 0.0) or 0.0),
+            "cost": float(ppc.get("cost_base", 0.0) or 0.0),
+            "lots": grand_total,                        # PSI bridge の数量（leaf_out_S 合計）
+            "lot_records": int(ppc.get("total_lots", 0) or 0),
+        }
 
     leaf_out_CO: Dict[str, Dict[str, float]] = extras.get("leaf_out_CO", {}) or {}
     # lot x weeks: the sum of every week's CO at the leaf_outs -- NOT the number
@@ -353,7 +369,7 @@ def attach_realized(state: dict, snapshot: dict, mgmt_result=None,
     plan_at_realized_fx: Optional[dict] = None
     gap_decomposition: Optional[dict] = None
     plan_eval = state.get("plan_eval")
-    if model_dir and cap_wk and plan_eval:
+    if model_dir and cap_wk and plan_eval and valuation == "評価済み":
         fx_effective = fx_effective_from_weekly(model_dir, extras.get("leaf_out_S_weekly", {}))
         plan_at_realized_fx = _evaluate_plan_at_fx(
             model_dir, state["allocation"], plan_eval, fx_effective, cap_wk)

@@ -1781,7 +1781,8 @@ class PPCTabPanel(tk.Frame):
                 if not force:
                     self._placeholder_var.set(f"{_label}\n\n今の計画の PPC の結果は、まだありません。\n{_what}")
                     self._status_var.set(_label)
-                    if os.path.exists(kpi_path):
+                    if os.path.exists(os.path.join(self._output_dir, "ppc_event_ledger.csv")):
+                        # an unverified folder with amounts (a 未評価 run writes none)
                         self._unverified_btn.pack(pady=(0, 40))
                     self._show_placeholder()
                     return
@@ -5968,37 +5969,16 @@ class WOMApp(tk.Tk):
             self._status_var.get() + "  |  💰 Running PPC …"
         )
 
-        # モデルフォルダ内に ppc_market_price.csv があればそちらを優先
-        _model_ppc_dir = getattr(self, "_model_dir", "")
-        _ppc_data_dir = "data/ppc"
-        if _model_ppc_dir and os.path.exists(
-            os.path.join(_model_ppc_dir, "ppc_market_price.csv")
-        ):
-            _ppc_data_dir = _model_ppc_dir
-            print(f"[PPC B2] Using model-local PPC rules: {_ppc_data_dir}")
-
-        # base_currency: auto-detected from the model-local ppc_fx_rate.csv's
-        # own base_currency column, so each scenario can choose its reporting
-        # currency (e.g. apparel-us-2026 = USD) via data, not code.
-        # Falls back to "JPY" (previous hardcoded default) when the file is
-        # absent, empty, or ambiguous, preserving existing Cookie/EV/oil
-        # sample behavior unchanged.
-        _base_currency = "JPY"
-        try:
-            _fx_path = os.path.join(_ppc_data_dir, "ppc_fx_rate.csv")
-            if os.path.exists(_fx_path):
-                import pandas as _pd
-                _fx_df = _pd.read_csv(_fx_path, dtype=str)
-                _bc_values = _fx_df["base_currency"].dropna().unique()
-                if len(_bc_values) == 1:
-                    _base_currency = str(_bc_values[0])
-                elif len(_bc_values) > 1:
-                    print(
-                        f"[PPC B2] Multiple base_currency values in ppc_fx_rate.csv: "
-                        f"{list(_bc_values)}; using '{_base_currency}' fallback"
-                    )
-        except Exception as _exc:
-            print(f"[PPC B2] base_currency auto-detect failed: {_exc}; using '{_base_currency}' fallback")
+        # RequestLetter_PPC_NoSilentFallback B.1: the rule source, the channel naming
+        # and the base currency come from the same resolver as the headless runner
+        # (model files first; data/ppc only when the model declares it as its
+        # shared rules; otherwise the money result is 未評価 -- no silent switch).
+        from wom.ppc.ppc_rules import (resolve_ppc_rules, channel_uses_node_name,
+                                       base_currency_of)
+        _rule_src = resolve_ppc_rules(getattr(self, "_model_dir", "") or "")
+        _ppc_data_dir = _rule_src.rule_dir_for("ppc_market_price.csv")
+        _base_currency = base_currency_of(_rule_src)
+        print(f"[PPC B2] rules: {_rule_src.sources}  missing: {_rule_src.missing}")
 
         def _ppc_thread():
             try:
@@ -6012,7 +5992,8 @@ class WOMApp(tk.Tk):
                     output_dir="output/ppc",
                     base_currency=_base_currency,
                     verbose=True,
-                    use_node_name=(_ppc_data_dir != "data/ppc"),
+                    use_node_name=channel_uses_node_name(_rule_src),
+                    rule_sources=_rule_src,
                     run_info={"run_id": _run.get("run_id", ""),
                               "model_dir": _run.get("model_dir", "")},
                 ))
@@ -6044,24 +6025,21 @@ class WOMApp(tk.Tk):
             print(f"[PPC B2] result of an older plan ignored (run_id={run_id}; "
                   f"current={self._ppc_gate.current})")
             return
-        margin = kpi.get("gross_margin_pct", 0.0)
-        lots   = kpi.get("total_lots", 0)
-        psi_mode = kpi.get("_psi_mode", False)
-        if psi_mode:
-            # P3: sales records built from the plan (market leaf shipments)
+        # RequestLetter_PPC_NoSilentFallback B.3: say what the money result is.
+        # Sample sales data are no longer substituted (K4).
+        status = kpi.get("valuation_status", "評価済み")
+        if status == "未評価":
+            self._status(f"💰 財務：未評価（{kpi.get('reason', '')}）— 金額は出しません", warn=True)
+        elif status == "一部未評価":
+            ex = ", ".join(f"{e['product_id']}×{e['channel_node']}" for e in kpi.get("excluded", []))
+            self._status(f"⚠ PPC は一部未評価（規則の無い製品・市場を除いて評価：{ex}）— "
+                         f"金額は評価できた範囲の値で、全計画の金額とは比べられません", warn=True)
+        else:
             self._status(
                 f"💰 PPC complete (PSI-linked) — "
-                f"Lots: {lots:,}  Margin: {margin:.1%}  "
+                f"Lots: {kpi.get('total_lots', 0):,}  Margin: {kpi.get('gross_margin_pct', 0.0):.1%}  "
                 f"| PPC・Management tabs refreshed"
             )
-        else:
-            # P3: the plan's products / channels were not found in the PPC
-            # masters, so ppc_runner replaced the sales records by SAMPLE data.
-            # These numbers do not correspond to the plan.
-            self._status(
-                "⚠ PPC はサンプルの販売データで計算されました（計画の製品・市場が PPC のマスターに"
-                "見つからないため）。PPC の数字は、この計画の数量と対応していません — "
-                f"Lots: {lots:,}  Margin: {margin:.1%}", warn=True)
         self._ppc_ctx = make_context(STATE_DONE, self._plan_run.get("run_id", ""),
                                      self._plan_run.get("model_dir", ""))
         # Refresh the PPC tab with newly written output/ppc/ files

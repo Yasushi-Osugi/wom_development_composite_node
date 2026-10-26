@@ -376,25 +376,17 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
 
 
 def _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose) -> dict:
-    from wom.ppc.ppc_runner import run_ppc_from_psi
-    data_dir = "data/ppc"
-    use_node_name = False
-    if os.path.exists(os.path.join(model_dir, "ppc_market_price.csv")):
-        data_dir = model_dir
-        use_node_name = True
-    base_currency = "JPY"
-    fx = os.path.join(data_dir, "ppc_fx_rate.csv")
-    if os.path.exists(fx):
-        try:
-            vals = pd.read_csv(fx, dtype=str)["base_currency"].dropna().unique()
-            if len(vals) == 1:
-                base_currency = str(vals[0])
-        except Exception:
-            pass
+    from wom.ppc.ppc_runner import run_ppc_from_psi, VAL_DONE
+    from wom.ppc.ppc_rules import resolve_ppc_rules, channel_uses_node_name, base_currency_of
+    # RequestLetter_PPC_NoSilentFallback B.1: the rule source and the channel naming
+    # are decided by the shared resolver (no silent switch to data/ppc).
+    src = resolve_ppc_rules(model_dir)
+    base_currency = base_currency_of(src)
     kpi = run_ppc_from_psi(
         sc_tree=sc_tree, weeks=list(sc_tree.week_labels) or weeks,
-        data_dir=data_dir, output_dir=output_ppc_dir,
-        base_currency=base_currency, verbose=verbose, use_node_name=use_node_name)
+        data_dir=src.rule_dir_for("ppc_market_price.csv"), output_dir=output_ppc_dir,
+        base_currency=base_currency, verbose=verbose,
+        use_node_name=channel_uses_node_name(src), rule_sources=src)
     # ppc_kpi_summary.json（唯一の真実源）を優先して読む
     js = os.path.join(output_ppc_dir, "ppc_kpi_summary.json")
     if os.path.exists(js):
@@ -402,7 +394,13 @@ def _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose) -> dict:
             k = json.load(f)
     else:
         k = kpi or {}
-    return {
+    status = k.get("valuation_status", VAL_DONE)
+    if status != VAL_DONE and "total_revenue_base" not in k:
+        # 未評価: no amount keys (never 0); the status and the reason only (B.2)
+        return {"base_currency": k.get("base_currency", base_currency),
+                "valuation_status": status, "reason": k.get("reason", ""),
+                "excluded": k.get("excluded", [])}
+    out = {
         "base_currency":  k.get("base_currency", base_currency),
         "total_lots":     int(k.get("total_lots", 0) or 0),
         "revenue_base":   round(float(k.get("total_revenue_base", 0) or 0), 2),
@@ -412,6 +410,12 @@ def _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose) -> dict:
         "tariff_base":    round(float(k.get("total_tariff_base", 0) or 0), 2),
         "trust_event_count": int(k.get("trust_event_count", 0) or 0),
     }
+    if status != VAL_DONE:
+        # 一部未評価: the amounts are those of the valued records only (B.2);
+        # the keys and values of a 評価済み snapshot stay exactly as before (golden)
+        out.update(valuation_status=status, reason=k.get("reason", ""),
+                   excluded=k.get("excluded", []))
+    return out
 
 
 def _planning_state_extras(sc_tree, n_weeks, fres_all, bres_all) -> dict:
@@ -627,8 +631,12 @@ def main(argv=None) -> int:
         os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)
         with open(a.out, "w", encoding="utf-8") as f:
             f.write(text + "\n")
-        print(f"[Headless] snapshot -> {a.out}  (GM={snap['ppc']['gross_margin_pct']*100:.1f}% "
-              f"trust={snap['ppc']['trust_event_count']} "
+        _p = snap["ppc"]
+        _money = (f"財務：{_p['valuation_status']}（{_p.get('reason', '')}） "
+                  if "gross_margin_pct" not in _p else
+                  f"GM={_p['gross_margin_pct']*100:.1f}% trust={_p['trust_event_count']} "
+                  + (f"[{_p['valuation_status']}] " if "valuation_status" in _p else ""))
+        print(f"[Headless] snapshot -> {a.out}  ({_money}"
               + cap_txt +
               f"cap_soft_viol={snap['forward']['cap_soft_violation_count']} "
               f"bwd_env={snap['backward']['cap_soft_envelope_count']})")

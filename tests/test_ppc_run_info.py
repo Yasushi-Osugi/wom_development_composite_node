@@ -144,8 +144,10 @@ def test_runner_clears_the_old_mark_and_writes_a_new_one_only_for_an_identified_
         assert "_psi_mode" not in json.load(f)
 
 
-def test_sample_fallback_is_recorded_and_not_used_as_the_plans_result(tmp_path):
-    """P3：計画の製品・市場が PPC のマスターに無いと、サンプルの販売データに差し替わる。"""
+def test_unknown_products_are_not_valued_and_no_sample_is_used(tmp_path):
+    """P3 → RequestLetter_PPC_NoSilentFallback（D8・K4）：計画の製品・市場が PPC のマスターに
+    無いとき、以前はサンプルの販売データに差し替えて計算していた。今は差し替えず「未評価」とし、
+    金額を書かない。今の計画の結果としては使わない。"""
     from wom.ppc.ppc_runner import run_ppc_from_psi
     tree, model, _out = _planned_tree(tmp_path)
     out = str(tmp_path / "ppc_sample")
@@ -154,17 +156,18 @@ def test_sample_fallback_is_recorded_and_not_used_as_the_plans_result(tmp_path):
     os.chdir(REPO)
     try:
         # data/ppc（既定のマスター）には、このモデルの製品が無い。
-        # 既定の為替表は 2026-W01 から始まるので、その範囲の週だけを渡す
-        # （それより前の週では、サンプルへの差し替え自体が為替の欠落で失敗する＝PPC 失敗）。
         weeks = [w for w in tree.week_labels if w >= "2026-W01"]
         kpi = run_ppc_from_psi(sc_tree=tree, weeks=weeks, data_dir="data/ppc",
                                output_dir=out, run_info={"run_id": run_id, "model_dir": model})
     finally:
         os.chdir(cwd)
-    assert kpi["_psi_mode"] is False and kpi["sales_source"] == "sample"
-    assert R.read_run_info(out)["sales_source"] == "sample"
+    assert kpi["valuation_status"] == "未評価" and kpi["sales_source"] == "psi"
+    assert "total_lots" not in kpi and "gross_margin_pct" not in kpi
+    assert sorted(os.listdir(out)) == ["ppc_kpi_summary.json", R.RUN_INFO_FILE]
+    info = R.read_run_info(out)
+    assert info["sales_source"] == "psi" and info["valuation_status"] == "未評価"
     ok, label = R.check_ppc_output(out, R.make_context(R.STATE_DONE, run_id, model))
-    assert not ok and "サンプル" in label
+    assert not ok and "未評価" in label
 
 
 # ---------------------------------------------------------------------------

@@ -145,6 +145,7 @@ def check_ppc_output(output_dir: str, ctx: Optional[dict]) -> Tuple[bool, str]:
       「PPC 未実行」「PPC 計算中」「PPC 失敗」
       「PPC の出力が今の計画のものではない」（印が無い・run_id かモデルのフォルダが違う）
       「PPC はサンプルの販売データ」（PSI と対応していない。今の計画の値としては使わない）
+      「PPC は未評価（理由）」「PPC は一部未評価（理由）」（D8。今の計画の金額として使わない）
     """
     if not ctx:
         return False, "PPC 未実行"
@@ -164,4 +165,9 @@ def check_ppc_output(output_dir: str, ctx: Optional[dict]) -> Tuple[bool, str]:
         return False, "PPC の出力が今の計画のものではない（別のモデルの結果）"
     if info.get("sales_source") != SALES_PSI:
         return False, "PPC はサンプルの販売データ（計画の数量と対応していない）"
+    # RequestLetter_PPC_NoSilentFallback B.2: only a 評価済み result is used as the
+    # plan's money values (an older mark without the key was evaluated).
+    status = info.get("valuation_status", "評価済み")
+    if status != "評価済み":
+        return False, f"PPC は{status}（{info.get('reason', '')}）"
     return True, "PPC 台帳（今の計画）"
