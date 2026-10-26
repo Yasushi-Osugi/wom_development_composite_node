@@ -129,7 +129,7 @@ GPT君のレビュー完了やCode君の動作確認だけで、採否を自動�
 
 | 文書 | 業務の問い | 採否 | 根拠の確認状態 | WOMとの対応 |
 |---|---|---|---|---|
-| [supply_allocation.md](supply_allocation.md) | 供給が足りないとき、どの需要に、どれだけ、いつ供給するか | §2 定義・§3 数量の関係：採用（2026-10-26）。§5 未決事項：保留。§6・§7：提案 | 項目ごとに §0 に記録。化粧品での実行確認は未確認 | [三層設計MD](../design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md)、[対応表](../../requests/BSSEAF_SupplyAllocation_ALC_Mapping_v0.2.md) |
+| [supply_allocation.md](supply_allocation.md) | 供給が足りないとき、どの需要に、どれだけ、いつ供給するか | §2 定義・§3 数量の関係：採用（2026-10-26）。§5 未決事項：保留。§6・§7：提案 | 項目ごとに文書の §0 に記録する（この欄には要約だけを書き、食い違ったら §0 を正とする）。①〜⑤：化粧品で実行確認（適合、数量配分モードの V09・P0・P1） | [三層設計MD](../design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md)、[対応表](../../requests/BSSEAF_SupplyAllocation_ALC_Mapping_v0.2.md) |
 
 ## 7 旧版からの移行
 

@@ -7,7 +7,7 @@ evidence_commit: "b120fdb4679878005e94f2e2cffec94fcce65009"
 evidence_commit_v0_2: "6a577604e5a04ca8fa7237da332a77e985820bfc"
 semantics: docs/semantics/supply_allocation.md
 verification_scope: "repository documents and static code inspection"
-cosmetics_activation: "not yet verified"
+cosmetics_activation: "quantity allocation mode run-confirmed on cosmetics (V09 at c563c31, trials P0/P1 at 49e8646); the ratio path (handoff / run_planning_loop) not applicable to cosmetics (ALC-Q04, Q09)"
 keywords: [生産配分, 優先供給, 市場優先, 需給調整, 親心, Demand Allocation, Supply Allocation, Capacity Envelope, Backward PSI Planning, Forward PSI Planning, allocation_id, planning_state, BS-SEAF]
 ---
 
