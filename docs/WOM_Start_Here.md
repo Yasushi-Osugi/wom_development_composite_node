@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-26 改4（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-10-26 改5（ブランチ `wom-v1r5m1_cap_trial`）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -88,7 +88,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | R9 | **関税は国境を越える区間**に置く（soysauce-jpy-2027-alloc は対応済み。ほかの soysauce と apparel-global は最後の区間に残っており、題材にするときに移す） | 段階 D の決定 c |
 | R10 | **販売チャネル**は、各国・各地域の中に ①自社 ②外部 ③自社ネット の 3 種類が並ぶ（PySI の時代から変わらない定義）。自社か外部かを名前から推測しない（割当表で明示） | `docs/design/drafts/WOM_ValueChain_Model_StageD_Design_v1.0.md` §3 |
 | R11 | **通貨の三つの役割**：① HQ の報告通貨（例 JPY）② 国際共通の評価通貨（USD）③ 現地通貨（例 EUR）。為替は `ppc_fx_rate.csv` だけを使い、黙って 1 にしない。表の最初の週より前は最初の週のレートを使って記録、表の後や無い通貨は未評価 | 同上 §5 |
-| R12 | **設定が無い価格**は未評価（NaN）にして一覧に出す（0 にしない）。助走週の仕入価格は、表の最初の行の価格を使って記録 | `WOM_StageD_Phase1_Report.md` |
+| R12 | **設定が無い価格**は未評価（NaN）にして一覧に出す（0 にしない）。助走週の仕入価格は、表の最初の行の価格を使って記録。**PPC も同じ（D8）**：結果に `valuation_status`（評価済み／一部未評価／未評価）を持つ。価格・仕入れの原価の行が無い製品 × 市場は 0 円で評価せず除き、除いた量を記録の件数・WOM の lot 数・物量で `excluded` に出す。未評価は金額のキーを持たない。一部未評価の金額は全計画の金額と比べない。規則の最初の週より前の週は最初の行の値を使い、件数を記録（`price_before_first_rule_week`）。費用の規則（ノード・区間・関税）の「行が無い」は費用なしとして扱い、件数だけを数える（未設定と区別するかは未決） | `WOM_StageD_Phase1_Report.md`、`docs/development/WOM_PPC_NoSilentFallback_Report.md` |
 | R13 | **金額の三つの視点**：V1（ノード・区間の管理評価）、V2（法人別）、V3（連結。内部取引の消去と、内部の未実現利益の消去） | 段階 D 設計 v1.0、`WOM_StageD_Phase2_Report.md` |
 | R14 | **能力を上位で扱う層**：市場の要求（週と Lot_ID）は変えず、内部の計画の位置だけを渡す。前倒しの窓（例 17 週）を設定する。プラグインで既定は OFF | `WOM_GenerationLine_UpperLayer_Report.md`、決定記録 §3（モデル 4） |
 | R15 | **世代の切り替えのライン**：混流しない。空き期間（例 4 週）は両世代とも能力 0。切り替えの週は上位の層で候補を並べて選ぶ | 同上、`data/sample/smartx-2027-2029/README.md` |
@@ -97,6 +97,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | R18 | **製品の年齢（残存期間）は先入れ先出しで数える**。物の在る所（工場の完成品倉庫＝supply point の I、DAD、店頭）ごと・SKU ごとに製造週（工場の実出荷週）の札を並べ、古い札から出す。年齢＝納品週 − 製造週（計画の週の番号で数える）。**Lot_ID は需要の単位なので、物の年齢を Lot_ID で数えない**（作り置きのとき需要の単位と物が離れ、年齢を大きく数える。化粧品の B3：Lot_ID で最大 165 週、先入れ先出しで最大 21 週）。道具 `python -m tools.shelf_life_check --model-dir <モデル> --max-age-weeks <週>`（許容は必須） | `docs/development/WOM_WarmupSoft_BlankAttrs_ShelfLifeFIFO_Report.md`、`requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.4.md` §8.3 |
 | R19 | **木の属性の空欄**（`sc_tree_master.csv`）：`ss_days`・`init_stock_days` の空欄は N/A（未設定。計画は 0 と同じ）、0 は明示の 0、0 以上の整数以外は止まる。`demand_envelope` の空欄は hard、hard・soft 以外は止まる（綴りの誤りを推測で直さない。直すのはモデルの CSV）。warmup の行には、能力の値の列（`max_supply`・`cap_soft`）を最初の実週から写す | 同上（`wom/engine/tree_attrs.py`、`wom/engine/warmup.py` の `_CAPACITY_COPY_COLS`） |
 | R20 | **生産配分と優先供給は三層で扱う**：Managementが採用配分を決め、BackwardがLT・需要集約・能力を考慮して配置し、Forwardが制約下の実出荷・未充足を計算する。既存のCSVハンドオフと三層連携CLIがある。元需要・配分済み需要・実納品を分け、対象ケースでの有効化・接続・検証を確認してから差分を判断する | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md)（WOM-KB-ALLOCATION-001）、`wom/allocation/handoff.py`、`tools/run_planning_loop.py` |
+| R22 | **PPC・Value Chain の規則の出どころ**：モデルのフォルダのファイルを先に使う。共有の規則（`data/ppc`）は、`planning_config.csv` の `ppc_shared_rules_dir` で宣言したモデルだけが、モデルに無いファイルについて読む（Cookie・rice・smartphone が宣言）。宣言が無ければ `data/ppc` は読まず未評価。見本の販売データで計算することは無い（`python -m wom.ppc` の実演だけ）。チャネルの対応方式（`use_node_name`）は規則の出どころとは別に決まる | `wom/ppc/ppc_rules.py` `resolve_ppc_rules()`、`docs/development/WOM_PPC_NoSilentFallback_Report.md` |
 | R21 | **金額なしで配分を試すときは数量配分モード**：`tools/run_quantity_allocation.py`（SKU × チャネルの lot 数で配分を渡す。価格・原価・`ga_*` を読まず、PPC を呼ばず財務は「未評価」）。元の需要で計画期間・warmup・能力を固定し、①〜⑤ を Flow Check 表2 の明細で数える。不整合なら結果を保存せず `diagnostics/` に書く。配分後の未充足（⑤ > 0）は計画の結果として保存する。期末の注文残を最終週の CO や毎週の CO の合計で数えない（`backlog_lot_weeks` は lot × 週） | [意味体系](semantics/supply_allocation.md) §3、[三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md) §3.1、`docs/development/WOM_QuantityAllocationMode_Report.md` |
 
 ---
@@ -131,7 +132,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 5. supply point に運賃や在庫を持たせる → 仮想のノードなので持たない（§2.1）。計画の結果として supply point の I に現れる作り置きは、工場の完成品在庫と読む（§2.1）。
 6. 単価の単位を lot と物量で取り違える → `cpu_size` と PPC のマスターの単位を揃える（R7。smartphone の「1 万倍」の件）。
 7. `node_master.csv` に座標が無い → World Map に描けない（一覧に出る）。Stock Yard は座標が無ければ親の組立工場の位置に描かれる。
-8. 価格を 0 で埋める → 未評価として扱うべきもの（R12）。
+8. 価格を 0 で埋める → 未評価として扱うべきもの（R12）。PPC の規則のファイルを見出しの行だけ置いたり、消したりしても、見本の金額にはならず未評価になる（R22。2026-10-26 より前は、見本の販売・見本の規則で、もっともらしい粗利率が出た）。
 9. 報告の開始週を二か所に書く → `vc_config.csv` の `report_start` だけに書く（`wom/engine/report_start.py`。World Map・Flow Check・Value Chain・Rice が読む）。無ければ最初の非ゼロ需要週。Rice の設定に残すと止まる。
 10. プラグインの組を GUI と headless で別々に選ぶ → 同じモデルで値が変わる（2026-10-09 の版の rice では、Holiday Calendar を忘れると当週出荷 139,554、正しくは 141,210）。モデルの `planning_config.csv` の `recommended_plugins` に golden と同じ組を書く。GUI は読み込みでチェックを合わせ、headless は `--plugins` を省けばこの組を使う。知らないプラグイン名は止まる。
 11. 実在の企業・団体・製品の名前をサンプルや文書に書く → 公開のリポジトリなので一般名（`EMS_A`、`Retailer_A` など）にする。`tests/test_no_real_names.py` が止める。元の名前との対応表はリポジトリに入れない。
@@ -193,5 +194,6 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | 歩留まり Part B | 投入の物量（良品 1 lot の裏に投入 1／y）、良品 1 lot 当たりの原価、画面の良品の上限の線（`WOM_YieldRate_PartA_Report.md` §6） |
 | supply point の作り置きの在庫の表示 | 理由は分かった（§2.1、化粧品の試行 Q5）：工場の完成品在庫が supply point の I に表示される。表示（所在の名前）を工場に寄せるかは未決 |
 | 在庫の保有費用・陳腐化の金額 | `vc_config.csv` の `holding_rate_weekly` を設定し、smartx などに Value Chain のマスターを用意してから |
+| 費用の規則の「行が無い」 | ノード・区間・関税の規則の行が無い組合せは、全 golden のモデルにある（`WOM_PPC_NoSilentFallback_Report.md` §6.1）。今は「費用なし」として扱い、件数だけを数える（Owner、2026-10-26）。明示の 0 の行を求めるかは、化粧品の費用を置く段階で、費用の種類ごとに決める |
 | 計画の最初の週に置かれて作れない lot | Backward は計画の最初の週の能力を使うが、原料の区間があると Forward は作れない（§4.3 の 12）。記録を足すか、InBound のリードタイムの分の週を能力 0 とするかは未決（保護対象コア。Owner は今は記録だけ、2026-10-26） |
 | Cookie の CVS・soysauce の卸価格 | 仮の値（各モデルの README に根拠と損益分岐） |
