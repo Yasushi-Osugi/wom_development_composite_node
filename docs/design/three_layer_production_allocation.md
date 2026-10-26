@@ -1,5 +1,11 @@
 # WOM 三層生産配分：Management / Demand / Supply の設計記録
 
+## 2026-10-26 現行機能への案内
+
+本書本文は2026-08-20時点の調査・設計記録であり、当時の経緯として保存する。現在の入口は[生産配分と優先供給の三層設計MD](./WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)である。後に`wom/allocation/handoff.py`、`tools/run_planning_loop.py`、`wom/planning_state/`が実装され、配分を需要CSVへ渡してBackward・Forward・PPCを一巡し、計画案を記録する明示的な経路が存在する。本文の「三層が未接続」「実装なし」を、その後の層間連携の現状説明として使わない。標準のBackward内部で利益配分を自動実行することと、既存ハンドオフ経路の存在は区別する。対象ケースでの有効化・接続・検証は現行設計MDから確認する。
+
+---
+
 **設計記録のみ・実装なし（2026-08-20）。** branch `wom-v1r3m0`。エンジン・GUI・CSV スキーマはすべて無変更。
 
 本文書は `docs/design/lot_id_traceability_and_coverage_views.md`（三層可視化）と対になる。前者が「モデルが正しいことをどう示すか」を扱うのに対し、本書は「生産配分をどこで、どう決めているか」を扱う。

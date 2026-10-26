@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-25 改（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-10-26 改（ブランチ `wom-v1r5m1_cap_trial`）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -16,6 +16,12 @@
 | 3 | `docs/design/wom_canonical_concepts.md`、`demand_anchored_lot.md` | WOM の考え方（設計の憲法）、Demand Anchored Lot |
 | 4 | `AGENTS.md` | 保護対象のコアと 3 層のテスト（コードを変えるとき必須） |
 | 5 | 扱うテーマの設計書・報告書（§5 の機能の地図） | 詳細 |
+
+### 0.1 生産配分と優先供給を調べる入口
+
+市場優先・チャネル優先・Global HQの需給調整（親心）・Demand Allocation・Supply Allocation・Capacity Envelopeを扱うときは、[生産配分と優先供給の三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)を先に読む。**Managementの配分判断、Backwardの需要・生産配置、Forwardの制約下の供給計算は、WOMの既存機能群である。** 配分を需要CSVへ渡す`wom/allocation/handoff.py`、三層を一巡する`tools/run_planning_loop.py`、計画案を残す`wom/planning_state/`にも辿る。
+
+機能の存在、対象モデルでの有効化、層間の接続、結果の検証を分けて確かめる。通常のBackwardが常に利益順で配分するとは仮定しない。「WOMに機能が無い」「Coreの新規実装が必要」と判断する前に、既存経路と適用条件を調べる。
 
 ---
 
@@ -81,6 +87,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | R17 | **歩留まり**（`sc_tree_master.csv` の `yield_rate`、工場＝MOM の行だけ）：完成品の出荷時点に一本化した歩留まり。工程別の不良は見ない。`cap_hard`（Sealing_Qty）・`cap_soft`（Production_Qty）は物理の投入の能力のまま、エンジンは **floor（能力 × yield_rate）＝引当て可能な良品の lot 数**で lot を置き・封じる（`PlanNode.shippable_*`）。不良の分の Lot_ID は作らない。空欄・列なし＝1.0。不正な値、MOM 以外、push の MOM、legacy、Rice Seasonal ON では止まる。投入の物量（1／y）と金額は Part B（未実装） | `docs/development/WOM_YieldRate_PartA_Report.md`、`requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.2.md` §7 |
 | R18 | **製品の年齢（残存期間）は先入れ先出しで数える**。物の在る所（工場の完成品倉庫＝supply point の I、DAD、店頭）ごと・SKU ごとに製造週（工場の実出荷週）の札を並べ、古い札から出す。年齢＝納品週 − 製造週（計画の週の番号で数える）。**Lot_ID は需要の単位なので、物の年齢を Lot_ID で数えない**（作り置きのとき需要の単位と物が離れ、年齢を大きく数える。化粧品の B3：Lot_ID で最大 165 週、先入れ先出しで最大 21 週）。道具 `python -m tools.shelf_life_check --model-dir <モデル> --max-age-weeks <週>`（許容は必須） | `docs/development/WOM_WarmupSoft_BlankAttrs_ShelfLifeFIFO_Report.md`、`requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.4.md` §8.3 |
 | R19 | **木の属性の空欄**（`sc_tree_master.csv`）：`ss_days`・`init_stock_days` の空欄は N/A（未設定。計画は 0 と同じ）、0 は明示の 0、0 以上の整数以外は止まる。`demand_envelope` の空欄は hard、hard・soft 以外は止まる（綴りの誤りを推測で直さない。直すのはモデルの CSV）。warmup の行には、能力の値の列（`max_supply`・`cap_soft`）を最初の実週から写す | 同上（`wom/engine/tree_attrs.py`、`wom/engine/warmup.py` の `_CAPACITY_COPY_COLS`） |
+| R20 | **生産配分と優先供給は三層で扱う**：Managementが採用配分を決め、BackwardがLT・需要集約・能力を考慮して配置し、Forwardが制約下の実出荷・未充足を計算する。既存のCSVハンドオフと三層連携CLIがある。元需要・配分済み需要・実納品を分け、対象ケースでの有効化・接続・検証を確認してから差分を判断する | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)（WOM-KB-ALLOCATION-001）、`wom/allocation/handoff.py`、`tools/run_planning_loop.py` |
 
 ---
 
@@ -145,7 +152,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | Value Chain（段階 D） | 実出荷の記録からの台帳、V1・V2・V3、連結、未実現利益の消去 | 設計 v1.0、`WOM_StageD_Phase1_Report.md`、`WOM_StageD_Phase2_Report.md` |
 | LOVEM | Lot の観測と表示 | `docs/design/drafts/LOVEM_on_WOM_Observation_Visualization_Design_v0.2.md`、`WOM_LOVEM_StageAB_EVThailand_Report.md`、`WOM_LOVEM_StageC_Report.md` |
 | World Map | Natural Earth ＋ 実出荷 | `WOM_WorldMap_ActualFlows_Report.md` |
-| 生産配分（`ask_global_allocation`） | 市場ごとの配分の利益地形 | `ask_global_allocation_spec.md`、`wom_model_typology.md`、`three_layer_production_allocation.md` |
+| 生産配分と優先供給（三層） | 配分の利益評価・採用、需要CSVへのハンドオフ、Backward配置、Forward供給、計画案記録 | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)、[配分仕様](design/ask_global_allocation_spec.md)、[計画案CLI](../tools/run_planning_loop.py) |
 | 上位の能力の層 | ボトルネック、世代の切り替え | `WOM_SmartxBottleneck_Report.md`、`WOM_GenerationLine_UpperLayer_Report.md` |
 | 授業の教材 | Lesson 000「お米が足りない」：台本と、rice から比較モデル（収穫・精米 +30%）を作る道具 `tools/lesson000_variants.py` | `docs/lessons/lesson000/`、`WOM_Lesson000_Public_Report.md` |
 

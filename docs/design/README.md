@@ -5,6 +5,19 @@ This directory contains canonical WOM design intent.
 Design documents describe why WOM is structured as it is.
 They are AI-neutral and should be usable by Claude Code, ChatGPT Codex, and future AI development agents.
 
+## Production allocation and priority supply
+
+Start with [WOM production allocation and priority supply](./WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)
+(knowledge ID `WOM-KB-ALLOCATION-001`, 2026-10-26). It maps the existing
+Management / Demand / Supply functions, allocation-to-demand CSV handoff,
+planning-loop CLI, and the conditions to check before reusing them in a new case.
+It distinguishes an implemented capability from activation and validation in a
+particular model.
+
+The older [three-layer design record](./three_layer_production_allocation.md)
+records the 2026-08-20 investigation. Read its historical statements about
+unconnected layers together with the later handoff and planning-loop implementation.
+
 ## Documents
 
 ```text
