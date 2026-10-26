@@ -52,7 +52,7 @@ Global HQの「親心」は、利益やサービス方針を踏まえて、供�
 | WOM-ALLOC-04 | DemandからSupplyへの計画引き継ぎ | [plan_copy.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/b120fdb4679878005e94f2e2cffec94fcce65009/wom/engine/plan_copy.py)の`copy_demand_to_supply()` | 実装あり。各ノード・各週のS・Pをコピーし、SupplyのI・COはForwardで計算する |
 | WOM-ALLOC-05 | 供給制約下の実現結果の計算 | [forward_planner.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/b120fdb4679878005e94f2e2cffec94fcce65009/wom/engine/forward_planner.py) | 実装あり。要求Sと実出荷を区別する。identityモードのLot_ID照合を確認する |
 | WOM-ALLOC-06 | 三層連携の実行と計画案の記録 | [run_planning_loop.py](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/b120fdb4679878005e94f2e2cffec94fcce65009/tools/run_planning_loop.py)、[planning_state](https://github.com/Yasushi-Osugi/wom_development_composite_node/blob/b120fdb4679878005e94f2e2cffec94fcce65009/wom/planning_state/__init__.py) | 明示的に利用する既存CLI経路あり。すべての通常実行がこの経路を通るわけではない |
-| WOM-ALLOC-07（v0.2） | 能力の層：数量だけで、要求ごとに計画週を割り当てる（元の要求週までに割り当てられる lot を最大化、その中で前倒しを最小化） | `wom/capacity_layer/`（`solver.py`・`serial_adapter.py`）、`wom/plugins/capacity_layer.py` の `CapacityLayerPlugin`。報告書 `docs/development/WOM_SmartxBottleneck_Report.md` | 実装あり。**既定 OFF**、`capacity_layer_config.csv` の `max_advance_weeks` が必須。金額を使わない。市場の要求（Lot_ID・要求週）を変えず、内部の計画位置だけを渡す。直列の inbound の木に限る。**その `unallocated` は、計画週に割り当てられず市場に注文残として残る lot で、意味体系の ⑤ に当たる（③ 未配分ではない）**。市場の優先は目的に入っていない |
+| WOM-ALLOC-07（v0.2） | 能力の層：数量だけで、要求ごとに計画週を割り当てる（元の要求週までに割り当てられる lot を最大化、その中で前倒しを最小化） | `wom/capacity_layer/`（`solver.py`・`serial_adapter.py`）、`wom/plugins/capacity_layer.py` の `CapacityLayerPlugin`。報告書 `docs/development/WOM_SmartxBottleneck_Report.md` | 実装あり。**既定 OFF**、`capacity_layer_config.csv` の `max_advance_weeks` が必須。金額を使わない。市場の要求（Lot_ID・要求週）を変えず、内部の計画位置だけを渡す。直列の inbound の木に限る。プラグインは LP（配置する数量の最大化、その中で前倒しの最小化）を使う。要求週の早い順の規則は別の貪欲法のもの。**各ノードの上限は `shippable_limit()`（cap_hard 側）で、cap_soft による平準化とは別の条件**。その `unallocated` は「内部の計画へ配置できなかった量」で、③ 未配分とも ⑤ 配分後の未充足とも同じではない。市場の優先は目的に入っていない |
 
 補助資料：
 
@@ -249,4 +249,4 @@ owner_decision: pending_case_application
 | 版 | 日付 | 内容 |
 |---|---|---|
 | 0.1 | 2026-10-26 | 既存三層機能、CSVハンドオフ・CLI、適用条件、化粧品の接続調査、Start Hereからの知識索引を整理 |
-| 0.2 | 2026-10-26 | Claude君（`requests/BSSEAF_SupplyAllocation_ALC_Mapping_v0.2.md` の T1〜T8）。WOM-ALLOC-07（能力の層）と語の衝突、意味体系への案内、PA-R05・R06 を ①〜⑤ に合わせる、ALC-Q04 の二重計上、ALC-Q05 の訂正（最終週の CO ではなく Flow Check 表2 の ID 照合。数量一致の検査は供給不足では止まらない）、ALC-Q09、P1 の前提。ファイル名を v0.2 に変更 |
+| 0.2 | 2026-10-26 | Claude君（`requests/BSSEAF_SupplyAllocation_ALC_Mapping_v0.2.md` の T1〜T8）。WOM-ALLOC-07（能力の層）と語の衝突、意味体系への案内、PA-R05・R06 を ①〜⑤ に合わせる、ALC-Q04 の二重計上、ALC-Q05 の訂正（最終週の CO ではなく Flow Check 表2 の ID 照合。数量一致の検査は供給不足では止まらない）、ALC-Q09、P1 の前提。ファイル名を v0.2 に変更。同日、GPT君の `a085a85` のレビューで WOM-ALLOC-07 の記述（cap_hard 側の上限、LP の目的、`unallocated` の意味）を直した |
