@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-26 改（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-10-26 改2（ブランチ `wom-v1r5m1_cap_trial`）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -16,8 +16,17 @@
 | 3 | `docs/design/wom_canonical_concepts.md`、`demand_anchored_lot.md` | WOM の考え方（設計の憲法）、Demand Anchored Lot |
 | 4 | `AGENTS.md` | 保護対象のコアと 3 層のテスト（コードを変えるとき必須） |
 | 5 | 扱うテーマの設計書・報告書（§5 の機能の地図） | 詳細 |
+| — | `docs/semantics/`（業務の意味体系、[読み方](semantics/README.md)） | 業務の用語の定義と、判断に要る業務の情報。**機能の名前を探す前に**、扱う業務の問いの意味をここで確かめる（§0.1） |
 
 ### 0.1 生産配分と優先供給を調べる入口
+
+**業務の問いから入る**：
+
+| 業務の問い | 1. 意味を確かめる | 2. WOM での表し方 | 3. 事例 |
+|---|---|---|---|
+| 供給が足りない。どの市場・チャネルに、どれだけ供給するか／外した需要はどうなるか／計画の注文残は何か | [供給配分の意味体系](semantics/supply_allocation.md)（配分・未配分・納期延期・注文残、追跡する 5 つの数量、例題） | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)（既存の機能・入力・経路、適用の前の確認 ALC-Q） | 化粧品：`docs/development/WOM_BSSEAF_Cosmetics_ChangeTasks123_Report.md`（C3a）、`requests/BSSEAF_SupplyAllocation_ALC_Mapping_v0.1.md` |
+
+**配分（供給の対象にする数量を決めること）と納期延期（後の時期に届けること）は別の判断である。** 計画の結果の注文残は「配分したが届かなかった量」であり、「配分で外した量（未配分）」とは別に数える。
 
 市場優先・チャネル優先・Global HQの需給調整（親心）・Demand Allocation・Supply Allocation・Capacity Envelopeを扱うときは、[生産配分と優先供給の三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)を先に読む。**Managementの配分判断、Backwardの需要・生産配置、Forwardの制約下の供給計算は、WOMの既存機能群である。** 配分を需要CSVへ渡す`wom/allocation/handoff.py`、三層を一巡する`tools/run_planning_loop.py`、計画案を残す`wom/planning_state/`にも辿る。
 
@@ -152,7 +161,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | Value Chain（段階 D） | 実出荷の記録からの台帳、V1・V2・V3、連結、未実現利益の消去 | 設計 v1.0、`WOM_StageD_Phase1_Report.md`、`WOM_StageD_Phase2_Report.md` |
 | LOVEM | Lot の観測と表示 | `docs/design/drafts/LOVEM_on_WOM_Observation_Visualization_Design_v0.2.md`、`WOM_LOVEM_StageAB_EVThailand_Report.md`、`WOM_LOVEM_StageC_Report.md` |
 | World Map | Natural Earth ＋ 実出荷 | `WOM_WorldMap_ActualFlows_Report.md` |
-| 生産配分と優先供給（三層） | 配分の利益評価・採用、需要CSVへのハンドオフ、Backward配置、Forward供給、計画案記録 | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)、[配分仕様](design/ask_global_allocation_spec.md)、[計画案CLI](../tools/run_planning_loop.py) |
+| 生産配分と優先供給（三層） | 配分の利益評価・採用、需要CSVへのハンドオフ、Backward配置、Forward供給、計画案記録。用語の意味は[供給配分の意味体系](semantics/supply_allocation.md) | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.1.md)、[配分仕様](design/ask_global_allocation_spec.md)、[計画案CLI](../tools/run_planning_loop.py) |
 | 上位の能力の層 | ボトルネック、世代の切り替え | `WOM_SmartxBottleneck_Report.md`、`WOM_GenerationLine_UpperLayer_Report.md` |
 | 授業の教材 | Lesson 000「お米が足りない」：台本と、rice から比較モデル（収穫・精米 +30%）を作る道具 `tools/lesson000_variants.py` | `docs/lessons/lesson000/`、`WOM_Lesson000_Public_Report.md` |
 
