@@ -258,7 +258,7 @@ def _format_conclusion(state: dict, markets) -> str:
     profit_ppc = ppc.get("profit")
     fx_eff = realized.get("fx_effective") or {}
     gap = realized.get("gap_decomposition")
-    unmet = realized.get("unmet_lots")
+    backlog_lw = realized.get("backlog_lot_weeks")   # lot x weeks
     cap_weeks = realized.get("capacity_violation_weeks", [])
     inv_weeks = realized.get("peak_inventory_weeks", [])
 
@@ -284,7 +284,7 @@ def _format_conclusion(state: dict, markets) -> str:
     cap_str = (f"{len(cap_weeks)}週（{', '.join(cap_weeks)}）"
               if cap_weeks else "0週")
     inv_str = f"{len(inv_weeks)}週" if inv_weeks else "0週"
-    lines.append(f"  未充足 {unmet:.0f} lot   能力超過 {cap_str}   在庫ピーク {inv_str}")
+    lines.append(f"  注文残 延べ {backlog_lw:.0f} lot・週   能力超過 {cap_str}   在庫ピーク {inv_str}")
     return "\n".join(lines)
 
 

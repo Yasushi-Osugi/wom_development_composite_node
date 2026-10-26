@@ -184,7 +184,7 @@ def test_state_transitions(tmp_path):
     realized = realized_state["realized"]
     assert set(realized.keys()) == {
         "allocation", "ppc", "fx_effective", "plan_at_realized_fx",
-        "gap_decomposition", "unmet_lots", "capacity_violation_weeks",
+        "gap_decomposition", "backlog_lot_weeks", "capacity_violation_weeks",
         "peak_inventory_weeks", "issues",
     }
     # model_dir/cap_wk 無しなので分解は計算されない（None・空のまま）
@@ -216,7 +216,7 @@ def test_planning_loop_closes(tmp_path):
 
     assert state["state"] == "feasible_plan"
     realized = state["realized"]
-    assert realized["unmet_lots"] >= 0
+    assert realized["backlog_lot_weeks"] >= 0
 
     blocks, _tp = derive_cost_blocks(model_dir)
     for m, x in realized["allocation"].items():

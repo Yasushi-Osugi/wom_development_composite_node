@@ -332,3 +332,7 @@ V4.7 の1周の結果は実装で決まる。**測って報告してもらい、
 
 **6. GUI は作らない。**
 本 Phase の成果物は JSON とコマンドだけである。画面は Phase 8。**「ついでに画面も」をやらないこと**——データ契約が固まる前に画面を作ると、画面ごとに違う形のデータを持ち回ることになる。
+
+---
+
+**訂正の注記（2026-10-26、RequestLetter_QuantityAllocationMode C.5）**：本書の `unmet_lots` は、`realized.backlog_lot_weeks`（leaf_out の毎週の CO の合計＝lot × 週。注文残の lot 数ではない）に改名した。本書は当時の記録として残す。旧い名前の JSON は `wom.planning_state.load()` が新しい名前で読む。

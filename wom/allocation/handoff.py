@@ -126,6 +126,22 @@ def write_demand_for_allocation(model_dir: str, allocation: Dict[str, float],
     #    per_region に無い地域（uom で絞り込んだ配分問題の対象外＝他 SKU 系統）は
     #    元の値のまま素通しする（勝手にゼロにしない）。
     dem_rows = _rows(model_dir, demand_file)
+
+    # RequestLetter_QuantityAllocationMode C.4: the weights below are per region
+    # over ALL sku rows and every row of a region-week gets the same quantity, so
+    # a region shared by 2+ SKUs would be counted twice (even a 0 row of the second
+    # SKU receives the region-week quantity). Stop instead of passing.
+    skus_by_region: Dict[str, set] = defaultdict(set)
+    for r in dem_rows:
+        if r["region"] in per_region:
+            skus_by_region[r["region"]].add(r["sku_id"])
+    shared = {reg: sorted(s) for reg, s in skus_by_region.items() if len(s) > 1}
+    if shared:
+        raise ValueError(
+            "write_demand_for_allocation(): a region to allocate has demand rows of "
+            "2+ sku_id, so the ratio route would count it twice (not supported; use "
+            "the quantity route keyed by (sku_id, region)): "
+            + "; ".join(f"{reg}: {skus}" for reg, skus in sorted(shared.items())))
     region_week_weight: Dict[str, Dict[str, float]] = defaultdict(dict)
     for r in dem_rows:
         wk = r["week"]
@@ -176,3 +192,136 @@ def write_demand_for_allocation(model_dir: str, allocation: Dict[str, float],
         "total_before": total_before,
         "total_after": total_after,
     }
+
+
+# ──────────────────────────────────────────────────────────────────────────
+# Quantity allocation mode (RequestLetter_QuantityAllocationMode C.1)
+# ──────────────────────────────────────────────────────────────────────────
+#
+# A person decides the allocation in LOTS per (sku_id, region). No price, cost,
+# FX or ga_* file is read (derive_cost_blocks is not called): only the demand
+# CSV and the allocation file. Quantities, per key (same demand set, same unit):
+#   q1 original demand = q2 in supply scope + q3 not in supply scope
+
+ALLOC_QTY_COLUMNS = ["sku_id", "region", "alloc_lots"]
+
+
+class QuantityAllocationError(ValueError):
+    """The allocation file cannot be used. Nothing is written."""
+
+
+def read_quantity_allocation(alloc_path: str) -> Dict[tuple, int]:
+    """allocation_qty_<id>.csv -> {(sku_id, region): alloc_lots}. Stops (listing
+    every bad row at once) on a missing column, a duplicate key, or a value that
+    is not an integer >= 0."""
+    with open(alloc_path, "r", encoding="utf-8-sig", newline="") as f:
+        rd = csv.DictReader(f)
+        missing = [c for c in ALLOC_QTY_COLUMNS if c not in (rd.fieldnames or [])]
+        if missing:
+            raise QuantityAllocationError(f"{alloc_path}: missing column(s) {missing}")
+        rows = list(rd)
+    out: Dict[tuple, int] = {}
+    errors: List[str] = []
+    for n, r in enumerate(rows, start=2):
+        key = (r["sku_id"].strip(), r["region"].strip())
+        raw = (r["alloc_lots"] or "").strip()
+        try:
+            v = float(raw)
+            ok = v >= 0 and v == int(v)
+        except ValueError:
+            ok = False
+        if not ok:
+            errors.append(f"line {n} {key}: alloc_lots={raw!r} is not an integer >= 0")
+            continue
+        if key in out:
+            errors.append(f"line {n} {key}: duplicate key")
+            continue
+        out[key] = int(v)
+    if errors:
+        raise QuantityAllocationError(f"{alloc_path}: " + "; ".join(errors))
+    return out
+
+
+def write_demand_for_quantity_allocation(model_dir: str, alloc_path: str, allocation_id: str,
+                                         *, demand_file: str = "demand_forecast.csv",
+                                         out_path: Optional[str] = None) -> dict:
+    """Write `demand_forecast_<allocation_id>.csv` from lot quantities per (sku_id, region).
+
+    - Each key's `alloc_lots` is spread over that key's rows in proportion to their
+      weekly quantity (largest remainder); weeks with 0 demand stay 0.
+    - A key with alloc_lots == its original total keeps its rows verbatim.
+    - Columns and row order are those of the demand CSV (0 rows are kept).
+    - Stops (nothing written, every bad key listed): alloc_lots > the key's
+      original total; a key with >= 1 lot of demand missing from the file; a key
+      not in the demand CSV; duplicate / non-integer / negative values.
+    - After writing, the file is read back and q2 per key must equal alloc_lots.
+
+    Returns {"path", "keys": [{sku_id, region, q1_original, q2_in_supply_scope,
+    q3_not_in_supply_scope}], "totals": {...}}.
+    """
+    alloc = read_quantity_allocation(alloc_path)
+    src = os.path.join(model_dir, demand_file)
+    with open(src, "r", encoding="utf-8", newline="") as f:
+        rd = csv.DictReader(f)
+        fieldnames = list(rd.fieldnames or [])
+        dem_rows = list(rd)
+    for c in DEMAND_COLUMNS:
+        if c not in fieldnames:
+            raise QuantityAllocationError(f"{src}: missing column {c!r}")
+
+    def _q(r):
+        return int(float(r["quantity"] or 0))
+
+    rows_by_key: Dict[tuple, List[int]] = defaultdict(list)
+    for i, r in enumerate(dem_rows):
+        rows_by_key[(r["sku_id"], r["region"])].append(i)
+    q1 = {k: sum(_q(dem_rows[i]) for i in idx) for k, idx in rows_by_key.items()}
+
+    errors: List[str] = []
+    for k in sorted(alloc):
+        if k not in q1:
+            errors.append(f"{k}: not in {demand_file}")
+        elif alloc[k] > q1[k]:
+            errors.append(f"{k}: alloc_lots {alloc[k]} > original demand {q1[k]} "
+                          f"(an allocation never adds demand)")
+    for k in sorted(q1):
+        if q1[k] >= 1 and k not in alloc:
+            errors.append(f"{k}: has {q1[k]} lot(s) of demand but no row in the allocation file")
+    if errors:
+        raise QuantityAllocationError(
+            f"{os.path.basename(alloc_path)}: " + "; ".join(errors))
+
+    new_q: Dict[int, str] = {}
+    for k, idx in rows_by_key.items():
+        a = alloc.get(k, 0)               # only keys with 0 demand can be absent here
+        if a == q1[k]:
+            continue                      # verbatim
+        shares = _largest_remainder({i: float(_q(dem_rows[i])) for i in idx}, a)
+        for i in idx:
+            new_q[i] = str(shares[i])
+
+    out_path = out_path or os.path.join(model_dir, f"demand_forecast_{allocation_id}.csv")
+    with open(out_path, "w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
+        w.writeheader()
+        for i, r in enumerate(dem_rows):
+            w.writerow(dict(r, quantity=new_q[i]) if i in new_q else r)
+
+    # read back: q2 per key must equal alloc_lots
+    with open(out_path, "r", encoding="utf-8", newline="") as f:
+        back = list(csv.DictReader(f))
+    q2: Dict[tuple, int] = defaultdict(int)
+    for r in back:
+        q2[(r["sku_id"], r["region"])] += _q(r)
+    bad = [f"{k}: written {q2.get(k, 0)} != alloc_lots {alloc.get(k, 0)}"
+           for k in sorted(q1) if q2.get(k, 0) != alloc.get(k, 0)]
+    if bad or len(back) != len(dem_rows):
+        raise QuantityAllocationError(
+            f"write_demand_for_quantity_allocation(): read-back mismatch: " + "; ".join(bad))
+
+    keys = [{"sku_id": k[0], "region": k[1], "q1_original": q1[k],
+             "q2_in_supply_scope": alloc.get(k, 0),
+             "q3_not_in_supply_scope": q1[k] - alloc.get(k, 0)} for k in sorted(q1)]
+    totals = {c: sum(r[c] for r in keys)
+              for c in ("q1_original", "q2_in_supply_scope", "q3_not_in_supply_scope")}
+    return {"path": out_path, "keys": keys, "totals": totals}

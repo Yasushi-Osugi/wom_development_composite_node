@@ -86,12 +86,12 @@ def _format_conclusion_ja(state: dict, snap: dict) -> List[str]:
     # carries lot_flow_mode only when it is not legacy.
     identity = (snap.get("config", {}) or {}).get("lot_flow_mode") == "identity"
     hard_note = "翌週へ繰り延べ" if identity else "需要が溢れた"
-    unmet = realized.get("unmet_lots", 0.0) or 0.0
+    backlog_lw = realized.get("backlog_lot_weeks", 0.0) or 0.0   # lot x weeks (sum of weekly CO)
     if cap_hard_weeks or cap_soft_weeks:
         line2 = (f"cap_hard {len(cap_hard_weeks)}週で上限に張り付き（{hard_note}） / "
-                f"cap_soft {len(cap_soft_weeks)}週で超過（残業帯）、未充足 {unmet:.0f} lot")
+                f"cap_soft {len(cap_soft_weeks)}週で超過（残業帯）、注文残 延べ {backlog_lw:.0f} lot・週")
     else:
-        line2 = f"能力超過なし（cap_hard 0週 / cap_soft 0週）、未充足 {unmet:.0f} lot"
+        line2 = f"能力超過なし（cap_hard 0週 / cap_soft 0週）、注文残 延べ {backlog_lw:.0f} lot・週"
 
     plan_x: Dict[str, float] = state.get("allocation", {}) or {}
     real_x: Dict[str, float] = realized.get("allocation", {}) or {}

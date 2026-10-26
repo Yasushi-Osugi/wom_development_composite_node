@@ -340,6 +340,7 @@ def materialize_warmup(
     planning_start: Optional[str] = None,
     write: bool = True,
     demand_file: str = _DEMAND,
+    warmup_real_start: Optional[str] = None,
 ) -> dict:
     """
     planning_config.csv（または明示引数）に基づき助走行を materialize する。
@@ -352,6 +353,11 @@ def materialize_warmup(
             ここだけ既定値のまま呼ぶと、「需要は差し替わったのに warmup だけ
             元の demand_forecast.csv を見る」という噛み合わせのズレが起きる
             （Phase 6 で複数回踏んだ、2箇所に分かれた設定が片方だけ更新される形）。
+        warmup_real_start: 助走の基準の週（real_start）を固定する（既定 None＝今までどおり、
+            渡した需要 CSV の最初の非ゼロ需要週）。数量配分モード
+            （RequestLetter_QuantityAllocationMode C.2）が、配分で先頭の週の需要が 0 に
+            なっても計画の開始週・能力の行が動かないように、元の需要の基準の週を渡す。
+            配分後の需要が全部 0 でも、この週で助走行を作る。
 
     Returns（サマリー dict、stdout 出力・テスト・呼び出し側の判定に使う）:
       {
@@ -375,7 +381,8 @@ def materialize_warmup(
     eff_ps = planning_start if planning_start is not None else cfg_ps
 
     dem_path = os.path.join(model_dir, demand_file)
-    real_start = first_nonzero_demand_week(dem_path)
+    real_start = (warmup_real_start if warmup_real_start is not None
+                  else first_nonzero_demand_week(dem_path))
     if real_start is None:
         return {"skipped": True, "changed": False, "warmup_lt": eff_lt, "planning_start": eff_ps,
                 "real_start": None, "effective_start": None, "warm_weeks": 0, "files": {}}

@@ -39,6 +39,7 @@ import hashlib
 import json
 import os
 import sys
+from typing import Optional
 
 import pandas as pd
 
@@ -112,7 +113,8 @@ def _select_plugins(spec: str):
 def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/ppc",
         verbose: bool = True, demand_file: str = "demand_forecast.csv",
         planning_state: bool = False, lot_flow_mode: str = None,
-        flow_check_dir: str = None, extra_plugins: list = None) -> dict:
+        flow_check_dir: str = None, extra_plugins: list = None,
+        ppc: bool = True, warmup_real_start: Optional[str] = None) -> dict:
     """GUI の planning + PPC を再現し、KPI スナップショット dict を返す。
 
     lot_flow_mode（RequestLetter_LotIdentityFlow C1）："identity"／"legacy"。
@@ -134,6 +136,11 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
         extra_plugins: 名前の指定とは別に、このプラグインの実体も登録する（測定の道具が、
             設定を持たせたプラグインを渡すため。RequestLetter_GenerationLine_UpperLayer）。
             既定 None のときの動きは変わらない。snapshot の config にはクラス名が入る。
+        ppc: False のときは PPC を呼ばず、返り値の "ppc" を
+            {"status": "未評価", "reason": "quantity allocation mode"} にする
+            （RequestLetter_QuantityAllocationMode C.2。数量の配分に金額は要らない）。
+        warmup_real_start: `materialize_warmup()` に渡す助走の基準の週（既定 None＝
+            今までどおり需要 CSV から求める）。配分案どうしで計画期間と能力を固定するため。
         planning_state: True のときだけ、返却に `"planning_state_extras"` キーを
             足す（週リスト・市場別 S/CO）。既定 False のときの返却は**現行と
             1バイトも変わらない**（C8）。golden 13ケースはこの経路を通らない。
@@ -170,7 +177,8 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
     from wom.engine.warmup import (materialize_warmup, format_summary, read_cpu_size,
                                    read_lot_flow_mode)
     from wom.engine.forward_planner import resolve_lot_flow_mode, LOT_FLOW_LEGACY
-    _wsum = materialize_warmup(model_dir, demand_file=demand_file)
+    _wsum = materialize_warmup(model_dir, demand_file=demand_file,
+                               warmup_real_start=warmup_real_start)
     if verbose:
         print("[Headless]", format_summary(_wsum))
     lot_flow_mode = resolve_lot_flow_mode(lot_flow_mode or read_lot_flow_mode(model_dir))
@@ -331,7 +339,10 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
                              flow_check_dir)
 
     # ── PPC（app.py _run_ppc_from_planning と同じ）─────────────────
-    ppc_kpi = _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose)
+    if ppc:
+        ppc_kpi = _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose)
+    else:
+        ppc_kpi = {"status": "未評価", "reason": "quantity allocation mode"}
 
     # ── スナップショット組み立て ───────────────────────────────────
     if lot_flow_mode == LOT_FLOW_LEGACY:

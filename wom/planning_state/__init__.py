@@ -126,10 +126,25 @@ def save(state: dict, out_dir: str = "output/planning_state") -> str:
     return path
 
 
+# Renamed keys of `realized` (old -> new). Old records are read under the new
+# name (RequestLetter_QuantityAllocationMode C.5); the JSON files are not rewritten.
+_REALIZED_RENAMES = {"unmet_lots": "backlog_lot_weeks"}
+
+
+def _upgrade_realized(state: dict) -> dict:
+    realized = state.get("realized")
+    if isinstance(realized, dict):
+        for old, new in _REALIZED_RENAMES.items():
+            if old in realized:
+                v = realized.pop(old)
+                realized.setdefault(new, v)       # both present -> the new name wins
+    return state
+
+
 def load(case: str, allocation_id: str, out_dir: str = "output/planning_state") -> dict:
     path = os.path.join(_case_dir(case, out_dir), f"{allocation_id}.json")
     with open(path, encoding="utf-8") as f:
-        return json.load(f)
+        return _upgrade_realized(json.load(f))
 
 
 def list_states(case: str, out_dir: str = "output/planning_state") -> List[dict]:
@@ -312,7 +327,10 @@ def attach_realized(state: dict, snapshot: dict, mgmt_result=None,
     }
 
     leaf_out_CO: Dict[str, Dict[str, float]] = extras.get("leaf_out_CO", {}) or {}
-    unmet_lots = sum(v for nodes in leaf_out_CO.values() for v in nodes.values())
+    # lot x weeks: the sum of every week's CO at the leaf_outs -- NOT the number
+    # of lots left unserved (RequestLetter_QuantityAllocationMode C.5; formerly
+    # named unmet_lots, which read as a lot count).
+    backlog_lot_weeks = sum(v for nodes in leaf_out_CO.values() for v in nodes.values())
 
     cap_violation_weeks = sorted(
         set(extras.get("cap_hard_violation_weeks", []) or []) |
@@ -364,7 +382,7 @@ def attach_realized(state: dict, snapshot: dict, mgmt_result=None,
         "fx_effective": fx_effective,
         "plan_at_realized_fx": plan_at_realized_fx,
         "gap_decomposition": gap_decomposition,
-        "unmet_lots": unmet_lots,
+        "backlog_lot_weeks": backlog_lot_weeks,
         "capacity_violation_weeks": cap_violation_weeks,
         "peak_inventory_weeks": peak_inventory_weeks,
         "issues": issues,

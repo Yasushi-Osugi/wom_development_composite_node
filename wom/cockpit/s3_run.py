@@ -262,11 +262,11 @@ class RunPanel(tk.Frame):
     def _render_result_info(self, state: dict, nodes):
         realized = state.get("realized") or {}
         placement = state.get("placement") or {}
-        unmet = realized.get("unmet_lots", 0.0) or 0.0
+        backlog_lw = realized.get("backlog_lot_weeks", 0.0) or 0.0   # lot x weeks
         peak_weeks = realized.get("peak_inventory_weeks", []) or []
         earliest = placement.get("earliest_start_week") or "—"
         lines = [
-            f"未充足 {unmet:.0f} lot",
+            f"注文残 延べ {backlog_lw:.0f} lot・週",
             f"在庫ピーク {len(peak_weeks)}週",
             f"最早着手週 {earliest}",
         ]

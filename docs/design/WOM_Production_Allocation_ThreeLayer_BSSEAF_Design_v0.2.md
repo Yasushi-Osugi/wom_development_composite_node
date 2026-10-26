@@ -86,6 +86,23 @@ python -m tools.run_planning_loop --model-dir output/allocation_review/soysauce-
 
 配分値の順は`markets_of(blocks)`の順である。実行前に市場名との対応を確認する。ハンドオフはモデルフォルダへ生成CSVを書き、warmupも作業用ファイルを扱うため、正式なサンプルを直接書き換える運用例にはしない。
 
+### 3.1 数量配分モード（金額を置かない経路、2026-10-26）
+
+人が**lotの数量**で配分を決めたときは、`tools/run_quantity_allocation.py`を使う（`run_planning_loop.py`の金額の経路とは分けてある。依頼書`requests/RequestLetter_QuantityAllocationMode_to_CodeKun.md`、報告`docs/development/WOM_QuantityAllocationMode_Report.md`）。
+
+```bash
+python -m tools.run_quantity_allocation --model-dir <作業用のモデル> --allocation-file <allocation_qty_X.csv> --out-dir output/planning_state
+```
+
+1. 入力は`allocation_qty_<id>.csv`（`sku_id, region, alloc_lots`）。鍵は(sku_id, region)。`alloc_lots`が元の需要を超える、需要のある鍵が無い、需要CSVに無い鍵・重複・整数でない値は、何も書かずに止める。
+2. `write_demand_for_quantity_allocation()`（`wom/allocation/handoff.py`）が、鍵ごとの週の形に比例して`alloc_lots`を配り、需要CSVを生成する。原価・価格・`ga_*`のファイルは読まない。
+3. 元の需要CSVから求めたwarmupの基準の週・計画の開始週・週数で計画し（`run(..., ppc=False, warmup_real_start=...)`）、能力・操業カレンダーのファイルが変わらないことを確かめる。配分案の間で変えてよいのは配分だけである。
+4. Flow Check表2の明細の行から、鍵ごとに①元の需要＝②供給対象＋③未配分、②＝④実納品（当週・前倒し・遅配）＋⑤配分後の未充足（期間内に一度も出荷されない要求）を記録する。③は配分のファイルだけで決まり、能力の層の`unallocated`とは別物である。
+5. 不整合（identityでない、表2の鍵の集合・②の不一致、`check`≠0、表1のNG・供給側の重複、市場の二重出荷、期間・能力の固定が破れた）なら、正常な結果を保存せず`diagnostics/`に診断を書く。⑤＞0は不整合ではなく、計画の結果として保存する。
+6. 計画案は`<out-dir>/<case>/Q<nn>.json`（`mode: "quantity"`、`valuation: "未評価"`、`state: "plan_computed"`）。利益・売上・原価のキーは作らない。
+
+比率の経路の`write_demand_for_allocation()`は、配分の対象の地域に2つ以上の`sku_id`の行があると止まる（地域の重みを全SKUで作り、各行に同じ数量を入れるため二重計上になる）。
+
 ## 4 業務の意味を保つためのルール
 
 | ルールID | 定義 | 確認する証拠 |

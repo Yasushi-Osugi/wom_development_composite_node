@@ -258,3 +258,7 @@ A系統の利益地形図は「為替が基準値のまま」という前提の�
 
 **5. 本書の 174.28 / 188.22 は単純平均である。**
 数量加重にすると変わる。**合わせにいかないこと。** 測った値を報告してもらい、それを正典とする。
+
+---
+
+**訂正の注記（2026-10-26、RequestLetter_QuantityAllocationMode C.5）**：本書の `unmet_lots` は、`realized.backlog_lot_weeks`（leaf_out の毎週の CO の合計＝lot × 週。注文残の lot 数ではない）に改名した。本書は当時の記録として残す。旧い名前の JSON は `wom.planning_state.load()` が新しい名前で読む。

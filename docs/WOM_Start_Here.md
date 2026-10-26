@@ -97,6 +97,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | R18 | **製品の年齢（残存期間）は先入れ先出しで数える**。物の在る所（工場の完成品倉庫＝supply point の I、DAD、店頭）ごと・SKU ごとに製造週（工場の実出荷週）の札を並べ、古い札から出す。年齢＝納品週 − 製造週（計画の週の番号で数える）。**Lot_ID は需要の単位なので、物の年齢を Lot_ID で数えない**（作り置きのとき需要の単位と物が離れ、年齢を大きく数える。化粧品の B3：Lot_ID で最大 165 週、先入れ先出しで最大 21 週）。道具 `python -m tools.shelf_life_check --model-dir <モデル> --max-age-weeks <週>`（許容は必須） | `docs/development/WOM_WarmupSoft_BlankAttrs_ShelfLifeFIFO_Report.md`、`requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.4.md` §8.3 |
 | R19 | **木の属性の空欄**（`sc_tree_master.csv`）：`ss_days`・`init_stock_days` の空欄は N/A（未設定。計画は 0 と同じ）、0 は明示の 0、0 以上の整数以外は止まる。`demand_envelope` の空欄は hard、hard・soft 以外は止まる（綴りの誤りを推測で直さない。直すのはモデルの CSV）。warmup の行には、能力の値の列（`max_supply`・`cap_soft`）を最初の実週から写す | 同上（`wom/engine/tree_attrs.py`、`wom/engine/warmup.py` の `_CAPACITY_COPY_COLS`） |
 | R20 | **生産配分と優先供給は三層で扱う**：Managementが採用配分を決め、BackwardがLT・需要集約・能力を考慮して配置し、Forwardが制約下の実出荷・未充足を計算する。既存のCSVハンドオフと三層連携CLIがある。元需要・配分済み需要・実納品を分け、対象ケースでの有効化・接続・検証を確認してから差分を判断する | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md)（WOM-KB-ALLOCATION-001）、`wom/allocation/handoff.py`、`tools/run_planning_loop.py` |
+| R21 | **金額なしで配分を試すときは数量配分モード**：`tools/run_quantity_allocation.py`（SKU × チャネルの lot 数で配分を渡す。価格・原価・`ga_*` を読まず、PPC を呼ばず財務は「未評価」）。元の需要で計画期間・warmup・能力を固定し、①〜⑤ を Flow Check 表2 の明細で数える。不整合なら結果を保存せず `diagnostics/` に書く。配分後の未充足（⑤ > 0）は計画の結果として保存する。期末の注文残を最終週の CO や毎週の CO の合計で数えない（`backlog_lot_weeks` は lot × 週） | [意味体系](semantics/supply_allocation.md) §3、[三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md) §3.1、`docs/development/WOM_QuantityAllocationMode_Report.md` |
 
 ---
 
@@ -161,7 +162,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | Value Chain（段階 D） | 実出荷の記録からの台帳、V1・V2・V3、連結、未実現利益の消去 | 設計 v1.0、`WOM_StageD_Phase1_Report.md`、`WOM_StageD_Phase2_Report.md` |
 | LOVEM | Lot の観測と表示 | `docs/design/drafts/LOVEM_on_WOM_Observation_Visualization_Design_v0.2.md`、`WOM_LOVEM_StageAB_EVThailand_Report.md`、`WOM_LOVEM_StageC_Report.md` |
 | World Map | Natural Earth ＋ 実出荷 | `WOM_WorldMap_ActualFlows_Report.md` |
-| 生産配分と優先供給（三層） | 配分の利益評価・採用、需要CSVへのハンドオフ、Backward配置、Forward供給、計画案記録。用語の意味は[供給配分の意味体系](semantics/supply_allocation.md) | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md)、[配分仕様](design/ask_global_allocation_spec.md)、[計画案CLI](../tools/run_planning_loop.py) |
+| 生産配分と優先供給（三層） | 配分の利益評価・採用、需要CSVへのハンドオフ、Backward配置、Forward供給、計画案記録。用語の意味は[供給配分の意味体系](semantics/supply_allocation.md) | [三層設計MD](design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md)、[配分仕様](design/ask_global_allocation_spec.md)、[計画案CLI](../tools/run_planning_loop.py)、[数量配分モード（金額なし）](../tools/run_quantity_allocation.py) |
 | 上位の能力の層 | ボトルネック、世代の切り替え | `WOM_SmartxBottleneck_Report.md`、`WOM_GenerationLine_UpperLayer_Report.md` |
 | 授業の教材 | Lesson 000「お米が足りない」：台本と、rice から比較モデル（収穫・精米 +30%）を作る道具 `tools/lesson000_variants.py` | `docs/lessons/lesson000/`、`WOM_Lesson000_Public_Report.md` |
 
