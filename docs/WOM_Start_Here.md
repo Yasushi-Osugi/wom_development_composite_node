@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-26 改3（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-10-26 改4（ブランチ `wom-v1r5m1_cap_trial`）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -135,6 +135,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 9. 報告の開始週を二か所に書く → `vc_config.csv` の `report_start` だけに書く（`wom/engine/report_start.py`。World Map・Flow Check・Value Chain・Rice が読む）。無ければ最初の非ゼロ需要週。Rice の設定に残すと止まる。
 10. プラグインの組を GUI と headless で別々に選ぶ → 同じモデルで値が変わる（2026-10-09 の版の rice では、Holiday Calendar を忘れると当週出荷 139,554、正しくは 141,210）。モデルの `planning_config.csv` の `recommended_plugins` に golden と同じ組を書く。GUI は読み込みでチェックを合わせ、headless は `--plugins` を省けばこの組を使う。知らないプラグイン名は止まる。
 11. 実在の企業・団体・製品の名前をサンプルや文書に書く → 公開のリポジトリなので一般名（`EMS_A`、`Retailer_A` など）にする。`tests/test_no_real_names.py` が止める。元の名前との対応表はリポジトリに入れない。
+12. **計画の両端で能力が使えない**（化粧品の配分の試行 P1、`docs/development/WOM_BSSEAF_Cosmetics_AllocationP0P1_Report.md` §4）→ 需要の合計を能力の合計にそろえても、期末の注文残が残ることがある。(a) **最初の週**：Backward は計画の最初の週にも能力があるとして押し戻しの最後尾を置くが、原料の区間（InBound のリードタイム）があると Forward はその週に作れず、注文残になる。Backward・Forward・Flow Check のどの記録にも「置いたが作れない」とは出ない（lot を追跡して初めて分かった）。(b) **最後の週**：店頭在庫（`ss_days`）などで早く作る分があると、最後の数週の工場の余裕を埋める需要が無い（押し戻しは前の週にしか動かない）。実際に使える能力は合計より少し小さい（P1：美容液 2,184 → 2,182）。この量は計画の境界の効果で、業務の欠品と読まない（Owner、2026-10-26）。Backward の扱いは保護対象コアの話で、今は記録だけ
 
 ### 4.4 確かめ方
 
@@ -192,4 +193,5 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | 歩留まり Part B | 投入の物量（良品 1 lot の裏に投入 1／y）、良品 1 lot 当たりの原価、画面の良品の上限の線（`WOM_YieldRate_PartA_Report.md` §6） |
 | supply point の作り置きの在庫の表示 | 理由は分かった（§2.1、化粧品の試行 Q5）：工場の完成品在庫が supply point の I に表示される。表示（所在の名前）を工場に寄せるかは未決 |
 | 在庫の保有費用・陳腐化の金額 | `vc_config.csv` の `holding_rate_weekly` を設定し、smartx などに Value Chain のマスターを用意してから |
+| 計画の最初の週に置かれて作れない lot | Backward は計画の最初の週の能力を使うが、原料の区間があると Forward は作れない（§4.3 の 12）。記録を足すか、InBound のリードタイムの分の週を能力 0 とするかは未決（保護対象コア。Owner は今は記録だけ、2026-10-26） |
 | Cookie の CVS・soysauce の卸価格 | 仮の値（各モデルの README に根拠と損益分岐） |
