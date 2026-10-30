@@ -71,7 +71,7 @@ def fig_loop(path):
     ax.set_yticks([])
     for sp in ax.spines.values():
         sp.set_visible(False)
-    ax.set_title("図1 ループの周回（青：通った段階、赤枠：誤りの型の段階）", fontsize=11, pad=34)
+    ax.set_title("図1 8 つの検討の反復（青：その反復で通った段階、赤枠：誤りの型の段階）", fontsize=11, pad=34)
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)
@@ -88,7 +88,7 @@ def fig_alloc(path):
     x = range(len(cases))
     a1.bar(x, rule, color="#5b8db8", label="配分の規則による差")
     a1.bar(x, boundary, bottom=rule, color="#e08a3c", label="追加の ⑤（境界の効果）による差")
-    a1.bar(x, p0, color="#7aa974", label="境界の ⑤ が無い分（P0）")
+    a1.bar(x, p0, color="#7aa974", label="P0 の純差額（境界 +501,240、規則 −198,432）")
     for i, v in enumerate([0, -559_380, -198_432, 302_808]):
         a1.text(i, v + (15_000 if v >= 0 else -15_000), f"{v:+,}" if v else "基準",
                 ha="center", va="bottom" if v >= 0 else "top", fontsize=9)
@@ -99,7 +99,7 @@ def fig_alloc(path):
     a1.set_ylim(-700_000, 450_000)
     a1.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:,.0f}"))
     a1.legend(fontsize=8, loc="upper left")
-    a1.set_title("評価の額の差（売上 11.56 億円に対して 0.05% 未満）", fontsize=10)
+    a1.set_title("評価の額の差（P2-a1・P2-a2・P1 の 3 案は売上の 0.05% 未満、\nP0 を含む 4 案の最大は約 0.075%）", fontsize=10)
     a2.bar(x, fifth, color="#b0b0b0")
     for i, v in enumerate(fifth):
         a2.text(i, v + 3, str(v), ha="center", fontsize=9)
