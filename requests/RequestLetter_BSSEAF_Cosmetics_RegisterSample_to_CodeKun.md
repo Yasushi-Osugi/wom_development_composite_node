@@ -3,7 +3,7 @@
 - 宛先：Code君（Claude Code、Windows）
 - 依頼者：大杉（WOM Project Owner）
 - 起草：Claude君（2026-10-30）。進め方：GPT君の確認（2026-10-30）に従う
-- 版：v0.1
+- 版：v0.1（同日、Claude君の見直しで 3 か所を足した：C3a の能力の値を文書に写す、休業日なしの仮定、生成の道具が `output/` に残ること）
 - 作業フォルダ：`C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r5m1_cap_trial`（起草時の先頭 `e9741a6`。この依頼書は大杉さんが先に commit する。着手時の SHA を報告書に記録する）
 - 出どころ：BS-SEAF の図の段階 6「Model Application and Execution」、検証報告の骨組み `requests/BSSEAF_Verification_Cosmetics_Report_Outline_v0.1.md`、金額の試行 M0 の報告書と付録（`docs/development/WOM_BSSEAF_Cosmetics_Money_M0_Report.md`・`..._appendix/`）、`AGENTS.md` §5（Scenario rules）、`docs/scenarios/README.md`
 - 種別：**サンプルのモデル・golden・文書の追加**。エンジン・道具のコードは変えない。既存の golden は変わらないこと
@@ -36,6 +36,7 @@
 - 先：`data/sample/cosmetics-sg-th-2027-2029/`。ファイルの組は既存のサンプル（Cookie-jp-2026）と同じ形。`planning_config.csv` は M0 のまま（`warmup_lt 17`、`lot_flow_mode identity`、`cpu_size 24`、`recommended_plugins`）。共有の規則の宣言（`ppc_shared_rules_dir`）は置かない（金額の規則は全部モデルの中にある）。
 - **warmup の行は、置いた状態で一定になること**（冪等）：登録したモデルを CLI・GUI で実行しても、追跡しているファイルが書き換わらないことを `git status` で確かめる。書き換わるなら、実行後の状態で登録し直し、もう一度確かめる。
 - 名前の検査（`tests/test_no_real_names.py`）を通す。ノードの名前は役割名のまま。
+- 試行のモデルを作った生成の道具（`output/bsseaf_cosmetics/gen_models.py`）は登録しない。**登録した CSV を正本とする**ことを README に書く（生成の道具は試行の記録で、正式なサンプルの入力ではない）。
 
 ### 2.2 文書
 
@@ -44,7 +45,7 @@
    - 単位（1 lot ＝ 1 ケース ＝ 24 個。価格・費用は 1 個当たり、税抜き）
    - 仮定（設計書 §1.4 の A1〜A13、金額の仮定 M1〜M8 の要点）と出どころ
    - 実行の方法（CLI・GUI）と期待する結果（M0 の数：期間、Flow Check の全量の充足、PPC の売上・試算利益）
-   - 既知の限界：歩留まりの損は原価に入っていない（約 3%、M3）、店舗の運営費は売上の 35% の近似（M5）、日本本社の固定費なし（M6）、Value Chain の G1〜G5、U4（配分の週の粒度）、計画の境界の効果、タイの関税は 0%（EPA の仮定）
+   - 既知の限界：休業日を置いていない（`holiday_calendar.csv` は見出しの行だけ。工場・DC・店は毎週動く仮定）、歩留まりの損は原価に入っていない（約 3%、M3）、店舗の運営費は売上の 35% の近似（M5）、日本本社の固定費なし（M6）、Value Chain の G1〜G5、U4（配分の週の粒度）、計画の境界の効果、タイの関税は 0%（EPA の仮定）
 2. **シナリオの文書**（`docs/scenarios/cosmetics.md`、英語。`docs/scenarios/README.md` の推奨の構成）と、`docs/scenarios/README.md` の一覧への 1 行。
 3. **比べる案の再現**（§2.4）をシナリオの文書に書く。
 
@@ -57,8 +58,8 @@
 
 | 案 | 基準からの作り方 |
 |---|---|
-| C3a（能力の不足） | `capacity_plan.csv` を A9 で計算し直す前の値に戻す（変更課題①②③の報告書 §2 の C3b の行の逆） |
-| P1・P2-a1・P2-a2 | C3a の写しに、配分のファイル（P0P1 の報告書の付録 A、`docs/development/WOM_BSSEAF_Cosmetics_AllocationP2a_appendix/allocation/`）を `tools/run_quantity_allocation.py` で渡す |
+| C3a（能力の不足） | `capacity_plan.csv` の工場の能力を、C3a の値に戻す。**C3a の値（SKU ごとの cap_hard・cap_soft）を `output/bsseaf_cosmetics/C3a/capacity_plan.csv` から読み、シナリオの文書に数字で写す**（`output/` は git の対象外なので、文書だけで再現できるようにする） |
+| P1・P2-a1・P2-a2 | C3a の写しに、配分のファイル（P1 は P0P1 の報告書の付録 A の表、P2-a は `docs/development/WOM_BSSEAF_Cosmetics_AllocationP2a_appendix/allocation/`）を `tools/run_quantity_allocation.py` で渡す |
 | M0t（タイの関税 30%） | `ppc_tariff_rule.csv` の `WH_JP_Released->DC_TH` を 0.30 に（M0 の付録 `money_csv/M0t/`） |
 
 手順は、実際に 1 回たどって、数が各報告書と合うことを確かめる（C3a の Flow Check 表2 の ⑤ 192、M0t の利益 −27,612,000 円）。
