@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-30（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-10-30 改1（ブランチ `wom-v1r5m1_cap_trial`）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -111,6 +111,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 - **smartx-2027-2029**：能力のボトルネック、世代の切り替えのライン、上位の層。
 - **ev-europe-2026**：組立と Stock Yard（Kitting）。
 - **rice-japan-2027-2028**：季節の供給（収穫・玄米保管・精米）、品目共用の設備、不足の配分。Rice Seasonal のプラグインが要る（GUI はモデルを読むと自動で ON。Holiday Calendar は手で ON）。
+- **cosmetics-sg-th-2027-2029**：1 工場から 2 か国・4 チャネル（直営店・EC・代理店 2 つ）へ、販売開始のずれ、店頭在庫（`ss_days`）、能力の平準化（`demand_envelope`＝soft）と歩留まり、製品の年齢（先入れ先出し、`tools/shelf_life_check.py`）、金額の規則を全部モデルの中に持つ PPC。BS-SEAF の検証の事例で、比べる案（能力の不足・数量配分・関税）の作り方は `docs/scenarios/cosmetics.md`、業務の意味は [供給配分の意味体系](semantics/supply_allocation.md)。
 
 ### 4.2 フォルダの中身（`data/sample/<モデル>/`）
 
@@ -194,6 +195,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 | 歩留まり Part B | 投入の物量（良品 1 lot の裏に投入 1／y）、良品 1 lot 当たりの原価、画面の良品の上限の線（`WOM_YieldRate_PartA_Report.md` §6） |
 | supply point の作り置きの在庫の表示 | 理由は分かった（§2.1、化粧品の試行 Q5）：工場の完成品在庫が supply point の I に表示される。表示（所在の名前）を工場に寄せるかは未決 |
 | 在庫の保有費用・陳腐化の金額 | `vc_config.csv` の `holding_rate_weekly` を設定し、smartx などに Value Chain のマスターを用意してから |
+| 画面の表示の誤読（化粧品のサンプルの登録で分かった、`WOM_BSSEAF_Cosmetics_RegisterSample_Report.md` §5） | Management の Tariff & FX パネルが空のとき「設定して」と出るが、原因は `edge_cost_master.csv` が見出しだけであること（メッセージと原因がずれる）。Inv Value・CCC・AR・AP が 0 と並ぶのは単価・回転日数が無いためで、「在庫が無い」と誤読しうる（未設定と 0 を分けていない。R12 と同じ問題）。PPC の Waterfall の GM（1 lot 当たりの平均）と KPI の GM（全体）が違う値で、同じ名前で並ぶ |
 | Value Chain の金額の層（G1〜G5） | 化粧品の金額の試行（`docs/development/WOM_BSSEAF_Cosmetics_Money_M0_Report.md` §6）で分かった、Value Chain が表せないもの：売上の率のノード費用を計上しない（G1。同じ行の 1 個当たりの金額も一緒に落ちる）、外部の代理店のノードに置いた自社負担の費用（MDF）を計上せず issues にも出ない（G2）、sell-in の代理店の売上が PPC より 1 週早い（G3）、関税の課税価格が振替価格だけ（G4、PPC も同じ）、CIF の運賃の負担（G5）。PPC は表せる。拡張するかは未決 |
 | 費用の規則の「行が無い」 | ノード・区間・関税の規則の行が無い組合せは、全 golden のモデルにある（`WOM_PPC_NoSilentFallback_Report.md` §6.1）。今は「費用なし」として扱い、件数だけを数える（Owner、2026-10-26）。明示の 0 の行を求めるかは、化粧品の費用を置く段階で、費用の種類ごとに決める |
 | 計画の最初の週に置かれて作れない lot | Backward は計画の最初の週の能力を使うが、原料の区間があると Forward は作れない（§4.3 の 12）。記録を足すか、InBound のリードタイムの分の週を能力 0 とするかは未決（保護対象コア。Owner は今は記録だけ、2026-10-26） |
