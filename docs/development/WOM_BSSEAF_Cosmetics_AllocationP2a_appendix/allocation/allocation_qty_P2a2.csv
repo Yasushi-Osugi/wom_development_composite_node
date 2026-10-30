@@ -1,0 +1,9 @@
+sku_id,region,alloc_lots
+COS_Cream,SG_Distributor,691
+COS_Cream,SG_EC,299
+COS_Cream,SG_Store,416
+COS_Cream,TH_Distributor,274
+COS_Serum,SG_Distributor,825
+COS_Serum,SG_EC,455
+COS_Serum,SG_Store,546
+COS_Serum,TH_Distributor,358

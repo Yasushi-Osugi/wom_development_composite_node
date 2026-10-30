@@ -5,6 +5,11 @@ tools/shelf_life_check.py — 残存期間の判定（先入れ先出しの年�
 RequestLetter_WarmupSoft_BlankAttrs_ShelfLifeFIFO Part C（大杉さんの決定 b・f、2026-10-25）。
 
     python -m tools.shelf_life_check --model-dir <モデル> --max-age-weeks 52 [--plugins …] [--out <フォルダ>]
+        [--demand-file demand_forecast_Q01.csv --warmup-real-start 2027-W01]
+
+数量配分モード（tools/run_quantity_allocation.py）で作った計画の年齢は、配分済みの需要 CSV と、
+その実行の warmup の基準の週（Q<nn>.json の fixed.warmup_real_start）を渡して測る
+（RequestLetter_BSSEAF_Cosmetics_AllocationP2a Part A）。既定の呼び方の動きは変えない。
 
 市場への納品（leaf_out の実出荷）ごとに、**先入れ先出しで出荷したと考えたときの製品の年齢**を数える。
 エンジンは変えない（Lot_ID は需要の単位のまま。Lot_ID は物理の個体ではない：決定記録 §1.1）。
@@ -210,6 +215,14 @@ def main(argv=None) -> int:
     ap.add_argument("--plugins", default=None,
                     help="same rule as run_headless_from_folder (default: the model's recommended_plugins)")
     ap.add_argument("--out", default=None, help="default: output/shelf_life/<model folder name>")
+    ap.add_argument("--demand-file", default="demand_forecast.csv",
+                    help="demand CSV inside the model folder (default demand_forecast.csv). Give the "
+                         "allocated demand CSV of a quantity allocation run (demand_forecast_<id>.csv) "
+                         "to count the ages of that plan")
+    ap.add_argument("--warmup-real-start", default=None,
+                    help="warm-up base week passed to run() (default: none = from the demand CSV). "
+                         "With an allocated demand CSV, give the week the allocation run used "
+                         "(Q<nn>.json fixed.warmup_real_start) so that the plan period does not move")
     a = ap.parse_args(argv)
     sys.path.insert(0, REPO)
     from tools.run_headless_from_folder import run
@@ -217,7 +230,8 @@ def main(argv=None) -> int:
     os.makedirs(out, exist_ok=True)
     cap = _capture_plugin()
     run(a.model_dir, plugins_spec=a.plugins, output_ppc_dir=os.path.join(out, "ppc"),
-        verbose=False, extra_plugins=[cap])
+        verbose=False, extra_plugins=[cap], demand_file=a.demand_file,
+        warmup_real_start=a.warmup_real_start)
     r = check_tree(cap.tree, a.max_age_weeks)
     labels = r["labels"]
     rows = [dict(x, delivery_week=labels[x["delivery_week"]],

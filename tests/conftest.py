@@ -50,6 +50,7 @@ AREAS = {
     "test_warmup_materialize.py": ("core",),
     "test_yield_rate_part_a.py": ("core", "capacity"),
     "test_warmup_soft_blank_attrs_fifo.py": ("core",),
+    "test_shelf_life_demand_file.py": ("core", "allocation"),
     "test_quantity_allocation.py": ("allocation", "core"),
     # capacity: the upper (capacity) layer
     "test_capacity_layer_trial.py": ("capacity",),

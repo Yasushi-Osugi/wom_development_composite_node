@@ -1,0 +1,203 @@
+{
+ "cm_check": [
+  {
+   "sku_id": "COS_Cream",
+   "region": "SG_Distributor",
+   "ppc_unit_profit": 4671.5,
+   "unit_revenue": 7130.0,
+   "add_back_rate": 0.0,
+   "derived": 4671.5,
+   "letter": 4671.5,
+   "diff": 0.0
+  },
+  {
+   "sku_id": "COS_Cream",
+   "region": "SG_EC",
+   "ppc_unit_profit": 8098.5,
+   "unit_revenue": 15065.0,
+   "add_back_rate": 0.1,
+   "derived": 9605.0,
+   "letter": 9605.0,
+   "diff": 0.0
+  },
+  {
+   "sku_id": "COS_Cream",
+   "region": "SG_Store",
+   "ppc_unit_profit": 6626.5,
+   "unit_revenue": 15870.0,
+   "add_back_rate": 0.45,
+   "derived": 13768.0,
+   "letter": 13768.0,
+   "diff": 0.0
+  },
+  {
+   "sku_id": "COS_Cream",
+   "region": "TH_Distributor",
+   "ppc_unit_profit": 4730.0,
+   "unit_revenue": 7200.0,
+   "add_back_rate": 0.0,
+   "derived": 4730.0,
+   "letter": 4730.0,
+   "diff": 0.0
+  },
+  {
+   "sku_id": "COS_Serum",
+   "region": "SG_Distributor",
+   "ppc_unit_profit": 5682.5,
+   "unit_revenue": 8510.0,
+   "add_back_rate": 0.0,
+   "derived": 5682.5,
+   "letter": 5682.5,
+   "diff": 0.0
+  },
+  {
+   "sku_id": "COS_Serum",
+   "region": "SG_EC",
+   "ppc_unit_profit": 9891.5,
+   "unit_revenue": 18055.0,
+   "add_back_rate": 0.1,
+   "derived": 11697.0,
+   "letter": 11697.0,
+   "diff": 0.0
+  },
+  {
+   "sku_id": "COS_Serum",
+   "region": "SG_Store",
+   "ppc_unit_profit": 8034.25,
+   "unit_revenue": 18975.0,
+   "add_back_rate": 0.45,
+   "derived": 16573.0,
+   "letter": 16573.0,
+   "diff": 0.0
+  },
+  {
+   "sku_id": "COS_Serum",
+   "region": "TH_Distributor",
+   "ppc_unit_profit": 5712.5,
+   "unit_revenue": 8550.0,
+   "add_back_rate": 0.0,
+   "derived": 5712.5,
+   "letter": 5712.5,
+   "diff": 0.0
+  }
+ ],
+ "P2a1": {
+  "demand": {
+   "COS_Cream|SG_Distributor": 754,
+   "COS_Cream|SG_EC": 299,
+   "COS_Cream|SG_Store": 416,
+   "COS_Cream|TH_Distributor": 299,
+   "COS_Serum|SG_Distributor": 897,
+   "COS_Serum|SG_EC": 455,
+   "COS_Serum|SG_Store": 546,
+   "COS_Serum|TH_Distributor": 390
+  },
+  "alloc": {
+   "COS_Cream|SG_Distributor": 666,
+   "COS_Cream|SG_EC": 299,
+   "COS_Cream|SG_Store": 416,
+   "COS_Cream|TH_Distributor": 299,
+   "COS_Serum|SG_Distributor": 793,
+   "COS_Serum|SG_EC": 455,
+   "COS_Serum|SG_Store": 546,
+   "COS_Serum|TH_Distributor": 390
+  },
+  "unallocated": {
+   "COS_Cream|SG_Distributor": 88,
+   "COS_Serum|SG_Distributor": 104
+  },
+  "supply_by_sku": {
+   "COS_Serum": 2184,
+   "COS_Cream": 1680
+  },
+  "order": {
+   "COS_Serum": [
+    "SG_Store",
+    "SG_EC",
+    "TH_Distributor",
+    "SG_Distributor"
+   ],
+   "COS_Cream": [
+    "SG_Store",
+    "SG_EC",
+    "TH_Distributor",
+    "SG_Distributor"
+   ]
+  },
+  "groups": null,
+  "file": "output/bsseaf_cosmetics/P2a1/allocation_qty_P2a1.csv"
+ },
+ "P2a2": {
+  "demand": {
+   "COS_Cream|SG_Distributor": 754,
+   "COS_Cream|SG_EC": 299,
+   "COS_Cream|SG_Store": 416,
+   "COS_Cream|TH_Distributor": 299,
+   "COS_Serum|SG_Distributor": 897,
+   "COS_Serum|SG_EC": 455,
+   "COS_Serum|SG_Store": 546,
+   "COS_Serum|TH_Distributor": 390
+  },
+  "alloc": {
+   "COS_Cream|SG_Distributor": 691,
+   "COS_Cream|SG_EC": 299,
+   "COS_Cream|SG_Store": 416,
+   "COS_Cream|TH_Distributor": 274,
+   "COS_Serum|SG_Distributor": 825,
+   "COS_Serum|SG_EC": 455,
+   "COS_Serum|SG_Store": 546,
+   "COS_Serum|TH_Distributor": 358
+  },
+  "unallocated": {
+   "COS_Cream|SG_Distributor": 63,
+   "COS_Cream|TH_Distributor": 25,
+   "COS_Serum|SG_Distributor": 72,
+   "COS_Serum|TH_Distributor": 32
+  },
+  "supply_by_sku": {
+   "COS_Serum": 2184,
+   "COS_Cream": 1680
+  },
+  "order": {
+   "COS_Serum": [
+    "SG_Store",
+    "SG_EC",
+    "TH_Distributor",
+    "SG_Distributor"
+   ],
+   "COS_Cream": [
+    "SG_Store",
+    "SG_EC",
+    "TH_Distributor",
+    "SG_Distributor"
+   ]
+  },
+  "groups": {
+   "COS_Serum": [
+    [
+     "SG_Store"
+    ],
+    [
+     "SG_EC"
+    ],
+    [
+     "TH_Distributor",
+     "SG_Distributor"
+    ]
+   ],
+   "COS_Cream": [
+    [
+     "SG_Store"
+    ],
+    [
+     "SG_EC"
+    ],
+    [
+     "TH_Distributor",
+     "SG_Distributor"
+    ]
+   ]
+  },
+  "file": "output/bsseaf_cosmetics/P2a2/allocation_qty_P2a2.csv"
+ }
+}

@@ -1,0 +1,708 @@
+{
+ "fixed_part_from_M0": 213719220.0,
+ "fixed_part_letter": 213719220.0,
+ "fixed_part_same": true,
+ "P2a1": {
+  "by_key": [
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_Distributor",
+    "q1": 754,
+    "q2": 666,
+    "q3": 88,
+    "q4": 666,
+    "q5": 0,
+    "cm": 4671.5,
+    "contribution_q4": 74669256.0,
+    "contribution_q2": 74669256.0,
+    "lost_q3": 9866208.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_EC",
+    "q1": 299,
+    "q2": 299,
+    "q3": 0,
+    "q4": 299,
+    "q5": 0,
+    "cm": 9605.0,
+    "contribution_q4": 68925480.0,
+    "contribution_q2": 68925480.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_Store",
+    "q1": 416,
+    "q2": 416,
+    "q3": 0,
+    "q4": 416,
+    "q5": 0,
+    "cm": 13768.0,
+    "contribution_q4": 137459712.0,
+    "contribution_q2": 137459712.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "TH_Distributor",
+    "q1": 299,
+    "q2": 299,
+    "q3": 0,
+    "q4": 297,
+    "q5": 2,
+    "cm": 4730.0,
+    "contribution_q4": 33715440.0,
+    "contribution_q2": 33942480.0,
+    "lost_q3": 0.0,
+    "lost_q5": 227040.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_Distributor",
+    "q1": 897,
+    "q2": 793,
+    "q3": 104,
+    "q4": 793,
+    "q5": 0,
+    "cm": 5682.5,
+    "contribution_q4": 108149340.0,
+    "contribution_q2": 108149340.0,
+    "lost_q3": 14183520.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_EC",
+    "q1": 455,
+    "q2": 455,
+    "q3": 0,
+    "q4": 455,
+    "q5": 0,
+    "cm": 11697.0,
+    "contribution_q4": 127731240.0,
+    "contribution_q2": 127731240.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_Store",
+    "q1": 546,
+    "q2": 546,
+    "q3": 0,
+    "q4": 546,
+    "q5": 0,
+    "cm": 16573.0,
+    "contribution_q4": 217172592.0,
+    "contribution_q2": 217172592.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "TH_Distributor",
+    "q1": 390,
+    "q2": 390,
+    "q3": 0,
+    "q4": 388,
+    "q5": 2,
+    "cm": 5712.5,
+    "contribution_q4": 53194800.0,
+    "contribution_q2": 53469000.0,
+    "lost_q3": 0.0,
+    "lost_q5": 274200.0
+   }
+  ],
+  "by_sku": {
+   "COS_Serum": {
+    "q1": 2288,
+    "q2": 2184,
+    "q3": 104,
+    "q4": 2182,
+    "q5": 2,
+    "contribution_q4": 506247972.0,
+    "contribution_q2": 506522172.0,
+    "lost_q3": 14183520.0,
+    "lost_q5": 274200.0
+   },
+   "COS_Cream": {
+    "q1": 1768,
+    "q2": 1680,
+    "q3": 88,
+    "q4": 1678,
+    "q5": 2,
+    "contribution_q4": 314769888.0,
+    "contribution_q2": 314996928.0,
+    "lost_q3": 9866208.0,
+    "lost_q5": 227040.0
+   }
+  },
+  "total": {
+   "q1": 4056,
+   "q2": 3864,
+   "q3": 192,
+   "q4": 3860,
+   "q5": 4,
+   "contribution_q4": 821017860.0,
+   "contribution_q2": 821519100.0,
+   "lost_q3": 24049728.0,
+   "lost_q5": 501240.0
+  },
+  "fixed_part": 213719220.0,
+  "evaluation": 607298640.0
+ },
+ "P2a2": {
+  "by_key": [
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_Distributor",
+    "q1": 754,
+    "q2": 691,
+    "q3": 63,
+    "q4": 691,
+    "q5": 0,
+    "cm": 4671.5,
+    "contribution_q4": 77472156.0,
+    "contribution_q2": 77472156.0,
+    "lost_q3": 7063308.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_EC",
+    "q1": 299,
+    "q2": 299,
+    "q3": 0,
+    "q4": 299,
+    "q5": 0,
+    "cm": 9605.0,
+    "contribution_q4": 68925480.0,
+    "contribution_q2": 68925480.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_Store",
+    "q1": 416,
+    "q2": 416,
+    "q3": 0,
+    "q4": 416,
+    "q5": 0,
+    "cm": 13768.0,
+    "contribution_q4": 137459712.0,
+    "contribution_q2": 137459712.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "TH_Distributor",
+    "q1": 299,
+    "q2": 274,
+    "q3": 25,
+    "q4": 270,
+    "q5": 4,
+    "cm": 4730.0,
+    "contribution_q4": 30650400.0,
+    "contribution_q2": 31104480.0,
+    "lost_q3": 2838000.0,
+    "lost_q5": 454080.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_Distributor",
+    "q1": 897,
+    "q2": 825,
+    "q3": 72,
+    "q4": 825,
+    "q5": 0,
+    "cm": 5682.5,
+    "contribution_q4": 112513500.0,
+    "contribution_q2": 112513500.0,
+    "lost_q3": 9819360.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_EC",
+    "q1": 455,
+    "q2": 455,
+    "q3": 0,
+    "q4": 455,
+    "q5": 0,
+    "cm": 11697.0,
+    "contribution_q4": 127731240.0,
+    "contribution_q2": 127731240.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_Store",
+    "q1": 546,
+    "q2": 546,
+    "q3": 0,
+    "q4": 546,
+    "q5": 0,
+    "cm": 16573.0,
+    "contribution_q4": 217172592.0,
+    "contribution_q2": 217172592.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "TH_Distributor",
+    "q1": 390,
+    "q2": 358,
+    "q3": 32,
+    "q4": 354,
+    "q5": 4,
+    "cm": 5712.5,
+    "contribution_q4": 48533400.0,
+    "contribution_q2": 49081800.0,
+    "lost_q3": 4387200.0,
+    "lost_q5": 548400.0
+   }
+  ],
+  "by_sku": {
+   "COS_Serum": {
+    "q1": 2288,
+    "q2": 2184,
+    "q3": 104,
+    "q4": 2180,
+    "q5": 4,
+    "contribution_q4": 505950732.0,
+    "contribution_q2": 506499132.0,
+    "lost_q3": 14206560.0,
+    "lost_q5": 548400.0
+   },
+   "COS_Cream": {
+    "q1": 1768,
+    "q2": 1680,
+    "q3": 88,
+    "q4": 1676,
+    "q5": 4,
+    "contribution_q4": 314507748.0,
+    "contribution_q2": 314961828.0,
+    "lost_q3": 9901308.0,
+    "lost_q5": 454080.0
+   }
+  },
+  "total": {
+   "q1": 4056,
+   "q2": 3864,
+   "q3": 192,
+   "q4": 3856,
+   "q5": 8,
+   "contribution_q4": 820458480.0,
+   "contribution_q2": 821460960.0,
+   "lost_q3": 24107868.0,
+   "lost_q5": 1002480.0
+  },
+  "fixed_part": 213719220.0,
+  "evaluation": 606739260.0
+ },
+ "P1": {
+  "by_key": [
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_Distributor",
+    "q1": 754,
+    "q2": 754,
+    "q3": 0,
+    "q4": 754,
+    "q5": 0,
+    "cm": 4671.5,
+    "contribution_q4": 84535464.0,
+    "contribution_q2": 84535464.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_EC",
+    "q1": 299,
+    "q2": 299,
+    "q3": 0,
+    "q4": 299,
+    "q5": 0,
+    "cm": 9605.0,
+    "contribution_q4": 68925480.0,
+    "contribution_q2": 68925480.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_Store",
+    "q1": 416,
+    "q2": 416,
+    "q3": 0,
+    "q4": 416,
+    "q5": 0,
+    "cm": 13768.0,
+    "contribution_q4": 137459712.0,
+    "contribution_q2": 137459712.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "TH_Distributor",
+    "q1": 299,
+    "q2": 211,
+    "q3": 88,
+    "q4": 209,
+    "q5": 2,
+    "cm": 4730.0,
+    "contribution_q4": 23725680.0,
+    "contribution_q2": 23952720.0,
+    "lost_q3": 9989760.0,
+    "lost_q5": 227040.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_Distributor",
+    "q1": 897,
+    "q2": 897,
+    "q3": 0,
+    "q4": 897,
+    "q5": 0,
+    "cm": 5682.5,
+    "contribution_q4": 122332860.0,
+    "contribution_q2": 122332860.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_EC",
+    "q1": 455,
+    "q2": 455,
+    "q3": 0,
+    "q4": 455,
+    "q5": 0,
+    "cm": 11697.0,
+    "contribution_q4": 127731240.0,
+    "contribution_q2": 127731240.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_Store",
+    "q1": 546,
+    "q2": 546,
+    "q3": 0,
+    "q4": 546,
+    "q5": 0,
+    "cm": 16573.0,
+    "contribution_q4": 217172592.0,
+    "contribution_q2": 217172592.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "TH_Distributor",
+    "q1": 390,
+    "q2": 286,
+    "q3": 104,
+    "q4": 284,
+    "q5": 2,
+    "cm": 5712.5,
+    "contribution_q4": 38936400.0,
+    "contribution_q2": 39210600.0,
+    "lost_q3": 14258400.0,
+    "lost_q5": 274200.0
+   }
+  ],
+  "by_sku": {
+   "COS_Serum": {
+    "q1": 2288,
+    "q2": 2184,
+    "q3": 104,
+    "q4": 2182,
+    "q5": 2,
+    "contribution_q4": 506173092.0,
+    "contribution_q2": 506447292.0,
+    "lost_q3": 14258400.0,
+    "lost_q5": 274200.0
+   },
+   "COS_Cream": {
+    "q1": 1768,
+    "q2": 1680,
+    "q3": 88,
+    "q4": 1678,
+    "q5": 2,
+    "contribution_q4": 314646336.0,
+    "contribution_q2": 314873376.0,
+    "lost_q3": 9989760.0,
+    "lost_q5": 227040.0
+   }
+  },
+  "total": {
+   "q1": 4056,
+   "q2": 3864,
+   "q3": 192,
+   "q4": 3860,
+   "q5": 4,
+   "contribution_q4": 820819428.0,
+   "contribution_q2": 821320668.0,
+   "lost_q3": 24248160.0,
+   "lost_q5": 501240.0
+  },
+  "fixed_part": 213719220.0,
+  "evaluation": 607100208.0
+ },
+ "C3b": {
+  "by_key": [
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_Distributor",
+    "q1": 754,
+    "q2": 754,
+    "q3": 0,
+    "q4": 754,
+    "q5": 0,
+    "cm": 4671.5,
+    "contribution_q4": 84535464.0,
+    "contribution_q2": 84535464.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_EC",
+    "q1": 299,
+    "q2": 299,
+    "q3": 0,
+    "q4": 299,
+    "q5": 0,
+    "cm": 9605.0,
+    "contribution_q4": 68925480.0,
+    "contribution_q2": 68925480.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "SG_Store",
+    "q1": 416,
+    "q2": 416,
+    "q3": 0,
+    "q4": 416,
+    "q5": 0,
+    "cm": 13768.0,
+    "contribution_q4": 137459712.0,
+    "contribution_q2": 137459712.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Cream",
+    "region": "TH_Distributor",
+    "q1": 299,
+    "q2": 299,
+    "q3": 0,
+    "q4": 299,
+    "q5": 0,
+    "cm": 4730.0,
+    "contribution_q4": 33942480.0,
+    "contribution_q2": 33942480.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_Distributor",
+    "q1": 897,
+    "q2": 897,
+    "q3": 0,
+    "q4": 897,
+    "q5": 0,
+    "cm": 5682.5,
+    "contribution_q4": 122332860.0,
+    "contribution_q2": 122332860.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_EC",
+    "q1": 455,
+    "q2": 455,
+    "q3": 0,
+    "q4": 455,
+    "q5": 0,
+    "cm": 11697.0,
+    "contribution_q4": 127731240.0,
+    "contribution_q2": 127731240.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "SG_Store",
+    "q1": 546,
+    "q2": 546,
+    "q3": 0,
+    "q4": 546,
+    "q5": 0,
+    "cm": 16573.0,
+    "contribution_q4": 217172592.0,
+    "contribution_q2": 217172592.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   {
+    "sku_id": "COS_Serum",
+    "region": "TH_Distributor",
+    "q1": 390,
+    "q2": 390,
+    "q3": 0,
+    "q4": 390,
+    "q5": 0,
+    "cm": 5712.5,
+    "contribution_q4": 53469000.0,
+    "contribution_q2": 53469000.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   }
+  ],
+  "by_sku": {
+   "COS_Serum": {
+    "q1": 2288,
+    "q2": 2288,
+    "q3": 0,
+    "q4": 2288,
+    "q5": 0,
+    "contribution_q4": 520705692.0,
+    "contribution_q2": 520705692.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   },
+   "COS_Cream": {
+    "q1": 1768,
+    "q2": 1768,
+    "q3": 0,
+    "q4": 1768,
+    "q5": 0,
+    "contribution_q4": 324863136.0,
+    "contribution_q2": 324863136.0,
+    "lost_q3": 0.0,
+    "lost_q5": 0.0
+   }
+  },
+  "total": {
+   "q1": 4056,
+   "q2": 4056,
+   "q3": 0,
+   "q4": 4056,
+   "q5": 0,
+   "contribution_q4": 845568828.0,
+   "contribution_q2": 845568828.0,
+   "lost_q3": 0.0,
+   "lost_q5": 0.0
+  },
+  "fixed_part": 213719220.0,
+  "evaluation": 631849608.0
+ },
+ "diff_vs_P2a1": {
+  "P2a1": 0.0,
+  "P2a2": -559380.0,
+  "P1": -198432.0,
+  "C3b": 24550968.0
+ },
+ "forecast_check": {
+  "P2a1": {
+   "serum_q2_forecast": 506522172,
+   "serum_q2": 506522172.0,
+   "cream_q2_forecast": 314996928,
+   "cream_q2": 314996928.0,
+   "same": true
+  },
+  "P2a2": {
+   "serum_q2_forecast": 506499132,
+   "serum_q2": 506499132.0,
+   "cream_q2_forecast": 314961828,
+   "cream_q2": 314961828.0,
+   "same": true
+  },
+  "P1": {
+   "serum_q2_forecast": 506447292,
+   "serum_q2": 506447292.0,
+   "cream_q2_forecast": 314873376,
+   "cream_q2": 314873376.0,
+   "same": true
+  }
+ },
+ "thai30": {
+  "cm_thai": {
+   "COS_Serum": 3912.5,
+   "COS_Cream": 3230.0
+  },
+  "order": {
+   "COS_Serum": [
+    "SG_Store",
+    "SG_EC",
+    "SG_Distributor",
+    "TH_Distributor"
+   ],
+   "COS_Cream": [
+    "SG_Store",
+    "SG_EC",
+    "SG_Distributor",
+    "TH_Distributor"
+   ]
+  },
+  "groups_p2a2": {
+   "COS_Serum": [
+    [
+     "SG_Store"
+    ],
+    [
+     "SG_EC"
+    ],
+    [
+     "SG_Distributor"
+    ],
+    [
+     "TH_Distributor"
+    ]
+   ],
+   "COS_Cream": [
+    [
+     "SG_Store"
+    ],
+    [
+     "SG_EC"
+    ],
+    [
+     "SG_Distributor"
+    ],
+    [
+     "TH_Distributor"
+    ]
+   ]
+  },
+  "p2a1_equals_P1": true,
+  "p2a2_equals_P1": true,
+  "p2a1": {
+   "COS_Cream|SG_Distributor": 754,
+   "COS_Cream|SG_EC": 299,
+   "COS_Cream|SG_Store": 416,
+   "COS_Cream|TH_Distributor": 211,
+   "COS_Serum|SG_Distributor": 897,
+   "COS_Serum|SG_EC": 455,
+   "COS_Serum|SG_Store": 546,
+   "COS_Serum|TH_Distributor": 286
+  }
+ }
+}
