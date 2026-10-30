@@ -1,0 +1,55 @@
+{
+ "C3a_capacity_same_as_trial": true,
+ "C3a": {
+  "q5_rows": {
+   "COS_Serum|TH_Distributor": 104,
+   "COS_Serum|Σ（製品）": 104,
+   "COS_Cream|TH_Distributor": 88,
+   "COS_Cream|Σ（製品）": 88,
+   "Σ（モデル全体）|": 192
+  },
+  "revenue": 1119737280.0,
+  "profit": 607601448.0,
+  "flow_check_market.csv_same_as_M0a": true,
+  "flow_check_nodes.csv_same_as_M0a": true
+ },
+ "M0t": {
+  "rows_changed": 2,
+  "profit": 604237608.0,
+  "tariff": 27612000.0,
+  "ledger_same": true
+ },
+ "P1": {
+  "rc": 0,
+  "flow_check_same": {
+   "flow_check_market.csv": true,
+   "flow_check_nodes.csv": true
+  },
+  "keys_differ": [
+   "allocation_file",
+   "evidence"
+  ]
+ },
+ "P2a1": {
+  "rc": 0,
+  "flow_check_same": {
+   "flow_check_market.csv": true,
+   "flow_check_nodes.csv": true
+  },
+  "keys_differ": [
+   "allocation_file",
+   "evidence"
+  ]
+ },
+ "P2a2": {
+  "rc": 0,
+  "flow_check_same": {
+   "flow_check_market.csv": true,
+   "flow_check_nodes.csv": true
+  },
+  "keys_differ": [
+   "allocation_file",
+   "evidence"
+  ]
+ }
+}

@@ -1,0 +1,6 @@
+entity_id,entity_name,kind,functional_currency,consolidated
+E_JP,日本本社,group,JPY,1
+E_SG,シンガポール販社,group,SGD,1
+EXT_SUP_JP,外部の供給者（日本）,external_supplier,JPY,0
+EXT_CH_SG_DIST,代理店（シンガポール）,external_channel,SGD,0
+EXT_CH_TH_DIST,代理店（タイ）,external_channel,THB,0

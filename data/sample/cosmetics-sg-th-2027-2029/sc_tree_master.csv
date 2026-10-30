@@ -1,0 +1,21 @@
+node_name,parent_node,product_name,node_type,side,lt_wks,region,ss_days,buffering_stock_flag,description,supply_role,bom_qty,yield_rate,init_stock_days,demand_envelope
+SP_COS_Serum,,COS_Serum,supply_point,outbound,0,,0,0,Supply Point bridge (COS_Serum),,,,,
+WH_JP_Released,SP_COS_Serum,COS_Serum,dad,outbound,1,JP,0,0,判定済み倉庫（日本・輸出前）。lt_wks 1 = 出荷判定の期間,,,,,
+DC_SG,WH_JP_Released,COS_Serum,dad,outbound,2,SG,0,0,シンガポールの DC。lt_wks 2 = 海上輸送,,,,,
+SG_Store,DC_SG,COS_Serum,leaf_out,outbound,1,SG_Store,14,0,直営店（自社 ①）,,,,,
+SG_EC,DC_SG,COS_Serum,leaf_out,outbound,1,SG_EC,0,0,公式 EC（自社ネット ③）,,,,,
+SG_Distributor,DC_SG,COS_Serum,leaf_out,outbound,1,SG_Distributor,0,0,代理店（外部 ②、sell-in）,,,,,
+DC_TH,WH_JP_Released,COS_Serum,dad,outbound,2,TH,0,0,タイの DC（港の近く）。lt_wks 2 = 海上輸送,,,,,
+TH_Distributor,DC_TH,COS_Serum,leaf_out,outbound,1,TH_Distributor,0,0,タイの代理店（外部 ②、sell-in）,,,,,
+Factory_JP,,COS_Serum,mom,inbound,,JP,0,0,日本の工場（調合・充填・包装）,,,0.97,,soft
+Materials_JP,Factory_JP,COS_Serum,leaf_in,inbound,1,JP,0,0,原料（日本で調達）,,,,,
+SP_COS_Cream,,COS_Cream,supply_point,outbound,0,,0,0,Supply Point bridge (COS_Cream),,,,,
+WH_JP_Released,SP_COS_Cream,COS_Cream,dad,outbound,1,JP,0,0,判定済み倉庫（日本・輸出前）。lt_wks 1 = 出荷判定の期間,,,,,
+DC_SG,WH_JP_Released,COS_Cream,dad,outbound,2,SG,0,0,シンガポールの DC。lt_wks 2 = 海上輸送,,,,,
+SG_Store,DC_SG,COS_Cream,leaf_out,outbound,1,SG_Store,14,0,直営店（自社 ①）,,,,,
+SG_EC,DC_SG,COS_Cream,leaf_out,outbound,1,SG_EC,0,0,公式 EC（自社ネット ③）,,,,,
+SG_Distributor,DC_SG,COS_Cream,leaf_out,outbound,1,SG_Distributor,0,0,代理店（外部 ②、sell-in）,,,,,
+DC_TH,WH_JP_Released,COS_Cream,dad,outbound,2,TH,0,0,タイの DC（港の近く）。lt_wks 2 = 海上輸送,,,,,
+TH_Distributor,DC_TH,COS_Cream,leaf_out,outbound,1,TH_Distributor,0,0,タイの代理店（外部 ②、sell-in）,,,,,
+Factory_JP,,COS_Cream,mom,inbound,,JP,0,0,日本の工場（調合・充填・包装）,,,0.97,,soft
+Materials_JP,Factory_JP,COS_Cream,leaf_in,inbound,1,JP,0,0,原料（日本で調達）,,,,,

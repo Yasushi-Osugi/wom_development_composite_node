@@ -1,0 +1,9 @@
+market_node,product_id,week,market_price,currency
+SG_Store,COS_Serum,2026-W37,165,SGD
+SG_Store,COS_Cream,2026-W37,138,SGD
+SG_EC,COS_Serum,2026-W37,157,SGD
+SG_EC,COS_Cream,2026-W37,131,SGD
+SG_Distributor,COS_Serum,2026-W37,74,SGD
+SG_Distributor,COS_Cream,2026-W37,62,SGD
+TH_Distributor,COS_Serum,2026-W37,1900,THB
+TH_Distributor,COS_Cream,2026-W37,1600,THB

@@ -1,0 +1,203 @@
+{
+  "backward": {
+    "cap_soft_envelope_count": 0
+  },
+  "case": "cosmetics-sg-th-2027-2029",
+  "config": {
+    "lot_flow_mode": "identity",
+    "plugins": [
+      "BufferingStockOptimizerPlugin",
+      "CapacityOverridePlugin",
+      "HolidayCalendarPlugin"
+    ]
+  },
+  "forward": {
+    "cap_hard_deferred_lot_weeks": 0,
+    "cap_hard_deferred_lots": 0,
+    "cap_soft_violation_count": 0
+  },
+  "period": {
+    "start": "2026-W37",
+    "weeks": 173
+  },
+  "ppc": {
+    "base_currency": "JPY",
+    "cost_base": 524434872.0,
+    "gross_margin_pct": 0.546448,
+    "gross_profit_base": 631849608.0,
+    "revenue_base": 1156284480.0,
+    "tariff_base": 0.0,
+    "total_lots": 1118,
+    "trust_event_count": 0
+  },
+  "products": [
+    "COS_Serum",
+    "COS_Cream"
+  ],
+  "psi": {
+    "COS_Cream": {
+      "DC_SG": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 1469,
+        "S": 1469,
+        "series_md5": "b79390c71493"
+      },
+      "DC_TH": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 299,
+        "S": 299,
+        "series_md5": "49544ee5e258"
+      },
+      "Factory_JP": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 1768,
+        "S": 1768,
+        "series_md5": "460c65a37c77"
+      },
+      "Materials_JP": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 1768,
+        "S": 1768,
+        "series_md5": "1d7badf79145"
+      },
+      "SG_Distributor": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 754,
+        "S": 754,
+        "series_md5": "6dc60cca0323"
+      },
+      "SG_EC": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 299,
+        "S": 299,
+        "series_md5": "005aea736ea9"
+      },
+      "SG_Store": {
+        "CO": 0,
+        "I_max": 6,
+        "I_sum": 832,
+        "P": 416,
+        "S": 416,
+        "series_md5": "1e7b236a34ac"
+      },
+      "SP_COS_Cream": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 1768,
+        "S": 1768,
+        "series_md5": "460c65a37c77"
+      },
+      "TH_Distributor": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 299,
+        "S": 299,
+        "series_md5": "7a35f427b0a3"
+      },
+      "WH_JP_Released": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 1768,
+        "S": 1768,
+        "series_md5": "e14e1b291dab"
+      }
+    },
+    "COS_Serum": {
+      "DC_SG": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 1898,
+        "S": 1898,
+        "series_md5": "f7e9c520ee62"
+      },
+      "DC_TH": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 390,
+        "S": 390,
+        "series_md5": "179cba90be27"
+      },
+      "Factory_JP": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 2288,
+        "S": 2288,
+        "series_md5": "aa8e5fdb9924"
+      },
+      "Materials_JP": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 2288,
+        "S": 2288,
+        "series_md5": "3bec6f16f1f4"
+      },
+      "SG_Distributor": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 897,
+        "S": 897,
+        "series_md5": "4447e2e5228e"
+      },
+      "SG_EC": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 455,
+        "S": 455,
+        "series_md5": "ab7c24ace98b"
+      },
+      "SG_Store": {
+        "CO": 0,
+        "I_max": 8,
+        "I_sum": 1092,
+        "P": 546,
+        "S": 546,
+        "series_md5": "fb4b96b0e2d8"
+      },
+      "SP_COS_Serum": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 2288,
+        "S": 2288,
+        "series_md5": "aa8e5fdb9924"
+      },
+      "TH_Distributor": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 390,
+        "S": 390,
+        "series_md5": "2be55f629035"
+      },
+      "WH_JP_Released": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 2288,
+        "S": 2288,
+        "series_md5": "9b2ce209581d"
+      }
+    }
+  }
+}

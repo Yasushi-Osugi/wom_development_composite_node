@@ -1,0 +1,17 @@
+edge_id,from_country,to_country,product_id,hs_code,tariff_rate,tariff_basis
+Materials_JP->Factory_JP,JP,JP,COS_Serum,3304,0,material_cost
+Materials_JP->Factory_JP,JP,JP,COS_Cream,3304,0,material_cost
+Factory_JP->WH_JP_Released,JP,JP,COS_Serum,3304,0,material_cost
+Factory_JP->WH_JP_Released,JP,JP,COS_Cream,3304,0,material_cost
+WH_JP_Released->DC_SG,JP,SG,COS_Serum,3304,0,transfer_price
+WH_JP_Released->DC_SG,JP,SG,COS_Cream,3304,0,transfer_price
+WH_JP_Released->DC_TH,JP,TH,COS_Serum,3304,0,transfer_price
+WH_JP_Released->DC_TH,JP,TH,COS_Cream,3304,0,transfer_price
+DC_SG->SG_Store,SG,SG,COS_Serum,3304,0,material_cost
+DC_SG->SG_Store,SG,SG,COS_Cream,3304,0,material_cost
+DC_SG->SG_EC,SG,SG,COS_Serum,3304,0,material_cost
+DC_SG->SG_EC,SG,SG,COS_Cream,3304,0,material_cost
+DC_SG->SG_Distributor,SG,SG,COS_Serum,3304,0,material_cost
+DC_SG->SG_Distributor,SG,SG,COS_Cream,3304,0,material_cost
+DC_TH->TH_Distributor,TH,TH,COS_Serum,3304,0,material_cost
+DC_TH->TH_Distributor,TH,TH,COS_Cream,3304,0,material_cost

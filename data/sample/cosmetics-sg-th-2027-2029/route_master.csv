@@ -1,0 +1,9 @@
+sku_id,region,src_region,dst_region,hs_code,product_type,assembly_cost_usd_per_lot
+COS_Serum,SG_Store,JP,SG,,finished_goods,0
+COS_Serum,SG_EC,JP,SG,,finished_goods,0
+COS_Serum,SG_Distributor,JP,SG,,finished_goods,0
+COS_Serum,TH_Distributor,JP,TH,,finished_goods,0
+COS_Cream,SG_Store,JP,SG,,finished_goods,0
+COS_Cream,SG_EC,JP,SG,,finished_goods,0
+COS_Cream,SG_Distributor,JP,SG,,finished_goods,0
+COS_Cream,TH_Distributor,JP,TH,,finished_goods,0

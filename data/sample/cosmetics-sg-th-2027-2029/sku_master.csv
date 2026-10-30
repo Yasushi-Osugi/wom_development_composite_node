@@ -1,0 +1,9 @@
+sku_id,sku_name,region,uom,unit_cost,safety_stock_wks,lead_time_wks,order_multiple,max_order_qty,shelf_life_wks,active,selling_price,dso_wks,dpo_wks
+COS_Serum,Serum (generic),SG_Store,CS,,,4,,,156,True,,,
+COS_Serum,Serum (generic),SG_EC,CS,,,4,,,156,True,,,
+COS_Serum,Serum (generic),SG_Distributor,CS,,,4,,,156,True,,,
+COS_Serum,Serum (generic),TH_Distributor,CS,,,4,,,156,True,,,
+COS_Cream,Cream (generic),SG_Store,CS,,,4,,,156,True,,,
+COS_Cream,Cream (generic),SG_EC,CS,,,4,,,156,True,,,
+COS_Cream,Cream (generic),SG_Distributor,CS,,,4,,,156,True,,,
+COS_Cream,Cream (generic),TH_Distributor,CS,,,4,,,156,True,,,

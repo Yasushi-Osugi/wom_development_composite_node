@@ -1,0 +1,12 @@
+node_id,node_name,node_type,lat,lon,sku_id,region,description
+Factory_JP,日本の工場（化粧品）,mother_plant,35.0,138.4,,JP,調合・充填・包装
+Materials_JP,原料の調達（日本）,sku_supplier,35.3,138.8,,JP,原料
+WH_JP_Released,判定済み倉庫（日本の港）,region_dc,35.4,139.6,,JP,輸出前の判定済み在庫
+DC_SG,シンガポールの DC,region_dc,1.33,103.75,,SG,現地の物流拠点
+SG_Store,直営店（シンガポール）,marketing,1.3,103.83,,SG_Store,直営店
+SG_EC,公式 EC（シンガポール）,marketing,1.35,103.87,,SG_EC,公式 EC
+SG_Distributor,代理店（シンガポール）,marketing,1.32,103.89,,SG_Distributor,代理店
+SP_COS_Serum,SP_COS_Serum（調達本部）,procurement,35.2,139.0,,JP,仮想ブリッジノード
+SP_COS_Cream,SP_COS_Cream（調達本部）,procurement,35.2,139.0,,JP,仮想ブリッジノード
+DC_TH,タイの DC（港の近く）,region_dc,13.1,100.9,,TH,現地の物流拠点
+TH_Distributor,代理店（バンコク）,marketing,13.75,100.5,,TH_Distributor,代理店

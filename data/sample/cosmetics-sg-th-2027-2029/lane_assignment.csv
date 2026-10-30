@@ -1,0 +1,9 @@
+sku_id,leaf_node_name,mom_node_id,priority
+COS_Serum,SG_Store,IN:mom:Factory_JP:COS_Serum,1
+COS_Serum,SG_EC,IN:mom:Factory_JP:COS_Serum,1
+COS_Serum,SG_Distributor,IN:mom:Factory_JP:COS_Serum,1
+COS_Serum,TH_Distributor,IN:mom:Factory_JP:COS_Serum,1
+COS_Cream,SG_Store,IN:mom:Factory_JP:COS_Cream,1
+COS_Cream,SG_EC,IN:mom:Factory_JP:COS_Cream,1
+COS_Cream,SG_Distributor,IN:mom:Factory_JP:COS_Cream,1
+COS_Cream,TH_Distributor,IN:mom:Factory_JP:COS_Cream,1

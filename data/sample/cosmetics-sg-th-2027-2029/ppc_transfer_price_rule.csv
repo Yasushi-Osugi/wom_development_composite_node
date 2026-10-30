@@ -1,0 +1,3 @@
+mom_node,product_id,method,margin_rate,fixed_price,currency
+Factory_JP,COS_Serum,fixed,0,6000,JPY
+Factory_JP,COS_Cream,fixed,0,5000,JPY

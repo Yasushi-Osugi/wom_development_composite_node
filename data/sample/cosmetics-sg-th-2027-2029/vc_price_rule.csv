@@ -1,0 +1,7 @@
+edge_id,product_id,price_type,week,price,currency
+WH_JP_Released->DC_SG,COS_Serum,intercompany,2026-W37,6000,JPY
+WH_JP_Released->DC_SG,COS_Cream,intercompany,2026-W37,5000,JPY
+DC_SG->SG_Distributor,COS_Serum,wholesale,2026-W37,74,SGD
+DC_SG->SG_Distributor,COS_Cream,wholesale,2026-W37,62,SGD
+DC_TH->TH_Distributor,COS_Serum,wholesale,2026-W37,1900,THB
+DC_TH->TH_Distributor,COS_Cream,wholesale,2026-W37,1600,THB

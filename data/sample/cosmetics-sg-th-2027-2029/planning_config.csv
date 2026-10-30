@@ -1,0 +1,5 @@
+key,value
+warmup_lt,17
+lot_flow_mode,identity
+cpu_size,24
+recommended_plugins,"HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin"

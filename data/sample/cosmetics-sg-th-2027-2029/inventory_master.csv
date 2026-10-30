@@ -1,0 +1,9 @@
+sku_id,region,on_hand_qty,on_order_qty,week
+COS_Serum,SG_Store,0,0,2027-W01
+COS_Serum,SG_EC,0,0,2027-W01
+COS_Serum,SG_Distributor,0,0,2027-W01
+COS_Serum,TH_Distributor,0,0,2027-W01
+COS_Cream,SG_Store,0,0,2027-W01
+COS_Cream,SG_EC,0,0,2027-W01
+COS_Cream,SG_Distributor,0,0,2027-W01
+COS_Cream,TH_Distributor,0,0,2027-W01

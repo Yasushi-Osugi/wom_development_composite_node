@@ -22,6 +22,9 @@ ev.md
 
 oil-global-2027.md
   Global oil supply chain risk comparison across regions and route structures.
+
+cosmetics.md
+  Premium skincare from Japan to Singapore and Thailand: launch, capacity, delivery age, and allocation.
 ```
 
 ## Scenario documentation rule
