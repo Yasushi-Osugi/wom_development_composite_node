@@ -1,8 +1,8 @@
 # BS-SEAF 検証報告（化粧品の事例）— 骨組み
 
-- 版：v0.1（2026-10-30）。骨組み（章立て・各章に書くこと・根拠の文書）。本文はこの骨組みを大杉さんが確かめた後に書く
+- 版：v0.2（2026-10-30）。骨組み（章立て・各章に書くこと・根拠の文書）。本文はこの骨組みを大杉さんが確かめた後に書く
 - 作成：Claude君（設計・Knowledge Curator）。骨組みの観点：GPT君（2026-10-30 の進め方の確認）
-- 対象の期間：2026-10-24（化粧品設計書 v0.1）〜 2026-10-30（配分の試行 P2-a）
+- 対象の期間：2026-10-24（化粧品設計書 v0.1）〜 2026-10-30（正式なサンプルとしての登録と、大杉さんの GUI での確認）
 - 根拠の版：`1377c42`（`wom-v1r5m1_cap_trial`）
 
 ---
@@ -22,7 +22,7 @@
 | 目的：モデルを完成させることではなく、BS-SEAF の手順（Self-Evolving Modeling Loop の 8 段階）が、お米とは別の業務に使えるかを確かめる | `requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.1.md` §0.1 |
 | 題材：架空の日本製高級スキンケアのシンガポール展開（2 SKU、3 チャネル、後にタイの代理店） | 同 §1 |
 | 役割：大杉さん（Business Semantics Owner・判断）、Claude君（設計・Curator）、Code君（実装・実行の根拠）、GPT君（独立のレビュー）、Grok（読解試験） | 意味体系 README、各依頼書 |
-| 範囲の外：実在の企業の値、業務に使える精度の金額、GUI の検証 | 金額の仮定 §0 |
+| 範囲の外：実在の企業の値、業務に使える精度の金額、実企業での運用。段階 6 の範囲は「教育・実証用のモデルの正式な登録と実行」 | 金額の仮定 §0、登録の依頼書 §0 |
 
 ### 第2章 8 段階のループとの対応
 
@@ -35,11 +35,13 @@
 | 3. Semantic Gap Analysis（Identifying Required Changes） | WOM との対応表、中心の差分（品質・残存期間）、ALC-Q01〜Q10、Data／Parameter／Core の区別（図の Modification Points） | 設計書 §3、対応表 v0.2、U3 資料 §4 | Claude君 |
 | 4. Trial Model Definition and Execution（in a Test Environment） | 試行の写し（`output/bsseaf_cosmetics/`）：B0〜B3、C1〜C3b、P0・P1、M0、P2-a | 各試行の報告書 | Code君 |
 | 5. Model Selection（Human Decision） | D1〜D25、J1〜J4、M1〜M8、U3 | 設計書 §6、対応表 §4、金額の仮定 §5.1、U3 資料 §6 | 大杉さん |
-| 6. Model Application and Execution | Core・道具の変更は行った（歩留まり Part A、warmup の cap_soft、木の属性の空欄、`shelf_life_check`、数量配分モード、D8）。**化粧品のモデルそのものは試行の写しのままで、正式なモデル（`data/sample/`）として適用・実行していない** | 各実装の報告書 | Code君 |
+| 6. Model Application and Execution | 採用したモデル（M0）を正式なサンプル `data/sample/cosmetics-sg-th-2027-2029/` に登録し、通常の CLI・GUI で実行した（golden・シナリオの文書・README、比べる案の再現の手順）。あわせて Core・道具の変更（歩留まり Part A、warmup の cap_soft、木の属性の空欄、`shelf_life_check`、数量配分モード、D8） | 登録の報告書 `WOM_BSSEAF_Cosmetics_RegisterSample_Report.md`、大杉さんの GUI での確認（2026-10-30）、各実装の報告書 | Code君・大杉さん（GUI） |
 | 7. Independent Validation | GPT君の独立のレビュー（再計算、小さな再現、コードの確認）、読解試験（Claude Code・Grok・GPT君）。Code君の受入条件の確認は、実装者自身の確認なので独立ではない | GPT君のレビューの記録、読解試験の結果 | GPT君・Grok・新しいセッション |
 | 8. Knowledge and Evidence Capture（in the Knowledge Base） | 図の「Knowledge Base Update」の 4 種類で整理する：**Definitions**（意味体系）、**Applicability Conditions**（D7 の適用条件、warmup、境界の効果）、**Indexes**（Start Here §0.1・R20〜R22・落とし穴）、**Evidence**（報告書と付録、採否と根拠の二軸） | 意味体系、Start Here、報告書 | Claude君（Curator） |
 
-**段階 6 は、この事例では十分に検証していない**ことを本文に明記する。試行（段階 4）で選んだ（段階 5）モデルを、正式なモデルとして適用する段階を通っていないため。図の左側の 2 つの記憶（Business Semantic Knowledge Base、Application-Specific Models and Data Structures）のうち、更新したのは主に前者と、Core・道具（後者の一部）である。
+**段階 6 は、教育・実証用のモデルの範囲で通った**ことを本文に書く。試行（段階 4）で選んだ（段階 5）M0 を正式なサンプルとして登録し、受入条件 S1〜S9 を満たした（Flow Check と PPC の出力が M0 とバイト単位で同じ、売上 1,156,284,480 円・試算利益 631,849,608 円、実行の前後でフォルダのハッシュが変わらない、`quick_check --full` 992 passed）。大杉さんが GUI で 4 点（プラグインの組、PSI の開店 2027-W14・店頭在庫・工場の平準化、PPC の「評価済み」と金額、World Map の日本 → シンガポール・タイの流れ）を確かめた。これで図の左側の 2 つの記憶（Business Semantic Knowledge Base、Application-Specific Models and Data Structures）の両方を更新したことになる。実企業での運用は範囲の外のまま。
+
+段階 6 で見つかった表示の誤読のおそれ（Tariff & FX の表示と原因の食い違い、単価が無いときの Inv Value・CCC の 0、同じ名前の GM が 53.4% と 54.6% の 2 つ）は、段階 7・8 への入力として第6章に書く（Start Here §7 の未解決の課題）。
 
 ループが何周したかを、時系列の図（matplotlib）で示す：品質と残存期間 → 店頭在庫と平準化 → 変更課題①〜③ → 供給配分の意味 → 配分の試行 → 金額 → 利益による配分。周ごとに、段階 1→8 のどこを通り、どこで段階 2・3 に戻ったかを示す。
 
@@ -76,10 +78,11 @@ E4（配分経路の見落とし）→ 三層設計 MD・意味体系・Start He
 | P0・P1 | P1 の ⑤＝0 | ⑤＝4（境界の効果） | |
 | M0 | 8 通りの 1 個当たりの損益 | 一致 | Value Chain の G1〜G5 |
 | P2-a | 規則の差 −58,140 円 | −559,380 円（境界の ⑤ が −501,240 円） | P2-a1 は P1 より 198,432 円良いが、P0（配分しない）に 302,808 円届かない |
+| 登録（段階 6） | M0 と同じ結果 | Flow Check・PPC の出力がバイト単位で一致、年齢の最大 6 週、Value Chain の差 303,211,896 円（G1＋G2）を再現、比べる案（C3a・P1・P2-a・M0t）を基準から再現 | 表示の誤読のおそれ 3 件（申し送り） |
 
 ③ 未配分と ⑤ 配分後の未充足を分けて書く。配分の方針の効果と、週への需要の展開・計画の境界による ⑤ の影響を分けて残す。
 
-根拠：各試行の報告書（`docs/development/WOM_BSSEAF_Cosmetics_Trial_Report.md`、`..._Trial_B2_Report.md`、`..._ChangeTasks123_Report.md`、`..._AllocationP0P1_Report.md`、`..._Money_M0_Report.md`、`..._AllocationP2a_Report.md`）、化粧品設計書 §8。
+根拠：各試行の報告書（`docs/development/WOM_BSSEAF_Cosmetics_Trial_Report.md`、`..._Trial_B2_Report.md`、`..._ChangeTasks123_Report.md`、`..._AllocationP0P1_Report.md`、`..._Money_M0_Report.md`、`..._AllocationP2a_Report.md`、`..._RegisterSample_Report.md`）、化粧品設計書 §8。
 
 ### 第6章 一般化と次の課題
 
@@ -94,7 +97,7 @@ E4（配分経路の見落とし）→ 三層設計 MD・意味体系・Start He
 
 **6.2 化粧品に固有の仮定**：金額の仮定（M1〜M8）、店舗の運営費の近似、タイの関税、U3 の採用（化粧品に限る）。
 
-**6.3 未検証のこと**：別の業務への適用、GUI、人間の読み手による読解試験、Value Chain の金額の層、固定費（F 型）。
+**6.3 未検証のこと**：別の業務への適用、実企業での運用（段階 6 は教育・実証用の範囲）、人間の読み手による読解試験、Value Chain の金額の層、固定費（F 型）、GUI の表示の誤読のおそれ（段階 6 で発見）。
 
 **6.4 次の課題の順**：U4（対象期間の配分の数量を、各週の需要にどう当てるかの業務の方針を先に決め、その後に配分のファイルに週の列を持たせるかを決める）→ 次にどの経営判断を可能にしたいかに応じて、Value Chain の拡張（G1〜G5）か固定費（F 型）。
 
@@ -108,9 +111,10 @@ E4（配分経路の見落とし）→ 三層設計 MD・意味体系・Start He
 ## 大杉さんに確かめたいこと
 
 1. 章立てと、各章に書くことの過不足。
-2. 段階 6 を「この事例では十分に検証していない」と書くこと（化粧品のモデルを正式なモデルにする作業を、検証の一部として行うかどうか）。
+2. ~~段階 6 を「この事例では十分に検証していない」と書くこと~~ → 決定済み：正式なサンプルへの登録までを検証に含めた（大杉さん、2026-10-30）。登録と GUI の確認を終えた。
 3. 本文を書いたあと、GPT君のレビューを経るか。
 
 | 版 | 日付 | 内容 |
 |---|---|---|
 | v0.1 | 2026-10-30 | 骨組み。同日、第2章を note の図の段階の名前に合わせ、E1〜E5 を段階に対応させた |
+| v0.2 | 2026-10-30 | 段階 6 を、正式なサンプルへの登録と大杉さんの GUI での確認の結果に書き換えた。第5章に登録の行、第6章の未検証に表示の課題 |
