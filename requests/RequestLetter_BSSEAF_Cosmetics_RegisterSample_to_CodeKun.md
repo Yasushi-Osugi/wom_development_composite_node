@@ -3,7 +3,7 @@
 - 宛先：Code君（Claude Code、Windows）
 - 依頼者：大杉（WOM Project Owner）
 - 起草：Claude君（2026-10-30）。進め方：GPT君の確認（2026-10-30）に従う
-- 版：v0.1（同日、Claude君の見直しで 3 か所を足した：C3a の能力の値を文書に写す、休業日なしの仮定、生成の道具が `output/` に残ること）
+- 版：v0.2（2026-10-30）。v0.1 に、Claude君の見直し（C3a の能力の値を文書に写す、休業日なしの仮定、登録した CSV を正本とする）と、GPT君の確認（`217160c`）による受入条件の追記（S3 の製品の年齢、S4 の比べる値、S5 のハッシュ、完了の報告の書き分け）を加えた。R1・R2 は決定済み
 - 作業フォルダ：`C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r5m1_cap_trial`（起草時の先頭 `e9741a6`。この依頼書は大杉さんが先に commit する。着手時の SHA を報告書に記録する）
 - 出どころ：BS-SEAF の図の段階 6「Model Application and Execution」、検証報告の骨組み `requests/BSSEAF_Verification_Cosmetics_Report_Outline_v0.1.md`、金額の試行 M0 の報告書と付録（`docs/development/WOM_BSSEAF_Cosmetics_Money_M0_Report.md`・`..._appendix/`）、`AGENTS.md` §5（Scenario rules）、`docs/scenarios/README.md`
 - 種別：**サンプルのモデル・golden・文書の追加**。エンジン・道具のコードは変えない。既存の golden は変わらないこと
@@ -21,12 +21,10 @@
 
 ## 1. 決めてほしいこと（大杉さん、この依頼書を Code君に渡す前に）
 
-| # | 事項 | Claude君の推奨 |
+| # | 事項 | 決定（大杉さん、2026-10-30。GPT君も賛成） |
 |---|---|---|
-| R1 | モデルのフォルダの名前 | **`cosmetics-sg-th-2027-2029`**（題材・市場・販売の年。既存の `smartx-2027-2029` などに合わせる。シンガポールとタイの両方を含むことを名前に出す） |
-| R2 | 比べる案（C3a・P1・P2-a）の残し方 | 手順と配分のファイルとして、シナリオの文書と既存の付録に残す（モデルのフォルダは 1 つ） |
-
-以下は推奨どおりに決まったものとして書く。
+| R1 | モデルのフォルダの名前 | **`cosmetics-sg-th-2027-2029`**（題材・市場・販売の年） |
+| R2 | 比べる案（C3a・P1・P2-a）の残し方 | 基準のモデルを 1 つ登録し、比べる案は手順と配分のファイルとして、シナリオの文書と既存の付録に残す |
 
 ## 2. 作業
 
@@ -70,9 +68,9 @@
 |---|---|
 | S1 | **モデルの保存**：計画・金額の入力と設定が全部 git の管理下にあり、`output/` や登録していないスクリプトに依存しない |
 | S2 | **通常の CLI の実行**：`run_headless_from_folder` で計画と PPC が動く。期間・プラグインの組が M0 と同じ。PPC は `評価済み` |
-| S3 | **結果の再現**：数量（Flow Check 表1・表2 の明細）と PPC（全体の売上 1,156,284,480 円・試算利益 631,849,608 円、チャネル × SKU の 8 通りの 1 個当たりの値）が M0 と一致する。差があれば理由を書く |
-| S4 | **Value Chain**：`tools.valuechain_run`（golden ができたので `--plugins` の既定が golden の組になる）が最後まで動く。G1〜G5 は既知の限界として README に書いてあり、Value Chain の利益が PPC より G1＋G2 の分多いことを確かめる |
-| S5 | **冪等**：CLI・GUI の実行の後、`git status` で追跡しているファイルが変わっていない |
+| S3 | **結果の再現**：数量（Flow Check 表1・表2 の明細）と PPC（全体の売上 1,156,284,480 円・試算利益 631,849,608 円、チャネル × SKU の 8 通りの 1 個当たりの値）が M0 と一致する。差があれば理由を書く。**製品の年齢**（化粧品の業務の条件：納品時の年齢 52 週以内）も確かめる：`python -m tools.shelf_life_check --model-dir data/sample/cosmetics-sg-th-2027-2029 --max-age-weeks 52`。最大の年齢と、52 週を超えた納品の数を報告書に書く（C3b の値：最大 6 週、52 週超 0） |
+| S4 | **Value Chain**：`tools.valuechain_run`（golden ができたので `--plugins` の既定が golden の組になる）が最後まで動く。G1〜G5 は既知の限界として README に書いてある。**比べる値は M0 の報告書の T11 と同じ条件に固定する**：`vc_ppc_comparison.csv` の「利益 合計（全期間、消去前）」、対象 2026-W37〜2029-W52、JPY。期待値は PPC 631,849,608 円、台帳 935,061,504 円、差 303,211,896 円（G1＋G2）。既知の差を再現する確認であり、法人別・連結の損益が業務の要求を満たしたという判定は引き続き保留する |
+| S5 | **冪等**：登録の作業中のモデルは未追跡なので、`git status` では書き換わりが分からない。**CLI・GUI の実行の直前と直後で、登録するファイルの一覧と SHA256 を比べる**（既存の `wom.lovem.observer.model_hashes()` を使える。標準のコードは足さない・変えない）。既存の追跡しているファイルに変更が無いことは `git status` でも確かめる |
 | S6 | **回帰**：既存の golden（通常 15・legacy 3）が変わらない。新しい golden が通る。`test_public_readiness`・`test_no_real_names` が通る。最後に `python -m tools.quick_check --full` を 1 回（サンプルと golden をリポジトリに足す変更のため） |
 | S7 | **GUI**：Windows の GUI でモデルを読み込み、計画と PPC を実行できる。GUI の確認の道具（`tools/gui_*_check.py` のうち、読み込み・計画・PPC を確かめるもの）があれば回し、画面の画像を報告書に付ける。**最後の確認は大杉さんが GUI で行う**（§4） |
 | S8 | **説明と限界**：README とシナリオの文書に、業務の意味・仮定・単位・実行の方法・期待する結果・既知の限界が書いてある |
@@ -94,8 +92,10 @@
 ## 6. 報告書と commit
 
 - 報告書：`docs/development/WOM_BSSEAF_Cosmetics_RegisterSample_Report.md`。着手時の SHA、§2 で作ったもの、§3 の S1〜S9 の結果（実行した後の数）、GUI の画像、止める理由と申し送り、Start Here への追記の案。
+- **完了の報告では、Code君の作業の完了と、ほかの担当の確認を分けて書く**：S7 の最後の GUI の確認は「Owner の確認待ち」、S9 の Start Here への実際の追記は「索引の更新待ち（Claude君）」として残す。
 - commit メッセージの下書きを、使われていない次の番号の `commit_msg<N>.txt` に書く。git の操作は大杉さんが行う。
 
 | 版 | 日付 | 内容 |
 |---|---|---|
 | v0.1 | 2026-10-30 | 初版 |
+| v0.2 | 2026-10-30 | Claude君の見直し 3 点、GPT君の確認（`217160c`）による S3・S4・S5 と完了の報告の追記、R1・R2 の決定 |
