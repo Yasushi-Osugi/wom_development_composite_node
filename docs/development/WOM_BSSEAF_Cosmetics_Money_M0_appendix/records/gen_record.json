@@ -1,0 +1,236 @@
+{
+ "planning_start": "2026-W37",
+ "n_weeks": 173,
+ "week_last": "2029-W52",
+ "M0": {
+  "source": "C3b",
+  "thai_tariff": 0.0,
+  "quantity_inputs_equal_to_source": true,
+  "quantity_input_sha256": {
+   "capacity_plan.csv": "aaa92bea0e85163790265da3c4c07e03433475a6ad98e4331f5c57e64d53ea82",
+   "decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+   "demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+   "edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+   "holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+   "inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+   "lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+   "node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+   "node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+   "planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+   "push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+   "route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+   "sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+   "sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+   "vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+   "vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+   "vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98"
+  },
+  "money_sha256": {
+   "ppc_edge_cost_rule.csv": "b5f82cfd0c6e8c1b4d25e98b12f47bee67c147aa8cd834a5cdede1d82dd00577",
+   "ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+   "ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+   "ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+   "ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+   "ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+   "ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+   "ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+   "ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+   "vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2"
+  }
+ },
+ "M0t": {
+  "source": "M0",
+  "thai_tariff": 0.3,
+  "quantity_inputs_equal_to_source": true,
+  "quantity_input_sha256": {
+   "capacity_plan.csv": "aaa92bea0e85163790265da3c4c07e03433475a6ad98e4331f5c57e64d53ea82",
+   "decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+   "demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+   "edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+   "holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+   "inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+   "lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+   "node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+   "node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+   "planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+   "push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+   "route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+   "sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+   "sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+   "vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+   "vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+   "vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98"
+  },
+  "money_sha256": {
+   "ppc_edge_cost_rule.csv": "b5f82cfd0c6e8c1b4d25e98b12f47bee67c147aa8cd834a5cdede1d82dd00577",
+   "ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+   "ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+   "ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+   "ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+   "ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+   "ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+   "ppc_tariff_rule.csv": "6ca8a69d871caab4afcbbd6ece07e230aea6a0a4d8d967cdbee453457f30487c",
+   "ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+   "vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2"
+  }
+ },
+ "M0a": {
+  "source": "C3a",
+  "thai_tariff": 0.0,
+  "quantity_inputs_equal_to_source": true,
+  "quantity_input_sha256": {
+   "capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+   "decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+   "demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+   "edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+   "holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+   "inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+   "lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+   "node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+   "node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+   "planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+   "push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+   "route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+   "sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+   "sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+   "vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+   "vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+   "vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98"
+  },
+  "money_sha256": {
+   "ppc_edge_cost_rule.csv": "b5f82cfd0c6e8c1b4d25e98b12f47bee67c147aa8cd834a5cdede1d82dd00577",
+   "ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+   "ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+   "ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+   "ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+   "ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+   "ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+   "ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+   "ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+   "vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2"
+  }
+ },
+ "node_map": [
+  {
+   "product_id": "COS_Serum",
+   "node_id": "DC_SG",
+   "node_type": "dad",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "DC_TH",
+   "node_type": "dad",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "Factory_JP",
+   "node_type": "mom",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "Materials_JP",
+   "node_type": "leaf_in",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "SG_Distributor",
+   "node_type": "leaf_out",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "SG_EC",
+   "node_type": "leaf_out",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "SG_Store",
+   "node_type": "leaf_out",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "SP_COS_Serum",
+   "node_type": "supply_point",
+   "used_in_money_files": false
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "TH_Distributor",
+   "node_type": "leaf_out",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Serum",
+   "node_id": "WH_JP_Released",
+   "node_type": "dad",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "DC_SG",
+   "node_type": "dad",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "DC_TH",
+   "node_type": "dad",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "Factory_JP",
+   "node_type": "mom",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "Materials_JP",
+   "node_type": "leaf_in",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "SG_Distributor",
+   "node_type": "leaf_out",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "SG_EC",
+   "node_type": "leaf_out",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "SG_Store",
+   "node_type": "leaf_out",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "SP_COS_Cream",
+   "node_type": "supply_point",
+   "used_in_money_files": false
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "TH_Distributor",
+   "node_type": "leaf_out",
+   "used_in_money_files": true
+  },
+  {
+   "product_id": "COS_Cream",
+   "node_id": "WH_JP_Released",
+   "node_type": "dad",
+   "used_in_money_files": true
+  }
+ ],
+ "names_not_in_tree": []
+}

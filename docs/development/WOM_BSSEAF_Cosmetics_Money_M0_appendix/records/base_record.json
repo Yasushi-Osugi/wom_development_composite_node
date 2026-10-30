@@ -1,0 +1,158 @@
+{
+ "C3b": {
+  "source": "output/bsseaf_cosmetics/C3b",
+  "copy_equal_to_source": true,
+  "inputs_unchanged_by_run": true,
+  "changed_by_run": [],
+  "quantity_input_sha256": {
+   "capacity_plan.csv": "aaa92bea0e85163790265da3c4c07e03433475a6ad98e4331f5c57e64d53ea82",
+   "decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+   "demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+   "edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+   "holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+   "inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+   "lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+   "node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+   "node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+   "planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+   "push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+   "route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+   "sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+   "sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+   "vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+   "vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+   "vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98"
+  },
+  "period": {
+   "start": "2026-W37",
+   "weeks": 173
+  },
+  "config": {
+   "plugins": [
+    "BufferingStockOptimizerPlugin",
+    "CapacityOverridePlugin",
+    "Capture",
+    "HolidayCalendarPlugin"
+   ],
+   "lot_flow_mode": "identity",
+   "plugins_source": "recommended_plugins"
+  },
+  "week_first": "2026-W37",
+  "week_last": "2029-W52",
+  "n_weeks": 173,
+  "planning_config": {
+   "warmup_lt": "17",
+   "lot_flow_mode": "identity",
+   "cpu_size": "24",
+   "recommended_plugins": "HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin"
+  },
+  "cpu_size": 24,
+  "ppc_status": "未評価",
+  "demand_lots": {
+   "COS_Serum": {
+    "SG_Store": 546,
+    "SG_EC": 455,
+    "SG_Distributor": 897,
+    "TH_Distributor": 390
+   },
+   "COS_Cream": {
+    "SG_Store": 416,
+    "SG_EC": 299,
+    "SG_Distributor": 754,
+    "TH_Distributor": 299
+   }
+  },
+  "ship_lots": {
+   "COS_Serum": {
+    "SG_Store": 546,
+    "SG_EC": 455,
+    "SG_Distributor": 897,
+    "TH_Distributor": 390
+   },
+   "COS_Cream": {
+    "SG_Store": 416,
+    "SG_EC": 299,
+    "SG_Distributor": 754,
+    "TH_Distributor": 299
+   }
+  }
+ },
+ "C3a": {
+  "source": "output/bsseaf_cosmetics/C3a",
+  "copy_equal_to_source": true,
+  "inputs_unchanged_by_run": true,
+  "changed_by_run": [],
+  "quantity_input_sha256": {
+   "capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+   "decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+   "demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+   "edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+   "holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+   "inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+   "lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+   "node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+   "node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+   "planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+   "push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+   "route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+   "sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+   "sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+   "vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+   "vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+   "vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98"
+  },
+  "period": {
+   "start": "2026-W37",
+   "weeks": 173
+  },
+  "config": {
+   "plugins": [
+    "BufferingStockOptimizerPlugin",
+    "CapacityOverridePlugin",
+    "Capture",
+    "HolidayCalendarPlugin"
+   ],
+   "lot_flow_mode": "identity",
+   "plugins_source": "recommended_plugins"
+  },
+  "week_first": "2026-W37",
+  "week_last": "2029-W52",
+  "n_weeks": 173,
+  "planning_config": {
+   "warmup_lt": "17",
+   "lot_flow_mode": "identity",
+   "cpu_size": "24",
+   "recommended_plugins": "HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin"
+  },
+  "cpu_size": 24,
+  "ppc_status": "未評価",
+  "demand_lots": {
+   "COS_Serum": {
+    "SG_Store": 546,
+    "SG_EC": 455,
+    "SG_Distributor": 897,
+    "TH_Distributor": 390
+   },
+   "COS_Cream": {
+    "SG_Store": 416,
+    "SG_EC": 299,
+    "SG_Distributor": 754,
+    "TH_Distributor": 299
+   }
+  },
+  "ship_lots": {
+   "COS_Serum": {
+    "SG_Store": 546,
+    "SG_EC": 455,
+    "SG_Distributor": 897,
+    "TH_Distributor": 286
+   },
+   "COS_Cream": {
+    "SG_Store": 416,
+    "SG_EC": 299,
+    "SG_Distributor": 754,
+    "TH_Distributor": 211
+   }
+  }
+ }
+}

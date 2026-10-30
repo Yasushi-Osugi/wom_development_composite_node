@@ -1,0 +1,21 @@
+node_id,product_id,cost_type,basis,rate,fixed_amount,currency,note
+Materials_JP,COS_Serum,conversion_cost,qty,0,0,JPY,明示の 0（M7）。原料の費用は ppc_supplier_cost.csv の仕入原価で計上する
+Materials_JP,COS_Cream,conversion_cost,qty,0,0,JPY,明示の 0（M7）。原料の費用は ppc_supplier_cost.csv の仕入原価で計上する
+Factory_JP,COS_Serum,conversion_cost,qty,0,700,JPY,加工費（調合・充填・包装・品質確認・工場の間接費）。1 個当たり
+Factory_JP,COS_Cream,conversion_cost,qty,0,600,JPY,加工費（調合・充填・包装・品質確認・工場の間接費）。1 個当たり
+WH_JP_Released,COS_Serum,warehouse_cost,qty,0,30,JPY,判定済み在庫の保管・出荷。1 個当たり
+WH_JP_Released,COS_Cream,warehouse_cost,qty,0,30,JPY,判定済み在庫の保管・出荷。1 個当たり
+DC_SG,COS_Serum,conversion_cost,qty,0,0.5,SGD,取扱・通関等の 1 個当たりの仮定額。期間の在庫保有費を実装した意味ではない
+DC_SG,COS_Cream,conversion_cost,qty,0,0.5,SGD,取扱・通関等の 1 個当たりの仮定額。期間の在庫保有費を実装した意味ではない
+DC_TH,COS_Serum,conversion_cost,qty,0,12,THB,取扱・通関等の 1 個当たりの仮定額。期間の在庫保有費を実装した意味ではない
+DC_TH,COS_Cream,conversion_cost,qty,0,12,THB,取扱・通関等の 1 個当たりの仮定額。期間の在庫保有費を実装した意味ではない
+SG_Store,COS_Serum,sga_cost,revenue,0.45,0,SGD,売上の 45% ＝ 店舗運営費 35%（固定費の近似、M5）＋ 販社販管費 10%
+SG_Store,COS_Cream,sga_cost,revenue,0.45,0,SGD,売上の 45% ＝ 店舗運営費 35%（固定費の近似、M5）＋ 販社販管費 10%
+SG_EC,COS_Serum,sga_cost,revenue,0.15,3,SGD,売上の 15% ＝ 決済・基盤手数料 5% ＋ 販社販管費 10%。＋ 1 個当たり配送梱包 SGD 3.00
+SG_EC,COS_Cream,sga_cost,revenue,0.15,3,SGD,売上の 15% ＝ 決済・基盤手数料 5% ＋ 販社販管費 10%。＋ 1 個当たり配送梱包 SGD 3.00
+SG_EC,COS_Serum,marketing_cost,revenue,0.15,0,SGD,デジタル広告 15%
+SG_EC,COS_Cream,marketing_cost,revenue,0.15,0,SGD,デジタル広告 15%
+SG_Distributor,COS_Serum,marketing_cost,revenue,0.05,0,SGD,MDF 5%（自社負担。負担者はシンガポール販社）
+SG_Distributor,COS_Cream,marketing_cost,revenue,0.05,0,SGD,MDF 5%（自社負担。負担者はシンガポール販社）
+TH_Distributor,COS_Serum,marketing_cost,revenue,0.05,0,THB,MDF 5%（自社負担。負担者は日本本社）
+TH_Distributor,COS_Cream,marketing_cost,revenue,0.05,0,THB,MDF 5%（自社負担。負担者は日本本社）

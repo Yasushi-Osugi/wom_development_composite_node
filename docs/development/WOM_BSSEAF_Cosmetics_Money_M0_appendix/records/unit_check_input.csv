@@ -1,0 +1,17 @@
+lot_id,week,channel_node,product_id,qty
+SYN-COS_Serum-SG_Store-q1,2028-W18,SG_Store,COS_Serum,1
+SYN-COS_Serum-SG_Store-q24,2028-W18,SG_Store,COS_Serum,24
+SYN-COS_Serum-SG_EC-q1,2028-W18,SG_EC,COS_Serum,1
+SYN-COS_Serum-SG_EC-q24,2028-W18,SG_EC,COS_Serum,24
+SYN-COS_Serum-SG_Distributor-q1,2028-W18,SG_Distributor,COS_Serum,1
+SYN-COS_Serum-SG_Distributor-q24,2028-W18,SG_Distributor,COS_Serum,24
+SYN-COS_Serum-TH_Distributor-q1,2028-W18,TH_Distributor,COS_Serum,1
+SYN-COS_Serum-TH_Distributor-q24,2028-W18,TH_Distributor,COS_Serum,24
+SYN-COS_Cream-SG_Store-q1,2028-W18,SG_Store,COS_Cream,1
+SYN-COS_Cream-SG_Store-q24,2028-W18,SG_Store,COS_Cream,24
+SYN-COS_Cream-SG_EC-q1,2028-W18,SG_EC,COS_Cream,1
+SYN-COS_Cream-SG_EC-q24,2028-W18,SG_EC,COS_Cream,24
+SYN-COS_Cream-SG_Distributor-q1,2028-W18,SG_Distributor,COS_Cream,1
+SYN-COS_Cream-SG_Distributor-q24,2028-W18,SG_Distributor,COS_Cream,24
+SYN-COS_Cream-TH_Distributor-q1,2028-W18,TH_Distributor,COS_Cream,1
+SYN-COS_Cream-TH_Distributor-q24,2028-W18,TH_Distributor,COS_Cream,24

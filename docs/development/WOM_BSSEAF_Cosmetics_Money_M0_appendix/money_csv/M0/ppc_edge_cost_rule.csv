@@ -1,0 +1,17 @@
+edge_id,product_id,cost_type,basis,rate,fixed_amount,currency
+Materials_JP->Factory_JP,COS_Serum,logistics_cost,qty,0,0,JPY
+Materials_JP->Factory_JP,COS_Cream,logistics_cost,qty,0,0,JPY
+Factory_JP->WH_JP_Released,COS_Serum,logistics_cost,qty,0,20,JPY
+Factory_JP->WH_JP_Released,COS_Cream,logistics_cost,qty,0,20,JPY
+WH_JP_Released->DC_SG,COS_Serum,logistics_cost,qty,0,60,JPY
+WH_JP_Released->DC_SG,COS_Cream,logistics_cost,qty,0,60,JPY
+WH_JP_Released->DC_TH,COS_Serum,logistics_cost,qty,0,70,JPY
+WH_JP_Released->DC_TH,COS_Cream,logistics_cost,qty,0,70,JPY
+DC_SG->SG_Store,COS_Serum,logistics_cost,qty,0,0.3,SGD
+DC_SG->SG_Store,COS_Cream,logistics_cost,qty,0,0.3,SGD
+DC_SG->SG_EC,COS_Serum,logistics_cost,qty,0,0.3,SGD
+DC_SG->SG_EC,COS_Cream,logistics_cost,qty,0,0.3,SGD
+DC_SG->SG_Distributor,COS_Serum,logistics_cost,qty,0,0.3,SGD
+DC_SG->SG_Distributor,COS_Cream,logistics_cost,qty,0,0.3,SGD
+DC_TH->TH_Distributor,COS_Serum,logistics_cost,qty,0,8,THB
+DC_TH->TH_Distributor,COS_Cream,logistics_cost,qty,0,8,THB

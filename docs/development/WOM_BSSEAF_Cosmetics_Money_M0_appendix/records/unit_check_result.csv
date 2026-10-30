@@ -1,0 +1,9 @@
+product_id,channel,rev_1,rev_24,cost_1,cost_24,ratio_ok,events_q1,events_q24,same_events,each_once,ec_sga_events,ec_sga_per_unit_jpy
+COS_Serum,SG_Store,18975.0,455400.0,10940.75,262578.0,True,12,12,True,True,0,
+COS_Serum,SG_EC,18055.0,433320.0,8163.5,195924.0,True,13,13,True,True,1,3053.25
+COS_Serum,SG_Distributor,8510.0,204240.0,2827.5,67860.0,True,12,12,True,True,0,
+COS_Serum,TH_Distributor,8550.0,205200.0,2837.5,68100.0,True,12,12,True,True,0,
+COS_Cream,SG_Store,15870.0,380880.0,9243.5,221844.0,True,12,12,True,True,0,
+COS_Cream,SG_EC,15065.0,361560.0,6966.5,167196.0,True,13,13,True,True,1,2604.75
+COS_Cream,SG_Distributor,7130.0,171120.0,2458.5,59004.0,True,12,12,True,True,0,
+COS_Cream,TH_Distributor,7200.0,172800.0,2470.0,59280.0,True,12,12,True,True,0,
