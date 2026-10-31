@@ -16,7 +16,7 @@
 | 3 | `docs/design/wom_canonical_concepts.md`、`demand_anchored_lot.md` | WOM の考え方（設計の憲法）、Demand Anchored Lot |
 | 4 | `AGENTS.md` | 保護対象のコアと 3 層のテスト（コードを変えるとき必須） |
 | 5 | 扱うテーマの設計書・報告書（§5 の機能の地図） | 詳細 |
-| — | [BS-SEAF の進め方の知識](bsseaf/WOM_BSSEAF_Process_Knowledge.md)（WOM-KB-BSSEAF-001） | WOM を BS-SEAF の 8 段階で改良する進め方：段階と担当、誤りの型と打ち手、標準にするもの（知識 × 適用条件 × 根拠）、一巡ごとの記録、中心仮説。**事例を始める前に読む** |
+| — | [BS-SEAF の進め方の知識](bsseaf/WOM_BSSEAF_Process_Knowledge.md)（WOM-KB-BSSEAF-001） | WOM を BS-SEAF の 8 段階で改良する進め方：段階と担当、誤りの型と打ち手、標準にするもの（知識 × 適用条件 × 根拠）、一巡ごとの記録、中心仮説。AI 間の自動ループの設計案（提案）へもここから辿る。**事例を始める前に読む** |
 | — | `docs/semantics/`（業務の意味体系、[読み方](semantics/README.md)） | 業務の用語の定義と、判断に要る業務の情報。**機能の名前を探す前に**、扱う業務の問いの意味をここで確かめる（§0.1） |
 
 ### 0.1 生産配分と優先供給を調べる入口

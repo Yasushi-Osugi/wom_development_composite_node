@@ -18,6 +18,14 @@ The older [three-layer design record](./three_layer_production_allocation.md)
 records the 2026-08-20 investigation. Read its historical statements about
 unconnected layers together with the later handoff and planning-loop implementation.
 
+## BS-SEAF multi-AI loop (proposal)
+
+[BS-SEAF on WOM multi-AI loop design](./WOM_BSSEAF_MultiAI_Loop_Design_v0.1.md)
+(`WOM-DESIGN-BSSEAF-LOOP-001`, 2026-10-31, proposal, not yet run) holds the
+machine-facing rules for handing work between AIs: the handoff fields, work
+states and transitions, stop/restart and return-to-Owner conditions. The
+principles live in [BS-SEAF process knowledge](../bsseaf/WOM_BSSEAF_Process_Knowledge.md).
+
 ## Documents
 
 ```text
