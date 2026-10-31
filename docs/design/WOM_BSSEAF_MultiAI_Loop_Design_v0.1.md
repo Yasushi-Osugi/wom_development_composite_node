@@ -1,7 +1,7 @@
 ---
 knowledge_id: WOM-DESIGN-BSSEAF-LOOP-001
 title: BS-SEAF on WOM — AI 間の自動ループの設計案
-version: "0.1"
+version: "0.1.1"
 updated: "2026-10-31"
 adoption: 提案
 evidence: "未確認（AI 間の自動連携としての実行は未実施。U4 で引き継ぎの形式と記録の方法を試す）"
@@ -40,14 +40,14 @@ principles: docs/bsseaf/WOM_BSSEAF_Process_Knowledge.md
 
 ## 2. 共通の引き継ぎの形式
 
-依頼書・報告書の冒頭に、機械でも読める欄（YAML）を置く。この文書が形式の正本で、各依頼書・報告書は具体の値を書く。三層設計 MD の先頭の `knowledge_id`・`evidence_commit` の欄が先例。
+依頼書・報告書の冒頭に、機械でも読める欄（YAML）を置く。下の例は、未決事項があるため Owner へ判断を戻す状態の例（`status`・`role_to`・`next` と `open_items` をそろえる。未決事項が残るうちは「試行可能」にしない）。この文書が形式の正本で、各依頼書・報告書は具体の値を書く。三層設計 MD の先頭の `knowledge_id`・`evidence_commit` の欄が先例。
 
 ```yaml
 handoff:
   case_id: BSSEAF-COS-U4          # 案件
   task_id: U4-T1                  # 作業
   role_from: design               # design / implement / verify / owner
-  role_to: implement
+  role_to: owner
   target_commit: <sha>            # 対象の版
   knowledge_used:                 # 使った知識と適用条件
     - id: WOM-SEM-SUPPLY-ALLOCATION-001
@@ -57,12 +57,12 @@ handoff:
     ref: requests/<依頼書>.md#受入条件
   evidence:                       # 実行の結果・根拠のファイル
     - docs/development/<報告書>.md
-  status: 試行可能                 # §3 の作業の状態
+  status: "Owner 判断待ち"         # §3 の作業の状態
   open_items:                     # 未決事項
     - "端数の同順位の規則（Owner の判断待ち）"
   stop_reasons: []                # 止める理由（あれば）
   handover_notes: []              # 申し送り
-  next: verify                    # 次の担当、または owner
+  next: owner                     # 次の担当、または owner
 ```
 
 - 「完了」と書いたことには、**受入条件を満たした証拠**（`evidence`）を結びつける。YAML の記述と実行の結果を照合できるようにする。
@@ -119,3 +119,4 @@ handoff:
 | 版 | 日付 | 内容 |
 |---|---|---|
 | v0.1 | 2026-10-31 | 設計案の初版（提案）。2026-10-31 の対話から |
+| v0.1.1 | 2026-10-31 | §2 の YAML の例の状態をそろえた（未決事項があるので「Owner 判断待ち」、`role_to`・`next` を owner に。GPT君の指摘） |
