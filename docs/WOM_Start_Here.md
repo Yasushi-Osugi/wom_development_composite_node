@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-30 改1（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-10-31（ブランチ `wom-v1r5m1_cap_trial`）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -16,6 +16,7 @@
 | 3 | `docs/design/wom_canonical_concepts.md`、`demand_anchored_lot.md` | WOM の考え方（設計の憲法）、Demand Anchored Lot |
 | 4 | `AGENTS.md` | 保護対象のコアと 3 層のテスト（コードを変えるとき必須） |
 | 5 | 扱うテーマの設計書・報告書（§5 の機能の地図） | 詳細 |
+| — | [BS-SEAF の進め方の知識](bsseaf/WOM_BSSEAF_Process_Knowledge.md)（WOM-KB-BSSEAF-001） | WOM を BS-SEAF の 8 段階で改良する進め方：段階と担当、誤りの型と打ち手、標準にするもの（知識 × 適用条件 × 根拠）、一巡ごとの記録、中心仮説。**事例を始める前に読む** |
 | — | `docs/semantics/`（業務の意味体系、[読み方](semantics/README.md)） | 業務の用語の定義と、判断に要る業務の情報。**機能の名前を探す前に**、扱う業務の問いの意味をここで確かめる（§0.1） |
 
 ### 0.1 生産配分と優先供給を調べる入口
@@ -175,6 +176,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 
 - **役割**：大杉さん（Owner：判断・実機確認・git）、Claude君（設計・依頼書・検証）、Code君（Claude Code：実装）、GPT-6 Astra君・GPT-6.1 Sol君（独立の調査・検証）。
 - **流れ**：依頼書（`requests/`）→ 実装 → 報告書（`docs/development/`）→ 検証（「止める理由」と「申し送り」を分ける）→ commit。依頼書と実装は別の commit にする。
+- **BS-SEAF の一巡**：8 段階・誤りの型・標準の作法・報告書に残す記録は [BS-SEAF の進め方の知識](bsseaf/WOM_BSSEAF_Process_Knowledge.md)。最初の基準事例は化粧品（[検証報告](development/WOM_BSSEAF_Verification_Cosmetics_Report.md)）。
 - **保護対象のコア**（`AGENTS.md` §10）：`backward_planner.py`、`forward_planner.py`、`plan_copy.py`、`plan_node.py`、`sc_tree.py`、`push_pull.py`。依頼書が無ければ変えない。変えるときは 3 層のテスト（単体・CSV からの結合・golden）を緑にし、大杉さんが diff を確かめる。
 - **golden**：`tests/golden/*.json`（15 件）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。プラグインの組はモデルの `recommended_plugins` と同じ（rice 以外は Holiday Calendar・Buffering Stock・Capacity Override、rice はこれに Rice Seasonal）。作るときは `--plugins` を明示する（`CLAUDE.md`、`tests/test_golden.py` の説明）。
 - **テストの段**（`tests/README.md`、2026-10-15）：途中は `python -m tools.quick_check --smoke`（約 1 分）と、直した所の領域（`--area rice` など、`--changed` は変えたファイルから選ぶ）。全テスト（`--full`、約 15〜18 分）は依頼書ごとに最後に 1 回。保護対象のコアを直したときは全テストと 3 層のテストが必須。依頼書には回す段を書く。新しいテストのファイルは `tests/conftest.py` の対応表に 1 行足す。golden を含む pytest は並行させない。
