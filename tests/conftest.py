@@ -52,6 +52,7 @@ AREAS = {
     "test_warmup_soft_blank_attrs_fifo.py": ("core",),
     "test_shelf_life_demand_file.py": ("core", "allocation"),
     "test_quantity_allocation.py": ("allocation", "core"),
+    "test_upper_demand_plan.py": ("allocation",),
     # capacity: the upper (capacity) layer
     "test_capacity_layer_trial.py": ("capacity",),
     "test_cpu_size_plan_wide.py": ("capacity",),

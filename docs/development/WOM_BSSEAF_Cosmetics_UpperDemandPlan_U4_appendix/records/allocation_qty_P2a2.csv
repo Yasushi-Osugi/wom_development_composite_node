@@ -1,0 +1,9 @@
+sku_id,region,alloc_lots,quota_source
+COS_Cream,SG_Distributor,691,P2-a2（U3 の基準、僅差の代理店は需要に比例）
+COS_Cream,SG_EC,299,P2-a2（U3 の基準、僅差の代理店は需要に比例）
+COS_Cream,SG_Store,416,P2-a2（U3 の基準、僅差の代理店は需要に比例）
+COS_Cream,TH_Distributor,274,P2-a2（U3 の基準、僅差の代理店は需要に比例）
+COS_Serum,SG_Distributor,825,P2-a2（U3 の基準、僅差の代理店は需要に比例）
+COS_Serum,SG_EC,455,P2-a2（U3 の基準、僅差の代理店は需要に比例）
+COS_Serum,SG_Store,546,P2-a2（U3 の基準、僅差の代理店は需要に比例）
+COS_Serum,TH_Distributor,358,P2-a2（U3 の基準、僅差の代理店は需要に比例）

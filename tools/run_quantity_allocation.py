@@ -6,6 +6,7 @@ RequestLetter_QuantityAllocationMode v0.2 C.3（判断 J1〜J4、2026-10-26）�
 
     python -m tools.run_quantity_allocation --model-dir <作業用のモデル> --allocation-file <allocation_qty_X.csv>
         [--out-dir output/planning_state] [--unallocated-note "<U1 の仮定>"] [--plugins …]
+        [--week-rule proportional_early_tie|proportional_even|earliest_first] [--udp-out <場所>]
 
 人が **lot の数量** で決めた配分（(sku_id, region) ごとの `alloc_lots`）を、価格・原価・為替を
 一つも置かずに、配分 → Backward → Forward → 結果の記録まで一巡させる。財務は「未評価」。
@@ -24,6 +25,11 @@ warmup の基準の週・計画の開始週・週数で計画し（`warmup_real_
 保存：不整合が無ければ `<out-dir>/<case>/Q<nn>.json`（⑤ > 0 でも保存する）と
 `Q<nn>_flow_check/`。不整合があれば Q の番号を使わず、
 `<out-dir>/<case>/diagnostics/<配分のファイル名>_inconsistent.json` に診断を書いて終了コード 1。
+
+上位 Demand Plan のモード 1（RequestLetter_BSSEAF_Cosmetics_UpperDemandPlan_U4、
+wom/allocation/upper_demand_plan.py）：`--week-rule` は鍵の中でどの要求週を残すかの規則、
+`--udp-out` は台帳・診断・要求週ごとの照合の出力の場所（省略時は出さない）。どちらも省略すると
+今までと同じ需要 CSV を同じ関数で書く。
 """
 from __future__ import annotations
 
@@ -133,9 +139,15 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
                             plugins: Optional[str] = None,
                             extra_plugins: Optional[list] = None,
                             demand_file: str = "demand_forecast.csv",
-                            _after_handoff=None) -> dict:
+                            week_rule: Optional[str] = None,
+                            udp_out: Optional[str] = None,
+                            demand_nature: str = "forecast",
+                            _after_handoff=None,
+                            _after_plan=None) -> dict:
     """Run one quantity allocation. Returns {"status": "ok"|"inconsistent", ...}.
-    `_after_handoff(path)` is a test hook called after the demand CSV is written."""
+    `_after_handoff(path)` is a test hook called after the demand CSV is written;
+    `_after_plan(tree)` after planning, before the checks."""
+    from wom.allocation import upper_demand_plan as UDP
     from wom.allocation.handoff import write_demand_for_quantity_allocation
     from wom.engine.warmup import (materialize_warmup, first_nonzero_demand_week,
                                    read_lot_flow_mode, read_cpu_size)
@@ -143,6 +155,10 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
     from wom.engine.plan_period import detect_plan_period
     from tools.run_headless_from_folder import run
 
+    use_udp = week_rule is not None or udp_out is not None
+    week_rule = week_rule or UDP.DEFAULT_WEEK_RULE
+    if week_rule not in UDP.WEEK_RULES:
+        raise ValueError(f"week_rule={week_rule!r}: use one of {sorted(UDP.WEEK_RULES)}")
     model_dir = os.path.normpath(model_dir)
     case = os.path.basename(model_dir)
     case_dir = os.path.join(out_dir, case)
@@ -184,8 +200,13 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
     qid = next_q_id(case_dir)                 # tentative: used only on success
     gen_name = f"demand_forecast_{qid}.csv"
     gen_path = os.path.join(model_dir, gen_name)
-    h = write_demand_for_quantity_allocation(model_dir, allocation_file, qid,
-                                             demand_file=demand_file, out_path=gen_path)
+    if use_udp:
+        ledger = UDP.build_demand_ledger(model_dir, demand_file, demand_nature=demand_nature)
+        selection = UDP.select_mode1(ledger, allocation_file, week_rule)
+        h = UDP.write_engine_demand(selection, model_dir, gen_path, demand_file=demand_file)
+    else:
+        h = write_demand_for_quantity_allocation(model_dir, allocation_file, qid,
+                                                 demand_file=demand_file, out_path=gen_path)
     if _after_handoff is not None:
         _after_handoff(gen_path)
 
@@ -199,6 +220,8 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
                demand_file=gen_name, flow_check_dir=fc_dir, ppc=False,
                warmup_real_start=base, extra_plugins=[cap] + list(extra_plugins or []))
     tree = cap.tree
+    if _after_plan is not None:
+        _after_plan(tree)
     ppc_output_created = os.path.exists(ppc_dir)      # must stay False (no PPC run)
 
     # 3. table 2 detail rows -> per key q2 observed / q4 / q5
@@ -245,6 +268,14 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
         per_bad.append(f"period {snap['period']} != fixed {fixed['start']} x {fixed['weeks']}")
     per_bad += [f"{f} changed" for f in hash_files if new_hashes[f] != hashes[f]]
     chk("period_and_capacity_fixed", "; ".join(per_bad))
+    by_request = None
+    if use_udp:
+        market_rows = _read_csv(os.path.join(fc_dir, "flow_check_market.csv"))
+        try:
+            by_request = UDP.reconcile_by_request(tree, selection, market_rows)
+            chk("udp_reconcile_by_request", "")
+        except UDP.ReconcileError as e:
+            chk("udp_reconcile_by_request", str(e))
 
     if not all(v["ok"] for v in checks.values()):
         if os.path.exists(gen_path):
@@ -278,6 +309,7 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
     state = {
         "mode": "quantity",
         "allocation_id": qid,
+        "week_rule": week_rule,
         "case": case,
         "allocation_file": os.path.abspath(allocation_file),
         "allocation": [{"sku_id": r["sku_id"].strip(), "region": r["region"].strip(),
@@ -308,7 +340,15 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
         shutil.rmtree(fc_final)
     shutil.move(fc_dir, fc_final)
     shutil.rmtree(work, ignore_errors=True)
-    return {"status": "ok", "path": path, "state": state}
+    res = {"status": "ok", "path": path, "state": state}
+    if udp_out:
+        res["udp_dir"] = UDP.write_plan_outputs(
+            udp_out, f"{case}_{week_rule}", model_dir=model_dir, ledger=ledger, selection=selection,
+            capacity_check=UDP.time_phased_check(model_dir, selection),
+            by_request=by_request, supply_runs=UDP.supply_runs(tree, selection),
+            demand_file=demand_file, allocation_file=allocation_file, generated_csv=gen_path,
+            period=fixed, commit=commit, totals=state["quantities"]["total"], repo=REPO)
+    return res
 
 
 def format_block(state: dict) -> str:
@@ -337,9 +377,17 @@ def main(argv=None) -> int:
     ap.add_argument("--unallocated-note", default=None)
     ap.add_argument("--plugins", default=None,
                     help="same rule as run_headless_from_folder (default: recommended_plugins)")
+    ap.add_argument("--week-rule", default=None,
+                    choices=["proportional_early_tie", "proportional_even", "earliest_first"],
+                    help="which request weeks a key keeps (default: proportional_early_tie)")
+    ap.add_argument("--udp-out", default=None,
+                    help="upper Demand Plan outputs go to <udp-out>/<plan_id>/ (default: none)")
+    ap.add_argument("--demand-nature", default="forecast", choices=["forecast", "firm"])
     a = ap.parse_args(argv)
     r = run_quantity_allocation(a.model_dir, a.allocation_file, out_dir=a.out_dir,
-                                unallocated_note=a.unallocated_note, plugins=a.plugins)
+                                unallocated_note=a.unallocated_note, plugins=a.plugins,
+                                week_rule=a.week_rule, udp_out=a.udp_out,
+                                demand_nature=a.demand_nature)
     if r["status"] != "ok":
         print("[quantity allocation] 入力・記録の不整合")
         for k, v in r["checks"].items():
@@ -349,6 +397,8 @@ def main(argv=None) -> int:
         return 1
     print(format_block(r["state"]))
     print(f"[quantity allocation] -> {r['path']}")
+    if r.get("udp_dir"):
+        print(f"[upper demand plan] -> {r['udp_dir']}")
     return 0
 
 

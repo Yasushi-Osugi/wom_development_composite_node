@@ -1,0 +1,261 @@
+{
+ "B1_same_as_Q01_csv": true,
+ "B1_rows_in_week_order": {
+  "('COS_Cream', 'SG_Distributor')": true,
+  "('COS_Cream', 'SG_EC')": true,
+  "('COS_Cream', 'SG_Store')": true,
+  "('COS_Cream', 'TH_Distributor')": true,
+  "('COS_Serum', 'SG_Distributor')": true,
+  "('COS_Serum', 'SG_EC')": true,
+  "('COS_Serum', 'SG_Store')": true,
+  "('COS_Serum', 'TH_Distributor')": true
+ },
+ "B1_cut": {
+  "('COS_Serum', 'SG_Distributor')": {
+   "lots": 72,
+   "from": "2028-W33",
+   "to": "2029-W52",
+   "max_per_week": 1,
+   "weeks": 72
+  },
+  "('COS_Cream', 'SG_Distributor')": {
+   "lots": 63,
+   "from": "2028-W42",
+   "to": "2029-W52",
+   "max_per_week": 1,
+   "weeks": 63
+  },
+  "('COS_Serum', 'TH_Distributor')": {
+   "lots": 32,
+   "from": "2029-W21",
+   "to": "2029-W52",
+   "max_per_week": 1,
+   "weeks": 32
+  },
+  "('COS_Cream', 'TH_Distributor')": {
+   "lots": 25,
+   "from": "2029-W28",
+   "to": "2029-W52",
+   "max_per_week": 1,
+   "weeks": 25
+  }
+ },
+ "B2_region_is_node_name": {
+  "COS_Serum|SG_Store": true,
+  "COS_Serum|SG_EC": true,
+  "COS_Serum|SG_Distributor": true,
+  "COS_Serum|TH_Distributor": true,
+  "COS_Cream|SG_Store": true,
+  "COS_Cream|SG_EC": true,
+  "COS_Cream|SG_Distributor": true,
+  "COS_Cream|TH_Distributor": true
+ },
+ "B2_leaf_S_week_equals_request_week": true,
+ "B2_n": [
+  3864,
+  3864
+ ],
+ "B3": {
+  "COS_Serum": {
+   "yield": 0.97,
+   "cap_soft": 14.0,
+   "shippable_planned": 13.0,
+   "cap_hard": 17.0,
+   "shippable_limit": 16.0,
+   "envelope": "soft"
+  },
+  "COS_Serum_L": {
+   "SG_Store": {
+    "L": 4,
+    "path": [
+     [
+      "SG_Store",
+      1,
+      2
+     ],
+     [
+      "DC_SG",
+      2,
+      0
+     ],
+     [
+      "WH_JP_Released",
+      1,
+      0
+     ]
+    ]
+   },
+   "SG_EC": {
+    "L": 4,
+    "path": [
+     [
+      "SG_EC",
+      1,
+      0
+     ],
+     [
+      "DC_SG",
+      2,
+      0
+     ],
+     [
+      "WH_JP_Released",
+      1,
+      0
+     ]
+    ]
+   },
+   "SG_Distributor": {
+    "L": 4,
+    "path": [
+     [
+      "SG_Distributor",
+      1,
+      0
+     ],
+     [
+      "DC_SG",
+      2,
+      0
+     ],
+     [
+      "WH_JP_Released",
+      1,
+      0
+     ]
+    ]
+   },
+   "TH_Distributor": {
+    "L": 4,
+    "path": [
+     [
+      "TH_Distributor",
+      1,
+      0
+     ],
+     [
+      "DC_TH",
+      2,
+      0
+     ],
+     [
+      "WH_JP_Released",
+      1,
+      0
+     ]
+    ]
+   }
+  },
+  "COS_Cream": {
+   "yield": 0.97,
+   "cap_soft": 11.0,
+   "shippable_planned": 10.0,
+   "cap_hard": 13.0,
+   "shippable_limit": 12.0,
+   "envelope": "soft"
+  },
+  "COS_Cream_L": {
+   "SG_Store": {
+    "L": 4,
+    "path": [
+     [
+      "SG_Store",
+      1,
+      2
+     ],
+     [
+      "DC_SG",
+      2,
+      0
+     ],
+     [
+      "WH_JP_Released",
+      1,
+      0
+     ]
+    ]
+   },
+   "SG_EC": {
+    "L": 4,
+    "path": [
+     [
+      "SG_EC",
+      1,
+      0
+     ],
+     [
+      "DC_SG",
+      2,
+      0
+     ],
+     [
+      "WH_JP_Released",
+      1,
+      0
+     ]
+    ]
+   },
+   "SG_Distributor": {
+    "L": 4,
+    "path": [
+     [
+      "SG_Distributor",
+      1,
+      0
+     ],
+     [
+      "DC_SG",
+      2,
+      0
+     ],
+     [
+      "WH_JP_Released",
+      1,
+      0
+     ]
+    ]
+   },
+   "TH_Distributor": {
+    "L": 4,
+    "path": [
+     [
+      "TH_Distributor",
+      1,
+      0
+     ],
+     [
+      "DC_TH",
+      2,
+      0
+     ],
+     [
+      "WH_JP_Released",
+      1,
+      0
+     ]
+    ]
+   }
+  }
+ },
+ "B4_Q01_total": {
+  "q1_original": 4056,
+  "q2_in_supply_scope": 3864,
+  "q3_not_in_supply_scope": 192,
+  "q4_delivered": {
+   "total": 3856,
+   "on_time": 3856,
+   "early": 0,
+   "late": 0
+  },
+  "q5_backlog_end": 8
+ },
+ "B4_late_tree": {},
+ "B4_q5_lots": {
+  "('COS_Serum', 'TH_Distributor', '2029-W49')": 2,
+  "('COS_Serum', 'TH_Distributor', '2029-W50')": 2,
+  "('COS_Cream', 'TH_Distributor', '2029-W47')": 1,
+  "('COS_Cream', 'TH_Distributor', '2029-W48')": 1,
+  "('COS_Cream', 'TH_Distributor', '2029-W49')": 1,
+  "('COS_Cream', 'TH_Distributor', '2029-W50')": 1
+ }
+}

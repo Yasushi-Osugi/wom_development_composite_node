@@ -40,12 +40,15 @@ def _rows(model_dir: str, fname: str) -> List[dict]:
         return list(csv.DictReader(f))
 
 
-def _largest_remainder(weights: Dict[str, float], total: int) -> Dict[str, int]:
+def _largest_remainder(weights: Dict[str, float], total: int, tie_key=None) -> Dict[str, int]:
     """`weights`（非負）の比率で整数 `total` を配る。合計は厳密に `total` になる。
 
     重み 0 のキーは常に 0 のまま（Step 5: 需要ゼロの週はゼロのまま・端数の
     +1 を受け取らない）。重みの合計が 0 なら（total も通常 0 のはずだが）
     全キーに 0 を割り当てる。
+
+    `tie_key`：端数が同じキーの順を決める関数（既定はキーそのもの）。上位 Demand Plan は
+    要求週を渡す（行の順に頼らない）。
     """
     keys = list(weights.keys())
     wsum = sum(weights.values())
@@ -58,7 +61,8 @@ def _largest_remainder(weights: Dict[str, float], total: int) -> Dict[str, int]:
 
     # 端数の大きい順（同値は決定的にキー順）に +1 を配る。重み0のキーは
     # raw==floor==0 なので remainder==0 となり、自動的に対象外になる。
-    order = sorted(keys, key=lambda k: (-(raw[k] - floors[k]), k))
+    tie = tie_key or (lambda k: k)
+    order = sorted(keys, key=lambda k: (-(raw[k] - floors[k]), tie(k)))
     for k in order[:remainder]:
         floors[k] += 1
     return floors
@@ -242,6 +246,25 @@ def read_quantity_allocation(alloc_path: str) -> Dict[tuple, int]:
     return out
 
 
+def check_quantity_quota(alloc: Dict[tuple, int], q1: Dict[tuple, int], demand_file: str,
+                         alloc_path: str) -> None:
+    """Stop (every bad key listed) on alloc_lots > the key's original total, a key
+    with >= 1 lot of demand missing from the file, or a key not in the demand CSV."""
+    errors: List[str] = []
+    for k in sorted(alloc):
+        if k not in q1:
+            errors.append(f"{k}: not in {demand_file}")
+        elif alloc[k] > q1[k]:
+            errors.append(f"{k}: alloc_lots {alloc[k]} > original demand {q1[k]} "
+                          f"(an allocation never adds demand)")
+    for k in sorted(q1):
+        if q1[k] >= 1 and k not in alloc:
+            errors.append(f"{k}: has {q1[k]} lot(s) of demand but no row in the allocation file")
+    if errors:
+        raise QuantityAllocationError(
+            f"{os.path.basename(alloc_path)}: " + "; ".join(errors))
+
+
 def write_demand_for_quantity_allocation(model_dir: str, alloc_path: str, allocation_id: str,
                                          *, demand_file: str = "demand_forecast.csv",
                                          out_path: Optional[str] = None) -> dict:
@@ -277,19 +300,7 @@ def write_demand_for_quantity_allocation(model_dir: str, alloc_path: str, alloca
         rows_by_key[(r["sku_id"], r["region"])].append(i)
     q1 = {k: sum(_q(dem_rows[i]) for i in idx) for k, idx in rows_by_key.items()}
 
-    errors: List[str] = []
-    for k in sorted(alloc):
-        if k not in q1:
-            errors.append(f"{k}: not in {demand_file}")
-        elif alloc[k] > q1[k]:
-            errors.append(f"{k}: alloc_lots {alloc[k]} > original demand {q1[k]} "
-                          f"(an allocation never adds demand)")
-    for k in sorted(q1):
-        if q1[k] >= 1 and k not in alloc:
-            errors.append(f"{k}: has {q1[k]} lot(s) of demand but no row in the allocation file")
-    if errors:
-        raise QuantityAllocationError(
-            f"{os.path.basename(alloc_path)}: " + "; ".join(errors))
+    check_quantity_quota(alloc, q1, demand_file, alloc_path)
 
     new_q: Dict[int, str] = {}
     for k, idx in rows_by_key.items():
