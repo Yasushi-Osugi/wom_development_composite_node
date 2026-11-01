@@ -89,7 +89,7 @@ Backward／Forward／Flow Check
 
 **A0 が今の結果と同じになることの確認**：`proportional_early_tie` で P2-a2 の配分を選び、今の `write_demand_for_quantity_allocation()` が書く需要 CSV と、全行一致することをテストにする（P2-a・P0P1 の結果を変えないため）。
 
-### 3.1 能力に合わせて減らす週を選ぶ規則（`trim_to_capacity_latest`、v0.3 で追加。提案）
+### 3.1 能力に合わせて減らす週を選ぶ規則（`trim_to_capacity_latest`、v0.3 で追加。提案。化粧品の事例で採用〔大杉さん 2026-11-02〕、実行確認：`docs/development/WOM_BSSEAF_Cosmetics_CapacityAwareWeekRule_U4_Report.md`：未充足 0）
 
 **業務の意味**：能力が足りなくなる区間に合わせて、**期間の後ろの週から、各週の需要を能力の高さまで削る**。能力を余らせない範囲で、できるだけ遅い週で減らす。近い週の需要は全部残し、遠い週は「能力に入りきる分」だけ残す（代理店への供給は止めない）。
 
