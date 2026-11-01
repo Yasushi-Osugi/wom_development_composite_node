@@ -33,7 +33,7 @@ handoff:
 - 宛先：Code君（Claude Code、Windows）
 - 依頼者：大杉（WOM Project Owner）
 - 起草：Claude君（2026-11-01）
-- 版：v0.1
+- 版：v0.1.1
 - 作業フォルダ：`C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r5m1_cap_trial`（起草時の先頭 `c6c2994`。この依頼書は大杉さんが先に commit する。着手時の SHA を報告書に記録する）
 - 出どころ：
   - 判断：`requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md`（v0.3）§7（大杉さん、2026-11-01、全項目決定）
@@ -74,7 +74,7 @@ handoff:
 | B1 | `handoff.py` の `write_demand_for_quantity_allocation()` が、P2-a2 の配分で、鍵ごとに減らす 1 lot を期間の後ろの週に並べること（U4 資料 §2.1 の表：美容液 SG 2028-W33〜2029-W52 など）。鍵の中の行が週の順であること |
 | B2 | 需要 CSV の `region` が leaf_out のノードの名前と一致し、identity の計画で、leaf の lot の S の週（Flow Check の表2 の `s_week`）が元の需要の要求週と一致すること。これで `source_demand_ref ＝ sku_id｜region｜request_week` に戻せる |
 | B3 | `PlanNode.shippable_*` の良品の換算（C3a の開放の週：美容液 13・クリーム 10）と、leaf から工場の出荷までの LT の和（化粧品は 4 週）の読み方 |
-| B4 | **Forward が、押し戻せなかった lot を後の週で作って遅配（表2 の `late`）にすることがあるか**。P2-a2 の結果の `late` の数も確かめる。これで、時間の可否の参考値と期末の未充足の関係が分かる（詳細設計 §4） |
+| B4 | **Forward が、押し戻せなかった lot を後の週で作って遅配（表2 の `late`）にすることがあるか**。P2-a2 の結果の `late` の数も確かめる。これで、時間の可否の参考値と期末の未充足の関係が分かる（詳細設計 §4）。**遅配の有無そのものは合否にしない**（確かめた動きを報告する。違っても止める理由ではない） |
 | B5 | `tools/run_quantity_allocation.py` のどこで需要 CSV を書き、どこで計画と Flow Check を走らせているか（新しい出力を差し込む所） |
 
 ## 3. Part A：上位 Demand Plan のモード 1（詳細設計 §2〜§5・§7）
@@ -111,7 +111,7 @@ handoff:
 | 照合 | 小さな合成のモデルで、`reconcile_by_request` の leaf ごとの合計が表2 と一致。わざと 1 lot ずらしたら止まる |
 | 再現 | 同じ入力で 2 回走らせ、`input_hashes` と出力が同じ（UP-V10） |
 
-回す段：途中は `python -m tools.quick_check --smoke` と `--area allocation`（無ければ `tests/test_quantity_allocation.py` と新しいテスト）。**最後に `--full` を 1 回**。既存の golden（通常 15・legacy 3、化粧品を含む）が変わらないこと。
+回す段：途中は `python -m tools.quick_check --smoke` と `--area allocation`（無ければ `tests/test_quantity_allocation.py` と新しいテスト）。**最後に `--full` を 1 回**。既存の golden の全ファイル（起草時は通常 16・legacy 3 の計 19。化粧品を含む）が変わらないこと。
 
 ## 4. Part B：化粧品の試行（段階 2）
 
@@ -191,3 +191,4 @@ A0 が P2-a2 と一致しなければ止める。
 | 版 | 日付 | 内容 |
 |---|---|---|
 | v0.1 | 2026-11-01 | 初版 |
+| v0.1.1 | 2026-11-01 | golden の件数を訂正（通常 15 → 16。化粧品のサンプルの登録で 1 件増えていた。GPT君の指摘）。B4 は、遅配の有無を合否にせず、確かめた動きと、参考値・未充足・遅配の関係を報告する |

@@ -178,7 +178,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 - **流れ**：依頼書（`requests/`）→ 実装 → 報告書（`docs/development/`）→ 検証（「止める理由」と「申し送り」を分ける）→ commit。依頼書と実装は別の commit にする。
 - **BS-SEAF の一巡**：8 段階・誤りの型・標準の作法・報告書に残す記録は [BS-SEAF の進め方の知識](bsseaf/WOM_BSSEAF_Process_Knowledge.md)。最初の基準事例は化粧品（[検証報告](development/WOM_BSSEAF_Verification_Cosmetics_Report.md)）。
 - **保護対象のコア**（`AGENTS.md` §10）：`backward_planner.py`、`forward_planner.py`、`plan_copy.py`、`plan_node.py`、`sc_tree.py`、`push_pull.py`。依頼書が無ければ変えない。変えるときは 3 層のテスト（単体・CSV からの結合・golden）を緑にし、大杉さんが diff を確かめる。
-- **golden**：`tests/golden/*.json`（15 件）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。プラグインの組はモデルの `recommended_plugins` と同じ（rice 以外は Holiday Calendar・Buffering Stock・Capacity Override、rice はこれに Rice Seasonal）。作るときは `--plugins` を明示する（`CLAUDE.md`、`tests/test_golden.py` の説明）。
+- **golden**：`tests/golden/*.json`（16 件。2026-10-30 に化粧品が加わった）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。プラグインの組はモデルの `recommended_plugins` と同じ（rice 以外は Holiday Calendar・Buffering Stock・Capacity Override、rice はこれに Rice Seasonal）。作るときは `--plugins` を明示する（`CLAUDE.md`、`tests/test_golden.py` の説明）。
 - **テストの段**（`tests/README.md`、2026-10-15）：途中は `python -m tools.quick_check --smoke`（約 1 分）と、直した所の領域（`--area rice` など、`--changed` は変えたファイルから選ぶ）。全テスト（`--full`、約 15〜18 分）は依頼書ごとに最後に 1 回。保護対象のコアを直したときは全テストと 3 層のテストが必須。依頼書には回す段を書く。新しいテストのファイルは `tests/conftest.py` の対応表に 1 行足す。golden を含む pytest は並行させない。
 - **git**：Windows 側で行う。リモートは `composite_node`（`wom_development_composite_node`、default branch `wom-v1r5m1_cap_trial`）。commit メッセージの下書きは `commit_msg*.txt`（git の対象外）。
 - **誤読を招く名前**は見つけ次第、関連する資料をまとめて直す。黙った既定値（0・1・前の週）を作らない。
