@@ -1,7 +1,7 @@
 ---
 knowledge_id: WOM-DESIGN-UPPER-DEMAND-PLAN-001
 title: 上位 Demand Plan — 詳細設計と実装の進め方
-version: "0.1"
+version: "0.2"
 updated: "2026-11-01"
 adoption: 提案
 evidence: "コード確認（2ac9598）：handoff.py、flow_check.py、run_quantity_allocation.py、sc_tree.py、backward_planner.py。実装・実行は未実施"
@@ -11,7 +11,7 @@ basis:
   - requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md               # U4 の判断資料（v0.2）
 ---
 
-# 上位 Demand Plan — 詳細設計と実装の進め方 v0.1
+# 上位 Demand Plan — 詳細設計と実装の進め方 v0.2
 
 - 作成：Claude君（設計）。GPT君の設計ドラフト（2026-11-01）の §3〜§7 を、WOM の既存のコードに対応させて詳細にしたもの
 - 位置づけ：**従来の Demand Plan（需要 CSV）の上位にある計画の機能**。元の需要 ① の全体に経営の方針を与え、供給の条件を見て供給の対象 ② を選び、外した ③ の理由を残し、実行の後に ④⑤ を元の需要へ戻して照合する。三層の **Management の層**に当たり、PSI エンジン（Backward／Forward）の前と後に置く。保護対象のコアは変えない
@@ -69,10 +69,10 @@ Backward／Forward／Flow Check
 | `udp_quota.csv` | 入力（モード 1） | `sku_id, region, alloc_lots, quota_source` | 今の `allocation_qty_*.csv` に出どころの列を足したもの。`quota_source` の例：`P2-a2（U3 の基準による配分）`。今の形のファイルもそのまま読めるようにする |
 | `udp_policy.csv` | 入力（任意。段階 3 から） | `policy_id, policy_version, sku_id, region, week_from, week_to, segment, priority_class, reason, window_from, window_to, min_supply_lots, min_supply_kind` | `priority_class` 1〜5（1 が最優先、順序だけ）。`min_supply_kind`：`required`／`target`。空欄の項目は「指定なし」で、既定値を黙って置かない |
 | `udp_selection_ledger.csv` | 出力（(2)） | `source_demand_ref, q1, q2, q3, week_rule, tie_key, reason_code, quota_ref, policy_ref` | `reason_code` の例：`quota_cut_proportional`、`quota_cut_even`、`quota_cut_latest_first`、`kept_full`。鍵ごとに Σq2 ＝ `alloc_lots` |
-| `udp_capacity_check.csv` | 出力（(3)、診断） | `sku_id, week, need_good_lots, cap_good_lots, cum_need, cum_cap, cum_excess` | §4 |
+| `udp_capacity_check.csv` | 出力（(3)、診断） | `sku_id, week, need_good_lots, cap_good_lots, cum_need, cum_cap, cum_excess` と、SKU ごとの `ontime_short_ref`・適用条件 | §4。要求時期までに満たせない量の参考値で、期末の未充足の予測値ではない |
 | `udp_result_by_request.csv` | 出力（(5)） | `source_demand_ref, q2, on_time, early, late, q5, first_ship_weeks` | §5。q2 ＝ on_time＋early＋late＋q5 |
 | `udp_supply_runs.csv` | 出力（(5)） | `sku_id, region, zero_supply_weeks, longest_zero_run, longest_zero_run_from, excluded_weeks_rule` | 実際の出荷の週で数える。§5.3 |
-| `udp_plan.json` | 出力 | `plan_id, scenario_id, mode, horizon, judgement_week, report_start, week_rule, tie_key, quota_file_sha256, policy_file_sha256, model_dir_sha256, target_commit, knowledge_used[], owner_decisions[], status` | 再現と引き継ぎ。`status` は「候補作成／計算済み／整合確認／目標の達成・未達／Owner 採用」（GPT君の §10.2） |
+| `udp_plan.json` | 出力 | `plan_id, scenario_id, mode, horizon, judgement_week, report_start, week_rule, tie_key, input_hashes{}, target_commit, knowledge_used[], owner_decisions[], calc_status, consistency_status, target_status, owner_status` | 再現と引き継ぎ。**`input_hashes` は計算に使う入力のファイルだけ**（元の需要 CSV、数量枠、方針、モデルの入力 CSV）。生成した需要 CSV と実行の結果は混ぜない（それらは出力として別に記録）。**状態は 4 つを別々に持つ**：計算（未計算／計算済み）、数量の整合（未確認／整合／不整合）、業務の目標（未判定／達成／未達）、Owner の採否（未判断／採用／不採用）。一つの `status` にまとめない（GPT君） |
 
 ## 3. 選び方（モード 1：数量枠を固定）
 
@@ -81,7 +81,7 @@ Backward／Forward／Flow Check
 | 規則（`week_rule`） | 定義 | 化粧品の案 |
 |---|---|---|
 | `proportional_early_tie` | 最大剰余法。raw(w) ＝ a·d(w)/Σd、floor の後の残り R を、端数の大きい順、**同じ端数は request_week の早い順**に +1 | **A0**。今の `handoff.py` と同じ結果になる（鍵の中の行が週の順のため）。結果として、減らす 1 lot は遅い週に並ぶ |
-| `proportional_even` | まず floor(raw) を置き、残り R を、端数の最も大きい週の集合 T（|T| ＝ n）の中で、**等間隔の位置** i_j ＝ floor((j＋0.5)·n／R)（j ＝ 0…R−1、T を request_week の順に並べた番号）に +1。R ≥ n や端数が複数の水準に分かれるときは、水準ごとに同じことを繰り返す | **A0e** |
+| `proportional_even` | まず floor(raw) を置く。残り R を、**端数の大きい集団から順に**、集団の全週へ +1 する（端数が同じ週の集まりを一つの集団とする）。残りが集団の大きさ n より少なくなった**最後の集団だけ**、その R' 個の +1 を、集団を request_week の順に並べた番号の**等間隔の位置** i_j ＝ floor((j＋0.5)·n／R')（j ＝ 0…R'−1）に置く | **A0e** |
 | `earliest_first` | request_week の早い順に s(w) ＝ min(d(w), 残り) | **A1**（遅い週から丸ごと減る） |
 | `priority_then_<rule>` | 段階 3。`udp_policy.csv` の priority_class の順に枠を埋め、同じ優先の中は上のどれかの規則 | A2・構想の段階 A |
 
@@ -89,7 +89,7 @@ Backward／Forward／Flow Check
 
 **A0 が今の結果と同じになることの確認**：`proportional_early_tie` で P2-a2 の配分を選び、今の `write_demand_for_quantity_allocation()` が書く需要 CSV と、全行一致することをテストにする（P2-a・P0P1 の結果を変えないため）。
 
-## 4. 時間の可否の診断（`udp_capacity_check.csv`）
+## 4. 時間の可否の診断（`udp_capacity_check.csv`）— 要求時期までに満たせない量の参考値
 
 GPT君のドラフト §7 の「期間の合計の能力を ② にそろえることと、要求の時期に間に合う需要を選ぶことは違う」を、計画の前に数で示す診断。
 
@@ -98,12 +98,17 @@ GPT君のドラフト §7 の「期間の合計の能力を ② にそろえる�
 1. need_good(w) ＝ Σ_leaf s_leaf(w ＋ L_leaf)。L_leaf は leaf から工場の出荷までの週数（木の `lt_wks` の和。化粧品は判定 1＋海上 2＋DC→チャネル 1 ＝ 4）。
 2. cap_good(w) ＝ floor(cap_soft(w) × yield_rate)（`demand_envelope`＝soft のとき。hard なら max_supply）。`PlanNode.shippable_*` と同じ換算にする（C3a の開放の週：美容液 13、クリーム 10）。
 3. cum_excess(t) ＝ Σ_{w≤t} need_good(w) − Σ_{w≤t} cap_good(w)（w は計画の最初の週から）。
-4. **見込みの下限**：unmet_lb ＝ max(0, max_t cum_excess(t))。作り置きは前の週にしかできないので、ある時点までの必要が、その時点までの能力を超えた分は、計画の中では作れない。
+4. **要求時期までに満たせない量の参考値**：ontime_short_ref ＝ max(0, max_t cum_excess(t))。作り置きは前の週にしかできないので、ある時点までの必要が、その時点までの能力を超えた分は、その要求時期には間に合わない。
 
-**読み方**：
+**意味（v0.2 で直した。GPT君の指摘）**：
 
-- 合計が等しい（Σneed ＝ Σcap）とき、cum_excess(t) ＝ t より後の能力の余り − t より後の必要。**期間の終わりで能力が余る選び方ほど、unmet_lb が大きい**（A1 の ⑤ の見込みの仕組み）。
-- これは単一の資源・固定の LT・作り置きに上限なしの近似で、エンジンの結果の代わりではない。店頭在庫（`ss_days`）、原料の区間（最初の週）、休業は入っていない。**A0（⑤＝8）と P1（⑤＝4）で、エンジンの結果とどれだけ合うかを先に確かめ**、合う範囲を記録してから、モード 2 の選択に使う。
+**時間の可否の診断は、指定した近似の条件の下で、要求時期までに満たせない数量を示す参考値とする。期末の未充足（⑤）の予測値とは区別する。期末の未充足は、Forward の後の Lot の照合（§5）で確定し、診断との差と適用の条件を記録する。**
+
+- 要求時期に間に合わない量と、期末まで届かない量は違いうる。例：第 1 週の需要 10・能力 5、第 2 週の需要 0・能力 5。第 1 週に 5 不足する（参考値 5）が、翌週の生産と遅配を認める計画なら、期末までに 10 全部を届けられる（期末の未充足 0）。
+- 近似の条件：単一の資源（SKU ごとの工場）、固定の LT、作り置きに上限なし、遅れての生産をしない、店頭在庫（`ss_days`）・原料の区間（最初の週）・休業は入れない。この条件を `udp_capacity_check.csv` に一緒に書く。
+- 今の WOM の Backward は、能力を超えた分を前の週へだけ押し戻し、計画の最初より前に出た分を `past_due` にする。Forward がそれを後の週で作って遅配にするかどうかで、参考値と期末の未充足の関係が変わる。**化粧品の試行で、遅配（Flow Check の表2 の `late`）が出るかを確かめ、参考値・期末の未充足・遅配の三つを並べて記録する。**
+- 合計が等しい（Σneed ＝ Σcap）とき、cum_excess(t) ＝ t より後の能力の余り − t より後の必要。期間の終わりで能力が余る選び方ほど、参考値が大きい。
+- A0・P1 で期末の未充足と数が近くても、それだけで一般の予測の式としては採用しない。今の Backward の配置に限った診断として使う場合も、その条件を書く。モード 2 の選択に使うかは、試行の後に決める。
 
 ## 5. 実行の後の照合（元の需要へ戻す）
 
@@ -128,6 +133,7 @@ GPT君のドラフト §7 の「期間の合計の能力を ② にそろえる�
 | 測ること（U4 資料 §5） | 出どころ |
 |---|---|
 | M1 鍵ごとの ①〜⑤ | 選択の台帳＋`udp_result_by_request.csv`（Q json とも照合） |
+| 要求週ごとの当週の充足率 | `udp_result_by_request.csv` の on_time ÷ **元の需要 ①**（その週の）。「近い週を守れたか」を直接見る（GPT君）。分母が 0 の週は「対象なし」と書き、100% にしない |
 | M2 要求週ごとの ②〜⑤ | `udp_result_by_request.csv` |
 | M3 供給が 0 の週・連続 | `udp_supply_runs.csv` |
 | M4 能力の余り | `udp_capacity_check.csv` と工場の PSI |
@@ -187,3 +193,4 @@ U4 資料 v0.2 §7 に、GPT君の UP-J01〜J06 と合わせて並べる。
 | 版 | 日付 | 内容 |
 |---|---|---|
 | v0.1 | 2026-11-01 | 初版（提案）。GPT君の上位 Demand Plan の設計ドラフトを、既存のコードに対応させて詳細にした |
+| v0.2 | 2026-11-01 | GPT君の確認（`c9a1d16`）：時間の可否の診断を「要求時期までに満たせない量の参考値」とし、期末の未充足の予測値と区別（§4）。均等の規則の定義を「端数の大きい集団から、最後の集団だけ等間隔」に（§3）。ハッシュは入力のファイルだけ、状態は 4 つを別々に（§2.2）。要求週ごとの当週の充足率（元の需要が分母）を足した（§6） |
