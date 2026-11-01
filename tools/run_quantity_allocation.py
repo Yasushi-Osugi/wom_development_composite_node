@@ -6,7 +6,8 @@ RequestLetter_QuantityAllocationMode v0.2 C.3（判断 J1〜J4、2026-10-26）�
 
     python -m tools.run_quantity_allocation --model-dir <作業用のモデル> --allocation-file <allocation_qty_X.csv>
         [--out-dir output/planning_state] [--unallocated-note "<U1 の仮定>"] [--plugins …]
-        [--week-rule proportional_early_tie|proportional_even|earliest_first] [--udp-out <場所>]
+        [--week-rule proportional_early_tie|proportional_even|earliest_first|trim_to_capacity_latest]
+        [--udp-out <場所>]
 
 人が **lot の数量** で決めた配分（(sku_id, region) ごとの `alloc_lots`）を、価格・原価・為替を
 一つも置かずに、配分 → Backward → Forward → 結果の記録まで一巡させる。財務は「未評価」。
@@ -202,7 +203,10 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
     gen_path = os.path.join(model_dir, gen_name)
     if use_udp:
         ledger = UDP.build_demand_ledger(model_dir, demand_file, demand_nature=demand_nature)
-        selection = UDP.select_mode1(ledger, allocation_file, week_rule)
+        if week_rule == UDP.CAPACITY_RULE:
+            selection = UDP.select_mode1_capacity(ledger, allocation_file, model_dir)
+        else:
+            selection = UDP.select_mode1(ledger, allocation_file, week_rule)
         h = UDP.write_engine_demand(selection, model_dir, gen_path, demand_file=demand_file)
     else:
         h = write_demand_for_quantity_allocation(model_dir, allocation_file, qid,
@@ -342,12 +346,14 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
     shutil.rmtree(work, ignore_errors=True)
     res = {"status": "ok", "path": path, "state": state}
     if udp_out:
+        by_rule = week_rule == UDP.CAPACITY_RULE      # the rule's own conditions go to the diagnosis
         res["udp_dir"] = UDP.write_plan_outputs(
             udp_out, f"{case}_{week_rule}", model_dir=model_dir, ledger=ledger, selection=selection,
-            capacity_check=UDP.time_phased_check(model_dir, selection),
+            capacity_check=UDP.time_phased_check(model_dir, selection, by_rule, by_rule),
             by_request=by_request, supply_runs=UDP.supply_runs(tree, selection),
             demand_file=demand_file, allocation_file=allocation_file, generated_csv=gen_path,
-            period=fixed, commit=commit, totals=state["quantities"]["total"], repo=REPO)
+            period=fixed, commit=commit, totals=state["quantities"]["total"], repo=REPO,
+            rule_detail=UDP.capacity_rule_detail(model_dir, selection) if by_rule else None)
     return res
 
 
@@ -378,7 +384,8 @@ def main(argv=None) -> int:
     ap.add_argument("--plugins", default=None,
                     help="same rule as run_headless_from_folder (default: recommended_plugins)")
     ap.add_argument("--week-rule", default=None,
-                    choices=["proportional_early_tie", "proportional_even", "earliest_first"],
+                    choices=["proportional_early_tie", "proportional_even", "earliest_first",
+                             "trim_to_capacity_latest"],
                     help="which request weeks a key keeps (default: proportional_early_tie)")
     ap.add_argument("--udp-out", default=None,
                     help="upper Demand Plan outputs go to <udp-out>/<plan_id>/ (default: none)")

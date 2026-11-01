@@ -309,3 +309,162 @@ def test_changing_an_input_changes_its_hash(tmp_path):
         f.write("\n")
     b = U.input_file_hashes(m, "demand_forecast.csv", q)
     assert a["capacity_plan.csv"] != b["capacity_plan.csv"] and a["demand_forecast.csv"] == b["demand_forecast.csv"]
+
+
+# ── 能力に合わせて減らす週を選ぶ規則（RequestLetter_…_CapacityAwareWeekRule_U4 §3.3） ──────
+HAND_WEEKS = [f"2027-W{i:02d}" for i in range(1, 9)]
+TREE_COLS = ["node_name", "parent_node", "product_name", "node_type", "side", "lt_wks", "region", "ss_days"]
+
+
+def _hand_model(tmp_path, cap, demand):
+    """工場 1・代理店 2・直営店 1。LT 2 週、直営店は ss_days 14 日で 2 週早い。"""
+    m = str(tmp_path / "hand")
+    os.makedirs(m, exist_ok=True)
+    tree = [["SP", "", "P", "supply_point", "outbound", 0, "", 0], ["DC", "SP", "P", "dad", "outbound", 1, "", 0],
+            ["Store", "DC", "P", "leaf_out", "outbound", 1, "Store", 14], ["D1", "DC", "P", "leaf_out", "outbound", 1, "D1", 0],
+            ["D2", "DC", "P", "leaf_out", "outbound", 1, "D2", 0], ["F", "", "P", "mom", "inbound", "", "", 0]]
+    _w(os.path.join(m, "sc_tree_master.csv"), TREE_COLS, tree)
+    _w(os.path.join(m, "capacity_plan.csv"), ["sku_id", "week", "max_supply"], [["P", w, cap] for w in HAND_WEEKS])
+    _w(os.path.join(m, "demand_forecast.csv"), ["sku_id", "region", "week", "quantity"],
+       [["P", r, w, q] for r, qs in demand.items() for w, q in zip(HAND_WEEKS, qs)])
+    return m
+
+
+HAND_DEMAND = {"Store": [0, 0, 0, 0, 1, 1, 1, 1], "D1": [0, 0, 4, 4, 4, 4, 6, 6], "D2": [0, 0, 2, 2, 2, 2, 2, 2]}
+
+
+def _hand_select(tmp_path, cap, quota, **kw):
+    m = _hand_model(tmp_path, cap, HAND_DEMAND)
+    q = make_alloc(str(tmp_path / "q.csv"), {("P", r): v for r, v in quota.items()})
+    sel = U.select_mode1_capacity(U.build_demand_ledger(m), q, m, **kw)
+    return m, sel, {r: [x["q2"] for x in sel if x["region"] == r] for r in HAND_DEMAND}
+
+
+def test_trim_by_hand(tmp_path):
+    # need(p) = W03..W08 の代理店 p=0..5 に直営店 W05..W08 p=0..3：7 7 7 7 8 8、能力 5
+    # p5 の超過 3 を残り 4:2 で分ける -> D1 2, D2 1。p4 も 3 -> D1 2, D2 1。ここで使い切る
+    m, sel, q2 = _hand_select(tmp_path, 5, {"Store": 4, "D1": 24, "D2": 10})
+    assert q2["Store"] == HAND_DEMAND["Store"]
+    assert q2["D1"] == [0, 0, 4, 4, 4, 4, 4, 4]
+    assert q2["D2"] == [0, 0, 2, 2, 2, 2, 1, 1]
+    rows = [r for r in U.time_phased_check(m, sel, True, True)]
+    assert [r["need_good_lots"] for r in rows][4:6] == [5, 5] and [r["cap_good_lots"] for r in rows][4:6] == [5, 5]
+    assert rows[0]["cap_good_lots"] == 0
+    assert all(x["reason_code"] == "quota_cut_trim_to_capacity" for x in sel if x["q3"])
+    assert all(x["week_rule"] == "trim_to_capacity_latest" for x in sel)
+    assert sel[0]["policy_ref"] == "capacity_check:first_week_unusable=1,ss_lead=1,rest_lots=0"
+
+
+def test_trim_tie_goes_by_region_name(tmp_path):
+    # 減らす量 1:1、p5 の超過を 1 にする（能力 7）。端数が同じなら region の名前の順で D1
+    _, _, q2 = _hand_select(tmp_path, 7, {"Store": 4, "D1": 27, "D2": 11}, first_week_unusable=False)
+    assert q2["D1"][7] == 5 and q2["D1"][6] == 6
+    assert q2["D2"][6] == 1 and q2["D2"][7] == 2
+
+
+def test_trim_rest_goes_even_and_is_recorded(tmp_path):
+    # 能力 7：超える分は p5・p4 の 1 ずつ。減らす量 3・1。比率 .75／.67 で 2 回とも D1、残り 1・1 を均等
+    m, sel, q2 = _hand_select(tmp_path, 7, {"Store": 4, "D1": 25, "D2": 11}, first_week_unusable=False)
+    assert q2["D1"] == [0, 0, 4, 4, 4, 4, 4, 5]
+    assert q2["D2"] == [0, 0, 2, 2, 1, 2, 2, 2]
+    assert next(x for x in sel if x["region"] == "D1")["policy_ref"].endswith("rest_lots=1")
+    d = U.capacity_rule_detail(m, sel, False, True)
+    assert d["rest_lots_total"] == 2 and d["rest_lots_by_key"]["P|D2"] == 1
+
+
+def test_trim_keys_without_a_cut_stay_whole_and_conserve(tmp_path):
+    _, sel, _ = _hand_select(tmp_path, 3, {"Store": 4, "D1": 20, "D2": 8})
+    tot = {}
+    for x in sel:
+        assert x["q1"] == x["q2"] + x["q3"] and 0 <= x["q2"] <= x["q1"]
+        tot[x["region"]] = tot.get(x["region"], 0) + x["q3"]
+    assert tot == {"Store": 0, "D1": 8, "D2": 4}
+
+
+def test_trim_row_order_does_not_matter(tmp_path):
+    m = _hand_model(tmp_path, 5, HAND_DEMAND)
+    q = make_alloc(str(tmp_path / "q.csv"), {("P", "Store"): 4, ("P", "D1"): 24, ("P", "D2"): 10})
+    a = U.select_mode1_capacity(U.build_demand_ledger(m), q, m)
+    p = os.path.join(m, "demand_forecast.csv")
+    src = list(csv.reader(open(p, encoding="utf-8")))
+    body = src[1:]
+    random.Random(5).shuffle(body)
+    _w(p, src[0], body)
+    assert U.select_mode1_capacity(U.build_demand_ledger(m), q, m) == a
+
+
+def _c3a_model(tmp_path):
+    """化粧品の C3a の能力の写し（資料 docs/scenarios/cosmetics.md の作り方）。"""
+    m = str(tmp_path / "c3a")
+    shutil.copytree(COSMETICS, m, ignore=shutil.ignore_patterns("README.md"))
+    p = os.path.join(m, "capacity_plan.csv")
+    rows = list(csv.DictReader(open(p, encoding="utf-8", newline="")))
+    for r in rows:
+        r["max_supply"], r["cap_soft"] = {"COS_Serum": (17, 14), "COS_Cream": (13, 11)}[r["sku_id"]]
+    _w(p, list(rows[0]), [list(r.values()) for r in rows])
+    return m
+
+
+def test_trim_on_the_cosmetics_demand(tmp_path):
+    m = _c3a_model(tmp_path)
+    sel = U.select_mode1_capacity(U.build_demand_ledger(m), P2A2, m)
+    quota = {(r["sku_id"], r["region"]): int(r["alloc_lots"]) for r in csv.DictReader(open(P2A2, encoding="utf-8-sig"))}
+    tot = {}
+    for x in sel:
+        assert x["q1"] == x["q2"] + x["q3"] and 0 <= x["q2"] <= x["q1"]
+        tot[(x["sku_id"], x["region"])] = tot.get((x["sku_id"], x["region"]), 0) + x["q2"]
+    assert {k: v for k, v in tot.items() if v} == quota
+    assert all(x["q3"] == 0 for x in sel if x["region"] in ("SG_Store", "SG_EC"))
+    assert U.capacity_rule_detail(m, sel)["rest_lots_total"] == 0
+    assert all(x["q2"] > 0 for x in sel if x["q1"] > 0)            # 代理店への供給を止めない
+
+
+# ── 診断の条件の選択肢 ────────────────────────────────────────────────────────
+APPX = os.path.join(REPO, "docs", "development", "WOM_BSSEAF_Cosmetics_UpperDemandPlan_U4_appendix", "udp")
+
+
+@pytest.mark.parametrize("case,serum,cream,plain_s,plain_c", [("U4_A0", 4, 4, 0, 0), ("U4_A0e", 2, 2, 0, 0),
+                                                              ("U4_A1", 64, 55, 43, 39)])
+def test_conditions_reproduce_the_u4_results(tmp_path, case, serum, cream, plain_s, plain_c):
+    m = _c3a_model(tmp_path)
+    sel = []
+    for r in csv.DictReader(open(os.path.join(APPX, case, "udp_selection_ledger.csv"), encoding="utf-8")):
+        sku, reg, wk = r["source_demand_ref"].split("|")
+        sel.append({"sku_id": sku, "region": reg, "request_week": wk, "q2": int(r["q2"])})
+    ref = lambda *f: {r["sku_id"]: r["ontime_short_ref"] for r in U.time_phased_check(m, sel, *f)}
+    assert ref(True, True) == {"COS_Serum": serum, "COS_Cream": cream}
+    assert ref() == {"COS_Serum": plain_s, "COS_Cream": plain_c}
+
+
+def test_conditions_are_written_and_the_default_text_is_unchanged():
+    assert U.APPROX_CONDITIONS == ("近似の条件：単一の資源（SKU ごとの工場）、固定の LT、作り置きに上限なし、遅れての生産をしない、"
+                                   "店頭在庫（ss_days）・原料の区間（最初の週）・休業は入れない")
+    t = U.approx_conditions(True, True)
+    assert t.endswith("休業は入れない。入れた：店頭在庫（ss_days）・原料の区間（最初の週）")
+    assert "入れた：原料の区間（最初の週）" in U.approx_conditions(True, False)
+
+
+def test_select_mode1_refuses_the_capacity_rule(tmp_path):
+    q = make_alloc(str(tmp_path / "q.csv"), {("A", "X"): 1})
+    with pytest.raises(ValueError, match="select_mode1_capacity"):
+        U.select_mode1(_ledger_of(tmp_path, [1, 1]), q, "trim_to_capacity_latest")
+
+
+def test_trim_through_the_tool_records_its_conditions(tmp_path):
+    m = make_model(str(tmp_path / "m"), cap=2)
+    r = _ps(tmp_path, m, week_rule="trim_to_capacity_latest", udp_out=str(tmp_path / "udp"))
+    assert r["status"] == "ok" and r["state"]["week_rule"] == "trim_to_capacity_latest"
+    d = r["udp_dir"]
+    p = json.load(open(os.path.join(d, "udp_plan.json"), encoding="utf-8"))
+    w = p["week_rule_detail"]
+    assert w["first_week_unusable"] is True and w["ss_lead"] is True and "rest_lots_total" in w
+    cc = list(csv.DictReader(open(os.path.join(d, "udp_capacity_check.csv"), encoding="utf-8")))
+    assert all("入れた：" in x["approx_conditions"] for x in cc)
+    rows = list(csv.DictReader(open(os.path.join(d, "udp_result_by_request.csv"), encoding="utf-8")))
+    assert all(int(x["q2"]) == int(x["on_time"]) + int(x["early"]) + int(x["late"]) + int(x["q5"]) for x in rows)
+
+
+def test_other_rules_have_no_rule_detail_in_the_plan_json(tmp_path):
+    m = make_model(str(tmp_path / "m"), cap=2)
+    r = _ps(tmp_path, m, week_rule="proportional_even", udp_out=str(tmp_path / "udp"))
+    assert "week_rule_detail" not in json.load(open(os.path.join(r["udp_dir"], "udp_plan.json"), encoding="utf-8"))

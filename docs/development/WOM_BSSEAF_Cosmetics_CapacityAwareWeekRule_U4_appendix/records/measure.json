@@ -1,0 +1,298 @@
+{
+ "checks": {
+  "B3_selection_same": true,
+  "B3_result_same": true,
+  "B3_demand_same": true,
+  "B3_q5": 4,
+  "B3_eval": 607240500.0,
+  "B3_flow_check_market.csv": true,
+  "B3_flow_check_nodes.csv": true,
+  "capacity_same_as_C3a": {
+   "A0e": true,
+   "A3": true
+  },
+  "base_demand_same_as_sample": {
+   "A0e": true,
+   "A3": true
+  },
+  "period": {
+   "A0e": {
+    "start": "2026-W37",
+    "weeks": 173
+   },
+   "A3": {
+    "start": "2026-W37",
+    "weeks": 173
+   }
+  },
+  "same_quota_totals": {
+   "A0e": {
+    "COS_Serum|SG_Store": 546,
+    "COS_Serum|SG_EC": 455,
+    "COS_Serum|SG_Distributor": 825,
+    "COS_Serum|TH_Distributor": 358,
+    "COS_Cream|SG_Store": 416,
+    "COS_Cream|SG_EC": 299,
+    "COS_Cream|SG_Distributor": 691,
+    "COS_Cream|TH_Distributor": 274
+   },
+   "A3": {
+    "COS_Serum|SG_Store": 546,
+    "COS_Serum|SG_EC": 455,
+    "COS_Serum|SG_Distributor": 825,
+    "COS_Serum|TH_Distributor": 358,
+    "COS_Cream|SG_Store": 416,
+    "COS_Cream|SG_EC": 299,
+    "COS_Cream|SG_Distributor": 691,
+    "COS_Cream|TH_Distributor": 274
+   }
+  },
+  "same_quota": true,
+  "A3_plan": {
+   "calc_status": "計算済み",
+   "consistency_status": "整合",
+   "target_status": "未判定",
+   "owner_status": "未判断",
+   "target_commit": "720429e308b3f87c237907e1036238786e09a1fc",
+   "code_dirty": true,
+   "week_rule_detail": {
+    "first_week_unusable": true,
+    "ss_lead": true,
+    "rest_lots_by_key": {
+     "COS_Cream|SG_Distributor": 0,
+     "COS_Cream|SG_EC": 0,
+     "COS_Cream|SG_Store": 0,
+     "COS_Cream|TH_Distributor": 0,
+     "COS_Serum|SG_Distributor": 0,
+     "COS_Serum|SG_EC": 0,
+     "COS_Serum|SG_Store": 0,
+     "COS_Serum|TH_Distributor": 0
+    },
+    "rest_lots_total": 0,
+    "ontime_short_ref_with_conditions": {
+     "COS_Cream": 0,
+     "COS_Serum": 0
+    },
+    "ontime_short_ref_without_conditions": {
+     "COS_Cream": 0,
+     "COS_Serum": 0
+    }
+   }
+  },
+  "A3_ref_same_before_and_after": true
+ },
+ "slack30": {
+  "A0e": {
+   "COS_Serum": 54.0,
+   "COS_Cream": 42.0
+  },
+  "A3": {
+   "COS_Serum": 52.0,
+   "COS_Cream": 40.0
+  }
+ },
+ "slack20": {
+  "A0e": {
+   "COS_Serum": 54.0,
+   "COS_Cream": 42.0
+  },
+  "A3": {
+   "COS_Serum": 52.0,
+   "COS_Cream": 40.0
+  }
+ },
+ "t10": {
+  "A0": {
+   "q2": 3864,
+   "on_time": 3856,
+   "miss": 8,
+   "dist_q2": 2148,
+   "dist_on_time": 2140
+  },
+  "A0e": {
+   "q2": 3864,
+   "on_time": 3860,
+   "miss": 4,
+   "dist_q2": 2148,
+   "dist_on_time": 2144
+  },
+  "A1": {
+   "q2": 3864,
+   "on_time": 3745,
+   "miss": 119,
+   "dist_q2": 2148,
+   "dist_on_time": 2029
+  },
+  "A3": {
+   "q2": 3864,
+   "on_time": 3864,
+   "miss": 0,
+   "dist_q2": 2148,
+   "dist_on_time": 2148
+  }
+ },
+ "rate_stats": {
+  "COS_Serum|SG_Distributor|A0": [
+   94.32624113475178,
+   83.33333333333334,
+   83.33333333333334,
+   0
+  ],
+  "COS_Serum|SG_Distributor|A0e": [
+   92.05673758865248,
+   91.66666666666666,
+   83.33333333333334,
+   0
+  ],
+  "COS_Serum|SG_Distributor|A1": [
+   100.0,
+   62.5,
+   0.0,
+   12
+  ],
+  "COS_Serum|SG_Distributor|A3": [
+   100.0,
+   62.5,
+   50.0,
+   0
+  ],
+  "COS_Serum|TH_Distributor|A0": [
+   100.0,
+   71.875,
+   25.0,
+   0
+  ],
+  "COS_Serum|TH_Distributor|A0e": [
+   91.98473282442748,
+   89.84375,
+   50.0,
+   0
+  ],
+  "COS_Serum|TH_Distributor|A1": [
+   100.0,
+   25.0,
+   0.0,
+   24
+  ],
+  "COS_Serum|TH_Distributor|A3": [
+   100.0,
+   75.0,
+   50.0,
+   0
+  ],
+  "COS_Cream|SG_Distributor|A0": [
+   94.78114478114477,
+   80.0,
+   80.0,
+   0
+  ],
+  "COS_Cream|SG_Distributor|A0e": [
+   91.75084175084174,
+   91.25,
+   80.0,
+   0
+  ],
+  "COS_Cream|SG_Distributor|A1": [
+   100.0,
+   60.62499999999999,
+   0.0,
+   12
+  ],
+  "COS_Cream|SG_Distributor|A3": [
+   100.0,
+   60.62499999999999,
+   40.0,
+   0
+  ],
+  "COS_Cream|TH_Distributor|A0": [
+   100.0,
+   69.79166666666666,
+   33.33333333333333,
+   0
+  ],
+  "COS_Cream|TH_Distributor|A0e": [
+   92.11822660098522,
+   88.54166666666666,
+   33.33333333333333,
+   0
+  ],
+  "COS_Cream|TH_Distributor|A1": [
+   100.0,
+   16.666666666666664,
+   0.0,
+   26
+  ],
+  "COS_Cream|TH_Distributor|A3": [
+   100.0,
+   73.95833333333334,
+   66.66666666666666,
+   0
+  ]
+ },
+ "eval": {
+  "A0": {
+   "contribution": 820458480.0,
+   "lost_q3": 24107868.0,
+   "lost_q5": 1002480.0,
+   "evaluation": 606739260.0,
+   "diff_p2a2": 0.0
+  },
+  "A1": {
+   "contribution": 806442960.0,
+   "lost_q3": 24107868.0,
+   "lost_q5": 15018000.0,
+   "evaluation": 592723740.0,
+   "diff_p2a2": -14015520.0
+  },
+  "A0e": {
+   "contribution": 820959720.0,
+   "lost_q3": 24107868.0,
+   "lost_q5": 501240.0,
+   "evaluation": 607240500.0,
+   "diff_p2a2": 501240.0
+  },
+  "A3": {
+   "contribution": 821460960.0,
+   "lost_q3": 24107868.0,
+   "lost_q5": 0.0,
+   "evaluation": 607741740.0,
+   "diff_p2a2": 1002480.0
+  }
+ },
+ "ref_plain": {
+  "A0": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  },
+  "A1": {
+   "COS_Cream": 39,
+   "COS_Serum": 43
+  },
+  "A0e": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  },
+  "A3": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  }
+ },
+ "ref_cond": {
+  "A0": {
+   "COS_Cream": 4,
+   "COS_Serum": 4
+  },
+  "A1": {
+   "COS_Cream": 55,
+   "COS_Serum": 64
+  },
+  "A0e": {
+   "COS_Cream": 2,
+   "COS_Serum": 2
+  },
+  "A3": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  }
+ }
+}

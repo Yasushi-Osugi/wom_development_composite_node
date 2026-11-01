@@ -1,0 +1,153 @@
+{
+ "B1": {
+  "U4_A0": {
+   "default": {
+    "COS_Cream": 0,
+    "COS_Serum": 0
+   },
+   "with_conditions": {
+    "COS_Cream": 4,
+    "COS_Serum": 4
+   },
+   "q5": {
+    "COS_Cream": 4,
+    "COS_Serum": 4
+   },
+   "match": true
+  },
+  "U4_A0e": {
+   "default": {
+    "COS_Cream": 0,
+    "COS_Serum": 0
+   },
+   "with_conditions": {
+    "COS_Cream": 2,
+    "COS_Serum": 2
+   },
+   "q5": {
+    "COS_Cream": 2,
+    "COS_Serum": 2
+   },
+   "match": true
+  },
+  "U4_A1": {
+   "default": {
+    "COS_Cream": 39,
+    "COS_Serum": 43
+   },
+   "with_conditions": {
+    "COS_Cream": 55,
+    "COS_Serum": 64
+   },
+   "q5": {
+    "COS_Cream": 55,
+    "COS_Serum": 64
+   },
+   "match": true
+  }
+ },
+ "B1_all_match": true,
+ "B2": {
+  "COS_Serum": {
+   "lead": {
+    "SG_Store": 4,
+    "SG_EC": 4,
+    "SG_Distributor": 4,
+    "TH_Distributor": 4
+   },
+   "lead_with_ss": {
+    "SG_Store": 6,
+    "SG_EC": 4,
+    "SG_Distributor": 4,
+    "TH_Distributor": 4
+   }
+  },
+  "COS_Cream": {
+   "lead": {
+    "SG_Store": 4,
+    "SG_EC": 4,
+    "SG_Distributor": 4,
+    "TH_Distributor": 4
+   },
+   "lead_with_ss": {
+    "SG_Store": 6,
+    "SG_EC": 4,
+    "SG_Distributor": 4,
+    "TH_Distributor": 4
+   }
+  }
+ },
+ "A3_before_trial": {
+  "first_week_unusable": true,
+  "ss_lead": true,
+  "rest_lots_by_key": {
+   "COS_Cream|SG_Distributor": 0,
+   "COS_Cream|SG_EC": 0,
+   "COS_Cream|SG_Store": 0,
+   "COS_Cream|TH_Distributor": 0,
+   "COS_Serum|SG_Distributor": 0,
+   "COS_Serum|SG_EC": 0,
+   "COS_Serum|SG_Store": 0,
+   "COS_Serum|TH_Distributor": 0
+  },
+  "rest_lots_total": 0,
+  "ontime_short_ref_with_conditions": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  },
+  "ontime_short_ref_without_conditions": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  },
+  "refs_default": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  }
+ },
+ "A0e_refs": {
+  "default": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  },
+  "with_conditions": {
+   "COS_Cream": 2,
+   "COS_Serum": 2
+  }
+ },
+ "A3_cut": {
+  "COS_Cream|SG_Distributor": {
+   "lots": 63,
+   "from": "2029-W21",
+   "to": "2029-W50",
+   "weeks": 30,
+   "max_per_week": 3
+  },
+  "COS_Cream|TH_Distributor": {
+   "lots": 25,
+   "from": "2029-W22",
+   "to": "2029-W50",
+   "weeks": 25,
+   "max_per_week": 1
+  },
+  "COS_Serum|SG_Distributor": {
+   "lots": 72,
+   "from": "2029-W25",
+   "to": "2029-W50",
+   "weeks": 26,
+   "max_per_week": 3
+  },
+  "COS_Serum|TH_Distributor": {
+   "lots": 32,
+   "from": "2029-W25",
+   "to": "2029-W50",
+   "weeks": 26,
+   "max_per_week": 2
+  }
+ },
+ "A3_ledger_totals": {
+  "q1": 4056,
+  "q2": 3864,
+  "q3": 192
+ },
+ "A3_policy_ref": "capacity_check:first_week_unusable=1,ss_lead=1,rest_lots=0"
+}

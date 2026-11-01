@@ -1,0 +1,91 @@
+{
+  "plan_id": "U4_A0e_r2_proportional_even",
+  "scenario_id": "U4_A0e_r2",
+  "mode": "mode1_fixed_quota",
+  "horizon": {
+    "start": "2026-W37",
+    "end": "2029-W52",
+    "weeks": 173
+  },
+  "judgement_week": "2029-W52",
+  "report_start": "2027-W01",
+  "week_rule": "proportional_even",
+  "tie_key": "request_week",
+  "input_hashes": {
+    "quota:allocation_qty_P2a2.csv": "d104a358433e33b068c0ff787c23bbba3b2d5e2d68795f9345a468c78bff4f64",
+    "capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+    "decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+    "demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+    "edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+    "holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+    "inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+    "lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+    "node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+    "node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+    "planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+    "ppc_edge_cost_rule.csv": "b5f82cfd0c6e8c1b4d25e98b12f47bee67c147aa8cd834a5cdede1d82dd00577",
+    "ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+    "ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+    "ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+    "ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+    "ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+    "ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+    "ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+    "ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+    "push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+    "route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+    "sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+    "sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+    "vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+    "vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+    "vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98",
+    "vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2"
+  },
+  "output_hashes": {
+    "udp_demand_ledger.csv": "c76b8aff3747d806f5ead5f5be921a9e2011af8639cab6b747550299dfeccdff",
+    "udp_selection_ledger.csv": "3a1d4302855db827d897781e9a4fdf52d0e25eae2ab3fb6b73e602ac42e86c9a",
+    "udp_capacity_check.csv": "cdeb0d90951a36942425b9502a7ed24a942c8e7134b4735b16a2448742606bd6",
+    "udp_result_by_request.csv": "7e269fa1f8d64c89e25643f6361f9bacb06ee96e7fdd35ded565ebd7931f6b09",
+    "udp_supply_runs.csv": "07bf9a661a87484ddefec9447e948a664d3f3ccbfae0cfa26aab20e6c914be76",
+    "generated_demand_csv": "efa9c6c5220af6ac720a77962383ba4ee923437b0edefef1cd4d1f1c67a25a8e"
+  },
+  "quota_sources": [
+    "P2-a2（U3 の基準、僅差の代理店は需要に比例）"
+  ],
+  "target_commit": "720429e308b3f87c237907e1036238786e09a1fc",
+  "code_dirty": true,
+  "knowledge_used": [
+    {
+      "id": "WOM-SEM-SUPPLY-ALLOCATION-001",
+      "version": "v0.4"
+    },
+    {
+      "id": "WOM-KB-ALLOCATION-001",
+      "version": "v0.2"
+    },
+    {
+      "id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001",
+      "version": "0.3"
+    }
+  ],
+  "owner_decisions": [
+    "requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md §7（2026-11-01）",
+    "requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md §7.1（2026-11-02）"
+  ],
+  "totals": {
+    "q1_original": 4056,
+    "q2_in_supply_scope": 3864,
+    "q3_not_in_supply_scope": 192,
+    "q4_delivered": {
+      "total": 3860,
+      "on_time": 3860,
+      "early": 0,
+      "late": 0
+    },
+    "q5_backlog_end": 4
+  },
+  "calc_status": "計算済み",
+  "consistency_status": "整合",
+  "target_status": "未判定",
+  "owner_status": "未判断"
+}

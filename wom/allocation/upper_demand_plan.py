@@ -3,7 +3,8 @@
 wom/allocation/upper_demand_plan.py — 上位 Demand Plan のモード 1（数量枠を固定）
 ================================================================================
 RequestLetter_BSSEAF_Cosmetics_UpperDemandPlan_U4、
-詳細設計 docs/design/drafts/WOM_Upper_Demand_Plan_DetailDesign_v0.1.md（v0.2）§2〜§5。
+RequestLetter_BSSEAF_Cosmetics_CapacityAwareWeekRule_U4、
+詳細設計 docs/design/drafts/WOM_Upper_Demand_Plan_DetailDesign_v0.1.md（v0.3）§2〜§5。
 
 従来の Demand Plan（需要 CSV）の上位の計画。元の需要を台帳に残し、数量枠の中でどの要求週を
 残すかを規則で選び（選択の台帳）、実行用の需要 CSV はその派生物として書く。計画の後に、
@@ -26,6 +27,7 @@ import json
 import os
 import re
 from collections import Counter, defaultdict
+from math import ceil
 from fractions import Fraction
 from typing import Dict, List, Optional
 
@@ -36,19 +38,34 @@ from wom.model.plan_node import S
 DEFAULT_WEEK_RULE = "proportional_early_tie"
 CUT_REASON = {"proportional_early_tie": "quota_cut_proportional",
               "proportional_even": "quota_cut_even",
-              "earliest_first": "quota_cut_latest_first"}
+              "earliest_first": "quota_cut_latest_first",
+              "trim_to_capacity_latest": "quota_cut_trim_to_capacity"}
 WEEK_RULES = frozenset(CUT_REASON)
+CAPACITY_RULE = "trim_to_capacity_latest"
 TIE_KEY = "request_week"
 REF_NOTE = "参考値：要求時期までに満たせない量。期末の未充足の予測値ではない"
-APPROX_CONDITIONS = ("近似の条件：単一の資源（SKU ごとの工場）、固定の LT、作り置きに上限なし、遅れての生産をしない、"
-                     "店頭在庫（ss_days）・原料の区間（最初の週）・休業は入れない")
+SS_LEAD_LABEL = "店頭在庫（ss_days）"
+FIRST_WEEK_LABEL = "原料の区間（最初の週）"
+
+
+def approx_conditions(first_week_unusable: bool = False, ss_lead: bool = False) -> str:
+    """診断の近似の条件の文字列。入れた条件は「入れた：」に書く。既定は従来の文字列。"""
+    on = [x for x, f in ((SS_LEAD_LABEL, ss_lead), (FIRST_WEEK_LABEL, first_week_unusable)) if f]
+    off = [x for x, f in ((SS_LEAD_LABEL, ss_lead), (FIRST_WEEK_LABEL, first_week_unusable)) if not f]
+    text = ("近似の条件：単一の資源（SKU ごとの工場）、固定の LT、作り置きに上限なし、遅れての生産をしない、"
+            + "・".join(off + ["休業"]) + "は入れない")
+    return text + ("。入れた：" + "・".join(on) if on else "")
+
+
+APPROX_CONDITIONS = approx_conditions()
 RUN_RULE = "数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）"
 KNOWLEDGE_USED = [
-    {"id": "WOM-SEM-SUPPLY-ALLOCATION-001", "version": "v0.3"},
+    {"id": "WOM-SEM-SUPPLY-ALLOCATION-001", "version": "v0.4"},
     {"id": "WOM-KB-ALLOCATION-001", "version": "v0.2"},
-    {"id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001", "version": "0.2"},
+    {"id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001", "version": "0.3"},
 ]
-OWNER_DECISIONS = ["requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md §7（2026-11-01）"]
+OWNER_DECISIONS = ["requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md §7（2026-11-01）",
+                   "requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md §7.1（2026-11-02）"]
 
 
 class ReconcileError(ValueError):
@@ -141,6 +158,8 @@ def select_mode1(ledger: List[dict], quota_file: str, week_rule: str = DEFAULT_W
                  tie_key: str = TIE_KEY) -> List[dict]:
     """鍵（SKU × region）ごとに s(w) を決める。数量枠は固定。a ＝ Σd の鍵はそのまま。
     止める理由は handoff と同じ（数量枠が元の需要を超える、鍵が無いなど）。"""
+    if week_rule == CAPACITY_RULE:
+        raise ValueError(f"{CAPACITY_RULE} reads the model: use select_mode1_capacity()")
     if week_rule not in WEEK_RULES:
         raise ValueError(f"week_rule={week_rule!r}: use one of {sorted(WEEK_RULES)}")
     if tie_key != TIE_KEY:
@@ -218,35 +237,31 @@ def time_phased_rows(need: List[int], cap: List[int]) -> tuple:
     return cn, cc, ce, max([0] + ce)
 
 
-def time_phased_check(model_dir: str, selection: List[dict]) -> List[dict]:
-    """時間の可否の診断（参考値）。SKU ごとに工場を一つの資源とみなす。工場が一つでない SKU、
-    能力の行が無い SKU は適用外の 1 行を返す。計画の最初の週より前の need はその週に寄せる。"""
+def _sku_resources(model_dir: str, skus: List[str], weeks: List[str], first_week_unusable: bool = False,
+                   ss_lead: bool = False) -> Dict[str, dict]:
+    """SKU ごとの資源。{"cap": 週の良品の能力, "lead": region → 工場までの週} か、適用外なら {"na": 理由}。
+    first_week_unusable は計画の最初の週の能力を 0 に、ss_lead は leaf の要求を ceil(ss_days／7) 週早める。"""
     tree = _read(os.path.join(model_dir, "sc_tree_master.csv"))
     cap_rows = _read(os.path.join(model_dir, "capacity_plan.csv"))
-    weeks = sorted({x["request_week"] for x in selection}, key=_week_key)
     idx = {w: i for i, w in enumerate(weeks)}
-    out = []
-
-    def _na(sku, why):
-        out.append({"sku_id": sku, "week": "", "need_good_lots": "", "cap_good_lots": "", "cum_need": "",
-                    "cum_cap": "", "cum_excess": "", "ontime_short_ref": "",
-                    "note": f"適用外：{why}", "approx_conditions": APPROX_CONDITIONS})
-
-    for sku in sorted({x["sku_id"] for x in selection}):
+    out = {}
+    for sku in skus:
         nodes = {r["node_name"]: r for r in tree if r["product_name"] == sku}
         moms = [r for r in nodes.values() if r["node_type"] == "mom"]
         if len(moms) != 1:
-            _na(sku, f"工場（mom）が {len(moms)} 個")
+            out[sku] = {"na": f"工場（mom）が {len(moms)} 個"}
             continue
         mom = moms[0]
-        lt = {}
+        lead = {}
         for r in nodes.values():
             if r["node_type"] == "leaf_out":
                 x, total = r, 0
                 while x is not None and x["node_type"] != "supply_point":
                     total += int(float(x.get("lt_wks") or 0))
                     x = nodes.get(x.get("parent_node", ""))
-                lt[r.get("region") or r["node_name"]] = total
+                if ss_lead:
+                    total += ceil(float(r.get("ss_days") or 0) / 7)
+                lead[r.get("region") or r["node_name"]] = total
         rows = [r for r in cap_rows if r["sku_id"] == sku
                 and r.get("node_name", mom["node_name"]) == mom["node_name"]]
         soft = (mom.get("demand_envelope") or "hard").strip() == "soft"
@@ -257,18 +272,139 @@ def time_phased_check(model_dir: str, selection: List[dict]) -> List[dict]:
             if r["week"] in idx and (r.get(cols) or "") != "":
                 cap[idx[r["week"]]] = int(float(r[cols]) * yld + 1e-9)
         if not rows:
-            _na(sku, "能力の行が無い")
+            out[sku] = {"na": "能力の行が無い"}
             continue
+        if first_week_unusable and cap:
+            cap[0] = 0
+        out[sku] = {"cap": cap, "lead": lead}
+    return out
+
+
+def time_phased_check(model_dir: str, selection: List[dict], first_week_unusable: bool = False,
+                      ss_lead: bool = False) -> List[dict]:
+    """時間の可否の診断（参考値）。SKU ごとに工場を一つの資源とみなす。工場が一つでない SKU、
+    能力の行が無い SKU は適用外の 1 行を返す。計画の最初の週より前の need はその週に寄せる。
+    条件の選択肢の既定は入れない（詳細設計 §4）。使った条件は approx_conditions の列に書く。"""
+    weeks = sorted({x["request_week"] for x in selection}, key=_week_key)
+    idx = {w: i for i, w in enumerate(weeks)}
+    skus = sorted({x["sku_id"] for x in selection})
+    res = _sku_resources(model_dir, skus, weeks, first_week_unusable, ss_lead)
+    cond = approx_conditions(first_week_unusable, ss_lead)
+    out = []
+    for sku in skus:
+        if "na" in res[sku]:
+            out.append({"sku_id": sku, "week": "", "need_good_lots": "", "cap_good_lots": "", "cum_need": "",
+                        "cum_cap": "", "cum_excess": "", "ontime_short_ref": "",
+                        "note": f"適用外：{res[sku]['na']}", "approx_conditions": cond})
+            continue
+        cap, lead = res[sku]["cap"], res[sku]["lead"]
         need = [0] * len(weeks)
         for x in selection:
             if x["sku_id"] == sku and x["q2"]:
-                need[max(0, idx[x["request_week"]] - lt[x["region"]])] += x["q2"]
+                need[max(0, idx[x["request_week"]] - lead[x["region"]])] += x["q2"]
         cn, cc, ce, ref = time_phased_rows(need, cap)
         for i, w in enumerate(weeks):
             out.append({"sku_id": sku, "week": w, "need_good_lots": need[i], "cap_good_lots": cap[i],
                         "cum_need": cn[i], "cum_cap": cc[i], "cum_excess": ce[i],
-                        "ontime_short_ref": ref, "note": REF_NOTE, "approx_conditions": APPROX_CONDITIONS})
+                        "ontime_short_ref": ref, "note": REF_NOTE, "approx_conditions": cond})
     return out
+
+
+def select_mode1_capacity(ledger: List[dict], quota_file: str, model_dir: str, first_week_unusable: bool = True,
+                          ss_lead: bool = True, tie_key: str = TIE_KEY) -> List[dict]:
+    """trim_to_capacity_latest（詳細設計 §3.1）。SKU ごとに工場の週を後ろから前へたどり、必要が
+    良品の能力を超える分 e(p) を、対応する要求週の、減らす量の残っている鍵から減らす。鍵の間は
+    残りの減らす量に比例（同順位は region の名前の順）。残った減らす量は proportional_even で配る。
+    台帳の形は select_mode1 と同じ。policy_ref に診断の条件と残りの量を書く。"""
+    if tie_key != TIE_KEY:
+        raise ValueError(f"tie_key={tie_key!r}: mode 1 uses {TIE_KEY}")
+    alloc = read_quantity_allocation(quota_file)
+    by_key: Dict[tuple, List[dict]] = defaultdict(list)
+    for r in ledger:
+        by_key[(r["sku_id"], r["region"])].append(r)
+    q1 = {k: sum(r["q1"] for r in rows) for k, rows in by_key.items()}
+    check_quantity_quota(alloc, q1, "the demand ledger", quota_file)
+    weeks = sorted({r["request_week"] for r in ledger}, key=_week_key)
+    idx = {w: i for i, w in enumerate(weeks)}
+    skus = sorted({k[0] for k in by_key})
+    res = _sku_resources(model_dir, skus, weeks, first_week_unusable, ss_lead)
+    s = {k: {r["request_week"]: r["q1"] for r in rows} for k, rows in by_key.items()}
+    rest = {}
+    for sku in skus:
+        keys = [k for k in sorted(by_key) if k[0] == sku]
+        left = {k: q1[k] - alloc.get(k, 0) for k in keys}
+        if not any(left.values()):
+            rest.update(left)
+            continue
+        if "na" in res[sku]:
+            raise QuantityAllocationError(f"{sku}: {CAPACITY_RULE} needs one capacity resource: {res[sku]['na']}")
+        cap, lead = res[sku]["cap"], res[sku]["lead"]
+        need = [0] * len(weeks)
+        at_p = defaultdict(lambda: defaultdict(list))        # 工場の週 → 鍵 → 要求週（遅い順）
+        for k in keys:
+            for w in sorted(s[k], key=_week_key, reverse=True):
+                p = max(0, idx[w] - lead[k[1]])
+                need[p] += s[k][w]
+                at_p[p][k].append(w)
+        for p in range(len(weeks) - 1, -1, -1):
+            e = need[p] - cap[p]
+            while e > 0:
+                room = {k: min(left[k], sum(s[k][w] for w in ws)) for k, ws in at_p[p].items()}
+                room = {k: v for k, v in room.items() if v > 0}
+                if not room:
+                    break
+                region_of = {k[1]: k for k in room}
+                give = _largest_remainder({r: float(left[k]) for r, k in region_of.items()},
+                                          min(e, sum(room.values())))
+                for r, k in region_of.items():
+                    take = min(give[r], room[k])
+                    left[k] -= take
+                    need[p] -= take
+                    e -= take
+                    for w in at_p[p][k]:
+                        cut = min(take, s[k][w])
+                        s[k][w] -= cut
+                        take -= cut
+            if not any(left.values()):
+                break
+        for k in keys:
+            rest[k] = left[k]
+            if left[k]:
+                s[k] = _proportional_even(s[k], sum(s[k].values()) - left[k])
+    stem = os.path.basename(quota_file)
+    out = []
+    for k in sorted(by_key):
+        rows, a = by_key[k], alloc.get(k, 0)
+        d = {r["request_week"]: r["q1"] for r in rows}
+        if sum(s[k].values()) != a or any(not 0 <= s[k][w] <= d[w] for w in d):
+            raise QuantityAllocationError(f"{k}: rule {CAPACITY_RULE} gave an impossible selection")
+        policy = (f"capacity_check:first_week_unusable={int(first_week_unusable)},"
+                  f"ss_lead={int(ss_lead)},rest_lots={rest[k]}")
+        for r in rows:
+            q2 = s[k][r["request_week"]]
+            q3 = r["q1"] - q2
+            reason = "no_demand" if r["q1"] == 0 else CUT_REASON[CAPACITY_RULE] if q3 else "kept_full"
+            out.append({"source_demand_ref": r["source_demand_ref"], "q1": r["q1"], "q2": q2, "q3": q3,
+                        "week_rule": CAPACITY_RULE, "tie_key": tie_key, "reason_code": reason,
+                        "quota_ref": f"{stem}:{k[0]}|{k[1]}={a}", "policy_ref": policy,
+                        "sku_id": k[0], "region": k[1], "request_week": r["request_week"]})
+    return out
+
+
+def capacity_rule_detail(model_dir: str, selection: List[dict], first_week_unusable: bool = True,
+                         ss_lead: bool = True) -> dict:
+    """udp_plan.json に書く：診断の条件、残って均等に配った量、減らした後の参考値（条件あり・なし）。"""
+    def refs(*flags):
+        rows = time_phased_check(model_dir, selection, *flags)
+        return {r["sku_id"]: r["ontime_short_ref"] for r in rows}
+
+    rest = {}
+    for x in selection:
+        rest[f"{x['sku_id']}|{x['region']}"] = int(x["policy_ref"].rpartition("rest_lots=")[2])
+    return {"first_week_unusable": first_week_unusable, "ss_lead": ss_lead, "rest_lots_by_key": rest,
+            "rest_lots_total": sum(rest.values()),
+            "ontime_short_ref_with_conditions": refs(first_week_unusable, ss_lead),
+            "ontime_short_ref_without_conditions": refs(False, False)}
 
 
 def _leaves(sc_tree):
@@ -385,7 +521,7 @@ def input_file_hashes(model_dir: str, demand_file: str, quota_file: str) -> Dict
 def write_plan_json(path: str, *, plan_id: str, scenario_id: str, week_rule: str, period: dict,
                     report_start: str, input_hashes: Dict[str, str], outputs: Dict[str, str],
                     quota_sources: List[str], commit: Optional[str], code_dirty: bool,
-                    totals: dict) -> dict:
+                    totals: dict, rule_detail: Optional[dict] = None) -> dict:
     body = {"plan_id": plan_id, "scenario_id": scenario_id, "mode": "mode1_fixed_quota",
             "horizon": {"start": period["start"], "end": period["end"], "weeks": period["weeks"]},
             "judgement_week": period["end"], "report_start": report_start,
@@ -395,6 +531,8 @@ def write_plan_json(path: str, *, plan_id: str, scenario_id: str, week_rule: str
             "knowledge_used": KNOWLEDGE_USED, "owner_decisions": OWNER_DECISIONS, "totals": totals,
             "calc_status": "計算済み", "consistency_status": "整合",
             "target_status": "未判定", "owner_status": "未判断"}
+    if rule_detail is not None:
+        body["week_rule_detail"] = rule_detail
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(body, f, ensure_ascii=False, indent=2)
         f.write("\n")
@@ -410,7 +548,8 @@ def _write_csv(path: str, columns: List[str], rows: List[dict]) -> None:
 
 def write_plan_outputs(udp_out: str, plan_id: str, *, model_dir: str, ledger, selection, capacity_check,
                        by_request, supply_runs, demand_file: str, allocation_file: str, generated_csv: str,
-                       period: dict, commit: Optional[str], totals: dict, repo: str) -> str:
+                       period: dict, commit: Optional[str], totals: dict, repo: str,
+                       rule_detail: Optional[dict] = None) -> str:
     """<udp_out>/<plan_id>/ に 6 ファイルを書く。上書きする（同じ plan_id は同じ入力の再実行）。"""
     from wom.lovem.observer import git_state
     d = os.path.join(udp_out, plan_id)
@@ -440,5 +579,5 @@ def write_plan_outputs(udp_out: str, plan_id: str, *, model_dir: str, ledger, se
                     week_rule=selection[0]["week_rule"] if selection else DEFAULT_WEEK_RULE, period=period,
                     report_start=report, input_hashes=input_file_hashes(model_dir, demand_file, allocation_file),
                     outputs=outputs, quota_sources=sources, commit=commit,
-                    code_dirty=git_state(repo)["dirty"], totals=totals)
+                    code_dirty=git_state(repo)["dirty"], totals=totals, rule_detail=rule_detail)
     return d

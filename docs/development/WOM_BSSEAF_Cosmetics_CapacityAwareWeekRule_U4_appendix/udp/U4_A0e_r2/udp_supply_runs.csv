@@ -1,0 +1,9 @@
+sku_id,region,zero_supply_weeks,longest_zero_run,longest_zero_run_from,excluded_weeks_rule
+COS_Cream,SG_Distributor,0,0,,数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）
+COS_Cream,SG_EC,0,0,,数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）
+COS_Cream,SG_Store,0,0,,数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）
+COS_Cream,TH_Distributor,0,0,,数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）
+COS_Serum,SG_Distributor,0,0,,数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）
+COS_Serum,SG_EC,0,0,,数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）
+COS_Serum,SG_Store,0,0,,数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）
+COS_Serum,TH_Distributor,0,0,,数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）
