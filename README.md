@@ -217,7 +217,7 @@ Physical Layer  ←→  Planning Layer  ←→  Management Layer
       損益評価  PPC                 実行可能なオペレーションから実際に得られる利益はいくらか
 ```
 
-第1層は年次の「どの市場に何個」を、第3層は週次の「実行できるか」を扱います。**年間計画として成立することと、週次実行計画として成立することは別の問題**であり、その差を見ることがWOMの目的の一つです。
+第1層は年次の「どの市場に何個」を、第3層は週次の「実行できるか」を扱います。第1層の結果は需要 CSV に渡して第2層・第3層へつなげます（`wom/allocation/handoff.py`、`tools/run_planning_loop.py`）。金額を置かずに lot の数で配分するときは数量配分モード（`tools/run_quantity_allocation.py`）、元の需要を台帳に残して、どの要求週の需要を供給の対象にするかを選び、納品まで照合するときは上位 Demand Plan（`wom/allocation/upper_demand_plan.py`）を使います。今有効な使い方は [`docs/WOM_Start_Here.md`](docs/WOM_Start_Here.md) の R20〜R23 にあります。**年間計画として成立することと、週次実行計画として成立することは別の問題**であり、その差を見ることがWOMの目的の一つです。
 
 なお、可視化モジュールは対象問題によって2系統に分かれています。混同しやすいので明記します。
 

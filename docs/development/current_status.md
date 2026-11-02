@@ -1,5 +1,8 @@
 # Current Status
 
+> **歴史の記録（2026-11-02 に注記）**：この文書は branch `wom-v1r1m5-agents`（v1r1m5）の時点の観察で、今の状態ではない。今有効な規則と機能の地図は [WOM Start Here](../WOM_Start_Here.md) から辿る。ここで「無い」「未実装」とされている機能（例：配分と需要 CSV の接続、三層の連携）は、その後に実装されている（Start Here の R20〜R23）。
+
+
 ## Purpose
 
 Record the current observed repository status for branch `wom-v1r1m5-agents` as implementation-derived documentation for the v1r1m5 documentation phase.
