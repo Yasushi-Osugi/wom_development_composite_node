@@ -170,7 +170,7 @@ BS-SEAF の 8 段階を、WOM の機能の改良で 100 回ほど繰り返す中
 | # | 事例 | 期間 | 8 段階 | 根拠 |
 |---|---|---|---|---|
 | 1 | 化粧品（日本製高級スキンケアのシンガポール・タイ展開）。**根拠の記録付きで 8 段階を一通り実施した最初の基準事例** | 2026-10-24〜30 | 8 つの検討の反復で全体として 8 段階。段階 6 は教育・実証用の範囲（`data/sample/cosmetics-sg-th-2027-2029`） | [検証報告](../development/WOM_BSSEAF_Verification_Cosmetics_Report.md)（v0.2）、[化粧品設計書](../../requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.5.md) §8 |
-| 2 | 化粧品の U4：配分の数量を各週の需要にどう当てるか。上位 Demand Plan（従来の需要 CSV の上位の計画の機能）のモード 1 を作った。引き継ぎの欄（YAML）と人の橋渡しの記録を初めて実際に使った | 2026-11-01〜02 | 段階 1〜6 を 2 回の反復で（1 回目：3 案、2 回目：能力に合わせる規則）。段階 7 は GPT君のレビュー。実作業の時間：1 回目 約 2 時間 10 分（計測なし、推定）、2 回目 28 分（時刻で記録） | [U4 資料](../../requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md)、`docs/development/WOM_BSSEAF_Cosmetics_UpperDemandPlan_U4_Report.md`、`docs/development/WOM_BSSEAF_Cosmetics_CapacityAwareWeekRule_U4_Report.md` |
+| 2 | 化粧品の U4：配分の数量を各週の需要にどう当てるか。上位 Demand Plan（従来の需要 CSV の上位の計画の機能）のモード 1 を作った。引き継ぎの欄（YAML）と人の橋渡しの記録を初めて実際に使った | 2026-11-01〜02 | 段階 1〜6 を 2 回の反復で（1 回目：3 案、2 回目：能力に合わせる規則）。段階 7 は GPT君のレビュー。再利用した知識と実作業の時間を記録できた最初の事例（2 回目 28 分を時刻で記録。1 回目は計測なし。作業の中身が違うので、二つを比べて生産性の向上とはしない〔GPT君〕） | [U4 資料](../../requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md)、`docs/development/WOM_BSSEAF_Cosmetics_UpperDemandPlan_U4_Report.md`、`docs/development/WOM_BSSEAF_Cosmetics_CapacityAwareWeekRule_U4_Report.md` |
 
 お米の事例は、段階の一部を回した先行の事例（決定記録・Start Here の多くはそこから）。
 
