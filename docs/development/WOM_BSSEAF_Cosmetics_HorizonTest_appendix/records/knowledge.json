@@ -1,0 +1,17 @@
+[
+ {
+  "id": "WOM-SEM-SUPPLY-ALLOCATION-001",
+  "version": "v0.5",
+  "applicability": "①〜⑤、U4（化粧品：A3）"
+ },
+ {
+  "id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001",
+  "version": "0.3",
+  "applicability": "モード 1、規則 proportional_even・trim_to_capacity_latest、§4 診断"
+ },
+ {
+  "id": "次の段階の判断資料",
+  "version": "v0.2",
+  "applicability": "第 1 部（H-1〜H-3 決定）"
+ }
+]

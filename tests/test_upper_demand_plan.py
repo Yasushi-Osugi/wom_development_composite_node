@@ -301,6 +301,69 @@ def test_plan_json_and_rerun_gives_the_same_result(tmp_path):
     assert p["mode"] == "mode1_fixed_quota" and p["week_rule"] == "proportional_even"
 
 
+KNOWLEDGE = [{"id": "WOM-X-001", "version": "v9.9", "applicability": "試験"}]
+DECISIONS = ["requests/some_letter.md §5", "requests/other_letter.md §1"]
+RECORD_KEYS = ("knowledge_used", "owner_decisions", "target_commit", "code_dirty")
+
+
+def _plan(d):
+    return json.load(open(os.path.join(d, "udp_plan.json"), encoding="utf-8"))
+
+
+def test_unspecified_knowledge_and_decisions_say_so(tmp_path):
+    m = make_model(str(tmp_path / "m"), cap=2)
+    p = _plan(_ps(tmp_path, m, week_rule="proportional_even", udp_out=str(tmp_path / "udp"))["udp_dir"])
+    assert p["knowledge_used"] == U.NOT_SPECIFIED == "未指定"
+    assert p["owner_decisions"] == "未指定"
+
+
+def test_specified_knowledge_and_decisions_are_written_as_given(tmp_path):
+    m = make_model(str(tmp_path / "m"), cap=2)
+    r = _ps(tmp_path, m, week_rule="proportional_even", udp_out=str(tmp_path / "udp"),
+            knowledge_used=KNOWLEDGE, owner_decisions=DECISIONS)
+    p = _plan(r["udp_dir"])
+    assert p["knowledge_used"] == KNOWLEDGE and p["owner_decisions"] == DECISIONS
+
+
+def test_specifying_them_changes_nothing_else(tmp_path):
+    m = make_model(str(tmp_path / "m"), cap=2)
+    udp = str(tmp_path / "udp")
+    d = _ps(tmp_path, m, week_rule="proportional_even", udp_out=udp)["udp_dir"]
+    files = sorted(os.listdir(d))
+    first = {f: open(os.path.join(d, f), "rb").read() for f in files}
+    p1 = _plan(d)
+    _ps(tmp_path, m, week_rule="proportional_even", udp_out=udp, knowledge_used=KNOWLEDGE, owner_decisions=DECISIONS)
+    p2 = _plan(d)
+    for f in files:
+        if f != "udp_plan.json":
+            assert open(os.path.join(d, f), "rb").read() == first[f]
+    assert {k: v for k, v in p1.items() if k not in RECORD_KEYS} == {k: v for k, v in p2.items() if k not in RECORD_KEYS}
+
+
+def test_cli_passes_the_knowledge_file_and_decision_refs(tmp_path):
+    from tools.run_quantity_allocation import main
+    m = make_model(str(tmp_path / "m"), cap=2)
+    q = make_alloc(str(tmp_path / "q.csv"), _short_alloc())
+    kf = tmp_path / "k.json"
+    kf.write_text(json.dumps(KNOWLEDGE, ensure_ascii=False), encoding="utf-8")
+    argv = ["--model-dir", m, "--allocation-file", q, "--out-dir", str(tmp_path / "ps"), "--week-rule",
+            "proportional_even", "--udp-out", str(tmp_path / "udp"), "--knowledge-file", str(kf)]
+    for x in DECISIONS:
+        argv += ["--decision-ref", x]
+    assert main(argv) == 0
+    p = _plan(os.path.join(tmp_path / "udp", "m_proportional_even"))
+    assert p["knowledge_used"] == KNOWLEDGE and p["owner_decisions"] == DECISIONS
+
+
+@pytest.mark.parametrize("body", [{"id": "x"}, [{"id": "x", "version": "1"}], ["x"]])
+def test_a_malformed_knowledge_file_is_refused(tmp_path, body):
+    from tools.run_quantity_allocation import read_knowledge_file
+    kf = tmp_path / "k.json"
+    kf.write_text(json.dumps(body), encoding="utf-8")
+    with pytest.raises(ValueError):
+        read_knowledge_file(str(kf))
+
+
 def test_changing_an_input_changes_its_hash(tmp_path):
     m = make_model(str(tmp_path / "m"), cap=2)
     q = make_alloc(str(tmp_path / "q.csv"), _short_alloc())

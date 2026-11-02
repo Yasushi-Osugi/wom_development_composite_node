@@ -59,13 +59,7 @@ def approx_conditions(first_week_unusable: bool = False, ss_lead: bool = False) 
 
 APPROX_CONDITIONS = approx_conditions()
 RUN_RULE = "数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）"
-KNOWLEDGE_USED = [
-    {"id": "WOM-SEM-SUPPLY-ALLOCATION-001", "version": "v0.4"},
-    {"id": "WOM-KB-ALLOCATION-001", "version": "v0.2"},
-    {"id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001", "version": "0.3"},
-]
-OWNER_DECISIONS = ["requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md §7（2026-11-01）",
-                   "requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md §7.1（2026-11-02）"]
+NOT_SPECIFIED = "未指定"          # 実行時に指定されなかった知識の版・判断の参照先（古い値を書かない）
 
 
 class ReconcileError(ValueError):
@@ -521,14 +515,17 @@ def input_file_hashes(model_dir: str, demand_file: str, quota_file: str) -> Dict
 def write_plan_json(path: str, *, plan_id: str, scenario_id: str, week_rule: str, period: dict,
                     report_start: str, input_hashes: Dict[str, str], outputs: Dict[str, str],
                     quota_sources: List[str], commit: Optional[str], code_dirty: bool,
-                    totals: dict, rule_detail: Optional[dict] = None) -> dict:
+                    totals: dict, rule_detail: Optional[dict] = None,
+                    knowledge_used: Optional[List[dict]] = None,
+                    owner_decisions: Optional[List[str]] = None) -> dict:
     body = {"plan_id": plan_id, "scenario_id": scenario_id, "mode": "mode1_fixed_quota",
             "horizon": {"start": period["start"], "end": period["end"], "weeks": period["weeks"]},
             "judgement_week": period["end"], "report_start": report_start,
             "week_rule": week_rule, "tie_key": TIE_KEY, "input_hashes": input_hashes,
             "output_hashes": outputs, "quota_sources": quota_sources,
             "target_commit": commit, "code_dirty": code_dirty,
-            "knowledge_used": KNOWLEDGE_USED, "owner_decisions": OWNER_DECISIONS, "totals": totals,
+            "knowledge_used": knowledge_used or NOT_SPECIFIED,
+            "owner_decisions": owner_decisions or NOT_SPECIFIED, "totals": totals,
             "calc_status": "計算済み", "consistency_status": "整合",
             "target_status": "未判定", "owner_status": "未判断"}
     if rule_detail is not None:
@@ -549,7 +546,9 @@ def _write_csv(path: str, columns: List[str], rows: List[dict]) -> None:
 def write_plan_outputs(udp_out: str, plan_id: str, *, model_dir: str, ledger, selection, capacity_check,
                        by_request, supply_runs, demand_file: str, allocation_file: str, generated_csv: str,
                        period: dict, commit: Optional[str], totals: dict, repo: str,
-                       rule_detail: Optional[dict] = None) -> str:
+                       rule_detail: Optional[dict] = None,
+                       knowledge_used: Optional[List[dict]] = None,
+                       owner_decisions: Optional[List[str]] = None) -> str:
     """<udp_out>/<plan_id>/ に 6 ファイルを書く。上書きする（同じ plan_id は同じ入力の再実行）。"""
     from wom.lovem.observer import git_state
     d = os.path.join(udp_out, plan_id)
@@ -579,5 +578,6 @@ def write_plan_outputs(udp_out: str, plan_id: str, *, model_dir: str, ledger, se
                     week_rule=selection[0]["week_rule"] if selection else DEFAULT_WEEK_RULE, period=period,
                     report_start=report, input_hashes=input_file_hashes(model_dir, demand_file, allocation_file),
                     outputs=outputs, quota_sources=sources, commit=commit,
-                    code_dirty=git_state(repo)["dirty"], totals=totals, rule_detail=rule_detail)
+                    code_dirty=git_state(repo)["dirty"], totals=totals, rule_detail=rule_detail,
+                    knowledge_used=knowledge_used, owner_decisions=owner_decisions)
     return d

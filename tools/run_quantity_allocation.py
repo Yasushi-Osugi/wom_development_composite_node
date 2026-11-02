@@ -143,6 +143,8 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
                             week_rule: Optional[str] = None,
                             udp_out: Optional[str] = None,
                             demand_nature: str = "forecast",
+                            knowledge_used: Optional[list] = None,
+                            owner_decisions: Optional[list] = None,
                             _after_handoff=None,
                             _after_plan=None) -> dict:
     """Run one quantity allocation. Returns {"status": "ok"|"inconsistent", ...}.
@@ -353,8 +355,19 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
             by_request=by_request, supply_runs=UDP.supply_runs(tree, selection),
             demand_file=demand_file, allocation_file=allocation_file, generated_csv=gen_path,
             period=fixed, commit=commit, totals=state["quantities"]["total"], repo=REPO,
-            rule_detail=UDP.capacity_rule_detail(model_dir, selection) if by_rule else None)
+            rule_detail=UDP.capacity_rule_detail(model_dir, selection) if by_rule else None,
+            knowledge_used=knowledge_used, owner_decisions=owner_decisions)
     return res
+
+
+def read_knowledge_file(path: str) -> list:
+    """--knowledge-file: a JSON list of {id, version, applicability} (the hand-off form)."""
+    with open(path, "r", encoding="utf-8") as f:
+        body = json.load(f)
+    if not isinstance(body, list) or not all(
+            isinstance(x, dict) and {"id", "version", "applicability"} <= set(x) for x in body):
+        raise ValueError(f"{path}: expected a list of objects with id, version, applicability")
+    return body
 
 
 def format_block(state: dict) -> str:
@@ -390,11 +403,17 @@ def main(argv=None) -> int:
     ap.add_argument("--udp-out", default=None,
                     help="upper Demand Plan outputs go to <udp-out>/<plan_id>/ (default: none)")
     ap.add_argument("--demand-nature", default="forecast", choices=["forecast", "firm"])
+    ap.add_argument("--knowledge-file", default=None,
+                    help="JSON list of {id, version, applicability} for udp_plan.json (default: 未指定)")
+    ap.add_argument("--decision-ref", action="append", default=None,
+                    help="where the Owner's decision is written; repeatable (default: 未指定)")
     a = ap.parse_args(argv)
     r = run_quantity_allocation(a.model_dir, a.allocation_file, out_dir=a.out_dir,
                                 unallocated_note=a.unallocated_note, plugins=a.plugins,
                                 week_rule=a.week_rule, udp_out=a.udp_out,
-                                demand_nature=a.demand_nature)
+                                demand_nature=a.demand_nature,
+                                knowledge_used=read_knowledge_file(a.knowledge_file) if a.knowledge_file else None,
+                                owner_decisions=a.decision_ref)
     if r["status"] != "ok":
         print("[quantity allocation] 入力・記録の不整合")
         for k, v in r["checks"].items():
