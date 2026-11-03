@@ -172,6 +172,7 @@ BS-SEAF の 8 段階を、WOM の機能の改良で 100 回ほど繰り返す中
 |---|---|---|---|---|
 | 1 | 化粧品（日本製高級スキンケアのシンガポール・タイ展開）。**根拠の記録付きで 8 段階を一通り実施した最初の基準事例** | 2026-10-24〜30 | 8 つの検討の反復で全体として 8 段階。段階 6 は教育・実証用の範囲（`data/sample/cosmetics-sg-th-2027-2029`） | [検証報告](../development/WOM_BSSEAF_Verification_Cosmetics_Report.md)（v0.2）、[化粧品設計書](../../requests/BSSEAF_Cosmetics_SG_Stage1-3_DesignMD_v0.5.md) §8 |
 | 2 | 化粧品の U4：配分の数量を各週の需要にどう当てるか。上位 Demand Plan（従来の需要 CSV の上位の計画の機能）のモード 1 を作った。引き継ぎの欄（YAML）と人の橋渡しの記録を初めて実際に使った | 2026-11-01〜02 | 段階 1〜6 を 2 回の反復で（1 回目：3 案、2 回目：能力に合わせる規則）。段階 7 は GPT君のレビュー。再利用した知識と実作業の時間を記録できた最初の事例（2 回目 28 分を時刻で記録。1 回目は計測なし。作業の中身が違うので、二つを比べて生産性の向上とはしない〔GPT君〕） | [U4 資料](../../requests/BSSEAF_Cosmetics_AllocationWeekRule_U4_v0.1.md)、`docs/development/WOM_BSSEAF_Cosmetics_UpperDemandPlan_U4_Report.md`、`docs/development/WOM_BSSEAF_Cosmetics_CapacityAwareWeekRule_U4_Report.md` |
+| 3 | 化粧品：上位 Demand Plan の次の段階。計画の期間を延ばす試験（能力対応案は今回の 3 つの期間で判断がぶれなかった）と、経営の守る条件（代理店への最低供給量）を初めて入れた。判断事項を「一言の決定と中身」で出す作法を初めて使った | 2026-11-02〜03 | 段階 1〜6 を 2 回の反復で（期間試験、最低供給量）。段階 7 は GPT君のレビュー（依頼書の削る順序の誤りを渡す前に発見） | `requests/BSSEAF_Cosmetics_DemandPlan_Horizon_Priority_v0.1.md`、`docs/development/WOM_BSSEAF_Cosmetics_HorizonTest_Report.md`、`docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_Report.md` |
 
 お米の事例は、段階の一部を回した先行の事例（決定記録・Start Here の多くはそこから）。
 
