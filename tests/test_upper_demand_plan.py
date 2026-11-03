@@ -444,6 +444,222 @@ def test_trim_keys_without_a_cut_stay_whole_and_conserve(tmp_path):
     assert tot == {"Store": 0, "D1": 8, "D2": 4}
 
 
+# ── 最低供給量（RequestLetter_…_MinimumSupply §3.5） ─────────────────────────────────
+POLICY_COLS = U.POLICY_COLUMNS
+
+
+def _policy(tmp_path, rows, name="pol.csv", pid="MS", ver="1"):
+    """rows: (sku, region, ratio[, rounding[, kind]])"""
+    p = str(tmp_path / name)
+    full = [(r + ("ceil", "required"))[:5] if len(r) == 3 else (r + ("required",))[:5] if len(r) == 4 else r for r in rows]
+    _w(p, POLICY_COLS, [[pid, ver, s, reg, ra, ro, k, "試験"] for s, reg, ra, ro, k in full])
+    return p
+
+
+def test_min_supply_lots_rounding():
+    ceil_7 = {"ratio": U.Fraction("0.7"), "rounding": "ceil", "kind": "required"}
+    assert [U.min_supply_lots(q, ceil_7) for q in (0, 1, 2, 3, 4, 5, 6, 10)] == [0, 1, 2, 3, 3, 4, 5, 7]
+    half = {"ratio": U.Fraction("0.5"), "rounding": "ceil", "kind": "required"}
+    assert [U.min_supply_lots(q, half) for q in (4, 5, 6)] == [2, 3, 3]
+    assert U.min_supply_lots(5, {"ratio": U.Fraction("0.5"), "rounding": "floor", "kind": "required"}) == 2
+    assert U.min_supply_lots(5, {"ratio": U.Fraction("0.5"), "rounding": "ceil", "kind": "target"}) == 0
+    assert U.min_supply_lots(5, None) == 0
+
+
+def test_no_policy_is_the_same_rule(tmp_path):
+    m = _c3a_model(tmp_path)
+    led = U.build_demand_ledger(m)
+    assert U.select_mode1_capacity(led, P2A2, m) == U.select_mode1_capacity(led, P2A2, m, policy_file=None)
+
+
+def test_a_minimum_that_does_not_bind_changes_nothing(tmp_path):
+    m, sel, q2 = _hand_select(tmp_path, 5, {"Store": 4, "D1": 24, "D2": 10})
+    pol = _policy(tmp_path, [("P", "D1", "0.25"), ("P", "D2", "0.25")])
+    q = str(tmp_path / "q.csv")
+    with_p = U.select_mode1_capacity(U.build_demand_ledger(m), q, m, policy_file=pol)
+    assert [(x["source_demand_ref"], x["q2"], x["q3"]) for x in with_p] == [(x["source_demand_ref"], x["q2"], x["q3"]) for x in sel]
+    assert with_p[0]["policy_ref"] == "capacity_check:first_week_unusable=1,ss_lead=1,policy=MS:1,rest_lots=0"
+
+
+def test_tail_without_excess_is_not_cut_first(tmp_path):
+    # 能力 5：W07・W08 の工場の週 p5・p4 だけ超える前に、末尾の超過が無いように D1 の末尾を小さくする
+    dem = {"Store": [0] * 8, "D1": [0, 0, 5, 5, 5, 5, 1, 1], "D2": [0, 0, 2, 2, 2, 2, 1, 1]}
+    m = _hand_model(tmp_path, 5, dem)
+    q = make_alloc(str(tmp_path / "q.csv"), {("P", "Store"): 0, ("P", "D1"): 19, ("P", "D2"): 7})
+    pol = _policy(tmp_path, [("P", "D1", "0.5"), ("P", "D2", "0.5")])
+    sel = U.select_mode1_capacity(U.build_demand_ledger(m), q, m, policy_file=pol)
+    v = {r: [x["q2"] for x in sel if x["region"] == r] for r in dem}
+    assert v["D1"][6:] == [1, 1] and v["D2"][6:] == [1, 1]
+    assert v["D1"][5] < 5 or v["D2"][5] < 2
+
+
+def test_cut_stops_at_the_minimum_and_spreads_forward_by_hand(tmp_path):
+    # 需要 D1 6（最低 3）、D2 2（最低 1）、能力 4（first_week_unusable なし）。全週 e=4。
+    # W08：余地 3+1＝4 で 4 削れる。D1 は 8 週で週 3 まで、D2 は週 1 まで。
+    # 比率を 0.9 にすると D1 最低 6・余地 0、D2 最低 2・余地 0 で全く削れず衝突になるので 0.7 で見る：
+    # D1 最低 5 余地 1、D2 最低 2 余地 0。外す量 D1 3：W08・W07・W06 で 1 ずつ、繰越で前へ
+    dem = {"Store": [0] * 8, "D1": [6] * 8, "D2": [2] * 8}
+    m = _hand_model(tmp_path, 4, dem)
+    q = make_alloc(str(tmp_path / "q.csv"), {("P", "Store"): 0, ("P", "D1"): 45, ("P", "D2"): 16})
+    pol = _policy(tmp_path, [("P", "D1", "0.7"), ("P", "D2", "0.7")])
+    sel = U.select_mode1_capacity(U.build_demand_ledger(m), q, m, policy_file=pol, first_week_unusable=False)
+    v = [x["q2"] for x in sel if x["region"] == "D1"]
+    assert v == [6, 6, 6, 6, 6, 5, 5, 5]
+    assert all(x["q2"] >= U.min_supply_lots(x["q1"], {"ratio": U.Fraction("0.7"), "rounding": "ceil", "kind": "required"})
+               for x in sel if x["region"] != "Store")
+
+
+def test_carry_reaches_a_week_without_excess_by_hand(tmp_path):
+    # W05〜W08 は超過 3（需要 8、能力 5）で、最低供給量 6 のため週 2 しか削れない。繰越が 1 ずつ増える。
+    # W03・W04 は超過なしだが、繰越があるので最低供給量 3 まで削られる。外す量 10＝2×4＋1×2
+    dem = {"Store": [0] * 8, "D1": [0, 0, 4, 4, 8, 8, 8, 8], "D2": [0] * 8}
+    m = _hand_model(tmp_path, 5, dem)
+    q = make_alloc(str(tmp_path / "q.csv"), {("P", "Store"): 0, ("P", "D1"): 30, ("P", "D2"): 0})
+    pol = _policy(tmp_path, [("P", "D1", "0.75")])             # 8 → 6、4 → 3
+    sel = U.select_mode1_capacity(U.build_demand_ledger(m), q, m, policy_file=pol, first_week_unusable=False)
+    assert [x["q2"] for x in sel if x["region"] == "D1"] == [0, 0, 3, 3, 6, 6, 6, 6]
+
+
+def test_conflict_detected_and_not_passed_to_the_engine(tmp_path):
+    m = make_model(str(tmp_path / "m"), cap=2)
+    a = make_alloc(str(tmp_path / "q.csv"), _short_alloc())
+    pol = _policy(tmp_path, [("A", "X", "1"), ("B", "Y", "0.5")])
+    r = run_quantity_allocation(m, a, out_dir=str(tmp_path / "ps"), week_rule="trim_to_capacity_latest",
+                                udp_out=str(tmp_path / "udp"), policy_file=pol)
+    assert r["status"] == "conflict"
+    assert [(c["sku_id"], c["region"], c["quota_cut_lots"], c["placeable_cut_lots"], c["unplaceable_lots"]) for c in r["conflicts"]] == [("A", "X", 6, 0, 6)]
+    c = r["conflicts"][0]
+    assert "能力を足すだけでは解消しない" in c["reason"] and "最低供給率を下げる" in c["alternatives"]
+    assert not any(f.startswith("demand_forecast_Q") for f in os.listdir(m))
+    assert not os.path.exists(tmp_path / "ps" / "m" / "Q01.json")
+    p = _plan(r["udp_dir"])
+    assert (p["calc_status"], p["consistency_status"], p["target_status"]) == ("計画の前に止めた（衝突）", "整合", "未達（衝突）")
+    assert p["totals"]["q4_delivered"] == p["totals"]["q5_backlog_end"] == p["totals"]["evaluation"] == "未実行"
+    ref = list(csv.DictReader(open(os.path.join(r["udp_dir"], "udp_selection_reference.csv"), encoding="utf-8")))
+    assert ref and not any(x["source_demand_ref"].startswith("A|X|") for x in ref)
+    assert sorted(os.listdir(r["udp_dir"])) == ["udp_conflicts.csv", "udp_demand_ledger.csv", "udp_plan.json", "udp_selection_reference.csv"]
+
+
+def test_conflict_exit_code_differs_from_the_quantity_error(tmp_path):
+    from tools.run_quantity_allocation import EXIT_CONFLICT, main
+    m = make_model(str(tmp_path / "m"), cap=2)
+    a = make_alloc(str(tmp_path / "q.csv"), _short_alloc())
+    pol = _policy(tmp_path, [("A", "X", "1")])
+    rc = main(["--model-dir", m, "--allocation-file", a, "--out-dir", str(tmp_path / "ps"), "--week-rule",
+               "trim_to_capacity_latest", "--udp-out", str(tmp_path / "udp"), "--policy-file", pol])
+    assert rc == EXIT_CONFLICT and rc not in (0, 1)
+
+
+def test_select_refuses_a_conflict_unless_reference(tmp_path):
+    m, _, _ = _hand_select(tmp_path, 5, {"Store": 4, "D1": 24, "D2": 10})
+    pol = _policy(tmp_path, [("P", "D1", "1")])
+    q = str(tmp_path / "q.csv")
+    with pytest.raises(QuantityAllocationError):
+        U.select_mode1_capacity(U.build_demand_ledger(m), q, m, policy_file=pol)
+    ref = U.select_mode1_capacity(U.build_demand_ledger(m), q, m, policy_file=pol, reference_only=True)
+    assert ref and {x["region"] for x in ref} == {"Store", "D2"}
+
+
+def test_two_stage_check_selected_but_not_delivered():
+    sel = [{"source_demand_ref": "A|X|W1", "sku_id": "A", "region": "X", "request_week": "2027-W01", "q1": 4, "q2": 2},
+           {"source_demand_ref": "A|X|W2", "sku_id": "A", "region": "X", "request_week": "2027-W02", "q1": 4, "q2": 2},
+           {"source_demand_ref": "A|X|W3", "sku_id": "A", "region": "X", "request_week": "2027-W03", "q1": 0, "q2": 0},
+           {"source_demand_ref": "A|Y|W1", "sku_id": "A", "region": "Y", "request_week": "2027-W01", "q1": 4, "q2": 0}]
+    res = [{"source_demand_ref": r["source_demand_ref"], "on_time": 2} for r in sel]
+    res[1]["on_time"] = 1
+    pol = {"keys": {("A", "X"): {"ratio": U.Fraction("0.5"), "rounding": "ceil", "kind": "required"}}}
+    rows, summ = U.min_supply_check(sel, res, pol)
+    assert [(r["min_supply_lots"], r["plan_ok"], r["delivered_ok"]) for r in rows] == [(2, True, True), (2, True, False)]
+    assert summ == {"A|X": {"weeks": 2, "plan_below_weeks": [], "delivered_below_weeks": ["2027-W02"]}}
+
+
+def test_delivered_shortfall_sets_the_status_and_keeps_the_results(tmp_path):
+    from tools.run_quantity_allocation import EXIT_DELIVERED_SHORT, main
+    import tools.run_quantity_allocation as RQ
+    m = make_model(str(tmp_path / "m"), cap=2)
+    a = make_alloc(str(tmp_path / "q.csv"), _short_alloc())
+    pol = _policy(tmp_path, [("A", "X", "0.5")])
+    r = run_quantity_allocation(m, a, out_dir=str(tmp_path / "ps"), week_rule="trim_to_capacity_latest",
+                                udp_out=str(tmp_path / "udp"), policy_file=pol)
+    assert r["status"] == "ok"
+    p = _plan(r["udp_dir"])
+    assert p["policy_id"] == "MS" and p["policy_version"] == "1" and len(p["policy_hash"]) == 64
+    assert any(k.startswith("policy:") for k in p["input_hashes"])
+    rows = list(csv.DictReader(open(os.path.join(r["udp_dir"], "udp_min_supply_check.csv"), encoding="utf-8")))
+    assert rows and p["consistency_status"] == "整合"
+    short = any(x["delivered_ok"] == "False" for x in rows)
+    assert p["target_status"] == ("未達（実納品不足）" if short else "達成")
+    assert EXIT_DELIVERED_SHORT not in (0, 1, RQ.EXIT_CONFLICT)
+
+
+def test_write_plan_marks_the_shortfall(tmp_path, monkeypatch):
+    m = make_model(str(tmp_path / "m"), cap=2)
+    a = make_alloc(str(tmp_path / "q.csv"), _short_alloc())
+    pol = _policy(tmp_path, [("A", "X", "0.5")])
+    orig = U.min_supply_check
+
+    def worse(selection, by_request, policy):
+        rows, summ = orig(selection, by_request, policy)
+        rows[0]["delivered_ok"] = False
+        summ["A|X"]["delivered_below_weeks"].append("2027-W01")
+        return rows, summ
+    monkeypatch.setattr(U, "min_supply_check", worse)
+    r = run_quantity_allocation(m, a, out_dir=str(tmp_path / "ps"), week_rule="trim_to_capacity_latest",
+                                udp_out=str(tmp_path / "udp"), policy_file=pol)
+    p = _plan(r["udp_dir"])
+    assert p["target_status"] == "未達（実納品不足）" and p["adoption_status"].startswith("止めた")
+    assert p["calc_status"] == "計算済み" and p["consistency_status"] == "整合"
+    assert r["target_status"] == "未達（実納品不足）"
+
+
+@pytest.mark.parametrize("rows, text", [
+    ([("X", "D1", "0.5")], "not in the model"),
+    ([("P", "D1", "0.5"), ("P", "D1", "0.7")], "twice"),
+    ([("P", "D1", "1.5")], "ratio"),
+    ([("P", "D1", "-0.1")], "ratio"),
+    ([("P", "D1", "")], "min_supply_ratio"),
+    ([("P", "D1", "abc")], "min_supply_ratio"),
+    ([("P", "D1", "0.5", "round")], "rounding"),
+    ([("P", "D1", "0.5", "ceil", "maybe")], "kind"),
+])
+def test_bad_policy_is_an_input_error(tmp_path, rows, text):
+    m = _hand_model(tmp_path, 5, HAND_DEMAND)
+    pol = _policy(tmp_path, rows)
+    with pytest.raises(QuantityAllocationError, match=text):
+        U.read_policy(pol, U.build_demand_ledger(m))
+
+
+def test_policy_needs_the_capacity_rule(tmp_path):
+    m = make_model(str(tmp_path / "m"), cap=2)
+    a = make_alloc(str(tmp_path / "q.csv"), _short_alloc())
+    pol = _policy(tmp_path, [("A", "X", "0.5")])
+    with pytest.raises(ValueError):
+        run_quantity_allocation(m, a, out_dir=str(tmp_path / "ps"), week_rule="proportional_even",
+                                udp_out=str(tmp_path / "udp"), policy_file=pol)
+
+
+def test_unlisted_key_has_no_minimum(tmp_path):
+    m = _hand_model(tmp_path, 5, HAND_DEMAND)
+    led = U.build_demand_ledger(m)
+    pol = U.read_policy(_policy(tmp_path, [("P", "D1", "0.5")]), led)
+    assert ("P", "D2") not in pol["keys"] and pol["keys"][("P", "D1")]["ratio"] == U.Fraction(1, 2)
+
+
+def test_cosmetics_ms50_keeps_every_minimum_and_ms70_conflicts_on_cream_th(tmp_path):
+    m = _c3a_model(tmp_path)
+    led = U.build_demand_ledger(m)
+    rows = [(s, r, "0.5") for s in ("COS_Serum", "COS_Cream") for r in ("SG_Distributor", "TH_Distributor")]
+    p50 = _policy(tmp_path, rows, "p50.csv")
+    sel = U.select_mode1_capacity(led, P2A2, m, policy_file=p50)
+    pol = U.read_policy(p50, led)
+    assert all(x["q2"] >= U.min_supply_lots(x["q1"], pol["keys"].get((x["sku_id"], x["region"]))) for x in sel)
+    assert sum(x["q2"] for x in sel) == 3864
+    p70 = U.read_policy(_policy(tmp_path, [(a, b, "0.7") for a, b, _ in rows], "p70.csv"), led)
+    c = U.min_supply_conflicts(led, P2A2, p70)
+    assert [(x["sku_id"], x["region"], x["quota_cut_lots"], x["placeable_cut_lots"], x["unplaceable_lots"]) for x in c] == [
+        ("COS_Cream", "TH_Distributor", 25, 0, 25)]
+
+
 def test_trim_row_order_does_not_matter(tmp_path):
     m = _hand_model(tmp_path, 5, HAND_DEMAND)
     q = make_alloc(str(tmp_path / "q.csv"), {("P", "Store"): 4, ("P", "D1"): 24, ("P", "D2"): 10})

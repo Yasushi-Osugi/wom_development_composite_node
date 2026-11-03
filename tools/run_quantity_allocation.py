@@ -134,6 +134,10 @@ def observed_quantities(market_rows, leaf_region: Dict[tuple, str]) -> Dict[tupl
     return obs
 
 
+EXIT_CONFLICT = 3            # not a quantity inconsistency (1): the plan stopped before the engine
+EXIT_DELIVERED_SHORT = 4     # the run completed; a required minimum was not delivered
+
+
 def run_quantity_allocation(model_dir: str, allocation_file: str, *,
                             out_dir: str = "output/planning_state",
                             unallocated_note: Optional[str] = None,
@@ -145,6 +149,7 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
                             demand_nature: str = "forecast",
                             knowledge_used: Optional[list] = None,
                             owner_decisions: Optional[list] = None,
+                            policy_file: Optional[str] = None,
                             _after_handoff=None,
                             _after_plan=None) -> dict:
     """Run one quantity allocation. Returns {"status": "ok"|"inconsistent", ...}.
@@ -162,6 +167,8 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
     week_rule = week_rule or UDP.DEFAULT_WEEK_RULE
     if week_rule not in UDP.WEEK_RULES:
         raise ValueError(f"week_rule={week_rule!r}: use one of {sorted(UDP.WEEK_RULES)}")
+    if policy_file and (week_rule != UDP.CAPACITY_RULE or not udp_out):
+        raise ValueError(f"--policy-file needs --week-rule {UDP.CAPACITY_RULE} and --udp-out")
     model_dir = os.path.normpath(model_dir)
     case = os.path.basename(model_dir)
     case_dir = os.path.join(out_dir, case)
@@ -205,8 +212,19 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
     gen_path = os.path.join(model_dir, gen_name)
     if use_udp:
         ledger = UDP.build_demand_ledger(model_dir, demand_file, demand_nature=demand_nature)
+        policy = UDP.read_policy(policy_file, ledger) if policy_file else None
+        conflicts = UDP.min_supply_conflicts(ledger, allocation_file, policy) if policy else []
+        if conflicts:                         # the plan does not reach the engine
+            ref = UDP.select_mode1_capacity(ledger, allocation_file, model_dir, policy_file=policy_file,
+                                            reference_only=True)
+            d = UDP.write_conflict_outputs(udp_out, f"{case}_{week_rule}", model_dir=model_dir, ledger=ledger,
+                                           reference=ref, conflicts=conflicts, demand_file=demand_file,
+                                           allocation_file=allocation_file, policy=policy, period=fixed,
+                                           commit=commit, repo=REPO, knowledge_used=knowledge_used,
+                                           owner_decisions=owner_decisions)
+            return {"status": "conflict", "udp_dir": d, "conflicts": conflicts}
         if week_rule == UDP.CAPACITY_RULE:
-            selection = UDP.select_mode1_capacity(ledger, allocation_file, model_dir)
+            selection = UDP.select_mode1_capacity(ledger, allocation_file, model_dir, policy_file=policy_file)
         else:
             selection = UDP.select_mode1(ledger, allocation_file, week_rule)
         h = UDP.write_engine_demand(selection, model_dir, gen_path, demand_file=demand_file)
@@ -356,7 +374,10 @@ def run_quantity_allocation(model_dir: str, allocation_file: str, *,
             demand_file=demand_file, allocation_file=allocation_file, generated_csv=gen_path,
             period=fixed, commit=commit, totals=state["quantities"]["total"], repo=REPO,
             rule_detail=UDP.capacity_rule_detail(model_dir, selection) if by_rule else None,
-            knowledge_used=knowledge_used, owner_decisions=owner_decisions)
+            knowledge_used=knowledge_used, owner_decisions=owner_decisions, policy=policy if use_udp else None)
+        if policy_file:
+            with open(os.path.join(res["udp_dir"], "udp_plan.json"), encoding="utf-8") as f:
+                res["target_status"] = json.load(f)["target_status"]
     return res
 
 
@@ -407,13 +428,22 @@ def main(argv=None) -> int:
                     help="JSON list of {id, version, applicability} for udp_plan.json (default: 未指定)")
     ap.add_argument("--decision-ref", action="append", default=None,
                     help="where the Owner's decision is written; repeatable (default: 未指定)")
+    ap.add_argument("--policy-file", default=None,
+                    help="udp_policy.csv (minimum supply); needs --week-rule trim_to_capacity_latest and --udp-out")
     a = ap.parse_args(argv)
     r = run_quantity_allocation(a.model_dir, a.allocation_file, out_dir=a.out_dir,
                                 unallocated_note=a.unallocated_note, plugins=a.plugins,
                                 week_rule=a.week_rule, udp_out=a.udp_out,
                                 demand_nature=a.demand_nature,
                                 knowledge_used=read_knowledge_file(a.knowledge_file) if a.knowledge_file else None,
-                                owner_decisions=a.decision_ref)
+                                owner_decisions=a.decision_ref, policy_file=a.policy_file)
+    if r["status"] == "conflict":
+        print("[quantity allocation] 衝突：エンジンに渡さず止めた（数量の不整合ではない）")
+        for c in r["conflicts"]:
+            print(f"  {c['sku_id']}|{c['region']}: 置けない {c['unplaceable_lots']} lot。{c['reason']}")
+            print(f"  代わりの案：{c['alternatives']}")
+        print(f"  -> {r['udp_dir']}")
+        return EXIT_CONFLICT
     if r["status"] != "ok":
         print("[quantity allocation] 入力・記録の不整合")
         for k, v in r["checks"].items():
@@ -425,6 +455,9 @@ def main(argv=None) -> int:
     print(f"[quantity allocation] -> {r['path']}")
     if r.get("udp_dir"):
         print(f"[upper demand plan] -> {r['udp_dir']}")
+    if r.get("target_status") == "未達（実納品不足）":
+        print("[quantity allocation] 未達（実納品不足）：計画の採用は止めた（試行は完了）")
+        return EXIT_DELIVERED_SHORT
     return 0
 
 

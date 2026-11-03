@@ -1,0 +1,17 @@
+[
+ {
+  "id": "WOM-SEM-SUPPLY-ALLOCATION-001",
+  "version": "v0.5",
+  "applicability": "①〜⑤、U4（化粧品：能力対応案。今回の 3 つの期間では鍵ごとの減らし始める週が同じ）"
+ },
+ {
+  "id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001",
+  "version": "0.3",
+  "applicability": "§2.2 udp_policy.csv、§3.1 trim_to_capacity_latest、§4 診断"
+ },
+ {
+  "id": "次の段階の判断資料",
+  "version": "v0.4",
+  "applicability": "第 2 部（P-1〜P-6 決定）"
+ }
+]

@@ -1,0 +1,124 @@
+{
+ "refs_before": {
+  "MS_base": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  },
+  "MS50": {
+   "COS_Cream": 0,
+   "COS_Serum": 0
+  },
+  "MS70": {
+   "COS_Cream": 0,
+   "COS_Serum": 0,
+   "注": "クリームは衝突の鍵（タイ）を除いた参考の台帳の値"
+  }
+ },
+ "B2": {
+  "MS50": {
+   "COS_Serum|SG_Distributor": {
+    "weeks_by_q1_min": {
+     "3->2": 13,
+     "6->3": 143
+    },
+    "q1": 897,
+    "min_total": 455,
+    "quota": 825,
+    "max_cut_steady": 3
+   },
+   "COS_Serum|TH_Distributor": {
+    "weeks_by_q1_min": {
+     "2->1": 13,
+     "4->2": 91
+    },
+    "q1": 390,
+    "min_total": 195,
+    "quota": 358,
+    "max_cut_steady": 2
+   },
+   "COS_Cream|SG_Distributor": {
+    "weeks_by_q1_min": {
+     "3->2": 13,
+     "5->3": 143
+    },
+    "q1": 754,
+    "min_total": 455,
+    "quota": 691,
+    "max_cut_steady": 2
+   },
+   "COS_Cream|TH_Distributor": {
+    "weeks_by_q1_min": {
+     "2->1": 13,
+     "3->2": 91
+    },
+    "q1": 299,
+    "min_total": 195,
+    "quota": 274,
+    "max_cut_steady": 1
+   }
+  },
+  "MS70": {
+   "COS_Serum|SG_Distributor": {
+    "weeks_by_q1_min": {
+     "3->3": 13,
+     "6->5": 143
+    },
+    "q1": 897,
+    "min_total": 754,
+    "quota": 825,
+    "max_cut_steady": 1
+   },
+   "COS_Serum|TH_Distributor": {
+    "weeks_by_q1_min": {
+     "2->2": 13,
+     "4->3": 91
+    },
+    "q1": 390,
+    "min_total": 299,
+    "quota": 358,
+    "max_cut_steady": 1
+   },
+   "COS_Cream|SG_Distributor": {
+    "weeks_by_q1_min": {
+     "3->3": 13,
+     "5->4": 143
+    },
+    "q1": 754,
+    "min_total": 611,
+    "quota": 691,
+    "max_cut_steady": 1
+   },
+   "COS_Cream|TH_Distributor": {
+    "weeks_by_q1_min": {
+     "2->2": 13,
+     "3->3": 91
+    },
+    "q1": 299,
+    "min_total": 299,
+    "quota": 274,
+    "max_cut_steady": 0
+   }
+  }
+ },
+ "rc": {
+  "MS_base": 0,
+  "MS50": 0,
+  "MS70": 3
+ },
+ "conflicts_before": {
+  "MS50": [],
+  "MS70": [
+   {
+    "sku_id": "COS_Cream",
+    "region": "TH_Distributor",
+    "quota_cut_lots": 25,
+    "placeable_cut_lots": 0,
+    "unplaceable_lots": 25,
+    "min_supply_ratio": "0.7",
+    "rounding": "ceil",
+    "reason": "最低供給量の合計 299 lot が数量枠 274 lot を超える（配分の問題。能力を足すだけでは解消しない）",
+    "alternatives": "最低供給率を下げる／チャネルの間の数量枠を見直す（次の段階）／能力を増強したうえで数量枠を設定し直す"
+   }
+  ]
+ }
+}

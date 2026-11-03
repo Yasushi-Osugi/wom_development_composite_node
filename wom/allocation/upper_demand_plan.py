@@ -27,7 +27,7 @@ import json
 import os
 import re
 from collections import Counter, defaultdict
-from math import ceil
+from math import ceil, floor
 from fractions import Fraction
 from typing import Dict, List, Optional
 
@@ -60,6 +60,16 @@ def approx_conditions(first_week_unusable: bool = False, ss_lead: bool = False) 
 APPROX_CONDITIONS = approx_conditions()
 RUN_RULE = "数えない週：その leaf の最初の需要の週より前、元の需要が 0 の週、休業の週（連続は切らない）"
 NOT_SPECIFIED = "未指定"          # 実行時に指定されなかった知識の版・判断の参照先（古い値を書かない）
+POLICY_COLUMNS = ["policy_id", "policy_version", "sku_id", "region", "min_supply_ratio", "min_supply_rounding",
+                  "min_supply_kind", "reason"]
+ROUNDINGS = {"ceil": ceil, "floor": floor}
+MIN_SUPPLY_KINDS = frozenset(["required", "target"])
+CONFLICT_ALTERNATIVES = ("最低供給率を下げる／チャネルの間の数量枠を見直す（次の段階）／"
+                         "能力を増強したうえで数量枠を設定し直す")
+CALC_STOPPED = "計画の前に止めた（衝突）"
+TARGET_CONFLICT = "未達（衝突）"
+TARGET_SHORT = "未達（実納品不足）"
+NOT_RUN = "未実行"
 
 
 class ReconcileError(ValueError):
@@ -304,14 +314,109 @@ def time_phased_check(model_dir: str, selection: List[dict], first_week_unusable
     return out
 
 
+def read_policy(policy_file: str, ledger: List[dict]) -> dict:
+    """udp_policy.csv（RequestLetter_…_MinimumSupply §3.1）。書かれていない鍵は「最低供給量なし」。
+    入力の誤りは QuantityAllocationError で止める。required の行だけが選択と確認に効く。"""
+    known = {(r["sku_id"], r["region"]) for r in ledger}
+    rows = _read(policy_file)
+    missing = [c for c in POLICY_COLUMNS if rows and c not in rows[0]]
+    if missing or not rows:
+        raise QuantityAllocationError(f"{policy_file}: missing column(s) {missing or POLICY_COLUMNS}")
+    ids = {(r["policy_id"].strip(), r["policy_version"].strip()) for r in rows}
+    if len(ids) != 1 or not all(next(iter(ids))):
+        raise QuantityAllocationError(f"{policy_file}: exactly one policy_id and policy_version, got {sorted(ids)}")
+    keys = {}
+    for r in rows:
+        k = (r["sku_id"].strip(), r["region"].strip())
+        if k not in known:
+            raise QuantityAllocationError(f"{policy_file}: {k} is not in the model")
+        if k in keys:
+            raise QuantityAllocationError(f"{policy_file}: {k} appears twice")
+        try:
+            ratio = Fraction(r["min_supply_ratio"].strip())
+        except ValueError:
+            raise QuantityAllocationError(f"{policy_file}: {k}: min_supply_ratio {r['min_supply_ratio']!r}") from None
+        rounding, kind = r["min_supply_rounding"].strip(), r["min_supply_kind"].strip()
+        if not 0 <= ratio <= 1 or rounding not in ROUNDINGS or kind not in MIN_SUPPLY_KINDS:
+            raise QuantityAllocationError(f"{policy_file}: {k}: ratio 0..1, rounding {sorted(ROUNDINGS)}, "
+                                          f"kind {sorted(MIN_SUPPLY_KINDS)}: got {dict(r)}")
+        keys[k] = {"ratio": ratio, "ratio_text": r["min_supply_ratio"].strip(), "rounding": rounding, "kind": kind}
+    return {"policy_id": next(iter(ids))[0], "policy_version": next(iter(ids))[1], "keys": keys,
+            "file": policy_file, "hash": _sha256(policy_file)}
+
+
+def min_supply_lots(q1: int, rule: Optional[dict]) -> int:
+    """要求週の最低供給量。元の需要が 0 の週・required でない鍵は 0。"""
+    if not q1 or not rule or rule["kind"] != "required":
+        return 0
+    return ROUNDINGS[rule["rounding"]](q1 * rule["ratio"])
+
+
+def min_supply_conflicts(ledger: List[dict], quota_file: str, policy: dict) -> List[dict]:
+    """鍵の外す量を、全部の週で最低供給量まで削っても置ききれない鍵。原因は配分の側にある
+    （最低供給量の合計 ＞ 数量枠）ので、能力を足すだけでは解消しない。"""
+    alloc = read_quantity_allocation(quota_file)
+    q1, floor = Counter(), Counter()
+    for r in ledger:
+        k = (r["sku_id"], r["region"])
+        q1[k] += r["q1"]
+        floor[k] += min_supply_lots(r["q1"], policy["keys"].get(k))
+    out = []
+    for k in sorted(q1):
+        cut, placeable = q1[k] - alloc.get(k, 0), q1[k] - floor[k]
+        if cut > placeable:
+            rule = policy["keys"][k]
+            out.append({"sku_id": k[0], "region": k[1], "quota_cut_lots": cut, "placeable_cut_lots": placeable,
+                        "unplaceable_lots": cut - placeable, "min_supply_ratio": rule["ratio_text"],
+                        "rounding": rule["rounding"],
+                        "reason": f"最低供給量の合計 {floor[k]} lot が数量枠 {alloc.get(k, 0)} lot を超える"
+                                  "（配分の問題。能力を足すだけでは解消しない）",
+                        "alternatives": CONFLICT_ALTERNATIVES})
+    return out
+
+
+def min_supply_check(selection: List[dict], by_request: List[dict], policy: dict) -> tuple:
+    """二段階の確認。(行の列, 鍵ごとのまとめ)。required の鍵の、元の需要がある週だけを見る。"""
+    res = {r["source_demand_ref"]: r for r in by_request}
+    rows, summary = [], {}
+    for x in selection:
+        k = (x["sku_id"], x["region"])
+        m = min_supply_lots(x["q1"], policy["keys"].get(k))
+        if not m:
+            continue
+        on_time = res[x["source_demand_ref"]]["on_time"]
+        row = {"source_demand_ref": x["source_demand_ref"], "min_supply_lots": m, "q2": x["q2"], "on_time": on_time,
+               "plan_ok": x["q2"] >= m, "delivered_ok": on_time >= m}
+        rows.append(row)
+        s = summary.setdefault(f"{k[0]}|{k[1]}", {"weeks": 0, "plan_below_weeks": [], "delivered_below_weeks": []})
+        s["weeks"] += 1
+        if not row["plan_ok"]:
+            s["plan_below_weeks"].append(x["request_week"])
+        if not row["delivered_ok"]:
+            s["delivered_below_weeks"].append(x["request_week"])
+    return rows, summary
+
+
 def select_mode1_capacity(ledger: List[dict], quota_file: str, model_dir: str, first_week_unusable: bool = True,
-                          ss_lead: bool = True, tie_key: str = TIE_KEY) -> List[dict]:
+                          ss_lead: bool = True, tie_key: str = TIE_KEY, policy_file: Optional[str] = None,
+                          reference_only: bool = False) -> List[dict]:
     """trim_to_capacity_latest（詳細設計 §3.1）。SKU ごとに工場の週を後ろから前へたどり、必要が
     良品の能力を超える分 e(p) を、対応する要求週の、減らす量の残っている鍵から減らす。鍵の間は
     残りの減らす量に比例（同順位は region の名前の順）。残った減らす量は proportional_even で配る。
-    台帳の形は select_mode1 と同じ。policy_ref に診断の条件と残りの量を書く。"""
+    台帳の形は select_mode1 と同じ。policy_ref に診断の条件と残りの量を書く。
+
+    policy_file があるとき、各要求週は最低供給量まで（上限 ＝ 需要 − 最低供給量）しか削らない。
+    最低供給量のために削れなかった分だけを繰越分として前の週へ送り、繰越分は能力の超過が無い
+    週でも削る。超過が無く繰越分も無い週は削らない。衝突の鍵があると止める。reference_only は、
+    衝突の鍵を除いた参考の台帳を返す（その鍵の行は出さない）。"""
     if tie_key != TIE_KEY:
         raise ValueError(f"tie_key={tie_key!r}: mode 1 uses {TIE_KEY}")
+    policy = read_policy(policy_file, ledger) if policy_file else None
+    conflicts = min_supply_conflicts(ledger, quota_file, policy) if policy else []
+    if conflicts and not reference_only:
+        raise QuantityAllocationError(f"{policy_file}: min supply conflict: "
+                                      + "; ".join(f"{c['sku_id']}|{c['region']}" for c in conflicts))
+    skipped = {(c["sku_id"], c["region"]): c for c in conflicts}
     alloc = read_quantity_allocation(quota_file)
     by_key: Dict[tuple, List[dict]] = defaultdict(list)
     for r in ledger:
@@ -323,10 +428,13 @@ def select_mode1_capacity(ledger: List[dict], quota_file: str, model_dir: str, f
     skus = sorted({k[0] for k in by_key})
     res = _sku_resources(model_dir, skus, weeks, first_week_unusable, ss_lead)
     s = {k: {r["request_week"]: r["q1"] for r in rows} for k, rows in by_key.items()}
+    fl = {k: {r["request_week"]: min_supply_lots(r["q1"], policy["keys"].get(k) if policy else None) for r in rows}
+          for k, rows in by_key.items()}
     rest = {}
     for sku in skus:
         keys = [k for k in sorted(by_key) if k[0] == sku]
-        left = {k: q1[k] - alloc.get(k, 0) for k in keys}
+        left = {k: min(q1[k] - alloc.get(k, 0), skipped[k]["placeable_cut_lots"]) if k in skipped
+                else q1[k] - alloc.get(k, 0) for k in keys}
         if not any(left.values()):
             rest.update(left)
             continue
@@ -340,10 +448,11 @@ def select_mode1_capacity(ledger: List[dict], quota_file: str, model_dir: str, f
                 p = max(0, idx[w] - lead[k[1]])
                 need[p] += s[k][w]
                 at_p[p][k].append(w)
+        carry = 0
         for p in range(len(weeks) - 1, -1, -1):
-            e = need[p] - cap[p]
+            e = max(0, need[p] - cap[p]) + carry
             while e > 0:
-                room = {k: min(left[k], sum(s[k][w] for w in ws)) for k, ws in at_p[p].items()}
+                room = {k: min(left[k], sum(s[k][w] - fl[k][w] for w in ws)) for k, ws in at_p[p].items()}
                 room = {k: v for k, v in room.items() if v > 0}
                 if not room:
                     break
@@ -356,31 +465,42 @@ def select_mode1_capacity(ledger: List[dict], quota_file: str, model_dir: str, f
                     need[p] -= take
                     e -= take
                     for w in at_p[p][k]:
-                        cut = min(take, s[k][w])
+                        cut = min(take, s[k][w] - fl[k][w])
                         s[k][w] -= cut
                         take -= cut
+            # 最低供給量で止まった分だけ繰り越す（減らす量が尽きた鍵の分は繰り越さない）
+            blocked = sum(fl[k][w] for k, ws in at_p[p].items() if left[k] for w in ws)
+            carry = min(e, blocked)
             if not any(left.values()):
                 break
         for k in keys:
             rest[k] = left[k]
             if left[k]:
-                s[k] = _proportional_even(s[k], sum(s[k].values()) - left[k])
+                total = sum(s[k].values()) - left[k]
+                even = _proportional_even(s[k], total)
+                if any(even[w] < fl[k][w] for w in even):
+                    above = _proportional_even({w: s[k][w] - fl[k][w] for w in s[k]}, total - sum(fl[k].values()))
+                    even = {w: fl[k][w] + above[w] for w in s[k]}
+                s[k] = even
     stem = os.path.basename(quota_file)
     out = []
+    tag = f"policy={policy['policy_id']}:{policy['policy_version']}," if policy else ""
     for k in sorted(by_key):
+        if k in skipped:
+            continue
         rows, a = by_key[k], alloc.get(k, 0)
         d = {r["request_week"]: r["q1"] for r in rows}
         if sum(s[k].values()) != a or any(not 0 <= s[k][w] <= d[w] for w in d):
             raise QuantityAllocationError(f"{k}: rule {CAPACITY_RULE} gave an impossible selection")
-        policy = (f"capacity_check:first_week_unusable={int(first_week_unusable)},"
-                  f"ss_lead={int(ss_lead)},rest_lots={rest[k]}")
+        policy_ref = (f"capacity_check:first_week_unusable={int(first_week_unusable)},"
+                      f"ss_lead={int(ss_lead)},{tag}rest_lots={rest[k]}")
         for r in rows:
             q2 = s[k][r["request_week"]]
             q3 = r["q1"] - q2
             reason = "no_demand" if r["q1"] == 0 else CUT_REASON[CAPACITY_RULE] if q3 else "kept_full"
             out.append({"source_demand_ref": r["source_demand_ref"], "q1": r["q1"], "q2": q2, "q3": q3,
                         "week_rule": CAPACITY_RULE, "tie_key": tie_key, "reason_code": reason,
-                        "quota_ref": f"{stem}:{k[0]}|{k[1]}={a}", "policy_ref": policy,
+                        "quota_ref": f"{stem}:{k[0]}|{k[1]}={a}", "policy_ref": policy_ref,
                         "sku_id": k[0], "region": k[1], "request_week": r["request_week"]})
     return out
 
@@ -501,11 +621,14 @@ def _sha256(path: str) -> str:
         return hashlib.sha256(f.read()).hexdigest()
 
 
-def input_file_hashes(model_dir: str, demand_file: str, quota_file: str) -> Dict[str, str]:
+def input_file_hashes(model_dir: str, demand_file: str, quota_file: str,
+                      policy_file: Optional[str] = None) -> Dict[str, str]:
     """計算に使う入力のファイルだけ（生成した需要 CSV と数量枠の写しは除く）。"""
     quota = os.path.basename(quota_file)
     gen = re.compile(r"^demand_forecast_.+\.csv$")
     out = {"quota:" + quota: _sha256(quota_file)}
+    if policy_file:
+        out["policy:" + os.path.basename(policy_file)] = _sha256(policy_file)
     for f in sorted(os.listdir(model_dir)):
         if f.endswith(".csv") and f != quota and (f == demand_file or not gen.match(f)):
             out[f] = _sha256(os.path.join(model_dir, f))
@@ -517,7 +640,8 @@ def write_plan_json(path: str, *, plan_id: str, scenario_id: str, week_rule: str
                     quota_sources: List[str], commit: Optional[str], code_dirty: bool,
                     totals: dict, rule_detail: Optional[dict] = None,
                     knowledge_used: Optional[List[dict]] = None,
-                    owner_decisions: Optional[List[str]] = None) -> dict:
+                    owner_decisions: Optional[List[str]] = None, policy: Optional[dict] = None,
+                    status: Optional[dict] = None, extra: Optional[dict] = None) -> dict:
     body = {"plan_id": plan_id, "scenario_id": scenario_id, "mode": "mode1_fixed_quota",
             "horizon": {"start": period["start"], "end": period["end"], "weeks": period["weeks"]},
             "judgement_week": period["end"], "report_start": report_start,
@@ -530,6 +654,11 @@ def write_plan_json(path: str, *, plan_id: str, scenario_id: str, week_rule: str
             "target_status": "未判定", "owner_status": "未判断"}
     if rule_detail is not None:
         body["week_rule_detail"] = rule_detail
+    if policy:
+        body.update(policy_id=policy["policy_id"], policy_version=policy["policy_version"],
+                    policy_hash=policy["hash"])
+    body.update(status or {})
+    body.update(extra or {})
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(body, f, ensure_ascii=False, indent=2)
         f.write("\n")
@@ -548,8 +677,9 @@ def write_plan_outputs(udp_out: str, plan_id: str, *, model_dir: str, ledger, se
                        period: dict, commit: Optional[str], totals: dict, repo: str,
                        rule_detail: Optional[dict] = None,
                        knowledge_used: Optional[List[dict]] = None,
-                       owner_decisions: Optional[List[str]] = None) -> str:
-    """<udp_out>/<plan_id>/ に 6 ファイルを書く。上書きする（同じ plan_id は同じ入力の再実行）。"""
+                       owner_decisions: Optional[List[str]] = None, policy: Optional[dict] = None) -> str:
+    """<udp_out>/<plan_id>/ に 6 ファイルを書く。上書きする（同じ plan_id は同じ入力の再実行）。
+    方針があるときは udp_min_supply_check.csv も書き、実行の結果の未達を target_status に書く。"""
     from wom.lovem.observer import git_state
     d = os.path.join(udp_out, plan_id)
     os.makedirs(d, exist_ok=True)
@@ -566,6 +696,14 @@ def write_plan_outputs(udp_out: str, plan_id: str, *, model_dir: str, ledger, se
         "udp_supply_runs.csv": (["sku_id", "region", "zero_supply_weeks", "longest_zero_run",
                                  "longest_zero_run_from", "excluded_weeks_rule"], supply_runs),
     }
+    status, extra = None, None
+    if policy:
+        check, summary = min_supply_check(selection, by_request, policy)
+        tables["udp_min_supply_check.csv"] = (["source_demand_ref", "min_supply_lots", "q2", "on_time", "plan_ok",
+                                               "delivered_ok"], check)
+        short = any(v["delivered_below_weeks"] for v in summary.values())
+        status = {"target_status": TARGET_SHORT if short else "達成"}
+        extra = {"min_supply_summary": summary, "adoption_status": "止めた（大杉さんの判断待ち）" if short else "判断待ち"}
     for name, (cols, rows) in tables.items():
         _write_csv(os.path.join(d, name), cols, rows)
     outputs = {name: _sha256(os.path.join(d, name)) for name in tables}
@@ -576,8 +714,41 @@ def write_plan_outputs(udp_out: str, plan_id: str, *, model_dir: str, ledger, se
     sources = sorted({(r.get("quota_source") or "").strip() for r in alloc_rows} - {""})
     write_plan_json(os.path.join(d, "udp_plan.json"), plan_id=plan_id, scenario_id=os.path.basename(model_dir),
                     week_rule=selection[0]["week_rule"] if selection else DEFAULT_WEEK_RULE, period=period,
-                    report_start=report, input_hashes=input_file_hashes(model_dir, demand_file, allocation_file),
+                    report_start=report,
+                    input_hashes=input_file_hashes(model_dir, demand_file, allocation_file,
+                                                   policy["file"] if policy else None),
                     outputs=outputs, quota_sources=sources, commit=commit,
                     code_dirty=git_state(repo)["dirty"], totals=totals, rule_detail=rule_detail,
-                    knowledge_used=knowledge_used, owner_decisions=owner_decisions)
+                    knowledge_used=knowledge_used, owner_decisions=owner_decisions, policy=policy,
+                    status=status, extra=extra)
+    return d
+
+
+def write_conflict_outputs(udp_out: str, plan_id: str, *, model_dir: str, ledger, reference, conflicts,
+                           demand_file: str, allocation_file: str, policy: dict, period: dict,
+                           commit: Optional[str], repo: str, knowledge_used=None, owner_decisions=None) -> str:
+    """衝突で止めた案の記録。エンジンに渡していないので、④⑤ は NOT_RUN と書く（0 で埋めない）。
+    udp_selection_reference.csv は衝突の無い鍵だけの参考で、採用できる台帳ではない。"""
+    from wom.lovem.observer import git_state
+    d = os.path.join(udp_out, plan_id)
+    os.makedirs(d, exist_ok=True)
+    tables = {"udp_conflicts.csv": (["sku_id", "region", "quota_cut_lots", "placeable_cut_lots", "unplaceable_lots",
+                                     "min_supply_ratio", "rounding", "reason", "alternatives"], conflicts),
+              "udp_selection_reference.csv": (["source_demand_ref", "q1", "q2", "q3", "week_rule", "tie_key",
+                                               "reason_code", "quota_ref", "policy_ref"], reference),
+              "udp_demand_ledger.csv": (["source_demand_ref", "sku_id", "region", "request_week", "segment",
+                                         "q1", "demand_nature"], ledger)}
+    for name, (cols, rows) in tables.items():
+        _write_csv(os.path.join(d, name), cols, rows)
+    totals = {"q1_original": sum(r["q1"] for r in ledger), "q2_in_supply_scope": NOT_RUN,
+              "q3_not_in_supply_scope": NOT_RUN, "q4_delivered": NOT_RUN, "q5_backlog_end": NOT_RUN,
+              "evaluation": NOT_RUN}
+    write_plan_json(os.path.join(d, "udp_plan.json"), plan_id=plan_id, scenario_id=os.path.basename(model_dir),
+                    week_rule=CAPACITY_RULE, period=period, report_start="",
+                    input_hashes=input_file_hashes(model_dir, demand_file, allocation_file, policy["file"]),
+                    outputs={name: _sha256(os.path.join(d, name)) for name in tables}, quota_sources=[],
+                    commit=commit, code_dirty=git_state(repo)["dirty"], totals=totals,
+                    knowledge_used=knowledge_used, owner_decisions=owner_decisions, policy=policy,
+                    status={"calc_status": CALC_STOPPED, "target_status": TARGET_CONFLICT},
+                    extra={"adoption_status": "止めた（大杉さんの判断待ち）", "conflicts": conflicts})
     return d

@@ -1,0 +1,2 @@
+sku_id,region,quota_cut_lots,placeable_cut_lots,unplaceable_lots,min_supply_ratio,rounding,reason,alternatives
+COS_Cream,TH_Distributor,25,0,25,0.7,ceil,最低供給量の合計 299 lot が数量枠 274 lot を超える（配分の問題。能力を足すだけでは解消しない）,最低供給率を下げる／チャネルの間の数量枠を見直す（次の段階）／能力を増強したうえで数量枠を設定し直す

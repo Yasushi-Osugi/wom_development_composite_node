@@ -1,0 +1,190 @@
+{
+ "checks": {
+  "no_early_late": true,
+  "B1_selection_same": true,
+  "B1_result_same": true,
+  "B1_q5": 0,
+  "B1_eval": 607741740.0,
+  "plan_status": {
+   "MS_base": [
+    "計算済み",
+    "整合",
+    "未判定"
+   ],
+   "MS50": [
+    "計算済み",
+    "整合",
+    "達成"
+   ]
+  },
+  "capacity_same_as_C3a": {
+   "MS_base": true,
+   "MS50": true,
+   "MS70": true
+  },
+  "demand_same_as_sample": {
+   "MS_base": true,
+   "MS50": true,
+   "MS70": true
+  },
+  "period": {
+   "MS_base": {
+    "start": "2026-W37",
+    "weeks": 173
+   },
+   "MS50": {
+    "start": "2026-W37",
+    "weeks": 173
+   }
+  },
+  "factory_P": {
+   "MS_base": {
+    "COS_Serum": 2184,
+    "COS_Cream": 1680
+   },
+   "MS50": {
+    "COS_Serum": 2184,
+    "COS_Cream": 1680
+   }
+  },
+  "refs_before_equal_after": {
+   "MS_base": true,
+   "MS50": true
+  },
+  "MS70": {
+   "status": [
+    "計画の前に止めた（衝突）",
+    "整合",
+    "未達（衝突）"
+   ],
+   "totals": {
+    "q1_original": 4056,
+    "q2_in_supply_scope": "未実行",
+    "q3_not_in_supply_scope": "未実行",
+    "q4_delivered": "未実行",
+    "q5_backlog_end": "未実行",
+    "evaluation": "未実行"
+   },
+   "rc": 3,
+   "Q01_exists": false,
+   "state_exists": false,
+   "policy": [
+    "MS70",
+    "1",
+    "510ec242d474b8342d651bbb4bfb4421cfc8b1ee104e01f59c2a752edf65ec73"
+   ]
+  }
+ },
+ "rates": {
+  "MS_base|COS_Serum|SG_Distributor": [
+   100.0,
+   62.5,
+   50.0
+  ],
+  "MS_base|COS_Serum|TH_Distributor": [
+   100.0,
+   75.0,
+   50.0
+  ],
+  "MS_base|COS_Cream|SG_Distributor": [
+   100.0,
+   60.62499999999999,
+   40.0
+  ],
+  "MS_base|COS_Cream|TH_Distributor": [
+   100.0,
+   73.95833333333334,
+   66.66666666666666
+  ],
+  "MS50|COS_Serum|SG_Distributor": [
+   100.0,
+   62.5,
+   50.0
+  ],
+  "MS50|COS_Serum|TH_Distributor": [
+   100.0,
+   75.0,
+   50.0
+  ],
+  "MS50|COS_Cream|SG_Distributor": [
+   99.4949494949495,
+   62.5,
+   60.0
+  ],
+  "MS50|COS_Cream|TH_Distributor": [
+   100.0,
+   73.95833333333334,
+   66.66666666666666
+  ]
+ },
+ "eval": {
+  "MS_base": 607741740.0,
+  "MS50": 607741740.0
+ },
+ "stock": {
+  "MS_base": {
+   "COS_Serum": {
+    "max": 278,
+    "week": "2027-W20"
+   },
+   "COS_Cream": {
+    "max": 205,
+    "week": "2027-W20"
+   }
+  },
+  "MS50": {
+   "COS_Serum": {
+    "max": 278,
+    "week": "2027-W20"
+   },
+   "COS_Cream": {
+    "max": 205,
+    "week": "2027-W20"
+   }
+  }
+ },
+ "min_supply_summary": {
+  "COS_Cream|SG_Distributor": {
+   "weeks": 156,
+   "plan_below_weeks": [],
+   "delivered_below_weeks": []
+  },
+  "COS_Cream|TH_Distributor": {
+   "weeks": 104,
+   "plan_below_weeks": [],
+   "delivered_below_weeks": []
+  },
+  "COS_Serum|SG_Distributor": {
+   "weeks": 156,
+   "plan_below_weeks": [],
+   "delivered_below_weeks": []
+  },
+  "COS_Serum|TH_Distributor": {
+   "weeks": 104,
+   "plan_below_weeks": [],
+   "delivered_below_weeks": []
+  }
+ },
+ "stock_week": {
+  "MS_base": {
+   "COS_Serum": {
+    "max": 278,
+    "week": "2027-W20"
+   },
+   "COS_Cream": {
+    "max": 205,
+    "week": "2027-W20"
+   }
+  },
+  "MS50": {
+   "COS_Serum": {
+    "max": 278,
+    "week": "2027-W20"
+   },
+   "COS_Cream": {
+    "max": 205,
+    "week": "2027-W20"
+   }
+  }
+ }
+}
