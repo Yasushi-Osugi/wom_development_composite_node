@@ -181,6 +181,21 @@ Expected, in lots:
 
 The tool is a quantity path: its financial result is "not valued". The comparison values are in `docs/development/WOM_BSSEAF_Cosmetics_AllocationP2a_Report.md`.
 
+### Adopted allocation plan: capacity-aware week rule with minimum supply 50%
+
+This is the plan the Owner adopted for the cosmetics case (2026-11-02 and 2026-11-03). It is the baseline for later allocation work. It uses the upper Demand Plan (`docs/WOM_Start_Here.md` R23).
+
+- Model: the C3a copy (capacity shortage, above).
+- Quota: the P2-a2 file above (`allocation_qty_P2a2.csv`).
+- Week rule: `trim_to_capacity_latest` (trim each week's need down to capacity, from the latest week).
+- Policy: `docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_appendix/policy/udp_policy_MS50.csv` (minimum supply 50% of original demand per distributor, product and request week, rounded up, required).
+
+```bash
+python -m tools.run_quantity_allocation --model-dir <C3a copy> --allocation-file <allocation_qty_P2a2.csv> --week-rule trim_to_capacity_latest --policy-file <udp_policy_MS50.csv> --udp-out <dir> --out-dir output/planning_state
+```
+
+Expected: original demand 4,056, in supply scope 3,864, not in scope 192, delivered on time 3,864, backlog 0; no week below the minimum, at plan time or on actual delivery. Comparison value 607,741,740 JPY. The meanings (minimum supply, conflict vs. error, exit codes) are in `docs/semantics/supply_allocation.md` §6.1 and Start Here R23. Evidence: `docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_Report.md`.
+
 ### M0t: Thai tariff 30%
 
 In `ppc_tariff_rule.csv`, set `tariff_rate` to `0.30` on the two `WH_JP_Released->DC_TH` rows. Quantities do not change.
@@ -192,7 +207,7 @@ Expected: tariff 27,612,000 JPY, trial profit 604,237,608 JPY (27,612,000 lower)
 Planning:
 
 - No holidays are set.
-- Allocation is by SKU × channel lots. The tool spreads cuts over weeks in proportion to demand. Which weeks to cut is not a business decision in this model.
+- Allocation is by SKU × channel lots. Without `--week-rule`, the tool spreads cuts over weeks in proportion to demand, and ties put the cut lots at the end of the horizon. Which weeks to cut can be chosen as a business rule with `--week-rule` (upper Demand Plan, Start Here R23); the adopted cosmetics plan uses `trim_to_capacity_latest`.
 - Plan boundary effect: lots pushed back into the first plan week cannot be made, and the slack of the last 2 production weeks cannot be used.
 
 Money:

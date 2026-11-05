@@ -12,8 +12,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 > このファイルの日付付きの節の多くは**開発の経緯の記録**で、後の変更で置き換わった記述も残っている。今有効な規則は Start Here から辿ること。
 
 - 起動: `python -m main`（GUIモード）/ headless: `python -m tools.run_headless_from_folder --model-dir data\sample\<モデル> --plugins safe`  
-- 現在の開発ブランチ: `wom-v1r5m1_cap_trial`（リモート `composite_node` ＝ `Yasushi-Osugi/wom_development_composite_node` の default branch。2026-10）  
-- サンプルモデル: `data/sample/`（golden 対象 13 件の一覧と、手本にするモデルは Start Here §4.1）
+- 現在の開発ブランチ: `wom-v1r6m0_BS-SEAF`（リモート `composite_node` ＝ `Yasushi-Osugi/wom_development_composite_node` の default branch。2026-11-06 に `wom-v1r5m1_cap_trial` から移行。旧ブランチは記録として残す）  
+- サンプルモデル: `data/sample/`（golden の一覧（2026-11 時点で通常 16 件・legacy 3 件）と、手本にするモデルは Start Here §4.1）
 
 ---
 

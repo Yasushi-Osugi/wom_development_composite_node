@@ -144,7 +144,7 @@ WOMは、**「週次」というリズムで経営の意思決定とサプライ
 
 ### 前提
 - Python 3.10+
-- 本リポジトリを clone 済み（既定のブランチ **`wom-v1r5m1_cap_trial`** が最新）
+- 本リポジトリを clone 済み（既定のブランチ **`wom-v1r6m0_BS-SEAF`** が最新（2026-11-06 に `wom-v1r5m1_cap_trial` から移行））
 
 ```bash
 git clone https://github.com/Yasushi-Osugi/wom_development_composite_node.git

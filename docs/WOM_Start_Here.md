@@ -1,6 +1,6 @@
 # WOM Start Here — 新しい人と新しい AI のための入口
 
-- 版：2026-10-31（ブランチ `wom-v1r5m1_cap_trial`）
+- 版：2026-11-06（ブランチ `wom-v1r6m0_BS-SEAF`。2026-11-06 に `wom-v1r5m1_cap_trial` から移った。それまでの報告書・依頼書の中の旧ブランチ名は、その時点の記録）
 - 作成：Claude君（大杉さんの依頼）
 - 位置づけ：**今有効な規則の索引と要約**。本文の正典は、各節で示す文書にある。この文書と正典が食い違ったら、正典が正しい（そしてこの文書を直す）。
 - `CLAUDE.md` の大半は、日付順の**開発の経緯の記録**である。今有効な規則を探すときは、まずこの文書から辿ること。
@@ -182,7 +182,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 - **保護対象のコア**（`AGENTS.md` §10）：`backward_planner.py`、`forward_planner.py`、`plan_copy.py`、`plan_node.py`、`sc_tree.py`、`push_pull.py`。依頼書が無ければ変えない。変えるときは 3 層のテスト（単体・CSV からの結合・golden）を緑にし、大杉さんが diff を確かめる。
 - **golden**：`tests/golden/*.json`（16 件。2026-10-30 に化粧品が加わった）と `tests/golden/legacy/`（3 件）。意図した変化のときだけ、変わるモデルを報告してから作り直す。プラグインの組はモデルの `recommended_plugins` と同じ（rice 以外は Holiday Calendar・Buffering Stock・Capacity Override、rice はこれに Rice Seasonal）。作るときは `--plugins` を明示する（`CLAUDE.md`、`tests/test_golden.py` の説明）。
 - **テストの段**（`tests/README.md`、2026-10-15）：途中は `python -m tools.quick_check --smoke`（約 1 分）と、直した所の領域（`--area rice` など、`--changed` は変えたファイルから選ぶ）。全テスト（`--full`、約 15〜18 分）は依頼書ごとに最後に 1 回。保護対象のコアを直したときは全テストと 3 層のテストが必須。依頼書には回す段を書く。新しいテストのファイルは `tests/conftest.py` の対応表に 1 行足す。golden を含む pytest は並行させない。
-- **git**：Windows 側で行う。リモートは `composite_node`（`wom_development_composite_node`、default branch `wom-v1r5m1_cap_trial`）。commit メッセージの下書きは `commit_msg*.txt`（git の対象外）。
+- **git**：Windows 側で行う。リモートは `composite_node`（`wom_development_composite_node`、default branch `wom-v1r6m0_BS-SEAF`。旧ブランチ `wom-v1r5m1_cap_trial` はそれまでの開発の記録として残す）。commit メッセージの下書きは `commit_msg*.txt`（git の対象外）。
 - **誤読を招く名前**は見つけ次第、関連する資料をまとめて直す。黙った既定値（0・1・前の週）を作らない。
 
 ---
