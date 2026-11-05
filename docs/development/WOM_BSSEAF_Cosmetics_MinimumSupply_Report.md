@@ -20,10 +20,9 @@ handoff:
   evidence:
     - docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_Report.md
     - docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_appendix/
-  status: "Owner 判断待ち"
+  status: "完了"               # 2026-11-03 に注記：5 割は採用済み（§7 の決定の記録）、7 割への対応は保留
   open_items:
-    - "化粧品で最低供給量を採るか・水準（§7）"
-    - "MS70 の衝突への対し方（§7）"
+    - "7 割への対応（保留。最低率を下げる＝守る方針を変える判断／数量枠を見直す＝配分を変える判断、は別の選択肢）"
   stop_reasons: []
   handover_notes:
     - "MS70 の衝突は結果の記録で、数量の不整合ではない。MS70 の実納品・未充足・評価の額は未実行"
