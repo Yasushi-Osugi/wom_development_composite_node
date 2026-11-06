@@ -1,0 +1,28 @@
+{
+ "udp_selection_ledger.csv": true,
+ "udp_result_by_request.csv": true,
+ "udp_min_supply_check.csv": true,
+ "udp_capacity_check.csv": true,
+ "udp_supply_runs.csv": true,
+ "output_hashes_same": true,
+ "input_hashes_same": true,
+ "plan_keys_differ": [
+  "code_dirty",
+  "knowledge_used",
+  "owner_decisions",
+  "target_commit"
+ ],
+ "totals": {
+  "q1_original": 4056,
+  "q2_in_supply_scope": 3864,
+  "q3_not_in_supply_scope": 192,
+  "q4_delivered": {
+   "total": 3864,
+   "on_time": 3864,
+   "early": 0,
+   "late": 0
+  },
+  "q5_backlog_end": 0
+ },
+ "rc": 0
+}
