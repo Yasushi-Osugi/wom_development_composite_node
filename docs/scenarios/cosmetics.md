@@ -181,20 +181,20 @@ Expected, in lots:
 
 The tool is a quantity path: its financial result is "not valued". The comparison values are in `docs/development/WOM_BSSEAF_Cosmetics_AllocationP2a_Report.md`.
 
-### Adopted allocation plan: capacity-aware week rule with minimum supply 50%
+### Adopted allocation plan: capacity-aware week rule, minimum supply 50% (Thai cream 70%)
 
-This is the plan the Owner adopted for the cosmetics case (2026-11-02 and 2026-11-03). It is the baseline for later allocation work. It uses the upper Demand Plan (`docs/WOM_Start_Here.md` R23).
+This is the plan the Owner adopted for the cosmetics case (2026-11-02, 2026-11-03, and 2026-11-06 for the Thai cream). It is the baseline for later allocation work. It uses the upper Demand Plan (`docs/WOM_Start_Here.md` R23).
 
 - Model: the C3a copy (capacity shortage, above).
-- Quota: the P2-a2 file above (`allocation_qty_P2a2.csv`).
+- Quota: `docs/development/WOM_BSSEAF_Cosmetics_ThaiCream_Minimum70_appendix/inputs/allocation_qty_TH70.csv` (P2-a2 with 25 cream lots moved from the SG distributor to the TH distributor: TH 299, SG 666). Two files named `allocation_qty_P2a2.csv` exist with the same numbers; the one in `docs/development/WOM_BSSEAF_Cosmetics_UpperDemandPlan_U4_appendix/records/` has an extra `quota_source` column and is the one the later trials used.
 - Week rule: `trim_to_capacity_latest` (trim each week's need down to capacity, from the latest week).
-- Policy: `docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_appendix/policy/udp_policy_MS50.csv` (minimum supply 50% of original demand per distributor, product and request week, rounded up, required).
+- Policy: `docs/development/WOM_BSSEAF_Cosmetics_ThaiCream_Minimum70_appendix/inputs/udp_policy_MS50TH70.csv` (minimum supply 50% of original demand per distributor, product and request week, rounded up, required; Thai cream 70%, which equals its full demand at 2-3 lots a week). The earlier 50%-only plan used `docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_appendix/policy/udp_policy_MS50.csv` with the P2-a2 quota.
 
 ```bash
-python -m tools.run_quantity_allocation --model-dir <C3a copy> --allocation-file <allocation_qty_P2a2.csv> --week-rule trim_to_capacity_latest --policy-file <udp_policy_MS50.csv> --udp-out <dir> --out-dir output/planning_state
+python -m tools.run_quantity_allocation --model-dir <C3a copy> --allocation-file <allocation_qty_TH70.csv> --week-rule trim_to_capacity_latest --policy-file <udp_policy_MS50TH70.csv> --udp-out <dir> --out-dir output/planning_state
 ```
 
-Expected: original demand 4,056, in supply scope 3,864, not in scope 192, delivered on time 3,864, backlog 0; no week below the minimum, at plan time or on actual delivery. Comparison value 607,741,740 JPY. The meanings (minimum supply, conflict vs. error, exit codes) are in `docs/semantics/supply_allocation.md` §6.1 and Start Here R23. Evidence: `docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_Report.md`.
+Expected: original demand 4,056, in supply scope 3,864, not in scope 192, delivered on time 3,864, backlog 0; Thai cream delivered in full every week; no week below the minimum, at plan time or on actual delivery. SG cream cuts run 2029-W07 to W50. Comparison value 607,776,840 JPY (the 50%-only plan: 607,741,740). The meanings (minimum supply, its applicability when lots are coarse, conflict vs. error, exit codes) are in `docs/semantics/supply_allocation.md` §6.1 and Start Here R23. Evidence: `docs/development/WOM_BSSEAF_Cosmetics_ThaiCream_Minimum70_Report.md` and its independent check `docs/development/WOM_BSSEAF_Cosmetics_ThaiCream_Minimum70_Verify_Report.md`.
 
 ### M0t: Thai tariff 30%
 
