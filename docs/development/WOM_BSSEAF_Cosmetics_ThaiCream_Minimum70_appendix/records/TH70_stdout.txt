@@ -1,0 +1,17 @@
+[HolidayCalendar] Loaded 0 rules from holiday_calendar.csv
+[quantity allocation] TH70 Q01  2026-W37..2029-W52 (173 weeks)  unit lot (cpu_size 24)
+sku_id            region                   q1     q2     q3     q4   (on/early/late)     q5
+COS_Cream         SG_Distributor          754    666     88    666           666/0/0      0
+COS_Cream         SG_EC                   299    299      0    299           299/0/0      0
+COS_Cream         SG_Store                416    416      0    416           416/0/0      0
+COS_Cream         TH_Distributor          299    299      0    299           299/0/0      0
+COS_Serum         SG_Distributor          897    825     72    825           825/0/0      0
+COS_Serum         SG_EC                   455    455      0    455           455/0/0      0
+COS_Serum         SG_Store                546    546      0    546           546/0/0      0
+COS_Serum         TH_Distributor          390    358     32    358           358/0/0      0
+TOTAL                                    4056   3864    192   3864          3864/0/0      0
+財務：未評価  |  配分した量を期間内に全て引渡し  |  未配分の扱い：当該期間は供給の対象にしない予測需要（仮定、化粧品設計書 v0.5 D18）
+[quantity allocation] -> output/bsseaf_cosmetics_th70/_planning_state\TH70\Q01.json
+[upper demand plan] -> output/bsseaf_cosmetics_th70/udp\TH70_trim_to_capacity_latest
+
+--- stderr ---

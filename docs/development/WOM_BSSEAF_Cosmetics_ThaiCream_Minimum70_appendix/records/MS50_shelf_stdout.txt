@@ -1,0 +1,24 @@
+[HolidayCalendar] Loaded 0 rules from holiday_calendar.csv
+[PPC Export] Written to output/bsseaf_cosmetics_th70/shelf/MS50\ppc/
+  ppc_event_ledger.csv        (18200 events)
+  ppc_node_week_summary.csv   (2574 rows)
+  ppc_profit_zone_summary.csv (1 rows)
+  ppc_lot_reconciliation.csv  (1118 rows)
+  ppc_node_pl_summary.csv     (18 rows)
+  ppc_kpi_summary.json
+[shelf_life] output/bsseaf_cosmetics_th70/MS50  max age 52 weeks  deliveries 3,864  backlog at end 0 (not deliveries)  in transit at end 0
+product             channel                  deliv  min  max  over  lot_dwell_max  lot_over
+*                   *                         3864    4   28     0            144       447
+COS_Cream           *                         1680    4   27     0            144       189
+COS_Cream           SG_Distributor             691    4   24     0              4         0
+COS_Cream           SG_EC                      299    4   25     0              4         0
+COS_Cream           SG_Store                   416    6   27     0              6         0
+COS_Cream           TH_Distributor             274    4   24     0            144       189
+COS_Serum           *                         2184    4   28     0            143       258
+COS_Serum           SG_Distributor             825    4   25     0              4         0
+COS_Serum           SG_EC                      455    4   26     0              4         0
+COS_Serum           SG_Store                   546    6   28     0              6         0
+COS_Serum           TH_Distributor             358    4   25     0            143       258
+[shelf_life] -> output/bsseaf_cosmetics_th70/shelf/MS50
+
+--- stderr ---

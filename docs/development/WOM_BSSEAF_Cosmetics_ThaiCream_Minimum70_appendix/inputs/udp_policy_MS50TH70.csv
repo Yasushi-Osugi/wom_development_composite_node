@@ -1,0 +1,5 @@
+policy_id,policy_version,sku_id,region,min_supply_ratio,min_supply_rounding,min_supply_kind,reason
+MS50TH70,1,COS_Serum,SG_Distributor,0.5,ceil,required,代理店への最低供給量（MS50 のまま）
+MS50TH70,1,COS_Serum,TH_Distributor,0.5,ceil,required,代理店への最低供給量（MS50 のまま）
+MS50TH70,1,COS_Cream,SG_Distributor,0.5,ceil,required,代理店への最低供給量（MS50 のまま）
+MS50TH70,1,COS_Cream,TH_Distributor,0.7,ceil,required,タイのクリームの最低供給量 7 割（依頼書 BSSEAF-COS-LOOP4、作業計画 H1）

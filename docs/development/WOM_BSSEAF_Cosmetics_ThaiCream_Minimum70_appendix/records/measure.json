@@ -1,0 +1,565 @@
+{
+ "checks": {
+  "rc": {
+   "MS50": 0,
+   "TH70": 0
+  },
+  "conflicts_before": {
+   "MS50": [],
+   "TH70": []
+  },
+  "status": {
+   "MS50": [
+    "計算済み",
+    "整合",
+    "達成"
+   ],
+   "TH70": [
+    "計算済み",
+    "整合",
+    "達成"
+   ]
+  },
+  "totals": {
+   "MS50": {
+    "q1_original": 4056,
+    "q2_in_supply_scope": 3864,
+    "q3_not_in_supply_scope": 192,
+    "q4_delivered": {
+     "total": 3864,
+     "on_time": 3864,
+     "early": 0,
+     "late": 0
+    },
+    "q5_backlog_end": 0
+   },
+   "TH70": {
+    "q1_original": 4056,
+    "q2_in_supply_scope": 3864,
+    "q3_not_in_supply_scope": 192,
+    "q4_delivered": {
+     "total": 3864,
+     "on_time": 3864,
+     "early": 0,
+     "late": 0
+    },
+    "q5_backlog_end": 0
+   }
+  },
+  "no_early_late": true,
+  "input_hash_diff": [
+   "policy:udp_policy_MS50.csv",
+   "policy:udp_policy_MS50TH70.csv",
+   "quota:allocation_qty_P2a2.csv",
+   "quota:allocation_qty_TH70.csv"
+  ],
+  "period": {
+   "MS50": {
+    "start": "2026-W37",
+    "weeks": 173
+   },
+   "TH70": {
+    "start": "2026-W37",
+    "weeks": 173
+   }
+  },
+  "keys_with_any_change": [
+   "COS_Cream|SG_Distributor",
+   "COS_Cream|TH_Distributor"
+  ],
+  "TH_cream_weeks": 104,
+  "TH_cream_all_on_time_full": true,
+  "factory_P_same": {
+   "COS_Serum": true,
+   "COS_Cream": true
+  },
+  "factory_P_total": {
+   "MS50": {
+    "COS_Serum": 2184,
+    "COS_Cream": 1680
+   },
+   "TH70": {
+    "COS_Serum": 2184,
+    "COS_Cream": 1680
+   }
+  },
+  "refs_before": {
+   "MS50": {
+    "COS_Cream": 0,
+    "COS_Serum": 0
+   },
+   "TH70": {
+    "COS_Cream": 0,
+    "COS_Serum": 0
+   }
+  },
+  "refs_after": {
+   "MS50": {
+    "COS_Cream": 0,
+    "COS_Serum": 0
+   },
+   "TH70": {
+    "COS_Cream": 0,
+    "COS_Serum": 0
+   }
+  },
+  "min_supply_summary": {
+   "MS50": {
+    "COS_Cream|SG_Distributor": [
+     156,
+     0,
+     0
+    ],
+    "COS_Cream|TH_Distributor": [
+     104,
+     0,
+     0
+    ],
+    "COS_Serum|SG_Distributor": [
+     156,
+     0,
+     0
+    ],
+    "COS_Serum|TH_Distributor": [
+     104,
+     0,
+     0
+    ]
+   },
+   "TH70": {
+    "COS_Cream|SG_Distributor": [
+     156,
+     0,
+     0
+    ],
+    "COS_Cream|TH_Distributor": [
+     104,
+     0,
+     0
+    ],
+    "COS_Serum|SG_Distributor": [
+     156,
+     0,
+     0
+    ],
+    "COS_Serum|TH_Distributor": [
+     104,
+     0,
+     0
+    ]
+   }
+  },
+  "plan_policy": {
+   "MS50": [
+    "MS50",
+    "1",
+    "f00d778bf2bdc546e351e9e8fb0db0c6bff4946beab880f89ad414fdcefe7007"
+   ],
+   "TH70": [
+    "MS50TH70",
+    "1",
+    "2e45e10aed39ed4f92d84029ea2136f2f10ef74a6662ac4b9c2105b8b9201642"
+   ]
+  },
+  "plan_meta": {
+   "MS50": {
+    "target_commit": "7a6755103ad935a319fea00f9f598871d9265c68",
+    "code_dirty": false,
+    "owner_decisions": [
+     "requests/BSSEAF_Cosmetics_DemandPlan_Horizon_Priority_v0.1.md §5",
+     "requests/Plan_BSSEAF_Cosmetics_ThaiCream_Minimum70_NewAgent_v0.1.md §7 H2（試行 T0〜T3 は同じ担当が写しで行う、大杉さん 2026-11-06）"
+    ],
+    "knowledge_used": [
+     {
+      "id": "WOM-SEM-SUPPLY-ALLOCATION-001",
+      "version": "0.6",
+      "applicability": "①〜⑤（§3）、最低供給量の二段階の確認と衝突（§6.1）"
+     },
+     {
+      "id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001",
+      "version": "0.3",
+      "applicability": "§3.1 trim_to_capacity_latest、§3.2 最低供給量、§4 診断（参考値）"
+     },
+     {
+      "id": "WOM-KB-BSSEAF-001",
+      "version": "v0.5",
+      "applicability": "8 段階（段階 4 の試行）、一巡の記録"
+     },
+     {
+      "id": "作業計画 TH70",
+      "version": "v0.1",
+      "applicability": "requests/Plan_BSSEAF_Cosmetics_ThaiCream_Minimum70_NewAgent_v0.1.md §5・§6"
+     }
+    ],
+    "adoption_status": "判断待ち",
+    "owner_status": "未判断"
+   },
+   "TH70": {
+    "target_commit": "7a6755103ad935a319fea00f9f598871d9265c68",
+    "code_dirty": false,
+    "owner_decisions": [
+     "requests/Plan_BSSEAF_Cosmetics_ThaiCream_Minimum70_NewAgent_v0.1.md §7 H1（タイのクリームは全量を守る、大杉さん 2026-11-06）",
+     "requests/Plan_BSSEAF_Cosmetics_ThaiCream_Minimum70_NewAgent_v0.1.md §7 H2（試行 T0〜T3 は同じ担当が写しで行う、大杉さん 2026-11-06）"
+    ],
+    "knowledge_used": [
+     {
+      "id": "WOM-SEM-SUPPLY-ALLOCATION-001",
+      "version": "0.6",
+      "applicability": "①〜⑤（§3）、最低供給量の二段階の確認と衝突（§6.1）"
+     },
+     {
+      "id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001",
+      "version": "0.3",
+      "applicability": "§3.1 trim_to_capacity_latest、§3.2 最低供給量、§4 診断（参考値）"
+     },
+     {
+      "id": "WOM-KB-BSSEAF-001",
+      "version": "v0.5",
+      "applicability": "8 段階（段階 4 の試行）、一巡の記録"
+     },
+     {
+      "id": "作業計画 TH70",
+      "version": "v0.1",
+      "applicability": "requests/Plan_BSSEAF_Cosmetics_ThaiCream_Minimum70_NewAgent_v0.1.md §5・§6"
+     }
+    ],
+    "adoption_status": "判断待ち",
+    "owner_status": "未判断"
+   }
+  },
+  "cream_factory_P_diff_weeks": [],
+  "cream_stock_diff_weeks": [
+   [
+    "2029-W03",
+    41,
+    43
+   ],
+   [
+    "2029-W04",
+    38,
+    42
+   ],
+   [
+    "2029-W05",
+    35,
+    41
+   ],
+   [
+    "2029-W06",
+    32,
+    40
+   ],
+   [
+    "2029-W07",
+    29,
+    39
+   ],
+   [
+    "2029-W08",
+    26,
+    38
+   ],
+   [
+    "2029-W09",
+    23,
+    37
+   ],
+   [
+    "2029-W10",
+    20,
+    36
+   ],
+   [
+    "2029-W11",
+    17,
+    35
+   ],
+   [
+    "2029-W12",
+    14,
+    34
+   ],
+   [
+    "2029-W13",
+    11,
+    33
+   ],
+   [
+    "2029-W14",
+    8,
+    32
+   ],
+   [
+    "2029-W15",
+    6,
+    31
+   ],
+   [
+    "2029-W16",
+    5,
+    30
+   ],
+   [
+    "2029-W17",
+    4,
+    29
+   ],
+   [
+    "2029-W18",
+    3,
+    28
+   ],
+   [
+    "2029-W19",
+    2,
+    27
+   ],
+   [
+    "2029-W20",
+    1,
+    26
+   ],
+   [
+    "2029-W21",
+    0,
+    25
+   ],
+   [
+    "2029-W22",
+    0,
+    24
+   ],
+   [
+    "2029-W23",
+    0,
+    23
+   ],
+   [
+    "2029-W24",
+    0,
+    22
+   ],
+   [
+    "2029-W25",
+    0,
+    21
+   ],
+   [
+    "2029-W26",
+    0,
+    20
+   ],
+   [
+    "2029-W27",
+    0,
+    19
+   ],
+   [
+    "2029-W28",
+    0,
+    18
+   ],
+   [
+    "2029-W29",
+    0,
+    17
+   ],
+   [
+    "2029-W30",
+    0,
+    16
+   ],
+   [
+    "2029-W31",
+    0,
+    15
+   ],
+   [
+    "2029-W32",
+    0,
+    14
+   ],
+   [
+    "2029-W33",
+    0,
+    13
+   ],
+   [
+    "2029-W34",
+    0,
+    12
+   ],
+   [
+    "2029-W35",
+    0,
+    11
+   ],
+   [
+    "2029-W36",
+    0,
+    10
+   ],
+   [
+    "2029-W37",
+    0,
+    9
+   ],
+   [
+    "2029-W38",
+    0,
+    8
+   ],
+   [
+    "2029-W39",
+    0,
+    7
+   ],
+   [
+    "2029-W40",
+    0,
+    6
+   ],
+   [
+    "2029-W41",
+    0,
+    5
+   ],
+   [
+    "2029-W42",
+    0,
+    4
+   ],
+   [
+    "2029-W43",
+    0,
+    3
+   ],
+   [
+    "2029-W44",
+    0,
+    2
+   ],
+   [
+    "2029-W45",
+    0,
+    1
+   ]
+  ],
+  "estimate_vs_tool": {
+   "estimate": {
+    "q3": 88,
+    "from": "2029-W07",
+    "to": "2029-W50",
+    "cut_weeks": 44,
+    "fill_in_cut_weeks": "3/5"
+   },
+   "tool": {
+    "q3": 88,
+    "from": "2029-W07",
+    "to": "2029-W50",
+    "cut_weeks": 44,
+    "span": 44,
+    "max_per_week": 2,
+    "fill_in_cut_weeks": {
+     "3/5": 44
+    }
+   }
+  }
+ },
+ "rates": {
+  "MS50|COS_Serum|SG_Distributor": [
+   100.0,
+   62.5,
+   50.0
+  ],
+  "MS50|COS_Serum|TH_Distributor": [
+   100.0,
+   75.0,
+   50.0
+  ],
+  "MS50|COS_Cream|SG_Distributor": [
+   99.4949494949495,
+   62.5,
+   60.0
+  ],
+  "MS50|COS_Cream|TH_Distributor": [
+   100.0,
+   73.95833333333334,
+   66.66666666666666
+  ],
+  "TH70|COS_Serum|SG_Distributor": [
+   100.0,
+   62.5,
+   50.0
+  ],
+  "TH70|COS_Serum|TH_Distributor": [
+   100.0,
+   75.0,
+   50.0
+  ],
+  "TH70|COS_Cream|SG_Distributor": [
+   95.28619528619528,
+   62.5,
+   60.0
+  ],
+  "TH70|COS_Cream|TH_Distributor": [
+   100.0,
+   100.0,
+   100.0
+  ]
+ },
+ "eval": {
+  "MS50": 607741740.0,
+  "TH70": 607776840.0
+ },
+ "stock": {
+  "MS50": {
+   "COS_Serum": {
+    "max": 278,
+    "week": "2027-W20",
+    "lot_weeks": 25740
+   },
+   "COS_Cream": {
+    "max": 205,
+    "week": "2027-W20",
+    "lot_weeks": 18568
+   }
+  },
+  "TH70": {
+   "COS_Serum": {
+    "max": 278,
+    "week": "2027-W20",
+    "lot_weeks": 25740
+   },
+   "COS_Cream": {
+    "max": 205,
+    "week": "2027-W20",
+    "lot_weeks": 19199
+   }
+  }
+ },
+ "age": {
+  "MS50": {
+   "product": "*",
+   "channel": "*",
+   "deliveries": "3864",
+   "fifo_age_min": "4",
+   "fifo_age_max": "28",
+   "over_max_age": "0",
+   "fifo_age_dist": "4:531;5:79;6:258;7:108;8:99;9:99;10:98;11:98;12:100;13:98;14:98;15:99;16:108;17:111;18:113;19:115;20:112;21:114;22:123;23:154;24:382;25:416;26:91;27:137;28:123",
+   "lot_dwell_max": "144",
+   "lot_dwell_over_max_age": "447"
+  },
+  "TH70": {
+   "product": "*",
+   "channel": "*",
+   "deliveries": "3864",
+   "fifo_age_min": "4",
+   "fifo_age_max": "28",
+   "over_max_age": "0",
+   "fifo_age_dist": "4:360;5:122;6:229;7:165;8:154;9:119;10:118;11:103;12:100;13:98;14:98;15:99;16:108;17:111;18:113;19:115;20:112;21:114;22:123;23:154;24:382;25:416;26:91;27:137;28:123",
+   "lot_dwell_max": "169",
+   "lot_dwell_over_max_age": "447"
+  }
+ }
+}

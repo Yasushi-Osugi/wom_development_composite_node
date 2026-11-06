@@ -1,0 +1,10 @@
+{
+ "docs/development/WOM_BSSEAF_Cosmetics_UpperDemandPlan_U4_appendix/records/allocation_qty_P2a2.csv": "d104a358433e33b068c0ff787c23bbba3b2d5e2d68795f9345a468c78bff4f64",
+ "docs/development/WOM_BSSEAF_Cosmetics_MinimumSupply_appendix/policy/udp_policy_MS50.csv": "f00d778bf2bdc546e351e9e8fb0db0c6bff4946beab880f89ad414fdcefe7007",
+ "output/bsseaf_cosmetics_th70/work/allocation_qty_TH70.csv": "e3f8d96a0d061a1e371f05c0ad9255ef51ca2734383eee0cb365e19946c3cac2",
+ "output/bsseaf_cosmetics_th70/work/udp_policy_MS50TH70.csv": "2e45e10aed39ed4f92d84029ea2136f2f10ef74a6662ac4b9c2105b8b9201642",
+ "output/bsseaf_cosmetics_th70/work/knowledge.json": "6d15a776954ee91529cf6bb47019e9b1f62796fa4df60607d9e8f69977d1e2f6",
+ "data/sample/cosmetics-sg-th-2027-2029/demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+ "MS50/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+ "TH70/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54"
+}

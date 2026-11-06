@@ -1,0 +1,34 @@
+{
+ "conflicts_before": [],
+ "refs_before": {
+  "COS_Cream": 0,
+  "COS_Serum": 0
+ },
+ "rc": 0,
+ "cmd": [
+  "C:\\Users\\ohsug\\anaconda3\\python.exe",
+  "-m",
+  "tools.run_quantity_allocation",
+  "--model-dir",
+  "output/bsseaf_cosmetics_th70/TH70",
+  "--allocation-file",
+  "output/bsseaf_cosmetics_th70/work/allocation_qty_TH70.csv",
+  "--week-rule",
+  "trim_to_capacity_latest",
+  "--policy-file",
+  "output/bsseaf_cosmetics_th70/work/udp_policy_MS50TH70.csv",
+  "--udp-out",
+  "output/bsseaf_cosmetics_th70/udp",
+  "--knowledge-file",
+  "output/bsseaf_cosmetics_th70/work/knowledge.json",
+  "--out-dir",
+  "output/bsseaf_cosmetics_th70/_planning_state",
+  "--unallocated-note",
+  "当該期間は供給の対象にしない予測需要（仮定、化粧品設計書 v0.5 D18）",
+  "--decision-ref",
+  "requests/Plan_BSSEAF_Cosmetics_ThaiCream_Minimum70_NewAgent_v0.1.md §7 H1（タイのクリームは全量を守る、大杉さん 2026-11-06）",
+  "--decision-ref",
+  "requests/Plan_BSSEAF_Cosmetics_ThaiCream_Minimum70_NewAgent_v0.1.md §7 H2（試行 T0〜T3 は同じ担当が写しで行う、大杉さん 2026-11-06）"
+ ],
+ "shelf_rc": 0
+}
