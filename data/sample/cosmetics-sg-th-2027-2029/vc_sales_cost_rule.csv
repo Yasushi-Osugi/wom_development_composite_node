@@ -1,0 +1,11 @@
+node_id,product_id,cost_item,ppc_cost_type,basis,rate,currency,note
+SG_EC,COS_Serum,hq_sga_allocation,sga_cost,revenue,0.10,SGD,販社販管費 10%
+SG_EC,COS_Serum,payment_platform_fee,sga_cost,revenue,0.05,SGD,決済・EC 基盤手数料 5%
+SG_EC,COS_Serum,digital_ad,marketing_cost,revenue,0.15,SGD,デジタル広告費 15%
+SG_EC,COS_Cream,hq_sga_allocation,sga_cost,revenue,0.10,SGD,販社販管費 10%
+SG_EC,COS_Cream,payment_platform_fee,sga_cost,revenue,0.05,SGD,決済・EC 基盤手数料 5%
+SG_EC,COS_Cream,digital_ad,marketing_cost,revenue,0.15,SGD,デジタル広告費 15%
+SG_Store,COS_Serum,store_operating,sga_cost,revenue,0.35,SGD,店舗運営費 35%（M5 の近似）
+SG_Store,COS_Serum,hq_sga_allocation,sga_cost,revenue,0.10,SGD,販社販管費 10%
+SG_Store,COS_Cream,store_operating,sga_cost,revenue,0.35,SGD,店舗運営費 35%（M5 の近似）
+SG_Store,COS_Cream,hq_sga_allocation,sga_cost,revenue,0.10,SGD,販社販管費 10%

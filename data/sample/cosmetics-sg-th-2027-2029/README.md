@@ -70,7 +70,13 @@ Materials_JP（原料） → Factory_JP（工場） → WH_JP_Released（判定�
 | M7 | 費用の無い区間・ノードにも 0 の行を明示する。行が無いのは supply point だけ |
 | M8 | タイの DC は日本本社のまま |
 
-金額の規則は全部このフォルダの中にある（`ppc_*.csv`・`vc_price_rule.csv`）。共有の規則は使わない。
+金額の規則は全部このフォルダの中にある（`ppc_*.csv`・`vc_price_rule.csv`・`vc_sales_cost_rule.csv`）。共有の規則は使わない。
+
+`vc_sales_cost_rule.csv` は Value Chain 用の、直販（直営店・公式 EC）の売上比率の費用の費目の表
+（販社販管費 10%、決済・EC 基盤手数料 5%、デジタル広告費 15%、店舗運営費 35%）。PPC は読まず、
+`ppc_node_cost_rule.csv` の合計の率（直営店 45%、EC 15%＋15%）で同じ額を計算する。公式 EC の配送・梱包
+（1 個 3 SGD）は `ppc_edge_cost_rule.csv` の `SG_EC->CONSUMER` の行（`delivery_packing_cost`）に置く。
+二つのファイルの率・固定額が合わなければ、Value Chain の読み込みで止まる。
 
 ## 実行の方法
 
@@ -99,7 +105,8 @@ GUI：`python -m main` → Load Model Folder でこのフォルダを選ぶ → 
 | Flow Check 表2 | 需要 4,056 lot（美容液 2,288、クリーム 1,768）を全量、納期どおりに充足。未充足 0 |
 | PPC | `評価済み`。売上 1,156,284,480 円、費用 524,434,872 円、試算利益 631,849,608 円（54.6%） |
 | 製品の年齢 | 最大 6 週（直営店 6 週、ほか 4 週）。52 週超 0 |
-| Value Chain（`vc_ppc_comparison.csv`、利益 合計、消去前） | PPC 631,849,608 円、台帳 935,061,504 円、差 303,211,896 円（下の G1＋G2） |
+| Value Chain（`vc_ppc_comparison.csv`、利益 合計、消去前） | PPC 631,849,608 円、台帳 654,045,756 円、差 22,196,148 円（下の G2 だけ） |
+| Value Chain の直販の売上比率の費用（G1） | 全期間 281,015,748 円（うち配送・梱包 6,243,120 円）。販売の週に費目ごとに 1 行。issues 0 |
 
 「試算利益」は、今回対象にした費用を控除した PPC の値で、営業利益ではない。
 
@@ -136,9 +143,11 @@ GUI：`python -m main` → Load Model Folder でこのフォルダを選ぶ → 
 
 実行は成功し保存の検査も通るが、法人別・連結の損益が業務の要求を満たしたとは判定していない。
 
-- G1：売上の率の販売費（`basis=revenue`）を台帳に計上しない。
+- G1：**解決済み（直販）**。直営店・公式 EC の売上比率の費用を、販売の週に費目ごとに計上する
+  （`vc_sales_cost_rule.csv`。報告書 `docs/development/WOM_BSSEAF_Cosmetics_G1_SalesBasedCosts_Report.md`）。
+  `vc_ppc_comparison.csv` では、配送・梱包 6,243,120 円が台帳は「運賃」、PPC は「SGA」に入る（合計は同じ）。
 - G2：外部の代理店のノードに置いた自社負担の MDF を、issue なしで計上しない。
-- G3：代理店の売上は DC の出荷週に立つ。sell-in の業務定義と週が違う。
+- G3：解決済み（2026-11-08）。代理店の売上は DC の出荷週に立ち、業務定義（出荷時の認識、`docs/design/drafts/WOM_G3_SellIn_Business_Definition_v0.1.md`）どおり。PPC は代理店の leaf の出荷週（1 週遅い）に立てる別の方式で、照合用の参考値（`docs/development/WOM_BSSEAF_Cosmetics_G3_SellIn_Verify_Report.md`）。
 - G4：関税の課税価格（上）。
 - G5：CIF の運賃は台帳では受け手の在庫原価になる。業務の負担者と違う。
 

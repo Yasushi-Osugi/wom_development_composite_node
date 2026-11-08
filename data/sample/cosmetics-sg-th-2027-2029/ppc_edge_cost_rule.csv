@@ -15,3 +15,5 @@ DC_SG->SG_Distributor,COS_Serum,logistics_cost,qty,0,0.3,SGD
 DC_SG->SG_Distributor,COS_Cream,logistics_cost,qty,0,0.3,SGD
 DC_TH->TH_Distributor,COS_Serum,logistics_cost,qty,0,8,THB
 DC_TH->TH_Distributor,COS_Cream,logistics_cost,qty,0,8,THB
+SG_EC->CONSUMER,COS_Serum,delivery_packing_cost,qty,0,3,SGD
+SG_EC->CONSUMER,COS_Cream,delivery_packing_cost,qty,0,3,SGD

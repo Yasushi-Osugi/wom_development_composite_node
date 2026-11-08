@@ -203,3 +203,43 @@ T1 の全期間の利益（第 1 回）は 932,520,912 → 926,277,792 円（差
 | `model_t2_added/vc_sales_cost_rule.csv`、`model_t2_added/ppc_edge_cost_rule.csv` | `model_t2` に足した・変えた 2 つのファイルの写し |
 
 実行の出力（`output/g1_trial/`）は git の対象外。
+
+## 11. 段階 6：正式なサンプルへの反映（2026-11-08）
+
+- 依頼：`requests/RequestLetter_BSSEAF_Cosmetics_G1_SampleAdoption_to_CodeKun.md` v0.1。大杉さんの判断：正式なサンプルに新しい表と配送の行を入れる。G1 は直販について閉じる
+- 着手時の SHA：`2bda934`（G1 の実装 `e822cc7` の後の先頭）。作業ツリーは clean
+- 時刻：17:11〜17:22（端末の時計）
+- 結果：**合格**（S1〜S3）。止める理由には当たらなかった
+
+### 変えたファイル
+
+| ファイル | 変更 |
+|---|---|
+| `data/sample/cosmetics-sg-th-2027-2029/vc_sales_cost_rule.csv` | 新しく置いた。付録 `model_t2_added/vc_sales_cost_rule.csv` とバイト単位で同じ（10 行） |
+| `data/sample/cosmetics-sg-th-2027-2029/ppc_edge_cost_rule.csv` | 付録の同名のファイルとバイト単位で同じにした。`git diff` は `SG_EC->CONSUMER` の `delivery_packing_cost` の 2 行の追加だけで、ほかの行は前と同じ。改行は前と同じ LF |
+| `data/sample/cosmetics-sg-th-2027-2029/README.md` | 「金額の規則」に `vc_sales_cost_rule.csv` と配送の行の説明。「期待する結果」の Value Chain の行（差 303,211,896 → 22,196,148 円、G2 だけ）と、G1 の行（281,015,748 円）を足した。「既知の限界」の G1 を解決済みにし、報告書へのリンクと、比較の表で配送・梱包が「運賃」と「SGA」に分かれる注意を書いた |
+| `tests/test_valuechain_sales_cost.py` | テストの準備を直した（下の「直したテスト」） |
+
+コード（`wom/`）・golden・PPC の規則のファイルは変えていない。
+
+### 確かめたこと（依頼書 §2）
+
+変更の前に、正式なサンプルを `output/g1_s6/before` に実行して基準を取り、変更の後に `output/g1_s6/after` に実行した。
+
+| # | 期待 | 結果 |
+|---|---|---|
+| 1 | G1 の行の全期間の合計 281,015,748 円、直販の `revenue_based_node_cost_not_supported` 0、利益の差（Value Chain − PPC）22,196,148 円、報告書の T2 と同じ | G1 の行 4,940、合計 **281,015,748 円**（うち配送・梱包 6,243,120 円）。issues **0**（前 2,470）。`vc_ppc_comparison.csv` の利益の差 **22,196,148 円**（台帳 654,045,756、PPC 631,849,608）。明細（`vc_money_lines.csv.gz` を解凍した中身）の sha256 が T2 と同じ（`dd3e0e21…`） |
+| 2 | PPC の出力が変更の前と同じ（バイト単位） | 7 ファイルとも `before` と同じ（T2 とも同じ） |
+| 3 | `--changed` が選ぶ領域と golden | `python -m tools.quick_check --changed`：smoke・`ppc`（テストのファイルを変えたため）・化粧品の golden、**603 passed・failed 0**。`--area golden`：**19 passed**。golden のファイルは変えていない（不変） |
+
+### 直したテスト
+
+`tests/test_valuechain_sales_cost.py` の結合のテストは、化粧品のサンプルを写して `SG_EC->CONSUMER` の行を書き足し、表を置いていた。また、写していないサンプルには表が無いことを確かめていた。サンプルに表と配送の行が入ったので、前の版では 18 件のうち 13 件が落ちる（配送の行が二重になり、`written twice` で止まる。表が無い前提が外れる）。確かめた。
+
+- 直し方：準備の関数 `_cos` で、写しから表と `->CONSUMER` の行をいったん取り除いてから、各テストの表・行を置くようにした（検査の中身・期待値は変えていない）。
+- 「表が無ければ空」は、表を取り除いた写しで確かめるようにした。正式なサンプルの表は、テストで置く 10 行と同じ中身であることを確かめる assert を足した。
+- 直した後：18 passed。
+
+### 申し送り
+
+- README の「既知の限界」の G3 の項（「代理店の売上は DC の出荷週に立つ。sell-in の業務定義と週が違う」）は、G3 の検証で Value Chain が業務定義（D-2）を満たすと判断された後の内容になっていない。今回の依頼の範囲（G1）の外なので変えていない。直すかは大杉さんが決める。

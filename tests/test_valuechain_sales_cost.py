@@ -160,8 +160,14 @@ def test_c3_without_the_table_behaves_as_before():
 
 # ── Integration: CSV -> load_masters ───────────────────────────────────
 def _cos(tmp_path, sales=SALES_COST_CSV, delivery=DELIVERY_ROWS):
+    """A copy of the cosmetics sample with the given table / delivery rows. The official sample has
+    both since stage 6 (G1 sample adoption); they are taken out first, so each test sets its own."""
     d = tmp_path / "cos"
     shutil.copytree(COS, d)
+    (d / "vc_sales_cost_rule.csv").unlink(missing_ok=True)
+    ec = d / "ppc_edge_cost_rule.csv"
+    lines = ec.read_text(encoding="utf-8").splitlines(keepends=True)
+    ec.write_text("".join(l for l in lines if "->CONSUMER," not in l), encoding="utf-8")
     if delivery:
         with open(d / "ppc_edge_cost_rule.csv", "a", encoding="utf-8") as f:
             f.write(delivery)
@@ -179,7 +185,10 @@ def test_c1_loads_and_absent_file_is_empty(tmp_path):
     assert sorted(m.sales_cost) == [("SG_EC", "COS_Cream"), ("SG_EC", "COS_Serum"),
                                     ("SG_Store", "COS_Cream"), ("SG_Store", "COS_Serum")]
     assert sum(len(v) for v in m.sales_cost.values()) == 10
-    assert _load(COS).sales_cost == {}
+    assert _load(_cos(tmp_path / "none", sales=None, delivery="")).sales_cost == {}
+    # the official sample carries the table since stage 6 (same 10 rows)
+    assert {k: [(r["cost_item"], r["rate"]) for r in v] for k, v in _load(COS).sales_cost.items()} == \
+        {k: [(r["cost_item"], r["rate"]) for r in v] for k, v in m.sales_cost.items()}
 
 
 @pytest.mark.parametrize("old,new,match", [
