@@ -1,0 +1,178 @@
+{
+  "B1": {
+    "files_before": 28,
+    "files_after": 28,
+    "changed": [],
+    "ok": true
+  },
+  "B3": {
+    "dc_ship_week": [
+      "2028-W28"
+    ],
+    "receipt_week": [
+      "2028-W29"
+    ],
+    "leaf_ship_week": [
+      "2028-W29"
+    ],
+    "ok": true
+  },
+  "L1": {
+    "rows": 1,
+    "row": {
+      "week": "2028-W28",
+      "kind": "revenue",
+      "scope": "external",
+      "family": "sale",
+      "price_type": "wholesale",
+      "entity": "E_SG",
+      "counterparty": "EXT_CH_SG_DIST",
+      "node": "DC_SG",
+      "amount_orig": 1488.0,
+      "currency_orig": "SGD",
+      "src_id": "ship:COS_Cream:OUT:dad:DC_SG:COS_Cream:96:6"
+    },
+    "ok": true
+  },
+  "L2": {
+    "rows": 0,
+    "ok": true
+  },
+  "L3": {
+    "rows": 1,
+    "weeks": [
+      "2028-W29"
+    ],
+    "nodes": [
+      "SG_Distributor"
+    ],
+    "scopes": [
+      "observation"
+    ],
+    "ok": true
+  },
+  "L4": {
+    "dc_ship_id": [
+      "ship:COS_Cream:OUT:dad:DC_SG:COS_Cream:96:6"
+    ],
+    "leaf_ship_id": [
+      "ship:COS_Cream:OUT:leaf_out:SG_Distributor:COS_Cream:97:1"
+    ],
+    "L1_src_id": "ship:COS_Cream:OUT:dad:DC_SG:COS_Cream:96:6",
+    "ok": true
+  },
+  "A1": {
+    "shipments": 2340,
+    "rev_rows_per_shipment": {
+      "1": 2340
+    },
+    "by_edge": {
+      "DC_SG->SG_Distributor": 1651,
+      "DC_TH->TH_Distributor": 689
+    },
+    "stray_revenue_src": 0,
+    "ok": true
+  },
+  "A2": {
+    "checked": 2340,
+    "mismatch": 0,
+    "ok": true
+  },
+  "A3": {
+    "lot_week_pairs": 2340,
+    "lots": 2340,
+    "leaf_sales": 2340,
+    "revenue_rows": 0,
+    "ok": true
+  },
+  "A4": {
+    "checked": 2340,
+    "mismatch": 0,
+    "examples": [],
+    "ok": true
+  },
+  "A5": {
+    "total_hq": 443922960.0,
+    "expect": 443922960,
+    "diff": 0.0,
+    "by_edge_product": {
+      "DC_SG->SG_Distributor COS_Cream": 129024480.0,
+      "DC_SG->SG_Distributor COS_Serum": 183203280.0,
+      "DC_TH->TH_Distributor COS_Cream": 51667200.0,
+      "DC_TH->TH_Distributor COS_Serum": 80028000.0
+    },
+    "ok": true
+  },
+  "observation": {
+    "rows": 2340,
+    "scopes": [
+      "observation"
+    ],
+    "basis": [
+      "obs"
+    ]
+  },
+  "R1": {
+    "rows_run_1_first": 97682,
+    "rows_run_1": 97682,
+    "text_sha_run_1_first": "ddb065b20fc54ba277ccb2b58ee2feb93805932108aa99a055b3c90551e0707e",
+    "text_sha_run_1": "ddb065b20fc54ba277ccb2b58ee2feb93805932108aa99a055b3c90551e0707e",
+    "equal": true,
+    "ok": true
+  },
+  "R2": {
+    "rows_run_1": 97682,
+    "rows_run_2": 97682,
+    "text_sha_run_1": "ddb065b20fc54ba277ccb2b58ee2feb93805932108aa99a055b3c90551e0707e",
+    "text_sha_run_2": "ddb065b20fc54ba277ccb2b58ee2feb93805932108aa99a055b3c90551e0707e",
+    "equal": true,
+    "ok": true,
+    "text_sha_equal": true
+  },
+  "ppc_rep": {
+    "record": "PSI-COS_Cream-SG_Distributor-2028-W29",
+    "rows": 1,
+    "week": [
+      "2028-W29"
+    ],
+    "qty": [
+      120
+    ],
+    "price_per_unit_local": [
+      62.0
+    ],
+    "currency": [
+      "SGD"
+    ],
+    "record_total_local": [
+      7440.0
+    ],
+    "rep_lot_share_local": [
+      1488.0
+    ],
+    "vc_lines_with_ppc_src": 0
+  },
+  "ppc_week_diff": {
+    "DC_SG->SG_Distributor COS_Cream | PPC-VC=1": 754,
+    "DC_SG->SG_Distributor COS_Serum | PPC-VC=1": 897,
+    "DC_TH->TH_Distributor COS_Cream | PPC-VC=1": 299,
+    "DC_TH->TH_Distributor COS_Serum | PPC-VC=1": 390
+  },
+  "ppc_dist_total_base": 443922960.0,
+  "summary": {
+    "B1": true,
+    "B3": true,
+    "L1": true,
+    "L2": true,
+    "L3": true,
+    "L4": true,
+    "A1": true,
+    "A2": true,
+    "A3": true,
+    "A4": true,
+    "A5": true,
+    "R1": true,
+    "R2": true
+  },
+  "all_ok": true
+}
