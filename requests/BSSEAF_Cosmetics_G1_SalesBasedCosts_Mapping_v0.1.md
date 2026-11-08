@@ -18,13 +18,12 @@ handoff:
     - docs/design/drafts/WOM_G1_SalesBasedCosts_Business_Definition_v0.1.md
     - "コード確認（d918468）：wom/valuechain/ledger.py _consumer・_receipt・_node_costs・_edge_costs、policy.py、masters.py、wom/ppc/ppc_profit_zone.py・ppc_tariff.py・ppc_backward.py"
     - "再集計：output/g3_verify/run_1（G3 検証の実行、d918468 とコードは同じ）の vc_shipments・vc_money_lines"
-  status: "Owner 判断待ち"
-  open_items:
-    - "§5 の 4 件"
+  status: "判断済み（大杉さん 2026-11-08、§5 の 4 件とも推奨どおり）"
+  open_items: []
   stop_reasons: []
   handover_notes:
     - "PPC の sga_cost の行の分類（Value Chain の policy.py では sga_cost は『その週の費用』、marketing_cost は『販売費』）。G1 の新しい明細は業務定義どおり販売費に置く"
-  next: owner
+  next: implement   # requests/RequestLetter_BSSEAF_Cosmetics_G1_SalesBasedCosts_to_CodeKun.md
 ---
 
 # G1（売上比率の費用）業務定義案 v0.1 と、今の WOM の対応
@@ -110,6 +109,8 @@ T1 だけなら今すぐ検証の依頼にできる（コードを変えない�
 
 ## 5. 大杉さんに決めてほしいこと
 
+**決定（大杉さん 2026-11-08）：4 件とも推奨どおり。** Code君への依頼書：`requests/RequestLetter_BSSEAF_Cosmetics_G1_SalesBasedCosts_to_CodeKun.md`
+
 | 一言で | 中身 | 推奨 |
 |---|---|---|
 | **代表の EC の lot は、週を読み替える** | 業務定義の例は「W28 入荷、W29 売上」だが、サンプルの EC は入荷と販売が同じ週。代表は `COS_Cream:SG_EC:2028-W28:00001`（販売 2028-W28、4 件・1,015.20 SGD）。「入荷だけでは 0 件」は直営店の lot（入荷 W28、販売 W30）で確かめる | 推奨。金額・件数は業務定義のまま |
@@ -119,4 +120,4 @@ T1 だけなら今すぐ検証の依頼にできる（コードを変えない�
 
 | 版 | 日付 | 内容 |
 |---|---|---|
-| v0.1 | 2026-11-08 | 初版 |
+| v0.1 | 2026-11-08 | 初版。同日、§5 の 4 件の決定を記入 |
