@@ -1,0 +1,409 @@
+{
+  "B1": {
+    "COS_Cream:SG_EC:2028-W28:00001": {
+      "dc_ship_week": [
+        "2028-W27"
+      ],
+      "receipt_week": [
+        "2028-W28"
+      ],
+      "sale_week": [
+        "2028-W28"
+      ],
+      "sale_ship_id": [
+        "ship:COS_Cream:OUT:leaf_out:SG_EC:COS_Cream:96:0"
+      ],
+      "revenue": [
+        3144.0
+      ],
+      "revenue_ccy": [
+        "SGD"
+      ],
+      "revenue_week": [
+        "2028-W28"
+      ]
+    },
+    "COS_Cream:SG_Store:2028-W30:00001": {
+      "dc_ship_week": [
+        "2028-W27"
+      ],
+      "receipt_week": [
+        "2028-W28"
+      ],
+      "sale_week": [
+        "2028-W30"
+      ],
+      "sale_ship_id": [
+        "ship:COS_Cream:OUT:leaf_out:SG_Store:COS_Cream:98:0"
+      ],
+      "revenue": [
+        3312.0
+      ],
+      "revenue_ccy": [
+        "SGD"
+      ],
+      "revenue_week": [
+        "2028-W30"
+      ]
+    },
+    "ok": true
+  },
+  "B3_t0_issues": {
+    "revenue_based_node_cost_not_supported | SG_EC | marketing_cost": 754,
+    "revenue_based_node_cost_not_supported | SG_EC | sga_cost": 754,
+    "revenue_based_node_cost_not_supported | SG_Store | sga_cost": 962
+  },
+  "T0_direct_sales": {
+    "SG_EC": 754,
+    "SG_Store": 962
+  },
+  "T1": {
+    "1_rep_line": {
+      "rows": 1,
+      "row": [
+        {
+          "week": "2028-W28",
+          "kind": "expense",
+          "scope": "selling",
+          "basis": "v1,entity,group",
+          "family": "freight",
+          "price_type": "logistics_cost",
+          "entity": "E_SG",
+          "counterparty": "CONSUMER:SG_EC",
+          "node": "SG_EC",
+          "amount_orig": 72.0,
+          "currency_orig": "SGD",
+          "amt_hq": 8280.0,
+          "src_id": "ship:COS_Cream:OUT:leaf_out:SG_EC:COS_Cream:96:0"
+        }
+      ],
+      "ok": true
+    },
+    "2_all_ec_sales": {
+      "ec_sales": 754,
+      "lines": 754,
+      "lines_per_sale": {
+        "1": 754
+      },
+      "total_hq": 6243120.0,
+      "ok": true
+    },
+    "3_rest_equals_t0": {
+      "rows_t1": 98436,
+      "rows_t0": 97682,
+      "new": 754,
+      "ok": true
+    },
+    "4_ppc_equals_t0": {
+      "files": 7,
+      "diff": [],
+      "ok": true
+    },
+    "issues": {
+      "revenue_based_node_cost_not_supported | SG_EC | marketing_cost": 754,
+      "revenue_based_node_cost_not_supported | SG_EC | sga_cost": 754,
+      "revenue_based_node_cost_not_supported | SG_Store | sga_cost": 962
+    },
+    "ok": true
+  },
+  "T2": {
+    "V1": {
+      "rows": [
+        {
+          "week": "2028-W28",
+          "kind": "expense",
+          "scope": "selling",
+          "basis": "v1,entity,group",
+          "family": "sga_cost",
+          "price_type": "hq_sga_allocation",
+          "entity": "E_SG",
+          "counterparty": "CONSUMER:SG_EC",
+          "node": "SG_EC",
+          "amount_orig": 314.40000000000003,
+          "currency_orig": "SGD",
+          "amt_hq": 36156.00000000001,
+          "src_id": "ship:COS_Cream:OUT:leaf_out:SG_EC:COS_Cream:96:0"
+        },
+        {
+          "week": "2028-W28",
+          "kind": "expense",
+          "scope": "selling",
+          "basis": "v1,entity,group",
+          "family": "sga_cost",
+          "price_type": "payment_platform_fee",
+          "entity": "E_SG",
+          "counterparty": "CONSUMER:SG_EC",
+          "node": "SG_EC",
+          "amount_orig": 157.20000000000002,
+          "currency_orig": "SGD",
+          "amt_hq": 18078.000000000004,
+          "src_id": "ship:COS_Cream:OUT:leaf_out:SG_EC:COS_Cream:96:0"
+        },
+        {
+          "week": "2028-W28",
+          "kind": "expense",
+          "scope": "selling",
+          "basis": "v1,entity,group",
+          "family": "marketing_cost",
+          "price_type": "digital_ad",
+          "entity": "E_SG",
+          "counterparty": "CONSUMER:SG_EC",
+          "node": "SG_EC",
+          "amount_orig": 471.6,
+          "currency_orig": "SGD",
+          "amt_hq": 54233.99999999999,
+          "src_id": "ship:COS_Cream:OUT:leaf_out:SG_EC:COS_Cream:96:0"
+        },
+        {
+          "week": "2028-W28",
+          "kind": "expense",
+          "scope": "selling",
+          "basis": "v1,entity,group",
+          "family": "freight",
+          "price_type": "delivery_packing_cost",
+          "entity": "E_SG",
+          "counterparty": "CONSUMER:SG_EC",
+          "node": "SG_EC",
+          "amount_orig": 72.0,
+          "currency_orig": "SGD",
+          "amt_hq": 8280.0,
+          "src_id": "ship:COS_Cream:OUT:leaf_out:SG_EC:COS_Cream:96:0"
+        }
+      ],
+      "total_sgd": 1015.2,
+      "ok": true
+    },
+    "V2": {
+      "rows": [
+        {
+          "week": "2028-W30",
+          "kind": "expense",
+          "scope": "selling",
+          "basis": "v1,entity,group",
+          "family": "sga_cost",
+          "price_type": "store_operating",
+          "entity": "E_SG",
+          "counterparty": "CONSUMER:SG_Store",
+          "node": "SG_Store",
+          "amount_orig": 1159.1999999999998,
+          "currency_orig": "SGD",
+          "amt_hq": 133307.99999999997,
+          "src_id": "ship:COS_Cream:OUT:leaf_out:SG_Store:COS_Cream:98:0"
+        },
+        {
+          "week": "2028-W30",
+          "kind": "expense",
+          "scope": "selling",
+          "basis": "v1,entity,group",
+          "family": "sga_cost",
+          "price_type": "hq_sga_allocation",
+          "entity": "E_SG",
+          "counterparty": "CONSUMER:SG_Store",
+          "node": "SG_Store",
+          "amount_orig": 331.20000000000005,
+          "currency_orig": "SGD",
+          "amt_hq": 38088.00000000001,
+          "src_id": "ship:COS_Cream:OUT:leaf_out:SG_Store:COS_Cream:98:0"
+        }
+      ],
+      "total_sgd": 1490.4,
+      "rows_in_receipt_week_2028_W28": 0,
+      "ok": true
+    },
+    "V3": {
+      "sales": {
+        "SG_EC": 754,
+        "SG_Store": 962
+      },
+      "items": {
+        "SG_EC": [
+          "delivery_packing_cost",
+          "digital_ad",
+          "hq_sga_allocation",
+          "payment_platform_fee"
+        ],
+        "SG_Store": [
+          "hq_sga_allocation",
+          "store_operating"
+        ]
+      },
+      "lines": 4940,
+      "lines_per_sale": {
+        "SG_Store:2": 962,
+        "SG_EC:4": 754
+      },
+      "not_exactly_one": 0,
+      "examples": [],
+      "stray_src": 0,
+      "ok": true
+    },
+    "V4": {
+      "checked": 4940,
+      "mismatch": 0,
+      "examples": [],
+      "ok": true
+    },
+    "V5": {
+      "total_hq": 281015748.0,
+      "expect": 281015748,
+      "diff": 0.0,
+      "delivery_packing_hq": 6243120.0,
+      "by_node_family_item": {
+        "SG_EC | freight | delivery_packing_cost": 6243120.0,
+        "SG_EC | marketing_cost | digital_ad": 45790056.0,
+        "SG_EC | sga_cost | hq_sga_allocation": 30526704.0,
+        "SG_EC | sga_cost | payment_platform_fee": 15263352.0,
+        "SG_Store | sga_cost | hq_sga_allocation": 40709448.0,
+        "SG_Store | sga_cost | store_operating": 142483068.0
+      },
+      "by_node_product_item": {
+        "SG_EC | COS_Cream | delivery_packing_cost": 2475720.0,
+        "SG_EC | COS_Cream | digital_ad": 16215966.0,
+        "SG_EC | COS_Cream | hq_sga_allocation": 10810644.0,
+        "SG_EC | COS_Cream | payment_platform_fee": 5405322.0,
+        "SG_EC | COS_Serum | delivery_packing_cost": 3767400.0,
+        "SG_EC | COS_Serum | digital_ad": 29574090.0,
+        "SG_EC | COS_Serum | hq_sga_allocation": 19716060.0,
+        "SG_EC | COS_Serum | payment_platform_fee": 9858030.0,
+        "SG_Store | COS_Cream | hq_sga_allocation": 15844608.0,
+        "SG_Store | COS_Cream | store_operating": 55456128.0,
+        "SG_Store | COS_Serum | hq_sga_allocation": 24864840.0,
+        "SG_Store | COS_Serum | store_operating": 87026940.0
+      },
+      "ok": true
+    },
+    "V6": {
+      "by_item": {
+        "SG_EC sga_cost": {
+          "ppc": 52033176.0,
+          "vc": 52033176.0,
+          "diff": 0.0,
+          "weeks": 312,
+          "weeks_diff_gt_1yen": 0,
+          "max_abs_week_diff": 1.4551915228366852e-11
+        },
+        "SG_EC marketing_cost": {
+          "ppc": 45790056.0,
+          "vc": 45790055.99999999,
+          "diff": -7.450580596923828e-09,
+          "weeks": 312,
+          "weeks_diff_gt_1yen": 0,
+          "max_abs_week_diff": 2.9103830456733704e-11
+        },
+        "SG_Store sga_cost": {
+          "ppc": 183192516.0,
+          "vc": 183192516.0,
+          "diff": 0.0,
+          "weeks": 286,
+          "weeks_diff_gt_1yen": 0,
+          "max_abs_week_diff": 5.820766091346741e-11
+        }
+      },
+      "ok": true
+    },
+    "V7": {
+      "issues": {},
+      "direct_revenue_based": {},
+      "distributor": {},
+      "t0_issues": {
+        "revenue_based_node_cost_not_supported | SG_EC | marketing_cost": 754,
+        "revenue_based_node_cost_not_supported | SG_EC | sga_cost": 754,
+        "revenue_based_node_cost_not_supported | SG_Store | sga_cost": 962
+      },
+      "ppc_only_rows_unused": {
+        "file": "vc_sales_cost_rule.csv",
+        "rows": 10,
+        "ppc_rows_not_used_by_value_chain": [
+          {
+            "node": "SG_EC",
+            "product": "COS_Cream",
+            "cost_type": "marketing_cost",
+            "receipts_skipped": 299
+          },
+          {
+            "node": "SG_EC",
+            "product": "COS_Cream",
+            "cost_type": "sga_cost",
+            "receipts_skipped": 299
+          },
+          {
+            "node": "SG_EC",
+            "product": "COS_Serum",
+            "cost_type": "marketing_cost",
+            "receipts_skipped": 455
+          },
+          {
+            "node": "SG_EC",
+            "product": "COS_Serum",
+            "cost_type": "sga_cost",
+            "receipts_skipped": 455
+          },
+          {
+            "node": "SG_Store",
+            "product": "COS_Cream",
+            "cost_type": "sga_cost",
+            "receipts_skipped": 416
+          },
+          {
+            "node": "SG_Store",
+            "product": "COS_Serum",
+            "cost_type": "sga_cost",
+            "receipts_skipped": 546
+          }
+        ],
+        "note": "PPC 用として Value Chain では使わなかった行（vc_sales_cost_rule.csv が販売の週に計上）"
+      },
+      "ok": true
+    },
+    "V8": {
+      "same_place": true,
+      "other_place": true,
+      "sha": {
+        "t2_first": "dd3e0e2159f8af3f623609dfda462484d10d6338caf97182392f468cff59bd41",
+        "t2": "dd3e0e2159f8af3f623609dfda462484d10d6338caf97182392f468cff59bd41",
+        "t2_b": "dd3e0e2159f8af3f623609dfda462484d10d6338caf97182392f468cff59bd41"
+      },
+      "ok": true
+    },
+    "V9": {
+      "sample_vc_money_equals_t0": true,
+      "sample_vc_shipments_equals_t0_wo_plan_id": true,
+      "sample_vc_csv_equal": {
+        "vc_conservation.csv": true,
+        "vc_cost_policy.csv": true,
+        "vc_edge_flows.csv": true,
+        "vc_fx_log.csv": true,
+        "vc_inventory_weekly.csv": true,
+        "vc_missing_prices.csv": true,
+        "vc_observation_weekly.csv": true,
+        "vc_ppc_comparison.csv": true,
+        "vc_price_log.csv": true,
+        "vc_unrealized_weekly.csv": true,
+        "vc_v1_weekly.csv": true,
+        "vc_v2_weekly.csv": true,
+        "vc_v3_weekly.csv": true
+      },
+      "sample_ppc_equals_t0": true,
+      "sample_issues_equal": true,
+      "t2_ppc_equals_t0": true,
+      "ok": true
+    },
+    "sample_hash": {
+      "files": 28,
+      "changed": []
+    }
+  },
+  "summary": {
+    "B1": true,
+    "T1": true,
+    "V1": true,
+    "V2": true,
+    "V3": true,
+    "V4": true,
+    "V5": true,
+    "V6": true,
+    "V7": true,
+    "V8": true,
+    "V9": true
+  }
+}

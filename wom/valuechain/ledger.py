@@ -21,6 +21,9 @@
     それ以外（外部）    外部への販売。外部チャネル（②）なら卸価格、無ければ NaN＋一覧
     外部の供給者→       ppc_supplier_cost（外部からの仕入）
     leaf_out→消費者     ppc_market_price。owner がグループなら外部売上、外部チャネルなら「観測」
+                        直販の売上比率の費用（vc_sales_cost_rule.csv、G1）は、その販売の週に費目ごとに
+                        「率 × 売上」を売り手の販売費として 1 行ずつ。表のあるノードでは
+                        ppc_node_cost_rule.csv の basis=revenue の行を PPC 用として使わない
 
 費用の分け方は policy.py（1 か所）。為替は fx.py（取引の週の為替。在庫原価は取得時の換算額のまま）。
 未評価（NaN）の明細は、その lot の記録を「未評価」にし、その後の明細にも印を付ける（合計に 0 として
@@ -100,6 +103,9 @@ class Ledger:
         self.missing: Dict[tuple, dict] = {}  # missing prices
         self.issues: List[dict] = []
         self.flow_counts = defaultdict(int)
+        # G1 C3: basis=revenue rows of ppc_node_cost_rule.csv not used here (vc_sales_cost_rule.csv
+        # books them at the sale); (node, product, cost_type) -> receipts skipped
+        self.ppc_only_node_cost: Dict[tuple, int] = defaultdict(int)
         self.holding_unset = masters.holding_rate_weekly is None
         self.unvalued_out: Dict[tuple, float] = defaultdict(float)
         # cost issued by a sale whose price is not set (the cost leaves the seller's books,
@@ -473,6 +479,16 @@ class Ledger:
                     self._line(s.ship_id, w, s.product, s.lot_id, owner.entity_id, s.node, s.to,
                                "cogs", "external", b, "sale", "market", c[0], self.hq, "carried",
                                c[0], c[1], c[2], f, c[2], f, rec.valued and not _isnan(price))
+                # sales-based costs of the direct sale (vc_sales_cost_rule.csv, G1 C2): one line per
+                # cost item, rate x the revenue of this sale, the seller's selling expense of the week.
+                # No price -> NaN (unvalued), like the revenue line.
+                for row in m.sales_cost.get((s.node, s.product), []):
+                    amt = row["rate"] * amount if not _isnan(amount) else NAN
+                    hq, cm, fn, lc, mth = self._conv(amt, ccy or row["currency"], w, f, local,
+                                                     f"sales cost {row['cost_item']} {s.node}")
+                    self._line(s.ship_id, w, s.product, s.lot_id, owner.entity_id, s.node, s.to,
+                               "expense", "selling", ALL, row["ppc_cost_type"], row["cost_item"], amt,
+                               ccy or row["currency"], mth, hq, cm, fn, f, lc, local or f, True)
                 # freight of the sale to the consumer (edge "<leaf>->CONSUMER"): the seller's
                 # selling expense (policy.py: group -> external)
                 for row in m.edge_cost.get((f"{s.node}->CONSUMER", s.product), []):
@@ -529,8 +545,13 @@ class Ledger:
         owner = self._ent(rec.owner)
         if not owner.is_group:
             return
+        sales_cost_here = (info.name, s.product) in self.m.sales_cost
         for row in self.m.node_cost.get((info.name, s.product), []):
             treat = POL.classify_node_cost(row["cost_type"])
+            if row["basis"] == "revenue" and sales_cost_here:
+                # G1 C3: the row is for PPC; vc_sales_cost_rule.csv books it at the sale (no issue)
+                self.ppc_only_node_cost[(info.name, s.product, row["cost_type"])] += 1
+                continue
             if row["basis"] == "revenue":
                 self.issues.append({"issue": "revenue_based_node_cost_not_supported",
                                     "node": info.name, "cost_type": row["cost_type"]})

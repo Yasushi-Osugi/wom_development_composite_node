@@ -7,6 +7,8 @@
     vc_entity.csv            entity_id, entity_name, kind, functional_currency, consolidated
     vc_node_assignment.csv   node_id, product_id, entity_id, channel_type, local_currency
     vc_price_rule.csv        edge_id, product_id, price_type, week, price, currency
+    vc_sales_cost_rule.csv   （任意、G1）node_id, product_id, cost_item, ppc_cost_type, basis, rate,
+                             currency, note。直販の売上比率の費用の費目（load_sales_cost_rule）
 
 価格の出どころ（1 つの価格は 1 か所だけ）：
     最終市場の価格                   ppc_market_price.csv
@@ -80,6 +82,9 @@ class VCMasters:
     tariff: Dict[Tuple[str, str], dict]
     transfer_price: Dict[Tuple[str, str], dict]
     price_log: Dict[tuple, dict] = field(default_factory=dict)
+    # vc_sales_cost_rule.csv (G1 C1): (leaf, product) -> [{cost_item, ppc_cost_type, rate, currency, note}]
+    # Empty when the file is absent (the ledger then behaves as before).
+    sales_cost: Dict[Tuple[str, str], List[dict]] = field(default_factory=dict)
 
     # ── lookups ──────────────────────────────────────────────────────
     def entity_of(self, node: str, product: str) -> Entity:
@@ -259,9 +264,109 @@ def load_masters(model_dir: str, terminal_moms: Dict[str, List[str]],
         if prod in physical_edges and edge not in physical_edges[prod]:
             raise MasterError(f"vc_price_rule.csv: {edge} is not a physical edge of {prod}")
 
+    sales_cost = load_sales_cost_rule(model_dir, ents, assign, mp, node_cost, edge_cost)
+
     return VCMasters(model_dir=model_dir, hq_currency=cfg["hq_currency"],
                      common_currency=cfg["common_currency"],
                      report_start=cfg.get("report_start") or None,
                      holding_rate_weekly=holding, entities=ents, assignment=assign,
                      price_rules=price_rules, market_price=mp, supplier_cost=sc,
-                     node_cost=node_cost, edge_cost=edge_cost, tariff=tariff, transfer_price=tp)
+                     node_cost=node_cost, edge_cost=edge_cost, tariff=tariff, transfer_price=tp,
+                     sales_cost=sales_cost)
+
+
+SALES_COST_FILE = "vc_sales_cost_rule.csv"
+SALES_COST_COLS = ("node_id", "product_id", "cost_item", "ppc_cost_type", "basis", "rate", "currency", "note")
+_TOL = 1e-9
+
+
+def load_sales_cost_rule(model_dir, ents, assign, market_price, node_cost, edge_cost) -> Dict[tuple, List[dict]]:
+    """vc_sales_cost_rule.csv（G1 C1。任意）。無ければ {}（今の動き）。
+
+    1 行 ＝ 直販の leaf × SKU × 費目。その販売の週に「率 × その販売の売上」を売り手の販売費として
+    1 行ずつ計上する（ledger._consumer）。読み込みで次を確かめ、違えば MasterError：
+      - 列がそろっている。ノード・SKU・費目の重複が無い
+      - 費目は policy.SALES_COST_ITEMS、ppc_cost_type は sga_cost / marketing_cost、basis は revenue だけ
+      - rate は 0 以上 1 以下の数
+      - ノードは直販の leaf（vc_node_assignment.csv の channel_type が own / online、法人がグループ）
+      - currency はその leaf・SKU の市場価格（ppc_market_price.csv）の通貨と同じ
+    C4（二つのファイルのずれ）：行のあるノード・SKU ごとに、
+      1. ppc_cost_type ごとの率の合計 ＝ ppc_node_cost_rule.csv の同じ種類の basis=revenue の行の率
+      2. その PPC の行（basis=revenue）の固定額の合計 ＝ 区間 <leaf>->CONSUMER の費用の行の 1 個当たりの
+         額（rate ＋ fixed。台帳の _consumer が計上する額）の合計（行が無ければ 0）
+      3. PPC に basis=revenue の行がある種類に、この表の行が無い
+    """
+    from wom.valuechain import policy as POL
+    df = _read(model_dir, SALES_COST_FILE, required=False)
+    if df is None:
+        return {}
+    fn = SALES_COST_FILE
+    miss = [c for c in SALES_COST_COLS if c not in df.columns]
+    if miss:
+        raise MasterError(f"{fn}: missing columns {miss} (needs {list(SALES_COST_COLS)})")
+    out: Dict[tuple, List[dict]] = {}
+    seen = set()
+    for i, r in enumerate(df.to_dict("records"), start=2):
+        where = f"{fn} line {i}"
+        node, prod, item = r["node_id"].strip(), r["product_id"].strip(), r["cost_item"].strip()
+        k = (node, prod)
+        if (k, item) in seen:
+            raise MasterError(f"{where}: {node} / {prod} / {item} written twice")
+        seen.add((k, item))
+        if item not in POL.SALES_COST_ITEMS:
+            raise MasterError(f"{where}: cost_item {item!r} not in {sorted(POL.SALES_COST_ITEMS)} "
+                              f"(wom/valuechain/policy.py SALES_COST_ITEMS)")
+        ptype = r["ppc_cost_type"].strip()
+        if ptype not in POL.SALES_COST_PPC_TYPES:
+            raise MasterError(f"{where}: ppc_cost_type {ptype!r} not in {POL.SALES_COST_PPC_TYPES}")
+        if r["basis"].strip() != "revenue":
+            raise MasterError(f"{where}: basis {r['basis']!r}; only 'revenue' is supported")
+        rate = _num(r["rate"], f"{where} rate")
+        if not (0.0 <= rate <= 1.0):
+            raise MasterError(f"{where}: rate {rate} must be between 0 and 1")
+        a = assign.get(k)
+        if a is None:
+            raise MasterError(f"{where}: no vc_node_assignment.csv row for {node} / {prod}")
+        if a.channel_type not in ("own", "online") or not ents[a.entity_id].is_group:
+            raise MasterError(f"{where}: {node} / {prod} is not a direct-sales leaf (channel_type "
+                              f"{a.channel_type!r}, entity {a.entity_id}); the table is for own / online "
+                              f"leaves of a group entity")
+        ccys = {c for _, _, c in market_price.get(k, [])}
+        if not ccys:
+            raise MasterError(f"{where}: no ppc_market_price.csv row for {node} / {prod}")
+        ccy = r["currency"].strip()
+        if ccys != {ccy}:
+            raise MasterError(f"{where}: currency {ccy!r} differs from the market price currency "
+                              f"{sorted(ccys)} of {node} / {prod}")
+        out.setdefault(k, []).append({"cost_item": item, "ppc_cost_type": ptype, "rate": rate,
+                                      "currency": ccy, "note": r.get("note", "")})
+
+    # ── C4: the two files must agree ──
+    for (node, prod), rows in out.items():
+        ppc_rows = [x for x in node_cost.get((node, prod), []) if x["basis"] == "revenue"]
+        ppc_types = {x["cost_type"] for x in ppc_rows}
+        mine = {}
+        for x in rows:
+            mine[x["ppc_cost_type"]] = mine.get(x["ppc_cost_type"], 0.0) + x["rate"]
+        for t in sorted(ppc_types - set(mine)):
+            raise MasterError(f"{fn}: ppc_node_cost_rule.csv has a basis=revenue {t} row for {node} / {prod} "
+                              f"but {fn} has no {t} item for it (the PPC row would not be booked)")
+        for t in sorted(set(mine) | ppc_types):
+            ppc_rate = sum(x["rate"] for x in ppc_rows if x["cost_type"] == t)
+            if abs(mine.get(t, 0.0) - ppc_rate) > _TOL:
+                raise MasterError(f"{fn}: {node} / {prod} {t}: the items sum to {mine.get(t, 0.0):g} but "
+                                  f"ppc_node_cost_rule.csv says {ppc_rate:g}")
+        ppc_fixed = sum(x["fixed"] for x in ppc_rows)
+        erows = edge_cost.get((f"{node}->CONSUMER", prod), [])
+        edge_fixed = sum(x["rate"] + x["fixed"] for x in erows)
+        bad_ccy = {x["currency"] for x in ppc_rows if x["fixed"]} | {x["currency"] for x in erows}
+        if len(bad_ccy) > 1:
+            raise MasterError(f"{fn}: {node} / {prod}: the fixed amounts of ppc_node_cost_rule.csv and "
+                              f"ppc_edge_cost_rule.csv ({node}->CONSUMER) use different currencies "
+                              f"{sorted(bad_ccy)}")
+        if abs(ppc_fixed - edge_fixed) > _TOL:
+            raise MasterError(f"{fn}: {node} / {prod}: the basis=revenue rows of ppc_node_cost_rule.csv have "
+                              f"a fixed amount of {ppc_fixed:g} per unit, but the {node}->CONSUMER rows of "
+                              f"ppc_edge_cost_rule.csv add up to {edge_fixed:g} (write the delivery / packing "
+                              f"cost on that edge)")
+    return out

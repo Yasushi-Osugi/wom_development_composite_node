@@ -11,6 +11,8 @@
 | conversion_cost（加工・取扱・通関）          | 在庫原価                                     |
 | warehouse_cost（保管）、sga_cost             | その週の費用                                 |
 | 在庫の保有費用（D-5）                        | その週の費用。独立した項目。率が空欄なら未設定 |
+| 直販の売上比率の費用（vc_sales_cost_rule.csv）| 売り手の、販売の週の販売費（費目ごとに 1 行）|
+| 消費者向けの配送・梱包（delivery_packing_cost）| 運賃と同じ（グループから外部へ＝売り手の販売費）|
 
 取引条件（FOB・CIF など）による運賃の負担の分け方は、第 1 回では扱わない。
 """
@@ -44,7 +46,22 @@ COST_POLICY = {
     ("holding", "node"): HOLDING,
 }
 
-EDGE_COST_FAMILY = {"logistics_cost": "freight", "insurance_cost": "insurance"}
+# delivery_packing_cost: the consumer delivery and packing of a direct sale (edge "<leaf>->CONSUMER").
+# Same treatment as freight: group -> external is the seller's selling expense (G1, C5).
+EDGE_COST_FAMILY = {"logistics_cost": "freight", "insurance_cost": "insurance",
+                    "delivery_packing_cost": "freight"}
+
+# Sales-based costs of a direct sale (vc_sales_cost_rule.csv, G1 C1). Every line is the seller's
+# selling expense of the sale week (kind=expense, scope=selling), whatever its PPC cost type.
+# cost_item -> label. An item not in this table stops the load (no silent default).
+SALES_COST_ITEMS = {
+    "hq_sga_allocation": "販社販管費",
+    "payment_platform_fee": "決済・EC 基盤手数料",
+    "digital_ad": "デジタル広告費",
+    "store_operating": "店舗運営費",
+}
+# the PPC cost types the items are summed into (ppc_node_cost_rule.csv)
+SALES_COST_PPC_TYPES = ("sga_cost", "marketing_cost")
 
 
 def classify_edge_cost(family: str, edge_class: str) -> str:

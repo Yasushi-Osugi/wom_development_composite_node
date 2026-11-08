@@ -208,6 +208,16 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
         "unrealized": unreal_check,
         "ppc_comparison": ppc_comparison_status,
     }
+    if masters.sales_cost:
+        # G1 C3: the basis=revenue rows of ppc_node_cost_rule.csv used for PPC only
+        checks["sales_cost_rule"] = {
+            "file": "vc_sales_cost_rule.csv",
+            "rows": int(sum(len(v) for v in masters.sales_cost.values())),
+            "ppc_rows_not_used_by_value_chain": [
+                {"node": n, "product": p, "cost_type": t, "receipts_skipped": c}
+                for (n, p, t), c in sorted(led.ppc_only_node_cost.items())],
+            "note": "PPC 用として Value Chain では使わなかった行（vc_sales_cost_rule.csv が販売の週に計上）",
+        }
     if lovem_run:
         checks["lovem"] = compare_with_lovem(records, lovem_run, gs, hashes_before, plugins)
     with open(os.path.join(out_dir, "vc_checks.json"), "w", encoding="utf-8") as f:
