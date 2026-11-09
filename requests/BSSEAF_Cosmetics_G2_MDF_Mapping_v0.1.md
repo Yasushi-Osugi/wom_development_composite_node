@@ -21,14 +21,12 @@ handoff:
     - docs/design/drafts/WOM_G2_Distributor_MDF_Business_Definition_v0.1.md
     - "コード確認（f994f11）：wom/valuechain/ledger.py _transfer・_price・_edge_costs・_consumer・_node_costs、masters.py load_sales_cost_rule、policy.py"
     - "G3 付録：docs/development/WOM_BSSEAF_Cosmetics_G3_SellIn_Verify_appendix/rep_lot_money_lines.csv（19 行目）、verify_g3_result.json"
-  status: "Owner 判断待ち（§6 の 2 件）"
-  open_items:
-    - "G2 の費目を G1 と同じ表に書くか（§6）"
-    - "外部チャネルで黙って落ちる売上比率の費用を一覧に出すか（§6）"
+  status: "判断済み（大杉さん 2026-11-09、§6 の 2 件とも推奨どおり）"
+  open_items: []
   stop_reasons: []
   handover_notes:
     - "PPC は MDF を代理店の leaf の出荷の週（1 週遅い）に立てる。週は照合に使わず、金額の合計で照合する（G3 と同じ扱い）"
-  next: owner
+  next: implement   # requests/RequestLetter_BSSEAF_Cosmetics_G2_MDF_to_CodeKun.md
 ---
 
 # G2（代理店向けの販促協賛金、MDF）業務定義案 v0.1 と、今の WOM の対応
@@ -103,7 +101,7 @@ G1 の仕組みを外部卸売にも使えるようにする。新しい表は�
 | D3 | **卸売の週に計上する** | `_transfer` で、外部チャネルへの卸売の売上の行の直後に、受け手の leaf の表の行ごとに「卸売額 × 率」を、**売り手の販売費**（`kind=expense`・`scope=selling`、`family=marketing_cost`、`price_type=distributor_mdf`、相手＝代理店、`src_id`＝卸売の出荷 ID）として 1 行ずつ立てる。金額は取引通貨で小数第 2 位に四捨五入（大杉さんの採用）。卸売額が未評価なら NaN。`node` は売り手の出荷ノード（`DC_SG`・`DC_TH`。今の区間の販売費と同じ）にし、`note` に販促の対象の leaf を書く |
 | D4 | **黙って落ちないようにする** | 外部チャネルの leaf に `ppc_node_cost_rule.csv` の `basis=revenue` の行があり、表に行が無いときは、issues に `revenue_based_cost_on_external_channel_not_booked`（ノード・SKU・種類ごとに 1 件）を出す。表があれば出さない。今のサンプルで当たるのは化粧品だけ（`data/ppc` の売上比率の行はスマートフォンの製品で、Value Chain のマスターを持つモデルに無い） |
 
-変えないもの：PPC のコードと規則のファイル、保護対象のコア、golden（Planning と PPC の snapshot）、ほかのサンプル（表が無いので今の動き）。G1 の直販の行の結果は 1 行も変わらないこと（明細のハッシュで確かめる）。
+変えないもの：PPC のコードと規則のファイル、保護対象のコア、golden（Planning と PPC の snapshot）、ほかのサンプル（表が無いので今の動き）。G1 の直販の行の結果は 1 行も変わらないこと（MDF の行と `line_id` の列を除いた明細で確かめる）。
 
 取らなかった案：
 - **区間の費用の行で表す案**（`DC_SG->SG_Distributor` の 1 個当たりの額に 3.10 SGD を足す）：卸価格が一定の今は額が合うが、価格が変われば合わなくなり、名前も運賃になる。PPC も区間の行を読むので、PPC に MDF が二重に入る。検証（T1）にだけ使う。
@@ -115,7 +113,7 @@ G1 の仕組みを外部卸売にも使えるようにする。新しい表は�
 |---|---|---|---|
 | T0 | 今の正式なサンプルで Value Chain を実行し、基準を記録（代表の 2 lot の明細、issues、利益の差 22,196,148 円） | 変えない | G1 の段階 6 の結果と同じ |
 | T1 | **写し**のモデルで、`DC_SG->SG_Distributor` と `DC_TH->TH_Distributor` の既存の運賃の行（`logistics_cost`）の 1 個当たりの額に、卸価格の 5% を足して実行（SG：0.3 → クリーム 3.40・美容液 4.00 SGD、TH：8 → クリーム 88・美容液 103 THB）。同じ区間・同じ種類の行を 2 行書くと読み込みで止まるため、行は足さない | 変えない | その区間の販売費の行が、T0 より代表の lot で 74.40 SGD、タイの代表の lot で 1,920 THB 増え、どちらも卸売の週の 1 件のまま。全期間の増加は 2,340 件・22,196,148 円。**PPC の出力は比べない**（PPC も区間の行を読むので変わる） |
-| T2 | D1〜D4 を入れ、写しのモデルに表の 4 行を足して実行 | 改修 | §2.3 の全項目。D4：表が無い写しでは issues が 4 件、表があれば 0 件。G1 の直販の明細は T0 とハッシュが同じ。PPC の出力は T0 とバイト単位で同じ。テストと golden が通る |
+| T2 | D1〜D4 を入れ、写しのモデルに表の 4 行を足して実行 | 改修 | §2.3 の全項目。D4：表が無い写しでは issues が 4 件、表があれば 0 件。MDF の行と `line_id` の列を除くと、明細は T0 と同じ（行が増えると `line_id` の番号がずれる）。PPC の出力は T0 とバイト単位で同じ。テストと golden が通る |
 | 段階 6 | 正式なサンプルに表の 4 行を足す（G1 と同じ流れ） | — | 利益の差 0 円。README の「既知の限界」の G2 を解決済みに |
 
 表に足す 4 行（案）：
@@ -142,7 +140,7 @@ TH_Distributor,COS_Cream,distributor_mdf,marketing_cost,revenue,0.05,THB,代理�
 | **G2 の費目は G1 と同じ表に書く** | `vc_sales_cost_rule.csv` を外部の代理店の leaf にも使えるようにし、費目 `distributor_mdf` を足す（§3 の D1〜D3）。「売上比率の費用は、その売上の週に、売り手の販売費」という意味が同じで、PPC との率の突き合わせも共通に使える | 推奨 |
 | **黙って落ちる売上比率の費用は、一覧に出す** | 外部の代理店の leaf に PPC の売上比率の行があり、Value Chain の表が無いとき、issues に出す（D4）。今は計上もされず一覧にも出ない（M0 で見つけにくかった理由）。当たるのは化粧品だけ | 推奨。黙った既定値を作らない原則と同じ |
 
-決まったら、Code君への依頼書（T0〜T2）を書く。
+**決定（大杉さん 2026-11-09）：2 件とも推奨どおり。** Code君への依頼書：`requests/RequestLetter_BSSEAF_Cosmetics_G2_MDF_to_CodeKun.md`
 
 ## 7. 申し送り
 
@@ -152,4 +150,4 @@ TH_Distributor,COS_Cream,distributor_mdf,marketing_cost,revenue,0.05,THB,代理�
 
 | 版 | 日付 | 内容 |
 |---|---|---|
-| v0.1 | 2026-11-09 | 初版 |
+| v0.1 | 2026-11-09 | 初版。同日、§6 の 2 件の決定を記入 |
