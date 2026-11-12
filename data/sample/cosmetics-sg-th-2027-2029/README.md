@@ -70,7 +70,7 @@ Materials_JP（原料） → Factory_JP（工場） → WH_JP_Released（判定�
 | M7 | 費用の無い区間・ノードにも 0 の行を明示する。行が無いのは supply point だけ |
 | M8 | タイの DC は日本本社のまま |
 
-金額の規則は全部このフォルダの中にある（`ppc_*.csv`・`vc_price_rule.csv`・`vc_sales_cost_rule.csv`・`vc_customs_valuation_rule.csv`）。共有の規則は使わない。
+金額の規則は全部このフォルダの中にある（`ppc_*.csv`・`vc_price_rule.csv`・`vc_sales_cost_rule.csv`・`vc_customs_valuation_rule.csv`・`vc_trade_terms.csv`）。共有の規則は使わない。
 
 `vc_sales_cost_rule.csv` は Value Chain 用の、直販（直営店・公式 EC）の売上比率の費用の費目の表
 （販社販管費 10%、決済・EC 基盤手数料 5%、デジタル広告費 15%、店舗運営費 35%）。PPC は読まず、
@@ -84,6 +84,13 @@ Materials_JP（原料） → Factory_JP（工場） → WH_JP_Released（判定�
 税率 0%（M4）の出荷には関税の行を立てず、`vc_customs_valuation.csv` に課税価格を 1 行ずつ残す（689 行、
 課税価格の合計 93,197,520 円、税額 0）。税率は `ppc_tariff_rule.csv` から読む。PPC はこの表を読まず、
 振替価格だけに課税する。
+
+`vc_trade_terms.csv` は Value Chain 用の、シンガポール向けの区間 `WH_JP_Released->DC_SG` の取引条件（G5）。
+CIF シンガポール：運賃は日本本社（`E_JP`）が負担し、法人間価格（クリーム 5,000・美容液 6,000 円/個）に含める
+（`seller`・`1`）。海上運賃は出荷の週に `E_JP` の法人間売上の原価として計上し（3,367 件、4,848,480 円）、
+シンガポール販社（`E_SG`）の取得は法人間価格だけになる。グループの在庫原価には運賃が 1 回入り、消去する
+未実現利益は運賃の分だけ小さくなる。法人別の利益は `E_JP` −4,848,480 円・`E_SG` ＋4,848,480 円（和は同じ）、
+消去後の連結の利益とグループの在庫は表が無いときと同じ。PPC は法人を持たず、この表を読まない。
 
 ## 実行の方法
 
@@ -147,9 +154,9 @@ GUI：`python -m main` → Load Model Folder でこのフォルダを選ぶ → 
 - 関税の課税価格：PPC は振替価格だけに課税する。Value Chain は運賃を足した課税価格を使う（G4、下）。
   税率 0% なので今は差 0。30% にすると Value Chain は 27,959,256 円、PPC は 27,612,000 円（差 347,256 円）。
 
-**Value Chain（業務の要求は未完了）**
+**Value Chain**
 
-実行は成功し保存の検査も通るが、法人別・連結の損益が業務の要求を満たしたとは判定していない。
+G1〜G5 の業務定義（採用済み）どおりに計上されることを、代表の lot と全期間の照合で確かめた。法人別・連結の損益を、経営の判断に使える水準だと判定したわけではない（上の「金額」の限界が残る）。
 
 - G1：**解決済み（直販）**。直営店・公式 EC の売上比率の費用を、販売の週に費目ごとに計上する
   （`vc_sales_cost_rule.csv`。報告書 `docs/development/WOM_BSSEAF_Cosmetics_G1_SalesBasedCosts_Report.md`）。
@@ -159,7 +166,10 @@ GUI：`python -m main` → Load Model Folder でこのフォルダを選ぶ → 
 - G4：**解決済み（Value Chain）**。タイ向けの関税は課税価格（振替価格 ＋ 運賃 ＋ 保険 0）× 税率で、DC_TH の
   受入の週に計上する（`vc_customs_valuation_rule.csv`。報告書 `docs/development/WOM_BSSEAF_Cosmetics_G4_TariffBase_Report.md`）。
   通関の確定の週は受入の週で代用している。PPC は照合の参考値のまま。
-- G5：CIF の運賃は台帳では受け手の在庫原価になる。業務の負担者と違う。
+- G5：**解決済み（Value Chain、2026-11-12）**。CIF シンガポールの海上運賃は、出荷の週に日本本社の法人間売上の
+  原価として計上する（`vc_trade_terms.csv`。報告書 `docs/development/WOM_BSSEAF_Cosmetics_G5_CIF_Freight_Report.md`）。
+  シンガポール販社の在庫原価は法人間価格だけ、グループの在庫原価には運賃が 1 回入る。PPC は法人を持たないので、
+  照合は全期間の運賃の合計（4,848,480 円）だけ。
 
 **画面**
 

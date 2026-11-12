@@ -38,6 +38,12 @@
     1 行残す。計画の期間の後に着く出荷は計上せず status=after_horizon。表に載らない区間は今のまま
     （出荷の週に ppc_tariff_rule.csv の tariff_basis × 率）。
 
+取引条件（G5、vc_trade_terms.csv で seller・1〔CIF 型〕を宣言した法人間の区間だけ）
+    区間の運賃は、出荷の週に売り手の法人が負担する。売り手の取得の行（v1,entity,group）を 1 行立てて
+    すぐに売り手の法人間売上に対応する原価（cogs、intercompany、v1 と entity の 2 行）として払い出す。
+    lot のグループの原価にだけ足し、受け手の法人の原価（V1・法人）には足さない。内部の未実現利益の
+    eliminated はその分小さくなる（120,000 − (C ＋ 運賃)）。表に無い区間・buyer・0 は今のまま。
+
 費用の分け方は policy.py（1 か所）。為替は fx.py（取引の週の為替。在庫原価は取得時の換算額のまま）。
 未評価（NaN）の明細は、その lot の記録を「未評価」にし、その後の明細にも印を付ける（合計に 0 として
 足さない）。
@@ -492,9 +498,13 @@ class Ledger:
             basis = rec.purchase if t["basis"] == "material_cost" else rec.tp
             amt = basis[0] * t["rate"] if not _isnan(basis[0]) else NAN
             items.append(("tariff", "tariff_cost", amt, basis[1] or seller.functional_currency))
+        cif = m.cif_freight(s.edge, s.product)
         for fam, ctype, amt, ccy in items:
             treat = POL.classify_edge_cost(fam, ecls)
             if treat is None:
+                continue
+            if cif and fam == "freight":
+                self._cif_freight(s, rec, seller, buyer, ctype, amt, ccy)
                 continue
             if treat == POL.INVENTORY:
                 f = buyer.functional_currency
@@ -590,6 +600,32 @@ class Ledger:
             line_id = self._lid
             self._add_cost(rec, BASES, hq, cm, fn, w)
         self.customs_rows.append(self._customs_row(v, self.labels[w], line_id, v["status"]))
+
+    def _cif_freight(self, s: Shipment, rec: Rec, seller, buyer, ctype, amt, ccy):
+        """G5 D2: the freight of a CIF intercompany edge (vc_trade_terms.csv seller / 1).
+
+        The seller bears it at the ship week: one acquisition line on the seller (v1,entity,group: the
+        group part is the group's inventory cost of the lot; v1 / entity balance the seller's books)
+        and the cost of the intercompany sale (cogs, intercompany, v1 and entity) on the seller. The
+        lot's group cost grows; the receiver's V1 / entity cost does not (its acquisition is the
+        price only). The eliminated internal profit shrinks by the freight."""
+        w = s.week
+        f = seller.functional_currency
+        hq, cm, fn, lc, mth = self._conv(amt, ccy, w, f, "", f"{ctype} {s.edge} (CIF, seller)")
+        node = s.phys_from
+        self._line(s.ship_id, w, s.product, s.lot_id, seller.entity_id, node, buyer.entity_id,
+                   "acquisition", "internal", ALL, "freight", ctype, amt, ccy, mth, hq, cm, fn, f, lc, f,
+                   rec.valued, "CIF：価格に含む運賃（売り手の負担。グループの在庫原価に入る）")
+        for b in ("v1", "entity"):
+            self._line(s.ship_id, w, s.product, s.lot_id, seller.entity_id, node, buyer.entity_id,
+                       "cogs", "intercompany", b, "freight", ctype, amt, ccy, mth, hq, cm, fn, f, lc, f,
+                       rec.valued, "CIF：価格に含む運賃（売り手の負担）")
+        # the lot's group cost (func column in the receiver's functional currency, as before)
+        bhq, bcm, bfn, _, _ = self._conv(amt, ccy, w, buyer.functional_currency, "",
+                                         f"{ctype} {s.edge} (CIF, group)")
+        if not _isnan(bhq) and self._u(rec) is not None:
+            self._uev(w, rec, "eliminated", (-bhq, -bcm if not _isnan(bcm) else 0.0))
+        self._add_cost(rec, ("group",), bhq, bcm, bfn, w)
 
     def _consumer(self, s: Shipment):
         m = self.m

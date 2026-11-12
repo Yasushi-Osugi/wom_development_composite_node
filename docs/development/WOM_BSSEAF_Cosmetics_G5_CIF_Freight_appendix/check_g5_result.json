@@ -1,0 +1,325 @@
+{
+ "T0": {
+  "B1": {
+   "ship": "2028-W25",
+   "arrival": "2028-W27",
+   "sale": "2028-W30",
+   "C_line": [
+    {
+     "line_id": 45861,
+     "week": "2028-W25",
+     "amt_hq": 46080.0
+    }
+   ],
+   "ok": true
+  },
+  "B2": {
+   "lines": [
+    {
+     "line_id": 45863,
+     "week": "2028-W25",
+     "entity": "E_SG",
+     "kind": "acquisition",
+     "basis": "v1,entity,group",
+     "amt_hq": 1440.0
+    }
+   ],
+   "ok": true
+  },
+  "B3": {
+   "lines": 3367,
+   "total": 4848480.0,
+   "entities": [
+    "E_SG"
+   ],
+   "ok": true
+  },
+  "B4": {
+   "sale_cogs": {
+    "entity": 123648.0,
+    "group": 49728.0
+   },
+   "ok": true
+  }
+ },
+ "T1": {
+  "V1": {
+   "E_JP_freight_lines": [
+    {
+     "line_id": 49109,
+     "week": "2028-W25",
+     "kind": "acquisition",
+     "scope": "internal",
+     "basis": "v1,entity,group",
+     "amt_hq": 1440.0,
+     "note": "CIF：価格に含む運賃（売り手の負担。グループの在庫原価に入る）"
+    },
+    {
+     "line_id": 49110,
+     "week": "2028-W25",
+     "kind": "cogs",
+     "scope": "intercompany",
+     "basis": "v1",
+     "amt_hq": 1440.0,
+     "note": "CIF：価格に含む運賃（売り手の負担）"
+    },
+    {
+     "line_id": 49111,
+     "week": "2028-W25",
+     "kind": "cogs",
+     "scope": "intercompany",
+     "basis": "entity",
+     "amt_hq": 1440.0,
+     "note": "CIF：価格に含む運賃（売り手の負担）"
+    }
+   ],
+   "C_line_id": 49107,
+   "C": 46080.0,
+   "C_breakdown_line_ids": [
+    47122,
+    47123,
+    47124,
+    47987,
+    48088,
+    48089
+   ],
+   "C_breakdown_sum": 46080.0,
+   "ok": true
+  },
+  "V2": {
+   "E_SG_W25": [
+    {
+     "line_id": 49108,
+     "family": "purchase",
+     "basis": "v1,entity",
+     "amt_hq": 120000.0
+    },
+    {
+     "line_id": 49112,
+     "family": "tariff",
+     "basis": "v1,entity,group",
+     "amt_hq": 0.0
+    }
+   ],
+   "E_SG_edge_freight": 0,
+   "E_SG_receipt_freight": 0,
+   "ok": true
+  },
+  "V3": {
+   "group_cost_transit_weekend": {
+    "2028-W25": 47520.0,
+    "2028-W26": 47520.0
+   },
+   "sale_cogs_group": 49728.0,
+   "edge_freight_in_group_cost_lines": 1,
+   "ok": true
+  },
+  "V4": {
+   "sale_cogs_entity": 122208.0,
+   "ok": true
+  },
+  "V5": {
+   "lot_U_transit_weekend": {
+    "2028-W25": 72480.0,
+    "2028-W26": 72480.0
+   },
+   "transit_weeks_compared": 316,
+   "mismatches": 0,
+   "ok": true
+  },
+  "V6": {
+   "E_JP_cogs_entity_lines": 3367,
+   "E_JP_cogs_entity_total": 4848480.0,
+   "E_SG_edge_freight_acq": 0,
+   "shipments_exactly_one": {
+    "jp_cogs_entity": 3367,
+    "jp_cogs_v1": 3367,
+    "group_once": 3367,
+    "sg_entity_acq": 3367
+   },
+   "all_at_ship_week": true,
+   "ok": true
+  },
+  "V7": {
+   "delta_vs_t0": {
+    "E_JP": -4848480.0,
+    "E_SG": 4848480.0
+   },
+   "sum_t0": 631849608.0,
+   "sum_t1": 631849608.0,
+   "ok": true
+  },
+  "V8": {
+   "v3_round2_and_group_inventory_columns_same": true,
+   "v3_round2_columns_checked": [
+    "external_cogs_r2_hq_wk",
+    "profit_r2_hq_wk",
+    "external_cogs_r2_hq_cum",
+    "profit_r2_hq_cum",
+    "external_cogs_r2_common_wk",
+    "profit_r2_common_wk",
+    "external_cogs_r2_common_cum",
+    "profit_r2_common_cum",
+    "inv_group_hq",
+    "inv_group_common",
+    "lots_unvalued",
+    "to_unvalued_hq"
+   ],
+   "v3_columns_that_differ": [
+    "external_cogs_common_wk",
+    "ic_profit_common_wk",
+    "external_cogs_func_wk",
+    "ic_profit_func_wk",
+    "external_cogs_hq_wk",
+    "ic_profit_hq_wk",
+    "external_cogs_hq_known_wk",
+    "ic_profit_hq_known_wk",
+    "ic_profit_n_valued_wk",
+    "profit_hq_wk",
+    "profit_common_wk",
+    "profit_func_wk",
+    "external_cogs_common_cum",
+    "ic_profit_common_cum",
+    "external_cogs_func_cum",
+    "ic_profit_func_cum",
+    "external_cogs_hq_cum",
+    "ic_profit_hq_cum",
+    "external_cogs_hq_known_cum",
+    "ic_profit_hq_known_cum",
+    "ic_profit_n_valued_cum",
+    "profit_hq_cum",
+    "profit_common_cum",
+    "profit_func_cum",
+    "unrealized_change_hq_wk",
+    "unrealized_change_hq_cum",
+    "unrealized_balance_hq_wk",
+    "unrealized_balance_hq_cum",
+    "unrealized_change_common_wk",
+    "unrealized_change_common_cum",
+    "unrealized_balance_common_wk",
+    "unrealized_balance_common_cum",
+    "inv_entity_hq",
+    "inv_entity_common",
+    "eliminated_hq",
+    "realized_hq"
+   ],
+   "v3_round1_profit_total_diff_whole_horizon": 0.0,
+   "v3_round1_profit_weeks_differ": 18,
+   "inventory_group_columns_same": true,
+   "ppc_comparison_moved_rows": {
+    "原価 合計（PPC：総原価／台帳：外部売上の原価＋費用）": -4848480.0,
+    "内部取引の利益（消去前）": -4848480.0
+   },
+   "ppc_freight_row_same": true,
+   "ppc_profit_total_same": true,
+   "conservation_all_ok": true,
+   "ok": true
+  },
+  "V9": {
+   "files": {
+    "vc_checks.json": true,
+    "vc_conservation.csv": true,
+    "vc_cost_policy.csv": true,
+    "vc_customs_valuation.csv": true,
+    "vc_edge_flows.csv": true,
+    "vc_fx_log.csv": true,
+    "vc_inventory_weekly.csv": true,
+    "vc_missing_prices.csv": true,
+    "vc_money_lines.csv.gz": true,
+    "vc_observation_weekly.csv": true,
+    "vc_ppc_comparison.csv": true,
+    "vc_price_log.csv": true,
+    "vc_shipments.csv.gz": true,
+    "vc_unrealized_weekly.csv": true,
+    "vc_v1_weekly.csv": true,
+    "vc_v2_weekly.csv": true,
+    "vc_v3_weekly.csv": true
+   },
+   "extra_files": [],
+   "note": "vc_checks.json は trade_terms の記録（表の内容）を除いて比べた",
+   "ok": true
+  },
+  "V10": {
+   "same": {
+    "vc_money_lines.csv.gz": true,
+    "vc_inventory_weekly.csv": true,
+    "vc_unrealized_weekly.csv": true,
+    "vc_v2_weekly.csv": true
+   },
+   "ok": true
+  },
+  "V11a": {
+   "files": {
+    "vc_checks.json": true,
+    "vc_conservation.csv": true,
+    "vc_cost_policy.csv": true,
+    "vc_customs_valuation.csv": true,
+    "vc_edge_flows.csv": true,
+    "vc_fx_log.csv": true,
+    "vc_inventory_weekly.csv": true,
+    "vc_missing_prices.csv": true,
+    "vc_money_lines.csv.gz": true,
+    "vc_observation_weekly.csv": true,
+    "vc_ppc_comparison.csv": true,
+    "vc_price_log.csv": true,
+    "vc_shipments.csv.gz": true,
+    "vc_unrealized_weekly.csv": true,
+    "vc_v1_weekly.csv": true,
+    "vc_v2_weekly.csv": true,
+    "vc_v3_weekly.csv": true
+   },
+   "extra_files": [],
+   "ok": true
+  },
+  "V11b": {
+   "pairs": {
+    "t0 vs t1_sample": {
+     "ppc_event_ledger.csv": true,
+     "ppc_kpi_summary.json": true,
+     "ppc_lot_reconciliation.csv": true,
+     "ppc_node_pl_summary.csv": true,
+     "ppc_node_week_summary.csv": true,
+     "ppc_profit_zone_summary.csv": true,
+     "ppc_warnings.csv": true
+    },
+    "t0 vs t1_cif": {
+     "ppc_event_ledger.csv": true,
+     "ppc_kpi_summary.json": true,
+     "ppc_lot_reconciliation.csv": true,
+     "ppc_node_pl_summary.csv": true,
+     "ppc_node_week_summary.csv": true,
+     "ppc_profit_zone_summary.csv": true,
+     "ppc_warnings.csv": true
+    },
+    "t0 vs t1_buyer": {
+     "ppc_event_ledger.csv": true,
+     "ppc_kpi_summary.json": true,
+     "ppc_lot_reconciliation.csv": true,
+     "ppc_node_pl_summary.csv": true,
+     "ppc_node_week_summary.csv": true,
+     "ppc_profit_zone_summary.csv": true,
+     "ppc_warnings.csv": true
+    }
+   },
+   "ok": true
+  }
+ },
+ "summary": {
+  "T0.B1": true,
+  "T0.B2": true,
+  "T0.B3": true,
+  "T0.B4": true,
+  "T1.V1": true,
+  "T1.V2": true,
+  "T1.V3": true,
+  "T1.V4": true,
+  "T1.V5": true,
+  "T1.V6": true,
+  "T1.V7": true,
+  "T1.V8": true,
+  "T1.V9": true,
+  "T1.V10": true,
+  "T1.V11a": true,
+  "T1.V11b": true
+ }
+}

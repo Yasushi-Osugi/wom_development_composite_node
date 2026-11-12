@@ -14,6 +14,8 @@
                              goods_value_per_unit, currency, freight_in_goods_value,
                              insurance_added_per_unit, duty_week, note。関税の課税価格の決め方
                              （load_customs_valuation_rule）
+    vc_trade_terms.csv       （任意、G5）edge_id, product_id, incoterm, freight_borne_by,
+                             freight_in_price, note。法人間の区間の運賃の負担（load_trade_terms）
 
 価格の出どころ（1 つの価格は 1 か所だけ）：
     最終市場の価格                   ppc_market_price.csv
@@ -93,6 +95,14 @@ class VCMasters:
     # vc_customs_valuation_rule.csv (G4 D1): (edge, product) -> rule dict. Empty when the file is
     # absent (the tariff is then computed as before: ppc_tariff_rule.csv's basis x rate at the ship week).
     customs_valuation: Dict[Tuple[str, str], dict] = field(default_factory=dict)
+    # vc_trade_terms.csv (G5 D1): (edge, product) -> {incoterm, freight_borne_by, freight_in_price, note}.
+    # Empty when the file is absent (freight is then the receiver's inventory cost, as before).
+    trade_terms: Dict[Tuple[str, str], dict] = field(default_factory=dict)
+
+    def cif_freight(self, edge: str, product: str) -> bool:
+        """True when the edge's freight is borne by the seller and included in the price (G5)."""
+        t = self.trade_terms.get((edge, product))
+        return t is not None and t["freight_borne_by"] == "seller" and t["freight_in_price"]
 
     # ── lookups ──────────────────────────────────────────────────────
     def entity_of(self, node: str, product: str) -> Entity:
@@ -274,6 +284,7 @@ def load_masters(model_dir: str, terminal_moms: Dict[str, List[str]],
 
     sales_cost = load_sales_cost_rule(model_dir, ents, assign, mp, node_cost, edge_cost, price_rules)
     customs = load_customs_valuation_rule(model_dir, ents, assign, tariff, edge_cost, physical_edges)
+    terms = load_trade_terms(model_dir, ents, assign, edge_cost, physical_edges)
 
     return VCMasters(model_dir=model_dir, hq_currency=cfg["hq_currency"],
                      common_currency=cfg["common_currency"],
@@ -281,7 +292,7 @@ def load_masters(model_dir: str, terminal_moms: Dict[str, List[str]],
                      holding_rate_weekly=holding, entities=ents, assignment=assign,
                      price_rules=price_rules, market_price=mp, supplier_cost=sc,
                      node_cost=node_cost, edge_cost=edge_cost, tariff=tariff, transfer_price=tp,
-                     sales_cost=sales_cost, customs_valuation=customs)
+                     sales_cost=sales_cost, customs_valuation=customs, trade_terms=terms)
 
 
 SALES_COST_FILE = "vc_sales_cost_rule.csv"
@@ -506,4 +517,68 @@ def load_customs_valuation_rule(model_dir, ents, assign, tariff, edge_cost,
         out[k] = {"goods_value_basis": basis, "goods_value_per_unit": gv, "currency": ccy,
                   "freight_in_goods_value": fig == "1", "insurance_added_per_unit": ins,
                   "duty_week": dw, "note": r.get("note", "")}
+    return out
+
+
+TERMS_FILE = "vc_trade_terms.csv"
+TERMS_COLS = ("edge_id", "product_id", "incoterm", "freight_borne_by", "freight_in_price", "note")
+# the combinations that can be expressed now: (borne by, in price)
+TERMS_SUPPORTED = {("seller", "1"): "CIF 型（売り手が負担し価格に含む）",
+                   ("buyer", "0"): "買い手が負担し価格に含まない（今の動きの明示）"}
+
+
+def load_trade_terms(model_dir, ents, assign, edge_cost, physical_edges) -> Dict[tuple, dict]:
+    """vc_trade_terms.csv（G5 D1。任意）。無ければ {}（運賃は今のまま受け手の在庫原価）。
+
+    1 行 ＝ 物理の区間 × SKU。法人間の区間の運賃の負担を宣言する。読み込みで次を確かめ、違えば MasterError：
+      - 列がそろっている。区間・SKU の重複が無い。物理の区間である
+      - freight_borne_by・freight_in_price の組は (seller, 1)（CIF 型）か (buyer, 0)（今の動き）だけ。
+        それ以外（受入時に支配が移る契約、売り手負担の別請求など）は今は表せない
+      - 区間の売り手（出荷する物理のノード）と受け手の法人が、連結の中の別々のグループの法人（法人間取引）
+      - その区間に ppc_edge_cost_rule.csv の logistics_cost の行がある。insurance_cost の行は無い
+        （保険の負担はこの表では扱わない）
+    incoterm は記録用の名前で、計算には使わない。
+    """
+    df = _read(model_dir, TERMS_FILE, required=False)
+    if df is None:
+        return {}
+    fn = TERMS_FILE
+    miss = [c for c in TERMS_COLS if c not in df.columns]
+    if miss:
+        raise MasterError(f"{fn}: missing columns {miss} (needs {list(TERMS_COLS)})")
+    out: Dict[tuple, dict] = {}
+    for i, r in enumerate(df.to_dict("records"), start=2):
+        where = f"{fn} line {i}"
+        edge, prod = r["edge_id"].strip(), r["product_id"].strip()
+        k = (edge, prod)
+        if k in out:
+            raise MasterError(f"{where}: {edge} / {prod} written twice (one row per edge x SKU)")
+        if "->" not in edge:
+            raise MasterError(f"{where}: edge_id {edge!r} is not '<from node>-><to node>'")
+        if prod in physical_edges and edge not in physical_edges[prod]:
+            raise MasterError(f"{where}: {edge} is not a physical edge of {prod}")
+        by, inp = r["freight_borne_by"].strip(), r["freight_in_price"].strip()
+        if (by, inp) not in TERMS_SUPPORTED:
+            raise MasterError(f"{where}: freight_borne_by={by!r} / freight_in_price={inp!r} cannot be expressed now; "
+                              f"use seller/1 (CIF: the seller bears the freight and includes it in the price) or "
+                              f"buyer/0 (the receiver bears it; today's behaviour)")
+        src, dst = edge.split("->")[0], edge.split("->")[-1]
+        sa, da = assign.get((src, prod)), assign.get((dst, prod))
+        se = ents[sa.entity_id] if sa else None
+        de = ents[da.entity_id] if da else None
+        if not (se and de and se.is_group and de.is_group and se.consolidated and de.consolidated
+                and se.entity_id != de.entity_id):
+            raise MasterError(f"{where}: {edge} / {prod} is not an intercompany edge (seller "
+                              f"{se.entity_id if se else 'no assignment'}, receiver "
+                              f"{de.entity_id if de else 'no assignment'}); the table is for edges between two "
+                              f"different consolidated group entities")
+        rows = edge_cost.get(k, [])
+        if not any(x["cost_type"] == "logistics_cost" for x in rows):
+            raise MasterError(f"{where}: ppc_edge_cost_rule.csv has no logistics_cost row for {edge} / {prod} "
+                              f"(no freight to assign)")
+        if any(x["cost_type"] == "insurance_cost" for x in rows):
+            raise MasterError(f"{where}: ppc_edge_cost_rule.csv has an insurance_cost row for {edge} / {prod}; "
+                              f"the insurance terms are not handled by {fn} (take the row out of the table)")
+        out[k] = {"incoterm": r["incoterm"].strip(), "freight_borne_by": by, "freight_in_price": inp == "1",
+                  "note": r.get("note", "")}
     return out

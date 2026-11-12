@@ -1,0 +1,3 @@
+edge_id,product_id,incoterm,freight_borne_by,freight_in_price,note
+WH_JP_Released->DC_SG,COS_Cream,CIF,seller,1,G5 trial: E_JP bears the sea freight and includes it in the intercompany price 5000/unit
+WH_JP_Released->DC_SG,COS_Serum,CIF,seller,1,G5 trial: E_JP bears the sea freight and includes it in the intercompany price 6000/unit

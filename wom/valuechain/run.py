@@ -232,6 +232,14 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
         cvdf = pd.DataFrame(led.customs_rows, columns=CUSTOMS_COLS)
         cvdf.to_csv(os.path.join(out_dir, "vc_customs_valuation.csv"), index=False)
         checks["customs_valuation"] = customs_checks(cvdf, masters)
+    if masters.trade_terms:
+        checks["trade_terms"] = {
+            "file": "vc_trade_terms.csv",
+            "edges": [{"edge": e, "product": p, **{k: v for k, v in t.items() if k != "note"}}
+                      for (e, p), t in sorted(masters.trade_terms.items())],
+            "note": ("seller・1（CIF 型）の区間では、運賃を売り手の法人間売上に対応する原価として出荷の週に計上し、"
+                     "受け手の法人の取得には足さない（グループの在庫原価には 1 回入る）。buyer・0 は今のまま"),
+        }
     if lovem_run:
         checks["lovem"] = compare_with_lovem(records, lovem_run, gs, hashes_before, plugins)
     with open(os.path.join(out_dir, "vc_checks.json"), "w", encoding="utf-8") as f:
