@@ -1,6 +1,6 @@
 # G4・G5 価格と運賃の共通照合表 v0.1
 
-2026-11-12 ・ GPT-MC ・ 採否待ち
+2026-11-12 ・ GPT-MC ・ 採用（大杉さん 2026-11-12：推奨どおり）
 
 各区間のクリーム24個（`COS_Cream`、1ロット、JPY）を照合する。[G4 タイ向け課税価格](WOM_G4_TariffBase_Business_Definition_v0.1.md) ・ [G5 シンガポール向けCIF運賃](WOM_G5_CIF_FreightResponsibility_Business_Definition_v0.1.md)
 
