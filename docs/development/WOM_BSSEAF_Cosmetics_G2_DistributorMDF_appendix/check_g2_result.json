@@ -1,0 +1,261 @@
+{
+ "T0": {
+  "B1": {
+   "sg": {
+    "week": [
+     "2028-W28"
+    ],
+    "amount": [
+     1488.0
+    ],
+    "ccy": [
+     "SGD"
+    ],
+    "src_id": [
+     "ship:COS_Cream:OUT:dad:DC_SG:COS_Cream:96:6"
+    ]
+   },
+   "th": {
+    "week": [
+     "2029-W02"
+    ],
+    "amount": [
+     38400.0
+    ],
+    "ccy": [
+     "THB"
+    ],
+    "src_id": [
+     "ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:122:2"
+    ]
+   },
+   "ok": true
+  },
+  "B2": {
+   "mdf_lines_at_distributor": 0,
+   "issues": [],
+   "ok": true
+  },
+  "B3": {
+   "profit_diff_vc_minus_ppc": 22196148.0,
+   "ok": true
+  },
+  "external_wholesale_sales": 2340
+ },
+ "T1": {
+  "(1)": {
+   "COS_Cream:SG_Distributor:2028-W29:00002": {
+    "t0": [
+     [
+      "2028-W28",
+      7.199999999999999,
+      "SGD"
+     ]
+    ],
+    "t1": [
+     [
+      "2028-W28",
+      81.6,
+      "SGD"
+     ]
+    ],
+    "increase": 74.39999999999999,
+    "ok": true
+   },
+   "COS_Cream:TH_Distributor:2029-W03:00003": {
+    "t0": [
+     [
+      "2029-W02",
+      192.0,
+      "THB"
+     ]
+    ],
+    "t1": [
+     [
+      "2029-W02",
+      2112.0,
+      "THB"
+     ]
+    ],
+    "increase": 1920.0,
+    "ok": true
+   }
+  },
+  "(2)": {
+   "rows_increased": 2340,
+   "increase_jpy": 22196148.0,
+   "ok": true
+  },
+  "(3)": {
+   "other_lines_equal": true,
+   "freight_lines_equal_except_amount": true,
+   "ok": true
+  },
+  "ok": true
+ },
+ "T2": {
+  "V1": {
+   "rows": [
+    {
+     "week": "2028-W28",
+     "src_id": "ship:COS_Cream:OUT:dad:DC_SG:COS_Cream:96:6",
+     "kind": "expense",
+     "scope": "selling",
+     "basis": "v1,entity,group",
+     "family": "marketing_cost",
+     "price_type": "distributor_mdf",
+     "entity": "E_SG",
+     "node": "DC_SG",
+     "counterparty": "EXT_CH_SG_DIST",
+     "amount_orig": 74.4,
+     "currency_orig": "SGD",
+     "amt_hq": 8556.0,
+     "note": "販促の対象：SG_Distributor"
+    }
+   ],
+   "rows_next_week": 0,
+   "ok": true
+  },
+  "V2": {
+   "rows": [
+    {
+     "week": "2029-W02",
+     "src_id": "ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:122:2",
+     "kind": "expense",
+     "scope": "selling",
+     "basis": "v1,entity,group",
+     "family": "marketing_cost",
+     "price_type": "distributor_mdf",
+     "entity": "E_JP",
+     "node": "DC_TH",
+     "counterparty": "EXT_CH_TH_DIST",
+     "amount_orig": 1920.0,
+     "currency_orig": "THB",
+     "amt_hq": 8640.0,
+     "note": "販促の対象：TH_Distributor"
+    }
+   ],
+   "rows_next_week": 0,
+   "ok": true,
+   "amt_hq": 8640.0
+  },
+  "V3": {
+   "wholesale_sales": 2340,
+   "mdf_rows": 2340,
+   "sales_with_exactly_one": 2340,
+   "mdf_from_non_wholesale": 0,
+   "ok": true
+  },
+  "V4": {
+   "amount_mismatch": 0,
+   "currency_mismatch": 0,
+   "week_mismatch": 0,
+   "rows": 2340,
+   "ok": true
+  },
+  "V5": {
+   "total_jpy": 22196148.0,
+   "split": {
+    "COS_Cream|SG_Distributor": 6451224.0,
+    "COS_Cream|TH_Distributor": 2583360.0,
+    "COS_Serum|SG_Distributor": 9160164.0,
+    "COS_Serum|TH_Distributor": 4001400.0
+   },
+   "ok": true
+  },
+  "V6": {
+   "profit_diff_vc_minus_ppc": 0.0,
+   "ppc_distributor_marketing_total": 22196148.0,
+   "ppc_distributor_marketing_events": 520,
+   "vc_mdf_total": 22196148.0,
+   "weekly": {
+    "cells_vc_week_plus_1_vs_ppc": 520,
+    "cells_equal_after_shift": 520,
+    "cells_equal_same_week": 512,
+    "note": "PPC は代理店の leaf の出荷の週（卸売の週の 1 週後）に立てる"
+   },
+   "ok": true
+  },
+  "V7": {
+   "t2_d4": 0,
+   "t2_issues": [],
+   "norule_d4": [
+    {
+     "issue": "revenue_based_cost_on_external_channel_not_booked",
+     "node": "SG_Distributor",
+     "product": "COS_Cream",
+     "cost_type": "marketing_cost",
+     "receipts": 754,
+     "note": "外部チャネルの leaf の basis=revenue の行（PPC）に、vc_sales_cost_rule.csv の行が無い（Value Chain では計上しない）"
+    },
+    {
+     "issue": "revenue_based_cost_on_external_channel_not_booked",
+     "node": "SG_Distributor",
+     "product": "COS_Serum",
+     "cost_type": "marketing_cost",
+     "receipts": 897,
+     "note": "外部チャネルの leaf の basis=revenue の行（PPC）に、vc_sales_cost_rule.csv の行が無い（Value Chain では計上しない）"
+    },
+    {
+     "issue": "revenue_based_cost_on_external_channel_not_booked",
+     "node": "TH_Distributor",
+     "product": "COS_Cream",
+     "cost_type": "marketing_cost",
+     "receipts": 299,
+     "note": "外部チャネルの leaf の basis=revenue の行（PPC）に、vc_sales_cost_rule.csv の行が無い（Value Chain では計上しない）"
+    },
+    {
+     "issue": "revenue_based_cost_on_external_channel_not_booked",
+     "node": "TH_Distributor",
+     "product": "COS_Serum",
+     "cost_type": "marketing_cost",
+     "receipts": 390,
+     "note": "外部チャネルの leaf の basis=revenue の行（PPC）に、vc_sales_cost_rule.csv の行が無い（Value Chain では計上しない）"
+    }
+   ],
+   "norule_other_issues": [],
+   "ok": true
+  },
+  "V8": {
+   "t2_first": true,
+   "t2_b": true,
+   "ok": true
+  },
+  "V9a": {
+   "equal": true,
+   "ok": true
+  },
+  "V9b": {
+   "money_lines_equal": true,
+   "d4_issues": 4,
+   "checks_equal_except_d4": true,
+   "other_files_equal": {
+    "vc_ppc_comparison.csv": true,
+    "vc_v1_weekly.csv": true,
+    "vc_v2_weekly.csv": true,
+    "vc_v3_weekly.csv": true,
+    "vc_observation_weekly.csv": true,
+    "vc_inventory_weekly.csv": true,
+    "vc_unrealized_weekly.csv": true,
+    "vc_conservation.csv": true,
+    "vc_missing_prices.csv": true,
+    "vc_edge_flows.csv": true,
+    "vc_cost_policy.csv": true
+   },
+   "ok": true
+  },
+  "V9c": {
+   "files": {
+    "ppc_event_ledger.csv": true,
+    "ppc_kpi_summary.json": true,
+    "ppc_lot_reconciliation.csv": true,
+    "ppc_node_pl_summary.csv": true,
+    "ppc_node_week_summary.csv": true,
+    "ppc_profit_zone_summary.csv": true,
+    "ppc_warnings.csv": true
+   },
+   "ok": true
+  },
+  "sample_unchanged": true
+ }
+}

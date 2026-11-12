@@ -9,3 +9,7 @@ SG_Store,COS_Serum,store_operating,sga_cost,revenue,0.35,SGD,店舗運営費 35%
 SG_Store,COS_Serum,hq_sga_allocation,sga_cost,revenue,0.10,SGD,販社販管費 10%
 SG_Store,COS_Cream,store_operating,sga_cost,revenue,0.35,SGD,店舗運営費 35%（M5 の近似）
 SG_Store,COS_Cream,hq_sga_allocation,sga_cost,revenue,0.10,SGD,販社販管費 10%
+SG_Distributor,COS_Serum,distributor_mdf,marketing_cost,revenue,0.05,SGD,代理店向け販促協賛費 5%（負担：シンガポール販社）
+SG_Distributor,COS_Cream,distributor_mdf,marketing_cost,revenue,0.05,SGD,代理店向け販促協賛費 5%（負担：シンガポール販社）
+TH_Distributor,COS_Serum,distributor_mdf,marketing_cost,revenue,0.05,THB,代理店向け販促協賛費 5%（負担：日本本社）
+TH_Distributor,COS_Cream,distributor_mdf,marketing_cost,revenue,0.05,THB,代理店向け販促協賛費 5%（負担：日本本社）

@@ -76,6 +76,7 @@ AREAS = {
     "test_valuechain_handcalc.py": ("ppc",),
     "test_valuechain_integration.py": ("ppc",),
     "test_valuechain_sales_cost.py": ("ppc",),
+    "test_valuechain_distributor_mdf.py": ("ppc",),
     # allocation (Management layer)
     "test_allocation_analytics.py": ("allocation",),
     "test_allocation_cli.py": ("allocation",),

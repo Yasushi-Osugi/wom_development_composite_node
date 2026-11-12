@@ -19,6 +19,11 @@
     同じ法人            管理価格（あれば）。無ければ原価振替（管理利益 0、price_type=cost_transfer）
     連結の中の別の法人  法人間の価格。無ければ未評価（NaN）＋未設定価格の一覧
     それ以外（外部）    外部への販売。外部チャネル（②）なら卸価格、無ければ NaN＋一覧
+                        卸売なら、受け手の leaf の vc_sales_cost_rule.csv の行（distributor_mdf、G2）ごとに
+                        「率 × 卸売の売上」（取引通貨で小数第 2 位に四捨五入）を売り手の卸売の週の販売費に
+                        1 行ずつ。代理店の受入・代理店から消費者への観測の販売では使わない。
+                        外部チャネルの leaf の ppc_node_cost_rule.csv の basis=revenue の行に表の行が無ければ
+                        issues（revenue_based_cost_on_external_channel_not_booked）
     外部の供給者→       ppc_supplier_cost（外部からの仕入）
     leaf_out→消費者     ppc_market_price。owner がグループなら外部売上、外部チャネルなら「観測」
                         直販の売上比率の費用（vc_sales_cost_rule.csv、G1）は、その販売の週に費目ごとに
@@ -43,6 +48,7 @@ from __future__ import annotations
 import math
 from collections import defaultdict
 from dataclasses import dataclass, field
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Callable, Dict, List, Optional, Tuple
 
 from wom.valuechain import policy as POL
@@ -106,6 +112,16 @@ class Ledger:
         # G1 C3: basis=revenue rows of ppc_node_cost_rule.csv not used here (vc_sales_cost_rule.csv
         # books them at the sale); (node, product, cost_type) -> receipts skipped
         self.ppc_only_node_cost: Dict[tuple, int] = defaultdict(int)
+        # G2 D4: basis=revenue rows of ppc_node_cost_rule.csv on an external channel leaf with no
+        # vc_sales_cost_rule.csv row (nothing books them: the stock there is outside the group).
+        # (node, product, cost_type) -> receipts at the leaf; reported in issues at the end of run()
+        self.ext_revenue_cost_unbooked: Dict[tuple, int] = {}
+        for (node, prod), a in masters.assignment.items():
+            if a.channel_type != "external" or (node, prod) in masters.sales_cost:
+                continue
+            for row in masters.node_cost.get((node, prod), []):
+                if row["basis"] == "revenue":
+                    self.ext_revenue_cost_unbooked[(node, prod, row["cost_type"])] = 0
         self.holding_unset = masters.holding_rate_weekly is None
         self.unvalued_out: Dict[tuple, float] = defaultdict(float)
         # cost issued by a sale whose price is not set (the cost leaves the seller's books,
@@ -232,6 +248,11 @@ class Ledger:
             self._week_end(w)
         if ei < len(events):
             self.issues.append({"issue": "events_after_horizon", "count": len(events) - ei})
+        for (node, prod, ctype), n_rec in sorted(self.ext_revenue_cost_unbooked.items()):
+            self.issues.append({"issue": "revenue_based_cost_on_external_channel_not_booked",
+                                "node": node, "product": prod, "cost_type": ctype, "receipts": n_rec,
+                                "note": "外部チャネルの leaf の basis=revenue の行（PPC）に、"
+                                        "vc_sales_cost_rule.csv の行が無い（Value Chain では計上しない）"})
         return self
 
     # ── shipments ─────────────────────────────────────────────────
@@ -347,6 +368,8 @@ class Ledger:
                            "cogs", scope, b, "sale", ptype, c[0], self.hq, "carried", c[0], c[1], c[2],
                            sf, c[2], sf, rec.valued and priced,
                            "" if priced else "価格が未設定の販売の原価（未評価）")
+            if scope == "external" and ptype == "wholesale":
+                self._distributor_sales_costs(s, w, seller, buyer, amount, ccy)
             # the buyer's side
             bf = buyer.functional_currency
             bhq, bcm, bfn, blc, bm = self._conv(amount, ccy, w, bf, "", f"{ptype} {s.edge} (buyer)")
@@ -397,6 +420,25 @@ class Ledger:
             self._uev(w, rec, "transfer_in", unreal_after[0])
             self._uev(w, rec, "eliminated", unreal_after[1])
         self._edge_costs(s, rec, seller, buyer)
+
+    def _distributor_sales_costs(self, s: Shipment, w, seller, buyer, amount, ccy):
+        """G2 D3: the sales-based costs of a wholesale to an external distributor leaf
+        (vc_sales_cost_rule.csv rows of the receiving leaf, distributor_mdf). One line per row at the
+        wholesale week: rate x the wholesale revenue, rounded half up to 2 decimals in the
+        transaction currency (NaN when the wholesale is not valued); the seller's selling expense."""
+        f = seller.functional_currency
+        for row in self.m.sales_cost.get((s.to, s.product), []):
+            if not row.get("external", False):
+                continue
+            if _isnan(amount):
+                amt = NAN
+            else:
+                amt = float((Decimal(repr(float(row["rate"]))) * Decimal(repr(float(amount))))
+                            .quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+            hq, cm, fn, lc, mth = self._conv(amt, ccy, w, f, "", f"sales cost {row['cost_item']} {s.edge}")
+            self._line(s.ship_id, w, s.product, s.lot_id, seller.entity_id, s.phys_from, buyer.entity_id,
+                       "expense", "selling", ALL, row["ppc_cost_type"], row["cost_item"], amt, ccy, mth,
+                       hq, cm, fn, f, lc, f, True, f"販促の対象：{s.to}")
 
     def _edge_costs(self, s: Shipment, rec: Rec, seller, buyer):
         """freight / insurance / tariff of the physical edge (policy.py)."""
@@ -483,6 +525,8 @@ class Ledger:
                 # cost item, rate x the revenue of this sale, the seller's selling expense of the week.
                 # No price -> NaN (unvalued), like the revenue line.
                 for row in m.sales_cost.get((s.node, s.product), []):
+                    if row.get("external", False):   # G2: booked at the wholesale (_transfer)
+                        continue
                     amt = row["rate"] * amount if not _isnan(amount) else NAN
                     hq, cm, fn, lc, mth = self._conv(amt, ccy or row["currency"], w, f, local,
                                                      f"sales cost {row['cost_item']} {s.node}")
@@ -511,6 +555,10 @@ class Ledger:
             return
         for rec in recs:
             rec.location = s.to
+        if self.ext_revenue_cost_unbooked:
+            for k in self.ext_revenue_cost_unbooked:
+                if k[0] == s.to and k[1] == s.product:
+                    self.ext_revenue_cost_unbooked[k] += 1
         info = self.r.nodes[(s.product, s.to)]
         if info.node_type == "mom":         # production / assembly: one record per lot at the node
             here = self._at(s.product, s.lot_id, s.to)

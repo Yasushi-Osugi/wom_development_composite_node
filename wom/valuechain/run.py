@@ -216,7 +216,12 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
             "ppc_rows_not_used_by_value_chain": [
                 {"node": n, "product": p, "cost_type": t, "receipts_skipped": c}
                 for (n, p, t), c in sorted(led.ppc_only_node_cost.items())],
-            "note": "PPC 用として Value Chain では使わなかった行（vc_sales_cost_rule.csv が販売の週に計上）",
+            "note": ("ppc_node_cost_rule.csv の basis=revenue の行は PPC 用で、Value Chain では使わない。"
+                     "Value Chain は vc_sales_cost_rule.csv の行で計上する：直販の leaf（自社 EC・店舗）は"
+                     "消費者への販売の週に、その leaf の販売費として。外部の代理店の leaf（distributor_mdf）は"
+                     "代理店への卸売の週に、売り手（卸売をした拠点の会社）の販売費として。"
+                     "ppc_rows_not_used_by_value_chain は直販の leaf の受入で使わなかった行の数"
+                     "（外部の代理店の leaf の在庫はグループの外なので、ここには数えない）"),
         }
     if lovem_run:
         checks["lovem"] = compare_with_lovem(records, lovem_run, gs, hashes_before, plugins)

@@ -186,9 +186,14 @@ def test_c1_loads_and_absent_file_is_empty(tmp_path):
                                     ("SG_Store", "COS_Cream"), ("SG_Store", "COS_Serum")]
     assert sum(len(v) for v in m.sales_cost.values()) == 10
     assert _load(_cos(tmp_path / "none", sales=None, delivery="")).sales_cost == {}
-    # the official sample carries the table since stage 6 (same 10 rows)
-    assert {k: [(r["cost_item"], r["rate"]) for r in v] for k, v in _load(COS).sales_cost.items()} == \
+    # the official sample carries the table since stage 6 (same 10 rows for the direct leaves; the 4
+    # distributor_mdf rows of G2 are on the external distributor leaves)
+    off = {k: [(r["cost_item"], r["rate"]) for r in v] for k, v in _load(COS).sales_cost.items()}
+    assert {k: v for k, v in off.items() if not k[0].endswith("_Distributor")} == \
         {k: [(r["cost_item"], r["rate"]) for r in v] for k, v in m.sales_cost.items()}
+    assert {k: v for k, v in off.items() if k[0].endswith("_Distributor")} == \
+        {(n, p): [("distributor_mdf", 0.05)] for n in ("SG_Distributor", "TH_Distributor")
+         for p in ("COS_Serum", "COS_Cream")}
 
 
 @pytest.mark.parametrize("old,new,match", [

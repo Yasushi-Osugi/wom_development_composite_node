@@ -12,6 +12,7 @@
 | warehouse_cost（保管）、sga_cost             | その週の費用                                 |
 | 在庫の保有費用（D-5）                        | その週の費用。独立した項目。率が空欄なら未設定 |
 | 直販の売上比率の費用（vc_sales_cost_rule.csv）| 売り手の、販売の週の販売費（費目ごとに 1 行）|
+| 外部の代理店への卸売の売上比率の費用（vc_sales_cost_rule.csv の external の leaf）| 売り手の、卸売の週の販売費 |
 | 消費者向けの配送・梱包（delivery_packing_cost）| 運賃と同じ（グループから外部へ＝売り手の販売費）|
 
 取引条件（FOB・CIF など）による運賃の負担の分け方は、第 1 回では扱わない。
@@ -54,12 +55,17 @@ EDGE_COST_FAMILY = {"logistics_cost": "freight", "insurance_cost": "insurance",
 # Sales-based costs of a direct sale (vc_sales_cost_rule.csv, G1 C1). Every line is the seller's
 # selling expense of the sale week (kind=expense, scope=selling), whatever its PPC cost type.
 # cost_item -> label. An item not in this table stops the load (no silent default).
+# distributor_mdf (G2 D1): the only item of an external distributor leaf; booked at the wholesale
+# week as the seller's selling expense (rate x the wholesale revenue).
 SALES_COST_ITEMS = {
     "hq_sga_allocation": "販社販管費",
     "payment_platform_fee": "決済・EC 基盤手数料",
     "digital_ad": "デジタル広告費",
     "store_operating": "店舗運営費",
+    "distributor_mdf": "代理店向け販促協賛費（MDF）",
 }
+# the items of an external distributor leaf (G2 D2); every other item is for direct-sales leaves
+EXTERNAL_SALES_COST_ITEMS = ("distributor_mdf",)
 # the PPC cost types the items are summed into (ppc_node_cost_rule.csv)
 SALES_COST_PPC_TYPES = ("sga_cost", "marketing_cost")
 

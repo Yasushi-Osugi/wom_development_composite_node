@@ -8,7 +8,8 @@
     vc_node_assignment.csv   node_id, product_id, entity_id, channel_type, local_currency
     vc_price_rule.csv        edge_id, product_id, price_type, week, price, currency
     vc_sales_cost_rule.csv   （任意、G1）node_id, product_id, cost_item, ppc_cost_type, basis, rate,
-                             currency, note。直販の売上比率の費用の費目（load_sales_cost_rule）
+                             currency, note。直販の売上比率の費用の費目と、外部の代理店への卸売の
+                             MDF（G2、distributor_mdf）（load_sales_cost_rule）
 
 価格の出どころ（1 つの価格は 1 か所だけ）：
     最終市場の価格                   ppc_market_price.csv
@@ -264,7 +265,7 @@ def load_masters(model_dir: str, terminal_moms: Dict[str, List[str]],
         if prod in physical_edges and edge not in physical_edges[prod]:
             raise MasterError(f"vc_price_rule.csv: {edge} is not a physical edge of {prod}")
 
-    sales_cost = load_sales_cost_rule(model_dir, ents, assign, mp, node_cost, edge_cost)
+    sales_cost = load_sales_cost_rule(model_dir, ents, assign, mp, node_cost, edge_cost, price_rules)
 
     return VCMasters(model_dir=model_dir, hq_currency=cfg["hq_currency"],
                      common_currency=cfg["common_currency"],
@@ -280,17 +281,27 @@ SALES_COST_COLS = ("node_id", "product_id", "cost_item", "ppc_cost_type", "basis
 _TOL = 1e-9
 
 
-def load_sales_cost_rule(model_dir, ents, assign, market_price, node_cost, edge_cost) -> Dict[tuple, List[dict]]:
-    """vc_sales_cost_rule.csv（G1 C1。任意）。無ければ {}（今の動き）。
+def load_sales_cost_rule(model_dir, ents, assign, market_price, node_cost, edge_cost,
+                         price_rules=None) -> Dict[tuple, List[dict]]:
+    """vc_sales_cost_rule.csv（G1 C1、G2 D2。任意）。無ければ {}（今の動き）。
 
-    1 行 ＝ 直販の leaf × SKU × 費目。その販売の週に「率 × その販売の売上」を売り手の販売費として
-    1 行ずつ計上する（ledger._consumer）。読み込みで次を確かめ、違えば MasterError：
+    1 行 ＝ leaf × SKU × 費目。leaf の種類で計上のしかたが違う：
+      直販の leaf（own / online）      その販売の週に「率 × その販売の売上」を売り手の販売費として
+                                       1 行ずつ（ledger._consumer）
+      外部の代理店の leaf（external）  その leaf への卸売の週に「率 × その卸売の売上」を売り手の販売費
+                                       として 1 行ずつ（ledger._transfer。費目は distributor_mdf だけ）
+    読み込みで次を確かめ、違えば MasterError：
       - 列がそろっている。ノード・SKU・費目の重複が無い
       - 費目は policy.SALES_COST_ITEMS、ppc_cost_type は sga_cost / marketing_cost、basis は revenue だけ
       - rate は 0 以上 1 以下の数
-      - ノードは直販の leaf（vc_node_assignment.csv の channel_type が own / online、法人がグループ）
-      - currency はその leaf・SKU の市場価格（ppc_market_price.csv）の通貨と同じ
-    C4（二つのファイルのずれ）：行のあるノード・SKU ごとに、
+      - ノードの種類（vc_node_assignment.csv）と費目：
+          channel_type が own / online、法人がグループ → distributor_mdf 以外。currency はその leaf・SKU の
+            市場価格（ppc_market_price.csv）の通貨と同じ
+          channel_type が external、法人が external_channel → distributor_mdf だけ。currency はその leaf に
+            入る区間の卸価格（vc_price_rule.csv、price_type=wholesale）の通貨と同じ。卸価格の行が無ければ止める
+          それ以外のノード → 止める
+      各行の辞書には "external"（外部の代理店の leaf なら True）を付ける。
+    C4（二つのファイルのずれ。どちらの leaf にも同じ規則）：行のあるノード・SKU ごとに、
       1. ppc_cost_type ごとの率の合計 ＝ ppc_node_cost_rule.csv の同じ種類の basis=revenue の行の率
       2. その PPC の行（basis=revenue）の固定額の合計 ＝ 区間 <leaf>->CONSUMER の費用の行の 1 個当たりの
          額（rate ＋ fixed。台帳の _consumer が計上する額）の合計（行が無ければ 0）
@@ -327,19 +338,43 @@ def load_sales_cost_rule(model_dir, ents, assign, market_price, node_cost, edge_
         a = assign.get(k)
         if a is None:
             raise MasterError(f"{where}: no vc_node_assignment.csv row for {node} / {prod}")
-        if a.channel_type not in ("own", "online") or not ents[a.entity_id].is_group:
+        ent = ents[a.entity_id]
+        direct = a.channel_type in ("own", "online") and ent.is_group
+        external = a.channel_type == "external" and ent.kind == "external_channel"
+        ccy = r["currency"].strip()
+        if external:
+            if item not in POL.EXTERNAL_SALES_COST_ITEMS:
+                raise MasterError(f"{where}: cost_item {item!r} is for a direct-sales leaf (own / online); "
+                                  f"{node} / {prod} is an external distributor leaf (entity {a.entity_id}), "
+                                  f"which takes only {list(POL.EXTERNAL_SALES_COST_ITEMS)}")
+            ccys = {c for (edge, p, t), rows in (price_rules or {}).items()
+                    if p == prod and t == "wholesale" and edge.split("->")[-1] == node
+                    for _, _, c in rows}
+            if not ccys:
+                raise MasterError(f"{where}: no wholesale price (vc_price_rule.csv, price_type=wholesale) "
+                                  f"on an edge into {node} / {prod}; the distributor_mdf rate needs the "
+                                  f"wholesale revenue")
+            if ccys != {ccy}:
+                raise MasterError(f"{where}: currency {ccy!r} differs from the wholesale price currency "
+                                  f"{sorted(ccys)} of the edge into {node} / {prod}")
+        elif direct:
+            if item in POL.EXTERNAL_SALES_COST_ITEMS:
+                raise MasterError(f"{where}: cost_item {item!r} is only for an external distributor leaf "
+                                  f"(channel_type 'external', entity kind external_channel); {node} / {prod} "
+                                  f"is a direct-sales leaf (channel_type {a.channel_type!r})")
+            ccys = {c for _, _, c in market_price.get(k, [])}
+            if not ccys:
+                raise MasterError(f"{where}: no ppc_market_price.csv row for {node} / {prod}")
+            if ccys != {ccy}:
+                raise MasterError(f"{where}: currency {ccy!r} differs from the market price currency "
+                                  f"{sorted(ccys)} of {node} / {prod}")
+        else:
             raise MasterError(f"{where}: {node} / {prod} is not a direct-sales leaf (channel_type "
                               f"{a.channel_type!r}, entity {a.entity_id}); the table is for own / online "
-                              f"leaves of a group entity")
-        ccys = {c for _, _, c in market_price.get(k, [])}
-        if not ccys:
-            raise MasterError(f"{where}: no ppc_market_price.csv row for {node} / {prod}")
-        ccy = r["currency"].strip()
-        if ccys != {ccy}:
-            raise MasterError(f"{where}: currency {ccy!r} differs from the market price currency "
-                              f"{sorted(ccys)} of {node} / {prod}")
+                              f"leaves of a group entity, or external leaves of an external_channel entity "
+                              f"(distributor_mdf)")
         out.setdefault(k, []).append({"cost_item": item, "ppc_cost_type": ptype, "rate": rate,
-                                      "currency": ccy, "note": r.get("note", "")})
+                                      "currency": ccy, "note": r.get("note", ""), "external": external})
 
     # ── C4: the two files must agree ──
     for (node, prod), rows in out.items():
