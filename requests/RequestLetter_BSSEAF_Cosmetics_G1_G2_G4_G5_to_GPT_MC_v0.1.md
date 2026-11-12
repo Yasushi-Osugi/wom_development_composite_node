@@ -4,7 +4,7 @@
 - 依頼者：大杉
 - 引継先：Claude君（設計担当）
 - 日付：2026-11-08
-- 状態：依頼書ドラフト
+- 状態：**役目を終えた（2026-11-12）**。G1 はこの依頼書から業務定義・実装まで完了。G2 は個別の依頼書 `RequestLetter_BSSEAF_Cosmetics_G2_MDF_to_GPT_MC_v0.1.md`、G4・G5 は個別の依頼書 `RequestLetter_BSSEAF_Cosmetics_G4_G5_TariffFreight_to_GPT_MC_v0.1.md` に置き換わった。G4・G5 はそちらに従うこと
 - 参照基準：`wom-v1r6m0_BS-SEAF`、コミット `d91846819e05b074013975917cbd6c219a558505`
 
 ## 1. 依頼の目的と最初の成果物
