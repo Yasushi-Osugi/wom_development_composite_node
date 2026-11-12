@@ -1,0 +1,3 @@
+edge_id,product_id,goods_value_basis,goods_value_per_unit,currency,freight_in_goods_value,insurance_added_per_unit,duty_week,note
+WH_JP_Released->DC_TH,COS_Cream,explicit,5070,JPY,0,0,receipt,G4 trial: value 5070/unit incl. freight
+WH_JP_Released->DC_TH,COS_Serum,explicit,6070,JPY,0,0,receipt,G4 trial: value 6070/unit incl. freight

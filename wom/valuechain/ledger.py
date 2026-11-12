@@ -30,6 +30,14 @@
                         「率 × 売上」を売り手の販売費として 1 行ずつ。表のあるノードでは
                         ppc_node_cost_rule.csv の basis=revenue の行を PPC 用として使わない
 
+関税の課税価格（G4、vc_customs_valuation_rule.csv に載った区間・SKU だけ）
+    出荷の週に「課税価格 ＝ 評価用の商品価額 ＋ 価額に含まれない運賃（その区間の logistics_cost、1 回）
+    ＋ 保険・その他」と「税額 ＝ 課税価格 × tariff_rate（取引通貨で小数第 2 位に四捨五入）」を決めて
+    おき、受入の週（_receipt。通関の確定の週の代用）に受け手の在庫原価として関税の行を 1 行立てる。
+    税額 0 なら行を立てない。どちらでも課税価格の記録（customs_rows → vc_customs_valuation.csv）を
+    1 行残す。計画の期間の後に着く出荷は計上せず status=after_horizon。表に載らない区間は今のまま
+    （出荷の週に ppc_tariff_rule.csv の tariff_basis × 率）。
+
 費用の分け方は policy.py（1 か所）。為替は fx.py（取引の週の為替。在庫原価は取得時の換算額のまま）。
 未評価（NaN）の明細は、その lot の記録を「未評価」にし、その後の明細にも印を付ける（合計に 0 として
 足さない）。
@@ -129,6 +137,11 @@ class Ledger:
         self.unpriced_issue: Dict[tuple, float] = defaultdict(float)
         # internal unrealized profit events: (w, owner, product, loc_kind, loc, event) -> [hq, common]
         self.unreal: Dict[tuple, List[float]] = defaultdict(lambda: [0.0, 0.0])
+        # G4: customs valuations decided at the ship week, booked at the receipt week.
+        # (ship_id, rid) -> valuation dict; customs_rows = vc_customs_valuation.csv rows
+        self.customs_pending: Dict[tuple, dict] = {}
+        self.customs_rows: List[dict] = []
+        self.customs_unvalued: Dict[tuple, dict] = {}   # (edge, product, reason) -> {shipments}
 
     # ── internal unrealized profit (round 2) ───────────────────────
     def _u(self, rec) -> Optional[Tuple[float, float]]:
@@ -248,6 +261,14 @@ class Ledger:
             self._week_end(w)
         if ei < len(events):
             self.issues.append({"issue": "events_after_horizon", "count": len(events) - ei})
+        for key in sorted(self.customs_pending, key=lambda k: (self.customs_pending[k]["ship_week_index"], k)):
+            v = self.customs_pending[key]          # not received in the horizon: no duty booked
+            self.customs_rows.append(self._customs_row(v, "", "", "after_horizon"))
+        self.customs_pending.clear()
+        for (edge, prod, reason), x in sorted(self.customs_unvalued.items()):
+            self.issues.append({"issue": "customs_value_unvalued", "edge": edge, "product": prod,
+                                "reason": reason, "shipments": x["shipments"],
+                                "note": "課税価格が未評価（関税の行は NaN、lot は未評価）"})
         for (node, prod, ctype), n_rec in sorted(self.ext_revenue_cost_unbooked.items()):
             self.issues.append({"issue": "revenue_based_cost_on_external_channel_not_booked",
                                 "node": node, "product": prod, "cost_type": ctype, "receipts": n_rec,
@@ -463,7 +484,11 @@ class Ledger:
                 ccy = row["currency"]
             items.append((fam, row["cost_type"], amt, ccy))
         t = m.tariff.get((s.edge, s.product))
-        if t is not None:
+        cv_rule = m.customs_valuation.get((s.edge, s.product))
+        if t is not None and cv_rule is not None:
+            # G4: valued now, booked at the receipt week (_receipt -> _book_customs)
+            self.customs_pending[(s.ship_id, rec.rid)] = self._customs_value(s, rec, seller, buyer, t, cv_rule)
+        elif t is not None:
             basis = rec.purchase if t["basis"] == "material_cost" else rec.tp
             amt = basis[0] * t["rate"] if not _isnan(basis[0]) else NAN
             items.append(("tariff", "tariff_cost", amt, basis[1] or seller.functional_currency))
@@ -483,6 +508,88 @@ class Ledger:
                 hq, cm, fn, lc, mth = self._conv(amt, ccy, w, f, "", f"{ctype} {s.edge}")
                 self._line(s.ship_id, w, s.product, s.lot_id, seller.entity_id, s.phys_from, buyer.entity_id,
                            "expense", "selling", ALL, fam, ctype, amt, ccy, mth, hq, cm, fn, f, lc, f, True)
+
+    # ── customs value (G4) ────────────────────────────────────────
+    @staticmethod
+    def _duty(cv, rate):
+        """cv x rate in Decimal, rounded half up to 2 decimals (like the G2 MDF)."""
+        return float((Decimal(repr(float(cv))) * Decimal(repr(float(rate))))
+                     .quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+
+    def _customs_value(self, s: Shipment, rec: Rec, seller, buyer, t, rule) -> dict:
+        """Customs value and duty of one shipment on a table edge (amounts in the customs value
+        currency; freight converted at the ship week's rate)."""
+        wk = self.labels[s.week]
+        status = "valued"
+        if rule["goods_value_basis"] == "transfer_price":
+            goods, ccy = rec.tp[0], (rec.tp[1] or seller.functional_currency)
+            if _isnan(goods):
+                status = "unvalued_goods_value"
+        else:
+            goods, ccy = rule["goods_value_per_unit"] * s.units, rule["currency"]
+        freight = 0.0
+        if not rule["freight_in_goods_value"]:
+            for row in self.m.edge_cost.get((s.edge, s.product), []):
+                if row["cost_type"] != "logistics_cost":
+                    continue
+                amt = (row["rate"] * 1 + row["fixed"]) * s.units
+                r, _ = self.fx.rate(row["currency"], ccy, wk, f"customs value freight {s.edge}")
+                if math.isnan(r):
+                    freight = NAN
+                    if status == "valued":
+                        status = "unvalued_fx"
+                    break
+                freight += amt * r
+        ins_pu = rule["insurance_added_per_unit"]
+        if ins_pu is None:
+            insurance = NAN
+            if status == "valued":
+                status = "unvalued_insurance"
+        else:
+            insurance = ins_pu * s.units
+        cv = goods + freight + insurance
+        rate = t["rate"]
+        duty = NAN if _isnan(cv) else self._duty(cv, rate)
+        if status != "valued":
+            x = self.customs_unvalued.setdefault((s.edge, s.product, status), {"shipments": 0})
+            x["shipments"] += 1
+        return {"ship_id": s.ship_id, "lot_id": s.lot_id, "product": s.product, "edge": s.edge,
+                "ship_week_index": s.week, "ship_week": wk, "entity": buyer.entity_id,
+                "seller": seller.entity_id, "units": s.units,
+                "goods_value_basis": rule["goods_value_basis"], "goods_value": goods,
+                "freight_added": freight, "insurance_added": insurance, "customs_value": cv,
+                "currency": ccy, "tariff_rate": rate, "duty": duty, "status": status}
+
+    @staticmethod
+    def _customs_row(v, duty_week, duty_line_id, status) -> dict:
+        return {"ship_id": v["ship_id"], "lot_id": v["lot_id"], "product": v["product"], "edge": v["edge"],
+                "ship_week": v["ship_week"], "duty_week": duty_week, "entity": v["entity"],
+                "units": v["units"], "goods_value_basis": v["goods_value_basis"],
+                "goods_value": v["goods_value"], "freight_added": v["freight_added"],
+                "insurance_added": v["insurance_added"], "customs_value": v["customs_value"],
+                "currency": v["currency"], "tariff_rate": v["tariff_rate"], "duty": v["duty"],
+                "duty_line_id": duty_line_id, "status": status}
+
+    def _book_customs(self, s: Shipment, rec: Rec, v: dict):
+        """G4 D2: the duty at the receipt week (stands for the customs clearance week): one
+        acquisition line on the importer's inventory cost unless the duty is 0; always one
+        customs valuation row."""
+        w = s.arrival_week
+        duty, ccy = v["duty"], v["currency"]
+        line_id = ""
+        if _isnan(duty) or duty != 0.0:
+            buyer = self._ent(v["entity"])
+            f = buyer.functional_currency
+            hq, cm, fn, lc, mth = self._conv(duty, ccy, w, f, "", f"tariff_cost {s.edge}")
+            cv = v["customs_value"]
+            cv_s = "未評価" if _isnan(cv) else f"{cv:,.2f} {ccy}"
+            self._line(s.ship_id, w, s.product, s.lot_id, buyer.entity_id, s.to, v["seller"],
+                       "acquisition", "internal", ALL, "tariff", "tariff_cost", duty, ccy, mth,
+                       hq, cm, fn, f, lc, f, rec.valued,
+                       f"課税価格 {cv_s} × {v['tariff_rate']:g}（受入の週で代用）")
+            line_id = self._lid
+            self._add_cost(rec, BASES, hq, cm, fn, w)
+        self.customs_rows.append(self._customs_row(v, self.labels[w], line_id, v["status"]))
 
     def _consumer(self, s: Shipment):
         m = self.m
@@ -555,6 +662,9 @@ class Ledger:
             return
         for rec in recs:
             rec.location = s.to
+            v = self.customs_pending.pop((s.ship_id, rec.rid), None)
+            if v is not None:
+                self._book_customs(s, rec, v)
         if self.ext_revenue_cost_unbooked:
             for k in self.ext_revenue_cost_unbooked:
                 if k[0] == s.to and k[1] == s.product:

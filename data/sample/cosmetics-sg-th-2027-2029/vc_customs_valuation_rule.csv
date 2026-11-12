@@ -1,0 +1,3 @@
+edge_id,product_id,goods_value_basis,goods_value_per_unit,currency,freight_in_goods_value,insurance_added_per_unit,duty_week,note
+WH_JP_Released->DC_TH,COS_Cream,transfer_price,,,0,0,receipt,G4: valuation value = transfer price 5000/unit (excl. freight); freight to Thailand 70/unit added once; insurance/other explicit 0 (model assumption; not confirmed by documents)
+WH_JP_Released->DC_TH,COS_Serum,transfer_price,,,0,0,receipt,G4: valuation value = transfer price 6000/unit (excl. freight); freight to Thailand 70/unit added once; insurance/other explicit 0 (model assumption; not confirmed by documents)

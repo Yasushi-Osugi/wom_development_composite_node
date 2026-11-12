@@ -1,0 +1,275 @@
+{
+ "T0": {
+  "B1": {
+   "ship_id": "ship:COS_Cream:OUT:dad:WH_JP_Released:COS_Cream:120:12",
+   "ship_week": "2028-W52",
+   "arrival_week": "2029-W02",
+   "dc_th_ship_week": "2029-W02",
+   "ok": true
+  },
+  "B2": {
+   "lines": 689,
+   "sum": 0.0,
+   "at_ship_week": true,
+   "ok": true
+  },
+  "B3": {
+   "lot_lines": [
+    {
+     "week": "2028-W52",
+     "amt_hq": 36000.0
+    }
+   ],
+   "vc_total": 27612000.0,
+   "ppc_total": 27612000.0,
+   "ok": true
+  },
+  "B4": {
+   "cogs_group": 49056.0,
+   "ok": true
+  }
+ },
+ "T1": {
+  "V1": {
+   "goods_value": 120000.0,
+   "freight_added": 1680.0,
+   "insurance_added": 0.0,
+   "customs_value": 121680.0,
+   "duty": 0.0,
+   "duty_week": "2029-W02",
+   "tariff_lines": 0,
+   "ok": true
+  },
+  "V8": {
+   "rows": 689,
+   "customs_value_total": 93197520.0,
+   "duty_total": 0.0,
+   "edge_tariff_lines": 0,
+   "ppc_tariff": 0.0,
+   "ok": true
+  },
+  "V2": {
+   "lines": [
+    {
+     "line_id": 68647,
+     "week": "2029-W02",
+     "entity": "E_JP",
+     "node": "DC_TH",
+     "kind": "acquisition",
+     "basis": "v1,entity,group",
+     "amt_hq": 36504.0,
+     "src_id": "ship:COS_Cream:OUT:dad:WH_JP_Released:COS_Cream:120:12",
+     "note": "課税価格 121,680.00 JPY × 0.3（受入の週で代用）"
+    }
+   ],
+   "duty_line_id": "68647",
+   "lines_at_ship_or_transit_week": 0,
+   "ok": true
+  },
+  "V3": {
+   "cogs": {
+    "entity": 85560.0,
+    "group": 85560.0
+   },
+   "ok": true
+  },
+  "V6": {
+   "lines": 689,
+   "total": 27959256.0,
+   "split": {
+    "COS_Cream": 10914696.0,
+    "COS_Serum": 17044560.0
+   },
+   "customs_value_total": 93197520.0,
+   "customs_value_split": {
+    "COS_Cream": 36382320.0,
+    "COS_Serum": 56815200.0
+   },
+   "duty_equals_cv_x_rate_all": true,
+   "rate_all_0.3": true,
+   "ok": true
+  },
+  "V6_detail": {
+   "joined": 689,
+   "only_lines": 0,
+   "only_records": 0,
+   "week_eq_duty_week": true,
+   "duty_week_eq_arrival": true,
+   "entity_eq": true,
+   "amount_eq": true,
+   "line_id_eq": true,
+   "ok": true
+  },
+  "V7": {
+   "ppc_tariff": 27612000.0,
+   "ppc_rows": 208,
+   "vc_ppc_tariff_row": {
+    "item": "費用 関税",
+    "ppc": 27612000.0,
+    "ledger_v3": 27959256.0,
+    "difference_ledger_minus_ppc": 347256.0,
+    "ledger_unvalued_lines": 0,
+    "explanation": "PPC は販売された lot の費用を販売週の為替でまとめて計上。台帳は発生した週（助走週を含む）の為替で、グループの外から得た原価・在庫原価・費用として計上（全期間の合計を比べる）。台帳の値は金額の分かる明細の合計（未評価の lot に付いた運賃・関税も含む）"
+   },
+   "profit_row": {
+    "item": "利益 合計（全期間、消去前）",
+    "ppc": 604237608.0,
+    "ledger_v3": 603890352.0,
+    "difference_ledger_minus_ppc": -347256.0,
+    "ledger_unvalued_lines": 0,
+    "explanation": "差は上の項目（② の売上、未評価、費用の計上のしかた）の合計"
+   },
+   "profit_row_t0_30": {
+    "item": "利益 合計（全期間、消去前）",
+    "ppc": 604237608.0,
+    "ledger_v3": 604237608.0,
+    "difference_ledger_minus_ppc": 0.0,
+    "ledger_unvalued_lines": 0,
+    "explanation": "差は上の項目（② の売上、未評価、費用の計上のしかた）の合計"
+   },
+   "tariff_diff": 347256.0,
+   "profit_diff_change_from_t0_30": -347256.0,
+   "ledger_profit_change": -347256.0,
+   "ok": true
+  },
+  "V4": {
+   "customs_value": 121680.0,
+   "duty": 36504.0,
+   "freight_added": 0.0,
+   "same_as_a30_all": true,
+   "ok": true
+  },
+  "V5": {
+   "customs_value": 123360.0,
+   "duty": 37008.0,
+   "script_judgement": "期待（121,680）と違う",
+   "ok": "True"
+  },
+  "V9": {
+   "customs_value_all_nan": true,
+   "status": {
+    "unvalued_insurance": 689
+   },
+   "edge_tariff_lines": 689,
+   "lines_nan": true,
+   "lines_valued": 0,
+   "issues": [
+    {
+     "issue": "customs_value_unvalued",
+     "edge": "WH_JP_Released->DC_TH",
+     "product": "COS_Cream",
+     "reason": "unvalued_insurance",
+     "shipments": 299,
+     "note": "課税価格が未評価（関税の行は NaN、lot は未評価）"
+    },
+    {
+     "issue": "customs_value_unvalued",
+     "edge": "WH_JP_Released->DC_TH",
+     "product": "COS_Serum",
+     "reason": "unvalued_insurance",
+     "shipments": 390,
+     "note": "課税価格が未評価（関税の行は NaN、lot は未評価）"
+    }
+   ],
+   "ok": true
+  },
+  "V10": {
+   "same": {
+    "vc_money_lines.csv.gz": true,
+    "vc_customs_valuation.csv": true,
+    "vc_inventory_weekly.csv": true
+   },
+   "ok": true
+  },
+  "V11a": {
+   "files": {
+    "vc_checks.json": true,
+    "vc_conservation.csv": true,
+    "vc_cost_policy.csv": true,
+    "vc_edge_flows.csv": true,
+    "vc_fx_log.csv": true,
+    "vc_inventory_weekly.csv": true,
+    "vc_missing_prices.csv": true,
+    "vc_money_lines.csv.gz": true,
+    "vc_observation_weekly.csv": true,
+    "vc_ppc_comparison.csv": true,
+    "vc_price_log.csv": true,
+    "vc_shipments.csv.gz": true,
+    "vc_unrealized_weekly.csv": true,
+    "vc_v1_weekly.csv": true,
+    "vc_v2_weekly.csv": true,
+    "vc_v3_weekly.csv": true
+   },
+   "extra_files": [],
+   "ok": true
+  },
+  "V11b": {
+   "t0_lines": 104962,
+   "dropped": 689,
+   "dropped_all_zero": true,
+   "a0_lines": 104273,
+   "ok": true
+  },
+  "V11c": {
+   "pairs": {
+    "t0_0 vs t1_sample": {
+     "ppc_event_ledger.csv": true,
+     "ppc_kpi_summary.json": true,
+     "ppc_lot_reconciliation.csv": true,
+     "ppc_node_pl_summary.csv": true,
+     "ppc_node_week_summary.csv": true,
+     "ppc_profit_zone_summary.csv": true,
+     "ppc_warnings.csv": true
+    },
+    "t0_0 vs t1_a0": {
+     "ppc_event_ledger.csv": true,
+     "ppc_kpi_summary.json": true,
+     "ppc_lot_reconciliation.csv": true,
+     "ppc_node_pl_summary.csv": true,
+     "ppc_node_week_summary.csv": true,
+     "ppc_profit_zone_summary.csv": true,
+     "ppc_warnings.csv": true
+    },
+    "t0_30 vs t1_a30": {
+     "ppc_event_ledger.csv": true,
+     "ppc_kpi_summary.json": true,
+     "ppc_lot_reconciliation.csv": true,
+     "ppc_node_pl_summary.csv": true,
+     "ppc_node_week_summary.csv": true,
+     "ppc_profit_zone_summary.csv": true,
+     "ppc_warnings.csv": true
+    },
+    "t0_30 vs t1_b30": {
+     "ppc_event_ledger.csv": true,
+     "ppc_kpi_summary.json": true,
+     "ppc_lot_reconciliation.csv": true,
+     "ppc_node_pl_summary.csv": true,
+     "ppc_node_week_summary.csv": true,
+     "ppc_profit_zone_summary.csv": true,
+     "ppc_warnings.csv": true
+    }
+   },
+   "ok": true
+  }
+ },
+ "summary": {
+  "T0.B1": true,
+  "T0.B2": true,
+  "T0.B3": true,
+  "T0.B4": true,
+  "T1.V1": true,
+  "T1.V8": true,
+  "T1.V2": true,
+  "T1.V3": true,
+  "T1.V6": true,
+  "T1.V6_detail": true,
+  "T1.V7": true,
+  "T1.V4": true,
+  "T1.V5": true,
+  "T1.V9": true,
+  "T1.V10": true,
+  "T1.V11a": true,
+  "T1.V11b": true,
+  "T1.V11c": true
+ }
+}

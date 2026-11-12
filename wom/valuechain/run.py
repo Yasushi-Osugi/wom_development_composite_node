@@ -26,6 +26,7 @@
   vc_ppc_comparison.csv    PPC との対応
   vc_edge_flows.csv        区間 × 週 × lot 数（World Map 用）
   vc_cost_policy.csv       費用の分け方の表（policy.py の写し）
+  vc_customs_valuation.csv 課税価格の記録（G4。vc_customs_valuation_rule.csv があるときだけ）
   vc_checks.json           照合の結果
   ppc/                     同じ計画の PPC の出力（今の PPC のまま）
 """
@@ -50,6 +51,10 @@ from wom.valuechain.records import build_records, edge_flows
 from wom.valuechain.views import build_views, check_conservation, check_external_sales, check_unrealized
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+CUSTOMS_COLS = ["ship_id", "lot_id", "product", "edge", "ship_week", "duty_week", "entity", "units",
+                "goods_value_basis", "goods_value", "freight_added", "insurance_added", "customs_value",
+                "currency", "tariff_rate", "duty", "duty_line_id", "status"]
 
 SHIP_COLS = ["plan_id", "ship_id", "product", "lot_id", "item", "node", "node_id", "phys_from", "to",
              "edge", "kind", "ship_week_index", "ship_week", "arrival_week_index", "arrival_week",
@@ -223,6 +228,10 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
                      "ppc_rows_not_used_by_value_chain は直販の leaf の受入で使わなかった行の数"
                      "（外部の代理店の leaf の在庫はグループの外なので、ここには数えない）"),
         }
+    if masters.customs_valuation:
+        cvdf = pd.DataFrame(led.customs_rows, columns=CUSTOMS_COLS)
+        cvdf.to_csv(os.path.join(out_dir, "vc_customs_valuation.csv"), index=False)
+        checks["customs_valuation"] = customs_checks(cvdf, masters)
     if lovem_run:
         checks["lovem"] = compare_with_lovem(records, lovem_run, gs, hashes_before, plugins)
     with open(os.path.join(out_dir, "vc_checks.json"), "w", encoding="utf-8") as f:
@@ -246,6 +255,28 @@ def run_valuechain(model_dir: str, out_dir: str, lovem_run: Optional[str] = None
         json.dump(info, f, ensure_ascii=False, indent=1, default=str)
     return {"info": info, "checks": checks, "views": views, "ledger": led, "records": records,
             "ppc_comparison": ppc_cmp}
+
+
+def customs_checks(cvdf: pd.DataFrame, masters) -> dict:
+    """G4 D3: counts and totals of the customs valuation records (by currency)."""
+    tot = {}
+    for ccy, g in cvdf.groupby("currency"):
+        tot[ccy] = {"customs_value": float(g["customs_value"].sum(skipna=False)),
+                    "duty": float(g["duty"].sum(skipna=False)),
+                    "duty_lines": int((g["duty_line_id"].astype(str) != "").sum())}
+    return {
+        "file": "vc_customs_valuation_rule.csv",
+        "edges": [{"edge": e, "product": p, **{k: v for k, v in r.items() if k != "note"}}
+                  for (e, p), r in sorted(masters.customs_valuation.items())],
+        "rows": int(len(cvdf)),
+        "by_status": {k: int(v) for k, v in cvdf["status"].value_counts().sort_index().items()},
+        "after_horizon_not_booked": int((cvdf["status"] == "after_horizon").sum()),
+        "totals_by_currency": tot,
+        "note": ("表に載った区間・SKU では、Value Chain は ppc_tariff_rule.csv の tariff_basis を使わない"
+                 "（tariff_rate だけを使う。tariff_basis は PPC が使う）。課税価格 ＝ 評価用の商品価額 ＋ "
+                 "価額に含まれない運賃 ＋ 保険・その他。関税は受入の週（通関の確定の週の代用）に受け手の"
+                 "在庫原価として計上し、税額 0 の出荷には関税の行を立てない（この記録だけ）"),
+    }
 
 
 def _write_shipments(records, path):

@@ -10,6 +10,10 @@
     vc_sales_cost_rule.csv   （任意、G1）node_id, product_id, cost_item, ppc_cost_type, basis, rate,
                              currency, note。直販の売上比率の費用の費目と、外部の代理店への卸売の
                              MDF（G2、distributor_mdf）（load_sales_cost_rule）
+    vc_customs_valuation_rule.csv （任意、G4）edge_id, product_id, goods_value_basis,
+                             goods_value_per_unit, currency, freight_in_goods_value,
+                             insurance_added_per_unit, duty_week, note。関税の課税価格の決め方
+                             （load_customs_valuation_rule）
 
 価格の出どころ（1 つの価格は 1 か所だけ）：
     最終市場の価格                   ppc_market_price.csv
@@ -86,6 +90,9 @@ class VCMasters:
     # vc_sales_cost_rule.csv (G1 C1): (leaf, product) -> [{cost_item, ppc_cost_type, rate, currency, note}]
     # Empty when the file is absent (the ledger then behaves as before).
     sales_cost: Dict[Tuple[str, str], List[dict]] = field(default_factory=dict)
+    # vc_customs_valuation_rule.csv (G4 D1): (edge, product) -> rule dict. Empty when the file is
+    # absent (the tariff is then computed as before: ppc_tariff_rule.csv's basis x rate at the ship week).
+    customs_valuation: Dict[Tuple[str, str], dict] = field(default_factory=dict)
 
     # ── lookups ──────────────────────────────────────────────────────
     def entity_of(self, node: str, product: str) -> Entity:
@@ -266,6 +273,7 @@ def load_masters(model_dir: str, terminal_moms: Dict[str, List[str]],
             raise MasterError(f"vc_price_rule.csv: {edge} is not a physical edge of {prod}")
 
     sales_cost = load_sales_cost_rule(model_dir, ents, assign, mp, node_cost, edge_cost, price_rules)
+    customs = load_customs_valuation_rule(model_dir, ents, assign, tariff, edge_cost, physical_edges)
 
     return VCMasters(model_dir=model_dir, hq_currency=cfg["hq_currency"],
                      common_currency=cfg["common_currency"],
@@ -273,7 +281,7 @@ def load_masters(model_dir: str, terminal_moms: Dict[str, List[str]],
                      holding_rate_weekly=holding, entities=ents, assignment=assign,
                      price_rules=price_rules, market_price=mp, supplier_cost=sc,
                      node_cost=node_cost, edge_cost=edge_cost, tariff=tariff, transfer_price=tp,
-                     sales_cost=sales_cost)
+                     sales_cost=sales_cost, customs_valuation=customs)
 
 
 SALES_COST_FILE = "vc_sales_cost_rule.csv"
@@ -404,4 +412,98 @@ def load_sales_cost_rule(model_dir, ents, assign, market_price, node_cost, edge_
                               f"a fixed amount of {ppc_fixed:g} per unit, but the {node}->CONSUMER rows of "
                               f"ppc_edge_cost_rule.csv add up to {edge_fixed:g} (write the delivery / packing "
                               f"cost on that edge)")
+    return out
+
+
+CUSTOMS_FILE = "vc_customs_valuation_rule.csv"
+CUSTOMS_COLS = ("edge_id", "product_id", "goods_value_basis", "goods_value_per_unit", "currency",
+                "freight_in_goods_value", "insurance_added_per_unit", "duty_week", "note")
+CUSTOMS_GOODS_BASES = ("transfer_price", "explicit")
+CUSTOMS_DUTY_WEEKS = ("receipt",)
+
+
+def load_customs_valuation_rule(model_dir, ents, assign, tariff, edge_cost,
+                                physical_edges) -> Dict[tuple, dict]:
+    """vc_customs_valuation_rule.csv（G4 D1。任意）。無ければ {}（関税は今のまま）。
+
+    1 行 ＝ 物理の区間 × SKU。その区間の関税を
+        課税価格 ＝ 評価用の商品価額 ＋ 価額に含まれない運賃（1 回）＋ 保険・その他
+        税額     ＝ 課税価格 × ppc_tariff_rule.csv の tariff_rate
+    で計算し、受け手の受入の週に計上する（ledger）。読み込みで次を確かめ、違えば MasterError：
+      - 列がそろっている。区間・SKU の重複が無い
+      - 物理の区間である。ppc_tariff_rule.csv に同じ区間・SKU の行がある（税率はそちら）
+      - 受け手のノードの法人がグループの法人（輸入する法人の在庫原価に計上するため）
+      - goods_value_basis は transfer_price / explicit。explicit なら goods_value_per_unit（0 以上の数）
+        と currency が要る。transfer_price なら goods_value_per_unit は空欄
+      - freight_in_goods_value は 0 / 1。0（価額は運賃別）なら、その区間の ppc_edge_cost_rule.csv に
+        logistics_cost の行が要る（足す運賃が無いのに 0 として扱わない）
+      - insurance_added_per_unit は空欄（未確認 → 課税価格は未評価）か 0 以上の数（明示の 0 を書く）
+      - duty_week は receipt だけ（通関の確定の週は表せないので受入の週で代用。2026-11-12 の決定）
+    """
+    df = _read(model_dir, CUSTOMS_FILE, required=False)
+    if df is None:
+        return {}
+    fn = CUSTOMS_FILE
+    miss = [c for c in CUSTOMS_COLS if c not in df.columns]
+    if miss:
+        raise MasterError(f"{fn}: missing columns {miss} (needs {list(CUSTOMS_COLS)})")
+    out: Dict[tuple, dict] = {}
+    for i, r in enumerate(df.to_dict("records"), start=2):
+        where = f"{fn} line {i}"
+        edge, prod = r["edge_id"].strip(), r["product_id"].strip()
+        k = (edge, prod)
+        if k in out:
+            raise MasterError(f"{where}: {edge} / {prod} written twice (one row per edge x SKU)")
+        if prod in physical_edges and edge not in physical_edges[prod]:
+            raise MasterError(f"{where}: {edge} is not a physical edge of {prod} "
+                              f"(write the edge as '<from node>-><to node>' of the planning tree)")
+        if "->" not in edge:
+            raise MasterError(f"{where}: edge_id {edge!r} is not '<from node>-><to node>'")
+        if k not in tariff:
+            raise MasterError(f"{where}: ppc_tariff_rule.csv has no row for {edge} / {prod} "
+                              f"(the tariff rate is read from there; add the row)")
+        dst = edge.split("->")[-1]
+        a = assign.get((dst, prod))
+        if a is None or not ents[a.entity_id].is_group:
+            raise MasterError(f"{where}: the receiving node {dst} / {prod} is not held by a group entity "
+                              f"({a.entity_id if a else 'no vc_node_assignment.csv row'}); the duty is "
+                              f"booked as the importer's inventory cost")
+        basis = r["goods_value_basis"].strip()
+        if basis not in CUSTOMS_GOODS_BASES:
+            raise MasterError(f"{where}: goods_value_basis {basis!r} not in {CUSTOMS_GOODS_BASES}")
+        gv_raw, ccy = r["goods_value_per_unit"].strip(), r["currency"].strip()
+        if basis == "explicit":
+            if gv_raw == "" or ccy == "":
+                raise MasterError(f"{where}: goods_value_basis=explicit needs goods_value_per_unit and "
+                                  f"currency (the value per unit used for the customs value)")
+            gv = _num(gv_raw, f"{where} goods_value_per_unit")
+            if gv < 0:
+                raise MasterError(f"{where}: goods_value_per_unit {gv} must be 0 or more")
+        else:
+            if gv_raw != "":
+                raise MasterError(f"{where}: goods_value_basis=transfer_price takes the lot's transfer price; "
+                                  f"leave goods_value_per_unit blank (or use goods_value_basis=explicit)")
+            gv = None
+        fig = r["freight_in_goods_value"].strip()
+        if fig not in ("0", "1"):
+            raise MasterError(f"{where}: freight_in_goods_value {fig!r} must be 0 (the value excludes the "
+                              f"freight: add it) or 1 (the value includes it: add nothing)")
+        if fig == "0" and not any(x["cost_type"] == "logistics_cost" for x in edge_cost.get(k, [])):
+            raise MasterError(f"{where}: freight_in_goods_value=0 but ppc_edge_cost_rule.csv has no "
+                              f"logistics_cost row for {edge} / {prod} (no freight to add; write the "
+                              f"freight row, or set freight_in_goods_value=1)")
+        ins_raw = r["insurance_added_per_unit"].strip()
+        if ins_raw == "":
+            ins = None                           # not confirmed -> the customs value is unvalued
+        else:
+            ins = _num(ins_raw, f"{where} insurance_added_per_unit")
+            if ins < 0:
+                raise MasterError(f"{where}: insurance_added_per_unit {ins} must be 0 or more")
+        dw = r["duty_week"].strip()
+        if dw not in CUSTOMS_DUTY_WEEKS:
+            raise MasterError(f"{where}: duty_week {dw!r}; only {CUSTOMS_DUTY_WEEKS} is supported "
+                              f"(the receipt week stands for the customs clearance week)")
+        out[k] = {"goods_value_basis": basis, "goods_value_per_unit": gv, "currency": ccy,
+                  "freight_in_goods_value": fig == "1", "insurance_added_per_unit": ins,
+                  "duty_week": dw, "note": r.get("note", "")}
     return out

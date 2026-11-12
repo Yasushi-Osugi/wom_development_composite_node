@@ -1,0 +1,2 @@
+ship_id,lot_id,product,edge,ship_week,duty_week,entity,units,goods_value_basis,goods_value,freight_added,insurance_added,customs_value,currency,tariff_rate,duty,duty_line_id,status
+ship:COS_Cream:OUT:dad:WH_JP_Released:COS_Cream:120:12,COS_Cream:TH_Distributor:2029-W03:00003,COS_Cream,WH_JP_Released->DC_TH,2028-W52,2029-W02,E_JP,24.0,explicit,121680.0,0.0,0.0,121680.0,JPY,0.3,36504.0,68647,valued

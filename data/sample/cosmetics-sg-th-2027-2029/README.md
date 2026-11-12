@@ -70,13 +70,20 @@ Materials_JP（原料） → Factory_JP（工場） → WH_JP_Released（判定�
 | M7 | 費用の無い区間・ノードにも 0 の行を明示する。行が無いのは supply point だけ |
 | M8 | タイの DC は日本本社のまま |
 
-金額の規則は全部このフォルダの中にある（`ppc_*.csv`・`vc_price_rule.csv`・`vc_sales_cost_rule.csv`）。共有の規則は使わない。
+金額の規則は全部このフォルダの中にある（`ppc_*.csv`・`vc_price_rule.csv`・`vc_sales_cost_rule.csv`・`vc_customs_valuation_rule.csv`）。共有の規則は使わない。
 
 `vc_sales_cost_rule.csv` は Value Chain 用の、直販（直営店・公式 EC）の売上比率の費用の費目の表
 （販社販管費 10%、決済・EC 基盤手数料 5%、デジタル広告費 15%、店舗運営費 35%）。PPC は読まず、
 `ppc_node_cost_rule.csv` の合計の率（直営店 45%、EC 15%＋15%）で同じ額を計算する。公式 EC の配送・梱包
 （1 個 3 SGD）は `ppc_edge_cost_rule.csv` の `SG_EC->CONSUMER` の行（`delivery_packing_cost`）に置く。
 二つのファイルの率・固定額が合わなければ、Value Chain の読み込みで止まる。
+
+`vc_customs_valuation_rule.csv` は Value Chain 用の、タイ向けの区間 `WH_JP_Released->DC_TH` の関税の課税価格の
+決め方（G4）。課税価格 ＝ 振替価格（クリーム 5,000・美容液 6,000 円/個、運賃別）＋ タイまでの運賃 70 円/個
+＋ 保険・その他 0（明示）。関税は DC_TH の受入の週（通関の確定の週の代用）に日本本社の在庫原価として計上し、
+税率 0%（M4）の出荷には関税の行を立てず、`vc_customs_valuation.csv` に課税価格を 1 行ずつ残す（689 行、
+課税価格の合計 93,197,520 円、税額 0）。税率は `ppc_tariff_rule.csv` から読む。PPC はこの表を読まず、
+振替価格だけに課税する。
 
 ## 実行の方法
 
@@ -105,7 +112,7 @@ GUI：`python -m main` → Load Model Folder でこのフォルダを選ぶ → 
 | Flow Check 表2 | 需要 4,056 lot（美容液 2,288、クリーム 1,768）を全量、納期どおりに充足。未充足 0 |
 | PPC | `評価済み`。売上 1,156,284,480 円、費用 524,434,872 円、試算利益 631,849,608 円（54.6%） |
 | 製品の年齢 | 最大 6 週（直営店 6 週、ほか 4 週）。52 週超 0 |
-| Value Chain（`vc_ppc_comparison.csv`、利益 合計、消去前） | PPC 631,849,608 円、台帳 654,045,756 円、差 22,196,148 円（下の G2 だけ） |
+| Value Chain（`vc_ppc_comparison.csv`、利益 合計、消去前） | PPC 631,849,608 円、台帳 631,849,608 円、差 0 円（G2 の MDF を計上した後。前は差 22,196,148 円） |
 | Value Chain の直販の売上比率の費用（G1） | 全期間 281,015,748 円（うち配送・梱包 6,243,120 円）。販売の週に費目ごとに 1 行。issues 0 |
 
 「試算利益」は、今回対象にした費用を控除した PPC の値で、営業利益ではない。
@@ -137,7 +144,8 @@ GUI：`python -m main` → Load Model Folder でこのフォルダを選ぶ → 
 - 店舗の運営費は売上の 35% の近似で、固定費ではない。売上が下がると費用も下がり、損益を良く見せる（M5）。
 - 日本本社の固定費が無い。試算利益はグループの営業利益ではない（M6）。
 - タイの関税は 0% の仮定。一般税率 30% なら試算利益は 27,612,000 円減る（M0t）。
-- 関税の課税価格：PPC は振替価格だけに課税する（1,800／1,500 円/個）。業務の定義（CIF）とは違う（G4）。
+- 関税の課税価格：PPC は振替価格だけに課税する。Value Chain は運賃を足した課税価格を使う（G4、下）。
+  税率 0% なので今は差 0。30% にすると Value Chain は 27,959,256 円、PPC は 27,612,000 円（差 347,256 円）。
 
 **Value Chain（業務の要求は未完了）**
 
@@ -146,9 +154,11 @@ GUI：`python -m main` → Load Model Folder でこのフォルダを選ぶ → 
 - G1：**解決済み（直販）**。直営店・公式 EC の売上比率の費用を、販売の週に費目ごとに計上する
   （`vc_sales_cost_rule.csv`。報告書 `docs/development/WOM_BSSEAF_Cosmetics_G1_SalesBasedCosts_Report.md`）。
   `vc_ppc_comparison.csv` では、配送・梱包 6,243,120 円が台帳は「運賃」、PPC は「SGA」に入る（合計は同じ）。
-- G2：外部の代理店のノードに置いた自社負担の MDF を、issue なしで計上しない。
+- G2：**解決済み（2026-11-12）**。代理店向けの販促協賛金（MDF）を、代理店への卸売の週に税抜卸売額の 5% で、売り手（シンガポール販社・日本本社）の販売費として計上する（`vc_sales_cost_rule.csv` の `distributor_mdf`。報告書 `docs/development/WOM_BSSEAF_Cosmetics_G2_DistributorMDF_Report.md`）。PPC は代理店の leaf の出荷週（1 週遅い）に立てる。
 - G3：解決済み（2026-11-08）。代理店の売上は DC の出荷週に立ち、業務定義（出荷時の認識、`docs/design/drafts/WOM_G3_SellIn_Business_Definition_v0.1.md`）どおり。PPC は代理店の leaf の出荷週（1 週遅い）に立てる別の方式で、照合用の参考値（`docs/development/WOM_BSSEAF_Cosmetics_G3_SellIn_Verify_Report.md`）。
-- G4：関税の課税価格（上）。
+- G4：**解決済み（Value Chain）**。タイ向けの関税は課税価格（振替価格 ＋ 運賃 ＋ 保険 0）× 税率で、DC_TH の
+  受入の週に計上する（`vc_customs_valuation_rule.csv`。報告書 `docs/development/WOM_BSSEAF_Cosmetics_G4_TariffBase_Report.md`）。
+  通関の確定の週は受入の週で代用している。PPC は照合の参考値のまま。
 - G5：CIF の運賃は台帳では受け手の在庫原価になる。業務の負担者と違う。
 
 **画面**
