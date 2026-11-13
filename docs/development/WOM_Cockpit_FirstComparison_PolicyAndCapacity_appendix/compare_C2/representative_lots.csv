@@ -1,0 +1,97 @@
+reason,lot_id,case,step,week,what,amount_hq
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_late,1 demand,2027-W27,COS_Cream TH_Distributor request week 2027-W27: demand 0 lots; this lot is seq 1 (NOT in this case's demand),
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_late,2 shipment,,no shipment record,
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_late,3 money,,no money line,
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,1 demand,2027-W27,COS_Cream TH_Distributor request week 2027-W27: demand 2 lots; this lot is seq 1,
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,2 shipment,2027-W22,purchase_in Materials_JP->Factory_JP (arrive 2027-W23),
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,2 shipment,2027-W23,handoff_to_sp nan (arrive 2027-W23),
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,2 shipment,2027-W23,outbound_move Factory_JP->WH_JP_Released (arrive 2027-W24),
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,2 shipment,2027-W24,outbound_move WH_JP_Released->DC_TH (arrive 2027-W26),
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,2 shipment,2027-W26,outbound_move DC_TH->TH_Distributor (arrive 2027-W27),
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,2 shipment,2027-W27,consumer_sale nan (arrive nan),
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W22,"E_JP acquisition/external/purchase basis=v1,entity,group node=Factory_JP",31200.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W22,"E_JP acquisition/internal/freight basis=v1,entity,group node=Factory_JP",0.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W22,"E_JP acquisition/internal/tariff basis=v1,entity,group node=Factory_JP",0.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W23,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Factory_JP",14400.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W23,E_JP revenue/management/sale basis=all node=Factory_JP,120000.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W23,E_JP cogs/management/sale basis=v1 node=Factory_JP,45600.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W23,E_JP acquisition/management/purchase basis=v1 node=WH_JP_Released,120000.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W23,"E_JP acquisition/internal/freight basis=v1,entity,group node=WH_JP_Released",480.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W23,"E_JP acquisition/internal/tariff basis=v1,entity,group node=WH_JP_Released",0.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W24,"E_JP expense/period/warehouse_cost basis=v1,entity,group node=WH_JP_Released",720.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W24,E_JP revenue/management/transfer basis=v1 node=WH_JP_Released,120480.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W24,E_JP cogs/management/transfer basis=v1 node=WH_JP_Released,120480.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W24,"E_JP acquisition/internal/freight basis=v1,entity,group node=DC_TH",1680.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W26,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=DC_TH",1296.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W26,E_JP revenue/external/sale basis=all node=DC_TH,172800.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W26,E_JP cogs/external/sale basis=v1 node=DC_TH,123456.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W26,E_JP cogs/external/sale basis=entity node=DC_TH,49056.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W26,E_JP cogs/external/sale basis=group node=DC_TH,49056.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W26,"E_JP expense/selling/marketing_cost basis=v1,entity,group node=DC_TH",8640.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W26,"E_JP expense/selling/freight basis=v1,entity,group node=DC_TH",864.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W26,"E_JP expense/selling/tariff basis=v1,entity,group node=DC_TH",0.0
+supply first request week 2027-W27,COS_Cream:TH_Distributor:2027-W27:00001,B_early,3 money,2027-W27,EXT_CH_TH_DIST observation_sale/observation/sale basis=obs node=TH_Distributor,172800.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_late,1 demand,2027-W40,COS_Cream TH_Distributor request week 2027-W40: demand 0 lots; this lot is seq 1 (NOT in this case's demand),
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_late,2 shipment,,no shipment record,
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_late,3 money,,no money line,
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,1 demand,2027-W40,COS_Cream TH_Distributor request week 2027-W40: demand 3 lots; this lot is seq 1,
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,2 shipment,2027-W35,purchase_in Materials_JP->Factory_JP (arrive 2027-W36),
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,2 shipment,2027-W36,handoff_to_sp nan (arrive 2027-W36),
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,2 shipment,2027-W36,outbound_move Factory_JP->WH_JP_Released (arrive 2027-W37),
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,2 shipment,2027-W37,outbound_move WH_JP_Released->DC_TH (arrive 2027-W39),
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,2 shipment,2027-W39,outbound_move DC_TH->TH_Distributor (arrive 2027-W40),
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,2 shipment,2027-W40,consumer_sale nan (arrive nan),
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W35,"E_JP acquisition/external/purchase basis=v1,entity,group node=Factory_JP",31200.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W35,"E_JP acquisition/internal/freight basis=v1,entity,group node=Factory_JP",0.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W35,"E_JP acquisition/internal/tariff basis=v1,entity,group node=Factory_JP",0.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W36,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Factory_JP",14400.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W36,E_JP revenue/management/sale basis=all node=Factory_JP,120000.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W36,E_JP cogs/management/sale basis=v1 node=Factory_JP,45600.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W36,E_JP acquisition/management/purchase basis=v1 node=WH_JP_Released,120000.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W36,"E_JP acquisition/internal/freight basis=v1,entity,group node=WH_JP_Released",480.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W36,"E_JP acquisition/internal/tariff basis=v1,entity,group node=WH_JP_Released",0.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W37,"E_JP expense/period/warehouse_cost basis=v1,entity,group node=WH_JP_Released",720.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W37,E_JP revenue/management/transfer basis=v1 node=WH_JP_Released,120480.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W37,E_JP cogs/management/transfer basis=v1 node=WH_JP_Released,120480.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W37,"E_JP acquisition/internal/freight basis=v1,entity,group node=DC_TH",1680.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W39,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=DC_TH",1296.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W39,E_JP revenue/external/sale basis=all node=DC_TH,172800.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W39,E_JP cogs/external/sale basis=v1 node=DC_TH,123456.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W39,E_JP cogs/external/sale basis=entity node=DC_TH,49056.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W39,E_JP cogs/external/sale basis=group node=DC_TH,49056.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W39,"E_JP expense/selling/marketing_cost basis=v1,entity,group node=DC_TH",8640.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W39,"E_JP expense/selling/freight basis=v1,entity,group node=DC_TH",864.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W39,"E_JP expense/selling/tariff basis=v1,entity,group node=DC_TH",0.0
+supply max request week 2027-W40,COS_Cream:TH_Distributor:2027-W40:00001,B_early,3 money,2027-W40,EXT_CH_TH_DIST observation_sale/observation/sale basis=obs node=TH_Distributor,172800.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_late,1 demand,2027-W50,COS_Cream TH_Distributor request week 2027-W50: demand 0 lots; this lot is seq 1 (NOT in this case's demand),
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_late,2 shipment,,no shipment record,
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_late,3 money,,no money line,
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,1 demand,2027-W50,COS_Cream TH_Distributor request week 2027-W50: demand 3 lots; this lot is seq 1,
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,2 shipment,2027-W45,purchase_in Materials_JP->Factory_JP (arrive 2027-W46),
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,2 shipment,2027-W46,handoff_to_sp nan (arrive 2027-W46),
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,2 shipment,2027-W46,outbound_move Factory_JP->WH_JP_Released (arrive 2027-W47),
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,2 shipment,2027-W47,outbound_move WH_JP_Released->DC_TH (arrive 2027-W49),
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,2 shipment,2027-W49,outbound_move DC_TH->TH_Distributor (arrive 2027-W50),
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,2 shipment,2027-W50,consumer_sale nan (arrive nan),
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W45,"E_JP acquisition/external/purchase basis=v1,entity,group node=Factory_JP",31200.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W45,"E_JP acquisition/internal/freight basis=v1,entity,group node=Factory_JP",0.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W45,"E_JP acquisition/internal/tariff basis=v1,entity,group node=Factory_JP",0.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W46,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Factory_JP",14400.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W46,E_JP revenue/management/sale basis=all node=Factory_JP,120000.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W46,E_JP cogs/management/sale basis=v1 node=Factory_JP,45600.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W46,E_JP acquisition/management/purchase basis=v1 node=WH_JP_Released,120000.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W46,"E_JP acquisition/internal/freight basis=v1,entity,group node=WH_JP_Released",480.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W46,"E_JP acquisition/internal/tariff basis=v1,entity,group node=WH_JP_Released",0.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W47,"E_JP expense/period/warehouse_cost basis=v1,entity,group node=WH_JP_Released",720.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W47,E_JP revenue/management/transfer basis=v1 node=WH_JP_Released,120480.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W47,E_JP cogs/management/transfer basis=v1 node=WH_JP_Released,120480.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W47,"E_JP acquisition/internal/freight basis=v1,entity,group node=DC_TH",1680.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W49,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=DC_TH",1296.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W49,E_JP revenue/external/sale basis=all node=DC_TH,172800.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W49,E_JP cogs/external/sale basis=v1 node=DC_TH,123456.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W49,E_JP cogs/external/sale basis=entity node=DC_TH,49056.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W49,E_JP cogs/external/sale basis=group node=DC_TH,49056.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W49,"E_JP expense/selling/marketing_cost basis=v1,entity,group node=DC_TH",8640.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W49,"E_JP expense/selling/freight basis=v1,entity,group node=DC_TH",864.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W49,"E_JP expense/selling/tariff basis=v1,entity,group node=DC_TH",0.0
+profit max week 2027-W50,COS_Cream:TH_Distributor:2027-W50:00001,B_early,3 money,2027-W50,EXT_CH_TH_DIST observation_sale/observation/sale basis=obs node=TH_Distributor,172800.0

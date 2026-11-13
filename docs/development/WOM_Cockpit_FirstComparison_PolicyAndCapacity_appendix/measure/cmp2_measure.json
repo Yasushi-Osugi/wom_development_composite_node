@@ -1,0 +1,206 @@
+{
+ "B1_comparison_value": {
+  "formula_th70_measure": 607776840.0,
+  "ppc_gross_profit_base_full": 607776840.0,
+  "vc_profit_r2_hq_full_period": 607776840.0,
+  "vc_profit_r2_hq_report_period": 607046472.0
+ },
+ "O5_serum_vs_baseline": {
+  "A_late": {
+   "shipments_base": 13104,
+   "shipments_run": 13104,
+   "shipments_only_base": 432,
+   "shipments_only_run": 432,
+   "money_only_base": 1944,
+   "money_only_run": 1584
+  },
+  "A_early": {
+   "shipments_base": 13104,
+   "shipments_run": 13104,
+   "shipments_only_base": 432,
+   "shipments_only_run": 432,
+   "money_only_base": 1944,
+   "money_only_run": 1584
+  },
+  "B_late": {
+   "shipments_base": 13104,
+   "shipments_run": 13104,
+   "shipments_only_base": 0,
+   "shipments_only_run": 0,
+   "money_only_base": 0,
+   "money_only_run": 0
+  },
+  "B_early": {
+   "shipments_base": 13104,
+   "shipments_run": 13104,
+   "shipments_only_base": 0,
+   "shipments_only_run": 0,
+   "money_only_base": 0,
+   "money_only_run": 0
+  }
+ },
+ "overview": {
+  "late_soft11": {
+   "cream_delivered": 1680,
+   "cream_unmet_TH": 88,
+   "cream_unmet_SG": 0,
+   "serum_delivered": 2184,
+   "serum_unmet": 104,
+   "P0_report": 606871080.0,
+   "cream_inv_lot_weeks": 26821,
+   "cream_inv_max": 256,
+   "cream_inv_end": 5,
+   "age_max": 28,
+   "age_over52": 0,
+   "cream_production": 1680,
+   "cream_weeks_at_soft": 168,
+   "cream_weeks_below_soft": {
+    "2026-W37": 10,
+    "2029-W49": 10,
+    "2029-W50": 10,
+    "2029-W51": 10,
+    "2029-W52": 10
+   },
+   "cream_soft_shippable_per_week": [
+    10
+   ]
+  },
+  "early_soft11": {
+   "cream_delivered": 1680,
+   "cream_unmet_TH": 166,
+   "cream_unmet_SG": 0,
+   "serum_delivered": 2184,
+   "serum_unmet": 104,
+   "P0_report": 606871080.0,
+   "cream_inv_lot_weeks": 21491,
+   "cream_inv_max": 255,
+   "cream_inv_end": 5,
+   "age_max": 28,
+   "age_over52": 0,
+   "cream_production": 1680,
+   "cream_weeks_at_soft": 168,
+   "cream_weeks_below_soft": {
+    "2026-W37": 10,
+    "2029-W49": 10,
+    "2029-W50": 10,
+    "2029-W51": 10,
+    "2029-W52": 10
+   },
+   "cream_soft_shippable_per_week": [
+    10
+   ]
+  },
+  "A_late": {
+   "cream_delivered": 1680,
+   "cream_unmet_TH": 0,
+   "cream_unmet_SG": 0,
+   "serum_delivered": 2184,
+   "serum_unmet": 0,
+   "P0_report": 607046472.0,
+   "cream_inv_lot_weeks": 27466,
+   "cream_inv_max": 256,
+   "cream_inv_end": 5,
+   "age_max": 28,
+   "age_over52": 0,
+   "cream_production": 1680,
+   "cream_weeks_at_soft": 168,
+   "cream_weeks_below_soft": {
+    "2026-W37": 10,
+    "2029-W49": 10,
+    "2029-W50": 10,
+    "2029-W51": 10,
+    "2029-W52": 10
+   },
+   "cream_soft_shippable_per_week": [
+    10
+   ]
+  },
+  "A_early": {
+   "cream_delivered": 1680,
+   "cream_unmet_TH": 0,
+   "cream_unmet_SG": 0,
+   "serum_delivered": 2184,
+   "serum_unmet": 0,
+   "P0_report": 607155984.0,
+   "cream_inv_lot_weeks": 23787,
+   "cream_inv_max": 255,
+   "cream_inv_end": 5,
+   "age_max": 28,
+   "age_over52": 0,
+   "cream_production": 1680,
+   "cream_weeks_at_soft": 168,
+   "cream_weeks_below_soft": {
+    "2026-W37": 10,
+    "2029-W49": 10,
+    "2029-W50": 10,
+    "2029-W51": 10,
+    "2029-W52": 10
+   },
+   "cream_soft_shippable_per_week": [
+    10
+   ]
+  },
+  "B_late": {
+   "cream_delivered": 1768,
+   "cream_unmet_TH": 0,
+   "cream_unmet_SG": 0,
+   "serum_delivered": 2184,
+   "serum_unmet": 104,
+   "P0_report": 616860840.0,
+   "cream_inv_lot_weeks": 26989,
+   "cream_inv_max": 246,
+   "cream_inv_end": 5,
+   "age_max": 28,
+   "age_over52": 0,
+   "cream_production": 1768,
+   "cream_weeks_at_soft": 158,
+   "cream_weeks_below_soft": {
+    "2026-W37": 11,
+    "2026-W38": 11,
+    "2026-W39": 11,
+    "2026-W40": 11,
+    "2026-W41": 11,
+    "2026-W42": 11,
+    "2026-W43": 11,
+    "2026-W44": 11,
+    "2026-W45": 1,
+    "2029-W47": 1,
+    "2029-W48": 1,
+    "2029-W49": 11,
+    "2029-W50": 11,
+    "2029-W51": 11,
+    "2029-W52": 11
+   },
+   "cream_soft_shippable_per_week": [
+    11
+   ]
+  },
+  "B_early": {
+   "cream_delivered": 1846,
+   "cream_unmet_TH": 0,
+   "cream_unmet_SG": 0,
+   "serum_delivered": 2184,
+   "serum_unmet": 104,
+   "P0_report": 625715400.0,
+   "cream_inv_lot_weeks": 31340,
+   "cream_inv_max": 297,
+   "cream_inv_end": 5,
+   "age_max": 29,
+   "age_over52": 0,
+   "cream_production": 1846,
+   "cream_weeks_at_soft": 166,
+   "cream_weeks_below_soft": {
+    "2026-W37": 11,
+    "2029-W47": 1,
+    "2029-W48": 1,
+    "2029-W49": 11,
+    "2029-W50": 11,
+    "2029-W51": 11,
+    "2029-W52": 11
+   },
+   "cream_soft_shippable_per_week": [
+    11
+   ]
+  }
+ }
+}

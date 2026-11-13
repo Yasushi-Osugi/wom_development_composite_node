@@ -1,0 +1,17 @@
+case,sku_id,region,demand,on_time,early,late,backlog_end,demand_flow_check,on_time_flow_check,early_flow_check,late_flow_check,backlog_end_flow_check,flow_check_match
+B_late,COS_Cream,SG_Distributor,754,754,0,0,0,754,754,0,0,0,True
+B_late,COS_Cream,SG_EC,299,299,0,0,0,299,299,0,0,0,True
+B_late,COS_Cream,SG_Store,416,416,0,0,0,416,416,0,0,0,True
+B_late,COS_Cream,TH_Distributor,299,299,0,0,0,299,299,0,0,0,True
+B_late,COS_Serum,SG_Distributor,897,897,0,0,0,897,897,0,0,0,True
+B_late,COS_Serum,SG_EC,455,455,0,0,0,455,455,0,0,0,True
+B_late,COS_Serum,SG_Store,546,546,0,0,0,546,546,0,0,0,True
+B_late,COS_Serum,TH_Distributor,390,286,0,0,104,390,286,0,0,104,True
+B_early,COS_Cream,SG_Distributor,754,754,0,0,0,754,754,0,0,0,True
+B_early,COS_Cream,SG_EC,299,299,0,0,0,299,299,0,0,0,True
+B_early,COS_Cream,SG_Store,416,416,0,0,0,416,416,0,0,0,True
+B_early,COS_Cream,TH_Distributor,377,377,0,0,0,377,377,0,0,0,True
+B_early,COS_Serum,SG_Distributor,897,897,0,0,0,897,897,0,0,0,True
+B_early,COS_Serum,SG_EC,455,455,0,0,0,455,455,0,0,0,True
+B_early,COS_Serum,SG_Store,546,546,0,0,0,546,546,0,0,0,True
+B_early,COS_Serum,TH_Distributor,390,286,0,0,104,390,286,0,0,104,True

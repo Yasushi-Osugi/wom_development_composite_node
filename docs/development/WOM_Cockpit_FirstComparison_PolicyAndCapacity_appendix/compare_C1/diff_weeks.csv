@@ -1,0 +1,5 @@
+measure,which,week,abs_diff
+supply_by_request_week,first,2027-W27,4.0
+supply_by_request_week,max,2027-W40,6.0
+profit_r2_by_week,first,2027-W24,1440.0
+profit_r2_by_week,max,2027-W50,342000.0

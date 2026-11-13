@@ -1,0 +1,12 @@
+﻿product,leaf,demand,on_time,early,late,backlog_end,check,demand_report,on_time_report,backlog_end_report,demand_qty,on_time_qty,early_qty,late_qty,backlog_end_qty
+COS_Serum,SG_Store,546,546,0,0,0,0,546,546,0,13104,13104,0,0,0
+COS_Serum,SG_EC,455,455,0,0,0,0,455,455,0,10920,10920,0,0,0
+COS_Serum,SG_Distributor,825,825,0,0,0,0,825,825,0,19800,19800,0,0,0
+COS_Serum,TH_Distributor,358,358,0,0,0,0,358,358,0,8592,8592,0,0,0
+COS_Serum,Σ（製品）,2184,2184,0,0,0,0,2184,2184,0,52416,52416,0,0,0
+COS_Cream,SG_Store,416,416,0,0,0,0,416,416,0,9984,9984,0,0,0
+COS_Cream,SG_EC,299,299,0,0,0,0,299,299,0,7176,7176,0,0,0
+COS_Cream,SG_Distributor,666,666,0,0,0,0,666,666,0,15984,15984,0,0,0
+COS_Cream,TH_Distributor,299,299,0,0,0,0,299,299,0,7176,7176,0,0,0
+COS_Cream,Σ（製品）,1680,1680,0,0,0,0,1680,1680,0,40320,40320,0,0,0
+Σ（モデル全体）,,3864,3864,0,0,0,0,3864,3864,0,92736,92736,0,0,0

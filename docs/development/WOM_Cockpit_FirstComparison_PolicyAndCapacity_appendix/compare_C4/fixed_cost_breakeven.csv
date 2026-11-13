@@ -1,0 +1,2 @@
+cost_item,entity,P0_base,P0_alt,paid_start_base,paid_end_base,W_base,paid_start_alt,paid_end_alt,W_alt,weekly_amount_base,weekly_amount_alt,cost_base,cost_alt,P_after_base,P_after_alt,delta_P0,delta_P0_by_product,delta_W,boundary,f_star_per_week,delta_P_after,valuation_status,note
+TH_cream_channel_fee,E_JP,606871080.0,607155984.0,2027-W27,2029-W52,130,2027-W27,2029-W52,130,,,,,,,284904.0,"COS_Cream: 233,064; COS_Serum: 51,840",0,順位変化なし（発生週数が同じ）,,,評価済み,週額が未設定：境目だけ

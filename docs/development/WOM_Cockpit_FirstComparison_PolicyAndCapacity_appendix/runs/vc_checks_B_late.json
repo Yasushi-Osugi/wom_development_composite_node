@@ -1,0 +1,178 @@
+{
+ "conservation_ok": true,
+ "conservation_rows": 346,
+ "conservation_max_abs_diff": 0.0,
+ "external_sales": {
+  "sum_consolidated_revenue": 1584535680.0,
+  "intercompany_revenue": 449592000.0,
+  "v3_external_revenue": 1134943680.0,
+  "lhs_total_minus_ic": 1134943680.0,
+  "records_times_price": 1134943680.0,
+  "external_shipments": 3952,
+  "external_shipments_unvalued": 0,
+  "v3_external_revenue_unvalued_lines": 0,
+  "ok_identity": true,
+  "ok_records": true
+ },
+ "issues": [],
+ "flow_counts": {
+  "purchase_in": 3952,
+  "handoff_to_sp": 3952,
+  "outbound_move": 11856,
+  "consumer_sale": 3952
+ },
+ "missing_price_rows": 0,
+ "fx_log_rows": 0,
+ "fx_first_week_rate_uses": 0,
+ "fx_unvalued_uses": 0,
+ "holding_rate": "未設定（holding_rate_weekly が空欄。0 として計算しない）",
+ "unvalued_lines": 0,
+ "unrealized": {
+  "weekly_max_abs_diff_hq": 0.0,
+  "weekly_ok_hq": true,
+  "weekly_max_abs_diff_common": 1.0913936421275139e-11,
+  "weekly_ok_common": true,
+  "per_owner_max_abs_diff_hq": 0.0,
+  "per_owner_ok": true,
+  "period": {
+   "report_start": "2027-W01",
+   "last_week": "2029-W52",
+   "profit_round1_hq": 615137160.0,
+   "profit_round2_hq": 616860840.0,
+   "round1_minus_round2": -1723680.0,
+   "unrealized_opening_hq": 1723680.0,
+   "unrealized_closing_hq": 0.0,
+   "to_unvalued_in_period_hq": 0.0,
+   "rhs_closing_minus_opening_plus_to_unvalued": -1723680.0
+  },
+  "period_ok": true,
+  "by_entity": [
+   {
+    "entity": "E_JP",
+    "opening_hq": 0.0,
+    "closing_hq": 0.0,
+    "opening_common": 0.0,
+    "closing_common": 0.0,
+    "eliminated_in_period_hq": 0.0,
+    "realized_in_period_hq": 0.0,
+    "to_unvalued_in_period_hq": 0.0,
+    "unvalued_lots_closing": 0
+   },
+   {
+    "entity": "E_SG",
+    "opening_hq": 1723680.0,
+    "closing_hq": 0.0,
+    "opening_common": 11491.2,
+    "closing_common": 0.0,
+    "eliminated_in_period_hq": 273717600.0,
+    "realized_in_period_hq": 275441280.0,
+    "to_unvalued_in_period_hq": 0.0,
+    "unvalued_lots_closing": 0
+   }
+  ],
+  "unvalued_lots_closing": 0,
+  "ok": true
+ },
+ "ppc_comparison": "比較した",
+ "sales_cost_rule": {
+  "file": "vc_sales_cost_rule.csv",
+  "rows": 14,
+  "ppc_rows_not_used_by_value_chain": [
+   {
+    "node": "SG_EC",
+    "product": "COS_Cream",
+    "cost_type": "marketing_cost",
+    "receipts_skipped": 299
+   },
+   {
+    "node": "SG_EC",
+    "product": "COS_Cream",
+    "cost_type": "sga_cost",
+    "receipts_skipped": 299
+   },
+   {
+    "node": "SG_EC",
+    "product": "COS_Serum",
+    "cost_type": "marketing_cost",
+    "receipts_skipped": 455
+   },
+   {
+    "node": "SG_EC",
+    "product": "COS_Serum",
+    "cost_type": "sga_cost",
+    "receipts_skipped": 455
+   },
+   {
+    "node": "SG_Store",
+    "product": "COS_Cream",
+    "cost_type": "sga_cost",
+    "receipts_skipped": 416
+   },
+   {
+    "node": "SG_Store",
+    "product": "COS_Serum",
+    "cost_type": "sga_cost",
+    "receipts_skipped": 546
+   }
+  ],
+  "note": "ppc_node_cost_rule.csv の basis=revenue の行は PPC 用で、Value Chain では使わない。Value Chain は vc_sales_cost_rule.csv の行で計上する：直販の leaf（自社 EC・店舗）は消費者への販売の週に、その leaf の販売費として。外部の代理店の leaf（distributor_mdf）は代理店への卸売の週に、売り手（卸売をした拠点の会社）の販売費として。ppc_rows_not_used_by_value_chain は直販の leaf の受入で使わなかった行の数（外部の代理店の leaf の在庫はグループの外なので、ここには数えない）"
+ },
+ "customs_valuation": {
+  "file": "vc_customs_valuation_rule.csv",
+  "edges": [
+   {
+    "edge": "WH_JP_Released->DC_TH",
+    "product": "COS_Cream",
+    "goods_value_basis": "transfer_price",
+    "goods_value_per_unit": null,
+    "currency": "",
+    "freight_in_goods_value": false,
+    "insurance_added_per_unit": 0.0,
+    "duty_week": "receipt"
+   },
+   {
+    "edge": "WH_JP_Released->DC_TH",
+    "product": "COS_Serum",
+    "goods_value_basis": "transfer_price",
+    "goods_value_per_unit": null,
+    "currency": "",
+    "freight_in_goods_value": false,
+    "insurance_added_per_unit": 0.0,
+    "duty_week": "receipt"
+   }
+  ],
+  "rows": 585,
+  "by_status": {
+   "valued": 585
+  },
+  "after_horizon_not_booked": 0,
+  "totals_by_currency": {
+   "JPY": {
+    "customs_value": 78046800.0,
+    "duty": 0.0,
+    "duty_lines": 0
+   }
+  },
+  "note": "表に載った区間・SKU では、Value Chain は ppc_tariff_rule.csv の tariff_basis を使わない（tariff_rate だけを使う。tariff_basis は PPC が使う）。課税価格 ＝ 評価用の商品価額 ＋ 価額に含まれない運賃 ＋ 保険・その他。関税は受入の週（通関の確定の週の代用）に受け手の在庫原価として計上し、税額 0 の出荷には関税の行を立てない（この記録だけ）"
+ },
+ "trade_terms": {
+  "file": "vc_trade_terms.csv",
+  "edges": [
+   {
+    "edge": "WH_JP_Released->DC_SG",
+    "product": "COS_Cream",
+    "incoterm": "CIF",
+    "freight_borne_by": "seller",
+    "freight_in_price": true
+   },
+   {
+    "edge": "WH_JP_Released->DC_SG",
+    "product": "COS_Serum",
+    "incoterm": "CIF",
+    "freight_borne_by": "seller",
+    "freight_in_price": true
+   }
+  ],
+  "note": "seller・1（CIF 型）の区間では、運賃を売り手の法人間売上に対応する原価として出荷の週に計上し、受け手の法人の取得には足さない（グループの在庫原価には 1 回入る）。buyer・0 は今のまま"
+ }
+}

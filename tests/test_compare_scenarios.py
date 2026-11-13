@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""tools/compare_scenarios.py on small synthetic outputs (RequestLetter_Cockpit_FirstComparison_Observe §3・S4)"""
+"""tools/compare_scenarios.py on small synthetic outputs
+(RequestLetter_Cockpit_FirstComparison_Observe §3・S4, ..._PolicyAndCapacity §4)"""
 import gzip
 import json
 import os
@@ -134,15 +135,24 @@ def test_unknown_or_double_shipped_lot_stops(tmp_path):
         C.supply_by_request_week(C.load_run(rb, mb))
 
 
+def _fc_plan(path, base=("2028-W01", "2029-W52", ""), alt=("2027-W27", "2029-W52", ""), ccy="JPY"):
+    pd.DataFrame([{"case": c, "cost_item": "TH_fee", "entity": "E_JP", "paid_start_week": v[0], "paid_end_week": v[1],
+                   "weekly_amount": v[2], "currency": ccy, "note": ""} for c, v in (("base", base), ("alt", alt))]).to_csv(
+        path, index=False)
+    return path
+
+
 def test_compare_end_to_end(tmp_path):
     rb, mb = _base(tmp_path)
     ra, ma = _alt(tmp_path)
     out = str(tmp_path / "out")
-    res = C.compare(rb, ra, mb, ma, out, extra_fixed_cost_weeks=2, base_name="b", alt_name="a")
+    plan = _fc_plan(str(tmp_path / "fc.csv"), base=("2027-W03", "2027-W04", ""), alt=("2027-W01", "2027-W04", ""))
+    res = C.compare(rb, ra, mb, ma, out, fixed_cost_plan=plan, base_name="b", alt_name="a")
     for f in ("demand_diff.csv", "supply_by_request_week.csv", "supply_by_key.csv", "money_by_week_sku.csv",
               "money_totals.csv", "inventory_weekly.csv", "diff_weeks.csv", "representative_lots.csv",
               "boundary.csv", "fixed_cost_breakeven.csv", "factory_idle_weeks.csv", "comparison_summary.md"):
         assert os.path.exists(os.path.join(out, f)), f
+    assert not os.path.exists(os.path.join(out, "supply_allocation_by_request_week.csv"))   # no udp: as before
     dd = res["demand_diff"].set_index("week")
     assert dd.loc["2027-W01", "diff"] == 1
     dw = res["diff_weeks"]
@@ -154,12 +164,140 @@ def test_compare_end_to_end(tmp_path):
     assert t.loc[("full", "*"), "profit_r2_diff"] == 0.0
     assert t.loc[("report", "*"), "profit_r2_diff"] == -50.0
     assert len(res["supply_check"]) == 2 and res["supply_check"]["flow_check_match"].all()
+    fc = res["fixed_cost"].iloc[0]
+    # report period W02..W04: base W03..W04 = 2, alt W01..W04 -> W02..W04 = 3; dP0 = -50 -> no positive boundary
+    assert (fc["W_base"], fc["W_alt"], fc["delta_W"], fc["delta_P0"]) == (2, 3, 1, -50.0)
+    assert fc["boundary"] == "正の境目なし（base が上）"
 
 
-def test_fixed_cost_breakeven():
-    t = pd.DataFrame([{"period": "report", "product": "X", "profit_r2_diff": 260.0}])
-    r = C.fixed_cost_breakeven(t, 26, "X").iloc[0]
-    assert r["breakeven_fixed_cost_per_week_hq"] == 10.0 and r["status"] == "provisional"
-    t = pd.DataFrame([{"period": "report", "product": "X", "profit_r2_diff": 0.0}])
-    assert "上回らない" in C.fixed_cost_breakeven(t, 26, "X").iloc[0]["note"]
-    assert C.fixed_cost_breakeven(t, None, "X").iloc[0]["extra_fixed_cost_weeks"] == ""
+# ── 固定費（GPT-MC 業務定義 v0.1 §3・§4）────────────────────────────────
+def test_paid_weeks_in_report():
+    R = ("2027-W01", "2029-W52")
+    assert C.paid_weeks_in_report("2027-W27", "2029-W52", *R) == 130
+    assert C.paid_weeks_in_report("2028-W01", "2029-W52", *R) == 104
+    assert C.paid_weeks_in_report("2030-W01", "2030-W10", *R) == 0          # outside the report period
+    assert C.paid_weeks_in_report("2027-W27", "2030-W26", *R) == 130        # weeks after 2029-W52 count 0
+    assert C.paid_weeks_in_report("2026-W40", "2027-W02", *R) == 2
+    with pytest.raises(C.CompareError):
+        C.paid_weeks_in_report("2029-W10", "2029-W01", *R)
+
+
+def test_week_2027_w26_and_2030_w01_rows():
+    """Definition §3: 2027-W26 is 0 for both cases (before either start); 2030-W01 adds 0."""
+    R = ("2027-W01", "2029-W52")
+    early = C.paid_weeks_in_report("2027-W27", "2029-W52", *R)
+    assert C.paid_weeks_in_report("2027-W27", "2029-W52", "2027-W26", "2027-W26") == 0
+    assert C.paid_weeks_in_report("2028-W01", "2029-W52", "2027-W26", "2027-W26") == 0
+    assert C.paid_weeks_in_report("2027-W27", "2029-W52", "2027-W27", "2027-W27") == 1
+    assert C.paid_weeks_in_report("2028-W01", "2029-W52", "2027-W27", "2027-W27") == 0
+    assert C.paid_weeks_in_report("2027-W27", "2030-W01", *R) == early
+    assert early - C.paid_weeks_in_report("2028-W01", "2029-W52", *R) == 26
+
+
+def test_worked_example_boundary_and_amounts(tmp_path):
+    R = ("2027-W01", "2029-W52")
+    p0 = {"base": 100_000_000.0, "alt": 101_300_000.0}
+    st = {"base": "評価済み", "alt": "評価済み"}
+    r = C.fixed_cost_table(C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "a.csv"))), p0, st, *R).iloc[0]
+    assert (r["W_alt"], r["W_base"], r["delta_W"], r["delta_P0"]) == (130, 104, 26, 1_300_000.0)
+    assert r["f_star_per_week"] == 50_000.0 and r["note"] == "週額が未設定：境目だけ"
+    for amt, diff in ((40_000, 260_000.0), (50_000, 0.0), (60_000, -260_000.0)):
+        p = _fc_plan(str(tmp_path / f"p{amt}.csv"), base=("2028-W01", "2029-W52", str(amt)),
+                     alt=("2027-W27", "2029-W52", str(amt)))
+        x = C.fixed_cost_table(C.read_fixed_cost_plan(p), p0, st, *R).iloc[0]
+        assert x["cost_alt"] == amt * 130 and x["cost_base"] == amt * 104
+        assert x["delta_P_after"] == diff
+
+
+@pytest.mark.parametrize("dp0,dw,label,fstar", [
+    (1_300_000.0, 26, "f* = ΔP0 ÷ ΔW", 50_000.0),
+    (500.0, 0, "順位変化なし（発生週数が同じ）", None),
+    (0.0, 0, "両案同額", None),
+    (-100.0, 26, "正の境目なし（base が上）", None),
+    (0.0, 26, "0円で同額", None),
+    (-2600.0, -26, "f が境目を超えると alt が上", 100.0),
+    (2600.0, -26, "正の境目なし（alt が上）", None),
+    (None, 26, "未算出", None),
+])
+def test_six_cases(dp0, dw, label, fstar):
+    lab, f = C.boundary_label(dp0, dw)
+    assert label in lab and f == fstar
+
+
+def test_undetermined_cases(tmp_path):
+    R = ("2027-W01", "2029-W52")
+    p0 = {"base": 0.0, "alt": 1_300_000.0}
+    plan = C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "a.csv")))
+    x = C.fixed_cost_table(plan, p0, {"base": "評価済み", "alt": "一部未評価（未評価の明細 3）"}, *R).iloc[0]
+    assert x["boundary"].startswith("未算出（連結利益未評価") and x["f_star_per_week"] == ""
+    y = C.fixed_cost_table(C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "b.csv"), ccy="THB")), p0,
+                           {"base": "評価済み", "alt": "評価済み"}, *R).iloc[0]
+    assert "共通の円建て週額の条件外" in y["boundary"]
+    z = C.fixed_cost_table(None, p0, {"base": "評価済み", "alt": "評価済み"}, *R).iloc[0]
+    assert z["boundary"].startswith("未算出（固定費の表なし")
+
+
+def test_fixed_cost_plan_stops(tmp_path):
+    p = str(tmp_path / "x.csv")
+    pd.DataFrame([{"case": "late", "cost_item": "a", "entity": "E", "paid_start_week": "2028-W01",
+                   "paid_end_week": "2029-W52", "weekly_amount": "", "currency": "JPY", "note": ""}]).to_csv(p, index=False)
+    with pytest.raises(C.CompareError, match="case"):
+        C.read_fixed_cost_plan(p)
+    pd.DataFrame([{"case": "base", "cost_item": "a"}]).to_csv(p, index=False)
+    with pytest.raises(C.CompareError, match="列が足りません"):
+        C.read_fixed_cost_plan(p)
+
+
+# ── 未配分と配分後の未充足 ─────────────────────────────────────────────
+def _udp(path, rows):
+    """rows: {week: (q1, q2, on_time, late, q5)} -> udp_selection_ledger.csv + udp_result_by_request.csv"""
+    os.makedirs(path, exist_ok=True)
+    led, res = [], []
+    for w in WEEKS:
+        q1, q2, on, late, q5 = rows.get(w, (0, 0, 0, 0, 0))
+        ref = f"{SKU}|{LEAF}|{w}"
+        led.append({"source_demand_ref": ref, "q1": q1, "q2": q2, "q3": q1 - q2})
+        res.append({"source_demand_ref": ref, "q2": q2, "on_time": on, "early": 0, "late": late, "q5": q5})
+    pd.DataFrame(led).to_csv(os.path.join(path, "udp_selection_ledger.csv"), index=False)
+    pd.DataFrame(res).to_csv(os.path.join(path, "udp_result_by_request.csv"), index=False)
+    return path
+
+
+def test_allocation_split_matches_and_mismatch_stops(tmp_path):
+    rb, mb = _base(tmp_path)          # money run demand (= allocated): W02 1, W03 2; W02 on time, W03 1 late + 1 unmet
+    run = C.load_run(rb, mb)
+    sup = C.supply_by_request_week(run)
+    u = C.load_udp(_udp(str(tmp_path / "udp" / "case_rule"), {"2027-W02": (3, 1, 1, 0, 0), "2027-W03": (2, 2, 0, 1, 1)}))
+    a = C.allocation_table(sup, u, "b").set_index("request_week")
+    assert a.loc["2027-W02", ["q1_original", "q2_in_scope", "q3_unallocated", "on_time", "q5_backlog_end"]].tolist() == \
+        [3, 1, 2, 1, 0]
+    assert a.loc["2027-W03", ["q1_original", "q2_in_scope", "q3_unallocated", "late", "q5_backlog_end"]].tolist() == \
+        [2, 2, 0, 1, 1]
+    # the parent folder with a single sub-folder is accepted
+    assert len(C.load_udp(str(tmp_path / "udp"))) == len(WEEKS)
+    # no udp: q1 = q2 = demand, q3 = 0
+    p = C.allocation_table(sup, None, "b").set_index("request_week")
+    assert p.loc["2027-W03", ["q1_original", "q3_unallocated", "q5_backlog_end"]].tolist() == [2, 0, 1]
+    bad = C.load_udp(_udp(str(tmp_path / "bad"), {"2027-W02": (3, 1, 1, 0, 0), "2027-W03": (2, 2, 1, 0, 1)}))
+    with pytest.raises(C.CompareError, match="数量配分モードの結果と合いません"):
+        C.allocation_table(sup, bad, "b")
+
+
+def test_compare_with_udp_writes_split(tmp_path):
+    rb, mb = _base(tmp_path)
+    ra, ma = _alt(tmp_path)
+    u = _udp(str(tmp_path / "udp_b"), {"2027-W02": (3, 1, 1, 0, 0), "2027-W03": (2, 2, 0, 1, 1)})
+    out = str(tmp_path / "out")
+    res = C.compare(rb, ra, mb, ma, out, base_udp=u)
+    k = pd.read_csv(os.path.join(out, "supply_allocation_by_key.csv")).iloc[0]
+    assert (k["q1_original_base"], k["q3_unallocated_base"], k["q1_original_alt"], k["q3_unallocated_alt"]) == (5, 2, 4, 0)
+    assert res["fixed_cost"].iloc[0]["boundary"].startswith("未算出（固定費の表なし")
+
+
+def test_udp_identity_violation_stops(tmp_path):
+    d = _udp(str(tmp_path / "u"), {"2027-W02": (3, 1, 1, 0, 0)})
+    r = pd.read_csv(os.path.join(d, "udp_result_by_request.csv"))
+    r.loc[1, "q5"] = 1          # q2 = 1 but on_time + q5 = 2
+    r.to_csv(os.path.join(d, "udp_result_by_request.csv"), index=False)
+    with pytest.raises(C.CompareError, match="②＝④＋⑤"):
+        C.load_udp(d)

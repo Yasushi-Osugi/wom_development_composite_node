@@ -1,0 +1,9 @@
+sku_id,region,alloc_lots,quota_source
+COS_Cream,SG_Distributor,588,早期案：クリームの枠 1680 のうち TH 全量 377 を先に取り、不足 166 を SG 代理店から（754→588）。依頼書 CMP2 §0
+COS_Cream,SG_EC,299,TH70 と同じ（P2-a2、U3 の基準）
+COS_Cream,SG_Store,416,TH70 と同じ（P2-a2、U3 の基準）
+COS_Cream,TH_Distributor,377,早期案のタイのクリームの需要の全量（最低 7 割＝週 2〜3 lot では実質全量）。依頼書 CMP2 §0
+COS_Serum,SG_Distributor,825,TH70 と同じ（P2-a2、U3 の基準）
+COS_Serum,SG_EC,455,TH70 と同じ（P2-a2、U3 の基準）
+COS_Serum,SG_Store,546,TH70 と同じ（P2-a2、U3 の基準）
+COS_Serum,TH_Distributor,358,TH70 と同じ（P2-a2、U3 の基準）

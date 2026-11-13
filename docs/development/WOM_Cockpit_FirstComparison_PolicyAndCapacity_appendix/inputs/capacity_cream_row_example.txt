@@ -1,0 +1,2 @@
+COS_Cream,Factory_JP,2027-W01,13,12,plan
+COS_Cream,Factory_JP,2027-W01,13,11,plan

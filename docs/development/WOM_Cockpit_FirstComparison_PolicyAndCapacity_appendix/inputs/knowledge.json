@@ -1,0 +1,22 @@
+[
+ {
+  "id": "WOM-SEM-SUPPLY-ALLOCATION-001",
+  "version": "0.6",
+  "applicability": "①〜⑤（§3）、最低供給量の二段階の確認と衝突（§6.1）"
+ },
+ {
+  "id": "WOM-DESIGN-UPPER-DEMAND-PLAN-001",
+  "version": "0.3",
+  "applicability": "§3.1 trim_to_capacity_latest、§3.2 最低供給量、§4 診断（参考値）"
+ },
+ {
+  "id": "WOM-KB-BSSEAF-001",
+  "version": "v0.5",
+  "applicability": "8 段階（段階 4 の試行）、一巡の記録"
+ },
+ {
+  "id": "作業計画 TH70",
+  "version": "v0.1",
+  "applicability": "requests/Plan_BSSEAF_Cosmetics_ThaiCream_Minimum70_NewAgent_v0.1.md §5・§6"
+ }
+]
