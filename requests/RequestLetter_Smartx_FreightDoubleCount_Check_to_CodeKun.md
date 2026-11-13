@@ -30,7 +30,7 @@ handoff:
 
 ## 1. 対象（`data/sample/smartx-2027-2029/`）
 
-| ノード × 製品 | `ppc_node_cost_rule.csv` の運賃（1 lot 当たり、USD） | 備考の列 | `ppc_edge_cost_rule.csv` の区間の運賃 |
+| ノード × 製品 | `ppc_node_cost_rule.csv` の運賃（`fixed_amount`、USD。`basis` の表記は `per_lot` だが、PPC の集計は換算済みの単価 `amount_base` × 物量 `qty`） | 備考の列 | `ppc_edge_cost_rule.csv` の区間の運賃 |
 |---|---:|---|---|
 | `DC_AMER` × `SmartXPro_IN` | 10.0 | Ocean freight CN→AMER + port handling | `AssemblyIN->DC_AMER` 17.0 |
 | `DC_APAC` × `SmartXPro_CN` | 8.0 | Ocean freight CN→APAC Singapore | `AssemblyCN->DC_APAC` 14.3 |
@@ -39,6 +39,8 @@ handoff:
 気になる点：1 行目は製品がインド組立（`SmartXPro_IN`、区間は `AssemblyIN->`）なのに、ノードの備考は「CN→AMER」。備考には港湾取扱・通関を含むと書いた行もある。
 
 ## 2. 調べること
+
+手順の詳細（代表の lot と PPC の集約行の対応、抽出の鍵、期間の集計）は、GPT-MC君の業務調査 `docs/design/drafts/WOM_Smartx_Freight_Business_Review_v0.1.md` §2・§3 に従う。役務の判定案は同 §1（AMER：保留、APAC・EMEA：一部重複の可能性）。**両方の明細が出ても、同じ役務と確認できた範囲だけを重複と呼ぶ。**
 
 | # | 問い | 調べ方 |
 |---|---|---|
