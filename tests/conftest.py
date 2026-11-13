@@ -96,6 +96,8 @@ AREAS = {
     "test_merit_order_plot.py": ("allocation",),
     "test_pareto_front.py": ("allocation",),
     "test_regime_map.py": ("allocation",),
+    "test_gen_demand_from_entry_plan.py": ("allocation",),
+    "test_compare_scenarios.py": ("allocation", "ppc"),
     "test_s1_view_model.py": ("allocation", "gui"),
     # lovem
     "test_lovem_interval_check.py": ("lovem",),

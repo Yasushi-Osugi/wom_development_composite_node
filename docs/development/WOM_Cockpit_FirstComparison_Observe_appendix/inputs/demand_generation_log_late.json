@@ -1,0 +1,121 @@
+{
+  "tool": "tools.gen_demand_from_entry_plan",
+  "entry_plan_path": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r6m0_BS-SEAF\\output\\cockpit_cmp1\\model_late\\market_entry_plan.csv",
+  "entry_plan_sha256": "f10633c3103b0ec3bb1d17063db59c4d791edbcca379e64e82971ffb65571db1",
+  "entry_plan_rows": [
+    {
+      "sku_id": "COS_Serum",
+      "region": "SG_Store",
+      "launch_week": "2027-W14",
+      "steady_lots_per_week": "4",
+      "ramp_weeks": "13",
+      "ramp_ratio": "0.5",
+      "price": "165",
+      "currency": "SGD",
+      "promotion_note": "",
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions"
+    },
+    {
+      "sku_id": "COS_Serum",
+      "region": "SG_EC",
+      "launch_week": "2027-W01",
+      "steady_lots_per_week": "3",
+      "ramp_weeks": "13",
+      "ramp_ratio": "0.5",
+      "price": "157",
+      "currency": "SGD",
+      "promotion_note": "",
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions"
+    },
+    {
+      "sku_id": "COS_Serum",
+      "region": "SG_Distributor",
+      "launch_week": "2027-W01",
+      "steady_lots_per_week": "6",
+      "ramp_weeks": "13",
+      "ramp_ratio": "0.5",
+      "price": "74",
+      "currency": "SGD",
+      "promotion_note": "",
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions"
+    },
+    {
+      "sku_id": "COS_Cream",
+      "region": "SG_Store",
+      "launch_week": "2027-W14",
+      "steady_lots_per_week": "3",
+      "ramp_weeks": "13",
+      "ramp_ratio": "0.5",
+      "price": "138",
+      "currency": "SGD",
+      "promotion_note": "",
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions"
+    },
+    {
+      "sku_id": "COS_Cream",
+      "region": "SG_EC",
+      "launch_week": "2027-W01",
+      "steady_lots_per_week": "2",
+      "ramp_weeks": "13",
+      "ramp_ratio": "0.5",
+      "price": "131",
+      "currency": "SGD",
+      "promotion_note": "",
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions"
+    },
+    {
+      "sku_id": "COS_Cream",
+      "region": "SG_Distributor",
+      "launch_week": "2027-W01",
+      "steady_lots_per_week": "5",
+      "ramp_weeks": "13",
+      "ramp_ratio": "0.5",
+      "price": "62",
+      "currency": "SGD",
+      "promotion_note": "",
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions"
+    },
+    {
+      "sku_id": "COS_Serum",
+      "region": "TH_Distributor",
+      "launch_week": "2028-W01",
+      "steady_lots_per_week": "4",
+      "ramp_weeks": "13",
+      "ramp_ratio": "0.5",
+      "price": "1900",
+      "currency": "THB",
+      "promotion_note": "",
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions"
+    },
+    {
+      "sku_id": "COS_Cream",
+      "region": "TH_Distributor",
+      "launch_week": "2028-W01",
+      "steady_lots_per_week": "3",
+      "ramp_weeks": "13",
+      "ramp_ratio": "0.5",
+      "price": "1600",
+      "currency": "THB",
+      "promotion_note": "",
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions"
+    }
+  ],
+  "plan_start": "2026-W37",
+  "plan_end": "2029-W52",
+  "weeks": 173,
+  "rule": "before launch 0; first ramp_weeks weeks round_half_up(steady*ramp_ratio); then steady",
+  "totals_by_key": {
+    "COS_Cream:SG_Distributor": 754,
+    "COS_Cream:SG_EC": 299,
+    "COS_Cream:SG_Store": 416,
+    "COS_Cream:TH_Distributor": 299,
+    "COS_Serum:SG_Distributor": 897,
+    "COS_Serum:SG_EC": 455,
+    "COS_Serum:SG_Store": 546,
+    "COS_Serum:TH_Distributor": 390
+  },
+  "total_lots": 4056,
+  "rows_written": 1384,
+  "out": "C:\\Users\\ohsug\\WOM_V0R2M1_new_cockpit\\wom-v1r6m0_BS-SEAF\\output\\cockpit_cmp1\\model_late\\demand_forecast.csv",
+  "out_sha256": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e"
+}

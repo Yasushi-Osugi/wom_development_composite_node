@@ -1,0 +1,31 @@
+{
+  "base_currency": "JPY",
+  "total_lots": 1063,
+  "total_qty_units": 92736.0,
+  "total_revenue_base": 1119737280.0,
+  "total_cost_base": 512135832.0,
+  "gross_profit_base": 607601448.0,
+  "gross_margin_pct": 0.5426285780178722,
+  "total_tariff_base": 0.0,
+  "mom_profit_base": 324172800.0,
+  "channel_jp_revenue_base": 0,
+  "channel_us_revenue_base": 0,
+  "trust_event_count": 0,
+  "trust_event_types": [],
+  "valuation_status": "評価済み",
+  "rule_sources": {
+    "shared_rules_dir": null,
+    "sources": {
+      "ppc_market_price.csv": "model",
+      "ppc_supplier_cost.csv": "model",
+      "ppc_node_cost_rule.csv": "model",
+      "ppc_edge_cost_rule.csv": "model",
+      "ppc_tariff_rule.csv": "model",
+      "ppc_transfer_price_rule.csv": "model",
+      "ppc_profit_zone_rule.csv": "model",
+      "ppc_fx_rate.csv": "model",
+      "ppc_node_profit_zone.csv": "model"
+    },
+    "missing": []
+  }
+}
