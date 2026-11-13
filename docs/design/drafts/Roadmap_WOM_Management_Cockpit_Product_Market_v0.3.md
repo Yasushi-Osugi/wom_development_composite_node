@@ -105,9 +105,9 @@
 
 | 本 | 担当 | 作業 | 根拠・依頼書 | 次に進む条件 |
 |---|---|---|---|---|
-| GUI の設計（到達点 3） | Claude君（設計）→ 大杉さん（採否）→ Code君（実装） | 今回の比較を画面で再現できる最小の 1 画面の設計書：投入の表・計画の生産量・供給の方針を変え、案を複製して実行し、案の表と境目を並べる。未配分と未充足の区別、最低供給量ちょうどの週、未設定の費用を見せる | §0 の GUI の設計の材料、二つの比較の報告書 | 大杉さんが設計書を採用する |
+| GUI（到達点 3） | Claude君（設計）→ 大杉さん（採否）→ Code君（実装） | 設計書は採用済み（`requests/Cockpit_Stage3_DesignMD_PlanCompareScreen_v0.1.md`、大杉さん 2026-11-13）。3 段で作る：段 1 案の置き場と実行（画面なし）→ 段 2 見る画面 → 段 3 操作 | 段 1：`requests/RequestLetter_Cockpit_Stage3_Step1_CasesAndRunner_to_CodeKun.md` | 段 1：6 つの案を作り直して同じ数字。段 3：大杉さんが画面だけで新しい案を作り、同じ数字を得る |
 | 生産量を上げる費用の業務定義 | GPT-MC君 → 大杉さん（採否）→ Claude君（比較の道具への反映） | クリームの `cap_soft` 11 → 12 の費用：対象、負担者、発生する週、境目の式、週固定費との組合せ | `requests/RequestLetter_WOM_Cockpit_PlannedOutputCost_to_GPT_MC_v0.1.md` | 定義が採用されるまで、画面と比較では「未設定」、採算の順位は保留 |
-| smartx の運賃の調査（金額基盤） | Code君（実行と集計）・GPT-MC君（役務の判定） → 大杉さん（直し方） | 3 組について、PPC が両方を計上しているかと、同じ輸送を指すかを分けて調べる。コード・サンプル・golden は変えない | `requests/RequestLetter_Smartx_FreightDoubleCount_Check_to_CodeKun.md`、`docs/design/drafts/WOM_Smartx_Freight_Business_Review_v0.1.md` | 結果を見て、大杉さんが直し方と golden の作り直しを決める |
+| 金額基盤：引かれていない規則の行（smartx から全サンプルへ） | Code君（調査）→ 大杉さん（直し方）→ Claude君（直しの依頼書） | smartx の調査は済み（`docs/development/WOM_MoneyBase_Smartx_FreightCheck_Report.md`）：3 組でノードと区間の運賃が両方計上、SmartX・SmartXNext の区間の運賃と関税 16 行が一度も引かれていない（関税 0）。大杉さんの判断（2026-11-13）：運賃は区間だけ、3 製品を同じ書き方にそろえる、直す前に全サンプルで洗い出す、PPC の警告は結果を見て決める | `requests/RequestLetter_MoneyBase_UnappliedRules_Survey_to_CodeKun.md`（GUI の段 1 の後に着手） | 洗い出しの結果を見て、直すモデルと golden の作り直しの単位を決める |
 
 役割：大杉さんが方針と採否を決める。Claude君は設計に加えて、誰が何を確かめ、どの結果を次の判断に渡すかを取りまとめ、この表を更新する。GPT君（アーキテクト）がレビューする。BS-SEAF Loop の自動化は中断のまま。
 
