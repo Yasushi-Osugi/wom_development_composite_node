@@ -176,7 +176,8 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 
 ## 6. 開発の進め方
 
-- **役割**：大杉さん（Owner：判断・実機確認・git）、Claude君（設計・依頼書・検証）、Code君（Claude Code：実装）、GPT-6 Astra君・GPT-6.1 Sol君（独立の調査・検証）。
+- **役割**（2026-11 時点）：大杉さん（Owner：方針・採否・実機確認・git）、GPT君（アーキテクト：ロードマップとレビュー）、GPT-MC君（経営コンサルタントの役：業務定義）、Claude君（設計・依頼書・検証・取りまとめ）、Code君（Claude Code：実装・実行）。過去に GPT-6 Astra君・GPT-6.1 Sol君・Gemini君が独立の調査・検証に加わった。
+- **今どこにいるか**は [経営コックピットのロードマップ](design/drafts/Roadmap_WOM_Management_Cockpit_Product_Market_v0.3.md) の §0（今の位置）と §4（並行する作業と担当）を見る。
 - **流れ**：依頼書（`requests/`）→ 実装 → 報告書（`docs/development/`）→ 検証（「止める理由」と「申し送り」を分ける）→ commit。依頼書と実装は別の commit にする。
 - **BS-SEAF の一巡**：8 段階・誤りの型・標準の作法・報告書に残す記録は [BS-SEAF の進め方の知識](bsseaf/WOM_BSSEAF_Process_Knowledge.md)。最初の基準事例は化粧品（[検証報告](development/WOM_BSSEAF_Verification_Cosmetics_Report.md)）。
 - **保護対象のコア**（`AGENTS.md` §10）：`backward_planner.py`、`forward_planner.py`、`plan_copy.py`、`plan_node.py`、`sc_tree.py`、`push_pull.py`。依頼書が無ければ変えない。変えるときは 3 層のテスト（単体・CSV からの結合・golden）を緑にし、大杉さんが diff を確かめる。
