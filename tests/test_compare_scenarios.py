@@ -171,27 +171,27 @@ def test_compare_end_to_end(tmp_path):
 
 
 # ── 固定費（GPT-MC 業務定義 v0.1 §3・§4）────────────────────────────────
-def test_paid_weeks_in_report():
+def test_paid_weeks():
     R = ("2027-W01", "2029-W52")
-    assert C.paid_weeks_in_report("2027-W27", "2029-W52", *R) == 130
-    assert C.paid_weeks_in_report("2028-W01", "2029-W52", *R) == 104
-    assert C.paid_weeks_in_report("2030-W01", "2030-W10", *R) == 0          # outside the report period
-    assert C.paid_weeks_in_report("2027-W27", "2030-W26", *R) == 130        # weeks after 2029-W52 count 0
-    assert C.paid_weeks_in_report("2026-W40", "2027-W02", *R) == 2
+    assert C.paid_weeks("2027-W27", "2029-W52", *R) == 130
+    assert C.paid_weeks("2028-W01", "2029-W52", *R) == 104
+    assert C.paid_weeks("2030-W01", "2030-W10", *R) == 0          # outside the report period
+    assert C.paid_weeks("2027-W27", "2030-W26", *R) == 130        # weeks after 2029-W52 count 0
+    assert C.paid_weeks("2026-W40", "2027-W02", *R) == 2
     with pytest.raises(C.CompareError):
-        C.paid_weeks_in_report("2029-W10", "2029-W01", *R)
+        C.paid_weeks("2029-W10", "2029-W01", *R)
 
 
 def test_week_2027_w26_and_2030_w01_rows():
     """Definition §3: 2027-W26 is 0 for both cases (before either start); 2030-W01 adds 0."""
     R = ("2027-W01", "2029-W52")
-    early = C.paid_weeks_in_report("2027-W27", "2029-W52", *R)
-    assert C.paid_weeks_in_report("2027-W27", "2029-W52", "2027-W26", "2027-W26") == 0
-    assert C.paid_weeks_in_report("2028-W01", "2029-W52", "2027-W26", "2027-W26") == 0
-    assert C.paid_weeks_in_report("2027-W27", "2029-W52", "2027-W27", "2027-W27") == 1
-    assert C.paid_weeks_in_report("2028-W01", "2029-W52", "2027-W27", "2027-W27") == 0
-    assert C.paid_weeks_in_report("2027-W27", "2030-W01", *R) == early
-    assert early - C.paid_weeks_in_report("2028-W01", "2029-W52", *R) == 26
+    early = C.paid_weeks("2027-W27", "2029-W52", *R)
+    assert C.paid_weeks("2027-W27", "2029-W52", "2027-W26", "2027-W26") == 0
+    assert C.paid_weeks("2028-W01", "2029-W52", "2027-W26", "2027-W26") == 0
+    assert C.paid_weeks("2027-W27", "2029-W52", "2027-W27", "2027-W27") == 1
+    assert C.paid_weeks("2028-W01", "2029-W52", "2027-W27", "2027-W27") == 0
+    assert C.paid_weeks("2027-W27", "2030-W01", *R) == early
+    assert early - C.paid_weeks("2028-W01", "2029-W52", *R) == 26
 
 
 def test_worked_example_boundary_and_amounts(tmp_path):
@@ -301,3 +301,123 @@ def test_udp_identity_violation_stops(tmp_path):
     r.to_csv(os.path.join(d, "udp_result_by_request.csv"), index=False)
     with pytest.raises(C.CompareError, match="②＝④＋⑤"):
         C.load_udp(d)
+
+
+# ── 増産の確保費（RequestLetter_Cockpit_Stage3_Step2 A：費目が 2 つ、助走を数える）─────────
+REP = ("2027-W01", "2029-W52")
+PLAN = ("2026-W37", "2029-W52")
+P0_4 = {"base_late": 606_871_080.0, "base_early": 606_871_080.0,
+        "raise_late": 616_860_840.0, "raise_early": 625_715_400.0}
+OK = {"base": "評価済み", "alt": "評価済み"}
+
+
+def _plan2(path, rows):
+    pd.DataFrame([dict(zip(["case", "cost_item", "entity", "paid_start_week", "paid_end_week", "weekly_amount",
+                            "currency", "note", "count_outside_report"], r)) for r in rows]).to_csv(path, index=False)
+    return C.read_fixed_cost_plan(path)
+
+
+def _ch(case, start, amt=""):
+    return (case, "channel", "E_JP", start, "2029-W52", amt, "JPY", "", "")
+
+
+def _rs(case, start, end, amt="", outside="1"):
+    return (case, "raise", "E_JP", start, end, amt, "JPY", "", outside)
+
+
+def test_paid_weeks_over_the_plan_period():
+    assert C.paid_weeks("2026-W46", "2029-W46", *REP) == 150            # report period only
+    assert C.paid_weeks("2026-W46", "2029-W46", *PLAN) == 158           # warm-up weeks counted
+    assert C.paid_weeks("2026-W38", "2029-W46", *PLAN) == 166
+
+
+def test_count_outside_report_column(tmp_path):
+    p = _plan2(str(tmp_path / "a.csv"), [_rs("base", "2026-W46", "2029-W46"), _rs("alt", "2026-W38", "2029-W46")])
+    r = C.fixed_cost_table(p, {"base": 1.0, "alt": 801.0}, OK, *REP, plan_start=PLAN[0], plan_end=PLAN[1]).iloc[0]
+    assert (r["W_base"], r["W_alt"], r["delta_W"], r["count_outside_report"]) == (158, 166, 8, 1)
+    assert r["f_star_per_week"] == 100.0
+    q = _plan2(str(tmp_path / "b.csv"), [_rs("base", "2026-W46", "2029-W46", outside=""),
+                                         _rs("alt", "2026-W38", "2029-W46", outside="")])
+    r = C.fixed_cost_table(q, {"base": 1.0, "alt": 801.0}, OK, *REP, plan_start=PLAN[0], plan_end=PLAN[1]).iloc[0]
+    assert (r["W_base"], r["W_alt"]) == (150, 150)                        # blank = report period only
+    with pytest.raises(C.CompareError, match="計画期間"):
+        C.fixed_cost_table(p, {"base": 1.0, "alt": 801.0}, OK, *REP)
+
+
+def test_count_outside_report_validation(tmp_path):
+    with pytest.raises(C.CompareError, match="0・1・空欄"):
+        _plan2(str(tmp_path / "a.csv"), [_rs("base", "2026-W46", "2029-W46", outside="yes")])
+    with pytest.raises(C.CompareError, match="base と alt で違います"):
+        _plan2(str(tmp_path / "b.csv"), [_rs("base", "2026-W46", "2029-W46", outside="1"),
+                                         _rs("alt", "2026-W38", "2029-W46", outside="0")])
+    with pytest.raises(C.CompareError, match="合計"):
+        _plan2(str(tmp_path / "c.csv"), [("base", "合計", "E", "2027-W01", "2027-W02", "", "JPY", "", "")])
+
+
+def test_old_tables_without_the_column_still_work(tmp_path):
+    p = C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "a.csv")))
+    assert list(p["count_outside_report"]) == ["", ""]
+    r = C.fixed_cost_table(p, {"base": 0.0, "alt": 8_854_560.0}, OK, *REP)
+    assert len(r) == 1 and r.iloc[0]["f_star_per_week"] == 340_560.0     # one item: no total row, same value
+    assert r.iloc[0]["boundary_assumption"] == ""
+
+
+def test_two_items_boundary_with_the_other_unset(tmp_path):
+    """Raised late -> raised early: channel ΔW 26, raise ΔW 8 (measured weeks 158 / 166)."""
+    p = _plan2(str(tmp_path / "a.csv"), [_ch("base", "2028-W01"), _ch("alt", "2027-W27"),
+                                         _rs("base", "2026-W46", "2029-W46"), _rs("alt", "2026-W38", "2029-W46")])
+    t = C.fixed_cost_table(p, {"base": P0_4["raise_late"], "alt": P0_4["raise_early"]}, OK, *REP,
+                           plan_start=PLAN[0], plan_end=PLAN[1]).set_index("cost_item")
+    assert t.loc["channel", "f_star_per_week"] == 340_560.0
+    assert "raise" in t.loc["channel", "boundary_assumption"] and "0 と置いた" in t.loc["channel", "boundary_assumption"]
+    assert t.loc["raise", "f_star_per_week"] == 8_854_560.0 / 8
+    assert t.loc["合計", "cost_base"] == "未算出" and t.loc["合計", "P_after_alt"] == "未算出"
+    assert "保留" in t.loc["合計", "note"]
+
+
+def test_same_launch_week_raise_cancels_the_channel_fee(tmp_path):
+    """Base late -> raised late: the channel fee is the same in both (ΔW 0); raise W = 158 in the alt only."""
+    p = _plan2(str(tmp_path / "a.csv"), [_ch("base", "2028-W01"), _ch("alt", "2028-W01"),
+                                         _rs("alt", "2026-W46", "2029-W46")])
+    t = C.fixed_cost_table(p, {"base": P0_4["base_late"], "alt": P0_4["raise_late"]}, OK, *REP,
+                           plan_start=PLAN[0], plan_end=PLAN[1]).set_index("cost_item")
+    assert t.loc["channel", "boundary"].startswith("順位変化なし")
+    assert (t.loc["raise", "W_base"], t.loc["raise", "W_alt"]) == (0, 158)
+    assert t.loc["raise", "weekly_amount_base"] == "対象外"
+    assert t.loc["raise", "f_star_per_week"] == pytest.approx(9_989_760.0 / 158)
+    assert t.loc["raise", "boundary_assumption"] == "channel は両案で同じ週数なので案間の差は 0"
+
+
+def test_other_item_with_an_amount_is_subtracted(tmp_path):
+    p = _plan2(str(tmp_path / "a.csv"), [_ch("base", "2028-W01", "200000"), _ch("alt", "2027-W27", "200000"),
+                                         _rs("base", "2026-W46", "2029-W46"), _rs("alt", "2026-W38", "2029-W46")])
+    t = C.fixed_cost_table(p, {"base": P0_4["raise_late"], "alt": P0_4["raise_early"]}, OK, *REP,
+                           plan_start=PLAN[0], plan_end=PLAN[1]).set_index("cost_item")
+    assert t.loc["raise", "other_items_cost_diff"] == 200_000 * 26
+    assert t.loc["raise", "f_star_per_week"] == (8_854_560.0 - 5_200_000) / 8
+
+
+def test_planned_output_cost_worked_example(tmp_path):
+    """Definition §5: channel 200,000 / week, raise 80,000 / week, raise paid 156 weeks (report period)."""
+    want = {"base_late": 586_071_080, "base_early": 580_871_080, "raise_late": 583_580_840, "raise_early": 587_235_400}
+    start = {"base_late": "2028-W01", "base_early": "2027-W27", "raise_late": "2028-W01", "raise_early": "2027-W27"}
+    for base, alt in (("base_late", "raise_late"), ("base_early", "raise_early"), ("raise_late", "raise_early")):
+        rows = [_ch("base", start[base], "200000"), _ch("alt", start[alt], "200000")]
+        rows += [_rs(c, "2027-W01", "2029-W52", "80000", outside="0") for c, n in (("base", base), ("alt", alt))
+                 if n.startswith("raise")]
+        p = _plan2(str(tmp_path / f"{base}_{alt}.csv"), rows)
+        t = C.fixed_cost_table(p, {"base": P0_4[base], "alt": P0_4[alt]}, OK, *REP).set_index("cost_item")
+        tot = t.loc["合計"] if "合計" in t.index else t.iloc[0]
+        assert tot["P_after_base"] == want[base] and tot["P_after_alt"] == want[alt]
+
+
+def test_planned_output_weeks_table():
+    rows = []
+    for i, (w, prod) in enumerate(zip(["2026-W52", "2026-W53", "2027-W01", "2027-W02", "2027-W03"],
+                                      [0, 11, 11, 11, 10])):
+        rows.append({"case": "x", "product": "P", "week_index": i, "week": w, "production_lots": prod,
+                     "shippable_soft": 11})
+    t = C.planned_output_weeks(pd.DataFrame(rows), "2027-W01", "2027-W03", {"x": {"P": "F"}}).iloc[0]
+    assert (t["first_week_at_cap"], t["last_week_at_cap"], t["span_weeks"]) == ("2026-W53", "2027-W02", 3)
+    assert (t["span_weeks_in_report"], t["span_weeks_outside_report"], t["weeks_at_cap"]) == (2, 1, 3)
+    assert (t["weeks_below_cap"], t["weeks_below_cap_in_report"], t["factory"]) == (2, 1, "F")

@@ -345,10 +345,12 @@ def _fixed_cost_plan(ws_dir: str, base: str, alt: str, out_csv: str) -> Optional
             continue
         _f, rs, _t, _b = C._read_rows(os.path.join(C.case_dir(ws_dir, cid), fc))
         for r in rs:
-            rows.append(dict(case=side, **{k: r[k] for k in C.FIXED_COST_COLS}))
+            rows.append(dict(case=side, **{k: r[k] for k in C.FIXED_COST_COLS},
+                             **{C.COUNT_OUTSIDE_COL: (r.get(C.COUNT_OUTSIDE_COL) or "").strip()}))
     if not rows:
         return None
-    C._write_rows(out_csv, ["case"] + C.FIXED_COST_COLS, rows, "\n", False)
+    cols = ["case"] + C.FIXED_COST_COLS + ([C.COUNT_OUTSIDE_COL] if any(r[C.COUNT_OUTSIDE_COL] for r in rows) else [])
+    C._write_rows(out_csv, cols, rows, "\n", False)
     return out_csv
 
 

@@ -51,6 +51,7 @@ DEMAND = "demand_forecast.csv"
 FIXED_COST_FILE = "fixed_cost.csv"            # inputs/ ; only the comparison reads it
 FIXED_COST_COLS = ["cost_item", "entity", "paid_start_week", "paid_end_week", "weekly_amount",
                    "currency", "note"]
+COUNT_OUTSIDE_COL = "count_outside_report"    # optional (段 2): 1 = the paid weeks include the warm-up weeks
 POLICY_FILES = ("allocation_file", "policy_file", "knowledge_file")
 _ID_RE = re.compile(r"^C(\d{2,})$")
 _WEEK_RE = re.compile(r"^\d{4}-W\d{2}$")
@@ -481,11 +482,16 @@ def set_fixed_cost(ws_dir: str, cid: str, *, file: str = None, side: str = None,
         _check_week(x["paid_end_week"], f"{i} 行目の paid_end_week")
         if x["weekly_amount"] != "":
             x["weekly_amount"] = _num_text(x["weekly_amount"], f"{i} 行目の weekly_amount")
+        x[COUNT_OUTSIDE_COL] = (r.get(COUNT_OUTSIDE_COL) or "").strip()
+        if x[COUNT_OUTSIDE_COL] not in ("", "0", "1"):
+            raise CaseError(f"費用の前提の {i} 行目：{COUNT_OUTSIDE_COL}={x[COUNT_OUTSIDE_COL]!r} は 0・1・空欄"
+                            "（空欄は 0 ＝ 報告期間だけを数える）")
         if x["cost_item"] in seen:
             raise CaseError(f"費用の前提：cost_item {x['cost_item']} が重複しています")
         seen.add(x["cost_item"])
         out.append(x)
-    _write_rows(dst, FIXED_COST_COLS, out, "\n", False)
+    cols = FIXED_COST_COLS + ([COUNT_OUTSIDE_COL] if any(x[COUNT_OUTSIDE_COL] for x in out) else [])
+    _write_rows(dst, cols, out, "\n", False)
     case["inputs"]["fixed_cost"] = os.path.relpath(dst, cdir).replace("\\", "/")
     case.setdefault("changes", []).append({"at": _now(), "what": "fixed_cost", "rows": out})
     write_case(ws_dir, cid, case)
@@ -561,7 +567,8 @@ def input_summary(ws_dir: str, cid: str) -> dict:
     if fc and os.path.exists(os.path.join(cdir, fc)):
         _f, rows, _t, _b = _read_rows(os.path.join(cdir, fc))
         s["fixed_cost"] = [{"cost_item": r["cost_item"], "paid": f"{r['paid_start_week']}〜{r['paid_end_week']}",
-                            "weekly_amount": r["weekly_amount"] if r["weekly_amount"] != "" else "未設定"}
+                            "weekly_amount": r["weekly_amount"] if r["weekly_amount"] != "" else "未設定",
+                            "count_outside_report": (r.get(COUNT_OUTSIDE_COL) or "").strip() == "1"}
                            for r in rows]
     return s
 

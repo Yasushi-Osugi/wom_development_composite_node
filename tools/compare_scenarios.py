@@ -11,6 +11,9 @@ RequestLetter_Cockpit_FirstComparison_Observe §3（2026-11-13）。
 
 RequestLetter_Cockpit_FirstComparison_PolicyAndCapacity §4 で、数量配分の分け方と、GPT-MC の業務定義
 v0.1 による固定費の逆転点を足した（--extra-fixed-cost-weeks は廃止）。
+RequestLetter_Cockpit_Stage3_Step2 A で、増産の確保費（GPT-MC の業務定義 v0.1）のために、固定費の表の
+count_outside_report 列（1 なら助走の週も数える）、費目が 2 つ以上のときの合計の行と費目ごとの境目、
+planned_output_weeks.csv（計画の生産量ちょうど作った週）を足した。
 
 **出力とモデルの CSV を読むだけ（WOM を import しない）。**
 
@@ -40,7 +43,10 @@ v0.1 による固定費の逆転点を足した（--extra-fixed-cost-weeks は�
     supply_allocation_by_request_week.csv / supply_allocation_by_key.csv
                                  --base-udp・--alt-udp のとき：① 元の需要・② 供給の対象・③ 未配分・当週・早出し・
                                  遅配・⑤ 配分後の未充足（渡さない案は ①＝②＝需要、③＝0）
-    fixed_cost_breakeven.csv     固定費の逆転点（業務定義 §4：P0・有償の週・W・週額・費用・控除後・ΔP0・ΔW・境目）
+    fixed_cost_breakeven.csv     固定費の逆転点（業務定義 §4：P0・有償の週・W・週額・費用・控除後・ΔP0・ΔW・境目）。
+                                 費目が 2 つ以上なら合計の行と、ほかの費目の案間の差を差し引いた境目
+    planned_output_weeks.csv     案 × SKU：工場が計画の生産量（floor(cap_soft × 歩留まり)）ちょうど作った最初・最後の週、
+                                 その間の週数（報告期間の内・外）、ちょうど作った週・下回った週の数
     comparison_summary.md        まとめ
 
 止める条件（CompareError）：ファイルが無い、要求週別の供給の鍵ごとの合計が Flow Check の表 2 と合わない、
@@ -545,9 +551,11 @@ def allocation_table(sup: pd.DataFrame, udp: Optional[pd.DataFrame], name: str) 
     return out.sort_values(k).reset_index(drop=True)
 
 
-# ── 固定費の逆転点（GPT-MC 業務定義 v0.1 §3・§4）────────────────────────
+# ── 固定費の逆転点（GPT-MC 業務定義 v0.1 §3・§4、増産の確保費 v0.1）─────────────
 FIXED_COST_COLS = ["case", "cost_item", "entity", "paid_start_week", "paid_end_week", "weekly_amount",
                    "currency", "note"]
+COUNT_OUTSIDE_COL = "count_outside_report"   # optional: 1 = count the paid weeks over the plan period
+TOTAL_ITEM = "合計"
 ZERO_TOL = 0.5      # yen
 
 
@@ -557,13 +565,14 @@ def _wk_monday(label: str):
     return datetime.date.fromisocalendar(int(y), int(w), 1)
 
 
-def paid_weeks_in_report(paid_start: str, paid_end: str, report_start: str, report_end: str) -> int:
-    """ISO weeks in [paid_start, paid_end] ∩ [report_start, report_end] (both ends included)."""
+def paid_weeks(paid_start: str, paid_end: str, period_start: str, period_end: str) -> int:
+    """ISO weeks in [paid_start, paid_end] ∩ [period_start, period_end] (both ends included).
+    The period is the report period, or the plan period for a row with count_outside_report = 1."""
     try:
         a, b = _wk_monday(paid_start), _wk_monday(paid_end)
-        ra, rb = _wk_monday(report_start), _wk_monday(report_end)
+        ra, rb = _wk_monday(period_start), _wk_monday(period_end)
     except (ValueError, TypeError):
-        raise CompareError(f"週のラベルが不正です: {paid_start}〜{paid_end}（報告期間 {report_start}〜{report_end}）")
+        raise CompareError(f"週のラベルが不正です: {paid_start}〜{paid_end}（期間 {period_start}〜{period_end}）")
     if b < a:
         raise CompareError(f"有償の週の終わり {paid_end} が始まり {paid_start} より前です")
     lo, hi = max(a, ra), min(b, rb)
@@ -575,9 +584,13 @@ def read_fixed_cost_plan(path: str) -> pd.DataFrame:
     missing = [c for c in FIXED_COST_COLS if c not in df.columns]
     if missing:
         raise CompareError(f"{path}: 列が足りません {missing}")
+    if COUNT_OUTSIDE_COL not in df.columns:
+        df[COUNT_OUTSIDE_COL] = ""                      # old tables: the report period only
     for i, r in df.iterrows():
         if r["case"] not in ("base", "alt"):
             raise CompareError(f"{path} の {i + 2} 行目: case は base か alt（{r['case']!r}）")
+        if r["cost_item"].strip() == TOTAL_ITEM:
+            raise CompareError(f"{path} の {i + 2} 行目: cost_item に {TOTAL_ITEM!r} は使えません（合計の行の名前）")
         if r["weekly_amount"].strip() != "":
             try:
                 v = float(r["weekly_amount"])
@@ -585,8 +598,15 @@ def read_fixed_cost_plan(path: str) -> pd.DataFrame:
                 raise CompareError(f"{path} の {i + 2} 行目: weekly_amount={r['weekly_amount']!r} は数値ではありません")
             if v < 0:
                 raise CompareError(f"{path} の {i + 2} 行目: weekly_amount は 0 以上")
+        if r[COUNT_OUTSIDE_COL].strip() not in ("", "0", "1"):
+            raise CompareError(f"{path} の {i + 2} 行目: {COUNT_OUTSIDE_COL}={r[COUNT_OUTSIDE_COL]!r} は 0・1・空欄"
+                               "（空欄は 0 ＝ 報告期間だけを数える）")
     if df.duplicated(["case", "cost_item"]).any():
         raise CompareError(f"{path}: 同じ case・cost_item の行が重複しています")
+    for item, g in df.groupby("cost_item"):
+        flags = {x.strip() or "0" for x in g[COUNT_OUTSIDE_COL]}
+        if len(flags) > 1:
+            raise CompareError(f"{path}: {item} の {COUNT_OUTSIDE_COL} が base と alt で違います。直し方：同じ値にする")
     return df
 
 
@@ -620,16 +640,30 @@ def report_p0(run: dict) -> Tuple[float, str, str, str]:
     return p0, status, str(rep["week"].iloc[0]), str(rep["week"].iloc[-1])
 
 
-FC_COLS = ["cost_item", "entity", "P0_base", "P0_alt", "paid_start_base", "paid_end_base", "W_base",
-           "paid_start_alt", "paid_end_alt", "W_alt", "weekly_amount_base", "weekly_amount_alt", "cost_base",
-           "cost_alt", "P_after_base", "P_after_alt", "delta_P0", "delta_P0_by_product", "delta_W", "boundary",
-           "f_star_per_week", "delta_P_after", "valuation_status", "note"]
+FC_COLS = ["cost_item", "entity", "P0_base", "P0_alt", "count_outside_report", "paid_start_base", "paid_end_base",
+           "W_base", "paid_start_alt", "paid_end_alt", "W_alt", "weekly_amount_base", "weekly_amount_alt", "cost_base",
+           "cost_alt", "P_after_base", "P_after_alt", "delta_P0", "delta_P0_by_product", "delta_W",
+           "other_items_cost_diff", "delta_P0_net", "boundary", "f_star_per_week", "boundary_assumption",
+           "delta_P_after", "valuation_status", "note"]
+UNSET = ""            # an item row keeps the old blank cell for an unset weekly amount (screen: 「未設定」)
+NOT_COMPUTED = "未算出"  # the 合計 row only
+NOT_APPLICABLE = "対象外"  # the case does not bear the item (no row): W = 0, cost 0
 
 
 def fixed_cost_table(plan: Optional[pd.DataFrame], p0: Dict[str, float], status: Dict[str, str],
                      report_start: str, report_end: str, hq_currency: str = "JPY",
-                     dp0_by_product: str = "") -> pd.DataFrame:
-    """One row per cost_item: per-case P0, paid weeks, W, weekly amount, cost, P0 after cost, ΔP0, ΔW, boundary."""
+                     dp0_by_product: str = "", plan_start: Optional[str] = None,
+                     plan_end: Optional[str] = None) -> pd.DataFrame:
+    """One row per cost_item (and a 合計 row when there are two or more):
+    per-case P0, paid weeks, W, weekly amount, cost, P0 after cost, ΔP0, ΔW and the boundary.
+
+    W counts the paid weeks inside the report period; a row with count_outside_report = 1 counts them inside
+    the plan period (plan_start..plan_end), warm-up weeks included. A case without a row for an item does not
+    bear that cost (W = 0, cost 0). A row with a blank weekly amount is 未設定.
+
+    The boundary of an item treats only that item's weekly amount as unknown:
+        f* = (ΔP0 − Σ other items' (cost_alt − cost_base)) ÷ ΔW_item
+    An other item with an unset weekly amount enters that sum as 0, and boundary_assumption says so."""
     dp0 = p0["alt"] - p0["base"]
     unval = [f"{c}: {status[c]}" for c in ("base", "alt") if status[c] != "評価済み"]
     if plan is None or plan.empty:
@@ -638,45 +672,127 @@ def fixed_cost_table(plan: Optional[pd.DataFrame], p0: Dict[str, float], status:
                               "delta_P0": dp0, "delta_P0_by_product": dp0_by_product, "delta_W": "",
                               "boundary": lab, "f_star_per_week": "",
                               "valuation_status": "; ".join(unval) or "評価済み"}], columns=FC_COLS)
-    rows = []
-    for item in sorted(set(plan["cost_item"])):
+    if COUNT_OUTSIDE_COL not in plan.columns:
+        plan = plan.assign(**{COUNT_OUTSIDE_COL: ""})
+    items = sorted(set(plan["cost_item"]))
+    info = {}
+    for item in items:
         r = {"cost_item": item,
              "entity": ",".join(sorted(set(plan.loc[plan["cost_item"] == item, "entity"])))}
-        amounts, ccys = {}, set()
+        outside = (plan.loc[plan["cost_item"] == item, COUNT_OUTSIDE_COL].str.strip() == "1").any()
+        if outside and not (plan_start and plan_end):
+            raise CompareError(f"{item}: {COUNT_OUTSIDE_COL}=1 には計画期間が要ります")
+        ps, pe = (plan_start, plan_end) if outside else (report_start, report_end)
+        r["count_outside_report"] = 1 if outside else 0
+        amounts, ccys, has = {}, set(), {}
         for c in ("base", "alt"):
             sub = plan[(plan["cost_item"] == item) & (plan["case"] == c)]
             r[f"P0_{c}"] = p0[c]
-            if sub.empty:
+            if sub.empty:                           # this case does not bear the item
                 r[f"paid_start_{c}"], r[f"paid_end_{c}"], r[f"W_{c}"] = "", "", 0
-                amounts[c] = None
+                amounts[c], has[c] = 0.0, False
                 continue
             x = sub.iloc[0]
+            has[c] = True
             r[f"paid_start_{c}"], r[f"paid_end_{c}"] = x["paid_start_week"], x["paid_end_week"]
-            r[f"W_{c}"] = paid_weeks_in_report(x["paid_start_week"], x["paid_end_week"], report_start, report_end)
+            r[f"W_{c}"] = paid_weeks(x["paid_start_week"], x["paid_end_week"], ps, pe)
             amounts[c] = float(x["weekly_amount"]) if x["weekly_amount"].strip() != "" else None
             ccys.add(x["currency"].strip())
-        dw = r["W_alt"] - r["W_base"]
         reason = ""
         if unval:
             reason = "連結利益未評価"
         elif ccys - {hq_currency}:
             reason = f"共通の円建て週額の条件外（通貨 {sorted(ccys)}）"
-        elif all(amounts[c] is not None for c in ("base", "alt")) and amounts["base"] != amounts["alt"]:
+        elif has["base"] and has["alt"] and all(amounts[c] is not None for c in ("base", "alt")) \
+                and amounts["base"] != amounts["alt"]:
             reason = "共通の円建て週額の条件外（週額が案で違う）"
-        lab, fstar = boundary_label(dp0, dw, reason)
-        r.update({"delta_P0": dp0, "delta_P0_by_product": dp0_by_product, "delta_W": dw,
-                  "boundary": lab, "f_star_per_week": "" if fstar is None else fstar})
+        known = all(amounts[c] is not None for c in ("base", "alt"))
         for c in ("base", "alt"):
             a = amounts[c]
-            r[f"weekly_amount_{c}"] = "" if a is None else a
-            r[f"cost_{c}"] = "" if a is None else a * r[f"W_{c}"]
-            r[f"P_after_{c}"] = "" if a is None else p0[c] - a * r[f"W_{c}"]
-        both = all(amounts[c] is not None for c in ("base", "alt"))
-        r["delta_P_after"] = r["P_after_alt"] - r["P_after_base"] if both else ""
-        r["valuation_status"] = "; ".join(unval) or "評価済み"
-        r["note"] = "" if both else "週額が未設定：境目だけ"
+            r[f"weekly_amount_{c}"] = (NOT_APPLICABLE if not has[c] else (UNSET if a is None else a))
+            r[f"cost_{c}"] = UNSET if a is None else a * r[f"W_{c}"]
+        info[item] = (r, reason, known, (r["cost_alt"] - r["cost_base"]) if known else None)
+    rows = []
+    for item in items:
+        r, reason, known, _cd = info[item]
+        dw = r["W_alt"] - r["W_base"]
+        others = [o for o in items if o != item]
+        def _same_weeks(o):     # borne by both cases for the same number of weeks: the difference is 0 under
+            ro = info[o][0]     # the common weekly amount of the definition (§4), not an assumption
+            return ro["W_base"] == ro["W_alt"] and NOT_APPLICABLE not in (ro["weekly_amount_base"],
+                                                                          ro["weekly_amount_alt"])
+        unset_others = [o for o in others if info[o][3] is None and not _same_weeks(o)]
+        same_weeks = [o for o in others if info[o][3] is None and _same_weeks(o)]
+        other_diff = sum(info[o][3] for o in others if info[o][3] is not None)
+        dp_net = dp0 - other_diff
+        lab, fstar = boundary_label(dp_net, dw, reason)
+        assume = ""
+        if others:
+            parts = []
+            if other_diff:
+                parts.append(f"ほかの費用の案間の差 {other_diff:,.0f} 円を差し引いた")
+            if unset_others:
+                parts.append(f"ほかの未設定の費用（{', '.join(unset_others)}）の案間の差を 0 と置いた場合")
+            if same_weeks:
+                parts.append(f"{', '.join(same_weeks)} は両案で同じ週数なので案間の差は 0")
+            assume = "；".join(parts) or "ほかの費用の案間の差は 0"
+        for c in ("base", "alt"):
+            r[f"P_after_{c}"] = "" if r[f"cost_{c}"] == UNSET else p0[c] - r[f"cost_{c}"]
+        r.update({"delta_P0": dp0, "delta_P0_by_product": dp0_by_product, "delta_W": dw,
+                  "other_items_cost_diff": other_diff if others else "", "delta_P0_net": dp_net if others else "",
+                  "boundary": lab, "f_star_per_week": "" if fstar is None else fstar, "boundary_assumption": assume,
+                  "delta_P_after": (r["P_after_alt"] - r["P_after_base"]) if known else "",
+                  "valuation_status": "; ".join(unval) or "評価済み",
+                  "note": "" if known else "週額が未設定：境目だけ"})
         rows.append(r)
+    if len(items) >= 2:
+        all_known = all(info[i][2] for i in items)
+        t = {"cost_item": TOTAL_ITEM, "entity": ",".join(sorted(set(plan["entity"]))),
+             "P0_base": p0["base"], "P0_alt": p0["alt"], "delta_P0": dp0, "delta_P0_by_product": dp0_by_product,
+             "valuation_status": "; ".join(unval) or "評価済み"}
+        for c in ("base", "alt"):
+            t[f"cost_{c}"] = sum(r[f"cost_{c}"] for r in rows) if all_known else NOT_COMPUTED
+            t[f"P_after_{c}"] = (p0[c] - t[f"cost_{c}"]) if all_known else NOT_COMPUTED
+        t["delta_P_after"] = (t["P_after_alt"] - t["P_after_base"]) if all_known else NOT_COMPUTED
+        t["boundary"] = "合計（費目ごとの境目は上の行）"
+        for col in FC_COLS:                     # blank, not NaN (keeps the item rows' integer columns as they are)
+            t.setdefault(col, "")
+        t["note"] = "" if all_known else "週額が未設定の費用がある：費用・控除後の利益は未算出、採算の順位は保留"
+        rows.append(t)
     return pd.DataFrame(rows, columns=FC_COLS)
+
+
+def planned_output_weeks(fw: pd.DataFrame, report_start: str, report_end: str,
+                         mom_names: Optional[Dict[str, Dict[str, str]]] = None) -> pd.DataFrame:
+    """Per case x product: the weeks the factory made exactly its planned shippable output (floor(cap_soft x yield)).
+    Used to check the paid weeks written in the fixed cost table (the tool does not decide them)."""
+    rows = []
+    ra, rb = _wk_monday(report_start), _wk_monday(report_end)
+    for (case, prod), g in fw.groupby(["case", "product"]):
+        g = g.sort_values("week_index")
+        soft = pd.to_numeric(g["shippable_soft"], errors="coerce")
+        at = g[soft.notna() & (g["production_lots"] == soft)]
+        below = g[soft.notna() & (g["production_lots"] < soft)]
+        inrep = g["week"].map(lambda w: ra <= _wk_monday(w) <= rb)
+        r = {"case": case, "product": prod, "factory": (mom_names or {}).get(case, {}).get(prod, ""),
+             "shippable_soft_values": ",".join(str(int(v)) for v in sorted(soft.dropna().unique())),
+             "weeks_at_cap": len(at), "weeks_at_cap_in_report": int(inrep[at.index].sum()),
+             "weeks_at_cap_outside_report": int((~inrep[at.index]).sum()),
+             "weeks_below_cap": len(below), "weeks_below_cap_in_report": int(inrep[below.index].sum())}
+        if len(at):
+            first, last = at["week"].iloc[0], at["week"].iloc[-1]
+            span = g[(g["week_index"] >= at["week_index"].iloc[0]) & (g["week_index"] <= at["week_index"].iloc[-1])]
+            r.update({"first_week_at_cap": first, "last_week_at_cap": last, "span_weeks": len(span),
+                      "span_weeks_in_report": int(inrep[span.index].sum()),
+                      "span_weeks_outside_report": int((~inrep[span.index]).sum()),
+                      "weeks_below_cap_inside_span": int((span["production_lots"] <
+                                                          pd.to_numeric(span["shippable_soft"], errors="coerce")).sum())})
+        rows.append(r)
+    cols = ["case", "product", "factory", "shippable_soft_values", "first_week_at_cap", "last_week_at_cap",
+            "span_weeks", "span_weeks_in_report", "span_weeks_outside_report", "weeks_at_cap",
+            "weeks_at_cap_in_report", "weeks_at_cap_outside_report", "weeks_below_cap", "weeks_below_cap_in_report",
+            "weeks_below_cap_inside_span"]
+    return pd.DataFrame(rows).reindex(columns=cols)
 
 
 # ── 全体 ─────────────────────────────────────────────────────────────
@@ -753,12 +869,20 @@ def compare(base_run: str, alt_run: str, base_model: str, alt_model: str, out: s
     rep = tsbs[(tsbs["period"] == "report") & (tsbs["product"] != "*")]
     by_prod = "; ".join(f"{r.product}: {r.profit_r2_diff:,.0f}" for r in rep.itertuples())
     plan = read_fixed_cost_plan(fixed_cost_plan) if fixed_cost_plan else None
-    fc = fixed_cost_table(plan, {"base": pb, "alt": pa}, {"base": stb, "alt": sta}, rs, re_, dp0_by_product=by_prod)
+    fc = fixed_cost_table(plan, {"base": pb, "alt": pa}, {"base": stb, "alt": sta}, rs, re_, dp0_by_product=by_prod,
+                          plan_start=labels[0], plan_end=labels[-1])
     fc.to_csv(os.path.join(out, "fixed_cost_breakeven.csv"), index=False)
+    moms = {}
+    for nm, run in ((base_name, base), (alt_name, alt)):
+        t = run["tree"]
+        moms[nm] = {r["product_name"]: r["node_name"] for _, r in t[t["node_type"] == "mom"].iterrows()}
+    pw = planned_output_weeks(fw, rs, re_, moms)
+    pw.to_csv(os.path.join(out, "planned_output_weeks.csv"), index=False)
 
     res.update({"labels": labels, "demand_diff": dd, "entry_plan_diff": epd, "supply": ssbs, "supply_check": chk,
                 "money": msbs, "totals": tsbs, "inventory_sku": isku, "factory": fw, "age": ag,
                 "diff_weeks": dw, "picks": picks, "boundary": bd, "factory_idle": fi, "fixed_cost": fc, "alloc": alloc,
+                "planned_output_weeks": pw,
                 "unvalued": {base_name: mb.attrs.get("unvalued_consolidated_lines", 0),
                              alt_name: ma.attrs.get("unvalued_consolidated_lines", 0)},
                 "base_name": base_name, "alt_name": alt_name})
@@ -851,7 +975,16 @@ def write_summary(res: dict, path: str, base_run, alt_run, base_model, alt_model
                  f"ΔP0 {_fmt(fc.delta_P0)}（{fc.delta_P0_by_product}）、W base {getattr(fc, 'W_base', '')} / alt "
                  f"{getattr(fc, 'W_alt', '')}、ΔW {fc.delta_W} → {fc.boundary}"
                  + (f"：**{_fmt(fc.f_star_per_week)} 円／週**" if fs not in ("", "nan") else "")
+                 + (f"（{fc.boundary_assumption}）" if str(fc.boundary_assumption) not in ("", "nan") else "")
                  + f"（{fc.valuation_status}）")
+    pw = res.get("planned_output_weeks")
+    if pw is not None and len(pw):
+        L += ["", "## 計画の生産量ちょうど作った週（有償の週の確かめ用。道具は有償の週を決めない）", ""]
+        for r in pw.itertuples():
+            L.append(f"- {r.case} {r.product}（{r.factory}、上限 {r.shippable_soft_values}）：最初 {r.first_week_at_cap}・"
+                     f"最後 {r.last_week_at_cap}・その間 {r.span_weeks} 週（報告期間 {r.span_weeks_in_report}・"
+                     f"外 {r.span_weeks_outside_report}）、ちょうど作った週 {r.weeks_at_cap}（報告期間 {r.weeks_at_cap_in_report}）、"
+                     f"下回った週 {r.weeks_below_cap}")
     L.append("")
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(L) + "\n")
