@@ -1,0 +1,50 @@
+$ python -m tools.cockpit_cases new --ws output/cockpit_cases/stage1 --model data/sample/cosmetics-sg-th-2027-2029 --max-age-weeks 52 --name 基準・後期
+[cockpit_cases] 作業 output/cockpit_cases/stage1、最初の案 C01（基準・後期）
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C01 entry-plan --file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/market_entry_plan_A_late.csv
+[cockpit_cases] C01 entry-plan: {"total_lots": 4056, "rows": 1384}
+[cockpit_cases] C01 の状態：未実行
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C01 capacity --sku COS_Serum --max-supply 17 --cap-soft 14
+[cockpit_cases] C01 capacity: {"sku": "COS_Serum", "node": "Factory_JP", "rows": 173, "max_supply": "17", "cap_soft": "14"}
+[cockpit_cases] C01 の状態：未実行
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C01 capacity --sku COS_Cream --max-supply 13 --cap-soft 11
+[cockpit_cases] C01 capacity: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 173, "max_supply": "13", "cap_soft": "11"}
+[cockpit_cases] C01 の状態：未実行
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C01 fixed-cost --file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/fixed_cost_late_late.csv --side base
+[cockpit_cases] C01 fixed-cost: "output/cockpit_cases/stage1\\C01\\inputs\\fixed_cost.csv"
+[cockpit_cases] C01 の状態：未実行
+$ python -m tools.cockpit_cases copy --ws output/cockpit_cases/stage1 --from C01 --name 基準・早期
+[cockpit_cases] C01 → C02（基準・早期）
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C02 launch-week --sku COS_Cream --region TH_Distributor --week 2027-W27
+[cockpit_cases] C02 launch-week: {"total_lots": 4134, "totals_by_key": {"COS_Cream:SG_Distributor": 754, "COS_Cream:SG_EC": 299, "COS_Cream:SG_Store": 416, "COS_Cream:TH_Distributor": 377, "COS_Serum:SG_Distributor": 897, "COS_Serum:SG_EC": 455, "COS_Serum:SG_Store": 546, "COS_Serum:TH_Distributor": 390}}
+[cockpit_cases] C02 の状態：未実行
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C02 fixed-cost --file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/fixed_cost_late_early.csv --side alt
+[cockpit_cases] C02 fixed-cost: "output/cockpit_cases/stage1\\C02\\inputs\\fixed_cost.csv"
+[cockpit_cases] C02 の状態：未実行
+$ python -m tools.cockpit_cases copy --ws output/cockpit_cases/stage1 --from C01 --name 方針あり・後期
+[cockpit_cases] C01 → C03（方針あり・後期）
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C03 policy --allocation-file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/allocation_qty_TH70.csv --policy-file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/udp_policy_MS50TH70.csv --week-rule trim_to_capacity_latest --knowledge-file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/knowledge.json --unallocated-note 当該期間は供給の対象にしない予測需要（仮定、化粧品設計書 v0.5 D18）
+[cockpit_cases] C03 policy: {"week_rule": "trim_to_capacity_latest", "unallocated_note": "当該期間は供給の対象にしない予測需要（仮定、化粧品設計書 v0.5 D18）", "allocation_file": "inputs/allocation_qty_TH70.csv", "policy_file": "inputs/udp_policy_MS50TH70.csv", "knowledge_file": "inputs/knowledge.json"}
+[cockpit_cases] C03 の状態：未実行
+$ python -m tools.cockpit_cases copy --ws output/cockpit_cases/stage1 --from C02 --name 方針あり・早期
+[cockpit_cases] C02 → C04（方針あり・早期）
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C04 policy --allocation-file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/allocation_qty_TH70_early.csv --policy-file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/udp_policy_MS50TH70.csv --week-rule trim_to_capacity_latest --knowledge-file docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/knowledge.json --unallocated-note 当該期間は供給の対象にしない予測需要（仮定、化粧品設計書 v0.5 D18）
+[cockpit_cases] C04 policy: {"week_rule": "trim_to_capacity_latest", "unallocated_note": "当該期間は供給の対象にしない予測需要（仮定、化粧品設計書 v0.5 D18）", "allocation_file": "inputs/allocation_qty_TH70_early.csv", "policy_file": "inputs/udp_policy_MS50TH70.csv", "knowledge_file": "inputs/knowledge.json"}
+[cockpit_cases] C04 の状態：未実行
+$ python -m tools.cockpit_cases copy --ws output/cockpit_cases/stage1 --from C01 --name 生産量を上げる・後期
+[cockpit_cases] C01 → C05（生産量を上げる・後期）
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C05 planned-output --sku COS_Cream --cap-soft 12
+[cockpit_cases] C05 planned-output: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 173, "cap_soft": "12"}
+[cockpit_cases] C05 の状態：未実行
+$ python -m tools.cockpit_cases copy --ws output/cockpit_cases/stage1 --from C02 --name 生産量を上げる・早期
+[cockpit_cases] C02 → C06（生産量を上げる・早期）
+$ python -m tools.cockpit_cases set --ws output/cockpit_cases/stage1 --case C06 planned-output --sku COS_Cream --cap-soft 12
+[cockpit_cases] C06 planned-output: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 173, "cap_soft": "12"}
+[cockpit_cases] C06 の状態：未実行
+$ python -m tools.cockpit_cases list --ws output/cockpit_cases/stage1
+id	name	parent	launch COS_Cream:TH_Distributor	cap COS_Cream@Factory_JP	policy	deliveries	unallocated	backlog_end	P0	state
+C01	基準・後期	—	2028-W01	13/11	なし					未実行
+C02	基準・早期	C01	2027-W27	13/11	なし					未実行
+C03	方針あり・後期	C01	2028-W01	13/11	allocation_qty_TH70.csv+udp_policy_MS50TH70.csv/trim_to_capacity_latest					未実行
+C04	方針あり・早期	C02	2027-W27	13/11	allocation_qty_TH70_early.csv+udp_policy_MS50TH70.csv/trim_to_capacity_latest					未実行
+C05	生産量を上げる・後期	C01	2028-W01	13/12	なし					未実行
+C06	生産量を上げる・早期	C02	2027-W27	13/12	なし					未実行

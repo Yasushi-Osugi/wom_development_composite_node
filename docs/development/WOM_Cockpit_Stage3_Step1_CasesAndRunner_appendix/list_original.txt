@@ -1,0 +1,7 @@
+id	name	parent	launch COS_Cream:TH_Distributor	cap COS_Cream@Factory_JP	policy	deliveries	unallocated	backlog_end	P0	state
+C01	基準・後期	—	2028-W01	13/11	なし	COS_Cream=1680 COS_Serum=2184	—	COS_Cream:TH_Distributor=88 COS_Serum:TH_Distributor=104	606,871,080	済み
+C02	基準・早期	C01	2027-W27	13/11	なし	COS_Cream=1680 COS_Serum=2184	—	COS_Cream:TH_Distributor=166 COS_Serum:TH_Distributor=104	606,871,080	済み
+C03	方針あり・後期	C01	2028-W01	13/11	allocation_qty_TH70.csv+udp_policy_MS50TH70.csv/trim_to_capacity_latest	COS_Cream=1680 COS_Serum=2184	COS_Cream:SG_Distributor=88 COS_Serum:SG_Distributor=72 COS_Serum:TH_Distributor=32	0	607,046,472	済み
+C04	方針あり・早期	C02	2027-W27	13/11	allocation_qty_TH70_early.csv+udp_policy_MS50TH70.csv/trim_to_capacity_latest	COS_Cream=1680 COS_Serum=2184	COS_Cream:SG_Distributor=166 COS_Serum:SG_Distributor=72 COS_Serum:TH_Distributor=32	0	607,155,984	済み
+C05	生産量を上げる・後期	C01	2028-W01	13/12	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	616,860,840	済み
+C06	生産量を上げる・早期	C02	2027-W27	13/12	なし	COS_Cream=1846 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	625,715,400	済み

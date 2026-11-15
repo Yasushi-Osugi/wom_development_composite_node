@@ -99,6 +99,8 @@ AREAS = {
     "test_gen_demand_from_entry_plan.py": ("allocation",),
     "test_compare_scenarios.py": ("allocation", "ppc"),
     "test_s1_view_model.py": ("allocation", "gui"),
+    "test_cockpit_cases.py": ("allocation", "gui"),
+    "test_cockpit_case_runner.py": ("allocation", "gui"),
     # lovem
     "test_lovem_interval_check.py": ("lovem",),
     "test_lovem_intervals.py": ("lovem",),
@@ -180,6 +182,7 @@ SLOW = frozenset((
     "test_valuechain_integration.py::test_alloc_sample_prices_leave_nothing_unvalued",  # 61.9 s
     "test_valuechain_integration.py::test_alloc_ledger_records_match_the_plan",         # 57.5 s
     "test_rice_seasonal_layer.py::test_k_r10_migration_copy_regression",       # 42.6 s
+    "test_cockpit_case_runner.py::test_cosmetics_base_late_case_end_to_end",   # added 2026-11-15 (3 planning runs)
 ))
 
 

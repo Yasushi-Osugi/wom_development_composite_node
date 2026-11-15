@@ -1,0 +1,7 @@
+﻿case,name,cream_deliveries_expected,cream_deliveries,P0_expected,P0,TH_cream_backlog_expected,TH_cream_backlog,SG_dist_cream_unallocated_expected,SG_dist_cream_unallocated,valuation,match
+C01,基準・後期,1680,1680,606871080,606871080.00,88,88,,,評価済み,True
+C02,基準・早期,1680,1680,606871080,606871080.00,166,166,,,評価済み,True
+C03,方針あり・後期,1680,1680,607046472,607046472.00,0,0,88,88,評価済み,True
+C04,方針あり・早期,1680,1680,607155984,607155984.00,0,0,166,166,評価済み,True
+C05,生産量を上げる・後期,1768,1768,616860840,616860840.00,0,0,,,評価済み,True
+C06,生産量を上げる・早期,1846,1846,625715400,625715400.00,0,0,,,評価済み,True
