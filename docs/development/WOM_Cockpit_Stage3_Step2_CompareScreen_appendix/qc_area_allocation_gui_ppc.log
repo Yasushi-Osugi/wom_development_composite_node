@@ -1,0 +1,90 @@
+[quick_check] C:\Users\ohsug\anaconda3\python.exe -m pytest -q -p no:cacheprovider tests/ -m "allocation or gui or ppc"
+........................................................................ [ 10%]
+........................................................................ [ 20%]
+.................................................................s...ss. [ 31%]
+........................................................................ [ 41%]
+........................................................................ [ 52%]
+........................................................................ [ 62%]
+...................................F.................................... [ 73%]
+........................................................................ [ 83%]
+........................................................................ [ 94%]
+........................................                                 [100%]
+================================== FAILURES ===================================
+_____________ test_kpi_text_layout_lines_never_overlap[0-430-204] _____________
+
+w = 430, h = 204, n_ch = 0
+
+    @pytest.mark.parametrize("w,h", [(430, 204), (300, 160), (250, 134), (180, 100)])
+    @pytest.mark.parametrize("n_ch", [0, 3, 21])
+    def test_kpi_text_layout_lines_never_overlap(w, h, n_ch):
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        import wom.ppc.ppc_cockpit_app as C
+>       fig = plt.figure(dpi=100)
+
+tests\test_sim_mgmt_display.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\anaconda3\Lib\site-packages\matplotlib\pyplot.py:1027: in figure
+    manager = new_figure_manager(
+..\..\anaconda3\Lib\site-packages\matplotlib\pyplot.py:550: in new_figure_manager
+    return _get_backend_mod().new_figure_manager(*args, **kwargs)
+..\..\anaconda3\Lib\site-packages\matplotlib\backend_bases.py:3507: in new_figure_manager
+    return cls.new_figure_manager_given_figure(num, fig)
+..\..\anaconda3\Lib\site-packages\matplotlib\backend_bases.py:3512: in new_figure_manager_given_figure
+    return cls.FigureCanvas.new_manager(figure, num)
+..\..\anaconda3\Lib\site-packages\matplotlib\backend_bases.py:1797: in new_manager
+    return cls.manager_class.create_with_canvas(cls, figure, num)
+..\..\anaconda3\Lib\site-packages\matplotlib\backends\_backend_tk.py:483: in create_with_canvas
+    window = tk.Tk(className="matplotlib")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <tkinter.Tk object .>, screenName = None, baseName = '__main__'
+className = 'matplotlib', useTk = True, sync = False, use = None
+
+    def __init__(self, screenName=None, baseName=None, className='Tk',
+                 useTk=True, sync=False, use=None):
+        """Return a new top level widget on screen SCREENNAME. A new Tcl interpreter will
+        be created. BASENAME will be used for the identification of the profile file (see
+        readprofile).
+        It is constructed from sys.argv[0] without extensions if None is given. CLASSNAME
+        is the name of the widget class."""
+        self.master = None
+        self.children = {}
+        self._tkloaded = False
+        # to avoid recursions in the getattr code in case of failure, we
+        # ensure that self.tk is always _something_.
+        self.tk = None
+        if baseName is None:
+            import os
+            baseName = os.path.basename(sys.argv[0])
+            baseName, ext = os.path.splitext(baseName)
+            if ext not in ('.py', '.pyc'):
+                baseName = baseName + ext
+        interactive = False
+>       self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
+E       _tkinter.TclError: invalid command name "tcl_findLibrary"
+
+..\..\anaconda3\Lib\tkinter\__init__.py:2345: TclError
+============================== warnings summary ===============================
+tests/test_ppc_no_silent_fallback.py::test_t08_demo_still_uses_sample_data
+  C:\Users\ohsug\anaconda3\Lib\site-packages\_pytest\threadexception.py:73: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-70 (_readerthread)
+  
+  Traceback (most recent call last):
+    File "C:\Users\ohsug\anaconda3\Lib\threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "C:\Users\ohsug\anaconda3\Lib\threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "C:\Users\ohsug\anaconda3\Lib\subprocess.py", line 1599, in _readerthread
+      buffer.append(fh.read())
+                    ^^^^^^^^^
+  UnicodeDecodeError: 'cp932' codec can't decode byte 0x94 in position 768: illegal multibyte sequence
+  
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_sim_mgmt_display.py::test_kpi_text_layout_lines_never_overlap[0-430-204]
+1 failed, 684 passed, 3 skipped, 542 deselected, 1 warning in 679.17s (0:11:19)
+[quick_check] tier=area areas=allocation,gui,ppc | passed=684 failed=1 skipped=3 error=0 | 684 s | FAILED
+area exit 1

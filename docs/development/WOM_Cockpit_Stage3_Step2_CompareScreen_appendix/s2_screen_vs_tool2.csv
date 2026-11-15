@@ -1,0 +1,749 @@
+﻿pair,what,screen,tool2,match
+C01__C02,① P0 基準,606871080.0,606871080,True
+C01__C02,① P0 相手,606871080.0,606871080,True
+C01__C02,① 基準の印,◎,◎,True
+C01__C02,① 相手の印,○,○,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_EC 需要,299.0,299.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_EC 当週,299.0,299.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_EC 需要,299.0,299.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_EC 当週,299.0,299.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Store 需要,416.0,416.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Store 当週,416.0,416.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Store 需要,416.0,416.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Store 当週,416.0,416.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:TH_Distributor 需要,299.0,299.0,True
+C01__C02,③ 供給 C01 COS_Cream:TH_Distributor 当週,211.0,211.0,True
+C01__C02,③ 供給 C01 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Cream:TH_Distributor 配分後の未充足（⑤）,88.0,88.0,True
+C01__C02,③ 供給 C02 COS_Cream:TH_Distributor 需要,377.0,377.0,True
+C01__C02,③ 供給 C02 COS_Cream:TH_Distributor 当週,211.0,211.0,True
+C01__C02,③ 供給 C02 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Cream:TH_Distributor 配分後の未充足（⑤）,166.0,166.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_EC 需要,455.0,455.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_EC 当週,455.0,455.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_EC 需要,455.0,455.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_EC 当週,455.0,455.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Store 需要,546.0,546.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Store 当週,546.0,546.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Store 需要,546.0,546.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Store 当週,546.0,546.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C01__C02,③ 供給 C01 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C01__C02,③ 供給 C01 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C01__C02,③ 供給 C01 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C01__C02,③ 供給 C02 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C01__C02,③ 供給 C02 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C01__C02,③ 供給 C02 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C01__C02,③ 供給 C02 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C01__C02,③ P0 報告期間 合計 基準,606871080.0,606871080,True
+C01__C02,③ P0 報告期間 合計 相手,606871080.0,606871080,True
+C01__C02,③ P0 報告期間 合計 差,0.0,0,True
+C01__C02,③ P0 報告期間 COS_Cream 基準,232432128.0,232432128,True
+C01__C02,③ P0 報告期間 COS_Cream 相手,232432128.0,232432128,True
+C01__C02,③ P0 報告期間 COS_Cream 差,0.0,0,True
+C01__C02,③ P0 報告期間 COS_Serum 基準,374438952.0,374438952,True
+C01__C02,③ P0 報告期間 COS_Serum 相手,374438952.0,374438952,True
+C01__C02,③ P0 報告期間 COS_Serum 差,0.0,0,True
+C01__C02,③ 固定費 TH_cream_channel_fee 費目,TH_cream_channel_fee,TH_cream_channel_fee,True
+C01__C02,③ 固定費 TH_cream_channel_fee W 基準,104.0,104.0,True
+C01__C02,③ 固定費 TH_cream_channel_fee W 相手,130.0,130.0,True
+C01__C02,③ 固定費 TH_cream_channel_fee ΔW,26.0,26.0,True
+C01__C02,③ 固定費 TH_cream_channel_fee ΔP0,0.0,0,True
+C01__C02,③ 固定費 TH_cream_channel_fee 境目（小数 2 桁）,,,True
+C01__C02,③ 固定費 TH_cream_channel_fee 週額は「未設定」,未設定,未設定,True
+C01__C02,③ 固定費 TH_cream_channel_fee 控除後は「未算出」,未算出,未算出,True
+C01__C02,③ 工場 C01 COS_Cream その間の週数,168,168,True
+C01__C02,③ 工場 C01 COS_Cream 最初の週,2026-W38,2026-W38,True
+C01__C02,③ 工場 C02 COS_Cream その間の週数,168,168,True
+C01__C02,③ 工場 C02 COS_Cream 最初の週,2026-W38,2026-W38,True
+C01__C02,④ 未設定と保留,True,True,True
+C03__C04,① P0 基準,607046472.0,607046472,True
+C03__C04,① P0 相手,607155984.0,607155984,True
+C03__C04,① 基準の印,◎,◎,True
+C03__C04,① 相手の印,○,○,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Distributor 供給の対象,666.0,666.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Distributor 未配分（③）,88.0,88.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Distributor 当週,666.0,666.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Distributor 供給の対象,588.0,588.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Distributor 未配分（③）,166.0,166.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Distributor 当週,588.0,588.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_EC 需要,299.0,299.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_EC 供給の対象,299.0,299.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_EC 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_EC 当週,299.0,299.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_EC 需要,299.0,299.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_EC 供給の対象,299.0,299.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_EC 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_EC 当週,299.0,299.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Store 需要,416.0,416.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Store 供給の対象,416.0,416.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Store 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Store 当週,416.0,416.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Store 需要,416.0,416.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Store 供給の対象,416.0,416.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Store 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Store 当週,416.0,416.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:TH_Distributor 需要,299.0,299.0,True
+C03__C04,③ 供給 C03 COS_Cream:TH_Distributor 供給の対象,299.0,299.0,True
+C03__C04,③ 供給 C03 COS_Cream:TH_Distributor 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:TH_Distributor 当週,299.0,299.0,True
+C03__C04,③ 供給 C03 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Cream:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:TH_Distributor 需要,377.0,377.0,True
+C03__C04,③ 供給 C04 COS_Cream:TH_Distributor 供給の対象,377.0,377.0,True
+C03__C04,③ 供給 C04 COS_Cream:TH_Distributor 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:TH_Distributor 当週,377.0,377.0,True
+C03__C04,③ 供給 C04 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Cream:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Distributor 供給の対象,825.0,825.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Distributor 未配分（③）,72.0,72.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Distributor 当週,825.0,825.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Distributor 供給の対象,825.0,825.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Distributor 未配分（③）,72.0,72.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Distributor 当週,825.0,825.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_EC 需要,455.0,455.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_EC 供給の対象,455.0,455.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_EC 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_EC 当週,455.0,455.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_EC 需要,455.0,455.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_EC 供給の対象,455.0,455.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_EC 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_EC 当週,455.0,455.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Store 需要,546.0,546.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Store 供給の対象,546.0,546.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Store 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Store 当週,546.0,546.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Store 需要,546.0,546.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Store 供給の対象,546.0,546.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Store 未配分（③）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Store 当週,546.0,546.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C03__C04,③ 供給 C03 COS_Serum:TH_Distributor 供給の対象,358.0,358.0,True
+C03__C04,③ 供給 C03 COS_Serum:TH_Distributor 未配分（③）,32.0,32.0,True
+C03__C04,③ 供給 C03 COS_Serum:TH_Distributor 当週,358.0,358.0,True
+C03__C04,③ 供給 C03 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C03__C04,③ 供給 C03 COS_Serum:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C03__C04,③ 供給 C04 COS_Serum:TH_Distributor 供給の対象,358.0,358.0,True
+C03__C04,③ 供給 C04 COS_Serum:TH_Distributor 未配分（③）,32.0,32.0,True
+C03__C04,③ 供給 C04 COS_Serum:TH_Distributor 当週,358.0,358.0,True
+C03__C04,③ 供給 C04 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C03__C04,③ 供給 C04 COS_Serum:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C03__C04,③ P0 報告期間 合計 基準,607046472.0,607046472,True
+C03__C04,③ P0 報告期間 合計 相手,607155984.0,607155984,True
+C03__C04,③ P0 報告期間 合計 差,109512.0,109512,True
+C03__C04,③ P0 報告期間 COS_Cream 基準,232555680.0,232555680,True
+C03__C04,③ P0 報告期間 COS_Cream 相手,232665192.0,232665192,True
+C03__C04,③ P0 報告期間 COS_Cream 差,109512.0,109512,True
+C03__C04,③ P0 報告期間 COS_Serum 基準,374490792.0,374490792,True
+C03__C04,③ P0 報告期間 COS_Serum 相手,374490792.0,374490792,True
+C03__C04,③ P0 報告期間 COS_Serum 差,0.0,0,True
+C03__C04,③ 固定費 TH_cream_channel_fee 費目,TH_cream_channel_fee,TH_cream_channel_fee,True
+C03__C04,③ 固定費 TH_cream_channel_fee W 基準,104.0,104.0,True
+C03__C04,③ 固定費 TH_cream_channel_fee W 相手,130.0,130.0,True
+C03__C04,③ 固定費 TH_cream_channel_fee ΔW,26.0,26.0,True
+C03__C04,③ 固定費 TH_cream_channel_fee ΔP0,109512.0,109512,True
+C03__C04,③ 固定費 TH_cream_channel_fee 境目（小数 2 桁）,4212.0,4212.0,True
+C03__C04,③ 固定費 TH_cream_channel_fee 週額は「未設定」,未設定,未設定,True
+C03__C04,③ 固定費 TH_cream_channel_fee 控除後は「未算出」,未算出,未算出,True
+C03__C04,③ 工場 C03 COS_Cream その間の週数,168,168,True
+C03__C04,③ 工場 C03 COS_Cream 最初の週,2026-W38,2026-W38,True
+C03__C04,③ 工場 C04 COS_Cream その間の週数,168,168,True
+C03__C04,③ 工場 C04 COS_Cream 最初の週,2026-W38,2026-W38,True
+C03__C04,④ 未設定と保留,True,True,True
+C03__C04,S3 C04 SG 代理店のクリームの最低ちょうどの週,83.0,83.0,True
+C03__C04,S3 未配分と未充足の列が分かれている,True,True,True
+C05__C06,① P0 基準,616860840.0,616860840,True
+C05__C06,① P0 相手,625715400.0,625715400,True
+C05__C06,① 基準の印,◎,◎,True
+C05__C06,① 相手の印,○,○,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_EC 需要,299.0,299.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_EC 当週,299.0,299.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_EC 需要,299.0,299.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_EC 当週,299.0,299.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Store 需要,416.0,416.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Store 当週,416.0,416.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Store 需要,416.0,416.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Store 当週,416.0,416.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:TH_Distributor 需要,299.0,299.0,True
+C05__C06,③ 供給 C05 COS_Cream:TH_Distributor 当週,299.0,299.0,True
+C05__C06,③ 供給 C05 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Cream:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:TH_Distributor 需要,377.0,377.0,True
+C05__C06,③ 供給 C06 COS_Cream:TH_Distributor 当週,377.0,377.0,True
+C05__C06,③ 供給 C06 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Cream:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_EC 需要,455.0,455.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_EC 当週,455.0,455.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_EC 需要,455.0,455.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_EC 当週,455.0,455.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Store 需要,546.0,546.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Store 当週,546.0,546.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Store 需要,546.0,546.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Store 当週,546.0,546.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C05__C06,③ 供給 C05 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C05__C06,③ 供給 C05 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C05__C06,③ 供給 C05 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C05__C06,③ 供給 C06 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C05__C06,③ 供給 C06 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C05__C06,③ 供給 C06 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C05__C06,③ 供給 C06 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C05__C06,③ P0 報告期間 合計 基準,616860840.0,616860840,True
+C05__C06,③ P0 報告期間 合計 相手,625715400.0,625715400,True
+C05__C06,③ P0 報告期間 合計 差,8854560.0,8854560,True
+C05__C06,③ P0 報告期間 COS_Cream 基準,242421888.0,242421888,True
+C05__C06,③ P0 報告期間 COS_Cream 相手,251276448.0,251276448,True
+C05__C06,③ P0 報告期間 COS_Cream 差,8854560.0,8854560,True
+C05__C06,③ P0 報告期間 COS_Serum 基準,374438952.0,374438952,True
+C05__C06,③ P0 報告期間 COS_Serum 相手,374438952.0,374438952,True
+C05__C06,③ P0 報告期間 COS_Serum 差,0.0,0,True
+C05__C06,③ 固定費 TH_cream_channel_fee 費目,TH_cream_channel_fee,TH_cream_channel_fee,True
+C05__C06,③ 固定費 TH_cream_channel_fee W 基準,104.0,104.0,True
+C05__C06,③ 固定費 TH_cream_channel_fee W 相手,130.0,130.0,True
+C05__C06,③ 固定費 TH_cream_channel_fee ΔW,26.0,26.0,True
+C05__C06,③ 固定費 TH_cream_channel_fee ΔP0,8854560.0,8854560,True
+C05__C06,③ 固定費 TH_cream_channel_fee 境目（小数 2 桁）,340560.0,340560.0,True
+C05__C06,③ 固定費 TH_cream_channel_fee 週額は「未設定」,未設定,未設定,True
+C05__C06,③ 固定費 TH_cream_channel_fee 控除後は「未算出」,未算出,未算出,True
+C05__C06,③ 固定費 planned_output_raise 費目,planned_output_raise,planned_output_raise,True
+C05__C06,③ 固定費 planned_output_raise W 基準,158.0,158.0,True
+C05__C06,③ 固定費 planned_output_raise W 相手,166.0,166.0,True
+C05__C06,③ 固定費 planned_output_raise ΔW,8.0,8.0,True
+C05__C06,③ 固定費 planned_output_raise ΔP0,8854560.0,8854560,True
+C05__C06,③ 固定費 planned_output_raise 境目（小数 2 桁）,1106820.0,1106820.0,True
+C05__C06,③ 固定費 planned_output_raise 週額は「未設定」,未設定,未設定,True
+C05__C06,③ 固定費 planned_output_raise 控除後は「未算出」,未算出,未算出,True
+C05__C06,③ 固定費 合計 費目,合計,合計,True
+C05__C06,③ 固定費 合計 W 基準,,,True
+C05__C06,③ 固定費 合計 W 相手,,,True
+C05__C06,③ 固定費 合計 ΔW,,,True
+C05__C06,③ 固定費 合計 ΔP0,8854560.0,8854560,True
+C05__C06,③ 固定費 合計 境目（小数 2 桁）,,,True
+C05__C06,③ 工場 C05 COS_Cream その間の週数,158,158,True
+C05__C06,③ 工場 C05 COS_Cream 最初の週,2026-W46,2026-W46,True
+C05__C06,③ 工場 C06 COS_Cream その間の週数,166,166,True
+C05__C06,③ 工場 C06 COS_Cream 最初の週,2026-W38,2026-W38,True
+C05__C06,④ 未設定と保留,True,True,True
+C01__C05,① P0 基準,606871080.0,606871080,True
+C01__C05,① P0 相手,616860840.0,616860840,True
+C01__C05,① 基準の印,◎,◎,True
+C01__C05,① 相手の印,○,○,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_EC 需要,299.0,299.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_EC 当週,299.0,299.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_EC 需要,299.0,299.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_EC 当週,299.0,299.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Store 需要,416.0,416.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Store 当週,416.0,416.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Store 需要,416.0,416.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Store 当週,416.0,416.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:TH_Distributor 需要,299.0,299.0,True
+C01__C05,③ 供給 C01 COS_Cream:TH_Distributor 当週,211.0,211.0,True
+C01__C05,③ 供給 C01 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Cream:TH_Distributor 配分後の未充足（⑤）,88.0,88.0,True
+C01__C05,③ 供給 C05 COS_Cream:TH_Distributor 需要,299.0,299.0,True
+C01__C05,③ 供給 C05 COS_Cream:TH_Distributor 当週,299.0,299.0,True
+C01__C05,③ 供給 C05 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Cream:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_EC 需要,455.0,455.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_EC 当週,455.0,455.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_EC 需要,455.0,455.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_EC 当週,455.0,455.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Store 需要,546.0,546.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Store 当週,546.0,546.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Store 需要,546.0,546.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Store 当週,546.0,546.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C01__C05,③ 供給 C01 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C01__C05,③ 供給 C01 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C01__C05,③ 供給 C01 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C01__C05,③ 供給 C05 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C01__C05,③ 供給 C05 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C01__C05,③ 供給 C05 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C01__C05,③ 供給 C05 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C01__C05,③ P0 報告期間 合計 基準,606871080.0,606871080,True
+C01__C05,③ P0 報告期間 合計 相手,616860840.0,616860840,True
+C01__C05,③ P0 報告期間 合計 差,9989760.0,9989760,True
+C01__C05,③ P0 報告期間 COS_Cream 基準,232432128.0,232432128,True
+C01__C05,③ P0 報告期間 COS_Cream 相手,242421888.0,242421888,True
+C01__C05,③ P0 報告期間 COS_Cream 差,9989760.0,9989760,True
+C01__C05,③ P0 報告期間 COS_Serum 基準,374438952.0,374438952,True
+C01__C05,③ P0 報告期間 COS_Serum 相手,374438952.0,374438952,True
+C01__C05,③ P0 報告期間 COS_Serum 差,0.0,0,True
+C01__C05,③ 固定費 TH_cream_channel_fee 費目,TH_cream_channel_fee,TH_cream_channel_fee,True
+C01__C05,③ 固定費 TH_cream_channel_fee W 基準,104.0,104.0,True
+C01__C05,③ 固定費 TH_cream_channel_fee W 相手,104.0,104.0,True
+C01__C05,③ 固定費 TH_cream_channel_fee ΔW,0.0,0.0,True
+C01__C05,③ 固定費 TH_cream_channel_fee ΔP0,9989760.0,9989760,True
+C01__C05,③ 固定費 TH_cream_channel_fee 境目（小数 2 桁）,,,True
+C01__C05,③ 固定費 TH_cream_channel_fee 週額は「未設定」,未設定,未設定,True
+C01__C05,③ 固定費 TH_cream_channel_fee 控除後は「未算出」,未算出,未算出,True
+C01__C05,③ 固定費 planned_output_raise 費目,planned_output_raise,planned_output_raise,True
+C01__C05,③ 固定費 planned_output_raise W 基準,0.0,0.0,True
+C01__C05,③ 固定費 planned_output_raise W 相手,158.0,158.0,True
+C01__C05,③ 固定費 planned_output_raise ΔW,158.0,158.0,True
+C01__C05,③ 固定費 planned_output_raise ΔP0,9989760.0,9989760,True
+C01__C05,③ 固定費 planned_output_raise 境目（小数 2 桁）,63226.33,63226.33,True
+C01__C05,③ 固定費 合計 費目,合計,合計,True
+C01__C05,③ 固定費 合計 W 基準,,,True
+C01__C05,③ 固定費 合計 W 相手,,,True
+C01__C05,③ 固定費 合計 ΔW,,,True
+C01__C05,③ 固定費 合計 ΔP0,9989760.0,9989760,True
+C01__C05,③ 固定費 合計 境目（小数 2 桁）,,,True
+C01__C05,③ 工場 C01 COS_Cream その間の週数,168,168,True
+C01__C05,③ 工場 C01 COS_Cream 最初の週,2026-W38,2026-W38,True
+C01__C05,③ 工場 C05 COS_Cream その間の週数,158,158,True
+C01__C05,③ 工場 C05 COS_Cream 最初の週,2026-W46,2026-W46,True
+C01__C05,④ 未設定と保留,True,True,True
+C02__C04,① P0 基準,606871080.0,606871080,True
+C02__C04,① P0 相手,607155984.0,607155984,True
+C02__C04,① 基準の印,◎,◎,True
+C02__C04,① 相手の印,○,○,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Distributor 供給の対象,754.0,754.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Distributor 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Distributor 供給の対象,588.0,588.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Distributor 未配分（③）,166.0,166.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Distributor 当週,588.0,588.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_EC 需要,299.0,299.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_EC 供給の対象,299.0,299.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_EC 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_EC 当週,299.0,299.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_EC 需要,299.0,299.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_EC 供給の対象,299.0,299.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_EC 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_EC 当週,299.0,299.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Store 需要,416.0,416.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Store 供給の対象,416.0,416.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Store 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Store 当週,416.0,416.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Store 需要,416.0,416.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Store 供給の対象,416.0,416.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Store 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Store 当週,416.0,416.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:TH_Distributor 需要,377.0,377.0,True
+C02__C04,③ 供給 C02 COS_Cream:TH_Distributor 供給の対象,377.0,377.0,True
+C02__C04,③ 供給 C02 COS_Cream:TH_Distributor 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:TH_Distributor 当週,211.0,211.0,True
+C02__C04,③ 供給 C02 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Cream:TH_Distributor 配分後の未充足（⑤）,166.0,166.0,True
+C02__C04,③ 供給 C04 COS_Cream:TH_Distributor 需要,377.0,377.0,True
+C02__C04,③ 供給 C04 COS_Cream:TH_Distributor 供給の対象,377.0,377.0,True
+C02__C04,③ 供給 C04 COS_Cream:TH_Distributor 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:TH_Distributor 当週,377.0,377.0,True
+C02__C04,③ 供給 C04 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Cream:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Distributor 供給の対象,897.0,897.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Distributor 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Distributor 供給の対象,825.0,825.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Distributor 未配分（③）,72.0,72.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Distributor 当週,825.0,825.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_EC 需要,455.0,455.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_EC 供給の対象,455.0,455.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_EC 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_EC 当週,455.0,455.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_EC 需要,455.0,455.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_EC 供給の対象,455.0,455.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_EC 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_EC 当週,455.0,455.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Store 需要,546.0,546.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Store 供給の対象,546.0,546.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Store 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Store 当週,546.0,546.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Store 需要,546.0,546.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Store 供給の対象,546.0,546.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Store 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Store 当週,546.0,546.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C02__C04,③ 供給 C02 COS_Serum:TH_Distributor 供給の対象,390.0,390.0,True
+C02__C04,③ 供給 C02 COS_Serum:TH_Distributor 未配分（③）,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C02__C04,③ 供給 C02 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C02__C04,③ 供給 C02 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C02__C04,③ 供給 C04 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C02__C04,③ 供給 C04 COS_Serum:TH_Distributor 供給の対象,358.0,358.0,True
+C02__C04,③ 供給 C04 COS_Serum:TH_Distributor 未配分（③）,32.0,32.0,True
+C02__C04,③ 供給 C04 COS_Serum:TH_Distributor 当週,358.0,358.0,True
+C02__C04,③ 供給 C04 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C02__C04,③ 供給 C04 COS_Serum:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C04,③ P0 報告期間 合計 基準,606871080.0,606871080,True
+C02__C04,③ P0 報告期間 合計 相手,607155984.0,607155984,True
+C02__C04,③ P0 報告期間 合計 差,284904.0,284904,True
+C02__C04,③ P0 報告期間 COS_Cream 基準,232432128.0,232432128,True
+C02__C04,③ P0 報告期間 COS_Cream 相手,232665192.0,232665192,True
+C02__C04,③ P0 報告期間 COS_Cream 差,233064.0,233064,True
+C02__C04,③ P0 報告期間 COS_Serum 基準,374438952.0,374438952,True
+C02__C04,③ P0 報告期間 COS_Serum 相手,374490792.0,374490792,True
+C02__C04,③ P0 報告期間 COS_Serum 差,51840.0,51840,True
+C02__C04,③ 固定費 TH_cream_channel_fee 費目,TH_cream_channel_fee,TH_cream_channel_fee,True
+C02__C04,③ 固定費 TH_cream_channel_fee W 基準,130.0,130.0,True
+C02__C04,③ 固定費 TH_cream_channel_fee W 相手,130.0,130.0,True
+C02__C04,③ 固定費 TH_cream_channel_fee ΔW,0.0,0.0,True
+C02__C04,③ 固定費 TH_cream_channel_fee ΔP0,284904.0,284904,True
+C02__C04,③ 固定費 TH_cream_channel_fee 境目（小数 2 桁）,,,True
+C02__C04,③ 固定費 TH_cream_channel_fee 週額は「未設定」,未設定,未設定,True
+C02__C04,③ 固定費 TH_cream_channel_fee 控除後は「未算出」,未算出,未算出,True
+C02__C04,③ 工場 C02 COS_Cream その間の週数,168,168,True
+C02__C04,③ 工場 C02 COS_Cream 最初の週,2026-W38,2026-W38,True
+C02__C04,③ 工場 C04 COS_Cream その間の週数,168,168,True
+C02__C04,③ 工場 C04 COS_Cream 最初の週,2026-W38,2026-W38,True
+C02__C04,④ 未設定と保留,True,True,True
+C02__C06,① P0 基準,606871080.0,606871080,True
+C02__C06,① P0 相手,625715400.0,625715400,True
+C02__C06,① 基準の印,◎,◎,True
+C02__C06,① 相手の印,○,○,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Distributor 需要,754.0,754.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Distributor 当週,754.0,754.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_EC 需要,299.0,299.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_EC 当週,299.0,299.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_EC 需要,299.0,299.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_EC 当週,299.0,299.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_EC 早出し,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_EC 遅配,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Store 需要,416.0,416.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Store 当週,416.0,416.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Store 需要,416.0,416.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Store 当週,416.0,416.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Store 早出し,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Store 遅配,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:TH_Distributor 需要,377.0,377.0,True
+C02__C06,③ 供給 C02 COS_Cream:TH_Distributor 当週,211.0,211.0,True
+C02__C06,③ 供給 C02 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Cream:TH_Distributor 配分後の未充足（⑤）,166.0,166.0,True
+C02__C06,③ 供給 C06 COS_Cream:TH_Distributor 需要,377.0,377.0,True
+C02__C06,③ 供給 C06 COS_Cream:TH_Distributor 当週,377.0,377.0,True
+C02__C06,③ 供給 C06 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Cream:TH_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Distributor 需要,897.0,897.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Distributor 当週,897.0,897.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Distributor 早出し,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Distributor 遅配,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Distributor 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_EC 需要,455.0,455.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_EC 当週,455.0,455.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_EC 需要,455.0,455.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_EC 当週,455.0,455.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_EC 早出し,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_EC 遅配,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_EC 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Store 需要,546.0,546.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Store 当週,546.0,546.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Store 需要,546.0,546.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Store 当週,546.0,546.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Store 早出し,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Store 遅配,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:SG_Store 配分後の未充足（⑤）,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C02__C06,③ 供給 C02 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C02__C06,③ 供給 C02 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C02__C06,③ 供給 C02 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C02__C06,③ 供給 C06 COS_Serum:TH_Distributor 需要,390.0,390.0,True
+C02__C06,③ 供給 C06 COS_Serum:TH_Distributor 当週,286.0,286.0,True
+C02__C06,③ 供給 C06 COS_Serum:TH_Distributor 早出し,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:TH_Distributor 遅配,0.0,0.0,True
+C02__C06,③ 供給 C06 COS_Serum:TH_Distributor 配分後の未充足（⑤）,104.0,104.0,True
+C02__C06,③ P0 報告期間 合計 基準,606871080.0,606871080,True
+C02__C06,③ P0 報告期間 合計 相手,625715400.0,625715400,True
+C02__C06,③ P0 報告期間 合計 差,18844320.0,18844320,True
+C02__C06,③ P0 報告期間 COS_Cream 基準,232432128.0,232432128,True
+C02__C06,③ P0 報告期間 COS_Cream 相手,251276448.0,251276448,True
+C02__C06,③ P0 報告期間 COS_Cream 差,18844320.0,18844320,True
+C02__C06,③ P0 報告期間 COS_Serum 基準,374438952.0,374438952,True
+C02__C06,③ P0 報告期間 COS_Serum 相手,374438952.0,374438952,True
+C02__C06,③ P0 報告期間 COS_Serum 差,0.0,0,True
+C02__C06,③ 固定費 TH_cream_channel_fee 費目,TH_cream_channel_fee,TH_cream_channel_fee,True
+C02__C06,③ 固定費 TH_cream_channel_fee W 基準,130.0,130.0,True
+C02__C06,③ 固定費 TH_cream_channel_fee W 相手,130.0,130.0,True
+C02__C06,③ 固定費 TH_cream_channel_fee ΔW,0.0,0.0,True
+C02__C06,③ 固定費 TH_cream_channel_fee ΔP0,18844320.0,18844320,True
+C02__C06,③ 固定費 TH_cream_channel_fee 境目（小数 2 桁）,,,True
+C02__C06,③ 固定費 TH_cream_channel_fee 週額は「未設定」,未設定,未設定,True
+C02__C06,③ 固定費 TH_cream_channel_fee 控除後は「未算出」,未算出,未算出,True
+C02__C06,③ 固定費 planned_output_raise 費目,planned_output_raise,planned_output_raise,True
+C02__C06,③ 固定費 planned_output_raise W 基準,0.0,0.0,True
+C02__C06,③ 固定費 planned_output_raise W 相手,166.0,166.0,True
+C02__C06,③ 固定費 planned_output_raise ΔW,166.0,166.0,True
+C02__C06,③ 固定費 planned_output_raise ΔP0,18844320.0,18844320,True
+C02__C06,③ 固定費 planned_output_raise 境目（小数 2 桁）,113520.0,113520.0,True
+C02__C06,③ 固定費 合計 費目,合計,合計,True
+C02__C06,③ 固定費 合計 W 基準,,,True
+C02__C06,③ 固定費 合計 W 相手,,,True
+C02__C06,③ 固定費 合計 ΔW,,,True
+C02__C06,③ 固定費 合計 ΔP0,18844320.0,18844320,True
+C02__C06,③ 固定費 合計 境目（小数 2 桁）,,,True
+C02__C06,③ 工場 C02 COS_Cream その間の週数,168,168,True
+C02__C06,③ 工場 C02 COS_Cream 最初の週,2026-W38,2026-W38,True
+C02__C06,③ 工場 C06 COS_Cream その間の週数,166,166,True
+C02__C06,③ 工場 C06 COS_Cream 最初の週,2026-W38,2026-W38,True
+C02__C06,④ 未設定と保留,True,True,True
+C05__C06,S5 開き直して同じ表（同じ窓）,True,True,True
+C05__C06,S5 閉じて開き直して同じ表（新しい窓）,True,True,True
+C05 changed,S5 入力が変わった案の P0 は出さない,,,True
+C05 changed,S5 状態は「実行し直す」,実行し直す,実行し直す,True
+C05 changed,S5 比較の数字を出さない（表が空）,0,0,True
+C05 changed,S5 比較の理由を出す,True,True,True
+C05 changed,S5 ④ に変わったファイルの名前,True,True,True
+C05 reverted,S5 戻すと元の表,True,True,True

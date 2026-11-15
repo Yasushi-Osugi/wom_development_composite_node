@@ -1,0 +1,7 @@
+[quick_check] C:\Users\ohsug\anaconda3\python.exe -m pytest -q -p no:cacheprovider tests/ -m gui
+...............................................s...ss................... [ 42%]
+........................................................................ [ 84%]
+...........................                                              [100%]
+168 passed, 3 skipped, 1059 deselected in 111.61s (0:01:51)
+[quick_check] tier=area areas=gui | passed=168 failed=0 skipped=3 error=0 | 116 s | OK
+gui exit 0

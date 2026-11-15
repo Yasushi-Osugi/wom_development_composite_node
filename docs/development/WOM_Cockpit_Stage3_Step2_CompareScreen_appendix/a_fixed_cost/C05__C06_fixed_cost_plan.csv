@@ -1,0 +1,5 @@
+case,cost_item,entity,paid_start_week,paid_end_week,weekly_amount,currency,note,count_outside_report
+base,TH_cream_channel_fee,E_JP,2028-W01,2029-W52,,JPY,タイのクリーム販路の週定額運用委託費（GPT-MC 業務定義 v0.1 §2）。週額は未設定（境目だけ）,
+base,planned_output_raise,E_JP,2026-W46,2029-W46,,JPY,増産の確保費（GPT-MC 業務定義 v0.1、確保の形）。有償の週は計画の生産量ちょうど作った最初の週〜最後の週（助走を含む、実測）。週額は未設定（境目だけ）,1
+alt,TH_cream_channel_fee,E_JP,2027-W27,2029-W52,,JPY,タイのクリーム販路の週定額運用委託費（GPT-MC 業務定義 v0.1 §2）。週額は未設定（境目だけ）,
+alt,planned_output_raise,E_JP,2026-W38,2029-W46,,JPY,増産の確保費（GPT-MC 業務定義 v0.1、確保の形）。有償の週は計画の生産量ちょうど作った最初の週〜最後の週（助走を含む、実測）。週額は未設定（境目だけ）,1

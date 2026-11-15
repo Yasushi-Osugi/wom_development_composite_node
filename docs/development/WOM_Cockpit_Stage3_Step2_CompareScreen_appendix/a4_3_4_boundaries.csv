@@ -1,0 +1,6 @@
+﻿pair,cost_item,W_base,W_alt,delta_W,delta_P0,f_star_expected,f_star,assumption,match
+C01__C05,planned_output_raise,0,158,158,9989760.0,63226.33,63226.33,ほかの未設定の費用（TH_cream_channel_fee）の案間の差を 0 と置いた場合,True
+C02__C06,planned_output_raise,0,166,166,18844320.0,113520.0,113520.0,ほかの未設定の費用（TH_cream_channel_fee）の案間の差を 0 と置いた場合,True
+C05__C06,TH_cream_channel_fee,104,130,26,8854560.0,340560.0,340560.0,ほかの未設定の費用（planned_output_raise）の案間の差を 0 と置いた場合,True
+C05__C06,planned_output_raise,158,166,8,8854560.0,1106820.0,1106820.0,ほかの未設定の費用（TH_cream_channel_fee）の案間の差を 0 と置いた場合,True
+C03__C04,TH_cream_channel_fee,104,130,26,109512.0,4212.0,4212.0,,True

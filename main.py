@@ -144,6 +144,17 @@ def run_cockpit() -> None:
         sys.exit(1)
 
 
+def run_cockpit_compare(ws=None, base=None, alt=None) -> None:
+    """事業計画の比較の 1 画面（見るだけ。`wom/cockpit/compare_screen.py`）を起動する。"""
+    try:
+        from wom.cockpit.compare_screen import launch
+        launch(ws, base, alt)
+    except ImportError as e:
+        print(f"Plan comparison screen could not start: {e}")
+        print("Install requirements: pip install -r requirements.txt")
+        sys.exit(1)
+
+
 # ──────────────────────────────────────────────────────────────────────
 # Argument parser
 # ──────────────────────────────────────────────────────────────────────
@@ -157,6 +168,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--cli",  action="store_true", help="Run headless CLI simulation")
     p.add_argument("--cockpit", action="store_true",
                    help="Launch the management cockpit (wom/cockpit/, Phase 8)")
+    p.add_argument("--cockpit-compare", action="store_true",
+                   help="Open the plan comparison screen (view only; wom/cockpit/compare_screen.py)")
+    cmp_ = p.add_argument_group("Plan comparison options (only used with --cockpit-compare)")
+    cmp_.add_argument("--ws", default=None, help="workspace folder, e.g. output/cockpit_cases/stage1 "
+                                                 "(default: choose a folder)")
+    cmp_.add_argument("--base", default=None, help="base case id, e.g. C05")
+    cmp_.add_argument("--alt", default=None, help="case id to compare with, e.g. C06")
 
     # CLI-only options
     cli = p.add_argument_group("CLI options (only used with --cli)")
@@ -200,6 +218,8 @@ def main():
         run_cli(args)
     elif args.cockpit:
         run_cockpit()
+    elif args.cockpit_compare:
+        run_cockpit_compare(args.ws, args.base, args.alt)
     else:
         # Default: GUI
         run_gui()

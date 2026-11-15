@@ -1,0 +1,36 @@
+$ python -m tools.cockpit_cases status --ws output/cockpit_cases/stage1 --case C05
+{
+  "state": "済み",
+  "reason": "",
+  "changed_files": []
+}
+$ python -m tools.cockpit_cases compare --ws output/cockpit_cases/stage1 --base C01 --alt C02
+[cockpit_cases] C01 → C02：ΔP0 0
+  TH_cream_channel_fee：ΔW 26  0円で同額（正の週額では発生週数の少ない案が上）  f* 
+  -> output/cockpit_cases/stage1\compare\C01__C02
+$ python -m tools.cockpit_cases compare --ws output/cockpit_cases/stage1 --base C03 --alt C04
+[cockpit_cases] C03 → C04：ΔP0 109,512
+  TH_cream_channel_fee：ΔW 26  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 4212.0
+  -> output/cockpit_cases/stage1\compare\C03__C04
+$ python -m tools.cockpit_cases compare --ws output/cockpit_cases/stage1 --base C05 --alt C06
+[cockpit_cases] C05 → C06：ΔP0 8,854,560
+  TH_cream_channel_fee：ΔW 26  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 340560.0
+  planned_output_raise：ΔW 8  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 1106820.0
+  合計：ΔW   合計（費目ごとの境目は上の行）  f* 
+  -> output/cockpit_cases/stage1\compare\C05__C06
+$ python -m tools.cockpit_cases compare --ws output/cockpit_cases/stage1 --base C01 --alt C05
+[cockpit_cases] C01 → C05：ΔP0 9,989,760
+  TH_cream_channel_fee：ΔW 0  順位変化なし（発生週数が同じ）  f* 
+  planned_output_raise：ΔW 158  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 63226.3291139241
+  合計：ΔW   合計（費目ごとの境目は上の行）  f* 
+  -> output/cockpit_cases/stage1\compare\C01__C05
+$ python -m tools.cockpit_cases compare --ws output/cockpit_cases/stage1 --base C02 --alt C04
+[cockpit_cases] C02 → C04：ΔP0 284,904
+  TH_cream_channel_fee：ΔW 0  順位変化なし（発生週数が同じ）  f* 
+  -> output/cockpit_cases/stage1\compare\C02__C04
+$ python -m tools.cockpit_cases compare --ws output/cockpit_cases/stage1 --base C02 --alt C06
+[cockpit_cases] C02 → C06：ΔP0 18,844,320
+  TH_cream_channel_fee：ΔW 0  順位変化なし（発生週数が同じ）  f* 
+  planned_output_raise：ΔW 166  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 113520.0
+  合計：ΔW   合計（費目ごとの境目は上の行）  f* 
+  -> output/cockpit_cases/stage1\compare\C02__C06
