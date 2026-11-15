@@ -1,0 +1,19 @@
+{
+  "smartx": {
+    "cost": 67503725.76,
+    "add_freight": 8069860.199999999,
+    "add_tariff": 4084007.2680000006,
+    "remove_node_freight_x_next": 4431541.5,
+    "remove_node_freight_pro": 2647672.0,
+    "delta": 5074653.968,
+    "gm_now": 0.9036796901313502,
+    "gm_after": 0.896438723248844
+  },
+  "smartphone": {
+    "cost": 37695124383917.75,
+    "revenue": 64101413473420.0,
+    "dc_conversion": 2104152700.0,
+    "dc_logistics": 4223441500.0,
+    "phone16_amer_qty": 100306000
+  }
+}

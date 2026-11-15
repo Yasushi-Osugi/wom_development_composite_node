@@ -1,0 +1,88 @@
+{
+  "Cookie-jp-2026": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 4.7,
+    "vc_issues": 0,
+    "vc_unvalued_lines": 0
+  },
+  "apparel-global-2028-2029": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 8.7
+  },
+  "apparel-us-2026": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 6.0
+  },
+  "bom-test-2026": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 0.3
+  },
+  "cosmetics-sg-th-2027-2029": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 5.3,
+    "vc_issues": 0,
+    "vc_unvalued_lines": 0
+  },
+  "ev-europe-2026": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 3.8
+  },
+  "ev-thailand-2026": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 2.8
+  },
+  "ev-thailand-2026_update": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 3.4
+  },
+  "oil-global-2027": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 7.2
+  },
+  "rice-japan-2027-2028": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin,RiceSeasonalPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 42.1
+  },
+  "smartphone-global-2026-2029": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 15.8
+  },
+  "smartx-2027-2029": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 24.1
+  },
+  "soysauce-eu-2027": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 4.9
+  },
+  "soysauce-jpy-2027-alloc": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 6.1,
+    "vc_issues": 0,
+    "vc_unvalued_lines": 0
+  },
+  "soysauce-jpy-2027": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 4.5
+  },
+  "soysauce-us-2027": {
+    "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+    "snapshot_equals_golden": true,
+    "seconds": 4.0
+  }
+}

@@ -1,0 +1,13 @@
+﻿model,ledger,file,line,row,type,why
+cosmetics-sg-th-2027-2029,PPC,ppc_edge_cost_rule.csv,2,Materials_JP->Factory_JP | COS_Serum | logistics_cost | rate=0 fixed=0 JPY,c?,木の実在の区間。実出荷・計上の有無を確かめる
+cosmetics-sg-th-2027-2029,PPC,ppc_edge_cost_rule.csv,3,Materials_JP->Factory_JP | COS_Cream | logistics_cost | rate=0 fixed=0 JPY,c?,木の実在の区間。実出荷・計上の有無を確かめる
+cosmetics-sg-th-2027-2029,PPC,ppc_tariff_rule.csv,2,Materials_JP->Factory_JP | COS_Serum | tariff_rate=0 material_cost (JP->JP),c?,木の実在の区間。実出荷・計上の有無を確かめる
+cosmetics-sg-th-2027-2029,PPC,ppc_tariff_rule.csv,3,Materials_JP->Factory_JP | COS_Cream | tariff_rate=0 material_cost (JP->JP),c?,木の実在の区間。実出荷・計上の有無を確かめる
+cosmetics-sg-th-2027-2029,PPC,ppc_node_cost_rule.csv,2,Materials_JP | COS_Serum | conversion_cost | rate=0 fixed=0 JPY | 明示の 0（M7）。原料の費用は ppc_supplier_cost.csv の仕入原価で計上する,e?,木のノード（leaf_in）。PPC がこの種類のノード・費目を計上する経路を確かめる
+cosmetics-sg-th-2027-2029,PPC,ppc_node_cost_rule.csv,3,Materials_JP | COS_Cream | conversion_cost | rate=0 fixed=0 JPY | 明示の 0（M7）。原料の費用は ppc_supplier_cost.csv の仕入原価で計上する,e?,木のノード（leaf_in）。PPC がこの種類のノード・費目を計上する経路を確かめる
+cosmetics-sg-th-2027-2029,VC,ppc_tariff_rule.csv,8,WH_JP_Released->DC_TH | COS_Serum | tariff_rate=0,c?,木の実在の区間。実出荷・計上の有無を確かめる
+cosmetics-sg-th-2027-2029,VC,ppc_tariff_rule.csv,9,WH_JP_Released->DC_TH | COS_Cream | tariff_rate=0,c?,木の実在の区間。実出荷・計上の有無を確かめる
+smartx-2027-2029,PPC,ppc_tariff_rule.csv,2,AssemblyCN_g1->SP_SmartX | SmartX | tariff_rate=0.0 transfer_price (CN->CN),a,supply point 経由の鍵（PPC・VC は supply point を飛ばした区間を作る）
+smartx-2027-2029,PPC,ppc_tariff_rule.csv,5,SP_SmartX->Retail_APAC_g1 | SmartX | tariff_rate=0.0 transfer_price (CN->SG),a,supply point 経由の鍵（PPC・VC は supply point を飛ばした区間を作る）
+smartx-2027-2029,PPC,ppc_tariff_rule.csv,6,AssemblyCN_g3->SP_SmartXNext | SmartXNext | tariff_rate=0.0 transfer_price (CN->CN),a,supply point 経由の鍵（PPC・VC は supply point を飛ばした区間を作る）
+smartx-2027-2029,PPC,ppc_tariff_rule.csv,9,SP_SmartXNext->Retail_APAC_g3 | SmartXNext | tariff_rate=0.0 transfer_price (CN->SG),a,supply point 経由の鍵（PPC・VC は supply point を飛ばした区間を作る）

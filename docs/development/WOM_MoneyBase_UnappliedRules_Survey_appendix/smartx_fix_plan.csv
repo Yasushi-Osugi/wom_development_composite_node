@@ -1,0 +1,10 @@
+﻿product,now_edge_freight,after_edge_freight,now_tariff,after_tariff,dc_node_freight_removed,qty,add_freight,add_tariff,remove_node_freight
+SmartX,SP_SmartX->Retail_AMER_g1 16.1 (+ AssemblyCN_g1->SP_SmartX 0.9),AssemblyCN_g1->DC_AMER_g1 16.1; DC_AMER_g1->Retail_AMER_g1 0.9,SP_SmartX->Retail_AMER_g1 0.25,AssemblyCN_g1->DC_AMER_g1 0.25,9.5,59659,1014203.0,907264.24,566760.5
+SmartX,SP_SmartX->Retail_EMEA_g1 18.2 (+ AssemblyCN_g1->SP_SmartX 0.9),AssemblyCN_g1->DC_EMEA_g1 18.2; DC_EMEA_g1->Retail_EMEA_g1 0.9,SP_SmartX->Retail_EMEA_g1 0.075,AssemblyCN_g1->DC_EMEA_g1 0.075,11.0,41754,797501.3999999999,190492.19,459294.0
+SmartX,SP_SmartX->Retail_APAC_g1 13.3 (+ AssemblyCN_g1->SP_SmartX 0.9),AssemblyCN_g1->DC_APAC_g1 13.3; DC_APAC_g1->Retail_APAC_g1 0.9,SP_SmartX->Retail_APAC_g1 0.0,AssemblyCN_g1->DC_APAC_g1 0.0,7.5,47732,677794.4,0.0,357990.0
+SmartXNext,SP_SmartXNext->Retail_AMER_g3 17.9 (+ AssemblyCN_g3->SP_SmartXNext 1.2),AssemblyCN_g3->DC_AMER_g3 17.9; DC_AMER_g3->Retail_AMER_g3 1.2,SP_SmartXNext->Retail_AMER_g3 0.25,AssemblyCN_g3->DC_AMER_g3 0.25,10.5,117034,2235349.4,2468539.65,1228857.0
+SmartXNext,SP_SmartXNext->Retail_EMEA_g3 20.8 (+ AssemblyCN_g3->SP_SmartXNext 1.2),AssemblyCN_g3->DC_EMEA_g3 20.8; DC_EMEA_g3->Retail_EMEA_g3 1.2,SP_SmartXNext->Retail_EMEA_g3 0.075,AssemblyCN_g3->DC_EMEA_g3 0.075,12.5,81816,1799952.0,517711.19,1022700.0
+SmartXNext,SP_SmartXNext->Retail_APAC_g3 15.3 (+ AssemblyCN_g3->SP_SmartXNext 1.2),AssemblyCN_g3->DC_APAC_g3 15.3; DC_APAC_g3->Retail_APAC_g3 1.2,SP_SmartXNext->Retail_APAC_g3 0.0,AssemblyCN_g3->DC_APAC_g3 0.0,8.5,93640,1545060.0,0.0,795940.0
+SmartXPro_IN,(already on the physical edge),unchanged,(already on the physical edge),unchanged,DC_AMER,,0.0,0.0,1067560.0
+SmartXPro_CN,(already on the physical edge),unchanged,(already on the physical edge),unchanged,DC_APAC,,0.0,0.0,683280.0
+SmartXPro_CN,(already on the physical edge),unchanged,(already on the physical edge),unchanged,DC_EMEA,,0.0,0.0,896832.0
