@@ -106,7 +106,7 @@
 | 本 | 担当 | 作業 | 根拠・依頼書 | 次に進む条件 |
 |---|---|---|---|---|
 | GUI（到達点 3） | Claude君（設計）→ 大杉さん（採否）→ Code君（実装） | 設計書は採用済み（`requests/Cockpit_Stage3_DesignMD_PlanCompareScreen_v0.1.md`、大杉さん 2026-11-13）。3 段で作る：段 1 案の置き場と実行（画面なし）→ 段 2 見る画面 → 段 3 操作 | 段 1：`requests/RequestLetter_Cockpit_Stage3_Step1_CasesAndRunner_to_CodeKun.md` | 段 1：6 つの案を作り直して同じ数字。段 3：大杉さんが画面だけで新しい案を作り、同じ数字を得る |
-| 生産量を上げる費用の業務定義 | GPT-MC君 → 大杉さん（採否）→ Claude君（比較の道具への反映） | クリームの `cap_soft` 11 → 12 の費用：対象、負担者、発生する週、境目の式、週固定費との組合せ | `requests/RequestLetter_WOM_Cockpit_PlannedOutputCost_to_GPT_MC_v0.1.md` | 定義が採用されるまで、画面と比較では「未設定」、採算の順位は保留 |
+| 生産量を上げる費用の業務定義 | GPT-MC君（済み）→ 大杉さん（採否）→ Claude君（比較の道具への反映） | 業務定義 v0.1 を受領（`docs/design/drafts/WOM_Cockpit_PlannedOutputCost_Business_Definition_v0.1.md`、読取版 `3c3d677`）。推奨は「E_JP が追加シフト・要員を有償で確保した週に負担する」。境目：後期 約 64,037 円／週・早期 約 120,797 円／週（報告期間 156 週で確保した場合）。**助走 17 週にも同じ確保費がかかると、4 案の順位が「早期・増産」から「後期・据え置き」へ逆転する**（検算例）。大杉さんの判断事項：費用の形（確保か実績か）と有償の期間（助走を含めるか） | `requests/RequestLetter_WOM_Cockpit_PlannedOutputCost_to_GPT_MC_v0.1.md`、上の業務定義 v0.1 | 大杉さんが採用したら、比較の道具（`tools/compare_scenarios.py`）と比較の画面に別欄として足す。採用まで画面と比較では「未設定」、採算の順位は保留 |
 | 金額基盤：引かれていない規則の行（smartx から全サンプルへ） | Code君（調査）→ 大杉さん（直し方）→ Claude君（直しの依頼書） | smartx の調査は済み（`docs/development/WOM_MoneyBase_Smartx_FreightCheck_Report.md`）：3 組でノードと区間の運賃が両方計上、SmartX・SmartXNext の区間の運賃と関税 16 行が一度も引かれていない（関税 0）。大杉さんの判断（2026-11-13）：運賃は区間だけ、3 製品を同じ書き方にそろえる、直す前に全サンプルで洗い出す、PPC の警告は結果を見て決める | `requests/RequestLetter_MoneyBase_UnappliedRules_Survey_to_CodeKun.md`（GUI の段 1 の後に着手） | 洗い出しの結果を見て、直すモデルと golden の作り直しの単位を決める |
 
 役割：大杉さんが方針と採否を決める。Claude君は設計に加えて、誰が何を確かめ、どの結果を次の判断に渡すかを取りまとめ、この表を更新する。GPT君（アーキテクト）がレビューする。BS-SEAF Loop の自動化は中断のまま。
