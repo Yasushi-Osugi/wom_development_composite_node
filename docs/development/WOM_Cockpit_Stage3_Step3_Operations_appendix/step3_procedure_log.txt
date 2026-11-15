@@ -1,0 +1,24 @@
+18:06:44 $ python -m tools.cockpit_cases new --ws output\cockpit_step3\ws_b --model data\sample\cosmetics-sg-th-2027-2029 --max-age-weeks 52 --name 基準・後期 -> 0
+18:06:46 $ python -m tools.cockpit_cases set --ws output\cockpit_step3\ws_b --case C01 entry-plan --file docs\development\WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix\inputs\market_entry_plan_A_late.csv -> 0
+18:06:47 $ python -m tools.cockpit_cases set --ws output\cockpit_step3\ws_b --case C01 capacity --sku COS_Serum --max-supply 17 --cap-soft 14 -> 0
+18:06:49 $ python -m tools.cockpit_cases set --ws output\cockpit_step3\ws_b --case C01 capacity --sku COS_Cream --max-supply 13 --cap-soft 11 -> 0
+18:06:50 [画面] C01 を実行 -> OK：C01 の実行 を始めた
+18:07:16 実行中の更新の間隔：最長 0.66 秒（492 回）、見出しを 4 回切り替えた
+18:07:16 [画面] C01 を複製（基準・早期） -> OK：C01 を複製して C02（基準・早期）を作った。未実行
+18:07:16 [画面] C02 のタイのクリームの投入週を 2027-W27 に -> OK：C02：COS_Cream:TH_Distributor の投入週を 2027-W27 にした（需要を作り直した）。実行し直す
+18:07:16 [画面] C02 の入力の検査（不正な週） -> NG：投入週 '2027-27' は週のラベルではない（② 投入の表 COS_Cream:TH_Distributor）。直し方：2027-W27 の形で入れる
+18:07:16 [画面] C02 を実行 -> OK：C02 の実行 を始めた
+18:07:43 [画面] C01 を複製（生産量を上げる・後期） -> OK：C01 を複製して C03（生産量を上げる・後期）を作った。未実行
+18:07:43 [画面] C03 のクリームの cap_soft を 14 に（max_supply 13 を超える） -> NG：output\cockpit_step3\ws_b\C03\model\capacity_plan.csv: SKU COS_Cream・工場 Factory_JP の cap_soft=14 が max_supply を超える週があります：['2026-W37（max_supply 13）', '2026-W38（max_supply 13）', '2026-W39（max_supply 13）', '2026-W40（max_supply 13）', '2026-W41（max_supply 13）'] …（173 週）。直し方：cap_soft を max_supply 以下にするか、max_supply と cap_soft の組を変える
+18:07:43 [画面] C03 のクリームの cap_soft を 12 に -> OK：C03：COS_Cream の計画の生産量（cap_soft）を 12 にした。実行し直す
+18:07:43 [画面] C03 を実行 -> OK：C03 の実行 を始めた
+18:08:10 [画面] C01 → C03 を並べる -> OK：C01 → C03 を並べる を始めた
+18:08:18 [画面] C03 に増産の有償の週を入れる（確かめて「入れる」） -> OK：C03：増産の確保費の有償の週を 2026-W46〜2029-W46（158 週、助走を含む）にした。比較は並べ直す
+18:08:18 [画面] C01 → C03 を並べ直す -> OK：C01 → C03 を並べる を始めた
+18:08:24 [画面] C03 の増産の確保費に週額 50,000 を入れる -> OK：C03：費用の前提を 1 行にした。案は「済み」のまま、比較は並べ直す
+18:08:24 [画面] C01 → C03 を並べ直す -> OK：C01 → C03 を並べる を始めた
+18:08:30 [画面] C03 の週額を空欄（未設定）に戻す -> OK：C03：費用の前提を 1 行にした。案は「済み」のまま、比較は並べ直す
+18:08:30 [画面] C01 → C03 を並べ直す -> OK：C01 → C03 を並べる を始めた
+18:08:36 [画面] C01 を複製（衝突する方針） -> OK：C01 を複製して C04（衝突する方針）を作った。未実行
+18:08:37 [画面] C04 に方針（タイのクリームの数量枠 100 ＋ 最低 7 割） -> OK：C04：供給の方針を変えた。実行し直す
+18:08:37 [画面] C04 を実行 -> OK：C04 の実行 を始めた

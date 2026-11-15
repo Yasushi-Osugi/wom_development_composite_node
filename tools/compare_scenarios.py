@@ -555,6 +555,7 @@ def allocation_table(sup: pd.DataFrame, udp: Optional[pd.DataFrame], name: str) 
 FIXED_COST_COLS = ["case", "cost_item", "entity", "paid_start_week", "paid_end_week", "weekly_amount",
                    "currency", "note"]
 COUNT_OUTSIDE_COL = "count_outside_report"   # optional: 1 = count the paid weeks over the plan period
+DISPLAY_COL = "display_name"                 # optional: the name shown on a screen (copied; not used in sums)
 TOTAL_ITEM = "合計"
 ZERO_TOL = 0.5      # yen
 
@@ -586,6 +587,8 @@ def read_fixed_cost_plan(path: str) -> pd.DataFrame:
         raise CompareError(f"{path}: 列が足りません {missing}")
     if COUNT_OUTSIDE_COL not in df.columns:
         df[COUNT_OUTSIDE_COL] = ""                      # old tables: the report period only
+    if DISPLAY_COL not in df.columns:
+        df[DISPLAY_COL] = ""
     for i, r in df.iterrows():
         if r["case"] not in ("base", "alt"):
             raise CompareError(f"{path} の {i + 2} 行目: case は base か alt（{r['case']!r}）")
@@ -640,7 +643,7 @@ def report_p0(run: dict) -> Tuple[float, str, str, str]:
     return p0, status, str(rep["week"].iloc[0]), str(rep["week"].iloc[-1])
 
 
-FC_COLS = ["cost_item", "entity", "P0_base", "P0_alt", "count_outside_report", "paid_start_base", "paid_end_base",
+FC_COLS = ["cost_item", "display_name", "entity", "P0_base", "P0_alt", "count_outside_report", "paid_start_base", "paid_end_base",
            "W_base", "paid_start_alt", "paid_end_alt", "W_alt", "weekly_amount_base", "weekly_amount_alt", "cost_base",
            "cost_alt", "P_after_base", "P_after_alt", "delta_P0", "delta_P0_by_product", "delta_W",
            "other_items_cost_diff", "delta_P0_net", "boundary", "f_star_per_week", "boundary_assumption",
@@ -674,10 +677,13 @@ def fixed_cost_table(plan: Optional[pd.DataFrame], p0: Dict[str, float], status:
                               "valuation_status": "; ".join(unval) or "評価済み"}], columns=FC_COLS)
     if COUNT_OUTSIDE_COL not in plan.columns:
         plan = plan.assign(**{COUNT_OUTSIDE_COL: ""})
+    if DISPLAY_COL not in plan.columns:
+        plan = plan.assign(**{DISPLAY_COL: ""})
     items = sorted(set(plan["cost_item"]))
     info = {}
     for item in items:
-        r = {"cost_item": item,
+        names = [x.strip() for x in plan.loc[plan["cost_item"] == item, DISPLAY_COL] if x.strip()]
+        r = {"cost_item": item, "display_name": names[0] if names else "",
              "entity": ",".join(sorted(set(plan.loc[plan["cost_item"] == item, "entity"])))}
         outside = (plan.loc[plan["cost_item"] == item, COUNT_OUTSIDE_COL].str.strip() == "1").any()
         if outside and not (plan_start and plan_end):

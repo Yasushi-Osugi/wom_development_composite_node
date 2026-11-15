@@ -1,0 +1,129 @@
+﻿part,what,screen,expected,match
+A,C01__C05 差の表の鍵（差のある鍵だけ）,['COS_Cream:TH_Distributor'],['COS_Cream:TH_Distributor'],True
+A,C01__C05 差 COS_Cream:TH_Distributor 需要,0.0,0.0,True
+A,C01__C05 差 COS_Cream:TH_Distributor 当週,88.0,88.0,True
+A,C01__C05 差 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+A,C01__C05 差 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+A,C01__C05 差 COS_Cream:TH_Distributor 配分後の未充足,-88.0,-88.0,True
+A,C01__C05 差 COS_Cream:TH_Distributor 未配分,0.0,0.0,True
+A,C01__C05 要点：P0 の差,True,True,True
+A,C01__C05 要点：境目 増産の確保費,True,True,True
+A,C01__C05 要点：C01 COS_Cream の期間,True,True,True
+A,C01__C05 要点：C01 COS_Serum の期間,True,True,True
+A,C01__C05 要点：C05 COS_Cream の期間,True,True,True
+A,C01__C05 要点：C05 COS_Serum の期間,True,True,True
+A,C01__C05 ④ 在庫 COS_Cream,True,True,True
+A,C01__C05 ④ 在庫 COS_Serum,True,True,True
+A,C01__C05 要点に「良い」が無い,False,False,True
+A,C01__C05 要点に「推奨」が無い,False,False,True
+A,C01__C05 要点に「有利」が無い,False,False,True
+A,C01__C05 ④ 在庫の保管費の但し書き,True,True,True
+A,C01__C05 ④ コード名を出さない,False,False,True
+A,C01__C05 ④ 計画の端の週の書き方,True,True,True
+A,C01__C05 F5 下回った週の列が 2 つ,True,True,True
+A,C01__C05 F5 C01 報告期間で下回った週,4,4,True
+A,C01__C05 F5 C01 全計画で下回った週,5,5,True
+A,C01__C05 F5 C05 報告期間で下回った週,6,6,True
+A,C01__C05 F5 C05 全計画で下回った週,15,15,True
+A,C01__C05 F6 在庫の表の見出しに案の ID,True,True,True
+A,C01__C05 F8 合計の行が一番上,合計,合計,True
+A,C01__C05 F8 判断の列が左,"['費目', 'ΔP0', 'ΔW', '境目（円／週）', '境目の置き方', '評価']","['費目', 'ΔP0', 'ΔW', '境目（円／週）', '境目の置き方', '評価']",True
+A,C01__C05 F9 費目の行に控除後を出さない,True,True,True
+A,C01__C05 F10 表示名,True,True,True
+A,C05__C06 差の表の鍵（差のある鍵だけ）,['COS_Cream:TH_Distributor'],['COS_Cream:TH_Distributor'],True
+A,C05__C06 差 COS_Cream:TH_Distributor 需要,78.0,78.0,True
+A,C05__C06 差 COS_Cream:TH_Distributor 当週,78.0,78.0,True
+A,C05__C06 差 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+A,C05__C06 差 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+A,C05__C06 差 COS_Cream:TH_Distributor 配分後の未充足,0.0,0.0,True
+A,C05__C06 差 COS_Cream:TH_Distributor 未配分,0.0,0.0,True
+A,C05__C06 要点：P0 の差,True,True,True
+A,C05__C06 要点：境目 タイのクリームの販路費,True,True,True
+A,C05__C06 要点：境目 増産の確保費,True,True,True
+A,C05__C06 要点：C05 COS_Cream の期間,True,True,True
+A,C05__C06 要点：C05 COS_Serum の期間,True,True,True
+A,C05__C06 要点：C06 COS_Cream の期間,True,True,True
+A,C05__C06 要点：C06 COS_Serum の期間,True,True,True
+A,C05__C06 ④ 在庫 COS_Cream,True,True,True
+A,C05__C06 ④ 在庫 COS_Serum,True,True,True
+A,C05__C06 要点に「良い」が無い,False,False,True
+A,C05__C06 要点に「推奨」が無い,False,False,True
+A,C05__C06 要点に「有利」が無い,False,False,True
+A,C05__C06 ④ 在庫の保管費の但し書き,True,True,True
+A,C05__C06 ④ コード名を出さない,False,False,True
+A,C05__C06 ④ 計画の端の週の書き方,True,True,True
+A,C05__C06 F5 下回った週の列が 2 つ,True,True,True
+A,C05__C06 F5 C05 報告期間で下回った週,6,6,True
+A,C05__C06 F5 C05 全計画で下回った週,15,15,True
+A,C05__C06 F5 C06 報告期間で下回った週,6,6,True
+A,C05__C06 F5 C06 全計画で下回った週,7,7,True
+A,C05__C06 F6 在庫の表の見出しに案の ID,True,True,True
+A,C05__C06 F8 合計の行が一番上,合計,合計,True
+A,C05__C06 F8 判断の列が左,"['費目', 'ΔP0', 'ΔW', '境目（円／週）', '境目の置き方', '評価']","['費目', 'ΔP0', 'ΔW', '境目（円／週）', '境目の置き方', '評価']",True
+A,C05__C06 F9 費目の行に控除後を出さない,True,True,True
+A,C05__C06 F10 表示名,True,True,True
+A,C05__C06 F12 2 案に共通の不足,True,True,True
+A,C05__C06 F11 クリームの在庫 +16.1%,True,True,True
+A,C03__C04 差の表の鍵（差のある鍵だけ）,"['COS_Cream:SG_Distributor', 'COS_Cream:TH_Distributor']","['COS_Cream:SG_Distributor', 'COS_Cream:TH_Distributor']",True
+A,C03__C04 差 COS_Cream:SG_Distributor 需要,0.0,0.0,True
+A,C03__C04 差 COS_Cream:SG_Distributor 当週,-78.0,-78.0,True
+A,C03__C04 差 COS_Cream:SG_Distributor 早出し,0.0,0.0,True
+A,C03__C04 差 COS_Cream:SG_Distributor 遅配,0.0,0.0,True
+A,C03__C04 差 COS_Cream:SG_Distributor 未配分,78.0,78.0,True
+A,C03__C04 差 COS_Cream:SG_Distributor 配分後の未充足,0.0,0.0,True
+A,C03__C04 差 COS_Cream:TH_Distributor 需要,78.0,78.0,True
+A,C03__C04 差 COS_Cream:TH_Distributor 当週,78.0,78.0,True
+A,C03__C04 差 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+A,C03__C04 差 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+A,C03__C04 差 COS_Cream:TH_Distributor 未配分,0.0,0.0,True
+A,C03__C04 差 COS_Cream:TH_Distributor 配分後の未充足,0.0,0.0,True
+A,C03__C04 要点：P0 の差,True,True,True
+A,C03__C04 要点：境目 タイのクリームの販路費,True,True,True
+A,C03__C04 要点：C03 COS_Cream の期間,True,True,True
+A,C03__C04 要点：C03 COS_Serum の期間,True,True,True
+A,C03__C04 要点：C04 COS_Cream の期間,True,True,True
+A,C03__C04 要点：C04 COS_Serum の期間,True,True,True
+A,C03__C04 ④ 在庫 COS_Cream,True,True,True
+A,C03__C04 ④ 在庫 COS_Serum,True,True,True
+A,C03__C04 要点に「良い」が無い,False,False,True
+A,C03__C04 要点に「推奨」が無い,False,False,True
+A,C03__C04 要点に「有利」が無い,False,False,True
+A,C03__C04 ④ 在庫の保管費の但し書き,True,True,True
+A,C03__C04 ④ コード名を出さない,False,False,True
+A,C03__C04 ④ 計画の端の週の書き方,True,True,True
+A,C03__C04 F5 下回った週の列が 2 つ,True,True,True
+A,C03__C04 F5 C03 報告期間で下回った週,4,4,True
+A,C03__C04 F5 C03 全計画で下回った週,5,5,True
+A,C03__C04 F5 C04 報告期間で下回った週,4,4,True
+A,C03__C04 F5 C04 全計画で下回った週,5,5,True
+A,C03__C04 F6 在庫の表の見出しに案の ID,True,True,True
+A,C03__C04 F8 合計の行が一番上,合計,合計,True
+A,C03__C04 F8 判断の列が左,"['費目', 'ΔP0', 'ΔW', '境目（円／週）', '境目の置き方', '評価']","['費目', 'ΔP0', 'ΔW', '境目（円／週）', '境目の置き方', '評価']",True
+A,C03__C04 F9 費目の行に控除後を出さない,True,True,True
+A,C03__C04 F10 表示名,True,True,True
+A,F7 ① の供給の方針は短い名前,数量枠＋最低供給・削って最低,数量枠＋最低供給・削って最低,True
+A,F7 ② にファイル名,True,True,True
+B,実行中に画面の更新が止まった最長（秒）,True,True,True
+B,C01 状態,済み,済み,True
+B,C01 P0（段 1 の C01）,606871080.0,606871080.0,True
+B,C01 クリームの納品,1680,1680,True
+B,不正な週は文で返す,True,True,True
+B,C02 P0（段 1 の C02）,606871080.0,606871080.0,True
+B,C02 クリームの納品,1680,1680,True
+B,max_supply を超える値は段 1 の理由のまま,True,True,True
+B,C03 P0（段 1 の C05）,616860840.0,616860840.0,True
+B,C03 クリームの納品,1768,1768,True
+B,増産の有償の週の候補,"('2026-W46', '2029-W46', 158)","('2026-W46', '2029-W46', 158)",True
+B,費用の前提だけ変えた後の比較は「並べ直す」,True,True,True
+B,そのとき固定費の表を出さない,['費用の前提が変わった：並べ直す'],['費用の前提が変わった：並べ直す'],True
+B,そのとき要点の「判断に要るもの」を出さない,True,True,True
+B,"境目（段 1・段 2 と同じ 63,226 円／週）",63226.33,63226.33,True
+B,並べ直すと「費用の前提が変わった」が消える,,,True
+B,費用の前提だけ変えても案は「済み」,済み,済み,True
+B,比較は「並べ直す」,True,True,True
+B,"週額を入れると控除後の差が出る（P0 の差 − 50,000 × 158）",2089760,2089760,True
+B,C04 は「衝突」,衝突,衝突,True
+B,① の状態が「衝突」,衝突,衝突,True
+B,④ に衝突の理由とログの場所,True,True,True
+B,閉じて開き直して同じ案の表,4,4,True
+S7,stage1 の 6 案は変わらない（case.json の実行の記録）,True,True,True

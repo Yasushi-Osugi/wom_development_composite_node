@@ -346,10 +346,10 @@ def _fixed_cost_plan(ws_dir: str, base: str, alt: str, out_csv: str) -> Optional
         _f, rs, _t, _b = C._read_rows(os.path.join(C.case_dir(ws_dir, cid), fc))
         for r in rs:
             rows.append(dict(case=side, **{k: r[k] for k in C.FIXED_COST_COLS},
-                             **{C.COUNT_OUTSIDE_COL: (r.get(C.COUNT_OUTSIDE_COL) or "").strip()}))
+                             **{c: (r.get(c) or "").strip() for c in C.OPTIONAL_COST_COLS}))
     if not rows:
         return None
-    cols = ["case"] + C.FIXED_COST_COLS + ([C.COUNT_OUTSIDE_COL] if any(r[C.COUNT_OUTSIDE_COL] for r in rows) else [])
+    cols = ["case"] + C.FIXED_COST_COLS + [c for c in C.OPTIONAL_COST_COLS if any(r[c] for r in rows)]
     C._write_rows(out_csv, cols, rows, "\n", False)
     return out_csv
 
@@ -389,13 +389,20 @@ def compare_cases(ws_dir: str, base: str, alt: str) -> dict:
            "base_input_hashes": rb["input_hashes"], "alt_input_hashes": ra["input_hashes"],
            "P0_base": float(fc["P0_base"].iloc[0]), "P0_alt": float(fc["P0_alt"].iloc[0]),
            "delta_P0": float(fc["delta_P0"].iloc[0]), "fixed_cost": rows,
-           "fixed_cost_plan": "fixed_cost_plan.csv" if plan else None}
+           "fixed_cost_plan": "fixed_cost_plan.csv" if plan else None,
+           "base_fixed_cost_sha256": C.fixed_cost_hash(ws_dir, base),
+           "alt_fixed_cost_sha256": C.fixed_cost_hash(ws_dir, alt)}
     C._write_json(os.path.join(out, "compare.json"), rec)
     return rec
 
 
+ST_COST_CHANGED = "費用の前提が変わった"
+
+
 def compare_status(ws_dir: str, base: str, alt: str) -> str:
-    """済み / 未実行 / 入力が変わった (a case changed or was re-run after the comparison) / 不整合."""
+    """済み / 未実行 / 入力が変わった (a case changed or was re-run after the comparison) / 不整合 /
+    費用の前提が変わった (only the cost premises changed after the comparison; a comparison made before the
+    record existed counts as changed, since it cannot be checked)."""
     p = os.path.join(ws_dir, "compare", f"{base}__{alt}", "compare.json")
     if not os.path.exists(p):
         return C.ST_NOT_RUN
@@ -406,4 +413,7 @@ def compare_status(ws_dir: str, base: str, alt: str) -> str:
         run = C.read_case(ws_dir, cid).get("run") or {}
         if run.get("input_hashes") != rec[key] or C.status(ws_dir, cid)["state"] != C.ST_DONE:
             return C.ST_CHANGED
+    for cid, key in ((base, "base_fixed_cost_sha256"), (alt, "alt_fixed_cost_sha256")):
+        if key not in rec or rec[key] != C.fixed_cost_hash(ws_dir, cid):
+            return ST_COST_CHANGED
     return C.ST_DONE

@@ -1,0 +1,48 @@
+$ python -m tools.cockpit_cases set --ws output/cockpit_step3/ws_a --case C01 fixed-cost --file output/cockpit_step3/fixed_cost_C01_named.csv
+[cockpit_cases] C01 fixed-cost: "output/cockpit_step3/ws_a\\C01\\inputs\\fixed_cost.csv"
+[cockpit_cases] C01 の状態：済み
+$ python -m tools.cockpit_cases set --ws output/cockpit_step3/ws_a --case C02 fixed-cost --file output/cockpit_step3/fixed_cost_C02_named.csv
+[cockpit_cases] C02 fixed-cost: "output/cockpit_step3/ws_a\\C02\\inputs\\fixed_cost.csv"
+[cockpit_cases] C02 の状態：済み
+$ python -m tools.cockpit_cases set --ws output/cockpit_step3/ws_a --case C03 fixed-cost --file output/cockpit_step3/fixed_cost_C03_named.csv
+[cockpit_cases] C03 fixed-cost: "output/cockpit_step3/ws_a\\C03\\inputs\\fixed_cost.csv"
+[cockpit_cases] C03 の状態：済み
+$ python -m tools.cockpit_cases set --ws output/cockpit_step3/ws_a --case C04 fixed-cost --file output/cockpit_step3/fixed_cost_C04_named.csv
+[cockpit_cases] C04 fixed-cost: "output/cockpit_step3/ws_a\\C04\\inputs\\fixed_cost.csv"
+[cockpit_cases] C04 の状態：済み
+$ python -m tools.cockpit_cases set --ws output/cockpit_step3/ws_a --case C05 fixed-cost --file output/cockpit_step3/fixed_cost_C05_named.csv
+[cockpit_cases] C05 fixed-cost: "output/cockpit_step3/ws_a\\C05\\inputs\\fixed_cost.csv"
+[cockpit_cases] C05 の状態：済み
+$ python -m tools.cockpit_cases set --ws output/cockpit_step3/ws_a --case C06 fixed-cost --file output/cockpit_step3/fixed_cost_C06_named.csv
+[cockpit_cases] C06 fixed-cost: "output/cockpit_step3/ws_a\\C06\\inputs\\fixed_cost.csv"
+[cockpit_cases] C06 の状態：済み
+$ python -m tools.cockpit_cases compare --ws output/cockpit_step3/ws_a --base C01 --alt C02
+[cockpit_cases] C01 → C02：ΔP0 0
+  TH_cream_channel_fee：ΔW 26  0円で同額（正の週額では発生週数の少ない案が上）  f* 
+  -> output/cockpit_step3/ws_a\compare\C01__C02
+$ python -m tools.cockpit_cases compare --ws output/cockpit_step3/ws_a --base C03 --alt C04
+[cockpit_cases] C03 → C04：ΔP0 109,512
+  TH_cream_channel_fee：ΔW 26  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 4212.0
+  -> output/cockpit_step3/ws_a\compare\C03__C04
+$ python -m tools.cockpit_cases compare --ws output/cockpit_step3/ws_a --base C05 --alt C06
+[cockpit_cases] C05 → C06：ΔP0 8,854,560
+  TH_cream_channel_fee：ΔW 26  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 340560.0
+  planned_output_raise：ΔW 8  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 1106820.0
+  合計：ΔW   合計（費目ごとの境目は上の行）  f* 
+  -> output/cockpit_step3/ws_a\compare\C05__C06
+$ python -m tools.cockpit_cases compare --ws output/cockpit_step3/ws_a --base C01 --alt C05
+[cockpit_cases] C01 → C05：ΔP0 9,989,760
+  TH_cream_channel_fee：ΔW 0  順位変化なし（発生週数が同じ）  f* 
+  planned_output_raise：ΔW 158  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 63226.3291139241
+  合計：ΔW   合計（費目ごとの境目は上の行）  f* 
+  -> output/cockpit_step3/ws_a\compare\C01__C05
+$ python -m tools.cockpit_cases compare --ws output/cockpit_step3/ws_a --base C02 --alt C04
+[cockpit_cases] C02 → C04：ΔP0 284,904
+  TH_cream_channel_fee：ΔW 0  順位変化なし（発生週数が同じ）  f* 
+  -> output/cockpit_step3/ws_a\compare\C02__C04
+$ python -m tools.cockpit_cases compare --ws output/cockpit_step3/ws_a --base C02 --alt C06
+[cockpit_cases] C02 → C06：ΔP0 18,844,320
+  TH_cream_channel_fee：ΔW 0  順位変化なし（発生週数が同じ）  f* 
+  planned_output_raise：ΔW 166  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 113520.0
+  合計：ΔW   合計（費目ごとの境目は上の行）  f* 
+  -> output/cockpit_step3/ws_a\compare\C02__C06

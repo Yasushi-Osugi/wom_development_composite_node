@@ -421,3 +421,17 @@ def test_planned_output_weeks_table():
     assert (t["first_week_at_cap"], t["last_week_at_cap"], t["span_weeks"]) == ("2026-W53", "2027-W02", 3)
     assert (t["span_weeks_in_report"], t["span_weeks_outside_report"], t["weeks_at_cap"]) == (2, 1, 3)
     assert (t["weeks_below_cap"], t["weeks_below_cap_in_report"], t["factory"]) == (2, 1, "F")
+
+
+
+# ── 段 3 A2：表示名を写す ───────────────────────────────────────────────
+def test_display_name_is_copied(tmp_path):
+    p = str(tmp_path / "a.csv")
+    pd.DataFrame([{"case": c, "cost_item": "fee", "entity": "E", "paid_start_week": s, "paid_end_week": "2029-W52",
+                   "weekly_amount": "", "currency": "JPY", "note": "", "display_name": "販路費"}
+                  for c, s in (("base", "2028-W01"), ("alt", "2027-W27"))]).to_csv(p, index=False)
+    r = C.fixed_cost_table(C.read_fixed_cost_plan(p), {"base": 0.0, "alt": 8_854_560.0}, OK, *REP).iloc[0]
+    assert r["display_name"] == "販路費" and r["f_star_per_week"] == 340_560.0
+    q = C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "b.csv")))           # no column: blank, same values
+    r2 = C.fixed_cost_table(q, {"base": 0.0, "alt": 8_854_560.0}, OK, *REP).iloc[0]
+    assert r2["display_name"] == "" and r2["f_star_per_week"] == 340_560.0

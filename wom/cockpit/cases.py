@@ -52,6 +52,8 @@ FIXED_COST_FILE = "fixed_cost.csv"            # inputs/ ; only the comparison re
 FIXED_COST_COLS = ["cost_item", "entity", "paid_start_week", "paid_end_week", "weekly_amount",
                    "currency", "note"]
 COUNT_OUTSIDE_COL = "count_outside_report"    # optional (段 2): 1 = the paid weeks include the warm-up weeks
+DISPLAY_COL = "display_name"                  # optional (段 3): the name shown on the screen (blank = cost_item)
+OPTIONAL_COST_COLS = [COUNT_OUTSIDE_COL, DISPLAY_COL]
 POLICY_FILES = ("allocation_file", "policy_file", "knowledge_file")
 _ID_RE = re.compile(r"^C(\d{2,})$")
 _WEEK_RE = re.compile(r"^\d{4}-W\d{2}$")
@@ -483,6 +485,7 @@ def set_fixed_cost(ws_dir: str, cid: str, *, file: str = None, side: str = None,
         if x["weekly_amount"] != "":
             x["weekly_amount"] = _num_text(x["weekly_amount"], f"{i} 行目の weekly_amount")
         x[COUNT_OUTSIDE_COL] = (r.get(COUNT_OUTSIDE_COL) or "").strip()
+        x[DISPLAY_COL] = (r.get(DISPLAY_COL) or "").strip()
         if x[COUNT_OUTSIDE_COL] not in ("", "0", "1"):
             raise CaseError(f"費用の前提の {i} 行目：{COUNT_OUTSIDE_COL}={x[COUNT_OUTSIDE_COL]!r} は 0・1・空欄"
                             "（空欄は 0 ＝ 報告期間だけを数える）")
@@ -490,7 +493,7 @@ def set_fixed_cost(ws_dir: str, cid: str, *, file: str = None, side: str = None,
             raise CaseError(f"費用の前提：cost_item {x['cost_item']} が重複しています")
         seen.add(x["cost_item"])
         out.append(x)
-    cols = FIXED_COST_COLS + ([COUNT_OUTSIDE_COL] if any(x[COUNT_OUTSIDE_COL] for x in out) else [])
+    cols = FIXED_COST_COLS + [c for c in OPTIONAL_COST_COLS if any(x[c] for x in out)]
     _write_rows(dst, cols, out, "\n", False)
     case["inputs"]["fixed_cost"] = os.path.relpath(dst, cdir).replace("\\", "/")
     case.setdefault("changes", []).append({"at": _now(), "what": "fixed_cost", "rows": out})
@@ -519,6 +522,14 @@ def input_hashes(ws_dir: str, cid: str) -> Dict[str, str]:
     out["(policy)"] = hashlib.sha256(json.dumps(pol, sort_keys=True, ensure_ascii=False)
                                      .encode("utf-8")).hexdigest()
     return dict(sorted(out.items()))
+
+
+def fixed_cost_hash(ws_dir: str, cid: str) -> Optional[str]:
+    """sha256 of the case's cost premises (inputs/fixed_cost.csv), None without one. Not part of the run hash:
+    the comparison records it, so a change of the cost premises asks for comparing again (段 3 B3-2)."""
+    fc = (read_case(ws_dir, cid).get("inputs") or {}).get("fixed_cost")
+    p = os.path.join(case_dir(ws_dir, cid), fc) if fc else None
+    return _sha256_file(p) if p and os.path.exists(p) else None
 
 
 def changed_files(ws_dir: str, cid: str) -> List[str]:
@@ -568,7 +579,8 @@ def input_summary(ws_dir: str, cid: str) -> dict:
         _f, rows, _t, _b = _read_rows(os.path.join(cdir, fc))
         s["fixed_cost"] = [{"cost_item": r["cost_item"], "paid": f"{r['paid_start_week']}〜{r['paid_end_week']}",
                             "weekly_amount": r["weekly_amount"] if r["weekly_amount"] != "" else "未設定",
-                            "count_outside_report": (r.get(COUNT_OUTSIDE_COL) or "").strip() == "1"}
+                            "count_outside_report": (r.get(COUNT_OUTSIDE_COL) or "").strip() == "1",
+                            "display_name": (r.get(DISPLAY_COL) or "").strip() or r["cost_item"]}
                            for r in rows]
     return s
 
