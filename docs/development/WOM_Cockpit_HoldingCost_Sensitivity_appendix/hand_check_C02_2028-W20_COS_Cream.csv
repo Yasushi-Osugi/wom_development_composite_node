@@ -1,0 +1,9 @@
+﻿owner,location_kind,location,item,lots,group_hq
+E_JP,node,Factory_JP,finished,156,7113600.0
+E_JP,transit,Factory_JP->WH_JP_Released,finished,13,599040.0
+E_JP,transit,WH_JP_Released->DC_TH,finished,6,286560.0
+E_SG,node,SG_Store,finished,6,298368.0
+E_SG,transit,DC_SG->SG_Store,finished,3,149184.0
+E_SG,transit,DC_SG->SG_EC,finished,2,99456.0
+E_SG,transit,WH_JP_Released->DC_SG,finished,20,950400.0
+E_JP,transit,Materials_JP->Factory_JP,material:Materials_JP,11,343200.0

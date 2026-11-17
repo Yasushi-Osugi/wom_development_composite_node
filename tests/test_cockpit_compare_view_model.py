@@ -144,7 +144,7 @@ def test_unset_is_not_zero_and_ranking_is_pending(ws):
     assert tot["cost_base"] == "未算出"
     assert mv["unset_costs"] == ["fee", "raise"] and mv["ranking"] == V.PENDING
     notes = "\n".join(V.notes(ws, "C01", "C02"))
-    assert "未設定" in notes and "保留" in notes and "画面は言わない" in notes and "在庫の保管費" in notes
+    assert "未設定" in notes and "保留" in notes and "画面は言わない" in notes and "在庫の保有費" in notes
 
 
 def test_supply_totals_and_min_supply_marks(ws):
@@ -258,7 +258,9 @@ def test_common_shortage_and_storage_note(ws):
     t.loc[(t["side"] == "alt") & (t["region"] == "Y"), "backlog"] = 3      # the same backlog in both cases
     assert any("PA:Y の配分後の未充足 3 lot は 2 案に共通" in x for x in V.common_shortages(c["supply"]))
     notes = "\n".join(V.notes(ws, "C01", "C02", c))
-    assert "在庫の保管費は金額に入っていない" in notes and "PA 9 → 12" in notes
+    assert "在庫の保有費は P0 に入っていない。感度は金額と境目の見出しに（年率は仮置き、採用する率は未設定）" in notes
+    assert "PA 9 → 12" in notes
+    assert "在庫の保有費：この比較には保有費の欄が無い（並べ直す）" in notes        # an older comparison
     assert "計画の端の週（計画の最初の 1 週と最後の 4 週）" in notes
 
 
@@ -417,3 +419,58 @@ def test_text_changed_after_the_comparison_is_noted(ws):
     rec.pop("alt_entry_notes")
     json.dump(rec, open(p, "w", encoding="utf-8"))
     assert V.notes_changed_after_compare(ws, "C01", "C02") == []        # an older comparison has no record
+
+
+# ── 在庫の保有費（RequestLetter_Cockpit_HoldingCost_Sensitivity）──────────────────
+def _holding(d, rows):
+    base = {"weekly_rate": "", "display_name": "", "H_base_warmup": 0, "H_alt_warmup": 0, "dH_warmup": 0,
+            "delta_P0": 50.0, "delta_P0_net": 50.0, "delta_W": 3, "boundary_report_only": "f*",
+            "boundary_assumption": "", "valuation_status": "評価済み", "note": ""}
+    pd.DataFrame([{**base, **r} for r in rows]).to_csv(os.path.join(d, "holding_sensitivity.csv"), index=False)
+
+
+def test_holding_table_sentence_and_note(ws):
+    d = V.compare_dir(ws, "C01", "C02")
+    _holding(d, [{"annual_rate": r, "cost_item": "raise", "display_name": "増産の確保費", "H_base_report": 10 * k,
+                  "H_alt_report": 13 * k, "H_base_total": 10 * k, "H_alt_total": 13 * k, "dH_report": 3 * k,
+                  "dH_total": 3 * k, "f_star_incl_warmup": (50 - 3 * k) / 3, "f_star_report_only": (50 - 3 * k) / 3,
+                  "boundary_incl_warmup": "f* = ΔP0 ÷ ΔW"} for r, k in ((0.05, 1), (0.10, 2), (0.15, 3))])
+    c = V.comparison(ws, "C01", "C02")
+    hv = c["money"]["holding"]
+    assert hv["available"] and [r["rate_text"] for r in hv["rows"]] == ["5%", "10%", "15%"]
+    assert hv["rows"][0]["label"] == "増産の確保費"
+    judge = [p for p in c["summary"] if p["title"] == "判断に要るもの"][0]["text"]
+    assert "在庫の保有費（年率 5〜15% の仮置き）を入れると、増産の確保費の境目は 13.67〜15.67 円／週" in judge
+    assert "報告期間だけなら 13.67〜15.67 円／週" in judge
+    notes = "\n".join(V.notes(ws, "C01", "C02", c))
+    assert "在庫の保有費は P0 に入っていない" in notes and "この比較には保有費の欄が無い" not in notes
+
+
+def test_holding_is_hidden_when_the_cost_premises_changed(ws):
+    _holding(V.compare_dir(ws, "C01", "C02"), [{"annual_rate": 0.1, "cost_item": "fee", "H_base_report": 1,
+                                                "H_alt_report": 2, "H_base_total": 1, "H_alt_total": 2, "dH_report": 1,
+                                                "dH_total": 1, "f_star_incl_warmup": 1, "f_star_report_only": 1,
+                                                "boundary_incl_warmup": "f*"}])
+    _named_cost(ws, "C02", "2027-W01")
+    c = V.comparison(ws, "C01", "C02")
+    assert c["cost_stale"] and not c["money"]["holding"]["available"]
+    assert not any("保有費" in p["text"] for p in c["summary"])
+
+
+def test_raise_row_shows_the_weeks_made_at_cap_and_the_unused_weeks(ws, monkeypatch):
+    from wom.cockpit import case_actions as A
+    d = V.compare_dir(ws, "C01", "C02")
+    fw = pd.read_csv(os.path.join(d, "factory_weekly.csv"))
+    fw.loc[(fw["case"] == "C02") & (fw["week"] == "2027-W02"), "production_lots"] = 7     # below the raised output
+    fw.to_csv(os.path.join(d, "factory_weekly.csv"), index=False)
+    rows = [dict(FC[1], cost_item="planned_output_raise", display_name="増産の確保費", count_outside_report=1), FC[2]]
+    pd.DataFrame(rows).to_csv(os.path.join(d, "fixed_cost_breakeven.csv"), index=False)
+    monkeypatch.setattr(A, "raised_targets", lambda w, cid: [("PA", "Fac_A")])
+    r = [x for x in V.comparison(ws, "C01", "C02")["money"]["fixed_cost"]
+         if x["cost_item"] == "planned_output_raise"][0]
+    assert (r["made_at_cap_alt"], r["unused_alt"]) == (2, 1)          # 3 paid weeks, made at the raised output in 2
+    assert r["made_at_cap_base"] == "" and r["unused_base"] == ""      # the base case does not bear it
+    monkeypatch.setattr(A, "raised_targets", lambda w, cid: [])
+    r = [x for x in V.comparison(ws, "C01", "C02")["money"]["fixed_cost"]
+         if x["cost_item"] == "planned_output_raise"][0]
+    assert r["unused_alt"] == "" and r["use_note_alt"] == "引き上げた工場が見つからない"

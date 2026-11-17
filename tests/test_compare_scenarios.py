@@ -64,11 +64,12 @@ def make_case(root, name, demand, sales, flow_override=None, v3_offset=0.0):
     for i, w in enumerate(WEEKS):
         n = int(((m["week_index"] == i) & (m["kind"] == "revenue")).sum()) if len(m) else 0
         v3.append({"group_key": "GROUP", "week_index": i, "week": w, "in_report": i >= 1,
-                   "profit_r2_hq_wk": n * (UNIT_REV - UNIT_COGS - UNIT_EXP) + (v3_offset if i == 2 else 0.0)})
+                   "profit_r2_hq_wk": n * (UNIT_REV - UNIT_COGS - UNIT_EXP) + (v3_offset if i == 2 else 0.0),
+                   "inv_group_hq": 40.0})
     pd.DataFrame(v3).to_csv(os.path.join(run, "vc", "vc_v3_weekly.csv"), index=False)
     pd.DataFrame([{"week_index": i, "week": w, "owner": "E", "location_kind": "node", "location": "F",
-                   "product": SKU, "external": 0, "lots": 1, "group_hq": 40.0} for i, w in enumerate(WEEKS)]).to_csv(
-        os.path.join(run, "vc", "vc_inventory_weekly.csv"), index=False)
+                   "product": SKU, "valued": 1, "external": 0, "lots": 1, "group_hq": 40.0}
+                  for i, w in enumerate(WEEKS)]).to_csv(os.path.join(run, "vc", "vc_inventory_weekly.csv"), index=False)
     pd.DataFrame([{"product": "*", "channel": "*", "deliveries": len(sales), "fifo_age_max": 1,
                    "over_max_age": 0}]).to_csv(os.path.join(run, "shelf", "shelf_life_summary.csv"), index=False)
     json.dump({"total_revenue_base": 1.0, "gross_profit_base": 2.0},
@@ -533,3 +534,102 @@ def test_factory_table_reads_the_engine_capacity_per_factory(tmp_path):
     assert sorted(pw["factory"]) == ["F", "G"]
     old = C.factory_weekly({**C.load_run(rb, mb), "capacity_used": None}, "b")
     assert set(old["capacity_source"]) == {"capacity_plan"}     # a run made before: not the engine's value
+
+
+# ── 在庫の保有費（RequestLetter_Cockpit_HoldingCost_Sensitivity）──────────────────
+def _inventory(run, rows, inv_by_week):
+    """Replace the inventory of a case: rows (week_index, owner, kind, product, valued, external, lots, group_hq);
+    inv_by_week: vc_v3_weekly inv_group_hq per week index."""
+    pd.DataFrame([{"week_index": i, "week": WEEKS[i], "owner": o, "location_kind": k, "location": "F",
+                   "product": p, "valued": v, "external": e, "lots": n, "group_hq": g}
+                  for i, o, k, p, v, e, n, g in rows]).to_csv(os.path.join(run, "vc", "vc_inventory_weekly.csv"),
+                                                             index=False)
+    v3 = pd.read_csv(os.path.join(run, "vc", "vc_v3_weekly.csv"))
+    v3["inv_group_hq"] = [inv_by_week.get(i, 0.0) for i in v3["week_index"]]
+    v3.to_csv(os.path.join(run, "vc", "vc_v3_weekly.csv"), index=False)
+
+
+def test_holding_base_keeps_group_valued_inventory_and_splits_the_periods(tmp_path):
+    rb, mb = _base(tmp_path)
+    ra, ma = _alt(tmp_path)
+    rows = [(0, "E", "node", "P", 1, 0, 2, 100.0),          # warm-up (W01; the report period starts at W02)
+            (1, "E", "node", "P", 1, 0, 3, 150.0),
+            (1, "E", "transit", "P", 1, 0, 1, 60.0),        # in transit: counted
+            (1, "X", "node", "P", 1, 1, 5, 999.0),          # outside the group: not counted
+            (2, "E", "node", "P", 0, 0, 4, 0.0),            # unvalued: lot-weeks only, no amount
+            (2, "E", "node", "Q", 1, 0, 1, 70.0)]
+    _inventory(rb, rows, {0: 100.0, 1: 210.0, 2: 70.0})
+    out = str(tmp_path / "out")
+    res = C.compare(rb, ra, mb, ma, out, base_name="b", alt_name="a")
+    hb = res["holding_base"].set_index(["case", "period", "product", "location_kind"])
+    assert hb.loc[("b", "warmup", "*", "*"), "B_group_hq"] == 100.0
+    assert hb.loc[("b", "warmup", "*", "*"), "weeks"] == 1
+    r = hb.loc[("b", "report", "*", "*")]
+    assert (r["B_group_hq"], r["lots_weeks"], r["unvalued_lots_weeks"], r["weeks"]) == (280.0, 5, 4, 3)
+    assert hb.loc[("b", "report", "P", "transit"), "B_group_hq"] == 60.0
+    assert hb.loc[("b", "report", "Q", "*"), "B_group_hq"] == 70.0
+    hs = res["holding_sensitivity"]
+    assert "一部未評価" in hs["valuation_status"].iloc[0]
+    for f in ("holding_base.csv", "holding_by_week_sku.csv", "holding_sensitivity.csv"):
+        assert os.path.exists(os.path.join(out, f))
+    # the detail: one case x week x SKU at 10% = group_hq x 0.10 / 52
+    d = pd.read_csv(os.path.join(out, "holding_by_week_sku.csv"))
+    x = d[(d["case"] == "b") & (d["week"] == "2027-W02") & (d["product"] == "P")].iloc[0]
+    assert x["B_group_hq"] == 210.0 and abs(x["holding_10pct"] - 210.0 * 0.10 / 52) < 1e-9
+
+
+def test_holding_inventory_must_match_inv_group_hq(tmp_path):
+    rb, mb = _base(tmp_path)
+    ra, ma = _alt(tmp_path)
+    _inventory(rb, [(1, "E", "node", "P", 1, 0, 1, 40.0)], {1: 41.0})
+    with pytest.raises(C.CompareError, match="inv_group_hq と合いません"):
+        C.compare(rb, ra, mb, ma, str(tmp_path / "out"), base_name="b", alt_name="a")
+
+
+def test_holding_does_not_change_p0_or_the_fixed_cost_boundary(tmp_path):
+    rb, mb = _base(tmp_path)
+    ra, ma = _alt(tmp_path)
+    plan = _fc_plan(str(tmp_path / "fc.csv"), base=("2027-W03", "2027-W04", ""), alt=("2027-W01", "2027-W04", ""))
+    res = C.compare(rb, ra, mb, ma, str(tmp_path / "out"), fixed_cost_plan=plan, base_name="b", alt_name="a")
+    fc = res["fixed_cost"].iloc[0]
+    assert (fc["delta_P0"], fc["W_base"], fc["W_alt"], fc["boundary"]) == (-50.0, 2, 3, "正の境目なし（base が上）")
+    hs = res["holding_sensitivity"]
+    assert list(hs["annual_rate"]) == [0.05, 0.10, 0.15]
+    assert (hs["dH_total"] == 0).all()                       # the same inventory in both cases
+    assert (hs["boundary_incl_warmup"] == "正の境目なし（base が上）").all()
+
+
+def _hb(base_rep, base_wu, alt_rep, alt_wu):
+    rows = []
+    for case, rep, wu in (("b", base_rep, base_wu), ("a", alt_rep, alt_wu)):
+        for period, v in (("report", rep), ("warmup", wu)):
+            rows.append({"case": case, "period": period, "product": "*", "location_kind": "*", "weeks": 1,
+                         "B_group_hq": v, "lots_weeks": 1, "unvalued_lots_weeks": 0})
+    return pd.DataFrame(rows, columns=C.HB_COLS)
+
+
+def test_holding_sensitivity_worked_example_and_boundary():
+    # business definition §5: a difference of 130,000,000 yen-weeks at 10% a year -> 250,000 yen
+    hb = _hb(1_000_000_000.0, 0.0, 1_100_000_000.0, 30_000_000.0)
+    fc = pd.DataFrame([{"cost_item": "planned_output_raise", "display_name": "増産の確保費", "delta_P0": 0.0,
+                        "delta_P0_net": "", "delta_W": -85, "boundary": "0円で同額", "boundary_assumption": ""}])
+    hs = C.holding_sensitivity(hb, fc, "b", "a")
+    r = hs[hs["annual_rate"] == 0.10].iloc[0]
+    assert abs(r["dH_total"] - 250_000.0) < 1e-6
+    assert abs(r["dH_report"] - 100_000_000 * 0.10 / 52) < 1e-6
+    # f* = (ΔP0 − ΔH) ÷ ΔW = (0 − 250,000) ÷ (−85): above it, the case with fewer paid weeks (alt) is ahead
+    assert abs(r["f_star_incl_warmup"] - 250_000.0 / 85) < 1e-6
+    assert abs(r["f_star_report_only"] - (100_000_000 * 0.10 / 52) / 85) < 1e-6
+    assert r["boundary_incl_warmup"].startswith("f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）")
+    assert "年率 10% の仮置き（採用する率は未設定）" in r["note"]
+
+
+def test_holding_sensitivity_subtracts_from_the_net_profit_difference():
+    hb = _hb(0.0, 0.0, 52_000_000.0, 0.0)                   # alt holds more: 100,000 yen at 10%
+    fc = pd.DataFrame([{"cost_item": "raise", "display_name": "", "delta_P0": 1_000_000.0, "delta_P0_net": 900_000.0,
+                        "delta_W": 100, "boundary": "f*", "boundary_assumption": "ほかの費用の案間の差 100,000 円を差し引いた"}])
+    r = C.holding_sensitivity(hb, fc, "b", "a").set_index("annual_rate").loc[0.10]
+    assert abs(r["f_star_incl_warmup"] - (900_000.0 - 100_000.0) / 100) < 1e-6
+    fc.loc[0, "boundary"] = "未算出（連結利益未評価）"
+    r = C.holding_sensitivity(hb, fc, "b", "a").iloc[0]
+    assert r["boundary_incl_warmup"] == "未算出（連結利益未評価）" and r["f_star_incl_warmup"] == ""

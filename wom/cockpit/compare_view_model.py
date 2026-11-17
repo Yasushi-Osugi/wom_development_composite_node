@@ -382,6 +382,7 @@ def comparison(ws: str, base: str, alt: str) -> dict:
     out["supply_diff"] = supply_diff(out["supply"], base, alt)
     out["factory"] = factory_view(d, base, alt)
     out["money"] = money_view(d, base, alt, hide_fixed_cost=out["cost_stale"])
+    raise_use(ws, d, base, alt, out["money"]["fixed_cost"])
     out["summary"] = summary(ws, base, alt, out)
     return out
 
@@ -516,6 +517,87 @@ def _fc_display(r: pd.Series) -> dict:
     return x
 
 
+def raise_use(ws: str, d: str, base: str, alt: str, rows: List[dict]) -> None:
+    """保有費の依頼 A3: on the raise cost row, per case, the weeks the factory made exactly the raised planned output
+    inside the paid weeks (made_at_cap_*) and the paid weeks it did not use (unused_* = W − made_at_cap_*), from the
+    comparison's factory_weekly.csv and the (SKU, factory) the case raised (case_actions.raised_targets)."""
+    from wom.cockpit import case_actions as A
+    items = [r for r in rows if r.get("cost_item") == A.RAISE_ITEM]
+    if not items:
+        return
+    fw = _csv(os.path.join(d, "factory_weekly.csv"), dtype={"week": str})
+    labels = list(dict.fromkeys(fw.sort_values("week_index")["week"]))
+    rp = (C._read_json(os.path.join(ws, C.WORKSPACE_FILE)).get("report_period") or {})
+    for r in items:
+        outside = str(r.get("count_outside_report", "")) in ("1", "1.0")
+        ps, pe = (labels[0], labels[-1]) if outside else (rp.get("start", labels[0]), rp.get("end", labels[-1]))
+        for side, cid in (("base", base), ("alt", alt)):
+            r[f"made_at_cap_{side}"] = r[f"unused_{side}"] = r[f"use_note_{side}"] = ""
+            if _blank(r.get(f"paid_start_{side}")):
+                continue
+            tg = A.raised_targets(ws, cid)
+            if len(tg) != 1:
+                r[f"use_note_{side}"] = ("引き上げた工場が見つからない" if not tg else
+                                         "引き上げた工場が複数：" + "、".join(f"{s} @ {f}" for s, f in tg))
+                continue
+            sku, fac = tg[0]
+            lo, hi = max(r[f"paid_start_{side}"], ps), min(r[f"paid_end_{side}"], pe)
+            sel = (fw["case"] == cid) & (fw["product"] == sku) & (fw["week"] >= lo) & (fw["week"] <= hi)
+            if "factory" in fw.columns:
+                sel &= fw["factory"] == fac
+            g = fw[sel]
+            soft = pd.to_numeric(g["shippable_soft"], errors="coerce")
+            at = int((soft.notna() & (g["production_lots"] == soft)).sum())
+            r[f"made_at_cap_{side}"] = at
+            r[f"unused_{side}"] = int(float(r[f"W_{side}"])) - at
+            r[f"use_note_{side}"] = f"{sku} @ {fac}"
+
+
+def holding_view(d: str, hide: bool = False) -> dict:
+    """保有費の依頼 A3: tool 2's holding_sensitivity.csv for the screen (rates are placeholders)."""
+    p = os.path.join(d, "holding_sensitivity.csv")
+    if hide:
+        return {"available": False, "rows": [], "reason": f"費用の前提が変わった：{RECOMPARE}"}
+    if not os.path.exists(p):
+        return {"available": False, "rows": [], "reason": f"この比較には保有費の欄が無い（{RECOMPARE}）"}
+    hs = _csv(p, dtype=str, keep_default_na=False)
+    rows = []
+    for _, x in hs.iterrows():
+        r = dict(x)
+        r["rate_text"] = f"{float(x['annual_rate']) * 100:g}%"
+        r["label"] = x.get("display_name") or x.get("cost_item") or "（固定費の表なし）"
+        rows.append(r)
+    return {"available": True, "rows": rows, "reason": "",
+            "valuation_status": hs["valuation_status"].iloc[0] if len(hs) else "",
+            "title": "在庫の保有費（感度。年率は仮置き、採用する率は未設定。P0 には入っていない）"}
+
+
+def holding_sentence(hv: dict) -> List[str]:
+    """One sentence per cost item: the boundary range over the placeholder rates. Never says which is better."""
+    if not hv.get("available") or not hv["rows"]:
+        return []
+    out = []
+    rates = sorted({float(r["annual_rate"]) for r in hv["rows"]})
+    rt = f"年率 {rates[0] * 100:g}〜{rates[-1] * 100:g}% の仮置き" if len(rates) > 1 else f"年率 {rates[0] * 100:g}% の仮置き"
+    for item in dict.fromkeys(r["cost_item"] for r in hv["rows"]):
+        g = [r for r in hv["rows"] if r["cost_item"] == item]
+        label = g[0]["label"]
+
+        def rng(col, labcol):
+            v = [_num(r[col]) for r in g]
+            if all(x is not None for x in v):
+                lo, hi = min(v), max(v)
+                return f"{fmt_yen(lo)} 円／週" if fmt_yen(lo) == fmt_yen(hi) else f"{fmt_yen(lo)}〜{fmt_yen(hi)} 円／週"
+            return "、".join(f"{r['rate_text']} {r[labcol]}" for r in g)
+        if not item:
+            out.append(f"在庫の保有費（{rt}）：保有費の差（相手 − 基準、助走を含む）"
+                       + "、".join(f"{r['rate_text']} {fmt_yen(r['dH_total'])} 円" for r in g))
+            continue
+        out.append(f"在庫の保有費（{rt}）を入れると、{label}の境目は {rng('f_star_incl_warmup', 'boundary_incl_warmup')}"
+                   f"（助走を含む。報告期間だけなら {rng('f_star_report_only', 'boundary_report_only')}）")
+    return out
+
+
 def money_view(d: str, base: str, alt: str, hide_fixed_cost: bool = False) -> dict:
     tot = _csv(os.path.join(d, "money_totals.csv"), dtype=str)
     rep = tot[tot["period"] == "report"]
@@ -554,7 +636,7 @@ def money_view(d: str, base: str, alt: str, hide_fixed_cost: bool = False) -> di
     return {"report_by_product": rep, "full_by_product": full, "cumulative_report": r_,
             "fixed_cost": [] if hide_fixed_cost else [r for r in rows if r.get("cost_item")],
             "no_fixed_cost_table": no_table, "unset_costs": unset, "ranking": ranking,
-            "hidden": hide_fixed_cost}
+            "hidden": hide_fixed_cost, "holding": holding_view(d, hide_fixed_cost)}
 
 
 # ── 要点 ───────────────────────────────────────────────────────────────
@@ -729,6 +811,7 @@ def summary(ws: str, base: str, alt: str, cmp: dict) -> List[dict]:
             parts.append(f"週額を入れた費用を引いた後の差（相手 − 基準）{fmt_yen(tot[0]['delta_P_after'])} 円")
         elif mv["unset_costs"]:
             parts.append(f"週額が未設定の費用があるので、控除後の利益は{NOT_COMPUTED}、採算の順位は{PENDING}")
+        parts += holding_sentence(mv["holding"])
         out.append({"title": "判断に要るもの", "text": "。".join(parts) + "。"})
     return out
 
@@ -811,7 +894,11 @@ def notes(ws: str, base: Optional[str], alt: Optional[str], cmp: Optional[dict] 
         if r.get("boundary_assumption"):
             out.append(f"{r['label']} の境目：{r['boundary_assumption']}")
     fv = cmp["factory"]
-    out.append(f"在庫の保管費は金額に入っていない。在庫 lot・週（基準 {base} → 相手 {alt}）：{inventory_text(fv)}")
+    out.append("在庫の保有費は P0 に入っていない。感度は金額と境目の見出しに（年率は仮置き、採用する率は未設定）。"
+               f"在庫 lot・週（基準 {base} → 相手 {alt}）：{inventory_text(fv)}")
+    hv = mv.get("holding") or {}
+    if not hv.get("available") and hv.get("reason") and not mv["hidden"]:
+        out.append(f"在庫の保有費：{hv['reason']}")
     for c in common_shortages(cmp["supply"]):
         out.append(c)
     out.append(f"{EDGE_WEEKS_TEXT}：{', '.join(fv['boundary_weeks'])}。ここで工場が計画値より少なく作るのは計画の端の効果")

@@ -48,6 +48,12 @@ planned_output_weeks.csv（計画の生産量ちょうど作った週）を足�
     planned_output_weeks.csv     案 × SKU：工場が計画の生産量（floor(cap_soft × 歩留まり)）ちょうど作った最初・最後の週、
                                  その間の週数（報告期間の内・外）、ちょうど作った週・下回った週の数
     market_map.csv               製品 × 需要の地域 → 市場のノード（sc_tree_master.csv の市場の行の region、段 4 A2）
+    holding_base.csv             案 × 期間（報告期間 report・助走 warmup）× SKU × 所在の種類（node・transit・*）：
+                                 グループの法人が持つ評価済みの在庫の連結原価・週（B_group_hq）、lot・週、未評価の lot・週
+                                 （週ごとの合計を vc_v3_weekly.csv の inv_group_hq と照合。合わなければ止める）
+    holding_by_week_sku.csv      その明細（案 × 週 × SKU）と、年率 5・10・15% の保有費（週率 ＝ 年率 ÷ 52）
+    holding_sensitivity.csv      年率ごとの保有費（報告期間・助走・計）、案の差、費目ごとの境目
+                                 f* ＝（ΔP0 − ほかの費目の差 − 保有費の差）÷ ΔW（助走を含む・報告期間だけ）。P0 には入れない
     comparison_summary.md        まとめ
 
 止める条件（CompareError）：ファイルが無い、要求週別の供給の鍵ごとの合計が Flow Check の表 2 と合わない、
@@ -913,6 +919,151 @@ def planned_output_weeks(fw: pd.DataFrame, report_start: str, report_end: str,
     return t
 
 
+# ── 在庫の保有費（感度） ─────────────────────────────────────────────────
+# RequestLetter_Cockpit_HoldingCost_Sensitivity（2026-11-17）、業務定義 GPT-MC v0.1 ＋ 大杉さんの判断：
+# 資本拘束分だけ。週末の連結原価（group_hq）の在庫。グループの法人が持つ評価済みの在庫（移送中を含む、
+# グループの外は除く）。報告期間と助走を別欄に。年率は感度（採用する率は未設定）。週率 ＝ 年率 ÷ 52。
+# P0 には入れない（Value Chain の holding_rate_weekly は空欄のまま）。
+HOLDING_RATES = (0.05, 0.10, 0.15)
+WEEKS_PER_YEAR = 52
+PERIOD_REPORT, PERIOD_WARMUP, PERIOD_AFTER = "report", "warmup", "after"
+HB_COLS = ["case", "period", "product", "location_kind", "weeks", "B_group_hq", "lots_weeks", "unvalued_lots_weeks"]
+
+
+def group_entities(run: dict) -> set:
+    """The group's legal entities (vc_entity.csv: kind = group, or consolidated = 1 when there is no kind)."""
+    ent = run["entity"]
+    if "kind" in ent.columns:
+        s = set(ent.loc[ent["kind"].astype(str).str.strip() == "group", "entity_id"])
+    else:
+        s = set(ent.loc[ent["consolidated"].astype(str).str.strip() == "1", "entity_id"])
+    if not s:
+        raise CompareError("vc_entity.csv にグループの法人（kind=group）がありません")
+    return s
+
+
+def week_period(label: str, report_start: str, report_end: str) -> str:
+    m = _wk_monday(label)
+    if m < _wk_monday(report_start):
+        return PERIOD_WARMUP
+    return PERIOD_REPORT if m <= _wk_monday(report_end) else PERIOD_AFTER
+
+
+def holding_inventory(run: dict, name: str, report_start: str, report_end: str) -> pd.DataFrame:
+    """Week x SKU x location kind: the inventory the holding cost is charged on (group-owned, not external).
+    B_group_hq and lots count the valued rows only; unvalued_lots counts the rest (no amount).
+    Stops (CompareError) when the week totals of B_group_hq differ from vc_v3_weekly.csv inv_group_hq."""
+    inv = run["inv"]
+    grp = group_entities(run)
+    own = inv[inv["owner"].isin(grp) & (inv["external"].astype(int) == 0)].copy()
+    val = own["valued"].astype(int) == 1
+    own["B_group_hq"] = own["group_hq"].where(val, 0.0).astype(float)
+    own["lots_v"] = own["lots"].where(val, 0)
+    own["lots_u"] = own["lots"].where(~val, 0)
+    g = own.groupby(["week_index", "week", "product", "location_kind"]).agg(
+        B_group_hq=("B_group_hq", "sum"), lots=("lots_v", "sum"), unvalued_lots=("lots_u", "sum")).reset_index()
+    g.insert(0, "case", name)
+    g.insert(3, "period", g["week"].map(lambda w: week_period(w, report_start, report_end)))
+    v3 = run["v3"][run["v3"]["group_key"] == "GROUP"].set_index("week_index")
+    wk = g.groupby("week_index")["B_group_hq"].sum().reindex(v3.index, fill_value=0.0)
+    bad = (wk - v3["inv_group_hq"].astype(float)).abs()
+    if (bad > ZERO_TOL).any():
+        w = bad.idxmax()
+        raise CompareError(f"{name}: 在庫の連結原価が vc_v3_weekly.csv の inv_group_hq と合いません"
+                           f"（週 {v3.loc[w, 'week']}: 在庫の合計 {wk.loc[w]:,.2f}、inv_group_hq "
+                           f"{float(v3.loc[w, 'inv_group_hq']):,.2f}）")
+    return g
+
+
+def holding_base(hi: pd.DataFrame, weeks_by_period: Optional[Dict[str, int]] = None) -> pd.DataFrame:
+    """A1: case x period x SKU x location kind, with '*' totals (all SKUs, all location kinds).
+    weeks = the plan weeks of the period (weeks_by_period), else the weeks that have a row."""
+    rows = []
+    for (case, period), gp in hi.groupby(["case", "period"], sort=False):
+        weeks = (weeks_by_period or {}).get(period, gp["week_index"].nunique())
+        for prod in sorted(gp["product"].unique()) + ["*"]:
+            gs = gp if prod == "*" else gp[gp["product"] == prod]
+            for lk in sorted(gs["location_kind"].unique()) + ["*"]:
+                x = gs if lk == "*" else gs[gs["location_kind"] == lk]
+                rows.append({"case": case, "period": period, "product": prod, "location_kind": lk, "weeks": weeks,
+                             "B_group_hq": float(x["B_group_hq"].sum()), "lots_weeks": int(x["lots"].sum()),
+                             "unvalued_lots_weeks": int(x["unvalued_lots"].sum())})
+    return pd.DataFrame(rows, columns=HB_COLS)
+
+
+def holding_by_week(hi: pd.DataFrame, rates=HOLDING_RATES) -> pd.DataFrame:
+    """The detail: case x week x SKU (all location kinds): B_group_hq and the holding cost at each rate."""
+    g = hi.groupby(["case", "week_index", "week", "period", "product"]).agg(
+        B_group_hq=("B_group_hq", "sum"), lots=("lots", "sum"), unvalued_lots=("unvalued_lots", "sum")).reset_index()
+    for r in rates:
+        g[f"holding_{rate_tag(r)}"] = g["B_group_hq"] * r / WEEKS_PER_YEAR
+    return g
+
+
+def rate_tag(r: float) -> str:
+    return f"{round(r * 100):d}pct"
+
+
+HS_COLS = ["annual_rate", "weekly_rate", "cost_item", "display_name",
+           "H_base_report", "H_base_warmup", "H_base_total", "H_alt_report", "H_alt_warmup", "H_alt_total",
+           "dH_report", "dH_warmup", "dH_total", "delta_P0", "delta_P0_net", "delta_W",
+           "boundary_incl_warmup", "f_star_incl_warmup", "boundary_report_only", "f_star_report_only",
+           "boundary_assumption", "valuation_status", "note"]
+
+
+def holding_sensitivity(hb: pd.DataFrame, fc: pd.DataFrame, base_name: str, alt_name: str,
+                        rates=HOLDING_RATES) -> pd.DataFrame:
+    """A2: per annual rate, the holding cost of each case (report / warm-up / total), the difference (alt − base),
+    and for each fixed cost item the boundary with the holding cost counted as one more cost of the other items:
+        f* = (ΔP0 − Σ other items' cost difference − ΔH) ÷ ΔW_item
+    once with ΔH over warm-up + report, once over the report period only. The weekly amount of the item stays
+    unknown, so the after-cost profit is not computed here."""
+    tot = hb[(hb["product"] == "*") & (hb["location_kind"] == "*")]
+
+    def B(case, period):
+        x = tot[(tot["case"] == case) & (tot["period"] == period)]
+        return float(x["B_group_hq"].sum())
+    unval = {c: int(tot[tot["case"] == c]["unvalued_lots_weeks"].sum()) for c in (base_name, alt_name)}
+    vstat = "; ".join(f"{c}: 一部未評価（未評価の在庫 lot・週 {n:,}）" for c, n in unval.items() if n) or "評価済み"
+    items = fc[~fc["cost_item"].isin(["", TOTAL_ITEM])] if fc is not None and len(fc) else pd.DataFrame()
+    rows = []
+    for r in rates:
+        wr = r / WEEKS_PER_YEAR
+        h = {}
+        for side, case in (("base", base_name), ("alt", alt_name)):
+            h[f"H_{side}_report"] = wr * B(case, PERIOD_REPORT)
+            h[f"H_{side}_warmup"] = wr * B(case, PERIOD_WARMUP)
+            h[f"H_{side}_total"] = h[f"H_{side}_report"] + h[f"H_{side}_warmup"]
+        for p in ("report", "warmup", "total"):
+            h[f"dH_{p}"] = h[f"H_alt_{p}"] - h[f"H_base_{p}"]
+        head = {"annual_rate": r, "weekly_rate": wr, **h, "valuation_status": vstat,
+                "note": f"保有費 ＝ 年率 {r * 100:g}% の仮置き（採用する率は未設定）。P0 には入っていない"}
+        if items.empty:
+            dp0 = float(fc["delta_P0"].iloc[0]) if fc is not None and len(fc) else ""
+            rows.append({**head, "cost_item": "", "display_name": "", "delta_P0": dp0, "delta_P0_net": "",
+                         "delta_W": "", "boundary_incl_warmup": "未算出（固定費の表なし（有償週未設定））",
+                         "f_star_incl_warmup": "", "boundary_report_only": "未算出（固定費の表なし（有償週未設定））",
+                         "f_star_report_only": "", "boundary_assumption": ""})
+            continue
+        for _, it in items.iterrows():
+            dp0 = float(it["delta_P0"])
+            net = it.get("delta_P0_net", "")
+            dp_net = float(net) if str(net) not in ("", "nan") else dp0
+            dw = it["delta_W"]
+            row = {**head, "cost_item": it["cost_item"], "display_name": it.get("display_name", ""),
+                   "delta_P0": dp0, "delta_P0_net": dp_net, "delta_W": dw,
+                   "boundary_assumption": it.get("boundary_assumption", "")}
+            for scope, dh in (("incl_warmup", h["dH_total"]), ("report_only", h["dH_report"])):
+                if str(it["boundary"]).startswith("未算出"):
+                    lab, f = it["boundary"], None
+                else:
+                    lab, f = boundary_label(dp_net - dh, None if str(dw) in ("", "nan") else int(dw))
+                row[f"boundary_{scope}"] = lab
+                row[f"f_star_{scope}"] = "" if f is None else f
+            rows.append(row)
+    return pd.DataFrame(rows, columns=HS_COLS)
+
+
 # ── 全体 ─────────────────────────────────────────────────────────────
 def compare(base_run: str, alt_run: str, base_model: str, alt_model: str, out: str,
             fixed_cost_plan: Optional[str] = None, base_name: str = "base", alt_name: str = "alt",
@@ -1000,7 +1151,15 @@ def compare(base_run: str, alt_run: str, base_model: str, alt_model: str, out: s
         moms[nm] = {r["product_name"]: r["node_name"] for _, r in t[t["node_type"] == "mom"].iterrows()}
     pw = planned_output_weeks(fw, rs, re_, moms)
     pw.to_csv(os.path.join(out, "planned_output_weeks.csv"), index=False)
+    hi = pd.concat([holding_inventory(base, base_name, rs, re_), holding_inventory(alt, alt_name, rs, re_)])
+    wbp = pd.Series([week_period(w, rs, re_) for w in labels]).value_counts().to_dict()
+    hb = holding_base(hi, wbp)
+    hb.to_csv(os.path.join(out, "holding_base.csv"), index=False)
+    holding_by_week(hi).to_csv(os.path.join(out, "holding_by_week_sku.csv"), index=False)
+    hs = holding_sensitivity(hb, fc, base_name, alt_name)
+    hs.to_csv(os.path.join(out, "holding_sensitivity.csv"), index=False)
 
+    res.update({"holding_base": hb, "holding_sensitivity": hs})
     res.update({"labels": labels, "demand_diff": dd, "entry_plan_diff": epd, "supply": ssbs, "supply_check": chk,
                 "money": msbs, "totals": tsbs, "inventory_sku": isku, "factory": fw, "age": ag,
                 "diff_weeks": dw, "picks": picks, "boundary": bd, "factory_idle": fi, "fixed_cost": fc, "alloc": alloc,
@@ -1105,6 +1264,21 @@ def write_summary(res: dict, path: str, base_run, alt_run, base_model, alt_model
                  + (f"：**{_fmt(fc.f_star_per_week)} 円／週**" if fs not in ("", "nan") else "")
                  + (f"（{fc.boundary_assumption}）" if str(fc.boundary_assumption) not in ("", "nan") else "")
                  + f"（{fc.valuation_status}）")
+    hs = res.get("holding_sensitivity")
+    if hs is not None and len(hs):
+        L += ["", "## 在庫の保有費（感度。年率は仮置き、採用する率は未設定。P0 には入っていない）", "",
+              "対象：グループの法人が持つ評価済みの在庫（移送中を含む、グループの外は除く）、週末の連結原価（group_hq）。"
+              "保有費 ＝ 年率 ÷ 52 × 連結原価の在庫・週。", "",
+              "| 年率 | 保有費 base 報告/助走 | alt 報告/助走 | 差 報告/助走/計 | 費目 | 境目（助走を含む） | 境目（報告期間だけ） |",
+              "|---|---|---|---|---|---|---|"]
+        for r in hs.itertuples():
+            def fs(v, lab):
+                return f"{_fmt(v)} 円／週（{lab}）" if str(v) not in ("", "nan") else str(lab)
+            L.append(f"| {r.annual_rate * 100:g}% | {_fmt(r.H_base_report)} / {_fmt(r.H_base_warmup)} "
+                     f"| {_fmt(r.H_alt_report)} / {_fmt(r.H_alt_warmup)} "
+                     f"| {_fmt(r.dH_report)} / {_fmt(r.dH_warmup)} / {_fmt(r.dH_total)} | {r.cost_item or '—'} "
+                     f"| {fs(r.f_star_incl_warmup, r.boundary_incl_warmup)} | {fs(r.f_star_report_only, r.boundary_report_only)} |")
+        L.append(f"\n（{hs['valuation_status'].iloc[0]}）")
     pw = res.get("planned_output_weeks")
     if pw is not None and len(pw):
         L += ["", "## 計画の生産量ちょうど作った週（有償の週の確かめ用。道具は有償の週を決めない）", ""]

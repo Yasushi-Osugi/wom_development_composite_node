@@ -245,3 +245,13 @@ def test_preview_and_set_demand_hypothesis(ws):
     assert r.ok and "実行し直す" in r.message and "ramp_ratio 0.5 → 1.0" in r.message
     r = A.set_demand_hypothesis(ws, "C01", "PA", "X", {"basis_note": "強い（書き換え）"})
     assert r.ok and "実行し直しは要らない" in r.message
+
+
+# ── 保有費の依頼 A3：引き上げた工場を先祖の案までたどって探す ─────────────────────
+def test_raised_targets_walks_up_to_the_ancestor_that_is_lower(ws):
+    A.copy(ws, "C01", "raised")                                              # C02
+    assert A.set_planned_output(ws, "C02", "PA", None, "9", "2027-W02", "2027-W03").ok
+    A.copy(ws, "C02", "raised + demand")                                     # C03: the same capacity as C02
+    assert A.raised_ranges(ws, "C03") == []                                  # versus its parent: nothing raised
+    assert A.raised_targets(ws, "C03") == A.raised_targets(ws, "C02") != []  # found versus C01
+    assert A.raised_targets(ws, "C01") == []

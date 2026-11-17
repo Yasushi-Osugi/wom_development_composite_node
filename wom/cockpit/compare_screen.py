@@ -205,17 +205,25 @@ class CompareScreen(ttk.Frame):
                                        "max_a": "最大 相手", "end_b": "期末 基準", "end_a": "期末 相手"})
 
     def _build_money_tab(self):
+        # the tables are packed first (bottom frame) so they keep their height; the chart gets what is left
+        low = ttk.Frame(self.tab_money)
+        low.pack(side="bottom", fill="x")
         self.money_fig = Figure(figsize=(9, 2.0), dpi=90)
         self.money_canvas = FigureCanvasTkAgg(self.money_fig, self.tab_money)
         self.money_canvas.get_tk_widget().pack(fill="both", expand=True)
-        self.money_p0 = self._table(self.tab_money, ["期間", "SKU", "p0_b", "p0_a", "差（相手 − 基準）"], height=4)
-        self.money_fc = self._table(self.tab_money, [
-            "費目", "ΔP0", "ΔW", "境目（円／週）", "境目の置き方", "評価", "paid_b", "w_b", "paid_a", "w_a", "wa_b", "wa_a",
-            "cost_b", "cost_a", "after_b", "after_a", "控除後の差"], height=4)
+        self.money_p0 = self._table(low, ["期間", "SKU", "p0_b", "p0_a", "差（相手 − 基準）"], height=4)
+        self.money_fc = self._table(low, [
+            "費目", "ΔP0", "ΔW", "境目（円／週）", "境目の置き方", "評価", "paid_b", "w_b", "at_b", "un_b", "paid_a", "w_a",
+            "at_a", "un_a", "wa_b", "wa_a", "cost_b", "cost_a", "after_b", "after_a", "控除後の差"], height=3)
         self._heads(self.money_p0, {"p0_b": "P0 基準", "p0_a": "P0 相手"})
-        self._heads(self.money_fc, {"paid_b": "有償の週 基準", "w_b": "W 基準", "paid_a": "有償の週 相手", "w_a": "W 相手",
-                                    "wa_b": "週額 基準", "wa_a": "週額 相手", "cost_b": "費用 基準", "cost_a": "費用 相手",
-                                    "after_b": "控除後 基準（合計の行だけ）", "after_a": "控除後 相手（合計の行だけ）"})
+        self._heads(self.money_fc, self._fc_heads("基準", "相手"))
+        # 保有費の依頼 A3: the holding cost sensitivity under the fixed cost table
+        self.money_hold_title = ttk.Label(low, text="在庫の保有費（感度。年率は仮置き）", foreground="#335")
+        self.money_hold_title.pack(anchor="w", padx=4)
+        self.money_hold = self._table(low, [
+            "年率", "費目", "境目 助走を含む（円／週）", "境目 報告期間だけ（円／週）", "差 計", "差 報告期間", "差 助走",
+            "hb_r", "hb_w", "ha_r", "ha_w", "境目の読み方"], height=3)
+        self._heads(self.money_hold, self._hold_heads("基準", "相手"))
 
     # ── workspace ───────────────────────────────────────────────────────
     def _choose(self):
@@ -336,8 +344,9 @@ class CompareScreen(ttk.Frame):
     def _show_comparison(self):
         self.cmp = None
         for tv in (self.supply_diff, self.supply_totals, self.factory_weeks, self.factory_inv, self.factory_age,
-                   self.money_p0, self.money_fc):
+                   self.money_p0, self.money_fc, self.money_hold):
             tv.delete(*tv.get_children())
+        self.money_hold_title.configure(text="在庫の保有費（感度。年率は仮置き）")
         for fig in (self.supply_fig, self.factory_fig, self.money_fig):
             fig.clear()
         self._set_text(self.summary, "")
@@ -368,16 +377,26 @@ class CompareScreen(ttk.Frame):
                 cv.draw_idle()
         self._show_notes()
 
+    @staticmethod
+    def _fc_heads(b: str, a: str) -> dict:
+        return {"paid_b": f"有償の週 {b}", "w_b": f"W {b}", "at_b": f"上限で作った週 {b}", "un_b": f"使わなかった週 {b}",
+                "paid_a": f"有償の週 {a}", "w_a": f"W {a}", "at_a": f"上限で作った週 {a}", "un_a": f"使わなかった週 {a}",
+                "wa_b": f"週額 {b}", "wa_a": f"週額 {a}", "cost_b": f"費用 {b}", "cost_a": f"費用 {a}",
+                "after_b": f"控除後 {b}（合計の行だけ）", "after_a": f"控除後 {a}（合計の行だけ）"}
+
+    @staticmethod
+    def _hold_heads(b: str, a: str) -> dict:
+        return {"hb_r": f"保有費 {b} 報告期間", "hb_w": f"保有費 {b} 助走", "ha_r": f"保有費 {a} 報告期間",
+                "ha_w": f"保有費 {a} 助走"}
+
     def _heads_for_pair(self):
         b, a = f"基準（{self.base}）", f"相手（{self.alt}）"
         self.diff_label.configure(text=f"差（相手 {self.alt} − 基準 {self.base}）。差のある鍵だけ")
         self._heads(self.factory_inv, {"inv_b": f"在庫 lot・週 {b}", "inv_a": f"在庫 lot・週 {a}", "max_b": f"最大 {b}",
                                        "max_a": f"最大 {a}", "end_b": f"期末 {b}", "end_a": f"期末 {a}"})
         self._heads(self.money_p0, {"p0_b": f"P0 {b}", "p0_a": f"P0 {a}"})
-        self._heads(self.money_fc, {"paid_b": f"有償の週 {b}", "w_b": f"W {b}", "paid_a": f"有償の週 {a}",
-                                    "w_a": f"W {a}", "wa_b": f"週額 {b}", "wa_a": f"週額 {a}", "cost_b": f"費用 {b}",
-                                    "cost_a": f"費用 {a}", "after_b": f"控除後 {b}（合計の行だけ）",
-                                    "after_a": f"控除後 {a}（合計の行だけ）"})
+        self._heads(self.money_fc, self._fc_heads(b, a))
+        self._heads(self.money_hold, self._hold_heads(b, a))
 
     @staticmethod
     def _set_text(t: tk.Text, text: str, paragraphs: Optional[list] = None):
@@ -538,18 +557,32 @@ class CompareScreen(ttk.Frame):
                 self.money_p0.insert("", "end", values=[period, "合計" if r.product == "*" else r.product,
                                                         V.fmt_yen(r.profit_r2_base), V.fmt_yen(r.profit_r2_alt),
                                                         V.fmt_yen(r.profit_r2_diff)])
+        hv = mv["holding"]
+        if hv["available"]:
+            self.money_hold_title.configure(text=hv["title"] + (f"　{hv['valuation_status']}"
+                                                                if hv["valuation_status"] != "評価済み" else ""))
+            for r in hv["rows"]:
+                fsv = lambda c: V.fmt_yen(r[c]) if r[c] != "" else ""
+                self.money_hold.insert("", "end", values=[
+                    r["rate_text"], r["label"], fsv("f_star_incl_warmup"), fsv("f_star_report_only"),
+                    V.fmt_yen(r["dH_total"]), V.fmt_yen(r["dH_report"]), V.fmt_yen(r["dH_warmup"]),
+                    V.fmt_yen(r["H_base_report"]), V.fmt_yen(r["H_base_warmup"]),
+                    V.fmt_yen(r["H_alt_report"]), V.fmt_yen(r["H_alt_warmup"]), r["boundary_incl_warmup"]])
+        else:
+            self.money_hold_title.configure(text=f"在庫の保有費（感度。年率は仮置き）：{hv['reason']}")
         if mv["hidden"]:
-            self.money_fc.insert("", "end", values=[f"費用の前提が変わった：{V.RECOMPARE}"] + [""] * 16)
+            self.money_fc.insert("", "end", values=[f"費用の前提が変わった：{V.RECOMPARE}"] + [""] * 20)
             return
         if mv["no_fixed_cost_table"] and not mv["fixed_cost"]:
-            self.money_fc.insert("", "end", values=["（費用の前提なし：採算の順位は保留）"] + [""] * 16)
+            self.money_fc.insert("", "end", values=["（費用の前提なし：採算の順位は保留）"] + [""] * 20)
         for r in mv["fixed_cost"]:
             fs = r.get("f_star_per_week", "")
             paid = lambda s: f"{r.get(f'paid_start_{s}', '')}〜{r.get(f'paid_end_{s}', '')}" if r.get(f"paid_start_{s}") else ""
             self.money_fc.insert("", "end", values=[
                 r["label"], V.fmt_yen(r.get("delta_P0", "")), r.get("delta_W", ""), V.fmt_yen(fs) if fs != "" else "",
                 r.get("boundary_assumption", ""), r.get("valuation_status", ""),
-                paid("base"), r.get("W_base", ""), paid("alt"), r.get("W_alt", ""),
+                paid("base"), r.get("W_base", ""), r.get("made_at_cap_base", ""), r.get("unused_base", ""),
+                paid("alt"), r.get("W_alt", ""), r.get("made_at_cap_alt", ""), r.get("unused_alt", ""),
                 r.get("weekly_amount_base", ""), r.get("weekly_amount_alt", ""),
                 V.fmt_yen(r.get("cost_base", "")), V.fmt_yen(r.get("cost_alt", "")),
                 V.fmt_yen(r.get("P_after_base", "")), V.fmt_yen(r.get("P_after_alt", "")),
@@ -1029,7 +1062,7 @@ class CompareScreen(ttk.Frame):
         return {"cases": tv(self.tree), "supply_diff": tv(self.supply_diff), "supply_totals": tv(self.supply_totals),
                 "factory_weeks": tv(self.factory_weeks), "factory_inventory": tv(self.factory_inv),
                 "factory_age": tv(self.factory_age), "money_p0": tv(self.money_p0),
-                "money_fixed_cost": tv(self.money_fc),
+                "money_fixed_cost": tv(self.money_fc), "money_holding": tv(self.money_hold),
                 "summary": pd.DataFrame({"line": self.summary.get("1.0", "end").strip().splitlines()}),
                 "notes": pd.DataFrame({"note": self.notes.get("1.0", "end").strip().splitlines()}),
                 "inputs": pd.DataFrame({"line": self.inputs.get("1.0", "end").strip().splitlines()}),

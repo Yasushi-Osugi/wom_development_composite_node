@@ -1,0 +1,5 @@
+case,product,factory,shippable_soft_values,first_week_at_cap,last_week_at_cap,span_weeks,span_weeks_in_report,span_weeks_outside_report,weeks_at_cap,weeks_at_cap_in_report,weeks_at_cap_outside_report,weeks_below_cap,weeks_below_cap_in_report,weeks_below_cap_inside_span
+C01,COS_Cream,Factory_JP,10,2026-W38,2029-W48,168,152,16,168,152,16,5,4,0
+C01,COS_Serum,Factory_JP,13,2026-W38,2029-W48,168,152,16,168,152,16,5,4,0
+C02,COS_Cream,Factory_JP,11,2026-W46,2029-W46,158,150,8,158,150,8,15,6,0
+C02,COS_Serum,Factory_JP,13,2026-W38,2029-W48,168,152,16,168,152,16,5,4,0

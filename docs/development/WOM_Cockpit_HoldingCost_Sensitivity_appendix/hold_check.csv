@@ -1,0 +1,225 @@
+﻿part,what,screen,expected,match
+1 A1,C02__C03 C02 報告期間の週ごとの差の最大,0.0,0.0,True
+1 A1,C02__C03 C02 report B_group_hq,3005080896.0,3005080896.0,True
+1 A1,C02__C03 C02 warmup B_group_hq,126689664.0,126689664.0,True
+1 A1,C02__C03 C02 node＋transit ＝ 計,3131770560.0,3131770560.0,True
+1 A1,C02__C03 C02 未評価の lot・週,0,0,True
+1 A1,C02__C03 C03 報告期間の週ごとの差の最大,0.0,0.0,True
+1 A1,C02__C03 C03 report B_group_hq,3089407296.0,3089407296.0,True
+1 A1,C02__C03 C03 warmup B_group_hq,168447264.0,168447264.0,True
+1 A1,C02__C03 C03 node＋transit ＝ 計,3257854560.0,3257854560.0,True
+1 A1,C02__C03 C03 未評価の lot・週,0,0,True
+1 A1,C06__C07 C06 報告期間の週ごとの差の最大,0.0,0.0,True
+1 A1,C06__C07 C06 report B_group_hq,3038932896.0,3038932896.0,True
+1 A1,C06__C07 C06 warmup B_group_hq,133023264.0,133023264.0,True
+1 A1,C06__C07 C06 node＋transit ＝ 計,3171956160.0,3171956160.0,True
+1 A1,C06__C07 C06 未評価の lot・週,0,0,True
+1 A1,C06__C07 C07 報告期間の週ごとの差の最大,0.0,0.0,True
+1 A1,C06__C07 C07 report B_group_hq,3091060896.0,3091060896.0,True
+1 A1,C06__C07 C07 warmup B_group_hq,168447264.0,168447264.0,True
+1 A1,C06__C07 C07 node＋transit ＝ 計,3259508160.0,3259508160.0,True
+1 A1,C06__C07 C07 未評価の lot・週,0,0,True
+1 A1,C01__C02 C01 報告期間の週ごとの差の最大,0.0,0.0,True
+1 A1,C01__C02 C01 report B_group_hq,2956507296.0,2956507296.0,True
+1 A1,C01__C02 C01 warmup B_group_hq,168447264.0,168447264.0,True
+1 A1,C01__C02 C01 node＋transit ＝ 計,3124954560.0,3124954560.0,True
+1 A1,C01__C02 C01 未評価の lot・週,0,0,True
+1 A1,C01__C02 C02 報告期間の週ごとの差の最大,0.0,0.0,True
+1 A1,C01__C02 C02 report B_group_hq,3005080896.0,3005080896.0,True
+1 A1,C01__C02 C02 warmup B_group_hq,126689664.0,126689664.0,True
+1 A1,C01__C02 C02 node＋transit ＝ 計,3131770560.0,3131770560.0,True
+1 A1,C01__C02 C02 未評価の lot・週,0,0,True
+1 A1,C01__C03 C01 報告期間の週ごとの差の最大,0.0,0.0,True
+1 A1,C01__C03 C01 report B_group_hq,2956507296.0,2956507296.0,True
+1 A1,C01__C03 C01 warmup B_group_hq,168447264.0,168447264.0,True
+1 A1,C01__C03 C01 node＋transit ＝ 計,3124954560.0,3124954560.0,True
+1 A1,C01__C03 C01 未評価の lot・週,0,0,True
+1 A1,C01__C03 C03 報告期間の週ごとの差の最大,0.0,0.0,True
+1 A1,C01__C03 C03 report B_group_hq,3089407296.0,3089407296.0,True
+1 A1,C01__C03 C03 warmup B_group_hq,168447264.0,168447264.0,True
+1 A1,C01__C03 C03 node＋transit ＝ 計,3257854560.0,3257854560.0,True
+1 A1,C01__C03 C03 未評価の lot・週,0,0,True
+2 手計算,"C02 2028-W20 COS_Cream group_hq 9,839,808 × 0.10 ÷ 52",18922.707692,18922.707692,True
+3 画面,C02__C03 保有費の表の行数,3,3,True
+3 画面,C02__C03 5% f_star_incl_warmup,"1,426.29","1,426.29",True
+3 画面,C02__C03 5% f_star_report_only,953.92,953.92,True
+3 画面,C02__C03 5% dH_total,"121,234.62","121,234.62",True
+3 画面,C02__C03 5% dH_report,"81,083.08","81,083.08",True
+3 画面,C02__C03 5% dH_warmup,"40,151.54","40,151.54",True
+3 画面,C02__C03 5% H_base_report,"2,889,500.86","2,889,500.86",True
+3 画面,C02__C03 5% H_base_warmup,"121,816.98","121,816.98",True
+3 画面,C02__C03 5% H_alt_report,"2,970,583.94","2,970,583.94",True
+3 画面,C02__C03 5% H_alt_warmup,"161,968.52","161,968.52",True
+3 画面,C02__C03 5% 境目の読み方,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,True
+3 画面,C02__C03 10% f_star_incl_warmup,"2,852.58","2,852.58",True
+3 画面,C02__C03 10% f_star_report_only,"1,907.84","1,907.84",True
+3 画面,C02__C03 10% dH_total,"242,469.23","242,469.23",True
+3 画面,C02__C03 10% dH_report,"162,166.15","162,166.15",True
+3 画面,C02__C03 10% dH_warmup,"80,303.08","80,303.08",True
+3 画面,C02__C03 10% H_base_report,"5,779,001.72","5,779,001.72",True
+3 画面,C02__C03 10% H_base_warmup,"243,633.97","243,633.97",True
+3 画面,C02__C03 10% H_alt_report,"5,941,167.88","5,941,167.88",True
+3 画面,C02__C03 10% H_alt_warmup,"323,937.05","323,937.05",True
+3 画面,C02__C03 10% 境目の読み方,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,True
+3 画面,C02__C03 15% f_star_incl_warmup,"4,278.87","4,278.87",True
+3 画面,C02__C03 15% f_star_report_only,"2,861.76","2,861.76",True
+3 画面,C02__C03 15% dH_total,"363,703.85","363,703.85",True
+3 画面,C02__C03 15% dH_report,"243,249.23","243,249.23",True
+3 画面,C02__C03 15% dH_warmup,"120,454.62","120,454.62",True
+3 画面,C02__C03 15% H_base_report,"8,668,502.58","8,668,502.58",True
+3 画面,C02__C03 15% H_base_warmup,"365,450.95","365,450.95",True
+3 画面,C02__C03 15% H_alt_report,"8,911,751.82","8,911,751.82",True
+3 画面,C02__C03 15% H_alt_warmup,"485,905.57","485,905.57",True
+3 画面,C02__C03 15% 境目の読み方,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,True
+5 使わなかった週,C02__C03 C02 W・上限で作った週・使わなかった週,"('173', '158', '15')","('173', '158', '15')",True
+5 使わなかった週,C02__C03 C03 W・上限で作った週・使わなかった週,"('88', '88', '0')","('88', '88', '0')",True
+3 画面,C02__C03 要点の一文,True,True,True
+3 画面,C02__C03 ④ の注意,True,True,True
+3 画面,C02__C03 「在庫の保管費は金額に入っていない」が無い,False,False,True
+3 画面,C06__C07 保有費の表の行数,3,3,True
+3 画面,C06__C07 5% f_star_incl_warmup,"1,169.23","1,169.23",True
+3 画面,C06__C07 5% f_star_report_only,696.15,696.15,True
+3 画面,C06__C07 5% dH_total,"84,184.62","84,184.62",True
+3 画面,C06__C07 5% dH_report,"50,123.08","50,123.08",True
+3 画面,C06__C07 5% dH_warmup,"34,061.54","34,061.54",True
+3 画面,C06__C07 5% H_base_report,"2,922,050.86","2,922,050.86",True
+3 画面,C06__C07 5% H_base_warmup,"127,906.98","127,906.98",True
+3 画面,C06__C07 5% H_alt_report,"2,972,173.94","2,972,173.94",True
+3 画面,C06__C07 5% H_alt_warmup,"161,968.52","161,968.52",True
+3 画面,C06__C07 5% 境目の読み方,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,True
+3 画面,C06__C07 10% f_star_incl_warmup,"2,338.46","2,338.46",True
+3 画面,C06__C07 10% f_star_report_only,"1,392.31","1,392.31",True
+3 画面,C06__C07 10% dH_total,"168,369.23","168,369.23",True
+3 画面,C06__C07 10% dH_report,"100,246.15","100,246.15",True
+3 画面,C06__C07 10% dH_warmup,"68,123.08","68,123.08",True
+3 画面,C06__C07 10% H_base_report,"5,844,101.72","5,844,101.72",True
+3 画面,C06__C07 10% H_base_warmup,"255,813.97","255,813.97",True
+3 画面,C06__C07 10% H_alt_report,"5,944,347.88","5,944,347.88",True
+3 画面,C06__C07 10% H_alt_warmup,"323,937.05","323,937.05",True
+3 画面,C06__C07 10% 境目の読み方,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,True
+3 画面,C06__C07 15% f_star_incl_warmup,"3,507.69","3,507.69",True
+3 画面,C06__C07 15% f_star_report_only,"2,088.46","2,088.46",True
+3 画面,C06__C07 15% dH_total,"252,553.85","252,553.85",True
+3 画面,C06__C07 15% dH_report,"150,369.23","150,369.23",True
+3 画面,C06__C07 15% dH_warmup,"102,184.62","102,184.62",True
+3 画面,C06__C07 15% H_base_report,"8,766,152.58","8,766,152.58",True
+3 画面,C06__C07 15% H_base_warmup,"383,720.95","383,720.95",True
+3 画面,C06__C07 15% H_alt_report,"8,916,521.82","8,916,521.82",True
+3 画面,C06__C07 15% H_alt_warmup,"485,905.57","485,905.57",True
+3 画面,C06__C07 15% 境目の読み方,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,f* = ΔP0 ÷ ΔW（f が境目を超えると alt が上）,True
+5 使わなかった週,C06__C07 C06 W・上限で作った週・使わなかった週,"('173', '160', '13')","('173', '160', '13')",True
+5 使わなかった週,C06__C07 C07 W・上限で作った週・使わなかった週,"('101', '101', '0')","('101', '101', '0')",True
+3 画面,C06__C07 要点の一文,True,True,True
+3 画面,C06__C07 ④ の注意,True,True,True
+3 画面,C06__C07 「在庫の保管費は金額に入っていない」が無い,False,False,True
+3 画面,C01__C02 保有費の表の行数,3,3,True
+3 画面,C01__C02 5% f_star_incl_warmup,"57,706.39","57,706.39",True
+3 画面,C01__C02 5% f_star_report_only,"57,474.30","57,474.30",True
+3 画面,C01__C02 5% dH_total,"6,553.85","6,553.85",True
+3 画面,C01__C02 5% dH_report,"46,705.38","46,705.38",True
+3 画面,C01__C02 5% dH_warmup,"-40,151.54","-40,151.54",True
+3 画面,C01__C02 5% H_base_report,"2,842,795.48","2,842,795.48",True
+3 画面,C01__C02 5% H_base_warmup,"161,968.52","161,968.52",True
+3 画面,C01__C02 5% H_alt_report,"2,889,500.86","2,889,500.86",True
+3 画面,C01__C02 5% H_alt_warmup,"121,816.98","121,816.98",True
+3 画面,C01__C02 5% 境目の読み方,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,True
+3 画面,C01__C02 10% f_star_incl_warmup,"57,668.51","57,668.51",True
+3 画面,C01__C02 10% f_star_report_only,"57,204.33","57,204.33",True
+3 画面,C01__C02 10% dH_total,"13,107.69","13,107.69",True
+3 画面,C01__C02 10% dH_report,"93,410.77","93,410.77",True
+3 画面,C01__C02 10% dH_warmup,"-80,303.08","-80,303.08",True
+3 画面,C01__C02 10% H_base_report,"5,685,590.95","5,685,590.95",True
+3 画面,C01__C02 10% H_base_warmup,"323,937.05","323,937.05",True
+3 画面,C01__C02 10% H_alt_report,"5,779,001.72","5,779,001.72",True
+3 画面,C01__C02 10% H_alt_warmup,"243,633.97","243,633.97",True
+3 画面,C01__C02 10% 境目の読み方,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,True
+3 画面,C01__C02 15% f_star_incl_warmup,"57,630.63","57,630.63",True
+3 画面,C01__C02 15% f_star_report_only,"56,934.36","56,934.36",True
+3 画面,C01__C02 15% dH_total,"19,661.54","19,661.54",True
+3 画面,C01__C02 15% dH_report,"140,116.15","140,116.15",True
+3 画面,C01__C02 15% dH_warmup,"-120,454.62","-120,454.62",True
+3 画面,C01__C02 15% H_base_report,"8,528,386.43","8,528,386.43",True
+3 画面,C01__C02 15% H_base_warmup,"485,905.57","485,905.57",True
+3 画面,C01__C02 15% H_alt_report,"8,668,502.58","8,668,502.58",True
+3 画面,C01__C02 15% H_alt_warmup,"365,450.95","365,450.95",True
+3 画面,C01__C02 15% 境目の読み方,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,True
+5 使わなかった週,C01__C02 C01 W・上限で作った週・使わなかった週,"('0', '', '')","('0', '', '')",True
+5 使わなかった週,C01__C02 C02 W・上限で作った週・使わなかった週,"('173', '158', '15')","('173', '158', '15')",True
+3 画面,C01__C02 要点の一文,True,True,True
+3 画面,C01__C02 ④ の注意,True,True,True
+3 画面,C01__C02 「在庫の保管費は金額に入っていない」が無い,False,False,True
+3 画面,C01__C03 保有費の表の行数,3,3,True
+3 画面,C01__C03 5% f_star_incl_warmup,"112,067.86","112,067.86",True
+3 画面,C01__C03 5% f_star_report_only,"112,067.86","112,067.86",True
+3 画面,C01__C03 5% dH_total,"127,788.46","127,788.46",True
+3 画面,C01__C03 5% dH_report,"127,788.46","127,788.46",True
+3 画面,C01__C03 5% dH_warmup,0,0,True
+3 画面,C01__C03 5% H_base_report,"2,842,795.48","2,842,795.48",True
+3 画面,C01__C03 5% H_base_warmup,"161,968.52","161,968.52",True
+3 画面,C01__C03 5% H_alt_report,"2,970,583.94","2,970,583.94",True
+3 画面,C01__C03 5% H_alt_warmup,"161,968.52","161,968.52",True
+3 画面,C01__C03 5% 境目の読み方,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,True
+3 画面,C01__C03 10% f_star_incl_warmup,"110,615.72","110,615.72",True
+3 画面,C01__C03 10% f_star_report_only,"110,615.72","110,615.72",True
+3 画面,C01__C03 10% dH_total,"255,576.92","255,576.92",True
+3 画面,C01__C03 10% dH_report,"255,576.92","255,576.92",True
+3 画面,C01__C03 10% dH_warmup,0,0,True
+3 画面,C01__C03 10% H_base_report,"5,685,590.95","5,685,590.95",True
+3 画面,C01__C03 10% H_base_warmup,"323,937.05","323,937.05",True
+3 画面,C01__C03 10% H_alt_report,"5,941,167.88","5,941,167.88",True
+3 画面,C01__C03 10% H_alt_warmup,"323,937.05","323,937.05",True
+3 画面,C01__C03 10% 境目の読み方,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,True
+3 画面,C01__C03 15% f_star_incl_warmup,"109,163.58","109,163.58",True
+3 画面,C01__C03 15% f_star_report_only,"109,163.58","109,163.58",True
+3 画面,C01__C03 15% dH_total,"383,365.38","383,365.38",True
+3 画面,C01__C03 15% dH_report,"383,365.38","383,365.38",True
+3 画面,C01__C03 15% dH_warmup,0,0,True
+3 画面,C01__C03 15% H_base_report,"8,528,386.43","8,528,386.43",True
+3 画面,C01__C03 15% H_base_warmup,"485,905.57","485,905.57",True
+3 画面,C01__C03 15% H_alt_report,"8,911,751.82","8,911,751.82",True
+3 画面,C01__C03 15% H_alt_warmup,"485,905.57","485,905.57",True
+3 画面,C01__C03 15% 境目の読み方,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）,True
+5 使わなかった週,C01__C03 C01 W・上限で作った週・使わなかった週,"('0', '', '')","('0', '', '')",True
+5 使わなかった週,C01__C03 C03 W・上限で作った週・使わなかった週,"('88', '88', '0')","('88', '88', '0')",True
+3 画面,C01__C03 要点の一文,True,True,True
+3 画面,C01__C03 ④ の注意,True,True,True
+3 画面,C01__C03 「在庫の保管費は金額に入っていない」が無い,False,False,True
+6 前の数字,C01__C02/age_summary.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/boundary.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/demand_diff.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/diff_weeks.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/entry_plan_diff.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/factory_idle_weeks.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/factory_weekly.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/fixed_cost_breakeven.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/fixed_cost_plan.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/inventory_by_week_sku.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/inventory_weekly.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/market_map.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/money_by_week_sku.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/money_totals.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/planned_output_weeks.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/representative_lots.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/supply_by_key.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/supply_by_request_week.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C02/compare.json 違う鍵（時刻だけ）,"['at', 'seconds']","['at', 'seconds']",True
+6 前の数字,C01__C03/age_summary.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/boundary.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/demand_diff.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/diff_weeks.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/entry_plan_diff.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/factory_idle_weeks.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/factory_weekly.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/fixed_cost_breakeven.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/fixed_cost_plan.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/inventory_by_week_sku.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/inventory_weekly.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/market_map.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/money_by_week_sku.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/money_totals.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/planned_output_weeks.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/representative_lots.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/supply_by_key.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/supply_by_request_week.csv バイト単位で同じ,True,True,True
+6 前の数字,C01__C03/compare.json 違う鍵（時刻だけ）,"['at', 'seconds']","['at', 'seconds']",True
+6 前の数字,holding_rate_weekly は空欄のまま,,,True

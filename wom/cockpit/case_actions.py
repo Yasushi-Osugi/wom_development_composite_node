@@ -303,14 +303,15 @@ def _planned_values(ws: str, cid: str, engine: bool):
 KIND_TEXT = {"engine": "エンジンの計画値", "shifts": "シフト", "cap_soft": "cap_soft"}
 
 
-def raised_ranges(ws: str, cid: str) -> List[dict]:
+def raised_ranges(ws: str, cid: str, against: Optional[str] = None) -> List[dict]:
     """段 4: the week ranges where the case's planned output is higher than in its parent case (consecutive weeks,
     per SKU x factory). When both cases have run (済み), the engine's values (run/capacity.csv) are compared, so a
     change of cap_soft and a change of shifts are found the same way; otherwise the inputs (shifts where the
-    calendar decides, else cap_soft). [{sku, factory, first, last, span, in_report, outside, cap_from, cap_to, kind}]"""
+    calendar decides, else cap_soft). [{sku, factory, first, last, span, in_report, outside, cap_from, cap_to, kind}]
+    against: compare with this case instead of the parent (保有費の依頼：先祖の案と比べる)."""
     from wom.cockpit import compare_view_model as V
     case = C.read_case(ws, cid)
-    parent = case.get("parent")
+    parent = against or case.get("parent")
     if not parent:
         return []
     engine = V.engine_capacity(ws, cid) is not None and V.engine_capacity(ws, parent) is not None
@@ -354,6 +355,20 @@ def raised_ranges(ws: str, cid: str) -> List[dict]:
             r["outside"] = r["span"] - r["in_report"]
             out.append(r)
     return out
+
+
+def raised_targets(ws: str, cid: str) -> List[tuple]:
+    """The (SKU, factory) whose planned output the case raised: compared with its parent, then with the parent's
+    parent, and so on, until a raise is found (a case whose parent already had the same raise, e.g. a demand
+    variant of a raised case, finds it further up). [] when no ancestor is lower."""
+    seen, a = {cid}, C.read_case(ws, cid).get("parent")
+    while a and a not in seen:
+        found = sorted({(r["sku"], r["factory"]) for r in raised_ranges(ws, cid, against=a)})
+        if found:
+            return found
+        seen.add(a)
+        a = C.read_case(ws, a).get("parent")
+    return []
 
 
 def _at_cap_in(ws: str, cid: str, rng: dict) -> Optional[int]:
