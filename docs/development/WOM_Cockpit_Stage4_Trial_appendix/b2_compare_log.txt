@@ -1,0 +1,6 @@
+[cockpit_cases] C01 → C02：ΔP0 9,989,760
+  planned_output_raise：ΔW 158  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 63226.3291139241
+  -> output/cockpit_step4/cos\compare\C01__C02
+[cockpit_cases] C01 → C03：ΔP0 9,989,760
+  planned_output_raise：ΔW 88  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 113520.0
+  -> output/cockpit_step4/cos\compare\C01__C03

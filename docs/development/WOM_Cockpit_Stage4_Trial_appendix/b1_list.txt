@@ -1,0 +1,4 @@
+id	name	parent	cap COS_Cream@Factory_JP	policy	deliveries	unallocated	backlog_end	P0	state
+C01	基準・後期	—	13/11	なし	COS_Cream=1680 COS_Serum=2184	—	COS_Cream:TH_Distributor=88 COS_Serum:TH_Distributor=104	606,871,080	済み
+C02	増産・全期間	C01	13/12	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	616,860,840	済み
+C03	増産・88週	C01	13/11・12（週で違う）	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	616,860,840	済み

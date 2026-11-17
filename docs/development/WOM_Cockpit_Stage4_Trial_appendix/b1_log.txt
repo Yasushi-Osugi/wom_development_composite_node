@@ -1,0 +1,55 @@
+[cockpit_cases] 作業 output/cockpit_step4/cos、最初の案 C01（基準・後期）
+[cockpit_cases] C01 entry-plan: {"total_lots": 4056, "rows": 1384}
+[cockpit_cases] C01 の状態：未実行
+[cockpit_cases] C01 capacity: {"sku": "COS_Serum", "node": "Factory_JP", "rows": 173, "max_supply": "17", "cap_soft": "14"}
+[cockpit_cases] C01 の状態：未実行
+[cockpit_cases] C01 capacity: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 173, "max_supply": "13", "cap_soft": "11"}
+[cockpit_cases] C01 の状態：未実行
+[cockpit_cases] C01 → C02（増産・全期間）
+[cockpit_cases] C02 planned-output: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 173, "cap_soft": "12", "weeks": "all"}
+[cockpit_cases] C02 の状態：未実行
+[cockpit_cases] C01 → C03（増産・88週）
+[cockpit_cases] C03 planned-output: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 88, "cap_soft": "12", "weeks": ["2028-W11", "2029-W46"]}
+[cockpit_cases] C03 の状態：未実行
+[C01] 1/5 需要 …
+[C01] 1/5 需要 済み（0.0 秒）
+[C01] 2/5 計画・PPC・Flow Check …
+[C01] 2/5 計画・PPC・Flow Check 済み（6.6 秒）
+[C01] 3/5 Value Chain …
+[C01] 3/5 Value Chain 済み（11.2 秒）
+[C01] 4/5 年齢の検査 …
+[C01] 4/5 年齢の検査 済み（7.1 秒）
+[C01] 5/5 突き合わせ …
+[C01] 5/5 突き合わせ 済み（1.2 秒）
+[cockpit_cases] C01：済み（26.1 秒）  P0 606,871,080
+[C02] 1/5 需要 …
+[C02] 1/5 需要 済み（0.0 秒）
+[C02] 2/5 計画・PPC・Flow Check …
+[C02] 2/5 計画・PPC・Flow Check 済み（6.9 秒）
+[C02] 3/5 Value Chain …
+[C02] 3/5 Value Chain 済み（11.9 秒）
+[C02] 4/5 年齢の検査 …
+[C02] 4/5 年齢の検査 済み（7.0 秒）
+[C02] 5/5 突き合わせ …
+[C02] 5/5 突き合わせ 済み（1.2 秒）
+[cockpit_cases] C02：済み（27.1 秒）  P0 616,860,840
+[C03] 1/5 需要 …
+[C03] 1/5 需要 済み（0.0 秒）
+[C03] 2/5 計画・PPC・Flow Check …
+[C03] 2/5 計画・PPC・Flow Check 済み（6.8 秒）
+[C03] 3/5 Value Chain …
+[C03] 3/5 Value Chain 済み（11.9 秒）
+[C03] 4/5 年齢の検査 …
+[C03] 4/5 年齢の検査 済み（6.9 秒）
+[C03] 5/5 突き合わせ …
+[C03] 5/5 突き合わせ 済み（1.2 秒）
+[cockpit_cases] C03：済み（26.8 秒）  P0 616,860,840
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tools\cockpit_cases.py", line 187, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tools\cockpit_cases.py", line 174, in main
+    print(C.format_list(rows))
+UnicodeEncodeError: 'cp932' codec can't encode character '\u2014' in position 102: illegal multibyte sequence

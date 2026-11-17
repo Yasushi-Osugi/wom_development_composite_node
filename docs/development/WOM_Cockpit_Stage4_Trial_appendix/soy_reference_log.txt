@@ -1,0 +1,36 @@
+== official  (output/cockpit_step4/soy_official)  GM 0.260865
+      market  demand  on_time  early  late  backlog_end  late_weeks_total
+     Rest_BE   10050     2650      0     0         7400                 0
+     Rest_FR   15075     6615      0     0         8460                 0
+     Rest_JP   30150    29250      0     0          900                 0
+     Rest_NL   10050     2650      0     0         7400                 0
+Rest_US_East   17588    17063      0     0          525                 0
+Rest_US_West   17588    17063      0     0          525                 0
+total {'demand': 100501, 'on_time': 75291, 'early': 0, 'late': 0, 'backlog_end': 25210}
+Bottling_Noda production (report period) most common: [(686, 86), (0, 10), (300, 7), (475, 1)] | cap_hard [800.0] cap_soft [686.0] | max 686
+Brewing_Noda production (report period) most common: [(686, 82), (0, 14), (300, 7), (475, 1)] | cap_hard [800.0] cap_soft [] | max 686
+age: [('*', 23), ('*', 23)]
+== S01  (output/cockpit_step4/soy/C01/model)  GM 0.27565
+      market  demand  on_time  early  late  backlog_end  late_weeks_total
+     Rest_BE   10050     8345      0     0         1705                 0
+     Rest_FR   15075    14775      0     0          300                 0
+     Rest_JP   30150    29550      0     0          600                 0
+     Rest_NL   10050     6271      0     0         3779                 0
+Rest_US_East   17588    17238      0     0          350                 0
+Rest_US_West   17588    17238      0     0          350                 0
+total {'demand': 100501, 'on_time': 93417, 'early': 0, 'late': 0, 'backlog_end': 7084}
+Bottling_Noda production (report period) most common: [(857, 86), (0, 10), (300, 7), (475, 1)] | cap_hard [1000.0] cap_soft [800.0, 857.0] | max 857
+Brewing_Noda production (report period) most common: [(857, 82), (0, 14), (300, 7), (475, 1)] | cap_hard [1000.0] cap_soft [] | max 857
+age: [('*', 24), ('*', 24)]
+== S02  (output/cockpit_step4/soy/C02/model)  GM 0.27565
+      market  demand  on_time  early  late  backlog_end  late_weeks_total
+     Rest_BE   10050     8345      0     0         1705                 0
+     Rest_FR   15075    14775      0     0          300                 0
+     Rest_JP   30150    29550      0     0          600                 0
+     Rest_NL   10050     6271      0     0         3779                 0
+Rest_US_East   17588    17238      0     0          350                 0
+Rest_US_West   17588    17238      0     0          350                 0
+total {'demand': 100501, 'on_time': 93417, 'early': 0, 'late': 0, 'backlog_end': 7084}
+Bottling_Noda production (report period) most common: [(857, 86), (0, 10), (300, 7), (475, 1)] | cap_hard [1000.0] cap_soft [857.0, 900.0] | max 857
+Brewing_Noda production (report period) most common: [(857, 82), (0, 14), (300, 7), (475, 1)] | cap_hard [1000.0] cap_soft [] | max 857
+age: [('*', 24), ('*', 24)]

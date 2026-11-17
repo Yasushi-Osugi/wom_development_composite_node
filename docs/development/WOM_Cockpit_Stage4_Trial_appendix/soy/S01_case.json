@@ -1,0 +1,105 @@
+{
+  "id": "C01",
+  "name": "S01 基準（瓶詰 800）",
+  "parent": null,
+  "created": "2026-11-17T12:06:05",
+  "inputs": {
+    "policy": null,
+    "fixed_cost": null
+  },
+  "changes": [],
+  "run": {
+    "state": "不整合",
+    "started": "2026-11-17T12:06:11",
+    "finished": "2026-11-17T12:07:56",
+    "stage": "check",
+    "stages": [
+      {
+        "stage": "demand",
+        "seconds": 0.0,
+        "info": {
+          "note": "投入の表なし：モデルの需要をそのまま使う"
+        }
+      },
+      {
+        "stage": "plan_ppc",
+        "seconds": 6.89,
+        "info": {
+          "period": {
+            "start": "2026-W28",
+            "weeks": 130
+          },
+          "plugins": [
+            "BufferingStockOptimizerPlugin",
+            "CapacityOverridePlugin",
+            "HolidayCalendarPlugin"
+          ]
+        }
+      },
+      {
+        "stage": "valuechain",
+        "seconds": 70.21,
+        "info": {}
+      },
+      {
+        "stage": "shelf_life",
+        "seconds": 10.8,
+        "info": {}
+      },
+      {
+        "stage": "check",
+        "seconds": null,
+        "stopped": "不整合"
+      }
+    ],
+    "input_hashes": {
+      "(policy)": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "model/README.md": "38aaf252c894221c9b0f00ad2dc6554a9908ed5f5ab95f4c307fc98e0ddd3c13",
+      "model/capacity_plan.csv": "b98894c9cb582a61933079f4fed675bf4d1fe985436e1ebcc4565715d88c9e86",
+      "model/demand_forecast.csv": "80940d6104218fc9a6ff35f69e99bc7fda4c83a0be89eddfbfbb37582fccaec0",
+      "model/demand_forecast_A01.csv": "681701910a271c8aa9250754f815b152cbde1ddc59b1c0d0e7cd4112ae2f9ac8",
+      "model/demand_forecast_A02.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+      "model/demand_forecast_A03.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+      "model/demand_forecast_A04.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+      "model/demand_forecast_A05.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+      "model/demand_forecast_A06.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+      "model/demand_forecast_A08.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+      "model/demand_forecast_S1.csv": "5d2c25cf5091818e2ac4f57d019b5d6837cbc8fc405feded4352aee5b257ba45",
+      "model/demand_forecast_S2.csv": "a4c9ea1b5347b9ab3f17f0fc19f6560c54a98194a74c42624e3d27e95ee2acc6",
+      "model/edge_cost_master.csv": "60c7b33734db2755bda6045185638a9a26515459e32216323be0c43a3d78a1c5",
+      "model/ga_fx_policy_master.csv": "d6b9f35d5173f31583f124548468743ecbd8e18bbd1aede52684e49794ff7093",
+      "model/ga_market_aggregation.csv": "b89f7cc3f8f67ea55f7a1482c8fc3d1e06af05a68615892b8564a8c295e5dd02",
+      "model/ga_scenario_master.csv": "89dc29eeb6160ff59af9a937ac7e090861a554f38492ac711a8022072168f7ad",
+      "model/holiday_calendar.csv": "b5012392952ddd41048e13fe46a57c077828d54caccac0b2f597346fbac81811",
+      "model/inventory_master.csv": "0e281a5f2f2f2b172f44ba4fc2bc78a61b91c8479ec481b2007c7dfaf4c7649b",
+      "model/lane_assignment.csv": "f8fb95860c6794870c5c09322e9c9014be7073233754f926b569cd25f2a5d2d9",
+      "model/node_cost_master.csv": "ab6447424f139a4993a48488d28ea076b135c0a3ce0d73a1e70f5c414631aacd",
+      "model/node_master.csv": "ee6aa84540ef9bbc64fb0c0b499d058488db59d470a3ea8290e169c3cda7c15f",
+      "model/operating_calendar.csv": "3dbea7a7c9e9486a7271f9a9a7480683aeeafe43b75ae0283acd77973338ed66",
+      "model/planning_config.csv": "fbe229548c0d3c6046681222fa349421cdf155e56ffe6b369072ef2271807808",
+      "model/ppc_edge_cost_rule.csv": "379fb7b2ed0bfd3a63b22d46c2e0181820f84b4a01f307c3fc4d8d09a3ac321b",
+      "model/ppc_fx_rate.csv": "9d9eb8b58d99ec48a3312a498fa3bca6fd85176e322d426fae903d2055c79c7e",
+      "model/ppc_market_price.csv": "00e5d81291e5a4cfdc4f780cc5641167701dfff7d3b0b7983f433e4ec0817c19",
+      "model/ppc_node_cost_rule.csv": "7356020fba26a18644a8a2018d395bdf90e5a10e1fbb9269366ff826290d6577",
+      "model/ppc_node_profit_zone.csv": "243fd56a1bf058e95e23dbb54debfadd8ce5fb3d4323ec6e8ad95bffb97f0fca",
+      "model/ppc_profit_zone_rule.csv": "02e12ac08902c184cd682ffa2fd4266d98a104b084e293aa3340d0ce084a924d",
+      "model/ppc_supplier_cost.csv": "c9b5529820e12d20bff0d94d4816ffdf9c92bf947062981c6495f790c562ea26",
+      "model/ppc_tariff_rule.csv": "9d9ff30cb69be60068320067ef03a606d2e351e43fbeea95628a1be2e31dcb2f",
+      "model/ppc_transfer_price_rule.csv": "4e4fc06cd20ceb52946c92ca2095d92db370817ffde81a6691b72727c912ce47",
+      "model/push_config.csv": "bb6e4d1cc7105358694992d75c85308dedff4f6462b17dae4be47c0aca20a1d9",
+      "model/route_master.csv": "2d7beee11e7df0474cd3ea6710e2c383c652075dec52323c420a3e3896a33b64",
+      "model/sc_tree_master.csv": "21a834ccc0eb00a684803cbf2ee8472733ed2e4779c378403636aeafaba01416",
+      "model/sku_master.csv": "4eadfa48ba48d55c83dd247da5a4ccade4ae32932e6d1ccc0309ff232eb97830",
+      "model/vc_config.csv": "e9f262d7e98d9baf91af419190a392e23463bc71300d34b95080f9c47e1ceaf1",
+      "model/vc_entity.csv": "d808c64976eb391a953cf3cb9755ca483d8a688918f43564ee35662616cb168d",
+      "model/vc_node_assignment.csv": "b0cc3ee00d90e0f1a886e5ac560115fc59c41677cf6fb009dea55a8cc2515f10",
+      "model/vc_price_rule.csv": "d55eb66557b18065630ffe634fad9e478896cfe568863303ba22e771e933d3c5"
+    },
+    "plugins": "HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin",
+    "reason": "突き合わせ の段で止まった",
+    "message": "突き合わせ：output/cockpit_step4/soy\\C01\\run: Lot_ID Soy_Sauce:US_W:2027-W01:00001 が別の市場 Rest_US_West で出荷されています",
+    "money_model": "model",
+    "udp_dir": null,
+    "summary": null
+  }
+}

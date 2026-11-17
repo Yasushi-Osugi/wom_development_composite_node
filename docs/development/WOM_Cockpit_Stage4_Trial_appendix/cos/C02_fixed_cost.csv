@@ -1,0 +1,2 @@
+cost_item,entity,paid_start_week,paid_end_week,weekly_amount,currency,note,count_outside_report,display_name
+planned_output_raise,E_JP,2026-W46,2029-W46,,JPY,有償の週は COS_Cream の計画の生産量ちょうど作った最初の週〜最後の週（助走を含む、比較 C01__C02 の実測）,1,増産の確保費
