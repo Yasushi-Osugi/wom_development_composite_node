@@ -48,3 +48,16 @@ SmartXNext を始めるまでに、設備を調整する**空き期間**があ�
 Plugins の **Capacity Layer** を ON にしたときだけ使う（既定は OFF）。golden は OFF で作っている。
 OFF のときは Backward の能力の押し戻しに前倒しの上限が無いので、ON（窓 17 週）とは結果が違う
 （`docs/development/WOM_GenerationLine_UpperLayer_Report.md`）。
+
+## PPC（粗利の試算）の原価と運賃・関税（RequestLetter_MoneyBase_Smartx_CostFix、2026-11-17）
+
+- **原価は組立工場での完成品の仕入値で持つ**（`ppc_cost_basis.csv`：4 製品とも `finished_goods`）。
+  SmartX 320・SmartXNext 490・SmartXPro_CN 450・SmartXPro_IN 470 USD／台（`ppc_supplier_cost.csv` の組立工場の行。
+  `node_cost_master.csv` の組立の原価と同じ値）。部材・台湾の工場・組立工場の加工費と入荷の運賃は、仕入値に含まれるので
+  PPC の規則から消した。移転価格は今までどおり原価に 10%（SmartXPro_IN は 8%）を乗せる。
+- **国際輸送の運賃と関税は物理の区間に書く**（組立工場 → DC。国内の 0.9・1.2 は DC → 市場）。DC のノードの運賃は消した
+  （同じ輸送の二重を避ける）。SmartX・SmartXNext も Pro と同じ書き方。
+- PPC の金額（golden、計画期間 2025-W36 から 278 週）：売上 700,825,463 USD、費用 371,343,704.70 USD、
+  粗利 329,481,758.30 USD、**粗利率 47.0%**、関税 41,751,951.30 USD、trust event 566（すべて TARIFF_SHOCK：米州向け 25%）。
+  前の値（粗利率 90.4%）は部材の仕入値だけで原価を作っていたため。
+- 報告書：`docs/development/WOM_MoneyBase_Smartx_CostFix_Report.md`。

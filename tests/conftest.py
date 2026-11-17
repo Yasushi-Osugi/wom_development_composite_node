@@ -98,6 +98,8 @@ AREAS = {
     "test_regime_map.py": ("allocation",),
     "test_gen_demand_from_entry_plan.py": ("allocation",),
     "test_compare_scenarios.py": ("allocation", "ppc"),
+    "test_ppc_cost_basis.py": ("ppc",),
+    "test_ppc_unused_rule_rows.py": ("ppc",),
     "test_s1_view_model.py": ("allocation", "gui"),
     "test_cockpit_cases.py": ("allocation", "gui"),
     "test_cockpit_case_runner.py": ("allocation", "gui"),

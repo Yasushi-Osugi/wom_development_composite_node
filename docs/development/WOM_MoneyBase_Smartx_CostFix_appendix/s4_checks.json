@@ -1,0 +1,45 @@
+{
+ "before_after": {
+  "total_revenue_base": {
+   "before": 700825463.0,
+   "after": 700825463.0
+  },
+  "total_cost_base": {
+   "before": 67503725.76,
+   "after": 371343704.7
+  },
+  "gross_profit_base": {
+   "before": 633321737.24,
+   "after": 329481758.3
+  },
+  "gross_margin_pct": {
+   "before": 0.9036796901313502,
+   "after": 0.4701338288845821
+  },
+  "total_tariff_base": {
+   "before": 2558419.56,
+   "after": 41751951.3
+  },
+  "trust_event_count": {
+   "before": 207,
+   "after": 566
+  },
+  "mom_profit_base": {
+   "before": 4805173.07,
+   "after": 30325245.600000024
+  }
+ },
+ "tariff_rows_all_tp_x_rate": true,
+ "freight": {
+  "edge_added_by_product": {
+   "SmartX": 2489498.8,
+   "SmartXNext": 5580361.4,
+   "SmartXPro_CN": 0.0,
+   "SmartXPro_IN": 0.0
+  },
+  "edge_added_total": 8069860.2,
+  "dc_node_freight_removed_total": 7079213.5,
+  "upstream_node_freight_removed_total": 4953344.5,
+  "node_freight_left": {}
+ }
+}

@@ -2,8 +2,6 @@ supplier_node,product_id,week,purchase_price,currency
 Battery_DE,EVmaker_Local,2026-W01,10500,EUR
 Motor_DE,EVmaker_Local,2026-W01,3600,EUR
 ECU_DE,EVmaker_Local,2026-W01,1600,EUR
-Factory_Local_DE,EVmaker_Local,2026-W01,19900,EUR
 Battery_HU,EVmaker_Import,2026-W01,8000,EUR
 Motor_HU,EVmaker_Import,2026-W01,3000,EUR
 ECU_HU,EVmaker_Import,2026-W01,1400,EUR
-Factory_Import_HU,EVmaker_Import,2026-W01,14900,EUR

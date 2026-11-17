@@ -146,6 +146,7 @@ def run_ppc_from_psi(
                 pass
         return _not_valued(reason)
     rules = PPCRuleSet.load_from_sources(src)
+    cost_basis = read_cost_basis(src.model_dir, sc_tree)
     data_dir = src.rule_dir_for("ppc_market_price.csv")
 
     known_products = {p for p in rules.supplier_cost["product_id"].unique() if isinstance(p, str)}
@@ -180,7 +181,7 @@ def run_ppc_from_psi(
 
     # ── Step 4 (removed, K4): sample sales are never substituted here ─────
 
-    result, rules = _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency)
+    result, rules = _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency, cost_basis)
     # a supplier the engine asked for has no cost rule (formerly valued as 0):
     # exclude that product's records and value the rest once more
     miss = {p for (k, _n, p) in rules.lookup_log if k in ("supplier_cost_missing",
@@ -192,7 +193,7 @@ def run_ppc_from_psi(
         if sales.empty:
             return _not_valued("評価できる販売記録が無い（原価・価格の規則が無い）", excluded)
         rules.lookup_log.clear()
-        result, rules = _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency)
+        result, rules = _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency, cost_basis)
 
     status = VAL_PARTIAL if excluded else VAL_DONE
     before_first = [{"kind": k.replace("_before_first_rule_week", ""), "node": n, "product_id": p,
@@ -212,6 +213,16 @@ def run_ppc_from_psi(
              "currency": "", "requested_week": "", "used_week": "first rule row",
              "count": b["lookups"], "detail": "week before the rule's first row: the first row's value used"}
             for b in before_first]
+
+    # RequestLetter_MoneyBase_Smartx_CostFix B: rule rows never booked (warning only; not a trust event)
+    try:
+        from wom.ppc.ppc_unused_rules import find_unused_rule_rows
+        _u = find_unused_rule_rows(src.paths, src.sources, result.ppc_events, sc_tree, use_node_name)
+        result.kpi_summary["unused_rule_rows"] = _u["summary"]
+        result.warnings = list(result.warnings or []) + _u["warnings"]
+    except Exception as _exc:          # a check, never a reason to lose the valuation -- but say so
+        print(f"[PPC Runner] unused rule row check failed: {_exc}")
+        result.kpi_summary["unused_rule_rows"] = {"error": f"{type(_exc).__name__}: {_exc}"}
 
     # RequestLetter_StageD_Phase1 0-5: the Landed Cost engine's silent fx_rate
     # defaults of this model's edge_cost_master.csv go to the same warnings file.
@@ -241,7 +252,61 @@ def run_ppc_from_psi(
     return out
 
 
-def _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency):
+COST_BASIS_FILE = "ppc_cost_basis.csv"
+COST_BASIS_COLS = ["product_id", "cost_basis", "purchase_node"]
+
+
+class PPCCostBasisError(ValueError):
+    """ppc_cost_basis.csv cannot be used as written (the message says where and how to fix it)."""
+
+
+def read_cost_basis(model_dir: str, sc_tree=None) -> Dict[str, str]:
+    """ppc_cost_basis.csv of the model (optional; RequestLetter_MoneyBase_Smartx_CostFix C).
+    Returns {product_id: purchase_node} for the finished_goods products; {} without the file (parts, as before)."""
+    p = os.path.join(model_dir or "", COST_BASIS_FILE)
+    if not model_dir or not os.path.exists(p):
+        return {}
+    df = pd.read_csv(p, dtype=str, keep_default_na=False)
+    miss = [c for c in COST_BASIS_COLS if c not in df.columns]
+    if miss:
+        raise PPCCostBasisError(f"{p}: 列が足りません {miss}（列は {COST_BASIS_COLS}）")
+    prods = set(sc_tree.products) if sc_tree is not None else None
+    out, seen = {}, set()
+    for i, r in df.iterrows():
+        where = f"{p} の {i + 2} 行目（product_id={r['product_id']!r}）"
+        prod, basis, node = r["product_id"].strip(), r["cost_basis"].strip(), r["purchase_node"].strip()
+        if prod in seen:
+            raise PPCCostBasisError(f"{where}: 製品が重複しています。直し方：1 製品 1 行にする")
+        seen.add(prod)
+        if prods is not None and prod not in prods:
+            raise PPCCostBasisError(f"{where}: 計画の木に無い製品です（木の製品 {sorted(prods)}）")
+        if basis not in ("parts", "finished_goods"):
+            raise PPCCostBasisError(f"{where}: cost_basis={basis!r} は parts か finished_goods にしてください")
+        if basis == "finished_goods":
+            if not node:
+                raise PPCCostBasisError(f"{where}: finished_goods には purchase_node（仕入値を読む最後の工場）が要ります")
+            out[prod] = node
+        elif node:
+            raise PPCCostBasisError(f"{where}: parts の行に purchase_node は書かない（{node!r}）")
+    return out
+
+
+def check_cost_basis(cost_basis: Dict[str, str], mom_node, rules) -> None:
+    """Stop when a purchase_node is not the product's terminal MOM, or when it has no purchase price row
+    (never valued as 0 silently; R4)."""
+    for prod, node in cost_basis.items():
+        m = mom_node.get(prod) if isinstance(mom_node, dict) else mom_node
+        if node != m:
+            raise PPCCostBasisError(
+                f"{COST_BASIS_FILE}: 製品 {prod} の purchase_node {node!r} がその製品の最後の工場 {m!r} ではありません。"
+                "直し方：purchase_node を最後の工場にする")
+        if not rules._supplier_cost_idx.get((node, prod)):
+            raise PPCCostBasisError(
+                f"{COST_BASIS_FILE}: 製品 {prod} の仕入値の行（ppc_supplier_cost.csv の supplier_node={node}）が"
+                "ありません。直し方：その行を足す（0 として計算はしない）")
+
+
+def _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency, cost_basis=None):
     """Scenario detection + engine run on the (rule-covered) sales records.
     Returns (result, rules). Unchanged logic of the former Step 5."""
     # ── Step 5: Auto-detect scenario and build engine parameters ─────────
@@ -435,6 +500,8 @@ def _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency):
     if verbose:
         print(f"[PPC Runner] Running engine on {len(sales)} lot-records ...")
 
+    if cost_basis:
+        check_cost_basis(cost_basis, mom_node, rules)
     eng = PPCSimulationEngine(
         sales_records=sales,
         sc_paths=sc_paths,
@@ -446,6 +513,7 @@ def _run_engine(sales, rules, sc_tree, known_products, verbose, base_currency):
         dad_nodes_chain=dad_nodes_chain,
         mom_nodes_chain=mom_nodes_chain,
         bom_qty_map=bom_qty_map,
+        cost_basis=cost_basis or None,
         verbose=False,
     )
     result = eng.run()

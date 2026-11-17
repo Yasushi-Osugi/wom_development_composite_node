@@ -1,0 +1,5 @@
+product_id,cost_basis,purchase_node
+SmartX,finished_goods,AssemblyCN_g1
+SmartXNext,finished_goods,AssemblyCN_g3
+SmartXPro_CN,finished_goods,AssemblyCN
+SmartXPro_IN,finished_goods,AssemblyIN

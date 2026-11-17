@@ -66,6 +66,7 @@ def run_forward_propagation(
     supplier_node: Union[str, List[str], Dict[str, str], Dict[str, List[str]]] = "Supplier_CN",
     mom_nodes_chain: Optional[Dict[Tuple[str, str], List[str]]] = None,
     bom_qty_map: Optional[Dict[Tuple[str, str], int]] = None,
+    cost_basis: Optional[Dict[str, str]] = None,
 ) -> List[PPCEvent]:
     """
     Step 1: Forward cost accumulation from Supplier(s) -> MOM.
@@ -159,6 +160,13 @@ def run_forward_propagation(
                     denominated per finished/assembled lot, not per physical
                     component piece -- confirming Step 1b stays untouched.
 
+    cost_basis    : dict[product_id -> purchase_node], optional (RequestLetter_MoneyBase_Smartx_CostFix C,
+                    ppc_cost_basis.csv with cost_basis=finished_goods). For such a product the cost is the
+                    finished-goods purchase price at purchase_node (the product's terminal MOM): one
+                    supplier_cost event there, and NOTHING of Steps 1a-1c (parts, inbound edges, intermediate
+                    tiers, the MOM's own node costs) -- they are inside the purchase price. Products not in the
+                    dict keep the parts build-up (events identical to before).
+
     Returns
     -------
     List of PPCEvent (forward direction)
@@ -173,6 +181,21 @@ def run_forward_propagation(
 
         s_nodes = _resolve_node_list(supplier_node, product)
         m_node = _resolve_node(mom_node, product)
+
+        # ── finished-goods cost basis: the purchase price at the terminal MOM, nothing else upstream ──
+        fg_node = cost_basis.get(product) if cost_basis else None
+        if fg_node:
+            price_local, currency = rules.get_supplier_cost(fg_node, product, week)
+            fx_rate, price_base = fx.convert(price_local, currency, week)
+            acc.supplier_cost_base += price_base
+            events.append(PPCEvent(
+                event_id=f"FWD-{next(_event_counter):06d}", week=week, lot_id=acc.lot_id, node_id=fg_node,
+                edge_id="", product_id=product, qty=int(round(acc.qty)), ppc_event_type="supplier_cost",
+                amount_local=price_local, currency=currency, fx_rate=fx_rate, amount_base=price_base,
+                amount_per_unit_base=price_base, source_rule="ppc_supplier_cost.csv", direction="forward",
+                profit_zone=rules.get_profit_zone(fg_node, product), cost_phase="EXW",
+            ))
+            continue
 
         # ── Step 1a: Supplier purchase cost (one or more Tier-1 suppliers) ──
         for s_node in s_nodes:

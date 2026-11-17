@@ -1,0 +1,321 @@
+{
+  "backward": {
+    "cap_soft_envelope_count": 0
+  },
+  "case": "smartx-2027-2029",
+  "config": {
+    "lot_flow_mode": "identity",
+    "plugins": [
+      "BufferingStockOptimizerPlugin",
+      "CapacityOverridePlugin",
+      "HolidayCalendarPlugin"
+    ]
+  },
+  "forward": {
+    "cap_hard_deferred_lot_weeks": 19887,
+    "cap_hard_deferred_lots": 19887,
+    "cap_soft_violation_count": 0
+  },
+  "period": {
+    "start": "2025-W36",
+    "weeks": 278
+  },
+  "ppc": {
+    "base_currency": "USD",
+    "cost_base": 67503725.76,
+    "gross_margin_pct": 0.90368,
+    "gross_profit_base": 633321737.24,
+    "revenue_base": 700825463.0,
+    "tariff_base": 2558419.56,
+    "total_lots": 1697,
+    "trust_event_count": 207
+  },
+  "products": [
+    "SmartX",
+    "SmartXNext",
+    "SmartXPro_CN",
+    "SmartXPro_IN"
+  ],
+  "psi": {
+    "SmartX": {
+      "AssemblyCN_g1": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 149145,
+        "S": 149145,
+        "series_md5": "b587fba7f373"
+      },
+      "DC_AMER_g1": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 59659,
+        "S": 59659,
+        "series_md5": "0d455820c9fb"
+      },
+      "DC_APAC_g1": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 47732,
+        "S": 47732,
+        "series_md5": "e966ca8c2e1e"
+      },
+      "DC_EMEA_g1": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 41754,
+        "S": 41754,
+        "series_md5": "d97a0d10796f"
+      },
+      "FoundryTW_g1": {
+        "CO": 0,
+        "I_max": 2876,
+        "I_sum": 18136,
+        "P": 149145,
+        "S": 149145,
+        "series_md5": "b875840bd1cd"
+      },
+      "Retail_AMER_g1": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 59659,
+        "S": 59659,
+        "series_md5": "337c508f7083"
+      },
+      "Retail_APAC_g1": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 47732,
+        "S": 47732,
+        "series_md5": "401c150c8836"
+      },
+      "Retail_EMEA_g1": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 41754,
+        "S": 41754,
+        "series_md5": "1604957a21c0"
+      },
+      "SP_SmartX": {
+        "CO": 0,
+        "I_max": 21684,
+        "I_sum": 971956,
+        "P": 149145,
+        "S": 149145,
+        "series_md5": "379491fa21f7"
+      },
+      "WaferFab_TW_g1": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 149145,
+        "S": 149145,
+        "series_md5": "d736f894e72d"
+      }
+    },
+    "SmartXNext": {
+      "AssemblyCN_g3": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 292490,
+        "S": 292490,
+        "series_md5": "a300d46547ee"
+      },
+      "DC_AMER_g3": {
+        "CO": 59026,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 117034,
+        "S": 117500,
+        "series_md5": "6b2f3ae6d9e8"
+      },
+      "DC_APAC_g3": {
+        "CO": 47248,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 93640,
+        "S": 94013,
+        "series_md5": "752ec5bf5a92"
+      },
+      "DC_EMEA_g3": {
+        "CO": 54808,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 81816,
+        "S": 82251,
+        "series_md5": "84e59a97bd5e"
+      },
+      "FoundryTW_g3": {
+        "CO": 0,
+        "I_max": 6211,
+        "I_sum": 25007,
+        "P": 292490,
+        "S": 292490,
+        "series_md5": "3395ff3dbee7"
+      },
+      "Retail_AMER_g3": {
+        "CO": 58560,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 117034,
+        "S": 117500,
+        "series_md5": "37094f777197"
+      },
+      "Retail_APAC_g3": {
+        "CO": 46875,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 93640,
+        "S": 94013,
+        "series_md5": "b8f95aa1a3f5"
+      },
+      "Retail_EMEA_g3": {
+        "CO": 54373,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 81816,
+        "S": 82251,
+        "series_md5": "af98ff2c0b0a"
+      },
+      "SP_SmartXNext": {
+        "CO": 164065,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 292490,
+        "S": 293764,
+        "series_md5": "62447a0e700d"
+      },
+      "WaferFab_TW_g3": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 292490,
+        "S": 292490,
+        "series_md5": "75ee9504aed9"
+      }
+    },
+    "SmartXPro_CN": {
+      "AssemblyCN": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 160146,
+        "S": 160146,
+        "series_md5": "88814d3714ae"
+      },
+      "Buffer_Chip_TW": {
+        "CO": 0,
+        "I_max": 51412,
+        "I_sum": 6097704,
+        "P": 160146,
+        "S": 160146,
+        "series_md5": "0aea46ad5296"
+      },
+      "DC_APAC": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 85410,
+        "S": 85410,
+        "series_md5": "bb6865dea4b2"
+      },
+      "DC_EMEA": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 74736,
+        "S": 74736,
+        "series_md5": "859f56b1be69"
+      },
+      "FoundryTW": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 160146,
+        "S": 160146,
+        "series_md5": "ca8d72f0594c"
+      },
+      "Retail_APAC": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 85410,
+        "S": 85410,
+        "series_md5": "26c64b13803b"
+      },
+      "Retail_EMEA": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 74736,
+        "S": 74736,
+        "series_md5": "59d26be9f917"
+      },
+      "SP_SmartXPro_CN": {
+        "CO": 0,
+        "I_max": 5165,
+        "I_sum": 389556,
+        "P": 160146,
+        "S": 160146,
+        "series_md5": "37bfd52abd1f"
+      },
+      "WaferFab_TW": {
+        "CO": 0,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 160146,
+        "S": 160146,
+        "series_md5": "d6cd16652d2c"
+      }
+    },
+    "SmartXPro_IN": {
+      "AssemblyIN": {
+        "CO": 16073,
+        "I_max": 51,
+        "I_sum": 335,
+        "P": 106756,
+        "S": 106756,
+        "series_md5": "ca92041207cc"
+      },
+      "DC_AMER": {
+        "CO": 16073,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 106756,
+        "S": 106756,
+        "series_md5": "ce6622915dd5"
+      },
+      "Retail_AMER": {
+        "CO": 16073,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 106756,
+        "S": 106756,
+        "series_md5": "1c1b6f7e33e7"
+      },
+      "SP_SmartXPro_IN": {
+        "CO": 16073,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 106756,
+        "S": 106756,
+        "series_md5": "b74c655598f6"
+      },
+      "SensorIN": {
+        "CO": 7146,
+        "I_max": 0,
+        "I_sum": 0,
+        "P": 106756,
+        "S": 106756,
+        "series_md5": "4193d5bfdbee"
+      }
+    }
+  }
+}

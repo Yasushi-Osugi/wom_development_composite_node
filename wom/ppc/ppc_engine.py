@@ -62,6 +62,7 @@ class PPCSimulationEngine:
         dad_nodes_chain=None,
         mom_nodes_chain=None,
         bom_qty_map=None,
+        cost_basis=None,
         verbose: bool = False,
     ):
         self.sales_records  = sales_records
@@ -82,6 +83,8 @@ class PPCSimulationEngine:
         # run_forward_propagation docstring. None / empty entries preserve
         # pre-Letter-B behavior (every node treated as bom_qty=1).
         self.bom_qty_map    = bom_qty_map
+        # cost_basis: dict[product_id -> purchase_node] for finished-goods products (ppc_cost_basis.csv)
+        self.cost_basis     = cost_basis
         self.verbose        = verbose
 
         self._fx = FXConverter(rules.fx_rate, base_currency)
@@ -103,6 +106,7 @@ class PPCSimulationEngine:
             mom_node=self.mom_node, supplier_node=self.supplier_node,
             mom_nodes_chain=self.mom_nodes_chain,
             bom_qty_map=self.bom_qty_map,
+            cost_basis=self.cost_basis,
         )
         all_events.extend(fwd_events)
         if self.verbose:

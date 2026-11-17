@@ -1,6 +1,4 @@
 supplier_node,product_id,week,purchase_price,currency
 Platform_Unit_Assy,EVmaker_Local,2026-W01,245000,THB
 Motor_Unit_Assy,EVmaker_Local,2026-W01,95000,THB
-Factory_Local_TH,EVmaker_Local,2026-W01,780000,THB
 Components_CN,EVmaker_Import,2026-W01,600000,THB
-Factory_Import_CN,EVmaker_Import,2026-W01,950000,THB

@@ -1,0 +1,10 @@
+﻿product_id,channel_node,qty,cost,revenue,ppc_cost_per_unit,per_unit_conversion_cost,per_unit_logistics_cost,per_unit_supplier_cost,per_unit_tariff_cost,selling_price_per_lot,unit_cost_per_lot,gm_pct
+SmartX,Retail_AMER_g1,59659.0,25641438.2,699.0,429.8,4.8,17.0,320.0,88.0,699.0,460.0,38.5
+SmartX,Retail_APAC_g1,47732.0,16152508.799999999,649.0,338.4,4.2,14.2,320.0,0.0,649.0,440.0,47.9
+SmartX,Retail_EMEA_g1,41754.0,15478207.799999997,799.0,370.7,5.2,19.1,320.0,26.4,799.0,480.0,53.6
+SmartXNext,Retail_AMER_g3,117034.0,75960917.7,1099.0,649.05,5.2,19.1,490.0,134.75,1099.0,670.0,40.9
+SmartXNext,Retail_APAC_g3,93640.0,47878132.0,1049.0,511.3,4.8,16.5,490.0,0.0,1049.0,640.0,51.3
+SmartXNext,Retail_EMEA_g3,81816.0,45671736.6,1199.0,558.22,5.8,22.0,490.0,40.42,1199.0,700.0,53.4
+SmartXPro_CN,Retail_APAC,85410.0,40125618.0,949.0,469.8,4.5,15.3,450.0,0.0,949.0,600.0,50.5
+SmartXPro_CN,Retail_EMEA,74736.0,38363857.2,1099.0,513.33,5.5,20.7,450.0,37.12,1099.0,640.0,53.3
+SmartXPro_IN,Retail_AMER,106756.0,66071288.4,999.0,618.9,5.0,17.0,470.0,126.9,999.0,620.0,38.0

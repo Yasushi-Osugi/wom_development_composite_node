@@ -22,13 +22,13 @@
   },
   "ppc": {
     "base_currency": "USD",
-    "cost_base": 67503725.76,
-    "gross_margin_pct": 0.90368,
-    "gross_profit_base": 633321737.24,
+    "cost_base": 371343704.7,
+    "gross_margin_pct": 0.470134,
+    "gross_profit_base": 329481758.3,
     "revenue_base": 700825463.0,
-    "tariff_base": 2558419.56,
+    "tariff_base": 41751951.3,
     "total_lots": 1697,
-    "trust_event_count": 207
+    "trust_event_count": 566
   },
   "products": [
     "SmartX",

@@ -1,0 +1,78 @@
+﻿file,change,row,why
+ppc_cost_basis.csv,added,"SmartX,finished_goods,AssemblyCN_g1",原価を組立工場での完成品の仕入値で持つ（新しいファイル）
+ppc_cost_basis.csv,added,"SmartXNext,finished_goods,AssemblyCN_g3",原価を組立工場での完成品の仕入値で持つ（新しいファイル）
+ppc_cost_basis.csv,added,"SmartXPro_CN,finished_goods,AssemblyCN",原価を組立工場での完成品の仕入値で持つ（新しいファイル）
+ppc_cost_basis.csv,added,"SmartXPro_IN,finished_goods,AssemblyIN",原価を組立工場での完成品の仕入値で持つ（新しいファイル）
+ppc_supplier_cost.csv,removed,"WaferFab_TW,SmartXPro_CN,2027-W01,5.0,USD",完成品の仕入値に含まれる（部材・台湾の工場の仕入値）
+ppc_supplier_cost.csv,removed,"FoundryTW,SmartXPro_CN,2027-W01,38.0,USD",完成品の仕入値に含まれる（部材・台湾の工場の仕入値）
+ppc_supplier_cost.csv,removed,"SensorIN,SmartXPro_IN,2027-W01,16.0,USD",完成品の仕入値に含まれる（部材・台湾の工場の仕入値）
+ppc_supplier_cost.csv,removed,"WaferFab_TW_g1,SmartX,2027-W01,4.0,USD",完成品の仕入値に含まれる（部材・台湾の工場の仕入値）
+ppc_supplier_cost.csv,removed,"FoundryTW_g1,SmartX,2027-W01,28.0,USD",完成品の仕入値に含まれる（部材・台湾の工場の仕入値）
+ppc_supplier_cost.csv,removed,"WaferFab_TW_g3,SmartXNext,2027-W01,5.5,USD",完成品の仕入値に含まれる（部材・台湾の工場の仕入値）
+ppc_supplier_cost.csv,removed,"FoundryTW_g3,SmartXNext,2027-W01,42.0,USD",完成品の仕入値に含まれる（部材・台湾の工場の仕入値）
+ppc_node_cost_rule.csv,removed,"AssemblyCN,SmartXPro_CN,conversion_cost,per_lot,0,50.0,USD,Assembly labor + overhead per lot (100 units)",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"AssemblyCN,SmartXPro_CN,logistics_cost,per_lot,0,5.0,USD,Inbound logistics CN domestic",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"AssemblyIN,SmartXPro_IN,conversion_cost,per_lot,0,52.0,USD,Assembly labor + overhead per lot India",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"AssemblyIN,SmartXPro_IN,logistics_cost,per_lot,0,6.0,USD,Inbound logistics India domestic",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"FoundryTW,SmartXPro_CN,conversion_cost,per_lot,0,7.0,USD,SoC fab processing cost NextGen",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"FoundryTW,SmartXPro_CN,logistics_cost,per_lot,0,2.0,USD,Wafer logistics TW→CN",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"AssemblyCN_g1,SmartX,conversion_cost,per_lot,0,40.0,USD,Assembly labor + overhead per lot SmartX",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"AssemblyCN_g1,SmartX,logistics_cost,per_lot,0,4.5,USD,Inbound logistics CN domestic",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"FoundryTW_g1,SmartX,conversion_cost,per_lot,0,5.0,USD,SoC fab processing cost Gen1",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"FoundryTW_g1,SmartX,logistics_cost,per_lot,0,1.8,USD,Wafer logistics TW→CN SmartX",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"AssemblyCN_g3,SmartXNext,conversion_cost,per_lot,0,55.0,USD,Assembly labor + overhead per lot SmartXNext",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"AssemblyCN_g3,SmartXNext,logistics_cost,per_lot,0,5.5,USD,Inbound logistics CN domestic SmartXNext",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"FoundryTW_g3,SmartXNext,conversion_cost,per_lot,0,8.5,USD,SoC fab processing cost Gen3 next-gen",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_node_cost_rule.csv,removed,"FoundryTW_g3,SmartXNext,logistics_cost,per_lot,0,2.2,USD,Wafer logistics TW→CN SmartXNext",完成品の仕入値に含まれる（台湾の工場・組立工場の加工費と入荷の運賃）
+ppc_transfer_price_rule.csv,removed,"FoundryTW,SmartXPro_CN,cost_plus,0.15,,USD",台湾の工場の移転価格（PPC は最後の工場の移転価格だけ使う。完成品の仕入値に含まれる）
+ppc_transfer_price_rule.csv,removed,"FoundryTW_g1,SmartX,cost_plus,0.15,,USD",台湾の工場の移転価格（PPC は最後の工場の移転価格だけ使う。完成品の仕入値に含まれる）
+ppc_transfer_price_rule.csv,removed,"FoundryTW_g3,SmartXNext,cost_plus,0.15,,USD",台湾の工場の移転価格（PPC は最後の工場の移転価格だけ使う。完成品の仕入値に含まれる）
+ppc_node_cost_rule.csv,removed,"DC_AMER,SmartXPro_IN,logistics_cost,per_lot,0,10.0,USD,Ocean freight CN→AMER + port handling",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_node_cost_rule.csv,removed,"DC_EMEA,SmartXPro_CN,logistics_cost,per_lot,0,12.0,USD,Air/ocean freight CN→EMEA + customs",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_node_cost_rule.csv,removed,"DC_APAC,SmartXPro_CN,logistics_cost,per_lot,0,8.0,USD,Ocean freight CN→APAC Singapore",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_node_cost_rule.csv,removed,"DC_AMER_g1,SmartX,logistics_cost,per_lot,0,9.5,USD,Ocean freight CN→AMER SmartX",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_node_cost_rule.csv,removed,"DC_EMEA_g1,SmartX,logistics_cost,per_lot,0,11.0,USD,Air/ocean freight CN→EMEA SmartX",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_node_cost_rule.csv,removed,"DC_APAC_g1,SmartX,logistics_cost,per_lot,0,7.5,USD,Ocean freight CN→APAC SmartX",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_node_cost_rule.csv,removed,"DC_AMER_g3,SmartXNext,logistics_cost,per_lot,0,10.5,USD,Ocean freight CN→AMER SmartXNext",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_node_cost_rule.csv,removed,"DC_EMEA_g3,SmartXNext,logistics_cost,per_lot,0,12.5,USD,Air/ocean freight CN→EMEA SmartXNext",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_node_cost_rule.csv,removed,"DC_APAC_g3,SmartXNext,logistics_cost,per_lot,0,8.5,USD,Ocean freight CN→APAC SmartXNext",DC のノードの運賃（国際輸送は区間だけに書く：大杉さんの判断）
+ppc_edge_cost_rule.csv,removed,"AssemblyCN_g1->SP_SmartX,SmartX,logistics_cost,per_lot,0.0,0.9,USD",supply point 経由の鍵（PPC が引かない）
+ppc_edge_cost_rule.csv,removed,"AssemblyCN_g3->SP_SmartXNext,SmartXNext,logistics_cost,per_lot,0.0,1.2,USD",supply point 経由の鍵（PPC が引かない）
+ppc_edge_cost_rule.csv,removed,"SP_SmartX->Retail_AMER_g1,SmartX,logistics_cost,per_lot,0.0,16.1,USD",supply point 経由の鍵（PPC が引かない）
+ppc_edge_cost_rule.csv,removed,"SP_SmartX->Retail_EMEA_g1,SmartX,logistics_cost,per_lot,0.0,18.2,USD",supply point 経由の鍵（PPC が引かない）
+ppc_edge_cost_rule.csv,removed,"SP_SmartX->Retail_APAC_g1,SmartX,logistics_cost,per_lot,0.0,13.3,USD",supply point 経由の鍵（PPC が引かない）
+ppc_edge_cost_rule.csv,removed,"SP_SmartXNext->Retail_AMER_g3,SmartXNext,logistics_cost,per_lot,0.0,17.9,USD",supply point 経由の鍵（PPC が引かない）
+ppc_edge_cost_rule.csv,removed,"SP_SmartXNext->Retail_EMEA_g3,SmartXNext,logistics_cost,per_lot,0.0,20.8,USD",supply point 経由の鍵（PPC が引かない）
+ppc_edge_cost_rule.csv,removed,"SP_SmartXNext->Retail_APAC_g3,SmartXNext,logistics_cost,per_lot,0.0,15.3,USD",supply point 経由の鍵（PPC が引かない）
+ppc_edge_cost_rule.csv,added,"AssemblyCN_g1->DC_AMER_g1,SmartX,logistics_cost,per_lot,0.0,16.1,USD",国際輸送（組立工場 → DC）
+ppc_edge_cost_rule.csv,added,"DC_AMER_g1->Retail_AMER_g1,SmartX,logistics_cost,per_lot,0.0,0.9,USD",国内（DC → 市場。Pro と同じ寄せ方）
+ppc_edge_cost_rule.csv,added,"AssemblyCN_g1->DC_EMEA_g1,SmartX,logistics_cost,per_lot,0.0,18.2,USD",国際輸送（組立工場 → DC）
+ppc_edge_cost_rule.csv,added,"DC_EMEA_g1->Retail_EMEA_g1,SmartX,logistics_cost,per_lot,0.0,0.9,USD",国内（DC → 市場。Pro と同じ寄せ方）
+ppc_edge_cost_rule.csv,added,"AssemblyCN_g1->DC_APAC_g1,SmartX,logistics_cost,per_lot,0.0,13.3,USD",国際輸送（組立工場 → DC）
+ppc_edge_cost_rule.csv,added,"DC_APAC_g1->Retail_APAC_g1,SmartX,logistics_cost,per_lot,0.0,0.9,USD",国内（DC → 市場。Pro と同じ寄せ方）
+ppc_edge_cost_rule.csv,added,"AssemblyCN_g3->DC_AMER_g3,SmartXNext,logistics_cost,per_lot,0.0,17.9,USD",国際輸送（組立工場 → DC）
+ppc_edge_cost_rule.csv,added,"DC_AMER_g3->Retail_AMER_g3,SmartXNext,logistics_cost,per_lot,0.0,1.2,USD",国内（DC → 市場。Pro と同じ寄せ方）
+ppc_edge_cost_rule.csv,added,"AssemblyCN_g3->DC_EMEA_g3,SmartXNext,logistics_cost,per_lot,0.0,20.8,USD",国際輸送（組立工場 → DC）
+ppc_edge_cost_rule.csv,added,"DC_EMEA_g3->Retail_EMEA_g3,SmartXNext,logistics_cost,per_lot,0.0,1.2,USD",国内（DC → 市場。Pro と同じ寄せ方）
+ppc_edge_cost_rule.csv,added,"AssemblyCN_g3->DC_APAC_g3,SmartXNext,logistics_cost,per_lot,0.0,15.3,USD",国際輸送（組立工場 → DC）
+ppc_edge_cost_rule.csv,added,"DC_APAC_g3->Retail_APAC_g3,SmartXNext,logistics_cost,per_lot,0.0,1.2,USD",国内（DC → 市場。Pro と同じ寄せ方）
+ppc_tariff_rule.csv,removed,"AssemblyCN_g1->SP_SmartX,CN,CN,SmartX,8517120000,0.0,transfer_price",supply point 経由の鍵（PPC が引かない）
+ppc_tariff_rule.csv,removed,"SP_SmartX->Retail_AMER_g1,CN,US,SmartX,8517120000,0.25,transfer_price",supply point 経由の鍵（PPC が引かない）
+ppc_tariff_rule.csv,removed,"SP_SmartX->Retail_EMEA_g1,CN,EU,SmartX,8517120000,0.075,transfer_price",supply point 経由の鍵（PPC が引かない）
+ppc_tariff_rule.csv,removed,"SP_SmartX->Retail_APAC_g1,CN,SG,SmartX,8517120000,0.0,transfer_price",supply point 経由の鍵（PPC が引かない）
+ppc_tariff_rule.csv,removed,"AssemblyCN_g3->SP_SmartXNext,CN,CN,SmartXNext,8517120000,0.0,transfer_price",supply point 経由の鍵（PPC が引かない）
+ppc_tariff_rule.csv,removed,"SP_SmartXNext->Retail_AMER_g3,CN,US,SmartXNext,8517120000,0.25,transfer_price",supply point 経由の鍵（PPC が引かない）
+ppc_tariff_rule.csv,removed,"SP_SmartXNext->Retail_EMEA_g3,CN,EU,SmartXNext,8517120000,0.075,transfer_price",supply point 経由の鍵（PPC が引かない）
+ppc_tariff_rule.csv,removed,"SP_SmartXNext->Retail_APAC_g3,CN,SG,SmartXNext,8517120000,0.0,transfer_price",supply point 経由の鍵（PPC が引かない）
+ppc_tariff_rule.csv,added,"AssemblyCN_g1->DC_AMER_g1,CN,US,SmartX,8517120000,0.25,transfer_price",国境の区間（組立工場 → DC）。税率はそのまま
+ppc_tariff_rule.csv,added,"DC_AMER_g1->Retail_AMER_g1,US,US,SmartX,8517120000,0.0,transfer_price",DC → 市場（国内、0%。Pro と同じ）
+ppc_tariff_rule.csv,added,"AssemblyCN_g1->DC_EMEA_g1,CN,EU,SmartX,8517120000,0.075,transfer_price",国境の区間（組立工場 → DC）。税率はそのまま
+ppc_tariff_rule.csv,added,"DC_EMEA_g1->Retail_EMEA_g1,EU,EU,SmartX,8517120000,0.0,transfer_price",DC → 市場（国内、0%。Pro と同じ）
+ppc_tariff_rule.csv,added,"AssemblyCN_g1->DC_APAC_g1,CN,SG,SmartX,8517120000,0.0,transfer_price",国境の区間（組立工場 → DC）。税率はそのまま
+ppc_tariff_rule.csv,added,"DC_APAC_g1->Retail_APAC_g1,SG,SG,SmartX,8517120000,0.0,transfer_price",DC → 市場（国内、0%。Pro と同じ）
+ppc_tariff_rule.csv,added,"AssemblyCN_g3->DC_AMER_g3,CN,US,SmartXNext,8517120000,0.25,transfer_price",国境の区間（組立工場 → DC）。税率はそのまま
+ppc_tariff_rule.csv,added,"DC_AMER_g3->Retail_AMER_g3,US,US,SmartXNext,8517120000,0.0,transfer_price",DC → 市場（国内、0%。Pro と同じ）
+ppc_tariff_rule.csv,added,"AssemblyCN_g3->DC_EMEA_g3,CN,EU,SmartXNext,8517120000,0.075,transfer_price",国境の区間（組立工場 → DC）。税率はそのまま
+ppc_tariff_rule.csv,added,"DC_EMEA_g3->Retail_EMEA_g3,EU,EU,SmartXNext,8517120000,0.0,transfer_price",DC → 市場（国内、0%。Pro と同じ）
+ppc_tariff_rule.csv,added,"AssemblyCN_g3->DC_APAC_g3,CN,SG,SmartXNext,8517120000,0.0,transfer_price",国境の区間（組立工場 → DC）。税率はそのまま
+ppc_tariff_rule.csv,added,"DC_APAC_g3->Retail_APAC_g3,SG,SG,SmartXNext,8517120000,0.0,transfer_price",DC → 市場（国内、0%。Pro と同じ）

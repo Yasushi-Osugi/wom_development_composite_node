@@ -1,0 +1,5 @@
+kind,location,currency,requested_week,used_week,count,detail
+price_before_first_rule_week,market_price Retail_AMER_g1 x SmartX,,,first rule row,106,week before the rule's first row: the first row's value used
+price_before_first_rule_week,market_price Retail_APAC_g1 x SmartX,,,first rule row,106,week before the rule's first row: the first row's value used
+price_before_first_rule_week,market_price Retail_EMEA_g1 x SmartX,,,first rule row,106,week before the rule's first row: the first row's value used
+price_before_first_rule_week,supplier_cost AssemblyCN_g1 x SmartX,,,first rule row,159,week before the rule's first row: the first row's value used
