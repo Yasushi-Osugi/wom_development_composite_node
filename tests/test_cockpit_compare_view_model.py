@@ -474,3 +474,64 @@ def test_raise_row_shows_the_weeks_made_at_cap_and_the_unused_weeks(ws, monkeypa
     r = [x for x in V.comparison(ws, "C01", "C02")["money"]["fixed_cost"]
          if x["cost_item"] == "planned_output_raise"][0]
     assert r["unused_alt"] == "" and r["use_note_alt"] == "引き上げた工場が見つからない"
+
+
+# ── 控除後の差（RequestLetter_Cockpit_AfterCost_ThreeCases）────────────────────────
+def _ac_setup(ws):
+    from wom.cockpit import after_cost as AC
+    d = V.compare_dir(ws, "C01", "C02")
+    pd.DataFrame([{"case": c, "period": p, "product": "*", "location_kind": "*", "weeks": 1, "B_group_hq": v,
+                   "lots_weeks": 1, "unvalued_lots_weeks": 0}
+                  for c, p, v in (("C01", "report", 5200.0), ("C01", "warmup", 0.0),
+                                  ("C02", "report", 10400.0), ("C02", "warmup", 5200.0))]).to_csv(
+        os.path.join(d, "holding_base.csv"), index=False)
+    rows = [dict(FC[1], cost_item=AC.RAISE_ITEM, display_name="増産の確保費", count_outside_report=1), FC[2]]
+    pd.DataFrame(rows).to_csv(os.path.join(d, "fixed_cost_breakeven.csv"), index=False)
+    return AC
+
+
+def test_after_cost_table_is_not_shown_without_the_scenario_table(ws):
+    _ac_setup(ws)
+    av = V.comparison(ws, "C01", "C02")["money"]["after_cost"]
+    assert not av["shown"] and not av["available"]
+    assert not any("確保費の週額の仮置き" in n for n in V.notes(ws, "C01", "C02"))
+
+
+def test_after_cost_table_and_sentence(ws):
+    AC = _ac_setup(ws)
+    os.makedirs(os.path.join(ws, "inputs"), exist_ok=True)
+    with open(AC.scenario_path(ws), "w", encoding="utf-8", newline="\n") as f:
+        f.write("scenario,level,premium_pct,weekly_amount_full,weekly_amount_narrowed,status,note\n"
+                "低,低,15,10,11.5,仮置き,\n高,高,15,100,115,仮置き,\n")
+    c = V.comparison(ws, "C01", "C02")
+    av = c["money"]["after_cost"]
+    assert av["available"] and len(av["rows"]) == 2 * 4
+    # C02 bears W01..W03 = plan weeks -> full; P0 150 − 3 x amount − holding; C01: 100 − holding
+    r = [x for x in av["rows"] if x["scenario"] == "低" and x["holding_rate_text"] == "10%"][0]
+    hb, ha = 0.10 / 52 * 5200.0, 0.10 / 52 * 15600.0
+    assert r["weekly_amount_alt"] == 10.0 and abs(r["diff"] - ((150.0 - 30.0 - ha) - (100.0 - hb))) < 1e-9
+    judge = [p for p in c["summary"] if p["title"] == "判断に要るもの"][0]["text"]
+    lo = (150.0 - 300.0 - ha) - (100.0 - hb)
+    hi = (150.0 - 30.0 - ha) - (100.0 - hb)
+    assert (f"控除後の差（相手 − 基準、保有費 年率 10%）は {V.fmt_yen(lo)}〜{V.fmt_yen(hi)} 円"
+            f"（低 {V.fmt_yen(hi)}、高 {V.fmt_yen(lo)}）") in judge
+    assert any("確保費の週額は仮置き（GPT-MC 見積もり、採用額ではない）" in n for n in V.notes(ws, "C01", "C02", c))
+    _named_cost(ws, "C02", "2027-W01")                                       # cost premises changed: not shown
+    assert not V.comparison(ws, "C01", "C02")["money"]["after_cost"]["available"]
+
+
+def test_inputs_pane_keeps_its_minimum_width(ws):
+    root = _tk_root()
+    if root is None:
+        pytest.skip("no display available for tkinter")
+    try:
+        from wom.cockpit.compare_screen import CompareScreen
+        root.geometry("900x800+-3000+-3000")
+        s = CompareScreen(root, ws, "C01", "C02")
+        root.update()
+        assert s.inputs_width() >= V.MIN_INPUTS_WIDTH
+        s._hp.sashpos(0, 100)                                                  # dragged narrow
+        s._keep_inputs_width()
+        assert s.inputs_width() >= V.MIN_INPUTS_WIDTH
+    finally:
+        root.destroy()

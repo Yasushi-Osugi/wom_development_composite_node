@@ -40,6 +40,7 @@ STATE_DISPLAY = {C.ST_CHANGED: RERUN}
 WEEK_RULE_SHORT = {"trim_to_capacity_latest": "削って最低", "proportional_early_tie": "比例・早い週優先",
                    "proportional_even": "比例・均等", "earliest_first": "早い週から"}
 EDGE_WEEKS_TEXT = "計画の端の週（計画の最初の 1 週と最後の 4 週）"
+MIN_INPUTS_WIDTH = 360     # px: ② keeps at least this width however wide ③'s tables get (控除後の依頼 A3)
 
 
 # ── 小道具 ─────────────────────────────────────────────────────────────
@@ -383,6 +384,7 @@ def comparison(ws: str, base: str, alt: str) -> dict:
     out["factory"] = factory_view(d, base, alt)
     out["money"] = money_view(d, base, alt, hide_fixed_cost=out["cost_stale"])
     raise_use(ws, d, base, alt, out["money"]["fixed_cost"])
+    out["money"]["after_cost"] = after_cost_view(ws, d, base, alt, hide=out["cost_stale"])
     out["summary"] = summary(ws, base, alt, out)
     return out
 
@@ -551,6 +553,72 @@ def raise_use(ws: str, d: str, base: str, alt: str, rows: List[dict]) -> None:
             r[f"made_at_cap_{side}"] = at
             r[f"unused_{side}"] = int(float(r[f"W_{side}"])) - at
             r[f"use_note_{side}"] = f"{sku} @ {fac}"
+
+
+def after_cost_view(ws: str, d: str, base: str, alt: str, hide: bool = False) -> dict:
+    """控除後の依頼 A3: the two cases' after-cost profit for each weekly amount scenario of the workspace
+    (inputs/raise_cost_scenarios.csv) x holding rate, built from this comparison's outputs with the same function
+    as the CLI (after_cost.after_cost_rows). Not shown when the workspace has no scenario table."""
+    from wom.cockpit import after_cost as AC
+    out = {"available": False, "shown": False, "rows": [], "reason": "",
+           "title": "確保費の週額の仮置き（GPT-MC 見積もり）での控除後の差（相手 − 基準）"}
+    try:
+        scen = AC.read_raise_scenarios(ws)
+    except AC.AfterCostError as e:
+        out.update(shown=True, reason=str(e))
+        return out
+    if scen is None:
+        return out                               # no table: not shown (the weekly amount stays 未設定)
+    out["shown"] = True
+    if hide:
+        out["reason"] = f"費用の前提が変わった：{RECOMPARE}"
+        return out
+    hb_p = os.path.join(d, "holding_base.csv")
+    if not os.path.exists(hb_p):
+        out["reason"] = f"この比較には保有費の欄が無い（{RECOMPARE}）"
+        return out
+    fc = _csv(os.path.join(d, "fixed_cost_breakeven.csv"), dtype=str, keep_default_na=False)
+    hb = _csv(hb_p)
+    fw = _csv(os.path.join(d, "factory_weekly.csv"), dtype={"week": str})
+    labels = list(dict.fromkeys(fw.sort_values("week_index")["week"]))
+    rr = fc[fc["cost_item"] == AC.RAISE_ITEM]
+    facts = []
+    for side, cid in (("base", base), ("alt", alt)):
+        ps = pe = ""
+        w = 0
+        if len(rr) and not _blank(rr.iloc[0][f"paid_start_{side}"]):
+            ps, pe = rr.iloc[0][f"paid_start_{side}"], rr.iloc[0][f"paid_end_{side}"]
+            w = int(float(rr.iloc[0][f"W_{side}"]))
+        tot = hb[(hb["case"] == cid) & (hb["product"] == "*") & (hb["location_kind"] == "*")].set_index("period")
+        facts.append({"case": cid, "P0": float(fc.iloc[0][f"P0_{side}"]), "paid_start": ps, "paid_end": pe, "W": w,
+                      "kind": AC.raise_kind(ps, pe, labels[0], labels[-1]),
+                      "B_report": float(tot["B_group_hq"].get("report", 0.0)),
+                      "B_warmup": float(tot["B_group_hq"].get("warmup", 0.0))})
+    rows = AC.after_cost_rows(scen, facts)
+    pdiff = AC.pair_diffs(rows, base, alt)
+    out.update(available=True, rows=pdiff.to_dict("records"), facts=facts, note=AC.OVERLAP_NOTE,
+               status=sorted(set(scen["status"])))
+    return out
+
+
+def after_cost_sentence(av: dict) -> List[str]:
+    """One sentence at the 10 % holding rate: the range of the after-cost difference over the scenarios,
+    and per level. Never says which is better."""
+    if not av.get("available"):
+        return []
+    g = [r for r in av["rows"] if r["holding_rate_text"] == "10%" and r["diff"] != NOT_COMPUTED]
+    if not g:
+        return []
+    v = [float(r["diff"]) for r in g]
+    levels = []
+    for lv in dict.fromkeys(r["level"] for r in g):
+        x = [float(r["diff"]) for r in g if r["level"] == lv]
+        lo, hi = min(x), max(x)
+        levels.append(f"{lv} {fmt_yen(lo)}" + ("" if fmt_yen(lo) == fmt_yen(hi) else f"〜{fmt_yen(hi)}"))
+    prem = sorted({str(r["premium_pct"]) for r in g}, key=lambda t: float(t) if t else 0)
+    return [f"確保費の週額の仮置き（GPT-MC 見積もり、{'・'.join(dict.fromkeys(r['level'] for r in g))}、"
+            f"割増 {'・'.join(prem)}%）で、控除後の差（相手 − 基準、保有費 年率 10%）は "
+            f"{fmt_yen(min(v))}〜{fmt_yen(max(v))} 円（{'、'.join(levels)}）"]
 
 
 def holding_view(d: str, hide: bool = False) -> dict:
@@ -812,6 +880,7 @@ def summary(ws: str, base: str, alt: str, cmp: dict) -> List[dict]:
         elif mv["unset_costs"]:
             parts.append(f"週額が未設定の費用があるので、控除後の利益は{NOT_COMPUTED}、採算の順位は{PENDING}")
         parts += holding_sentence(mv["holding"])
+        parts += after_cost_sentence(mv.get("after_cost") or {})
         out.append({"title": "判断に要るもの", "text": "。".join(parts) + "。"})
     return out
 
@@ -899,6 +968,11 @@ def notes(ws: str, base: Optional[str], alt: Optional[str], cmp: Optional[dict] 
     hv = mv.get("holding") or {}
     if not hv.get("available") and hv.get("reason") and not mv["hidden"]:
         out.append(f"在庫の保有費：{hv['reason']}")
+    av = mv.get("after_cost") or {}
+    if av.get("available"):
+        out.append(f"確保費の週額は{'・'.join(av['status'])}（GPT-MC 見積もり、採用額ではない）。{av['note']}")
+    elif av.get("shown") and av.get("reason") and not mv["hidden"]:
+        out.append(f"確保費の週額の仮置き：{av['reason']}")
     for c in common_shortages(cmp["supply"]):
         out.append(c)
     out.append(f"{EDGE_WEEKS_TEXT}：{', '.join(fv['boundary_weeks'])}。ここで工場が計画値より少なく作るのは計画の端の効果")

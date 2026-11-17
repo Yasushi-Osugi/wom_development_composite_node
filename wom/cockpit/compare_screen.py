@@ -137,6 +137,9 @@ class CompareScreen(ttk.Frame):
         hp.add(f3, weight=5)
         vp.add(hp, weight=6)
         self._hp = hp
+        # 控除後の依頼 A3: ② never gets narrower than V.MIN_INPUTS_WIDTH (③'s tables scroll sideways instead)
+        hp.bind("<Configure>", lambda _e: self._keep_inputs_width(), add="+")
+        hp.bind("<ButtonRelease-1>", lambda _e: self._keep_inputs_width(), add="+")
         # ④ notes
         f4 = ttk.LabelFrame(vp, text="④ 読むときの注意")
         self.notes = tk.Text(f4, height=6, wrap="word", font=("Yu Gothic UI", 9))
@@ -205,16 +208,31 @@ class CompareScreen(ttk.Frame):
                                        "max_a": "最大 相手", "end_b": "期末 基準", "end_a": "期末 相手"})
 
     def _build_money_tab(self):
-        # the tables are packed first (bottom frame) so they keep their height; the chart gets what is left
-        low = ttk.Frame(self.tab_money)
-        low.pack(side="bottom", fill="x")
+        # 控除後の依頼: the tab scrolls up and down (chart of a fixed height, then the tables), so a short window
+        # squeezes nothing; each table still scrolls sideways
+        sc = tk.Canvas(self.tab_money, highlightthickness=0)
+        vs = ttk.Scrollbar(self.tab_money, orient="vertical", command=sc.yview)
+        sc.configure(yscrollcommand=vs.set)
+        vs.pack(side="right", fill="y")
+        sc.pack(side="left", fill="both", expand=True)
+        low = ttk.Frame(sc)
+        win = sc.create_window((0, 0), window=low, anchor="nw")
+        low.bind("<Configure>", lambda _e: sc.configure(scrollregion=sc.bbox("all")))
+        sc.bind("<Configure>", lambda e: sc.itemconfigure(win, width=e.width))
+
+        def wheel(e):
+            sc.yview_scroll(int(-e.delta / 120), "units")
+        sc.bind("<Enter>", lambda _e: sc.bind_all("<MouseWheel>", wheel))
+        sc.bind("<Leave>", lambda _e: sc.unbind_all("<MouseWheel>"))
+        self.money_scroll = sc
         self.money_fig = Figure(figsize=(9, 2.0), dpi=90)
-        self.money_canvas = FigureCanvasTkAgg(self.money_fig, self.tab_money)
-        self.money_canvas.get_tk_widget().pack(fill="both", expand=True)
+        self.money_canvas = FigureCanvasTkAgg(self.money_fig, low)
+        self.money_canvas.get_tk_widget().configure(height=180)
+        self.money_canvas.get_tk_widget().pack(fill="x")
         self.money_p0 = self._table(low, ["期間", "SKU", "p0_b", "p0_a", "差（相手 − 基準）"], height=4)
         self.money_fc = self._table(low, [
             "費目", "ΔP0", "ΔW", "境目（円／週）", "境目の置き方", "評価", "paid_b", "w_b", "at_b", "un_b", "paid_a", "w_a",
-            "at_a", "un_a", "wa_b", "wa_a", "cost_b", "cost_a", "after_b", "after_a", "控除後の差"], height=3)
+            "at_a", "un_a", "wa_b", "wa_a", "cost_b", "cost_a", "after_b", "after_a", "控除後の差"], height=4)
         self._heads(self.money_p0, {"p0_b": "P0 基準", "p0_a": "P0 相手"})
         self._heads(self.money_fc, self._fc_heads("基準", "相手"))
         # 保有費の依頼 A3: the holding cost sensitivity under the fixed cost table
@@ -222,8 +240,16 @@ class CompareScreen(ttk.Frame):
         self.money_hold_title.pack(anchor="w", padx=4)
         self.money_hold = self._table(low, [
             "年率", "費目", "境目 助走を含む（円／週）", "境目 報告期間だけ（円／週）", "差 計", "差 報告期間", "差 助走",
-            "hb_r", "hb_w", "ha_r", "ha_w", "境目の読み方"], height=3)
+            "hb_r", "hb_w", "ha_r", "ha_w", "境目の読み方"], height=4)
         self._heads(self.money_hold, self._hold_heads("基準", "相手"))
+        # 控除後の依頼 A3: the after-cost difference for the weekly amount placeholders (shown when the workspace
+        # has inputs/raise_cost_scenarios.csv)
+        self.money_ac_title = ttk.Label(low, text="", foreground="#335")
+        self.money_ac_title.pack(anchor="w", padx=4)
+        self.money_ac = self._table(low, [
+            "シナリオ", "年率", "控除後の差（相手 − 基準）", "ac_b", "ac_a", "wa_b", "wa_a", "rc_b", "rc_a", "h_b", "h_a"],
+            height=12)
+        self._heads(self.money_ac, self._ac_heads("基準", "相手"))
 
     # ── workspace ───────────────────────────────────────────────────────
     def _choose(self):
@@ -343,10 +369,12 @@ class CompareScreen(ttk.Frame):
     # ── ③ ─────────────────────────────────────────────────────────────
     def _show_comparison(self):
         self.cmp = None
+        self.master.after_idle(self._keep_inputs_width)
         for tv in (self.supply_diff, self.supply_totals, self.factory_weeks, self.factory_inv, self.factory_age,
-                   self.money_p0, self.money_fc, self.money_hold):
+                   self.money_p0, self.money_fc, self.money_hold, self.money_ac):
             tv.delete(*tv.get_children())
         self.money_hold_title.configure(text="在庫の保有費（感度。年率は仮置き）")
+        self.money_ac_title.configure(text="")
         for fig in (self.supply_fig, self.factory_fig, self.money_fig):
             fig.clear()
         self._set_text(self.summary, "")
@@ -385,9 +413,26 @@ class CompareScreen(ttk.Frame):
                 "after_b": f"控除後 {b}（合計の行だけ）", "after_a": f"控除後 {a}（合計の行だけ）"}
 
     @staticmethod
+    def _ac_heads(b: str, a: str) -> dict:
+        return {"ac_b": f"控除後 {b}", "ac_a": f"控除後 {a}", "wa_b": f"週額 {b}", "wa_a": f"週額 {a}",
+                "rc_b": f"確保費 {b}", "rc_a": f"確保費 {a}", "h_b": f"保有費 {b}", "h_a": f"保有費 {a}"}
+
+    @staticmethod
     def _hold_heads(b: str, a: str) -> dict:
         return {"hb_r": f"保有費 {b} 報告期間", "hb_w": f"保有費 {b} 助走", "ha_r": f"保有費 {a} 報告期間",
                 "ha_w": f"保有費 {a} 助走"}
+
+    def _keep_inputs_width(self) -> None:
+        try:
+            if self._hp.winfo_width() > V.MIN_INPUTS_WIDTH + 200 and self._hp.sashpos(0) < V.MIN_INPUTS_WIDTH:
+                self._hp.sashpos(0, V.MIN_INPUTS_WIDTH)
+        except tk.TclError:
+            pass
+
+    def inputs_width(self) -> int:
+        """The width of ② as drawn (for the checks)."""
+        self.master.update_idletasks()
+        return self._hp.sashpos(0)
 
     def _heads_for_pair(self):
         b, a = f"基準（{self.base}）", f"相手（{self.alt}）"
@@ -397,6 +442,7 @@ class CompareScreen(ttk.Frame):
         self._heads(self.money_p0, {"p0_b": f"P0 {b}", "p0_a": f"P0 {a}"})
         self._heads(self.money_fc, self._fc_heads(b, a))
         self._heads(self.money_hold, self._hold_heads(b, a))
+        self._heads(self.money_ac, self._ac_heads(b, a))
 
     @staticmethod
     def _set_text(t: tk.Text, text: str, paragraphs: Optional[list] = None):
@@ -570,6 +616,17 @@ class CompareScreen(ttk.Frame):
                     V.fmt_yen(r["H_alt_report"]), V.fmt_yen(r["H_alt_warmup"]), r["boundary_incl_warmup"]])
         else:
             self.money_hold_title.configure(text=f"在庫の保有費（感度。年率は仮置き）：{hv['reason']}")
+        av = mv.get("after_cost") or {}
+        if av.get("available"):
+            self.money_ac_title.configure(text=av["title"] + f"　週額は{'・'.join(av['status'])}、採用額ではない")
+            for r in av["rows"]:
+                self.money_ac.insert("", "end", values=[
+                    r["scenario"], r["holding_rate_text"], V.fmt_yen(r["diff"]), V.fmt_yen(r["P_after_base"]),
+                    V.fmt_yen(r["P_after_alt"]), V.fmt_yen(r["weekly_amount_base"]), V.fmt_yen(r["weekly_amount_alt"]),
+                    V.fmt_yen(r["raise_cost_base"]), V.fmt_yen(r["raise_cost_alt"]), V.fmt_yen(r["H_total_base"]),
+                    V.fmt_yen(r["H_total_alt"])])
+        elif av.get("shown"):
+            self.money_ac_title.configure(text=f"{av['title']}：{av['reason']}")
         if mv["hidden"]:
             self.money_fc.insert("", "end", values=[f"費用の前提が変わった：{V.RECOMPARE}"] + [""] * 20)
             return
@@ -1063,6 +1120,7 @@ class CompareScreen(ttk.Frame):
                 "factory_weeks": tv(self.factory_weeks), "factory_inventory": tv(self.factory_inv),
                 "factory_age": tv(self.factory_age), "money_p0": tv(self.money_p0),
                 "money_fixed_cost": tv(self.money_fc), "money_holding": tv(self.money_hold),
+                "money_after_cost": tv(self.money_ac),
                 "summary": pd.DataFrame({"line": self.summary.get("1.0", "end").strip().splitlines()}),
                 "notes": pd.DataFrame({"note": self.notes.get("1.0", "end").strip().splitlines()}),
                 "inputs": pd.DataFrame({"line": self.inputs.get("1.0", "end").strip().splitlines()}),

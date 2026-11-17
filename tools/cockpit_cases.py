@@ -18,6 +18,7 @@ RequestLetter_Cockpit_Stage3_Step1_CasesAndRunner §2.3。wom/cockpit/cases.py�
     python -m tools.cockpit_cases set     --ws <作業> --case C01 fixed-cost  --cost-item … --entity … --paid-start … --paid-end … [--weekly-amount …] --currency JPY [--note …]
     python -m tools.cockpit_cases run     --ws <作業> --case C01 [C02 …]
     python -m tools.cockpit_cases compare --ws <作業> --base C03 --alt C04
+    python -m tools.cockpit_cases after-cost --ws <作業> --cases C01,C02,C03 [--name <名前>]
     python -m tools.cockpit_cases list    --ws <作業> [--json]
     python -m tools.cockpit_cases status  --ws <作業> --case C01
 
@@ -36,6 +37,7 @@ if REPO not in sys.path:
 
 from wom.cockpit import cases as C          # noqa: E402
 from wom.cockpit import case_runner as R    # noqa: E402
+from wom.cockpit import after_cost as AC    # noqa: E402
 
 
 def _print_progress(e: dict) -> None:
@@ -118,6 +120,11 @@ def main(argv=None) -> int:
     p.add_argument("--base", required=True)
     p.add_argument("--alt", required=True)
 
+    p = sub.add_parser("after-cost", help="案の控除後の利益を、確保費の週額の仮置き × 保有費の年率で並べる")
+    p.add_argument("--ws", required=True)
+    p.add_argument("--cases", required=True, help="C01,C02,C03（最初の案が差の基準）")
+    p.add_argument("--name", default=None)
+
     p = sub.add_parser("list")
     p.add_argument("--ws", required=True)
     p.add_argument("--json", action="store_true")
@@ -193,6 +200,13 @@ def main(argv=None) -> int:
                 print(f"  {r.get('cost_item') or '(固定費の表なし)'}：ΔW {r.get('delta_W')}  {r.get('boundary')}  "
                       f"f* {r.get('f_star_per_week')}")
             print(f"  -> {os.path.join(a.ws, 'compare', f'{a.base}__{a.alt}')}")
+        elif a.cmd == "after-cost":
+            res = AC.after_cost(a.ws, [c.strip() for c in a.cases.split(",") if c.strip()], a.name)
+            if res["scenarios"] is None:
+                print(f"[cockpit_cases] 週額の表（inputs/{AC.SCENARIO_FILE}）が無い：週額は「{AC.UNSET}」")
+            for f in res["facts"]:
+                print(f"  {f['case']}：P0 {f['P0']:,.0f}、{f['kind']}、W {f['W']}")
+            print(f"  -> {res['dir']}")
         elif a.cmd == "list":
             rows = C.list_cases(a.ws)
             if a.json:
@@ -201,7 +215,7 @@ def main(argv=None) -> int:
                 print(C.format_list(rows))
         elif a.cmd == "status":
             print(json.dumps(C.status(a.ws, a.case), ensure_ascii=False, indent=2))
-    except C.CaseError as e:
+    except (C.CaseError, AC.AfterCostError) as e:
         print(f"[cockpit_cases] 止めました: {e}", file=sys.stderr)
         return 2
     except R.StageStop as e:
