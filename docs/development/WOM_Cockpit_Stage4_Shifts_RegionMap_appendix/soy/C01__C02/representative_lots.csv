@@ -1,0 +1,110 @@
+reason,lot_id,case,step,week,what,amount_hq
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C01,1 demand,2027-W24,Soy_Sauce JP request week 2027-W24: demand 300 lots; this lot is seq 1,
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C01,2 shipment,,no shipment record,
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C01,3 money,,no money line,
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,1 demand,2027-W24,Soy_Sauce JP request week 2027-W24: demand 300 lots; this lot is seq 1,
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,2 shipment,2026-W32,purchase_in Materials_JP->Brewing_Noda (arrive 2026-W34),
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,2 shipment,2026-W34,inbound_move Brewing_Noda->Bottling_Noda (arrive 2026-W38),
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,2 shipment,2026-W39,handoff_to_sp nan (arrive 2026-W39),
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,2 shipment,2027-W18,outbound_move Bottling_Noda->FG_WH_Noda (arrive 2027-W19),
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,2 shipment,2027-W22,outbound_move FG_WH_Noda->DC_JP (arrive 2027-W23),
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,2 shipment,2027-W23,outbound_move DC_JP->Rest_JP (arrive 2027-W24),
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,2 shipment,2027-W24,consumer_sale nan (arrive nan),
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2026-W32,"E_JP acquisition/external/purchase basis=v1,entity,group node=Brewing_Noda",900.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2026-W32,"E_JP acquisition/internal/freight basis=v1,entity,group node=Brewing_Noda",45.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2026-W34,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Brewing_Noda",750.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2026-W34,E_JP revenue/management/transfer basis=v1 node=Brewing_Noda,1695.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2026-W34,E_JP cogs/management/transfer basis=v1 node=Brewing_Noda,1695.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2026-W34,"E_JP acquisition/internal/freight basis=v1,entity,group node=Bottling_Noda",60.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2026-W38,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Bottling_Noda",750.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W18,E_JP revenue/management/sale basis=all node=Bottling_Noda,2755.5
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W18,E_JP cogs/management/sale basis=v1 node=Bottling_Noda,2505.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W18,E_JP acquisition/management/purchase basis=v1 node=FG_WH_Noda,2755.5
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W18,"E_JP acquisition/internal/freight basis=v1,entity,group node=FG_WH_Noda",60.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W19,"E_JP expense/period/warehouse_cost basis=v1,entity,group node=FG_WH_Noda",75.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W22,E_JP revenue/management/transfer basis=v1 node=FG_WH_Noda,2815.5
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W22,E_JP cogs/management/transfer basis=v1 node=FG_WH_Noda,2815.5
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W22,"E_JP acquisition/internal/freight basis=v1,entity,group node=DC_JP",150.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W22,"E_JP acquisition/internal/tariff basis=v1,entity,group node=DC_JP",0.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W23,"E_JP expense/period/warehouse_cost basis=v1,entity,group node=DC_JP",150.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W23,E_JP revenue/management/transfer basis=v1 node=DC_JP,2965.5
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W23,E_JP cogs/management/transfer basis=v1 node=DC_JP,2965.5
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W23,"E_JP acquisition/internal/freight basis=v1,entity,group node=Rest_JP",150.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W24,E_JP revenue/external/sale basis=all node=Rest_JP,3840.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W24,E_JP cogs/external/sale basis=v1 node=Rest_JP,3115.5
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W24,E_JP cogs/external/sale basis=entity node=Rest_JP,2865.0
+supply first request week 2027-W24,Soy_Sauce:JP:2027-W24:00001,C02,3 money,2027-W24,E_JP cogs/external/sale basis=group node=Rest_JP,2865.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C01,1 demand,2027-W32,Soy_Sauce BE request week 2027-W32: demand 100 lots; this lot is seq 1,
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C01,2 shipment,,no shipment record,
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C01,3 money,,no money line,
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,1 demand,2027-W32,Soy_Sauce BE request week 2027-W32: demand 100 lots; this lot is seq 1,
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,2 shipment,2026-W31,purchase_in Materials_JP->Brewing_Noda (arrive 2026-W33),
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,2 shipment,2026-W33,inbound_move Brewing_Noda->Bottling_Noda (arrive 2026-W37),
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,2 shipment,2026-W38,handoff_to_sp nan (arrive 2026-W38),
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,2 shipment,2027-W18,outbound_move Bottling_Noda->FG_WH_Noda (arrive 2027-W19),
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,2 shipment,2027-W22,outbound_move FG_WH_Noda->DC_EU_RTM (arrive 2027-W28),
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,2 shipment,2027-W31,outbound_move DC_EU_RTM->Rest_BE (arrive 2027-W32),
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,2 shipment,2027-W32,consumer_sale nan (arrive nan),
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2026-W31,"E_JP acquisition/external/purchase basis=v1,entity,group node=Brewing_Noda",900.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2026-W31,"E_JP acquisition/internal/freight basis=v1,entity,group node=Brewing_Noda",45.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2026-W33,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Brewing_Noda",750.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2026-W33,E_JP revenue/management/transfer basis=v1 node=Brewing_Noda,1695.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2026-W33,E_JP cogs/management/transfer basis=v1 node=Brewing_Noda,1695.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2026-W33,"E_JP acquisition/internal/freight basis=v1,entity,group node=Bottling_Noda",60.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2026-W37,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Bottling_Noda",750.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W18,E_JP revenue/management/sale basis=all node=Bottling_Noda,2755.5
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W18,E_JP cogs/management/sale basis=v1 node=Bottling_Noda,2505.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W18,E_JP acquisition/management/purchase basis=v1 node=FG_WH_Noda,2755.5
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W18,"E_JP acquisition/internal/freight basis=v1,entity,group node=FG_WH_Noda",60.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W19,"E_JP expense/period/warehouse_cost basis=v1,entity,group node=FG_WH_Noda",75.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W22,E_JP revenue/intercompany/sale basis=all node=FG_WH_Noda,2820.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W22,E_JP cogs/intercompany/sale basis=v1 node=FG_WH_Noda,2815.5
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W22,E_JP cogs/intercompany/sale basis=entity node=FG_WH_Noda,2565.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W22,"E_EU acquisition/intercompany/purchase basis=v1,entity node=DC_EU_RTM",2820.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W22,"E_EU acquisition/internal/freight basis=v1,entity,group node=DC_EU_RTM",900.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W22,"E_EU acquisition/internal/tariff basis=v1,entity,group node=DC_EU_RTM",220.44
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W28,"E_EU expense/period/warehouse_cost basis=v1,entity,group node=DC_EU_RTM",226.8
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W28,"E_EU expense/period/sga_cost basis=v1,entity,group node=DC_EU_RTM",121.5
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W31,E_EU revenue/external/sale basis=all node=DC_EU_RTM,4617.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W31,E_EU cogs/external/sale basis=v1 node=DC_EU_RTM,3940.44
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W31,E_EU cogs/external/sale basis=entity node=DC_EU_RTM,3940.44
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W31,E_EU cogs/external/sale basis=group node=DC_EU_RTM,3685.44
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W31,"E_EU expense/selling/freight basis=v1,entity,group node=DC_EU_RTM",225.0
+supply max request week 2027-W32,Soy_Sauce:BE:2027-W32:00001,C02,3 money,2027-W32,EXT_CH_BE observation_sale/observation/sale basis=obs node=Rest_BE,6156.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C01,1 demand,2027-W31,Soy_Sauce BE request week 2027-W31: demand 100 lots; this lot is seq 1,
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C01,2 shipment,,no shipment record,
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C01,3 money,,no money line,
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,1 demand,2027-W31,Soy_Sauce BE request week 2027-W31: demand 100 lots; this lot is seq 1,
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,2 shipment,2026-W33,purchase_in Materials_JP->Brewing_Noda (arrive 2026-W35),
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,2 shipment,2026-W35,inbound_move Brewing_Noda->Bottling_Noda (arrive 2026-W39),
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,2 shipment,2026-W40,handoff_to_sp nan (arrive 2026-W40),
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,2 shipment,2027-W17,outbound_move Bottling_Noda->FG_WH_Noda (arrive 2027-W18),
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,2 shipment,2027-W21,outbound_move FG_WH_Noda->DC_EU_RTM (arrive 2027-W27),
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,2 shipment,2027-W30,outbound_move DC_EU_RTM->Rest_BE (arrive 2027-W31),
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,2 shipment,2027-W31,consumer_sale nan (arrive nan),
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2026-W33,"E_JP acquisition/external/purchase basis=v1,entity,group node=Brewing_Noda",900.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2026-W33,"E_JP acquisition/internal/freight basis=v1,entity,group node=Brewing_Noda",45.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2026-W35,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Brewing_Noda",750.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2026-W35,E_JP revenue/management/transfer basis=v1 node=Brewing_Noda,1695.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2026-W35,E_JP cogs/management/transfer basis=v1 node=Brewing_Noda,1695.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2026-W35,"E_JP acquisition/internal/freight basis=v1,entity,group node=Bottling_Noda",60.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2026-W39,"E_JP acquisition/internal/conversion_cost basis=v1,entity,group node=Bottling_Noda",750.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W17,E_JP revenue/management/sale basis=all node=Bottling_Noda,2755.5
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W17,E_JP cogs/management/sale basis=v1 node=Bottling_Noda,2505.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W17,E_JP acquisition/management/purchase basis=v1 node=FG_WH_Noda,2755.5
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W17,"E_JP acquisition/internal/freight basis=v1,entity,group node=FG_WH_Noda",60.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W18,"E_JP expense/period/warehouse_cost basis=v1,entity,group node=FG_WH_Noda",75.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W21,E_JP revenue/intercompany/sale basis=all node=FG_WH_Noda,2820.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W21,E_JP cogs/intercompany/sale basis=v1 node=FG_WH_Noda,2815.5
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W21,E_JP cogs/intercompany/sale basis=entity node=FG_WH_Noda,2565.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W21,"E_EU acquisition/intercompany/purchase basis=v1,entity node=DC_EU_RTM",2820.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W21,"E_EU acquisition/internal/freight basis=v1,entity,group node=DC_EU_RTM",900.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W21,"E_EU acquisition/internal/tariff basis=v1,entity,group node=DC_EU_RTM",220.44
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W27,"E_EU expense/period/warehouse_cost basis=v1,entity,group node=DC_EU_RTM",226.8
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W27,"E_EU expense/period/sga_cost basis=v1,entity,group node=DC_EU_RTM",121.5
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W30,E_EU revenue/external/sale basis=all node=DC_EU_RTM,4617.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W30,E_EU cogs/external/sale basis=v1 node=DC_EU_RTM,3940.44
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W30,E_EU cogs/external/sale basis=entity node=DC_EU_RTM,3940.44
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W30,E_EU cogs/external/sale basis=group node=DC_EU_RTM,3685.44
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W30,"E_EU expense/selling/freight basis=v1,entity,group node=DC_EU_RTM",225.0
+profit first week 2027-W18,Soy_Sauce:BE:2027-W31:00001,C02,3 money,2027-W31,EXT_CH_BE observation_sale/observation/sale basis=obs node=Rest_BE,6156.0

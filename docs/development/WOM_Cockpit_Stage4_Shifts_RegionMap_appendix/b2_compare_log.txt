@@ -1,0 +1,3 @@
+[cockpit_cases] C01 → C02：ΔP0 7,765,271
+  planned_output_raise：ΔW 130  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 59732.8530803888
+  -> output/cockpit_step4b/soy\compare\C01__C02

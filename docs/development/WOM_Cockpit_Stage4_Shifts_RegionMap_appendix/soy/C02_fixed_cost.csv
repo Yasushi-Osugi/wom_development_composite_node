@@ -1,0 +1,2 @@
+cost_item,entity,paid_start_week,paid_end_week,weekly_amount,currency,note,count_outside_report,display_name
+planned_output_raise,E_JP,2026-W28,2028-W52,,JPY,有償の週は Soy_Sauce の計画の生産量を親の案より上げた週（686→800（エンジンの計画値））,1,追加シフトの確保費

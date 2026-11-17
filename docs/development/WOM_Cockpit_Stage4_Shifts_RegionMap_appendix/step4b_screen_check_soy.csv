@@ -1,0 +1,105 @@
+part,what,screen,expected,match
+soy,② C01 Soy_Sauce@Bottling_Noda の計画の生産量,"18 シフト → 686 lot／週（設備 800 × 18 ÷ 21）、休業 3 週（2027-W18, 2028-W18, 2028-W33）（エンジンの値）","18 シフト → 686 lot／週（設備 800 × 18 ÷ 21）、休業 3 週（2027-W18, 2028-W18, 2028-W33）（エンジンの値）",True
+soy,② 画面の文 C01 Soy_Sauce@Bottling_Noda,True,True,True
+soy,② C02 Soy_Sauce@Bottling_Noda の計画の生産量,"21 シフト → 800 lot／週（設備 800 × 21 ÷ 21）、休業 3 週（2027-W18, 2028-W18, 2028-W33）（エンジンの値）","21 シフト → 800 lot／週（設備 800 × 21 ÷ 21）、休業 3 週（2027-W18, 2028-W18, 2028-W33）（エンジンの値）",True
+soy,② 画面の文 C02 Soy_Sauce@Bottling_Noda,True,True,True
+soy,① 能力の列（エンジンの値）,"['能力 Soy_Sauce@Bottling_Noda（hard/soft）', ['800/686'], ['800/800']]","['能力 Soy_Sauce@Bottling_Noda（hard/soft）', ['800/686'], ['800/800']]",True
+soy,C01__C02 差の表の鍵（市場の名前と地域、差のある鍵だけ）,"['Soy_Sauce:Rest_BE（BE）', 'Soy_Sauce:Rest_FR（FR）', 'Soy_Sauce:Rest_JP（JP）', 'Soy_Sauce:Rest_NL（NL）', 'Soy_Sauce:Rest_US_East（US_E）', 'Soy_Sauce:Rest_US_West（US_W）']","['Soy_Sauce:Rest_BE（BE）', 'Soy_Sauce:Rest_FR（FR）', 'Soy_Sauce:Rest_JP（JP）', 'Soy_Sauce:Rest_NL（NL）', 'Soy_Sauce:Rest_US_East（US_E）', 'Soy_Sauce:Rest_US_West（US_W）']",True
+soy,C01__C02 差 Soy_Sauce:Rest_BE（BE） 需要,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_BE（BE） 当週,1674.0,1674.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_BE（BE） 早出し,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_BE（BE） 遅配,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_BE（BE） 配分後の未充足,-1674.0,-1674.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_FR（FR） 需要,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_FR（FR） 当週,8160.0,8160.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_FR（FR） 早出し,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_FR（FR） 遅配,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_FR（FR） 配分後の未充足,-8160.0,-8160.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_JP（JP） 需要,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_JP（JP） 当週,300.0,300.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_JP（JP） 早出し,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_JP（JP） 遅配,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_JP（JP） 配分後の未充足,-300.0,-300.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_NL（NL） 需要,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_NL（NL） 当週,1600.0,1600.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_NL（NL） 早出し,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_NL（NL） 遅配,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_NL（NL） 配分後の未充足,-1600.0,-1600.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_East（US_E） 需要,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_East（US_E） 当週,175.0,175.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_East（US_E） 早出し,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_East（US_E） 遅配,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_East（US_E） 配分後の未充足,-175.0,-175.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_West（US_W） 需要,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_West（US_W） 当週,175.0,175.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_West（US_W） 早出し,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_West（US_W） 遅配,0.0,0.0,True
+soy,C01__C02 差 Soy_Sauce:Rest_US_West（US_W） 配分後の未充足,-175.0,-175.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_BE（BE） C01 当週,2650.0,2650.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_BE（BE） C01 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_BE（BE） C01 配分後の未充足（⑤）,7400.0,7400.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_BE（BE） C02 当週,4324.0,4324.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_BE（BE） C02 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_BE（BE） C02 配分後の未充足（⑤）,5726.0,5726.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_FR（FR） C01 当週,6615.0,6615.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_FR（FR） C01 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_FR（FR） C01 配分後の未充足（⑤）,8460.0,8460.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_FR（FR） C02 当週,14775.0,14775.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_FR（FR） C02 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_FR（FR） C02 配分後の未充足（⑤）,300.0,300.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_JP（JP） C01 当週,29250.0,29250.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_JP（JP） C01 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_JP（JP） C01 配分後の未充足（⑤）,900.0,900.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_JP（JP） C02 当週,29550.0,29550.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_JP（JP） C02 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_JP（JP） C02 配分後の未充足（⑤）,600.0,600.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_NL（NL） C01 当週,2650.0,2650.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_NL（NL） C01 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_NL（NL） C01 配分後の未充足（⑤）,7400.0,7400.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_NL（NL） C02 当週,4250.0,4250.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_NL（NL） C02 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_NL（NL） C02 配分後の未充足（⑤）,5800.0,5800.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_East（US_E） C01 当週,17063.0,17063.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_East（US_E） C01 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_East（US_E） C01 配分後の未充足（⑤）,525.0,525.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_East（US_E） C02 当週,17238.0,17238.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_East（US_E） C02 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_East（US_E） C02 配分後の未充足（⑤）,350.0,350.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_West（US_W） C01 当週,17063.0,17063.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_West（US_W） C01 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_West（US_W） C01 配分後の未充足（⑤）,525.0,525.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_West（US_W） C02 当週,17238.0,17238.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_West（US_W） C02 遅配,0.0,0.0,True
+soy,C01__C02 供給の合計 Soy_Sauce:Rest_US_West（US_W） C02 配分後の未充足（⑤）,350.0,350.0,True
+soy,C01__C02 要点：P0 の差,True,True,True
+soy,C01__C02 要点：境目 追加シフトの確保費,True,True,True
+soy,C01__C02 金額の表：追加シフトの確保費 の ΔW,130.0,130.0,True
+soy,C01__C02 金額の表：P0 の差（全計画期間（参考））,"7,765,270.90","7,765,270.90",True
+soy,C01__C02 金額の表：P0 の差（報告期間）,"7,765,270.90","7,765,270.90",True
+soy,C01__C02 要点：C01 Soy_Sauce Bottling_Noda の期間,True,True,True
+soy,C01__C02 要点：C02 Soy_Sauce Bottling_Noda の期間,True,True,True
+soy,C01__C02 ④ 在庫 Soy_Sauce,True,True,True
+soy,C01__C02 要点に「良い」が無い,False,False,True
+soy,C01__C02 要点に「推奨」が無い,False,False,True
+soy,C01__C02 要点に「有利」が無い,False,False,True
+soy,C01__C02 工場の選択肢,"['Soy_Sauce @ Bottling_Noda', 'Soy_Sauce @ Brewing_Noda']","['Soy_Sauce @ Bottling_Noda', 'Soy_Sauce @ Brewing_Noda']",True
+soy,C01__C02 工場 Soy_Sauce @ Bottling_Noda の行の数,2,2,True
+soy,C01__C02 工場 C01 Soy_Sauce @ Bottling_Noda 計画の上限（良品）,686,686,True
+soy,C01__C02 工場 C01 Soy_Sauce @ Bottling_Noda ちょうど作った週,106.0,106.0,True
+soy,C01__C02 工場 C01 Soy_Sauce @ Bottling_Noda 全計画で下回った週,21.0,21.0,True
+soy,C01__C02 工場 C02 Soy_Sauce @ Bottling_Noda 計画の上限（良品）,800,800,True
+soy,C01__C02 工場 C02 Soy_Sauce @ Bottling_Noda ちょうど作った週,106.0,106.0,True
+soy,C01__C02 工場 C02 Soy_Sauce @ Bottling_Noda 全計画で下回った週,21.0,21.0,True
+soy,C01__C02 工場 Soy_Sauce @ Bottling_Noda の図の題に能力の出どころ（エンジンの値）,True,True,True
+soy,C01__C02 工場 C01 Soy_Sauce @ Bottling_Noda 年齢の最大,23.0,23.0,True
+soy,C01__C02 工場 C02 Soy_Sauce @ Bottling_Noda 年齢の最大,24.0,24.0,True
+soy,C01__C02 工場 Soy_Sauce @ Brewing_Noda の行の数,2,2,True
+soy,C01__C02 工場 C01 Soy_Sauce @ Brewing_Noda 計画の上限（良品）,,,True
+soy,C01__C02 工場 C01 Soy_Sauce @ Brewing_Noda ちょうど作った週,0.0,0.0,True
+soy,C01__C02 工場 C01 Soy_Sauce @ Brewing_Noda 全計画で下回った週,0.0,0.0,True
+soy,C01__C02 工場 C02 Soy_Sauce @ Brewing_Noda 計画の上限（良品）,,,True
+soy,C01__C02 工場 C02 Soy_Sauce @ Brewing_Noda ちょうど作った週,0.0,0.0,True
+soy,C01__C02 工場 C02 Soy_Sauce @ Brewing_Noda 全計画で下回った週,0.0,0.0,True
+soy,C01__C02 工場 Soy_Sauce @ Brewing_Noda の図の題に能力の出どころ（エンジンの値）,True,True,True
+soy,C01__C02 工場 C01 Soy_Sauce @ Brewing_Noda 年齢の最大,23.0,23.0,True
+soy,C01__C02 工場 C02 Soy_Sauce @ Brewing_Noda 年齢の最大,24.0,24.0,True

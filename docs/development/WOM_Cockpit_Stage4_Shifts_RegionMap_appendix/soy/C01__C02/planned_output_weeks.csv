@@ -1,0 +1,5 @@
+case,product,factory,shippable_soft_values,first_week_at_cap,last_week_at_cap,span_weeks,span_weeks_in_report,span_weeks_outside_report,weeks_at_cap,weeks_at_cap_in_report,weeks_at_cap_outside_report,weeks_below_cap,weeks_below_cap_in_report,weeks_below_cap_inside_span
+C01,Soy_Sauce,Bottling_Noda,686,2026-W35,2028-W38,109,90,19,106,87,19,21,14,0
+C01,Soy_Sauce,Brewing_Noda,,,,,,,0,0,0,0,0,
+C02,Soy_Sauce,Bottling_Noda,800,2026-W35,2028-W38,109,90,19,106,87,19,21,14,0
+C02,Soy_Sauce,Brewing_Noda,,,,,,,0,0,0,0,0,

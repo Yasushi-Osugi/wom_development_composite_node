@@ -1,0 +1,275 @@
+part,what,screen,expected,match
+cos,② C03 COS_Cream@Factory_JP の計画の生産量,max_supply 13・cap_soft 2028-W11〜2029-W46 は 12、ほかは 11（エンジンの値）,max_supply 13・cap_soft 2028-W11〜2029-W46 は 12、ほかは 11（エンジンの値）,True
+cos,② 画面の文 C03 COS_Cream@Factory_JP,True,True,True
+cos,C01__C02 差の表の鍵（市場の名前と地域、差のある鍵だけ）,['COS_Cream:TH_Distributor'],['COS_Cream:TH_Distributor'],True
+cos,C01__C02 差 COS_Cream:TH_Distributor 需要,0.0,0.0,True
+cos,C01__C02 差 COS_Cream:TH_Distributor 当週,88.0,88.0,True
+cos,C01__C02 差 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+cos,C01__C02 差 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+cos,C01__C02 差 COS_Cream:TH_Distributor 配分後の未充足,-88.0,-88.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Distributor C01 当週,754.0,754.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Distributor C01 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Distributor C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Distributor C02 当週,754.0,754.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Distributor C02 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Distributor C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_EC C01 当週,299.0,299.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_EC C01 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_EC C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_EC C02 当週,299.0,299.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_EC C02 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_EC C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Store C01 当週,416.0,416.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Store C01 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Store C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Store C02 当週,416.0,416.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Store C02 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:SG_Store C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:TH_Distributor C01 当週,211.0,211.0,True
+cos,C01__C02 供給の合計 COS_Cream:TH_Distributor C01 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:TH_Distributor C01 配分後の未充足（⑤）,88.0,88.0,True
+cos,C01__C02 供給の合計 COS_Cream:TH_Distributor C02 当週,299.0,299.0,True
+cos,C01__C02 供給の合計 COS_Cream:TH_Distributor C02 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Cream:TH_Distributor C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Distributor C01 当週,897.0,897.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Distributor C01 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Distributor C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Distributor C02 当週,897.0,897.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Distributor C02 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Distributor C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_EC C01 当週,455.0,455.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_EC C01 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_EC C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_EC C02 当週,455.0,455.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_EC C02 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_EC C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Store C01 当週,546.0,546.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Store C01 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Store C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Store C02 当週,546.0,546.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Store C02 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:SG_Store C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:TH_Distributor C01 当週,286.0,286.0,True
+cos,C01__C02 供給の合計 COS_Serum:TH_Distributor C01 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:TH_Distributor C01 配分後の未充足（⑤）,104.0,104.0,True
+cos,C01__C02 供給の合計 COS_Serum:TH_Distributor C02 当週,286.0,286.0,True
+cos,C01__C02 供給の合計 COS_Serum:TH_Distributor C02 遅配,0.0,0.0,True
+cos,C01__C02 供給の合計 COS_Serum:TH_Distributor C02 配分後の未充足（⑤）,104.0,104.0,True
+cos,C01__C02 要点：P0 の差,True,True,True
+cos,C01__C02 要点：境目 増産の確保費,True,True,True
+cos,C01__C02 金額の表：増産の確保費 の ΔW,158.0,158.0,True
+cos,C01__C02 金額の表：P0 の差（全計画期間（参考））,"9,989,760","9,989,760",True
+cos,C01__C02 金額の表：P0 の差（報告期間）,"9,989,760","9,989,760",True
+cos,C01__C02 要点：C01 COS_Cream Factory_JP の期間,True,True,True
+cos,C01__C02 要点：C01 COS_Serum Factory_JP の期間,True,True,True
+cos,C01__C02 要点：C02 COS_Cream Factory_JP の期間,True,True,True
+cos,C01__C02 要点：C02 COS_Serum Factory_JP の期間,True,True,True
+cos,C01__C02 ④ 在庫 COS_Cream,True,True,True
+cos,C01__C02 ④ 在庫 COS_Serum,True,True,True
+cos,C01__C02 要点に「良い」が無い,False,False,True
+cos,C01__C02 要点に「推奨」が無い,False,False,True
+cos,C01__C02 要点に「有利」が無い,False,False,True
+cos,C01__C02 工場の選択肢,"['COS_Cream', 'COS_Serum']","['COS_Cream', 'COS_Serum']",True
+cos,C01__C02 工場 COS_Cream の行の数,2,2,True
+cos,C01__C02 工場 C01 COS_Cream 計画の上限（良品）,10,10,True
+cos,C01__C02 工場 C01 COS_Cream ちょうど作った週,168.0,168.0,True
+cos,C01__C02 工場 C01 COS_Cream 全計画で下回った週,5.0,5.0,True
+cos,C01__C02 工場 C02 COS_Cream 計画の上限（良品）,11,11,True
+cos,C01__C02 工場 C02 COS_Cream ちょうど作った週,158.0,158.0,True
+cos,C01__C02 工場 C02 COS_Cream 全計画で下回った週,15.0,15.0,True
+cos,C01__C02 工場 COS_Cream の図の題に能力の出どころ（エンジンの値）,True,True,True
+cos,C01__C02 工場 C01 COS_Cream 年齢の最大,27.0,27.0,True
+cos,C01__C02 工場 C02 COS_Cream 年齢の最大,24.0,24.0,True
+cos,C01__C02 工場 COS_Serum の行の数,2,2,True
+cos,C01__C02 工場 C01 COS_Serum 計画の上限（良品）,13,13,True
+cos,C01__C02 工場 C01 COS_Serum ちょうど作った週,168.0,168.0,True
+cos,C01__C02 工場 C01 COS_Serum 全計画で下回った週,5.0,5.0,True
+cos,C01__C02 工場 C02 COS_Serum 計画の上限（良品）,13,13,True
+cos,C01__C02 工場 C02 COS_Serum ちょうど作った週,168.0,168.0,True
+cos,C01__C02 工場 C02 COS_Serum 全計画で下回った週,5.0,5.0,True
+cos,C01__C02 工場 COS_Serum の図の題に能力の出どころ（エンジンの値）,True,True,True
+cos,C01__C02 工場 C01 COS_Serum 年齢の最大,28.0,28.0,True
+cos,C01__C02 工場 C02 COS_Serum 年齢の最大,28.0,28.0,True
+cos,C01__C03 差の表の鍵（市場の名前と地域、差のある鍵だけ）,['COS_Cream:TH_Distributor'],['COS_Cream:TH_Distributor'],True
+cos,C01__C03 差 COS_Cream:TH_Distributor 需要,0.0,0.0,True
+cos,C01__C03 差 COS_Cream:TH_Distributor 当週,88.0,88.0,True
+cos,C01__C03 差 COS_Cream:TH_Distributor 早出し,0.0,0.0,True
+cos,C01__C03 差 COS_Cream:TH_Distributor 遅配,0.0,0.0,True
+cos,C01__C03 差 COS_Cream:TH_Distributor 配分後の未充足,-88.0,-88.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Distributor C01 当週,754.0,754.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Distributor C01 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Distributor C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Distributor C03 当週,754.0,754.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Distributor C03 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Distributor C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_EC C01 当週,299.0,299.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_EC C01 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_EC C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_EC C03 当週,299.0,299.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_EC C03 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_EC C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Store C01 当週,416.0,416.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Store C01 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Store C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Store C03 当週,416.0,416.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Store C03 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:SG_Store C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:TH_Distributor C01 当週,211.0,211.0,True
+cos,C01__C03 供給の合計 COS_Cream:TH_Distributor C01 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:TH_Distributor C01 配分後の未充足（⑤）,88.0,88.0,True
+cos,C01__C03 供給の合計 COS_Cream:TH_Distributor C03 当週,299.0,299.0,True
+cos,C01__C03 供給の合計 COS_Cream:TH_Distributor C03 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Cream:TH_Distributor C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Distributor C01 当週,897.0,897.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Distributor C01 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Distributor C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Distributor C03 当週,897.0,897.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Distributor C03 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Distributor C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_EC C01 当週,455.0,455.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_EC C01 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_EC C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_EC C03 当週,455.0,455.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_EC C03 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_EC C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Store C01 当週,546.0,546.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Store C01 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Store C01 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Store C03 当週,546.0,546.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Store C03 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:SG_Store C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:TH_Distributor C01 当週,286.0,286.0,True
+cos,C01__C03 供給の合計 COS_Serum:TH_Distributor C01 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:TH_Distributor C01 配分後の未充足（⑤）,104.0,104.0,True
+cos,C01__C03 供給の合計 COS_Serum:TH_Distributor C03 当週,286.0,286.0,True
+cos,C01__C03 供給の合計 COS_Serum:TH_Distributor C03 遅配,0.0,0.0,True
+cos,C01__C03 供給の合計 COS_Serum:TH_Distributor C03 配分後の未充足（⑤）,104.0,104.0,True
+cos,C01__C03 要点：P0 の差,True,True,True
+cos,C01__C03 要点：境目 増産の確保費,True,True,True
+cos,C01__C03 金額の表：増産の確保費 の ΔW,88.0,88.0,True
+cos,C01__C03 金額の表：P0 の差（全計画期間（参考））,"9,989,760","9,989,760",True
+cos,C01__C03 金額の表：P0 の差（報告期間）,"9,989,760","9,989,760",True
+cos,C01__C03 要点：C01 COS_Cream Factory_JP の期間,True,True,True
+cos,C01__C03 要点：C01 COS_Serum Factory_JP の期間,True,True,True
+cos,C01__C03 要点：C03 COS_Cream Factory_JP の期間,True,True,True
+cos,C01__C03 要点：C03 COS_Serum Factory_JP の期間,True,True,True
+cos,C01__C03 要点：C03 COS_Cream 上限 10 の週,True,True,True
+cos,C01__C03 要点：C03 COS_Cream 上限 11 の週,True,True,True
+cos,C01__C03 ④ 在庫 COS_Cream,True,True,True
+cos,C01__C03 ④ 在庫 COS_Serum,True,True,True
+cos,C01__C03 要点に「良い」が無い,False,False,True
+cos,C01__C03 要点に「推奨」が無い,False,False,True
+cos,C01__C03 要点に「有利」が無い,False,False,True
+cos,C01__C03 工場の選択肢,"['COS_Cream', 'COS_Serum']","['COS_Cream', 'COS_Serum']",True
+cos,C01__C03 工場 COS_Cream の行の数,4,4,True
+cos,C01__C03 工場 C01 COS_Cream 計画の上限（良品）,10,10,True
+cos,C01__C03 工場 C01 COS_Cream ちょうど作った週,168.0,168.0,True
+cos,C01__C03 工場 C01 COS_Cream 全計画で下回った週,5.0,5.0,True
+cos,C01__C03 工場 C03 COS_Cream 計画の上限（良品）,"10,11","10,11",True
+cos,C01__C03 工場 C03 COS_Cream ちょうど作った週,168.0,168.0,True
+cos,C01__C03 工場 C03 COS_Cream 全計画で下回った週,5.0,5.0,True
+cos,C01__C03 工場 C03 COS_Cream 上限 10 の行がある,1,1,True
+cos,C01__C03 工場 C03 COS_Cream 上限 10 ちょうど作った週,80.0,80.0,True
+cos,C01__C03 工場 C03 COS_Cream 上限 11 の行がある,1,1,True
+cos,C01__C03 工場 C03 COS_Cream 上限 11 ちょうど作った週,88.0,88.0,True
+cos,C01__C03 工場 COS_Cream の図の題に能力の出どころ（エンジンの値）,True,True,True
+cos,C01__C03 工場 C01 COS_Cream 年齢の最大,27.0,27.0,True
+cos,C01__C03 工場 C03 COS_Cream 年齢の最大,27.0,27.0,True
+cos,C01__C03 工場 COS_Serum の行の数,2,2,True
+cos,C01__C03 工場 C01 COS_Serum 計画の上限（良品）,13,13,True
+cos,C01__C03 工場 C01 COS_Serum ちょうど作った週,168.0,168.0,True
+cos,C01__C03 工場 C01 COS_Serum 全計画で下回った週,5.0,5.0,True
+cos,C01__C03 工場 C03 COS_Serum 計画の上限（良品）,13,13,True
+cos,C01__C03 工場 C03 COS_Serum ちょうど作った週,168.0,168.0,True
+cos,C01__C03 工場 C03 COS_Serum 全計画で下回った週,5.0,5.0,True
+cos,C01__C03 工場 COS_Serum の図の題に能力の出どころ（エンジンの値）,True,True,True
+cos,C01__C03 工場 C01 COS_Serum 年齢の最大,28.0,28.0,True
+cos,C01__C03 工場 C03 COS_Serum 年齢の最大,28.0,28.0,True
+cos,C02__C03 差の表の鍵（市場の名前と地域、差のある鍵だけ）,[],[],True
+cos,C02__C03 供給の合計 COS_Cream:SG_Distributor C02 当週,754.0,754.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Distributor C02 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Distributor C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Distributor C03 当週,754.0,754.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Distributor C03 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Distributor C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_EC C02 当週,299.0,299.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_EC C02 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_EC C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_EC C03 当週,299.0,299.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_EC C03 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_EC C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Store C02 当週,416.0,416.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Store C02 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Store C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Store C03 当週,416.0,416.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Store C03 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:SG_Store C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:TH_Distributor C02 当週,299.0,299.0,True
+cos,C02__C03 供給の合計 COS_Cream:TH_Distributor C02 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:TH_Distributor C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:TH_Distributor C03 当週,299.0,299.0,True
+cos,C02__C03 供給の合計 COS_Cream:TH_Distributor C03 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Cream:TH_Distributor C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Distributor C02 当週,897.0,897.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Distributor C02 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Distributor C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Distributor C03 当週,897.0,897.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Distributor C03 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Distributor C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_EC C02 当週,455.0,455.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_EC C02 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_EC C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_EC C03 当週,455.0,455.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_EC C03 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_EC C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Store C02 当週,546.0,546.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Store C02 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Store C02 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Store C03 当週,546.0,546.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Store C03 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:SG_Store C03 配分後の未充足（⑤）,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:TH_Distributor C02 当週,286.0,286.0,True
+cos,C02__C03 供給の合計 COS_Serum:TH_Distributor C02 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:TH_Distributor C02 配分後の未充足（⑤）,104.0,104.0,True
+cos,C02__C03 供給の合計 COS_Serum:TH_Distributor C03 当週,286.0,286.0,True
+cos,C02__C03 供給の合計 COS_Serum:TH_Distributor C03 遅配,0.0,0.0,True
+cos,C02__C03 供給の合計 COS_Serum:TH_Distributor C03 配分後の未充足（⑤）,104.0,104.0,True
+cos,C02__C03 要点：P0 の差,True,True,True
+cos,C02__C03 金額の表：P0 の差（全計画期間（参考））,0,0,True
+cos,C02__C03 金額の表：P0 の差（報告期間）,0,0,True
+cos,C02__C03 要点：C02 COS_Cream Factory_JP の期間,True,True,True
+cos,C02__C03 要点：C02 COS_Serum Factory_JP の期間,True,True,True
+cos,C02__C03 要点：C03 COS_Cream Factory_JP の期間,True,True,True
+cos,C02__C03 要点：C03 COS_Serum Factory_JP の期間,True,True,True
+cos,C02__C03 要点：C03 COS_Cream 上限 10 の週,True,True,True
+cos,C02__C03 要点：C03 COS_Cream 上限 11 の週,True,True,True
+cos,C02__C03 ④ 在庫 COS_Cream,True,True,True
+cos,C02__C03 ④ 在庫 COS_Serum,True,True,True
+cos,C02__C03 要点に「良い」が無い,False,False,True
+cos,C02__C03 要点に「推奨」が無い,False,False,True
+cos,C02__C03 要点に「有利」が無い,False,False,True
+cos,C02__C03 工場の選択肢,"['COS_Cream', 'COS_Serum']","['COS_Cream', 'COS_Serum']",True
+cos,C02__C03 工場 COS_Cream の行の数,4,4,True
+cos,C02__C03 工場 C02 COS_Cream 計画の上限（良品）,11,11,True
+cos,C02__C03 工場 C02 COS_Cream ちょうど作った週,158.0,158.0,True
+cos,C02__C03 工場 C02 COS_Cream 全計画で下回った週,15.0,15.0,True
+cos,C02__C03 工場 C03 COS_Cream 計画の上限（良品）,"10,11","10,11",True
+cos,C02__C03 工場 C03 COS_Cream ちょうど作った週,168.0,168.0,True
+cos,C02__C03 工場 C03 COS_Cream 全計画で下回った週,5.0,5.0,True
+cos,C02__C03 工場 C03 COS_Cream 上限 10 の行がある,1,1,True
+cos,C02__C03 工場 C03 COS_Cream 上限 10 ちょうど作った週,80.0,80.0,True
+cos,C02__C03 工場 C03 COS_Cream 上限 11 の行がある,1,1,True
+cos,C02__C03 工場 C03 COS_Cream 上限 11 ちょうど作った週,88.0,88.0,True
+cos,C02__C03 工場 COS_Cream の図の題に能力の出どころ（エンジンの値）,True,True,True
+cos,C02__C03 工場 C02 COS_Cream 年齢の最大,24.0,24.0,True
+cos,C02__C03 工場 C03 COS_Cream 年齢の最大,27.0,27.0,True
+cos,C02__C03 工場 COS_Serum の行の数,2,2,True
+cos,C02__C03 工場 C02 COS_Serum 計画の上限（良品）,13,13,True
+cos,C02__C03 工場 C02 COS_Serum ちょうど作った週,168.0,168.0,True
+cos,C02__C03 工場 C02 COS_Serum 全計画で下回った週,5.0,5.0,True
+cos,C02__C03 工場 C03 COS_Serum 計画の上限（良品）,13,13,True
+cos,C02__C03 工場 C03 COS_Serum ちょうど作った週,168.0,168.0,True
+cos,C02__C03 工場 C03 COS_Serum 全計画で下回った週,5.0,5.0,True
+cos,C02__C03 工場 COS_Serum の図の題に能力の出どころ（エンジンの値）,True,True,True
+cos,C02__C03 工場 C02 COS_Serum 年齢の最大,28.0,28.0,True
+cos,C02__C03 工場 C03 COS_Serum 年齢の最大,28.0,28.0,True
