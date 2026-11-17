@@ -286,3 +286,25 @@ def test_message_gist_picks_the_reason():
     msg = "[quantity allocation] 衝突：止めた\n  P|X: 置けない 9 lot。最低供給量の合計が数量枠を超える\n  代わりの案：…\n  -> out/dir\n"
     g = V.message_gist(msg)
     assert "置けない 9 lot" in g and "out/dir" not in g
+
+
+# ── 段 4 B0：週で違う能力は範囲で出す ─────────────────────────────────────
+def test_capacity_by_week_ranges(ws):
+    C.set_planned_output(ws, "C02", "PA", 9, from_week="2027-W02", to_week="2027-W03")
+    cap = V.case_inputs(ws, "C02")["capacity"][0]
+    assert cap["cap_soft"] == "2027-W02〜2027-W03 は 9、ほかは 8" and cap["cap_soft_main"] == "8"
+    assert cap["max_supply"] == "10"
+    t = V.case_table(ws)
+    i = [k for k, c in enumerate(t["columns"]) if c.startswith("能力")][0]
+    assert [r["cells"][i] for r in t["rows"]][:2] == ["10/8", "10/8・9（週で違う）"]
+
+
+def test_range_text_lists_every_other_range():
+    rows = [{"week": w, "cap_soft": v} for w, v in
+            (("2027-W01", "8"), ("2027-W02", "9"), ("2027-W03", "8"), ("2027-W04", "9"), ("2027-W05", "8"))]
+    assert V.range_text(rows, "cap_soft") == ("2027-W02・2027-W04 は 9、ほかは 8", "8")
+
+
+def test_range_text_other_is_the_value_at_both_ends():
+    rows = [{"week": f"2027-W{i:02d}", "cap_soft": "12" if 2 <= i <= 6 else "11"} for i in range(1, 9)]
+    assert V.range_text(rows, "cap_soft") == ("2027-W02〜2027-W06 は 12、ほかは 11", "11")   # 12 has more weeks

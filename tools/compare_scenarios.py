@@ -774,30 +774,53 @@ def planned_output_weeks(fw: pd.DataFrame, report_start: str, report_end: str,
     Used to check the paid weeks written in the fixed cost table (the tool does not decide them)."""
     rows = []
     ra, rb = _wk_monday(report_start), _wk_monday(report_end)
-    for (case, prod), g in fw.groupby(["case", "product"]):
-        g = g.sort_values("week_index")
-        soft = pd.to_numeric(g["shippable_soft"], errors="coerce")
+    varies = False
+
+    def measure(g, soft, inrep):
         at = g[soft.notna() & (g["production_lots"] == soft)]
         below = g[soft.notna() & (g["production_lots"] < soft)]
-        inrep = g["week"].map(lambda w: ra <= _wk_monday(w) <= rb)
-        r = {"case": case, "product": prod, "factory": (mom_names or {}).get(case, {}).get(prod, ""),
-             "shippable_soft_values": ",".join(str(int(v)) for v in sorted(soft.dropna().unique())),
-             "weeks_at_cap": len(at), "weeks_at_cap_in_report": int(inrep[at.index].sum()),
+        r = {"weeks_at_cap": len(at), "weeks_at_cap_in_report": int(inrep[at.index].sum()),
              "weeks_at_cap_outside_report": int((~inrep[at.index]).sum()),
              "weeks_below_cap": len(below), "weeks_below_cap_in_report": int(inrep[below.index].sum())}
         if len(at):
-            first, last = at["week"].iloc[0], at["week"].iloc[-1]
             span = g[(g["week_index"] >= at["week_index"].iloc[0]) & (g["week_index"] <= at["week_index"].iloc[-1])]
-            r.update({"first_week_at_cap": first, "last_week_at_cap": last, "span_weeks": len(span),
-                      "span_weeks_in_report": int(inrep[span.index].sum()),
+            ss = soft[span.index]
+            r.update({"first_week_at_cap": at["week"].iloc[0], "last_week_at_cap": at["week"].iloc[-1],
+                      "span_weeks": len(span), "span_weeks_in_report": int(inrep[span.index].sum()),
                       "span_weeks_outside_report": int((~inrep[span.index]).sum()),
-                      "weeks_below_cap_inside_span": int((span["production_lots"] <
-                                                          pd.to_numeric(span["shippable_soft"], errors="coerce")).sum())})
-        rows.append(r)
+                      "weeks_below_cap_inside_span": int((span["production_lots"] < ss).sum())})
+        return r
+
+    for (case, prod), g in fw.groupby(["case", "product"]):
+        g = g.sort_values("week_index")
+        soft = pd.to_numeric(g["shippable_soft"], errors="coerce")
+        inrep = g["week"].map(lambda w: ra <= _wk_monday(w) <= rb)
+        vals = sorted(soft.dropna().unique())
+        head = {"case": case, "product": prod, "factory": (mom_names or {}).get(case, {}).get(prod, "")}
+        rows.append({**head, "row": "全体", "shippable_soft_values": ",".join(str(int(v)) for v in vals),
+                     **measure(g, soft, inrep)})
+        if len(vals) > 1:
+            # 段 4: the plan varies by week -> one more row per shippable value, measured on the weeks planned at
+            # that value only (first / last / number of weeks planned at it; at-cap and below-cap weeks)
+            varies = True
+            for v in vals:
+                sub = g[soft == v]
+                rows.append({**head, "row": "値ごと", "shippable_soft_values": str(int(v)),
+                             "planned_first_week": sub["week"].iloc[0], "planned_last_week": sub["week"].iloc[-1],
+                             "planned_weeks": len(sub), "planned_weeks_in_report": int(inrep[sub.index].sum()),
+                             "planned_weeks_outside_report": int((~inrep[sub.index]).sum()),
+                             **measure(sub, soft[sub.index], inrep[sub.index])})
     cols = ["case", "product", "factory", "shippable_soft_values", "first_week_at_cap", "last_week_at_cap",
             "span_weeks", "span_weeks_in_report", "span_weeks_outside_report", "weeks_at_cap",
             "weeks_at_cap_in_report", "weeks_at_cap_outside_report", "weeks_below_cap", "weeks_below_cap_in_report",
             "weeks_below_cap_inside_span"]
+    if varies:   # a uniform plan keeps the table as it was (one row per case x product, same columns)
+        cols += ["row", "planned_first_week", "planned_last_week", "planned_weeks", "planned_weeks_in_report",
+                 "planned_weeks_outside_report"]
+        t = pd.DataFrame(rows).reindex(columns=cols)
+        for c in ("planned_weeks", "planned_weeks_in_report", "planned_weeks_outside_report"):
+            t[c] = t[c].astype("Int64")   # blank on the whole-case rows, integers on the per-value rows
+        return t
     return pd.DataFrame(rows).reindex(columns=cols)
 
 
@@ -987,6 +1010,12 @@ def write_summary(res: dict, path: str, base_run, alt_run, base_model, alt_model
     if pw is not None and len(pw):
         L += ["", "## 計画の生産量ちょうど作った週（有償の週の確かめ用。道具は有償の週を決めない）", ""]
         for r in pw.itertuples():
+            if getattr(r, "row", "全体") == "値ごと":
+                L.append(f"  - うち上限 {r.shippable_soft_values} の週（{r.planned_first_week}〜{r.planned_last_week}・"
+                         f"{r.planned_weeks} 週、報告期間 {r.planned_weeks_in_report}・外 {r.planned_weeks_outside_report}）："
+                         f"ちょうど作った週 {r.weeks_at_cap}（報告期間 {r.weeks_at_cap_in_report}）、"
+                         f"下回った週 {r.weeks_below_cap}（報告期間 {r.weeks_below_cap_in_report}）")
+                continue
             L.append(f"- {r.case} {r.product}（{r.factory}、上限 {r.shippable_soft_values}）：最初 {r.first_week_at_cap}・"
                      f"最後 {r.last_week_at_cap}・その間 {r.span_weeks} 週（報告期間 {r.span_weeks_in_report}・"
                      f"外 {r.span_weeks_outside_report}）、ちょうど作った週 {r.weeks_at_cap}（報告期間 {r.weeks_at_cap_in_report}）、"

@@ -197,7 +197,7 @@ class CompareScreen(ttk.Frame):
         self.factory_canvas.get_tk_widget().pack(fill="both", expand=True)
         self.factory_weeks = self._table(self.tab_factory, [
             "案", "SKU", "計画の上限（良品）", "ちょうど作った最初の週", "最後の週", "その間の週数", "うち報告期間", "うち助走",
-            "ちょうど作った週", "報告期間で上限を下回った週", "全計画で上限を下回った週（作らない週を含む）"], height=2)
+            "ちょうど作った週", "報告期間で上限を下回った週", "全計画で上限を下回った週（作らない週を含む）"], height=4)
         self.factory_inv = self._table(self.tab_factory, ["SKU", "inv_b", "inv_a", "max_b", "max_a", "end_b", "end_a"],
                                        height=2)
         self.factory_age = self._table(self.tab_factory, ["案", "SKU", "納品", "年齢の最大（週）", "52 週超"], height=2)
@@ -309,7 +309,7 @@ class CompareScreen(ttk.Frame):
             L.append(f"ログ：{d['log_dir']}")
         L += ["", "■ 投入の表"] + [f"  {r['sku_id']}:{r['region']}  投入 {r['launch_week']}  定常 {r['steady_lots_per_week']} lot／週"
                                    f"（立ち上がり {r['ramp_weeks']} 週 × {r['ramp_ratio']}）" for r in d["entry_plan"]]
-        L += ["", "■ 計画の生産量（工場 × SKU、全期間で 1 つの値）"] + \
+        L += ["", "■ 計画の生産量（工場 × SKU）"] + \
             [f"  {r['sku_id']} @ {r['node']}：max_supply {r['max_supply']}・cap_soft {r['cap_soft']}" for r in d["capacity"]]
         L += ["", "■ 供給の方針"]
         p = d["policy"]
@@ -487,6 +487,8 @@ class CompareScreen(ttk.Frame):
         if len(pw):
             for r in pw[pw["product"] == sku].itertuples():
                 who = "基準" if r.case == self.base else "相手"
+                if getattr(r, "row", "全体") == "値ごと":
+                    who = f"　うち {r.planned_first_week}〜{r.planned_last_week}（{r.planned_weeks} 週）"
                 self.factory_weeks.insert("", "end", values=[
                     f"{who} {r.case}", r.product, r.shippable_soft_values, r.first_week_at_cap, r.last_week_at_cap,
                     r.span_weeks, r.span_weeks_in_report, r.span_weeks_outside_report, r.weeks_at_cap,
@@ -698,7 +700,7 @@ class CompareScreen(ttk.Frame):
         ttk.Label(d, text="cap_soft（全期間で 1 つの値）").grid(row=1, column=0, padx=6, pady=4)
         e = ttk.Entry(d, width=10)
         e.grid(row=1, column=1, sticky="w", padx=6)
-        cb.bind("<<ComboboxSelected>>", lambda _e: (e.delete(0, "end"), e.insert(0, rows[cb.current()]["cap_soft"])))
+        cb.bind("<<ComboboxSelected>>", lambda _e: (e.delete(0, "end"), e.insert(0, rows[cb.current()]["cap_soft_main"])))
 
         def ok():
             if cb.current() < 0:
@@ -833,12 +835,19 @@ class CompareScreen(ttk.Frame):
         cands = A.raise_week_candidates(self.ws, self.selected)
         d = self._dialog(f"{self.selected}：増産の有償の週を入れる（確かめてから「入れる」）")
         if not cands:
-            ttk.Label(d, text="この案を含む比較が無い。先に「並べる」で比べると、計画の生産量ちょうど作った週が候補に出る",
+            ttk.Label(d, text="親の案より計画の生産量を上げた週が無く、この案を含む比較も無い。"
+                              "生産量を上げるか、先に「並べる」で比べると候補に出る",
                       wraplength=420).pack(padx=10, pady=10)
             return
-        lb = tk.Listbox(d, width=90, height=min(8, len(cands)))
+        lb = tk.Listbox(d, width=100, height=min(8, len(cands)))
         for c in cands:
-            lb.insert("end", f"{c['sku']} @ {c['factory']}（上限 {c['cap']}）：{c['first']}〜{c['last']}　"
+            if c.get("kind") == "raised":
+                act = ("工場が上限ちょうど作った週は比べると出る" if c["at_cap"] is None
+                       else f"そのうち工場が上限ちょうど作った週 {c['at_cap']}")
+                lb.insert("end", f"親より上げた週　{c['sku']} @ {c['factory']}（{c['cap']}）：{c['first']}〜{c['last']}　"
+                                 f"{c['span']} 週（報告期間 {c['in_report']}・外 {c['outside']}）、{act}")
+                continue
+            lb.insert("end", f"ちょうど作った週　{c['sku']} @ {c['factory']}（上限 {c['cap']}）：{c['first']}〜{c['last']}　"
                              f"{c['span']} 週（報告期間 {c['in_report']}・助走 {c['outside']}、途中で下回った週 {c['gaps']}）"
                              f"　比較 {c['compare']}")
         lb.pack(padx=6, pady=6)

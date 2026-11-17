@@ -435,3 +435,29 @@ def test_display_name_is_copied(tmp_path):
     q = C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "b.csv")))           # no column: blank, same values
     r2 = C.fixed_cost_table(q, {"base": 0.0, "alt": 8_854_560.0}, OK, *REP).iloc[0]
     assert r2["display_name"] == "" and r2["f_star_per_week"] == 340_560.0
+
+
+# ── 段 4 B0：上限が週で違う計画は値ごとの行を足す ──────────────────────────
+def test_planned_output_weeks_per_value_rows():
+    rows = []
+    for i, (w, prod, soft) in enumerate([("2026-W52", 10, 10), ("2027-W01", 11, 11), ("2027-W02", 11, 11),
+                                         ("2027-W03", 10, 11), ("2027-W04", 10, 10), ("2027-W05", 9, 10)]):
+        rows.append({"case": "x", "product": "P", "week_index": i, "week": w, "production_lots": prod,
+                     "shippable_soft": soft})
+    t = C.planned_output_weeks(pd.DataFrame(rows), "2027-W01", "2027-W05", {"x": {"P": "F"}})
+    assert list(t["row"]) == ["全体", "値ごと", "値ごと"]
+    whole = t.iloc[0]
+    assert whole["shippable_soft_values"] == "10,11" and whole["weeks_at_cap"] == 4
+    v11 = t[t["shippable_soft_values"] == "11"].iloc[0]
+    assert (v11["planned_first_week"], v11["planned_last_week"], v11["planned_weeks"]) == ("2027-W01", "2027-W03", 3)
+    assert (v11["weeks_at_cap"], v11["weeks_below_cap"], v11["planned_weeks_in_report"]) == (2, 1, 3)
+    v10 = t[t["shippable_soft_values"] == "10"].iloc[0]
+    assert (v10["planned_weeks"], v10["planned_weeks_outside_report"], v10["weeks_at_cap"]) == (3, 1, 2)
+    assert (v10["weeks_below_cap"], v10["weeks_below_cap_in_report"]) == (1, 1)
+
+
+def test_planned_output_weeks_uniform_plan_keeps_the_old_table():
+    rows = [{"case": "x", "product": "P", "week_index": i, "week": w, "production_lots": 11, "shippable_soft": 11}
+            for i, w in enumerate(["2027-W01", "2027-W02"])]
+    t = C.planned_output_weeks(pd.DataFrame(rows), "2027-W01", "2027-W02")
+    assert len(t) == 1 and "row" not in t.columns and "planned_weeks" not in t.columns

@@ -223,3 +223,38 @@ def test_reopen_elsewhere_gives_the_same_table(ws, tmp_path):
     shutil.copytree(w, w2)
     assert C.format_list(C.list_cases(w2)) == a
     assert C.status(w2, "C01")["state"] == C.ST_DONE
+
+
+# ── 段 4 B0：計画の生産量を週の範囲で変える ─────────────────────────────────
+def test_planned_output_week_range_changes_only_the_range(ws):
+    w, _src, _b = ws
+    r = C.set_planned_output(w, "C01", "PA", 9, from_week="2027-W02", to_week="2027-W03")
+    assert r["rows"] == 2 and r["weeks"] == ["2027-W02", "2027-W03"]
+    want = CAP.replace("2027-W02,10,8,", "2027-W02,10,9,").replace("2027-W03,10,8,", "2027-W03,10,9,")
+    assert _cap(w, "C01") == want                                      # rows outside the range untouched
+    ch = C.read_case(w, "C01")["changes"][-1]
+    assert ch["what"] == "planned_output" and ch["weeks"] == ["2027-W02", "2027-W03"]
+    s = C.input_summary(w, "C01")["capacity"]["PA@Fac_A"]
+    assert s == "10/8・9（週で違う）"                                    # never shown as one pair
+
+
+def test_planned_output_week_range_checks(ws):
+    w, _src, _b = ws
+    with pytest.raises(C.CaseError, match="行に週"):
+        C.set_planned_output(w, "C01", "PA", 9, from_week="2026-W40", to_week="2027-W02")
+    with pytest.raises(C.CaseError, match="両方"):
+        C.set_planned_output(w, "C01", "PA", 9, from_week="2027-W02")
+    with pytest.raises(C.CaseError, match="より前"):
+        C.set_planned_output(w, "C01", "PA", 9, from_week="2027-W03", to_week="2027-W02")
+    with pytest.raises(C.CaseError, match="max_supply を超える"):
+        C.set_planned_output(w, "C01", "PA", 11, from_week="2027-W02", to_week="2027-W02")
+    assert _cap(w, "C01") == CAP                                       # nothing written after a stop
+
+
+def test_capacity_runs_and_text():
+    rows = [{"week": w, "max_supply": "13", "cap_soft": v} for w, v in
+            (("2027-W01", "11"), ("2027-W02", "12"), ("2027-W03", "12"), ("2027-W04", "11"))]
+    assert [(r["from"], r["to"], r["weeks"], r["cap_soft"]) for r in C.capacity_runs(rows)] == \
+        [("2027-W01", "2027-W01", 1, "11"), ("2027-W02", "2027-W03", 2, "12"), ("2027-W04", "2027-W04", 1, "11")]
+    assert C.capacity_text(rows) == "13/11・12（週で違う）"
+    assert C.capacity_text(rows[:1]) == "13/11"

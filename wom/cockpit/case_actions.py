@@ -101,7 +101,8 @@ def _entry_plan(ws: str, cid: str) -> List[dict]:
     return V.case_inputs(ws, cid)["entry_plan"]
 
 
-def set_planned_output(ws: str, cid: str, sku: str, node: Optional[str], value: str) -> Result:
+def set_planned_output(ws: str, cid: str, sku: str, node: Optional[str], value: str,
+                       from_week: Optional[str] = None, to_week: Optional[str] = None) -> Result:
     g = _guard(ws, cid)
     if g:
         return g
@@ -111,8 +112,9 @@ def set_planned_output(ws: str, cid: str, sku: str, node: Optional[str], value: 
         return _fail(f"cap_soft {value!r} は数ではない", f"② 計画の生産量 {sku}", "0 以上の数を入れる（例 12）")
     if d < 0:
         return _fail(f"cap_soft {value} は負", f"② 計画の生産量 {sku}", "0 以上の数を入れる")
-    return _call(C.set_planned_output, ws, cid, sku, value, node,
-                 ok_message=f"{cid}：{sku} の計画の生産量（cap_soft）を {value} にした。実行し直す")
+    rng = f"（{from_week}〜{to_week}）" if from_week else ""
+    return _call(C.set_planned_output, ws, cid, sku, value, node, from_week, to_week,
+                 ok_message=f"{cid}：{sku} の計画の生産量（cap_soft）を {value} にした{rng}。実行し直す")
 
 
 def set_policy(ws: str, cid: str, none: bool = False, allocation_file: str = None, policy_file: str = None,
@@ -167,11 +169,84 @@ def set_fixed_cost(ws: str, cid: str, rows: List[dict]) -> Result:
 
 
 # ── 増産の有償の週の手助け ─────────────────────────────────────────────
+def raised_ranges(ws: str, cid: str) -> List[dict]:
+    """段 4: the week ranges where the case's planned output (cap_soft) is higher than in its parent case
+    (consecutive weeks, per SKU x factory). [{sku, factory, first, last, span, in_report, outside, cap_from, cap_to}]"""
+    import csv
+    case = C.read_case(ws, cid)
+    parent = case.get("parent")
+    if not parent:
+        return []
+
+    def rows(c):
+        p = os.path.join(C.case_dir(ws, c), "model", C.CAPACITY)
+        with open(p, encoding="utf-8-sig", newline="") as f:
+            return {(r["sku_id"].strip(), r["node_name"].strip(), r["week"].strip()): (r.get("cap_soft") or "").strip()
+                    for r in csv.DictReader(f)}
+
+    def num(v):
+        try:
+            return Decimal(v)
+        except (InvalidOperation, ValueError):
+            return None
+    mine, theirs = rows(cid), rows(parent)
+    rp = (C._read_json(os.path.join(ws, C.WORKSPACE_FILE)).get("report_period") or {})
+    rs, re_ = rp.get("start") or "", rp.get("end") or ""
+    out = []
+    for sku, node in sorted({(k[0], k[1]) for k in mine}):
+        wk = sorted(k[2] for k in mine if k[:2] == (sku, node))
+        run = None
+        for w in wk + [None]:
+            a, b = (num(mine[(sku, node, w)]), num(theirs.get((sku, node, w), ""))) if w else (None, None)
+            up = w is not None and a is not None and b is not None and a > b
+            key = (str(b), str(a)) if up else None
+            if run and (not up or key != run["key"]):
+                out.append(run)
+                run = None
+            if up:
+                if run is None:
+                    run = {"sku": sku, "factory": node, "first": w, "last": w, "span": 0, "in_report": 0,
+                           "key": key, "cap_from": theirs[(sku, node, w)], "cap_to": mine[(sku, node, w)]}
+                run["last"] = w
+                run["span"] += 1
+                run["in_report"] += int(rs <= w <= re_) if rs else 0
+    for r in out:
+        r.pop("key")
+        r["outside"] = r["span"] - r["in_report"]
+    return out
+
+
+def _at_cap_in(ws: str, cid: str, rng: dict) -> Optional[int]:
+    """Weeks the factory actually made exactly its planned output inside the range (from a comparison's
+    factory_weekly.csv that contains the case); None when no comparison has been made."""
+    import pandas as pd
+    cdir = os.path.join(ws, "compare")
+    for d in sorted(os.listdir(cdir)) if os.path.isdir(cdir) else []:
+        p = os.path.join(cdir, d, "factory_weekly.csv")
+        if cid not in d.split("__") or not os.path.exists(p):
+            continue
+        fw = pd.read_csv(p, dtype={"week": str})
+        g = fw[(fw["case"] == cid) & (fw["product"] == rng["sku"]) &
+               (fw["week"] >= rng["first"]) & (fw["week"] <= rng["last"])]
+        soft = pd.to_numeric(g["shippable_soft"], errors="coerce")
+        return int((soft.notna() & (g["production_lots"] == soft)).sum())
+    return None
+
+
 def raise_week_candidates(ws: str, cid: str) -> List[dict]:
-    """From every comparison that contains the case: the first / last week the factory made exactly its planned
-    output (planned_output_weeks.csv). Only candidates -- nothing is written until apply_raise_weeks."""
+    """Candidates for the paid weeks of the raise cost. First (段 4) the week ranges where the planned output was
+    raised versus the parent case (kind "raised", with the weeks the factory actually made exactly its planned
+    output inside the range, when a comparison exists); then, from every comparison that contains the case, the
+    first / last week the factory made exactly its planned output (kind "measured", planned_output_weeks.csv).
+    Only candidates -- nothing is written until apply_raise_weeks."""
     import pandas as pd
     out = []
+    for r in raised_ranges(ws, cid):
+        at = _at_cap_in(ws, cid, r)
+        out.append({"kind": "raised", "compare": "", "sku": r["sku"], "factory": r["factory"],
+                    "cap": f"{r['cap_from']}→{r['cap_to']}（cap_soft）", "first": r["first"], "last": r["last"],
+                    "span": r["span"], "in_report": r["in_report"], "outside": r["outside"],
+                    "at_cap": at, "gaps": None if at is None else r["span"] - at})
     for d in sorted(os.listdir(os.path.join(ws, "compare"))) if os.path.isdir(os.path.join(ws, "compare")) else []:
         if cid not in d.split("__"):
             continue
@@ -179,9 +254,12 @@ def raise_week_candidates(ws: str, cid: str) -> List[dict]:
         if not os.path.exists(p):
             continue
         t = pd.read_csv(p, dtype=str, keep_default_na=False)
+        if "row" in t.columns:
+            t = t[t["row"] != "値ごと"]
         for r in t[t["case"] == cid].itertuples():
-            if r.first_week_at_cap:
-                out.append({"compare": d, "sku": r.product, "factory": r.factory, "cap": r.shippable_soft_values,
+            # a plan whose output differs by week mixes the values in its whole-case row (段 4 F4): not offered
+            if r.first_week_at_cap and "," not in str(r.shippable_soft_values):
+                out.append({"kind": "measured", "compare": d, "sku": r.product, "factory": r.factory, "cap": r.shippable_soft_values,
                             "first": r.first_week_at_cap, "last": r.last_week_at_cap, "span": int(r.span_weeks),
                             "in_report": int(r.span_weeks_in_report), "outside": int(r.span_weeks_outside_report),
                             "gaps": int(r.weeks_below_cap_inside_span or 0)})
@@ -204,8 +282,11 @@ def apply_raise_weeks(ws: str, cid: str, candidate: dict, entity: str, currency:
              "weekly_amount": f["weekly_amount_raw"], "currency": f["currency"],
              "count_outside_report": f["count_outside_report"], "note": f["note"]}
             for f in V.case_inputs(ws, cid)["fixed_cost"]]
-    note = (f"有償の週は {candidate['sku']} の計画の生産量ちょうど作った最初の週〜最後の週（助走を含む、"
-            f"比較 {candidate['compare']} の実測）")
+    if candidate.get("kind") == "raised":
+        note = (f"有償の週は {candidate['sku']} の計画の生産量を親の案より上げた週（{candidate['cap']}）")
+    else:
+        note = (f"有償の週は {candidate['sku']} の計画の生産量ちょうど作った最初の週〜最後の週（助走を含む、"
+                f"比較 {candidate['compare']} の実測）")
     hit = [r for r in rows if r["cost_item"] == cost_item]
     if hit:
         hit[0].update({"paid_start_week": candidate["first"], "paid_end_week": candidate["last"],
@@ -217,8 +298,9 @@ def apply_raise_weeks(ws: str, cid: str, candidate: dict, entity: str, currency:
                      "currency": currency, "count_outside_report": True, "note": note})
     r = set_fixed_cost(ws, cid, rows)
     if r.ok:
+        what = "上げた週" if candidate.get("kind") == "raised" else "助走を含む"
         r.message = (f"{cid}：{display_name}の有償の週を {candidate['first']}〜{candidate['last']}"
-                     f"（{candidate['span']} 週、助走を含む）にした。比較は並べ直す")
+                     f"（{candidate['span']} 週、{what}）にした。比較は並べ直す")
     return r
 
 

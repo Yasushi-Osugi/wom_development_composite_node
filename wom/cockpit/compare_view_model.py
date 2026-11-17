@@ -140,6 +140,36 @@ def _kv(d) -> str:
 
 
 # ── ② 選んだ案の入力 ─────────────────────────────────────────────────────
+def range_text(rows: List[dict], col: str):
+    """(text, main value) of one capacity column over the weeks of the rows.
+    One value → ('11', '11'). Several → ('2028-W11〜2029-W46 は 12、ほかは 11', '11'): the value at both ends of
+    the plan is 'ほか' (else the value held for the most weeks); the other values are listed with their week ranges
+    (never shown as one value)."""
+    srt = sorted(rows, key=lambda r: r["week"])
+    runs = []
+    for r in srt:
+        v = (r.get(col) or "").strip()
+        if runs and runs[-1][0] == v:
+            runs[-1][2] = r["week"]
+            runs[-1][3] += 1
+        else:
+            runs.append([v, r["week"], r["week"], 1])
+    weeks = {}
+    for v, _a, _b, n in runs:
+        weeks[v] = weeks.get(v, 0) + n
+    if len(weeks) == 1:
+        v = next(iter(weeks))
+        return (v if v else UNSET), v
+    # 'ほか' = the value at both ends of the plan (a raise inside the plan reads "<range> は 12、ほかは 11");
+    # if the two ends differ, the value held for the most weeks
+    main = runs[0][0] if runs[0][0] == runs[-1][0] else max(weeks, key=lambda v: (weeks[v], v))
+    parts = []
+    for v in sorted((v for v in weeks if v != main), key=lambda v: min(a for x, a, _b, _n in runs if x == v)):
+        rng = "・".join(f"{a}〜{b}" if a != b else a for x, a, b, _n in runs if x == v)
+        parts.append(f"{rng} は {v if v else UNSET}")
+    return "、".join(parts) + f"、ほかは {main if main else UNSET}", main
+
+
 def case_inputs(ws: str, cid: str) -> dict:
     cdir = C.case_dir(ws, cid)
     case = C.read_case(ws, cid)
@@ -158,10 +188,13 @@ def case_inputs(ws: str, cid: str) -> dict:
                                "ramp_ratio"]].to_dict("records")
     cap = _csv(os.path.join(cdir, "model", C.CAPACITY), dtype=str, keep_default_na=False)
     for (sku, node), g in cap.groupby(["sku_id", "node_name"]):
-        pairs = sorted({(r["max_supply"], r["cap_soft"]) for _, r in g.iterrows()})
+        recs = g.to_dict("records")
+        ms_text, ms_main = range_text(recs, "max_supply")
+        cs_text, cs_main = range_text(recs, "cap_soft")
         out["capacity"].append({"sku_id": sku, "node": node, "rows": len(g),
-                                "max_supply": pairs[0][0] if len(pairs) == 1 else "週で違う",
-                                "cap_soft": pairs[0][1] if len(pairs) == 1 else "週で違う"})
+                                "max_supply": ms_text, "cap_soft": cs_text,
+                                "max_supply_main": ms_main, "cap_soft_main": cs_main,
+                                "runs": C.capacity_runs(recs)})
     pol = case["inputs"].get("policy")
     if pol:
         out["policy"] = {"allocation_file": pol.get("allocation_file"), "policy_file": pol.get("policy_file"),
@@ -444,6 +477,11 @@ def summary(ws: str, base: str, alt: str, cmp: dict) -> List[dict]:
     fv = cmp["factory"]
     labels = fv["labels"]
     pw = fv["planned_output_weeks"]
+    if len(pw) and "row" in pw.columns:
+        per_value = pw[pw["row"] == "値ごと"]
+        pw = pw[pw["row"] != "値ごと"]
+    else:
+        per_value = pd.DataFrame()
     parts = []
     if len(pw):
         for sku, g in pw.groupby("product"):
@@ -467,6 +505,12 @@ def summary(ws: str, base: str, alt: str, cmp: dict) -> List[dict]:
                     t += f"相手は {-dw} 週遅く作り始めた。"
             if made[base] != made[alt]:
                 t += f"作った量 基準 {made[base]:,}・相手 {made[alt]:,} lot（差 {made[alt] - made[base]:+,}）。"
+            for c, who in ((base, "基準"), (alt, "相手")):
+                pv = per_value[(per_value["case"] == c) & (per_value["product"] == sku)] if len(per_value) else per_value
+                if len(pv):
+                    t += f"{who}は週で上限が違う：" + "、".join(
+                        f"上限 {r.shippable_soft_values} の {r.planned_weeks} 週（{r.planned_first_week}〜"
+                        f"{r.planned_last_week}）のうち、ちょうど作った週 {r.weeks_at_cap}" for r in pv.itertuples()) + "。"
             parts.append(t)
     parts.append(f"在庫 lot・週（基準 → 相手）：{inventory_text(fv)}。")
     out.append({"title": "工場", "text": "".join(parts)})

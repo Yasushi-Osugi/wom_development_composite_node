@@ -350,9 +350,11 @@ def _capacity_rows_for(p: str, rows, sku: str, node: Optional[str]):
     return sel, node
 
 
-def set_planned_output(ws_dir: str, cid: str, sku: str, cap_soft, node: Optional[str] = None) -> dict:
-    """(b) the SKU's planned output: cap_soft of every row of the SKU's factory (warm-up rows included).
-    Stops if the value exceeds max_supply on any row."""
+def set_planned_output(ws_dir: str, cid: str, sku: str, cap_soft, node: Optional[str] = None,
+                       from_week: Optional[str] = None, to_week: Optional[str] = None) -> dict:
+    """(b) the SKU's planned output: cap_soft of every row of the SKU's factory (warm-up rows included), or only
+    of the rows from_week..to_week (both ends included; 段 4). The rows outside the range are not touched.
+    Stops if the value exceeds max_supply on a changed row, or if from_week / to_week is not a week of the rows."""
     _guard_not_running(ws_dir, cid)
     p = os.path.join(case_dir(ws_dir, cid), "model", CAPACITY)
     fields, rows, term, bom = _read_rows(p)
@@ -361,6 +363,20 @@ def set_planned_output(ws_dir: str, cid: str, sku: str, cap_soft, node: Optional
             raise CaseError(f"{p}: 列 {c} がありません")
     val = _num_text(cap_soft, "cap_soft")
     sel, node = _capacity_rows_for(p, rows, sku, node)
+    if (from_week is None) != (to_week is None):
+        raise CaseError("週の範囲は from_week と to_week の両方を指定してください（省略すると全週）")
+    rng = None
+    if from_week is not None:
+        a, b = _check_week(from_week, "from_week"), _check_week(to_week, "to_week")
+        weeks = sorted({r["week"].strip() for r in sel})
+        missing = [w for w in (a, b) if w not in weeks]
+        if missing:
+            raise CaseError(f"{p}: SKU {sku}・工場 {node} の行に週 {missing} がありません（行の週は {weeks[0]}〜{weeks[-1]}）。"
+                            "直し方：行のある週を指定する")
+        if b < a:
+            raise CaseError(f"週の範囲の終わり {b} が始まり {a} より前です")
+        sel = [r for r in sel if a <= r["week"].strip() <= b]
+        rng = (a, b)
     over = []
     for r in sel:
         ms = r["max_supply"].strip()
@@ -375,8 +391,31 @@ def set_planned_output(ws_dir: str, cid: str, sku: str, cap_soft, node: Optional
         r["cap_soft"] = val
     _write_rows(p, fields, rows, term, bom)
     _record_change(ws_dir, cid, "planned_output", {"sku": sku, "node": node, "cap_soft_from": old,
-                                                    "cap_soft_to": val, "rows": len(sel)})
-    return {"sku": sku, "node": node, "rows": len(sel), "cap_soft": val}
+                                                    "cap_soft_to": val, "rows": len(sel),
+                                                    "weeks": list(rng) if rng else "all"})
+    return {"sku": sku, "node": node, "rows": len(sel), "cap_soft": val, "weeks": list(rng) if rng else "all"}
+
+
+def capacity_runs(rows: List[dict]) -> List[dict]:
+    """Consecutive weeks with the same (max_supply, cap_soft), in week order: [{from, to, weeks, max_supply, cap_soft}]."""
+    out = []
+    for r in sorted(rows, key=lambda x: x["week"]):
+        ms, cs = (r.get("max_supply") or "").strip(), (r.get("cap_soft") or "").strip()
+        if out and (out[-1]["max_supply"], out[-1]["cap_soft"]) == (ms, cs):
+            out[-1]["to"] = r["week"]
+            out[-1]["weeks"] += 1
+        else:
+            out.append({"from": r["week"], "to": r["week"], "weeks": 1, "max_supply": ms, "cap_soft": cs})
+    return out
+
+
+def capacity_text(rows: List[dict]) -> str:
+    """'13/11' when one pair, else '13/11・12（週で違う）' (never shown as one pair)."""
+    ms = sorted({(r.get("max_supply") or "").strip() for r in rows}, key=lambda v: (len(v), v))
+    cs = sorted({(r.get("cap_soft") or "").strip() for r in rows}, key=lambda v: (len(v), v))
+    if len(ms) == 1 and len(cs) == 1:
+        return f"{ms[0]}/{cs[0]}"
+    return f"{'・'.join(ms)}/{'・'.join(cs)}（週で違う）"
 
 
 def set_capacity(ws_dir: str, cid: str, sku: str, max_supply, cap_soft, node: Optional[str] = None) -> dict:
@@ -566,8 +605,8 @@ def input_summary(ws_dir: str, cid: str) -> dict:
     by = {}
     for r in rows:
         k = f"{r['sku_id'].strip()}@{r['node_name'].strip()}"
-        by.setdefault(k, set()).add((r.get("max_supply", "").strip(), r.get("cap_soft", "").strip()))
-    s["capacity"] = {k: ("/".join(sorted(v)[0]) if len(v) == 1 else "週で違う") for k, v in sorted(by.items())}
+        by.setdefault(k, []).append(r)
+    s["capacity"] = {k: capacity_text(v) for k, v in sorted(by.items())}
     case = read_case(ws_dir, cid)
     pol = case["inputs"].get("policy")
     if pol:

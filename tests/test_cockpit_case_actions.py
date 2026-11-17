@@ -162,3 +162,36 @@ def test_old_comparison_without_the_cost_record_asks_to_compare_again(ws):
     rec.pop("base_fixed_cost_sha256")
     json.dump(rec, open(p, "w", encoding="utf-8"))
     assert R.compare_status(ws, "C01", "C02") == R.ST_COST_CHANGED
+
+
+# ── 段 4 B0：親より上げた週を候補に出す ──────────────────────────────────
+def test_raised_range_versus_the_parent_is_offered_first(ws):
+    A.copy(ws, "C01", "raised")
+    r = A.set_planned_output(ws, "C02", "PA", None, "9", "2027-W02", "2027-W03")
+    assert r.ok and "2027-W02〜2027-W03" in r.message
+    c = A.raise_week_candidates(ws, "C02")
+    assert c[0]["kind"] == "raised"
+    assert (c[0]["first"], c[0]["last"], c[0]["span"], c[0]["in_report"], c[0]["at_cap"]) == \
+        ("2027-W02", "2027-W03", 2, 2, None)                                 # no comparison yet: not known
+    assert not os.path.exists(os.path.join(ws, "C02", "inputs", "fixed_cost.csv"))   # nothing written yet
+    d = os.path.join(ws, "compare", "C01__C02")
+    os.makedirs(d)
+    pd.DataFrame([{"case": "C02", "product": "PA", "week": w, "production_lots": p, "shippable_soft": 9}
+                  for w, p in (("2027-W02", 9), ("2027-W03", 8))]).to_csv(os.path.join(d, "factory_weekly.csv"),
+                                                                         index=False)
+    c = A.raise_week_candidates(ws, "C02")
+    assert (c[0]["at_cap"], c[0]["gaps"]) == (1, 1)
+    assert A.apply_raise_weeks(ws, "C02", c[0], "E", "JPY").ok
+    f = pd.read_csv(os.path.join(ws, "C02", "inputs", "fixed_cost.csv"), dtype=str, keep_default_na=False).iloc[0]
+    assert (f["paid_start_week"], f["paid_end_week"], f["count_outside_report"]) == ("2027-W02", "2027-W03", "1")
+    assert "親の案より上げた週" in f["note"]
+    assert A.raise_week_candidates(ws, "C01") == []                          # the first case has no parent
+
+
+def test_measured_candidate_is_not_offered_for_a_mixed_plan(ws):
+    A.copy(ws, "C01", "mixed")
+    _fake_compare(ws, "C01", "C02", [
+        {"case": "C02", "product": "PA", "factory": "Fac_A", "shippable_soft_values": "8,9",
+         "first_week_at_cap": "2026-W52", "last_week_at_cap": "2027-W04", "span_weeks": 5, "span_weeks_in_report": 4,
+         "span_weeks_outside_report": 1, "weeks_below_cap_inside_span": 0}])
+    assert A.raise_week_candidates(ws, "C02") == []
