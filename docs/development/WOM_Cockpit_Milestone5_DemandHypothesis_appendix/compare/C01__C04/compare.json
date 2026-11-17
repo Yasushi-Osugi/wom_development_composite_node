@@ -1,0 +1,186 @@
+{
+  "base": "C01",
+  "alt": "C04",
+  "state": "済み",
+  "at": "2026-11-17T16:31:20",
+  "seconds": 3.62,
+  "base_input_hashes": {
+    "(policy)": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "model/README.md": "f2eff5c3d5d6a5a2b65bd6b30eaa0490e230dea09cb221445580803ee87264d1",
+    "model/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+    "model/decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+    "model/demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+    "model/demand_generation_log.json": "468daee8dd1c3a93868f64625371a26a97ea8bced5467a2461b9d7f59e44c834",
+    "model/edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+    "model/holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+    "model/inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+    "model/lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+    "model/market_entry_plan.csv": "nonote:2b39a634957aaac96b9c8af16a7e318e0494c105c8291fa6893ccd4c8e83cf4e",
+    "model/node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+    "model/node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+    "model/planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+    "model/ppc_edge_cost_rule.csv": "7a1dbef2bf62c715f7a55ca2f1b1ce0fcedf51a209be4b6fc69576a9f6f8ab0d",
+    "model/ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+    "model/ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+    "model/ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+    "model/ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+    "model/ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+    "model/ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+    "model/ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+    "model/ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+    "model/push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+    "model/route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+    "model/sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+    "model/sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+    "model/vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+    "model/vc_customs_valuation_rule.csv": "991a486a81a631b99396d359ad683e743181b02f7e06b2625a7607e82fbc3a64",
+    "model/vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+    "model/vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98",
+    "model/vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2",
+    "model/vc_sales_cost_rule.csv": "30da14e49384d4e1292b7b490a3a1f6b957ec5efaef5fd973f59e1caefb84297",
+    "model/vc_trade_terms.csv": "f8ac17ea24f4858c871858f564e7f2555a6cf770f4663b3ea962704ff571ca59"
+  },
+  "alt_input_hashes": {
+    "(policy)": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "model/README.md": "f2eff5c3d5d6a5a2b65bd6b30eaa0490e230dea09cb221445580803ee87264d1",
+    "model/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+    "model/decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+    "model/demand_forecast.csv": "29a7bbb26c3127f9010e78a082a9e59943e3cb938fee0033423c8a0d84803fb9",
+    "model/demand_generation_log.json": "85a4ccd01379476fb5e86a47fd6daa77f522232794b29ff781dbae548eee248c",
+    "model/edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+    "model/holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+    "model/inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+    "model/lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+    "model/market_entry_plan.csv": "nonote:bc1554c9a20fe2792e4e8c3431c58cff8e489cefedd5f3d55b09ec2b09100cd1",
+    "model/node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+    "model/node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+    "model/planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+    "model/ppc_edge_cost_rule.csv": "7a1dbef2bf62c715f7a55ca2f1b1ce0fcedf51a209be4b6fc69576a9f6f8ab0d",
+    "model/ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+    "model/ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+    "model/ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+    "model/ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+    "model/ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+    "model/ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+    "model/ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+    "model/ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+    "model/push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+    "model/route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+    "model/sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+    "model/sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+    "model/vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+    "model/vc_customs_valuation_rule.csv": "991a486a81a631b99396d359ad683e743181b02f7e06b2625a7607e82fbc3a64",
+    "model/vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+    "model/vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98",
+    "model/vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2",
+    "model/vc_sales_cost_rule.csv": "30da14e49384d4e1292b7b490a3a1f6b957ec5efaef5fd973f59e1caefb84297",
+    "model/vc_trade_terms.csv": "f8ac17ea24f4858c871858f564e7f2555a6cf770f4663b3ea962704ff571ca59"
+  },
+  "P0_base": 606871080.0,
+  "P0_alt": 606871080.0,
+  "delta_P0": 0.0,
+  "fixed_cost": [
+    {
+      "cost_item": "",
+      "display_name": null,
+      "entity": "",
+      "P0_base": 606871080.0,
+      "P0_alt": 606871080.0,
+      "count_outside_report": null,
+      "paid_start_base": null,
+      "paid_end_base": null,
+      "W_base": null,
+      "paid_start_alt": null,
+      "paid_end_alt": null,
+      "W_alt": null,
+      "weekly_amount_base": null,
+      "weekly_amount_alt": null,
+      "cost_base": null,
+      "cost_alt": null,
+      "P_after_base": null,
+      "P_after_alt": null,
+      "delta_P0": 0.0,
+      "delta_P0_by_product": "COS_Cream: 0; COS_Serum: 0",
+      "delta_W": "",
+      "other_items_cost_diff": null,
+      "delta_P0_net": null,
+      "boundary": "未算出（固定費の表なし（有償週未設定））",
+      "f_star_per_week": "",
+      "boundary_assumption": null,
+      "delta_P_after": null,
+      "valuation_status": "評価済み",
+      "note": null
+    }
+  ],
+  "fixed_cost_plan": null,
+  "base_fixed_cost_sha256": null,
+  "alt_fixed_cost_sha256": null,
+  "base_entry_notes": {
+    "COS_Serum:SG_Store": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Serum:SG_EC": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Serum:SG_Distributor": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Cream:SG_Store": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Cream:SG_EC": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Cream:SG_Distributor": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Serum:TH_Distributor": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Cream:TH_Distributor": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    }
+  },
+  "alt_entry_notes": {
+    "COS_Serum:SG_Store": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Serum:SG_EC": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Serum:SG_Distributor": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Cream:SG_Store": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Cream:SG_EC": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Cream:SG_Distributor": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Serum:TH_Distributor": {
+      "basis_note": "docs/scenarios/cosmetics.md Demand assumptions",
+      "promotion_note": ""
+    },
+    "COS_Cream:TH_Distributor": {
+      "basis_note": "発売直後の需要が想定より強い場合（立ち上がりの倍率 0.5→1.0）。到達点 5 の試行の仮説",
+      "promotion_note": ""
+    }
+  }
+}

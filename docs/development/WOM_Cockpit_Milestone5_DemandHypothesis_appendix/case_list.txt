@@ -1,0 +1,9 @@
+id	name	parent	cap COS_Cream@Factory_JP	policy	deliveries	unallocated	backlog_end	P0	state
+C01	基準・後期	—	13/11	なし	COS_Cream=1680 COS_Serum=2184	—	COS_Cream:TH_Distributor=88 COS_Serum:TH_Distributor=104	606,871,080	済み
+C02	増産・全期間	C01	13/12	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	616,860,840	済み
+C03	増産・88週	C01	13/11・12（週で違う）	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	616,860,840	済み
+C04	基準＋強い立ち上がり	C01	13/11	なし	COS_Cream=1680 COS_Serum=2184	—	COS_Cream:TH_Distributor=101 COS_Serum:TH_Distributor=104	606,871,080	済み
+C05	88週＋強い立ち上がり	C03	13/11・12（週で違う）	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Cream:TH_Distributor=13 COS_Serum:TH_Distributor=104	616,860,840	済み
+C06	全期間＋強い立ち上がり	C02	13/12	なし	COS_Cream=1781 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	618,336,600	済み
+C07	101週＋強い立ち上がり	C05	13/11・12（週で違う）	なし	COS_Cream=1781 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	618,336,600	済み
+C08	画面で作った 強い立ち上がり	C01	13/11	なし	COS_Cream=1680 COS_Serum=2184	—	COS_Cream:TH_Distributor=101 COS_Serum:TH_Distributor=104	606,871,080	済み

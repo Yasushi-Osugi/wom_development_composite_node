@@ -1,0 +1,3 @@
+sku_id,region,column,base,alt
+COS_Cream,TH_Distributor,ramp_ratio,0.5,1.0
+COS_Cream,TH_Distributor,basis_note,docs/scenarios/cosmetics.md Demand assumptions,発売直後の需要が想定より強い場合（立ち上がりの倍率 0.5→1.0）。到達点 5 の試行の仮説

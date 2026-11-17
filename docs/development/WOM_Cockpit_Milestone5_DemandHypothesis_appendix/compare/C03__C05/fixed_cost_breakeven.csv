@@ -1,0 +1,2 @@
+cost_item,display_name,entity,P0_base,P0_alt,count_outside_report,paid_start_base,paid_end_base,W_base,paid_start_alt,paid_end_alt,W_alt,weekly_amount_base,weekly_amount_alt,cost_base,cost_alt,P_after_base,P_after_alt,delta_P0,delta_P0_by_product,delta_W,other_items_cost_diff,delta_P0_net,boundary,f_star_per_week,boundary_assumption,delta_P_after,valuation_status,note
+planned_output_raise,増産の確保費,E_JP,616860840.0,616860840.0,1,2028-W11,2029-W46,88,2028-W11,2029-W46,88,,,,,,,0.0,COS_Cream: 0; COS_Serum: 0,0,,,順位変化なし（発生週数が同じ）。両案同額,,,,評価済み,週額が未設定：境目だけ

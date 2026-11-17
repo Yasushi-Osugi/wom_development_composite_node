@@ -1,0 +1,173 @@
+[cockpit_cases] 作業 output/cockpit_m5/cos、最初の案 C01（基準・後期）
+[cockpit_cases] C01 entry-plan: {"total_lots": 4056, "rows": 1384}
+[cockpit_cases] C01 の状態：未実行
+[cockpit_cases] C01 capacity: {"sku": "COS_Serum", "node": "Factory_JP", "rows": 173, "max_supply": "17", "cap_soft": "14"}
+[cockpit_cases] C01 の状態：未実行
+[cockpit_cases] C01 capacity: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 173, "max_supply": "13", "cap_soft": "11"}
+[cockpit_cases] C01 の状態：未実行
+[cockpit_cases] C01 → C02（増産・全期間）
+[cockpit_cases] C02 planned-output: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 173, "cap_soft": "12", "weeks": "all"}
+[cockpit_cases] C02 の状態：未実行
+[cockpit_cases] C01 → C03（増産・88週）
+[cockpit_cases] C03 planned-output: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 88, "cap_soft": "12", "weeks": ["2028-W11", "2029-W46"]}
+[cockpit_cases] C03 の状態：未実行
+C02 True C02：増産の確保費の有償の週を 2026-W37〜2029-W52（173 週、上げた週）にした。比較は並べ直す
+C03 True C03：増産の確保費の有償の週を 2028-W11〜2029-W46（88 週、上げた週）にした。比較は並べ直す
+[cockpit_cases] C01 → C04（基準＋強い立ち上がり）
+[cockpit_cases] 需要の差の見込み COS_Cream:TH_Distributor：合計 299 → 312（+13）
+    2028-W01  2 → 3（+1）
+    2028-W02  2 → 3（+1）
+    2028-W03  2 → 3（+1）
+    2028-W04  2 → 3（+1）
+    2028-W05  2 → 3（+1）
+    2028-W06  2 → 3（+1）
+    2028-W07  2 → 3（+1）
+    2028-W08  2 → 3（+1）
+    2028-W09  2 → 3（+1）
+    2028-W10  2 → 3（+1）
+    2028-W11  2 → 3（+1）
+    2028-W12  2 → 3（+1）
+    2028-W13  2 → 3（+1）
+[cockpit_cases] C04 demand-hypothesis: {"key": "COS_Cream:TH_Distributor", "changes": {"ramp_ratio": ["0.5", "1.0"], "basis_note": ["docs/scenarios/cosmetics.md Demand assumptions", "発売直後の需要が想定より強い場合（立ち上がりの倍率 0.5→1.0）。到達点 5 の試行の仮説"]}, "demand_regenerated": true, "total_lots": 4069}
+[cockpit_cases] C04 の状態：未実行
+[cockpit_cases] C03 → C05（88週＋強い立ち上がり）
+[cockpit_cases] 需要の差の見込み COS_Cream:TH_Distributor：合計 299 → 312（+13）
+    2028-W01  2 → 3（+1）
+    2028-W02  2 → 3（+1）
+    2028-W03  2 → 3（+1）
+    2028-W04  2 → 3（+1）
+    2028-W05  2 → 3（+1）
+    2028-W06  2 → 3（+1）
+    2028-W07  2 → 3（+1）
+    2028-W08  2 → 3（+1）
+    2028-W09  2 → 3（+1）
+    2028-W10  2 → 3（+1）
+    2028-W11  2 → 3（+1）
+    2028-W12  2 → 3（+1）
+    2028-W13  2 → 3（+1）
+[cockpit_cases] C05 demand-hypothesis: {"key": "COS_Cream:TH_Distributor", "changes": {"ramp_ratio": ["0.5", "1.0"], "basis_note": ["docs/scenarios/cosmetics.md Demand assumptions", "発売直後の需要が想定より強い場合（立ち上がりの倍率 0.5→1.0）。到達点 5 の試行の仮説"]}, "demand_regenerated": true, "total_lots": 4069}
+[cockpit_cases] C05 の状態：未実行
+[cockpit_cases] C02 → C06（全期間＋強い立ち上がり）
+[cockpit_cases] 需要の差の見込み COS_Cream:TH_Distributor：合計 299 → 312（+13）
+    2028-W01  2 → 3（+1）
+    2028-W02  2 → 3（+1）
+    2028-W03  2 → 3（+1）
+    2028-W04  2 → 3（+1）
+    2028-W05  2 → 3（+1）
+    2028-W06  2 → 3（+1）
+    2028-W07  2 → 3（+1）
+    2028-W08  2 → 3（+1）
+    2028-W09  2 → 3（+1）
+    2028-W10  2 → 3（+1）
+    2028-W11  2 → 3（+1）
+    2028-W12  2 → 3（+1）
+    2028-W13  2 → 3（+1）
+[cockpit_cases] C06 demand-hypothesis: {"key": "COS_Cream:TH_Distributor", "changes": {"ramp_ratio": ["0.5", "1.0"], "basis_note": ["docs/scenarios/cosmetics.md Demand assumptions", "発売直後の需要が想定より強い場合（立ち上がりの倍率 0.5→1.0）。到達点 5 の試行の仮説"]}, "demand_regenerated": true, "total_lots": 4069}
+[cockpit_cases] C06 の状態：未実行
+[cockpit_cases] C05 → C07（101週＋強い立ち上がり）
+[cockpit_cases] C07 planned-output: {"sku": "COS_Cream", "node": "Factory_JP", "rows": 101, "cap_soft": "12", "weeks": ["2027-W50", "2029-W46"]}
+[cockpit_cases] C07 の状態：未実行
+C07 True C07：費用の前提を 1 行にした。案は「済み」のまま、比較は並べ直す
+[C01] 1/5 需要 …
+[C01] 1/5 需要 済み（0.0 秒）
+[C01] 2/5 計画・PPC・Flow Check …
+[C01] 2/5 計画・PPC・Flow Check 済み（10.3 秒）
+[C01] 3/5 Value Chain …
+[C01] 3/5 Value Chain 済み（19.4 秒）
+[C01] 4/5 年齢の検査 …
+[C01] 4/5 年齢の検査 済み（10.1 秒）
+[C01] 5/5 突き合わせ …
+[C01] 5/5 突き合わせ 済み（2.3 秒）
+[cockpit_cases] C01：済み（42.1 秒）  P0 606,871,080
+[C02] 1/5 需要 …
+[C02] 1/5 需要 済み（0.0 秒）
+[C02] 2/5 計画・PPC・Flow Check …
+[C02] 2/5 計画・PPC・Flow Check 済み（10.2 秒）
+[C02] 3/5 Value Chain …
+[C02] 3/5 Value Chain 済み（19.7 秒）
+[C02] 4/5 年齢の検査 …
+[C02] 4/5 年齢の検査 済み（10.7 秒）
+[C02] 5/5 突き合わせ …
+[C02] 5/5 突き合わせ 済み（2.4 秒）
+[cockpit_cases] C02：済み（43.0 秒）  P0 616,860,840
+[C03] 1/5 需要 …
+[C03] 1/5 需要 済み（0.0 秒）
+[C03] 2/5 計画・PPC・Flow Check …
+[C03] 2/5 計画・PPC・Flow Check 済み（10.2 秒）
+[C03] 3/5 Value Chain …
+[C03] 3/5 Value Chain 済み（18.9 秒）
+[C03] 4/5 年齢の検査 …
+[C03] 4/5 年齢の検査 済み（10.3 秒）
+[C03] 5/5 突き合わせ …
+[C03] 5/5 突き合わせ 済み（1.2 秒）
+[cockpit_cases] C03：済み（40.6 秒）  P0 616,860,840
+[C04] 1/5 需要 …
+[C04] 1/5 需要 済み（0.0 秒）
+[C04] 2/5 計画・PPC・Flow Check …
+[C04] 2/5 計画・PPC・Flow Check 済み（7.2 秒）
+[C04] 3/5 Value Chain …
+[C04] 3/5 Value Chain 済み（11.3 秒）
+[C04] 4/5 年齢の検査 …
+[C04] 4/5 年齢の検査 済み（11.1 秒）
+[C04] 5/5 突き合わせ …
+[C04] 5/5 突き合わせ 済み（2.1 秒）
+[cockpit_cases] C04：済み（31.6 秒）  P0 606,871,080
+[C05] 1/5 需要 …
+[C05] 1/5 需要 済み（0.0 秒）
+[C05] 2/5 計画・PPC・Flow Check …
+[C05] 2/5 計画・PPC・Flow Check 済み（10.4 秒）
+[C05] 3/5 Value Chain …
+[C05] 3/5 Value Chain 済み（19.6 秒）
+[C05] 4/5 年齢の検査 …
+[C05] 4/5 年齢の検査 済み（7.1 秒）
+[C05] 5/5 突き合わせ …
+[C05] 5/5 突き合わせ 済み（1.1 秒）
+[cockpit_cases] C05：済み（38.3 秒）  P0 616,860,840
+[C06] 1/5 需要 …
+[C06] 1/5 需要 済み（0.0 秒）
+[C06] 2/5 計画・PPC・Flow Check …
+[C06] 2/5 計画・PPC・Flow Check 済み（7.9 秒）
+[C06] 3/5 Value Chain …
+[C06] 3/5 Value Chain 済み（10.8 秒）
+[C06] 4/5 年齢の検査 …
+[C06] 4/5 年齢の検査 済み（13.2 秒）
+[C06] 5/5 突き合わせ …
+[C06] 5/5 突き合わせ 済み（2.4 秒）
+[cockpit_cases] C06：済み（34.3 秒）  P0 618,336,600
+[C07] 1/5 需要 …
+[C07] 1/5 需要 済み（0.0 秒）
+[C07] 2/5 計画・PPC・Flow Check …
+[C07] 2/5 計画・PPC・Flow Check 済み（11.4 秒）
+[C07] 3/5 Value Chain …
+[C07] 3/5 Value Chain 済み（24.8 秒）
+[C07] 4/5 年齢の検査 …
+[C07] 4/5 年齢の検査 済み（13.4 秒）
+[C07] 5/5 突き合わせ …
+[C07] 5/5 突き合わせ 済み（2.5 秒）
+[cockpit_cases] C07：済み（52.3 秒）  P0 618,336,600
+[cockpit_cases] C01 → C02：ΔP0 9,989,760
+  planned_output_raise：ΔW 173  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 57744.2774566474
+  -> output/cockpit_m5/cos\compare\C01__C02
+[cockpit_cases] C01 → C03：ΔP0 9,989,760
+  planned_output_raise：ΔW 88  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 113520.0
+  -> output/cockpit_m5/cos\compare\C01__C03
+[cockpit_cases] C01 → C04：ΔP0 0
+  (固定費の表なし)：ΔW   未算出（固定費の表なし（有償週未設定））  f* 
+  -> output/cockpit_m5/cos\compare\C01__C04
+[cockpit_cases] C03 → C05：ΔP0 0
+  planned_output_raise：ΔW 0  順位変化なし（発生週数が同じ）。両案同額  f* 
+  -> output/cockpit_m5/cos\compare\C03__C05
+[cockpit_cases] C02 → C06：ΔP0 1,475,760
+  planned_output_raise：ΔW 0  順位変化なし（発生週数が同じ）  f* 
+  -> output/cockpit_m5/cos\compare\C02__C06
+[cockpit_cases] C05 → C07：ΔP0 1,475,760
+  planned_output_raise：ΔW 13  f* = ΔP0 ÷ ΔW（f が小さければ alt が上、等しければ同額、大きければ base が上）  f* 113520.0
+  -> output/cockpit_m5/cos\compare\C05__C07
+id	name	parent	cap COS_Cream@Factory_JP	policy	deliveries	unallocated	backlog_end	P0	state
+C01	基準・後期	—	13/11	なし	COS_Cream=1680 COS_Serum=2184	—	COS_Cream:TH_Distributor=88 COS_Serum:TH_Distributor=104	606,871,080	済み
+C02	増産・全期間	C01	13/12	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	616,860,840	済み
+C03	増産・88週	C01	13/11・12（週で違う）	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	616,860,840	済み
+C04	基準＋強い立ち上がり	C01	13/11	なし	COS_Cream=1680 COS_Serum=2184	—	COS_Cream:TH_Distributor=101 COS_Serum:TH_Distributor=104	606,871,080	済み
+C05	88週＋強い立ち上がり	C03	13/11・12（週で違う）	なし	COS_Cream=1768 COS_Serum=2184	—	COS_Cream:TH_Distributor=13 COS_Serum:TH_Distributor=104	616,860,840	済み
+C06	全期間＋強い立ち上がり	C02	13/12	なし	COS_Cream=1781 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	618,336,600	済み
+C07	101週＋強い立ち上がり	C05	13/11・12（週で違う）	なし	COS_Cream=1781 COS_Serum=2184	—	COS_Serum:TH_Distributor=104	618,336,600	済み
