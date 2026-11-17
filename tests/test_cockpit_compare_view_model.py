@@ -379,3 +379,41 @@ def test_case_table_labels_backlog_with_market_names(ws):
     assert V.case_market_labels(ws, "C01") == {"PA:X": "PA:Shop_X（X）", "PA:Y": "PA:Shop_Y（Y）"}
     assert V._kv({"PA:X": 2}, V.case_market_labels(ws, "C01")) == "PA:Shop_X（X） 2"
     assert V._kv({"PA:X": 2}) == "PA:X 2"
+
+
+# ── 到達点 5 B：需要の仮説の表・根拠の文・比べた後に変わった文 ─────────────────
+def test_entry_matrix_and_basis_text(ws):
+    C.set_demand_hypothesis(ws, "C02", "PA", "X", basis_note="強い", promotion_note="販促あり")
+    m = V.entry_matrix(ws, "C02")
+    assert m["products"] == ["PA"] and m["markets"] == ["X", "Y"]
+    assert m["cells"][("PA", "X")]["text"] == "2027-W02・定常 4・×0.5（2 週）"
+    ep = {r["region"]: r for r in V.case_inputs(ws, "C02")["entry_plan"]}
+    assert (ep["X"]["basis_note"], ep["X"]["promotion_note"]) == ("強い", "販促あり")
+
+
+def test_summary_lists_the_hypothesis_and_the_text(ws):
+    C.set_demand_hypothesis(ws, "C02", "PA", "X", ramp_ratio="1.0", basis_note="強い立ち上がり")
+    _done(ws, "C02", 150.0)
+    p = os.path.join(V.compare_dir(ws, "C01", "C02"), "compare.json")     # compared after the change
+    rec = json.load(open(p, encoding="utf-8"))
+    rec["alt_input_hashes"] = C.read_case(ws, "C02")["run"]["input_hashes"]
+    json.dump(rec, open(p, "w", encoding="utf-8"))
+    cmp = V.comparison(ws, "C01", "C02")
+    t = V.summary(ws, "C01", "C02", cmp)[0]["text"]
+    assert "PA:X の立ち上がりの割合（基準 0.5、相手 1.0）" in t
+    assert "PA:X の根拠（基準「なし」、相手「強い立ち上がり」）" in t
+
+
+def test_text_changed_after_the_comparison_is_noted(ws):
+    p = os.path.join(V.compare_dir(ws, "C01", "C02"), "compare.json")
+    rec = json.load(open(p, encoding="utf-8"))
+    rec["base_entry_notes"], rec["alt_entry_notes"] = C.entry_notes(ws, "C01"), C.entry_notes(ws, "C02")
+    json.dump(rec, open(p, "w", encoding="utf-8"))
+    assert V.notes_changed_after_compare(ws, "C01", "C02") == []
+    C.set_demand_hypothesis(ws, "C02", "PA", "Y", basis_note="後から書いた")
+    assert V.notes_changed_after_compare(ws, "C01", "C02") == ["C02 PA:Y"]
+    assert any("根拠の文は比べた後に変わった" in n for n in V.notes(ws, "C01", "C02", V.comparison(ws, "C01", "C02")))
+    rec.pop("base_entry_notes")
+    rec.pop("alt_entry_notes")
+    json.dump(rec, open(p, "w", encoding="utf-8"))
+    assert V.notes_changed_after_compare(ws, "C01", "C02") == []        # an older comparison has no record

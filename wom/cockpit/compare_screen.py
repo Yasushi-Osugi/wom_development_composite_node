@@ -101,7 +101,7 @@ class CompareScreen(ttk.Frame):
         bb = ttk.Frame(f2)
         bb.pack(side="bottom", fill="x")
         ttk.Label(bb, text="入力を変える（変えたら実行し直す）：").grid(row=0, column=0, columnspan=3, sticky="w")
-        for i, (text, cmd) in enumerate((("投入週…", self._dlg_launch), ("生産量…", self._dlg_output),
+        for i, (text, cmd) in enumerate((("需要の仮説…", self._dlg_hypothesis), ("生産量…", self._dlg_output),
                                          ("シフト…", self._dlg_shifts), ("供給の方針…", self._dlg_policy),
                                          ("費用の前提…", self._dlg_cost), ("増産の有償の週…", self._dlg_raise))):
             w = ttk.Button(bb, text=text, command=cmd)
@@ -307,8 +307,14 @@ class CompareScreen(ttk.Frame):
         if d["run_message"]:
             L.append(f"道具の言葉：{V.message_gist(d['run_message'])}")
             L.append(f"ログ：{d['log_dir']}")
-        L += ["", "■ 投入の表"] + [f"  {r['sku_id']}:{r['region']}  投入 {r['launch_week']}  定常 {r['steady_lots_per_week']} lot／週"
-                                   f"（立ち上がり {r['ramp_weeks']} 週 × {r['ramp_ratio']}）" for r in d["entry_plan"]]
+        L += ["", "■ 投入の表（需要の仮説）"]
+        for r in d["entry_plan"]:
+            L.append(f"  {r['sku_id']}:{r['region']}  投入 {r['launch_week']}  定常 {r['steady_lots_per_week']} lot／週"
+                     f"（立ち上がり {r['ramp_weeks']} 週 × {r['ramp_ratio']}）")
+            if r.get("basis_note"):
+                L.append(f"      根拠：{r['basis_note']}")
+            if r.get("promotion_note"):
+                L.append(f"      販促：{r['promotion_note']}")
         L += ["", "■ 計画の生産量（工場 × SKU）"] + \
             [f"  {r['sku_id']} @ {r['node']}：{r['text']}" for r in d["capacity"]]
         L += ["", "■ 供給の方針"]
@@ -579,6 +585,15 @@ class CompareScreen(ttk.Frame):
     def do_set_launch_week(self, sku: str, region: str, week: str) -> A.Result:
         return self._need_selected() or self._report(A.set_launch_week(self.ws, self.selected, sku, region, week))
 
+    def do_preview_demand(self, sku: str, region: str, values: dict) -> A.Result:
+        """到達点 5: the demand change before anything is written (shown in the dialog, not the message bar)."""
+        n = self._need_selected()
+        return n or A.preview_demand(self.ws, self.selected, sku, region, values)
+
+    def do_set_demand_hypothesis(self, sku: str, region: str, values: dict) -> A.Result:
+        return self._need_selected() or self._report(
+            A.set_demand_hypothesis(self.ws, self.selected, sku, region, values))
+
     def do_set_planned_output(self, sku: str, node: Optional[str], value: str, from_week: str = "",
                               to_week: str = "") -> A.Result:
         return self._need_selected() or self._report(
@@ -674,6 +689,87 @@ class CompareScreen(ttk.Frame):
         e = ttk.Entry(d, width=30)
         e.grid(row=0, column=1, padx=6)
         ttk.Button(d, text="複製", command=lambda: (self.do_copy(e.get()).ok and d.destroy())).grid(row=1, column=1, pady=6)
+
+    HYP_FIELDS = (("launch_week", "投入週（例 2028-W01）", 12), ("steady_lots_per_week", "定常の lot／週", 8),
+                  ("ramp_weeks", "立ち上がりの週数", 8), ("ramp_ratio", "立ち上がりの倍率", 8),
+                  ("basis_note", "根拠の文", 60), ("promotion_note", "販促のメモ", 60))
+    HYP_KEY = {"launch_week": "launch_week", "steady_lots_per_week": "steady", "ramp_weeks": "ramp_weeks",
+               "ramp_ratio": "ramp_ratio", "basis_note": "basis_note", "promotion_note": "promotion_note"}
+
+    def _dlg_hypothesis(self):
+        """到達点 5 B: the product x market table; choose a cell, change the hypothesis, see the demand change
+        before writing (nothing is written until 変える)."""
+        if self._need_selected():
+            return
+        m = V.entry_matrix(self.ws, self.selected)
+        if not m["cells"]:
+            return self._report(A.Result(False, "この案には投入の表（market_entry_plan.csv）が無い"), refresh=False)
+        d = self._dialog(f"{self.selected}：需要の仮説を変える（製品 × 市場の表からセルを選ぶ）")
+        tv = ttk.Treeview(d, columns=["product"] + m["markets"], show="headings", height=max(2, len(m["products"])),
+                          selectmode="none")
+        tv.heading("product", text="製品 ＼ 市場")
+        tv.column("product", width=110, anchor="w")
+        for mk in m["markets"]:
+            tv.heading(mk, text=mk)
+            tv.column(mk, width=170, anchor="w")
+        for p in m["products"]:
+            tv.insert("", "end", iid=p, values=[p] + [m["cells"].get((p, mk), {}).get("text", "—") for mk in m["markets"]])
+        tv.grid(row=0, column=0, columnspan=3, padx=6, pady=6, sticky="we")
+        sel = tk.StringVar(value="（セルを選ぶ）")
+        ttk.Label(d, textvariable=sel).grid(row=1, column=0, columnspan=3, sticky="w", padx=6)
+        ents = {}
+        for i, (col, label, width) in enumerate(self.HYP_FIELDS):
+            ttk.Label(d, text=label).grid(row=2 + i, column=0, sticky="w", padx=6, pady=2)
+            e = ttk.Entry(d, width=width)
+            e.grid(row=2 + i, column=1, columnspan=2, sticky="w", padx=6)
+            ents[col] = e
+        pv = tk.StringVar(value="")
+        ttk.Label(d, textvariable=pv, wraplength=760, foreground="#1f4e79").grid(
+            row=2 + len(self.HYP_FIELDS), column=0, columnspan=3, sticky="w", padx=6, pady=4)
+        state = {"key": None}
+
+        def choose(event):
+            item, colid = tv.identify_row(event.y), tv.identify_column(event.x)
+            ci = int(colid.replace("#", "") or 0) - 1
+            if not item or ci < 1:
+                return
+            k = (item, m["markets"][ci - 1])
+            if k not in m["cells"]:
+                return
+            state["key"] = k
+            sel.set(f"選んだ鍵：{k[0]}:{k[1]}")
+            for col, e in ents.items():
+                e.delete(0, "end")
+                e.insert(0, m["cells"][k].get(col, ""))
+            pv.set("")
+        tv.bind("<Button-1>", choose)
+        self._hyp_dialog = {"dialog": d, "tree": tv, "entries": ents, "preview": pv, "state": state,
+                            "matrix": m, "choose": choose}
+
+        def values():
+            k = state["key"]
+            cur = m["cells"][k]
+            return {self.HYP_KEY[c]: e.get().strip() for c, e in ents.items() if e.get().strip() != (cur.get(c) or "")}
+
+        def preview():
+            if not state["key"]:
+                return pv.set("セルを選ぶ")
+            r = self.do_preview_demand(*state["key"], values())
+            pv.set(r.message)
+            return r
+
+        def ok():
+            if not state["key"]:
+                return self._report(A.Result(False, "製品 × 市場のセルを選ぶ"), refresh=False)
+            if self.do_set_demand_hypothesis(*state["key"], values()).ok:
+                d.destroy()
+        self._hyp_dialog.update({"values": values, "preview_fn": preview, "ok": ok})
+        for col in ("launch_week", "steady_lots_per_week", "ramp_weeks", "ramp_ratio"):   # the change as you type
+            ents[col].bind("<KeyRelease>", lambda _e: preview() if state["key"] else None)
+        b = ttk.Frame(d)
+        b.grid(row=3 + len(self.HYP_FIELDS), column=0, columnspan=3, sticky="e", padx=6, pady=6)
+        ttk.Button(b, text="需要の差を見る（書かない）", command=preview).pack(side="left", padx=4)
+        ttk.Button(b, text="変える", command=ok).pack(side="left", padx=4)
 
     def _dlg_launch(self):
         if self._need_selected():

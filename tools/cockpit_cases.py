@@ -8,6 +8,7 @@ RequestLetter_Cockpit_Stage3_Step1_CasesAndRunner §2.3。wom/cockpit/cases.py�
     python -m tools.cockpit_cases copy    --ws <作業> --from C01 --name 基準・早期
     python -m tools.cockpit_cases set     --ws <作業> --case C02 entry-plan  --file <market_entry_plan.csv>
     python -m tools.cockpit_cases set     --ws <作業> --case C02 launch-week --sku COS_Cream --region TH_Distributor --week 2027-W27
+    python -m tools.cockpit_cases set     --ws <作業> --case C04 demand-hypothesis --sku COS_Cream --region TH_Distributor --ramp-ratio 1.0 [--steady … --ramp-weeks … --launch-week … --basis-note … --promotion-note …] [--preview]
     python -m tools.cockpit_cases set     --ws <作業> --case C02 planned-output --sku COS_Cream --cap-soft 12 [--node Factory_JP] [--from-week 2028-W11 --to-week 2029-W46]
     python -m tools.cockpit_cases set     --ws <作業> --case S02 shifts      --sku Soy_Sauce --node Bottling_Noda --shifts 21 [--from-week … --to-week …]
     python -m tools.cockpit_cases set     --ws <作業> --case C01 capacity    --sku COS_Cream --max-supply 13 --cap-soft 11 [--node …]
@@ -71,6 +72,12 @@ def main(argv=None) -> int:
     q.add_argument("--sku", required=True)
     q.add_argument("--region", required=True)
     q.add_argument("--week", required=True)
+    q = s2.add_parser("demand-hypothesis")
+    q.add_argument("--sku", required=True)
+    q.add_argument("--region", required=True)
+    for c in ("launch-week", "steady", "ramp-weeks", "ramp-ratio", "basis-note", "promotion-note"):
+        q.add_argument(f"--{c}", default=None)
+    q.add_argument("--preview", action="store_true", help="show the demand change without writing")
     q = s2.add_parser("planned-output")
     q.add_argument("--sku", required=True)
     q.add_argument("--cap-soft", required=True)
@@ -135,6 +142,17 @@ def main(argv=None) -> int:
             elif a.what == "launch-week":
                 r = C.set_launch_week(a.ws, a.case, a.sku, a.region, a.week)
                 r = {"total_lots": r["total_lots"], "totals_by_key": r["totals_by_key"]}
+            elif a.what == "demand-hypothesis":
+                ch = {"launch_week": a.launch_week, "steady": a.steady, "ramp_weeks": a.ramp_weeks,
+                      "ramp_ratio": a.ramp_ratio, "basis_note": a.basis_note, "promotion_note": a.promotion_note}
+                pv = C.preview_demand_change(a.ws, a.case, a.sku, a.region, **ch)
+                print(f"[cockpit_cases] 需要の差の見込み {pv['key']}：合計 {pv['total_before']} → {pv['total_after']}"
+                      f"（{pv['total_diff']:+d}）" + (f"、{pv['reason']}" if pv["reason"] else ""))
+                for w in pv["weeks"]:
+                    print(f"    {w['week']}  {w['before']} → {w['after']}（{w['diff']:+d}）")
+                if a.preview:
+                    return 0
+                r = C.set_demand_hypothesis(a.ws, a.case, a.sku, a.region, **ch)
             elif a.what == "planned-output":
                 r = C.set_planned_output(a.ws, a.case, a.sku, a.cap_soft, a.node, a.from_week, a.to_week)
             elif a.what == "shifts":

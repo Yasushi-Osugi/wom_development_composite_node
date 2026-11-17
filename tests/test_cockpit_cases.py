@@ -314,3 +314,86 @@ def test_planned_output_stops_where_the_calendar_decides(ws):
     with pytest.raises(C.CaseError, match="シフトで決まります"):
         C.set_planned_output(w, "C01", "PA", 9)
     assert _cal(w) == CAL and _cap(w, "C01") == CAP
+
+
+# ── 到達点 5 A0：需要の仮説 ────────────────────────────────────────────
+def _plan(w, cid="C01"):
+    with open(os.path.join(w, cid, "model", "market_entry_plan.csv"), encoding="utf-8") as f:
+        return f.read()
+
+
+def test_demand_hypothesis_changes_only_the_given_columns(ws):
+    w, _src, _b = ws
+    before = _plan(w)
+    r = C.set_demand_hypothesis(w, "C01", "PA", "X", ramp_ratio="1.0", basis_note="強い立ち上がり")
+    assert r["demand_regenerated"] and r["changes"] == {"ramp_ratio": ["0.5", "1.0"], "basis_note": ["", "強い立ち上がり"]}
+    assert _plan(w) == before.replace("PA,X,2027-W02,4,2,0.5,,,,", "PA,X,2027-W02,4,2,1.0,,,,強い立ち上がり")
+    d = _demand(w, "C01")
+    assert (d[("PA", "X", "2027-W02")], d[("PA", "X", "2027-W03")], d[("PA", "X", "2027-W04")]) == (4, 4, 4)
+    ch = C.read_case(w, "C01")["changes"][-1]
+    assert ch["what"] == "demand_hypothesis" and ch["key"] == "PA:X" and ch["changes"]["ramp_ratio"] == ["0.5", "1.0"]
+
+
+def test_demand_hypothesis_checks(ws):
+    w, _src, _b = ws
+    before = _plan(w)
+    with pytest.raises(C.CaseError, match="1 行のはず"):
+        C.set_demand_hypothesis(w, "C01", "PA", "Z", ramp_ratio="1.0")
+    for kw in ({"steady": "1.5"}, {"steady": "-1"}, {"ramp_weeks": "x"}, {"ramp_ratio": "-0.1"},
+               {"launch_week": "2027-53"}):
+        with pytest.raises(C.CaseError):
+            C.set_demand_hypothesis(w, "C01", "PA", "X", **kw)
+    with pytest.raises(C.CaseError, match="今と同じ"):
+        C.set_demand_hypothesis(w, "C01", "PA", "X", ramp_ratio="0.50")
+    with pytest.raises(C.CaseError, match="変える値がありません"):
+        C.set_demand_hypothesis(w, "C01", "PA", "X")
+    assert _plan(w) == before
+
+
+def test_preview_demand_change(ws):
+    w, _src, _b = ws
+    before = _plan(w), _demand(w, "C01")
+    pv = C.preview_demand_change(w, "C01", "PA", "X", ramp_ratio="1.0")
+    assert pv["total_diff"] == 4 and [(x["week"], x["diff"]) for x in pv["weeks"]] == [("2027-W02", 2), ("2027-W03", 2)]
+    pv = C.preview_demand_change(w, "C01", "PA", "X", ramp_ratio="0.6")      # 4 × 0.6 = 2.4 -> 2
+    assert pv["total_diff"] == 0 and pv["weeks"] == [] and "四捨五入" in pv["reason"] and "2.4 → 2" in pv["reason"]
+    pv = C.preview_demand_change(w, "C01", "PA", "X", basis_note="文だけ")
+    assert pv["total_diff"] == 0 and not pv["numbers_changed"]
+    assert (_plan(w), _demand(w, "C01")) == before                              # nothing written
+
+
+def _fake_run(w, cid):
+    case = C.read_case(w, cid)
+    case["run"] = {"state": C.ST_DONE, "input_hashes": C.input_hashes(w, cid), "stages": []}
+    C.write_case(w, cid, case)
+
+
+def test_text_columns_do_not_change_the_run_inputs(ws):
+    w, _src, _b = ws
+    _fake_run(w, "C01")
+    C.set_demand_hypothesis(w, "C01", "PA", "X", basis_note="根拠を書き換えた", promotion_note="販促")
+    assert C.status(w, "C01")["state"] == C.ST_DONE                    # text only: still 済み
+    assert C.read_case(w, "C01")["changes"][-1]["demand_regenerated"] is False
+    C.set_demand_hypothesis(w, "C01", "PA", "X", ramp_ratio="1.0")
+    st = C.status(w, "C01")
+    assert st["state"] == C.ST_CHANGED and "model/market_entry_plan.csv" in st["changed_files"]
+    assert "model/demand_forecast.csv" in st["changed_files"]
+
+
+def test_other_files_still_count_as_a_whole(ws):
+    w, _src, _b = ws
+    _fake_run(w, "C01")
+    p = os.path.join(w, "C01", "model", "sc_tree_master.csv")
+    with open(p, "a", encoding="utf-8") as f:
+        f.write("\n")
+    assert C.status(w, "C01")["state"] == C.ST_CHANGED
+
+
+def test_a_run_recorded_with_the_file_sha256_is_still_done(ws):
+    w, _src, _b = ws
+    _fake_run(w, "C01")
+    case = C.read_case(w, "C01")
+    case["run"]["input_hashes"]["model/market_entry_plan.csv"] = C._sha256_file(
+        os.path.join(w, "C01", "model", "market_entry_plan.csv"))           # as recorded before 到達点 5
+    C.write_case(w, "C01", case)
+    assert C.status(w, "C01")["state"] == C.ST_DONE

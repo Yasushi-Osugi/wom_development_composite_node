@@ -135,6 +135,54 @@ def _range(from_week, to_week, where: str):
     return a, b
 
 
+def _hyp_where(sku: str, region: str) -> str:
+    return f"② 需要の仮説 {sku}:{region}"
+
+
+def preview_demand(ws: str, cid: str, sku: str, region: str, values: dict) -> Result:
+    """到達点 5: the demand change of the key before anything is written (weeks, totals, and the reason when the
+    rounding leaves it unchanged)."""
+    vals = {k: v for k, v in values.items() if v not in (None, "")} if values else {}
+    try:
+        pv = C.preview_demand_change(ws, cid, sku, region, **vals)
+    except C.CaseError as e:
+        return Result(False, f"{e}（{_hyp_where(sku, region)}）")
+    if pv["total_diff"] or pv["weeks"]:
+        wk = pv["weeks"]
+        span = f"{wk[0]['week']}〜{wk[-1]['week']} の {len(wk)} 週" if wk else ""
+        msg = (f"需要の差 {pv['total_diff']:+d} lot（この鍵 {pv['total_before']:,} → {pv['total_after']:,}、"
+               f"全体 {pv['all_before']:,} → {pv['all_after']:,}、{span}）")
+        if wk and len({(w['before'], w['after']) for w in wk}) == 1:
+            msg += f"。週ごと：各 {wk[0]['before']} → {wk[0]['after']}（{wk[0]['diff']:+d}）"
+        elif wk:
+            shown = "、".join(f"{w['week']} {w['before']}→{w['after']}" for w in wk[:8])
+            msg += f"。週ごと：{shown}" + (f" ほか {len(wk) - 8} 週" if len(wk) > 8 else "")
+    elif pv["numbers_changed"]:
+        msg = f"需要の差 0 lot：{pv['reason']}"
+    else:
+        msg = "需要は変わらない（文の列だけの変更なら、実行し直しは要らない）"
+    return Result(True, msg, {"preview": pv})
+
+
+def set_demand_hypothesis(ws: str, cid: str, sku: str, region: str, values: dict) -> Result:
+    g = _guard(ws, cid)
+    if g:
+        return g
+    vals = {k: v for k, v in values.items() if v is not None}
+    for k in ("steady", "ramp_weeks", "ramp_ratio", "launch_week"):
+        if k in vals and str(vals[k]).strip() == "":
+            return _fail(f"{k} が空欄", _hyp_where(sku, region), "値を入れるか、今の値のままにする")
+    if "launch_week" in vals and not _week_ok(str(vals["launch_week"]).strip()):
+        return _fail(f"投入週 {vals['launch_week']!r} が週のラベルではない", _hyp_where(sku, region), "例 2028-W01")
+    try:
+        r = C.set_demand_hypothesis(ws, cid, sku, region, **vals)
+    except C.CaseError as e:
+        return Result(False, str(e))
+    what = "、".join(f"{c} {a or '（空）'} → {b or '（空）'}" for c, (a, b) in r["changes"].items())
+    tail = "。実行し直す" if r["demand_regenerated"] else "。文の列だけなので計画の結果は使い回す（実行し直しは要らない）"
+    return Result(True, f"{cid}：{sku}:{region} の需要の仮説を変えた（{what}）{tail}", {"result": r})
+
+
 def has_calendar(ws: str, cid: str) -> bool:
     return os.path.exists(os.path.join(C.case_dir(ws, cid), "model", C.OPCAL))
 

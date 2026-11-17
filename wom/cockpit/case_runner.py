@@ -392,7 +392,9 @@ def compare_cases(ws_dir: str, base: str, alt: str) -> dict:
            "delta_P0": float(fc["delta_P0"].iloc[0]), "fixed_cost": rows,
            "fixed_cost_plan": "fixed_cost_plan.csv" if plan else None,
            "base_fixed_cost_sha256": C.fixed_cost_hash(ws_dir, base),
-           "alt_fixed_cost_sha256": C.fixed_cost_hash(ws_dir, alt)}
+           "alt_fixed_cost_sha256": C.fixed_cost_hash(ws_dir, alt),
+           # 到達点 5 A0-4: the entry plan's text columns as they were when compared (not part of the inputs)
+           "base_entry_notes": C.entry_notes(ws_dir, base), "alt_entry_notes": C.entry_notes(ws_dir, alt)}
     C._write_json(os.path.join(out, "compare.json"), rec)
     return rec
 

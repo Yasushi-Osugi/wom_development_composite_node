@@ -157,6 +157,38 @@ def case_market_labels(ws: str, cid: str) -> Dict[str, str]:
             for r in t.itertuples() if r.region and r.region != r.node_name}
 
 
+# ── 到達点 5：製品 × 市場の表・需要の仮説 ──────────────────────────────
+def entry_matrix(ws: str, cid: str) -> dict:
+    """The entry plan as a product x market table: {"products": [...], "markets": [...],
+    "cells": {(sku, region): {"text": '2028-W01・定常 3・×0.5（13 週）', **row}}}. Markets are listed in the
+    order of the entry plan rows; a product without a row in a market has no cell."""
+    rows = case_inputs(ws, cid)["entry_plan"]
+    products = list(dict.fromkeys(r["sku_id"] for r in rows))
+    markets = list(dict.fromkeys(r["region"] for r in rows))
+    cells = {(r["sku_id"], r["region"]): {**r, "text": f"{r['launch_week']}・定常 {r['steady_lots_per_week']}・"
+                                                     f"×{r['ramp_ratio']}（{r['ramp_weeks']} 週）"} for r in rows}
+    return {"products": products, "markets": markets, "cells": cells}
+
+
+def notes_changed_after_compare(ws: str, base: str, alt: str) -> List[str]:
+    """Keys whose entry-plan text (basis_note / promotion_note) changed after the comparison (到達点 5 A0-4).
+    The numbers of the comparison stay valid; only the text on the screen is newer. Empty when the comparison
+    has no record of the text (made before)."""
+    p = os.path.join(compare_dir(ws, base, alt), "compare.json")
+    if not os.path.exists(p):
+        return []
+    rec = json.load(open(p, encoding="utf-8"))
+    out = []
+    for cid, key in ((base, "base_entry_notes"), (alt, "alt_entry_notes")):
+        if key not in rec:
+            continue
+        now = C.entry_notes(ws, cid)
+        for k in sorted(set(now) | set(rec[key])):
+            if now.get(k) != rec[key].get(k):
+                out.append(f"{cid} {k}")
+    return out
+
+
 # ── ② 選んだ案の入力 ─────────────────────────────────────────────────────
 def _calendar(cdir: str) -> Optional[pd.DataFrame]:
     p = os.path.join(cdir, "model", C.OPCAL)
@@ -245,8 +277,11 @@ def case_inputs(ws: str, cid: str) -> dict:
     ep = os.path.join(cdir, "model", C.ENTRY_PLAN)
     if os.path.exists(ep):
         d = _csv(ep, dtype=str, keep_default_na=False)
+        for c in C.NOTE_COLS:
+            if c not in d.columns:
+                d[c] = ""
         out["entry_plan"] = d[["sku_id", "region", "launch_week", "steady_lots_per_week", "ramp_weeks",
-                               "ramp_ratio"]].to_dict("records")
+                               "ramp_ratio", "basis_note", "promotion_note"]].to_dict("records")
     cap = _csv(os.path.join(cdir, "model", C.CAPACITY), dtype=str, keep_default_na=False)
     if "cap_soft" not in cap.columns:
         cap["cap_soft"] = ""
@@ -556,6 +591,12 @@ def summary(ws: str, base: str, alt: str, cmp: dict) -> List[dict]:
                           ("ramp_weeks", "立ち上がりの週数"), ("ramp_ratio", "立ち上がりの割合")):
             if x.get(col) != y.get(col):
                 diffs.append(f"{k[0]}:{k[1]} の{name}（基準 {x.get(col, 'なし')}、相手 {y.get(col, 'なし')}）")
+        for col, name in (("basis_note", "根拠"), ("promotion_note", "販促のメモ")):     # 到達点 5: the text now in the files
+            if (x.get(col) or "") != (y.get(col) or ""):
+                diffs.append(f"{k[0]}:{k[1]} の{name}（基準「{x.get(col) or 'なし'}」、相手「{y.get(col) or 'なし'}」）")
+    late = notes_changed_after_compare(ws, base, alt)
+    if late:
+        diffs.append(f"（根拠の文は比べた後に変わった（数字は同じ）：{'、'.join(late)}）")
     cb = {(r["sku_id"], r["node"]): r for r in ib["capacity"]}
     ca = {(r["sku_id"], r["node"]): r for r in ia["capacity"]}
     for k in sorted(set(cb) | set(ca)):
@@ -735,6 +776,10 @@ def common_shortages(sv: dict) -> List[str]:
 # ── ④ 読むときの注意 ─────────────────────────────────────────────────────
 def notes(ws: str, base: Optional[str], alt: Optional[str], cmp: Optional[dict] = None) -> List[str]:
     out = []
+    if base and alt:
+        late = notes_changed_after_compare(ws, base, alt)
+        if late:
+            out.append(f"根拠の文は比べた後に変わった（数字は同じ。画面の文は今のファイルのもの）：{'、'.join(late)}")
     table = case_table(ws)
     for r in table["rows"]:
         if r["state"] == C.ST_CHANGED:

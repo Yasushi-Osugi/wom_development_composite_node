@@ -228,3 +228,20 @@ def test_raised_shifts_versus_the_parent(ws):
     c = [x for x in A.raise_week_candidates(ws, "C02") if x["kind"] == "raised"]
     assert [(x["first"], x["last"], x["span"], x["cap"]) for x in c] == \
         [("2026-W52", "2027-W04", 5, "18→21（シフト）")]                 # the closed 2027-W02 does not split it
+
+
+# ── 到達点 5：需要の仮説の操作 ─────────────────────────────────────────
+def test_preview_and_set_demand_hypothesis(ws):
+    r = A.preview_demand(ws, "C01", "PA", "X", {"ramp_ratio": "1.0"})
+    assert r.ok and r.message.startswith("需要の差 +4 lot（この鍵 ") and "各 2 → 4（+2）" in r.message
+    r = A.preview_demand(ws, "C01", "PA", "X", {"ramp_ratio": "0.6"})
+    assert r.ok and "需要の差 0 lot" in r.message and "4 × 0.6 ＝ 2.4 → 2" in r.message
+    r = A.preview_demand(ws, "C01", "PA", "X", {"basis_note": "文だけ"})
+    assert r.ok and "実行し直しは要らない" in r.message
+    assert not A.preview_demand(ws, "C01", "PA", "X", {"ramp_ratio": "-1"}).ok
+    assert not A.set_demand_hypothesis(ws, "C01", "PA", "X", {"ramp_ratio": ""}).ok
+    assert not A.set_demand_hypothesis(ws, "C01", "PA", "X", {"launch_week": "2027-w2"}).ok
+    r = A.set_demand_hypothesis(ws, "C01", "PA", "X", {"ramp_ratio": "1.0", "basis_note": "強い"})
+    assert r.ok and "実行し直す" in r.message and "ramp_ratio 0.5 → 1.0" in r.message
+    r = A.set_demand_hypothesis(ws, "C01", "PA", "X", {"basis_note": "強い（書き換え）"})
+    assert r.ok and "実行し直しは要らない" in r.message

@@ -46,6 +46,9 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 WORKSPACE_FILE = "workspace.json"
 CASE_FILE = "case.json"
 ENTRY_PLAN = "market_entry_plan.csv"
+NOTE_COLS = ("basis_note", "promotion_note")   # 到達点 5: text only -- not part of the run's inputs
+HYPOTHESIS_COLS = {"launch_week": "launch_week", "steady": "steady_lots_per_week", "ramp_weeks": "ramp_weeks",
+                   "ramp_ratio": "ramp_ratio", "basis_note": "basis_note", "promotion_note": "promotion_note"}
 CAPACITY = "capacity_plan.csv"
 OPCAL = "operating_calendar.csv"               # 段 4 A1: the shift plan (the planned output where it has rows)
 MAX_SHIFTS = 21                                # 3 shifts x 7 days (wom.model.plan_node.MAX_SHIFTS)
@@ -337,6 +340,169 @@ def set_launch_week(ws_dir: str, cid: str, sku: str, region: str, week: str) -> 
     return log
 
 
+def _hypothesis_values(changes: dict) -> dict:
+    """Checked text values per entry-plan column (到達点 5). steady / ramp_weeks: integers >= 0; ramp_ratio: a
+    number >= 0 (kept as written, e.g. '1.0'); launch_week: a week label; the two notes: any text."""
+    out = {}
+    for k, v in changes.items():
+        if v is None:
+            continue
+        if k not in HYPOTHESIS_COLS:
+            raise CaseError(f"{k} は需要の仮説の列ではありません（{sorted(HYPOTHESIS_COLS)}）")
+        col = HYPOTHESIS_COLS[k]
+        t = str(v).strip()
+        if k in ("steady", "ramp_weeks"):
+            try:
+                d = Decimal(t)
+            except InvalidOperation:
+                raise CaseError(f"{col}={v!r} は数ではありません（0 以上の整数）")
+            if d < 0 or d != d.to_integral_value():
+                raise CaseError(f"{col}={v!r} は 0 以上の整数にしてください")
+            t = str(int(d))
+        elif k == "ramp_ratio":
+            try:
+                d = Decimal(t)
+            except InvalidOperation:
+                raise CaseError(f"ramp_ratio={v!r} は数ではありません（0 以上の数、例 1.0）")
+            if d < 0 or not d.is_finite():
+                raise CaseError(f"ramp_ratio={v!r} は 0 以上の数にしてください")
+        elif k == "launch_week":
+            t = _check_week(t, "launch_week")
+        out[col] = t
+    return out
+
+
+def _entry_row(p: str, rows, sku: str, region: str) -> dict:
+    hit = [r for r in rows if r.get("sku_id", "").strip() == sku and r.get("region", "").strip() == region]
+    if len(hit) != 1:
+        keys = sorted(f"{r.get('sku_id')}:{r.get('region')}" for r in rows)
+        raise CaseError(f"{p}: 鍵 {sku}:{region} の行が {len(hit)} 行です（1 行のはず）。今ある鍵：{keys}")
+    return hit[0]
+
+
+def _same_value(col: str, a: str, b: str) -> bool:
+    if col in NOTE_COLS or col == "launch_week":
+        return (a or "").strip() == (b or "").strip()
+    try:
+        return Decimal((a or "").strip()) == Decimal((b or "").strip())
+    except InvalidOperation:
+        return (a or "").strip() == (b or "").strip()
+
+
+def set_demand_hypothesis(ws_dir: str, cid: str, sku: str, region: str, **changes) -> dict:
+    """到達点 5: change only the given columns of one key of the entry plan (launch_week, steady, ramp_weeks,
+    ramp_ratio, basis_note, promotion_note). When a number (or the launch week) changes the demand is
+    regenerated; a change of the two text columns only does not touch the demand, and the case stays 済み
+    (the text columns are not part of the run's inputs, see input_hashes). Stops when the key is not one row,
+    a value is wrong, or nothing changes. The change (before / after) is recorded in case.json."""
+    _guard_not_running(ws_dir, cid)
+    vals = _hypothesis_values(changes)
+    if not vals:
+        raise CaseError("変える値がありません（launch_week・steady・ramp_weeks・ramp_ratio・basis_note・promotion_note）")
+    p = os.path.join(case_dir(ws_dir, cid), "model", ENTRY_PLAN)
+    fields, rows, term, bom = _read_rows(p)
+    for col in vals:
+        if col not in fields:
+            raise CaseError(f"{p}: 列 {col} がありません")
+    row = _entry_row(p, rows, sku, region)
+    diff = {col: [row.get(col, ""), v] for col, v in vals.items() if not _same_value(col, row.get(col, ""), v)}
+    if not diff:
+        raise CaseError(f"鍵 {sku}:{region} の値は今と同じです（変える値がありません）")
+    numbers = [c for c in diff if c not in NOTE_COLS]
+    old_bytes = open(p, "rb").read()
+    for col, (_a, b) in diff.items():
+        row[col] = b
+    _write_rows(p, fields, rows, term, bom)
+    log = None
+    if numbers:
+        try:
+            log = regenerate_demand(ws_dir, cid)
+        except CaseError:
+            open(p, "wb").write(old_bytes)
+            regenerate_demand(ws_dir, cid)
+            raise
+    _record_change(ws_dir, cid, "demand_hypothesis",
+                   {"key": f"{sku}:{region}", "changes": diff, "demand_regenerated": bool(numbers),
+                    **({"total_lots": log["total_lots"]} if log else {})})
+    return {"key": f"{sku}:{region}", "changes": diff, "demand_regenerated": bool(numbers),
+            "total_lots": log["total_lots"] if log else None}
+
+
+def preview_demand_change(ws_dir: str, cid: str, sku: str, region: str, **changes) -> dict:
+    """到達点 5: the demand of the key after the change, without writing anything (tool 1's own functions).
+    {"weeks": [{"week", "before", "after", "diff"}] (weeks whose demand changes), "total_before", "total_after",
+    "total_diff" (the key), "all_before", "all_after" (every key), "numbers_changed", "reason"}. With total_diff 0 after a change of the numbers, "reason" says why
+    (e.g. rounding: '3 × 0.6 ＝ 1.8 → 2')."""
+    import sys
+    if REPO not in sys.path:
+        sys.path.insert(0, REPO)
+    from tools import gen_demand_from_entry_plan as G
+    vals = _hypothesis_values(changes)
+    ws = open_workspace(ws_dir)
+    mdir = os.path.join(case_dir(ws_dir, cid), "model")
+    try:
+        rows, _raw, path = G.read_plan(mdir)
+    except G.EntryPlanError as e:
+        raise CaseError(str(e))
+    hit = [r for r in rows if r["sku_id"] == sku and r["region"] == region]
+    if len(hit) != 1:
+        raise CaseError(f"鍵 {sku}:{region} の行が {len(hit)} 行です（1 行のはず）")
+    old = hit[0]
+    new = dict(old)
+    if "launch_week" in vals:
+        new["launch_week"] = vals["launch_week"]
+    if "steady_lots_per_week" in vals:
+        new["steady"] = int(vals["steady_lots_per_week"])
+    if "ramp_weeks" in vals:
+        new["ramp_weeks"] = int(vals["ramp_weeks"])
+    if "ramp_ratio" in vals:
+        new["ramp_ratio"] = Decimal(vals["ramp_ratio"])
+    weeks = G.week_range(ws["demand_period"]["start"], ws["demand_period"]["end"])
+    try:
+        before = {(s, g, w): q for s, g, w, q in G.generate(rows, weeks, path)}
+        after = {(s, g, w): q for s, g, w, q in G.generate([new if r is old else r for r in rows], weeks, path)}
+    except G.EntryPlanError as e:
+        raise CaseError(str(e))
+    wk = [{"week": w, "before": before[(sku, region, w)], "after": after[(sku, region, w)],
+           "diff": after[(sku, region, w)] - before[(sku, region, w)]} for w in weeks
+          if after[(sku, region, w)] != before[(sku, region, w)]]
+    tb = sum(v for (s, g, _w), v in before.items() if (s, g) == (sku, region))
+    ta = sum(v for (s, g, _w), v in after.items() if (s, g) == (sku, region))
+    ab, aa = sum(before.values()), sum(after.values())
+    numbers = any(new[k] != old[k] for k in ("launch_week", "steady", "ramp_weeks", "ramp_ratio"))
+    reason = ""
+    if numbers and ta == tb and not wk:
+        parts = []
+        if new["ramp_ratio"] != old["ramp_ratio"] or new["steady"] != old["steady"]:
+            for lab, r in (("今", old), ("変えた後", new)):
+                x = Decimal(r["steady"]) * r["ramp_ratio"]
+                parts.append(f"{lab} {r['steady']} × {r['ramp_ratio']} ＝ {x.normalize():f} → {G.round_half_up(x)}")
+        reason = "四捨五入で需要は変わらない（立ち上がりの週：" + "、".join(parts) + "）" if parts else             "需要は変わらない（週別の需要が今と同じ）"
+    elif numbers and ta == tb:
+        reason = "合計は同じ（週の配置だけが変わる）"
+    return {"key": f"{sku}:{region}", "weeks": wk, "total_before": tb, "total_after": ta, "total_diff": ta - tb,
+            "all_before": ab, "all_after": aa, "numbers_changed": numbers, "reason": reason}
+
+
+def entry_notes(ws_dir: str, cid: str) -> Dict[str, dict]:
+    """{'sku:region': {'basis_note': …, 'promotion_note': …}} of the case's entry plan (empty without one)."""
+    p = os.path.join(case_dir(ws_dir, cid), "model", ENTRY_PLAN)
+    if not os.path.exists(p):
+        return {}
+    _f, rows, _t, _b = _read_rows(p)
+    return {f"{r.get('sku_id', '').strip()}:{r.get('region', '').strip()}": {c: (r.get(c) or "").strip()
+                                                                           for c in NOTE_COLS} for r in rows}
+
+
+def _entry_plan_digest(path: str) -> str:
+    """The entry plan's hash without the text columns (basis_note, promotion_note): changing only the text
+    does not change the run's inputs (到達点 5 A0-3). Prefixed so it is never mistaken for a file sha256."""
+    _f, rows, _t, _b = _read_rows(path)
+    fields = [c for c in _f if c not in NOTE_COLS]
+    body = json.dumps([fields] + [[(r.get(c) or "") for c in fields] for r in rows], ensure_ascii=False)
+    return "nonote:" + hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
 def _capacity_rows_for(p: str, rows, sku: str, node: Optional[str]):
     mine = [r for r in rows if r.get("sku_id", "").strip() == sku]
     if not mine:
@@ -618,7 +784,9 @@ def input_hashes(ws_dir: str, cid: str) -> Dict[str, str]:
     for root, _dirs, files in os.walk(mdir):
         for fn in files:
             p = os.path.join(root, fn)
-            out[os.path.relpath(p, cdir).replace("\\", "/")] = _sha256_file(p)
+            rel = os.path.relpath(p, cdir).replace("\\", "/")
+            # 到達点 5 A0-3: the entry plan without its text columns; every other file as a whole
+            out[rel] = _entry_plan_digest(p) if rel == f"model/{ENTRY_PLAN}" else _sha256_file(p)
     case = read_case(ws_dir, cid)
     pol = case["inputs"].get("policy") or {}
     for k in POLICY_FILES:
@@ -643,7 +811,17 @@ def changed_files(ws_dir: str, cid: str) -> List[str]:
     run = read_case(ws_dir, cid).get("run") or {}
     then = run.get("input_hashes") or {}
     now = input_hashes(ws_dir, cid)
-    return sorted(k for k in set(then) | set(now) if then.get(k) != now.get(k))
+    ep = f"model/{ENTRY_PLAN}"
+    out = []
+    for k in set(then) | set(now):
+        if then.get(k) == now.get(k):
+            continue
+        # a run recorded before 到達点 5 holds the entry plan's file sha256: unchanged if the file is the same
+        if k == ep and then.get(k) and not str(then[k]).startswith("nonote:") and \
+                then[k] == _sha256_file(os.path.join(case_dir(ws_dir, cid), ep)):
+            continue
+        out.append(k)
+    return sorted(out)
 
 
 def status(ws_dir: str, cid: str) -> dict:
