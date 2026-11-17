@@ -35,8 +35,9 @@ def make_case(root, name, demand, sales, flow_override=None, v3_offset=0.0):
         os.path.join(model, "vc_entity.csv"), index=False)
     pd.DataFrame([{"sku_id": SKU, "node_name": "F", "week": w, "max_supply": 3, "cap_soft": 2} for w in WEEKS]).to_csv(
         os.path.join(model, "capacity_plan.csv"), index=False)
-    pd.DataFrame([{"node_name": "F", "product_name": SKU, "node_type": "mom", "yield_rate": ""},
-                  {"node_name": LEAF, "product_name": SKU, "node_type": "leaf_out", "yield_rate": ""}]).to_csv(
+    pd.DataFrame([{"node_name": "F", "product_name": SKU, "node_type": "mom", "yield_rate": "", "region": "JP"},
+                  {"node_name": LEAF, "product_name": SKU, "node_type": "leaf_out", "yield_rate": "",
+                   "region": LEAF}]).to_csv(
         os.path.join(model, "sc_tree_master.csv"), index=False)
     ship, money = [], []
     lid = 0
@@ -461,3 +462,74 @@ def test_planned_output_weeks_uniform_plan_keeps_the_old_table():
             for i, w in enumerate(["2027-W01", "2027-W02"])]
     t = C.planned_output_weeks(pd.DataFrame(rows), "2027-W01", "2027-W02")
     assert len(t) == 1 and "row" not in t.columns and "planned_weeks" not in t.columns
+
+
+# ── 段 4 A2：需要の地域名と市場の名前（醤油の形）───────────────────────────
+def _regionize(run, model, region="R1"):
+    """Make the demand region differ from the market's name (as in soy sauce: US_W -> Rest_US_West)."""
+    d = pd.read_csv(os.path.join(model, "demand_forecast.csv"))
+    d["region"] = region
+    d.to_csv(os.path.join(model, "demand_forecast.csv"), index=False)
+    for fn in ("vc_shipments.csv.gz", "vc_money_lines.csv.gz"):
+        p = os.path.join(run, "vc", fn)
+        x = pd.read_csv(p, dtype=str)
+        x["lot_id"] = x["lot_id"].str.replace(f"{SKU}:{LEAF}:", f"{SKU}:{region}:", regex=False)
+        _write_gz(p, x)
+    t = pd.read_csv(os.path.join(model, "sc_tree_master.csv"), dtype=str, keep_default_na=False)
+    t.loc[t["node_type"] == "leaf_out", "region"] = region
+    t.to_csv(os.path.join(model, "sc_tree_master.csv"), index=False)
+
+
+def test_region_is_mapped_to_the_market_through_the_tree(tmp_path):
+    rb, mb = _base(tmp_path)
+    _regionize(rb, mb)
+    run = C.load_run(rb, mb)
+    sup = C.supply_by_request_week(run)                 # Lot_ID region R1 shipped at market MK: accepted
+    assert set(sup["region"]) == {"R1"} and sup["on_time"].sum() == 1 and sup["late"].sum() == 1
+    C.check_against_flow(sup, run, "b")                 # Flow Check's leaf MK is matched to R1
+    assert C.market_map(run) == {(SKU, "R1"): LEAF}
+    assert C.key_label(SKU, "R1", C.market_map(run)) == f"{SKU}:{LEAF}（R1）"
+
+
+def test_same_names_keep_the_key_as_before(tmp_path):
+    rb, mb = _base(tmp_path)
+    run = C.load_run(rb, mb)
+    assert C.key_label(SKU, LEAF, C.market_map(run)) == f"{SKU}:{LEAF}"
+
+
+def test_region_map_stops_on_two_markets_or_none(tmp_path):
+    rb, mb = _base(tmp_path)
+    t = pd.read_csv(os.path.join(mb, "sc_tree_master.csv"), dtype=str, keep_default_na=False)
+    two = pd.concat([t, t[t["node_type"] == "leaf_out"].assign(node_name="MK2")])
+    two.to_csv(os.path.join(mb, "sc_tree_master.csv"), index=False)
+    with pytest.raises(C.CompareError, match="2 つの市場"):
+        C.supply_by_request_week(C.load_run(rb, mb))
+    t.loc[t["node_type"] == "leaf_out", "region"] = "OTHER"
+    t.to_csv(os.path.join(mb, "sc_tree_master.csv"), index=False)
+    with pytest.raises(C.CompareError, match="当たる市場がありません"):
+        C.supply_by_request_week(C.load_run(rb, mb))
+
+
+# ── 段 4 A3：エンジンが使った能力で工場の表を作る（工場が 2 つ）──────────────
+def test_factory_table_reads_the_engine_capacity_per_factory(tmp_path):
+    rb, mb = _base(tmp_path)
+    rows = []
+    for i, w in enumerate(WEEKS):
+        rows.append({"product": SKU, "factory": "F", "week_index": i, "week": w, "cap_hard": 3, "cap_soft": 2,
+                     "cap_soft_source": "calendar" if i != 2 else "closed", "shifts": 14 if i != 2 else 0,
+                     "demand_envelope": "soft", "closed": int(i == 2), "yield_rate": 1.0,
+                     "shippable_hard": 3, "shippable_soft": 2})
+        rows.append({"product": SKU, "factory": "G", "week_index": i, "week": w, "cap_hard": 5, "cap_soft": "",
+                     "cap_soft_source": "", "shifts": "", "demand_envelope": "hard", "closed": 0, "yield_rate": 1.0,
+                     "shippable_hard": 5, "shippable_soft": ""})
+    pd.DataFrame(rows).to_csv(os.path.join(rb, "capacity.csv"), index=False)
+    fw = C.factory_weekly(C.load_run(rb, mb), "b")
+    assert sorted(set(fw["factory"])) == ["F", "G"] and (fw["capacity_source"] == "engine").all()
+    f = fw[fw["factory"] == "F"].set_index("week")
+    assert f.loc["2027-W01", "shippable_soft"] == 2 and str(f.loc["2027-W01", "shifts"]) == "14"
+    assert pd.isna(f.loc["2027-W03", "shippable_soft"]) and f.loc["2027-W03", "closed"] == 1   # closed: no plan
+    assert int(f["production_lots"].sum()) == 2          # lots handed off by F (the synthetic handoff rows)
+    pw = C.planned_output_weeks(fw, "2027-W01", "2027-W04")
+    assert sorted(pw["factory"]) == ["F", "G"]
+    old = C.factory_weekly({**C.load_run(rb, mb), "capacity_used": None}, "b")
+    assert set(old["capacity_source"]) == {"capacity_plan"}     # a run made before: not the engine's value

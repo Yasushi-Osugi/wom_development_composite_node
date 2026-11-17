@@ -99,6 +99,39 @@ def test_no_cap_hard_no_derivation():
     assert mom.cap_soft(w10) is None           # cap_hard 未設定なので cap_soft 導出せず
 
 
+# ---------------------------------------------------------------------------
+# 4. 段 4 A4：capacity_plan の cap_soft を上書きしたら数えて警告（計算は前と同じ）
+# ---------------------------------------------------------------------------
+
+def test_overwrite_of_cap_soft_is_counted_and_warned(capsys):
+    sc_tree, weeks, sku_id, mom = _demo()
+    for w in range(len(weeks)):
+        mom.set_capacity(w, cap_hard=1000.0)
+    w10, w11 = weeks.index("2024-W10"), weeks.index("2024-W11")
+    mom.set_capacity(w10, cap_hard=1000.0, cap_soft=800.0)        # capacity_plan.csv gave a cap_soft
+    cal_df = pd.DataFrame([
+        {"sku_id": sku_id, "node_name": mom.node_name, "week": "2024-W10", "shifts": 18},
+        {"sku_id": sku_id, "node_name": mom.node_name, "week": "2024-W11", "shifts": 18},   # no cap_soft before
+        {"sku_id": sku_id, "node_name": mom.node_name, "week": "2024-W12", "shifts": 0},
+    ])
+    st = load_operating_calendar(sc_tree, cal_df, weeks)
+    assert mom.cap_soft(w10) == 857 and mom.cap_soft(w11) == 857       # the calendar still wins
+    assert st["cap_soft_overridden"] == 1
+    assert st["cap_soft_overridden_examples"] == [{"product": sku_id, "node": mom.node_name, "week": "2024-W10",
+                                                   "before": 800.0, "after": 857.0}]
+    out = capsys.readouterr().out
+    assert out.count("警告") == 1 and "1 週上書き" in out and "800 → 857" in out
+
+
+def test_no_warning_without_cap_soft(capsys):
+    sc_tree, weeks, sku_id, mom = _demo()
+    for w in range(len(weeks)):
+        mom.set_capacity(w, cap_hard=1500.0)
+    st = load_operating_calendar(sc_tree, pd.DataFrame(
+        [{"sku_id": sku_id, "node_name": mom.node_name, "week": "2024-W10", "shifts": 14}]), weeks)
+    assert st["cap_soft_overridden"] == 0 and "警告" not in capsys.readouterr().out
+
+
 if __name__ == "__main__":
     for t in [
         test_shifts_derive_cap_soft,

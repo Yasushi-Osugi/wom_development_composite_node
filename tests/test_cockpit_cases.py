@@ -258,3 +258,59 @@ def test_capacity_runs_and_text():
         [("2027-W01", "2027-W01", 1, "11"), ("2027-W02", "2027-W03", 2, "12"), ("2027-W04", "2027-W04", 1, "11")]
     assert C.capacity_text(rows) == "13/11・12（週で違う）"
     assert C.capacity_text(rows[:1]) == "13/11"
+
+
+# ── 段 4 A1：シフトを案の入力にする ─────────────────────────────────────
+CAL = """sku_id,node_name,week,shifts
+PA,Fac_A,2026-W52,18
+PA,Fac_A,2027-W01,18
+PA,Fac_A,2027-W02,0
+PA,Fac_A,2027-W03,18
+PA,Fac_A,2027-W04,18
+"""
+
+
+def _cal(w, cid="C01"):
+    with open(os.path.join(w, cid, "model", "operating_calendar.csv"), encoding="utf-8") as f:
+        return f.read()
+
+
+def _with_calendar(w):
+    with open(os.path.join(w, "C01", "model", "operating_calendar.csv"), "w", encoding="utf-8", newline="") as f:
+        f.write(CAL)
+
+
+def test_set_shifts_keeps_closed_weeks_and_records_the_range(ws):
+    w, _src, _b = ws
+    _with_calendar(w)
+    r = C.set_shifts(w, "C01", "PA", "Fac_A", 21)
+    assert r["rows"] == 4 and r["closed_kept"] == ["2027-W02"]
+    assert _cal(w) == CAL.replace(",18\n", ",21\n")                  # 0 stays 0
+    _with_calendar(w)
+    r = C.set_shifts(w, "C01", "PA", "Fac_A", 20, from_week="2027-W03", to_week="2027-W04")
+    assert r["weeks"] == ["2027-W03", "2027-W04"] and r["rows"] == 2
+    assert _cal(w) == CAL.replace("2027-W03,18", "2027-W03,20").replace("2027-W04,18", "2027-W04,20")
+    ch = C.read_case(w, "C01")["changes"][-1]
+    assert ch["what"] == "shifts" and ch["weeks"] == ["2027-W03", "2027-W04"] and ch["shifts_to"] == "20"
+
+
+def test_set_shifts_checks(ws):
+    w, _src, _b = ws
+    with pytest.raises(C.CaseError, match="操業カレンダー"):
+        C.set_shifts(w, "C01", "PA", "Fac_A", 21)                      # no calendar: stop, no file created
+    assert not os.path.exists(os.path.join(w, "C01", "model", "operating_calendar.csv"))
+    _with_calendar(w)
+    for bad in (0, 22, "x", "1.5"):
+        with pytest.raises(C.CaseError):
+            C.set_shifts(w, "C01", "PA", "Fac_A", bad)
+    with pytest.raises(C.CaseError, match="行がありません"):
+        C.set_shifts(w, "C01", "PA", "Fac_X", 21)
+    assert _cal(w) == CAL
+
+
+def test_planned_output_stops_where_the_calendar_decides(ws):
+    w, _src, _b = ws
+    _with_calendar(w)
+    with pytest.raises(C.CaseError, match="シフトで決まります"):
+        C.set_planned_output(w, "C01", "PA", 9)
+    assert _cal(w) == CAL and _cap(w, "C01") == CAP

@@ -112,9 +112,57 @@ def set_planned_output(ws: str, cid: str, sku: str, node: Optional[str], value: 
         return _fail(f"cap_soft {value!r} は数ではない", f"② 計画の生産量 {sku}", "0 以上の数を入れる（例 12）")
     if d < 0:
         return _fail(f"cap_soft {value} は負", f"② 計画の生産量 {sku}", "0 以上の数を入れる")
+    rngr = _range(from_week, to_week, f"② 計画の生産量 {sku}")
+    if isinstance(rngr, Result):
+        return rngr
+    from_week, to_week = rngr
     rng = f"（{from_week}〜{to_week}）" if from_week else ""
     return _call(C.set_planned_output, ws, cid, sku, value, node, from_week, to_week,
                  ok_message=f"{cid}：{sku} の計画の生産量（cap_soft）を {value} にした{rng}。実行し直す")
+
+
+def _range(from_week, to_week, where: str):
+    """(from, to) with blanks as None (= all weeks), or a Result when the input is wrong (段 4 A5)."""
+    a = (from_week or "").strip() or None
+    b = (to_week or "").strip() or None
+    if (a is None) != (b is None):
+        return _fail("週の範囲の始まりと終わりの片方だけが入っている", where, "両方入れるか、両方空欄（全週）にする")
+    for w in (a, b):
+        if w is not None and not _week_ok(w):
+            return _fail(f"週 {w!r} が週のラベルではない", where, "例 2028-W11 の形で入れる")
+    if a and b < a:
+        return _fail(f"終わり {b} が始まり {a} より前", where, "始まり ≦ 終わり にする")
+    return a, b
+
+
+def has_calendar(ws: str, cid: str) -> bool:
+    return os.path.exists(os.path.join(C.case_dir(ws, cid), "model", C.OPCAL))
+
+
+def set_shifts(ws: str, cid: str, sku: str, node: str, value: str, from_week: Optional[str] = None,
+               to_week: Optional[str] = None) -> Result:
+    """段 4 A1: the shifts of the SKU x node in the operating calendar (1..21; closed weeks stay closed)."""
+    g = _guard(ws, cid)
+    if g:
+        return g
+    where = f"② シフト {sku} @ {node}"
+    if not has_calendar(ws, cid):
+        return _fail("このモデルには操業カレンダーが無い", where, "計画の生産量は「生産量…」で変える")
+    v = str(value).strip()
+    if not v.isdigit() or not 1 <= int(v) <= C.MAX_SHIFTS:
+        return _fail(f"シフトの数 {value!r} が 1〜{C.MAX_SHIFTS} の整数ではない", where,
+                     f"1〜{C.MAX_SHIFTS} の整数を入れる（0 ＝休業はここでは作らない）")
+    rngr = _range(from_week, to_week, where)
+    if isinstance(rngr, Result):
+        return rngr
+    from_week, to_week = rngr
+    try:
+        r = C.set_shifts(ws, cid, sku, node, int(v), from_week, to_week)
+    except C.CaseError as e:
+        return Result(False, str(e))
+    rng = f"（{from_week}〜{to_week}）" if from_week else ""
+    kept = f"。休業の {len(r['closed_kept'])} 週（{', '.join(r['closed_kept'])}）は休業のまま" if r["closed_kept"] else ""
+    return Result(True, f"{cid}：{sku} @ {node} のシフトを {v} にした{rng}{kept}。実行し直す", {"result": r})
 
 
 def set_policy(ws: str, cid: str, none: bool = False, allocation_file: str = None, policy_file: str = None,
@@ -169,50 +217,94 @@ def set_fixed_cost(ws: str, cid: str, rows: List[dict]) -> Result:
 
 
 # ── 増産の有償の週の手助け ─────────────────────────────────────────────
-def raised_ranges(ws: str, cid: str) -> List[dict]:
-    """段 4: the week ranges where the case's planned output (cap_soft) is higher than in its parent case
-    (consecutive weeks, per SKU x factory). [{sku, factory, first, last, span, in_report, outside, cap_from, cap_to}]"""
+def _planned_values(ws: str, cid: str, engine: bool):
+    """{(sku, factory, week): (value, kind)} -- the planned output per week.
+    engine=True: the engine's cap_soft in the case's last run (run/capacity.csv; open weeks only).
+    engine=False: from the inputs: the calendar's shifts where it has a row with shifts > 0, else capacity_plan's
+    cap_soft."""
     import csv
+    out = {}
+    if engine:
+        from wom.cockpit import compare_view_model as V
+        e = V.engine_capacity(ws, cid)
+        for r in e.to_dict("records"):
+            k = (r["product"], r["factory"], r["week"])
+            if str(r["closed"]) == "1":
+                out[k] = ("", "closed")
+            elif r["cap_soft"] != "":
+                out[k] = (r["cap_soft"], "engine")
+        return out
+    mdir = os.path.join(C.case_dir(ws, cid), "model")
+    with open(os.path.join(mdir, C.CAPACITY), encoding="utf-8-sig", newline="") as f:
+        for r in csv.DictReader(f):
+            out[(r["sku_id"].strip(), r["node_name"].strip(), r["week"].strip())] = ((r.get("cap_soft") or "").strip(),
+                                                                                    "cap_soft")
+    cal = os.path.join(mdir, C.OPCAL)
+    if os.path.exists(cal):
+        with open(cal, encoding="utf-8-sig", newline="") as f:
+            for r in csv.DictReader(f):
+                k = (r["sku_id"].strip(), r["node_name"].strip(), r["week"].strip())
+                sh = str(r.get("shifts", "")).strip()
+                if sh == "0":
+                    out[k] = ("", "closed")
+                elif sh:
+                    out[k] = (sh, "shifts")
+    return out
+
+
+KIND_TEXT = {"engine": "エンジンの計画値", "shifts": "シフト", "cap_soft": "cap_soft"}
+
+
+def raised_ranges(ws: str, cid: str) -> List[dict]:
+    """段 4: the week ranges where the case's planned output is higher than in its parent case (consecutive weeks,
+    per SKU x factory). When both cases have run (済み), the engine's values (run/capacity.csv) are compared, so a
+    change of cap_soft and a change of shifts are found the same way; otherwise the inputs (shifts where the
+    calendar decides, else cap_soft). [{sku, factory, first, last, span, in_report, outside, cap_from, cap_to, kind}]"""
+    from wom.cockpit import compare_view_model as V
     case = C.read_case(ws, cid)
     parent = case.get("parent")
     if not parent:
         return []
-
-    def rows(c):
-        p = os.path.join(C.case_dir(ws, c), "model", C.CAPACITY)
-        with open(p, encoding="utf-8-sig", newline="") as f:
-            return {(r["sku_id"].strip(), r["node_name"].strip(), r["week"].strip()): (r.get("cap_soft") or "").strip()
-                    for r in csv.DictReader(f)}
+    engine = V.engine_capacity(ws, cid) is not None and V.engine_capacity(ws, parent) is not None
+    mine, theirs = _planned_values(ws, cid, engine), _planned_values(ws, parent, engine)
 
     def num(v):
         try:
             return Decimal(v)
-        except (InvalidOperation, ValueError):
+        except (InvalidOperation, ValueError, TypeError):
             return None
-    mine, theirs = rows(cid), rows(parent)
     rp = (C._read_json(os.path.join(ws, C.WORKSPACE_FILE)).get("report_period") or {})
     rs, re_ = rp.get("start") or "", rp.get("end") or ""
     out = []
     for sku, node in sorted({(k[0], k[1]) for k in mine}):
         wk = sorted(k[2] for k in mine if k[:2] == (sku, node))
         run = None
+        found = []
         for w in wk + [None]:
-            a, b = (num(mine[(sku, node, w)]), num(theirs.get((sku, node, w), ""))) if w else (None, None)
-            up = w is not None and a is not None and b is not None and a > b
-            key = (str(b), str(a)) if up else None
+            up, key = False, None
+            if w is not None:
+                (va, ka), (vb, kb) = mine[(sku, node, w)], theirs.get((sku, node, w), ("", ""))
+                if "closed" in (ka, kb):
+                    continue    # a closed week inside a raised range does not end it (the raise is paid there too)
+                a, b = num(va), num(vb)
+                up = ka == kb and a is not None and b is not None and a > b
+                key = (vb, va, ka) if up else None
             if run and (not up or key != run["key"]):
-                out.append(run)
+                found.append(run)
                 run = None
             if up:
                 if run is None:
-                    run = {"sku": sku, "factory": node, "first": w, "last": w, "span": 0, "in_report": 0,
-                           "key": key, "cap_from": theirs[(sku, node, w)], "cap_to": mine[(sku, node, w)]}
+                    run = {"sku": sku, "factory": node, "first": w, "last": w,
+                           "key": key, "cap_from": key[0], "cap_to": key[1], "kind": key[2]}
                 run["last"] = w
-                run["span"] += 1
-                run["in_report"] += int(rs <= w <= re_) if rs else 0
-    for r in out:
-        r.pop("key")
-        r["outside"] = r["span"] - r["in_report"]
+        for r in found:
+            inside = [w for w in wk if r["first"] <= w <= r["last"]]   # closed weeks inside included
+            r["span"] = len(inside)
+            r["in_report"] = sum(1 for w in inside if rs and rs <= w <= re_)
+            r["closed_inside"] = [w for w in inside if mine[(sku, node, w)][1] == "closed"]
+            r.pop("key")
+            r["outside"] = r["span"] - r["in_report"]
+            out.append(r)
     return out
 
 
@@ -226,8 +318,10 @@ def _at_cap_in(ws: str, cid: str, rng: dict) -> Optional[int]:
         if cid not in d.split("__") or not os.path.exists(p):
             continue
         fw = pd.read_csv(p, dtype={"week": str})
-        g = fw[(fw["case"] == cid) & (fw["product"] == rng["sku"]) &
-               (fw["week"] >= rng["first"]) & (fw["week"] <= rng["last"])]
+        sel = (fw["case"] == cid) & (fw["product"] == rng["sku"])
+        if "factory" in fw.columns:
+            sel &= fw["factory"] == rng["factory"]
+        g = fw[sel & (fw["week"] >= rng["first"]) & (fw["week"] <= rng["last"])]
         soft = pd.to_numeric(g["shippable_soft"], errors="coerce")
         return int((soft.notna() & (g["production_lots"] == soft)).sum())
     return None
@@ -244,9 +338,10 @@ def raise_week_candidates(ws: str, cid: str) -> List[dict]:
     for r in raised_ranges(ws, cid):
         at = _at_cap_in(ws, cid, r)
         out.append({"kind": "raised", "compare": "", "sku": r["sku"], "factory": r["factory"],
-                    "cap": f"{r['cap_from']}→{r['cap_to']}（cap_soft）", "first": r["first"], "last": r["last"],
+                    "cap": f"{r['cap_from']}→{r['cap_to']}（{KIND_TEXT[r['kind']]}）", "first": r["first"], "last": r["last"],
                     "span": r["span"], "in_report": r["in_report"], "outside": r["outside"],
-                    "at_cap": at, "gaps": None if at is None else r["span"] - at})
+                    "closed_inside": r.get("closed_inside", []),
+                    "at_cap": at, "gaps": None if at is None else r["span"] - len(r.get("closed_inside", [])) - at})
     for d in sorted(os.listdir(os.path.join(ws, "compare"))) if os.path.isdir(os.path.join(ws, "compare")) else []:
         if cid not in d.split("__"):
             continue

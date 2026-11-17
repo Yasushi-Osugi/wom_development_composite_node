@@ -188,7 +188,8 @@ def _stage_allocation(ctx) -> dict:
 def _stage_plan_ppc(ctx) -> dict:
     run, mm = ctx["run"], ctx["money_model"]
     args = ["--model-dir", mm, "--plugins", ctx["plugins"], "--out", os.path.join(run, "snapshot.json"),
-            "--ppc-out", os.path.join(run, "ppc"), "--flow-check-out", os.path.join(run, "flow_check"), "--quiet"]
+            "--ppc-out", os.path.join(run, "ppc"), "--flow-check-out", os.path.join(run, "flow_check"),
+            "--capacity-out", os.path.join(run, "capacity.csv"), "--quiet"]
     code, out = ctx["tool"]("tools.run_headless_from_folder", args, os.path.join(ctx["logs"], "plan_ppc.log"))
     if code != 0:
         raise StageStop(C.ST_STOPPED, _tail(out))

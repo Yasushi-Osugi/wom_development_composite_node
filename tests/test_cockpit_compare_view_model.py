@@ -308,3 +308,74 @@ def test_range_text_lists_every_other_range():
 def test_range_text_other_is_the_value_at_both_ends():
     rows = [{"week": f"2027-W{i:02d}", "cap_soft": "12" if 2 <= i <= 6 else "11"} for i in range(1, 9)]
     assert V.range_text(rows, "cap_soft") == ("2027-W02〜2027-W06 は 12、ほかは 11", "11")   # 12 has more weeks
+
+
+# ── 段 4 A1・A3：シフトとエンジンが使った能力の表示 ────────────────────────
+def _calendar(ws, cid):
+    from test_cockpit_cases import CAL
+    with open(os.path.join(ws, cid, "model", "operating_calendar.csv"), "w", encoding="utf-8", newline="") as f:
+        f.write(CAL)
+
+
+def _engine_capacity(ws, cid, soft):
+    rows = []
+    for i, w in enumerate(["2026-W52"] + WEEKS + ["2027-W04"]):
+        closed = int(w == "2027-W02")
+        rows.append({"product": "PA", "factory": "Fac_A", "week_index": i, "week": w, "cap_hard": 10,
+                     "cap_soft": soft, "cap_soft_source": "closed" if closed else "calendar",
+                     "shifts": 0 if closed else 18, "demand_envelope": "soft", "closed": closed, "yield_rate": 1.0,
+                     "shippable_hard": 10, "shippable_soft": soft})
+    os.makedirs(os.path.join(ws, cid, "run"), exist_ok=True)
+    pd.DataFrame(rows).to_csv(os.path.join(ws, cid, "run", "capacity.csv"), index=False)
+
+
+def test_calendar_inputs_before_and_after_a_run(ws):
+    _calendar(ws, "C02")
+    cap = V.case_inputs(ws, "C02")["capacity"][0]               # inputs changed -> not 済み: the inputs
+    assert cap["calendar"] and cap["shifts"] == "18" and cap["closed_weeks"] == ["2027-W02"]
+    assert "シフト 18" in cap["text"] and "実行するとエンジンの値" in cap["text"]
+    _done(ws, "C02", 150.0)
+    _engine_capacity(ws, "C02", 9)
+    d = V.case_inputs(ws, "C02")
+    cap = d["capacity"][0]
+    assert d["capacity_source"] == "engine" and cap["source"] == "engine"
+    assert cap["text"] == "18 シフト → 9 lot／週（設備 10 × 18 ÷ 21）、休業 1 週（2027-W02）（エンジンの値）"
+    t = V.case_table(ws)
+    i = [k for k, c in enumerate(t["columns"]) if c.startswith("能力")][0]
+    assert [r["cells"][i] for r in t["rows"]][:2] == ["10/8", "10/9"]      # ① C02 from the engine
+
+
+def test_engine_capacity_is_not_used_when_inputs_changed(ws):
+    _engine_capacity(ws, "C01", 9)
+    assert V.engine_capacity(ws, "C01") is not None
+    C.set_planned_output(ws, "C01", "PA", 7)                          # inputs changed after the run
+    assert V.engine_capacity(ws, "C01") is None
+
+
+def test_market_labels_from_the_comparison(ws):
+    d = V.compare_dir(ws, "C01", "C02")
+    pd.DataFrame([{"sku_id": "PA", "region": "X", "market": "Shop_X"},
+                  {"sku_id": "PA", "region": "Y", "market": "Y"}]).to_csv(os.path.join(d, "market_map.csv"), index=False)
+    sv = V.supply_view(ws, "C01", "C02")
+    assert V.key_text(sv, "PA", "X") == "PA:Shop_X（X）" and V.key_text(sv, "PA", "Y") == "PA:Y"
+
+
+def test_factory_choices_one_or_several_factories(ws):
+    d = V.compare_dir(ws, "C01", "C02")
+    fv = V.factory_view(d, "C01", "C02")
+    assert [c["label"] for c in fv["choices"]] == ["PA"]             # old comparison: no factory column
+    fw = pd.read_csv(os.path.join(d, "factory_weekly.csv"))
+    two = pd.concat([fw.assign(factory="Brew"), fw.assign(factory="Bottle")])
+    two.to_csv(os.path.join(d, "factory_weekly.csv"), index=False)
+    fv = V.factory_view(d, "C01", "C02")
+    assert [c["label"] for c in fv["choices"]] == ["PA @ Brew", "PA @ Bottle"]
+
+
+def test_case_table_labels_backlog_with_market_names(ws):
+    p = os.path.join(ws, "C01", "model", "sc_tree_master.csv")
+    t = pd.read_csv(p, dtype=str, keep_default_na=False)
+    t.loc[t["node_name"] == "Shop_X", "region"] = "X"            # Shop_X <-> region X (names differ)
+    t.to_csv(p, index=False)
+    assert V.case_market_labels(ws, "C01") == {"PA:X": "PA:Shop_X（X）", "PA:Y": "PA:Shop_Y（Y）"}
+    assert V._kv({"PA:X": 2}, V.case_market_labels(ws, "C01")) == "PA:Shop_X（X） 2"
+    assert V._kv({"PA:X": 2}) == "PA:X 2"

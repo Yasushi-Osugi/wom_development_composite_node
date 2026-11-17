@@ -114,8 +114,12 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
         verbose: bool = True, demand_file: str = "demand_forecast.csv",
         planning_state: bool = False, lot_flow_mode: str = None,
         flow_check_dir: str = None, extra_plugins: list = None,
-        ppc: bool = True, warmup_real_start: Optional[str] = None) -> dict:
+        ppc: bool = True, warmup_real_start: Optional[str] = None,
+        capacity_out: Optional[str] = None) -> dict:
     """GUI の planning + PPC を再現し、KPI スナップショット dict を返す。
+
+    capacity_out（経営コックピット 段 4 A3）：指定したときだけ、計画の木の工場（MOM）ごと・週ごとの
+        能力を CSV で書く（エンジンが実際に使った値。write_capacity_csv）。snapshot には入れない。
 
     lot_flow_mode（RequestLetter_LotIdentityFlow C1）："identity"／"legacy"。
         優先順：この引数 → モデルの planning_config.csv の lot_flow_mode →
@@ -338,6 +342,9 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
                                                 report_start_index=_crs[0] if _crs else None),
                              flow_check_dir)
 
+    if capacity_out:
+        write_capacity_csv(sc_tree, capacity_out)
+
     # ── PPC（app.py _run_ppc_from_planning と同じ）─────────────────
     if ppc:
         ppc_kpi = _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose)
@@ -373,6 +380,47 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
         snap["planning_state_extras"] = _planning_state_extras(
             sc_tree, n_weeks, _fres_all, _bres_all)
     return snap
+
+
+CAPACITY_COLS = ["product", "factory", "week_index", "week", "cap_hard", "cap_soft", "cap_soft_source", "shifts",
+                 "demand_envelope", "closed", "yield_rate", "shippable_hard", "shippable_soft"]
+
+
+def write_capacity_csv(sc_tree, path: str) -> None:
+    """The capacity the engine used, per product x factory (MOM) x week (段 4 A3):
+    cap_hard (physical ceiling), cap_soft (planned output as the engine holds it after capacity_plan.csv, the
+    operating calendar and the plugins), cap_soft_source ("calendar" = derived from the week's shifts,
+    "closed" = 0 shifts (the value is not used), "capacity_plan" = the CSV value, blank = not set), shifts (blank = no calendar row), demand_envelope, closed
+    (the node is closed that week), yield_rate, and the good-lot ceilings (floor(value x yield))."""
+    import csv
+
+    def num(v):
+        return "" if v is None else (int(v) if float(v) == int(v) else v)
+    rows = []
+    labels = list(sc_tree.week_labels)
+    for prod in sc_tree.products:
+        for nd in sc_tree.iter_all_nodes(prod):
+            if nd.node_type != "mom":
+                continue
+            for w, wk in enumerate(labels):
+                ch, cs, sh = nd.cap_hard(w), nd.cap_soft(w), nd.operating_shifts(w)
+                if sh is not None and sh > 0 and ch is not None:
+                    src = "calendar"
+                elif sh == 0:
+                    src = "closed"          # 0 shifts: the week is closed, its cap_soft is not used
+                else:
+                    src = "capacity_plan" if cs is not None else ""
+                rows.append({"product": prod, "factory": nd.node_name, "week_index": w, "week": wk,
+                             "cap_hard": num(ch), "cap_soft": num(cs), "cap_soft_source": src,
+                             "shifts": "" if sh is None else int(sh),
+                             "demand_envelope": getattr(nd, "demand_envelope", "hard"),
+                             "closed": int(not nd.is_open(w)), "yield_rate": nd.yield_rate,
+                             "shippable_hard": num(nd.shippable_of(ch)), "shippable_soft": num(nd.shippable_of(cs))})
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        wr = csv.DictWriter(f, fieldnames=CAPACITY_COLS, lineterminator="\n")
+        wr.writeheader()
+        wr.writerows(rows)
 
 
 def _run_ppc(sc_tree, weeks, model_dir, output_ppc_dir, verbose) -> dict:
@@ -615,13 +663,16 @@ def main(argv=None) -> int:
     ap.add_argument("--flow-check-out", default="output/flow_check",
                     help="Flow Check の表1・表2 の CSV の出力先の親フォルダ（<これ>/<モデル名>/ に書く）。"
                          "空文字で書き出さない")
+    ap.add_argument("--capacity-out", default="",
+                    help="工場（MOM）× 週の能力（エンジンが使った値）の CSV の出力先。空（既定）なら書かない")
     a = ap.parse_args(argv)
 
     fc_dir = (os.path.join(a.flow_check_out, os.path.basename(a.model_dir.rstrip("/\\")))
               if a.flow_check_out else None)
     snap = run(a.model_dir, plugins_spec=a.plugins,
                output_ppc_dir=a.ppc_out, verbose=not a.quiet,
-               lot_flow_mode=a.lot_flow_mode, flow_check_dir=fc_dir)
+               lot_flow_mode=a.lot_flow_mode, flow_check_dir=fc_dir,
+               capacity_out=a.capacity_out or None)
     text = json.dumps(snap, ensure_ascii=False, indent=2, sort_keys=True)
     fw = snap["forward"]
     cap_txt = (f"cap_hard_sealed={fw['cap_hard_sealed']} " if "cap_hard_sealed" in fw else

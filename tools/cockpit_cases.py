@@ -9,6 +9,7 @@ RequestLetter_Cockpit_Stage3_Step1_CasesAndRunner §2.3。wom/cockpit/cases.py�
     python -m tools.cockpit_cases set     --ws <作業> --case C02 entry-plan  --file <market_entry_plan.csv>
     python -m tools.cockpit_cases set     --ws <作業> --case C02 launch-week --sku COS_Cream --region TH_Distributor --week 2027-W27
     python -m tools.cockpit_cases set     --ws <作業> --case C02 planned-output --sku COS_Cream --cap-soft 12 [--node Factory_JP] [--from-week 2028-W11 --to-week 2029-W46]
+    python -m tools.cockpit_cases set     --ws <作業> --case S02 shifts      --sku Soy_Sauce --node Bottling_Noda --shifts 21 [--from-week … --to-week …]
     python -m tools.cockpit_cases set     --ws <作業> --case C01 capacity    --sku COS_Cream --max-supply 13 --cap-soft 11 [--node …]
     python -m tools.cockpit_cases set     --ws <作業> --case C03 policy      --allocation-file … --policy-file … --week-rule trim_to_capacity_latest [--knowledge-file …] [--unallocated-note …]
     python -m tools.cockpit_cases set     --ws <作業> --case C03 policy      --none
@@ -76,6 +77,12 @@ def main(argv=None) -> int:
     q.add_argument("--node", default=None)
     q.add_argument("--from-week", default=None, help="first week of the range (with --to-week; default: all weeks)")
     q.add_argument("--to-week", default=None, help="last week of the range (both ends included)")
+    q = s2.add_parser("shifts")
+    q.add_argument("--sku", required=True)
+    q.add_argument("--node", required=True)
+    q.add_argument("--shifts", required=True)
+    q.add_argument("--from-week", default=None)
+    q.add_argument("--to-week", default=None)
     q = s2.add_parser("capacity")
     q.add_argument("--sku", required=True)
     q.add_argument("--max-supply", required=True)
@@ -130,6 +137,8 @@ def main(argv=None) -> int:
                 r = {"total_lots": r["total_lots"], "totals_by_key": r["totals_by_key"]}
             elif a.what == "planned-output":
                 r = C.set_planned_output(a.ws, a.case, a.sku, a.cap_soft, a.node, a.from_week, a.to_week)
+            elif a.what == "shifts":
+                r = C.set_shifts(a.ws, a.case, a.sku, a.node, a.shifts, a.from_week, a.to_week)
             elif a.what == "capacity":
                 r = C.set_capacity(a.ws, a.case, a.sku, a.max_supply, a.cap_soft, a.node)
             elif a.what == "policy":

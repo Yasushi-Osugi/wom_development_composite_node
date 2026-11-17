@@ -195,3 +195,36 @@ def test_measured_candidate_is_not_offered_for_a_mixed_plan(ws):
          "first_week_at_cap": "2026-W52", "last_week_at_cap": "2027-W04", "span_weeks": 5, "span_weeks_in_report": 4,
          "span_weeks_outside_report": 1, "weeks_below_cap_inside_span": 0}])
     assert A.raise_week_candidates(ws, "C02") == []
+
+
+# ── 段 4 A1・A5：シフト…・週の範囲の入力の検査 ─────────────────────────────
+def test_shifts_action_and_range_checks(ws):
+    from test_cockpit_cases import CAL
+    r = A.set_shifts(ws, "C01", "PA", "Fac_A", "21")
+    assert not r.ok and "操業カレンダーが無い" in r.message
+    with open(os.path.join(ws, "C01", "model", "operating_calendar.csv"), "w", encoding="utf-8", newline="") as f:
+        f.write(CAL)
+    assert A.has_calendar(ws, "C01")
+    for bad in ("0", "22", "x", ""):
+        assert not A.set_shifts(ws, "C01", "PA", "Fac_A", bad).ok
+    r = A.set_shifts(ws, "C01", "PA", "Fac_A", "21", "2027-W03", "")
+    assert not r.ok and "片方だけ" in r.message
+    r = A.set_shifts(ws, "C01", "PA", "Fac_A", "21", "2027-W04", "2027-W03")
+    assert not r.ok and "より前" in r.message
+    r = A.set_shifts(ws, "C01", "PA", "Fac_A", "21", "2027-w3", "2027-W04")
+    assert not r.ok and "週のラベル" in r.message
+    r = A.set_shifts(ws, "C01", "PA", "Fac_A", "21")
+    assert r.ok and "休業の 1 週（2027-W02）は休業のまま" in r.message
+    r = A.set_planned_output(ws, "C01", "PA", None, "9", "", "")
+    assert not r.ok and "シフト" in r.message                          # the calendar decides: use シフト…
+
+
+def test_raised_shifts_versus_the_parent(ws):
+    from test_cockpit_cases import CAL
+    with open(os.path.join(ws, "C01", "model", "operating_calendar.csv"), "w", encoding="utf-8", newline="") as f:
+        f.write(CAL)
+    A.copy(ws, "C01", "more shifts")
+    assert A.set_shifts(ws, "C02", "PA", "Fac_A", "21").ok
+    c = [x for x in A.raise_week_candidates(ws, "C02") if x["kind"] == "raised"]
+    assert [(x["first"], x["last"], x["span"], x["cap"]) for x in c] == \
+        [("2026-W52", "2027-W04", 5, "18→21（シフト）")]                 # the closed 2027-W02 does not split it

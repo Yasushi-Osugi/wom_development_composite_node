@@ -47,6 +47,7 @@ planned_output_weeks.csv（計画の生産量ちょうど作った週）を足�
                                  費目が 2 つ以上なら合計の行と、ほかの費目の案間の差を差し引いた境目
     planned_output_weeks.csv     案 × SKU：工場が計画の生産量（floor(cap_soft × 歩留まり)）ちょうど作った最初・最後の週、
                                  その間の週数（報告期間の内・外）、ちょうど作った週・下回った週の数
+    market_map.csv               製品 × 需要の地域 → 市場のノード（sc_tree_master.csv の市場の行の region、段 4 A2）
     comparison_summary.md        まとめ
 
 止める条件（CompareError）：ファイルが無い、要求週別の供給の鍵ごとの合計が Flow Check の表 2 と合わない、
@@ -71,6 +72,7 @@ import pandas as pd
 TOL = 0.5          # yen: tolerance for the per-week profit check (sums of floats)
 K_CONSUMER = "consumer_sale"
 K_HANDOFF = "handoff_to_sp"
+K_INBOUND_MOVE = "inbound_move"        # a factory (MOM) that is not the last one ships to the next factory
 SUPPLY_COLS = ["demand", "on_time", "early", "late", "backlog_end"]
 MONEY_COLS = ["external_revenue", "external_cogs_group", "expense", "profit_r2"]
 
@@ -112,6 +114,9 @@ def load_run(run_dir: str, model_dir: str) -> dict:
         "capacity": _csv(os.path.join(model_dir, "capacity_plan.csv"), dtype=str),
         "tree": _csv(os.path.join(model_dir, "sc_tree_master.csv"), dtype=str),
     }
+    cu = os.path.join(run_dir, "capacity.csv")       # 段 4 A3: the capacity the engine used (absent in older runs)
+    r["capacity_used"] = (pd.read_csv(cu, dtype={"week": str}, keep_default_na=False)
+                          if os.path.exists(cu) else None)
     with open(_need(os.path.join(run_dir, "ppc", "ppc_kpi_summary.json")), encoding="utf-8") as f:
         r["ppc"] = json.load(f)
     snap = os.path.join(run_dir, "snapshot.json")
@@ -156,6 +161,48 @@ def entry_plan_diff(base: dict, alt: dict) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=["sku_id", "region", "column", "base", "alt"])
 
 
+# ── 需要の地域と市場の名前（段 4 A2）─────────────────────────────────
+def market_map(run: dict) -> Dict[Tuple[str, str], str]:
+    """(product, demand region) -> market node name, from the leaf_out rows of sc_tree_master.csv (the region
+    column ties the demand's region to the market node one to one). Stops if, within a product, a region names two
+    markets or a market has no region. Cached in the run."""
+    if "_market_map" in run:
+        return run["_market_map"]
+    t = run["tree"].fillna("")
+    lf = t[t["node_type"].astype(str).str.strip() == "leaf_out"]
+    out: Dict[Tuple[str, str], str] = {}
+    for _, r in lf.iterrows():
+        prod, reg, node = str(r["product_name"]).strip(), str(r["region"]).strip(), str(r["node_name"]).strip()
+        if not reg:
+            raise CompareError(f"{run['model_dir']}: 製品 {prod} の市場 {node} に地域（sc_tree_master.csv の region）がありません。"
+                               "直し方：市場の行に需要の地域名を書く")
+        if (prod, reg) in out and out[(prod, reg)] != node:
+            raise CompareError(f"{run['model_dir']}: 製品 {prod} の地域 {reg} が 2 つの市場（{out[(prod, reg)]}・{node}）に当たります。"
+                               "直し方：市場ごとに地域名を分ける")
+        out[(prod, reg)] = node
+    run["_market_map"] = out
+    return out
+
+
+def market_of(run: dict, sku: str, region: str) -> str:
+    m = market_map(run)
+    if (sku, region) not in m:
+        raise CompareError(f"{run['model_dir']}: 需要の地域 {region}（製品 {sku}）に当たる市場がありません"
+                           "（sc_tree_master.csv の市場の行の region）。直し方：市場の行の region を需要の地域名にする")
+    return m[(sku, region)]
+
+
+def key_label(sku: str, region: str, mm: Optional[Dict[Tuple[str, str], str]] = None) -> str:
+    """'sku:market（region）' when the market's name differs from the demand region, else 'sku:region'."""
+    node = (mm or {}).get((sku, region))
+    return f"{sku}:{node}（{region}）" if node and node != region else f"{sku}:{region}"
+
+
+def market_table(run: dict) -> pd.DataFrame:
+    return pd.DataFrame([{"sku_id": s, "region": g, "market": n} for (s, g), n in sorted(market_map(run).items())],
+                        columns=["sku_id", "region", "market"])
+
+
 # ── 要求週別の供給 ────────────────────────────────────────────────────
 def parse_lot(lot_id: str) -> Tuple[str, str, str, int]:
     parts = str(lot_id).split(":")
@@ -171,6 +218,7 @@ def supply_by_request_week(run: dict) -> pd.DataFrame:
     dem = run["demand"]
     demand_lots = {}
     for s, g, w, q in dem[["sku_id", "region", "week", "quantity"]].itertuples(index=False):
+        market_of(run, s, g)                                # every demand region must name one market
         for seq in range(1, int(q) + 1):
             demand_lots[f"{s}:{g}:{w}:{seq:05d}"] = (s, g, w)
     cs = run["ship"][run["ship"]["kind"] == K_CONSUMER]
@@ -179,8 +227,9 @@ def supply_by_request_week(run: dict) -> pd.DataFrame:
         if lot not in demand_lots:
             raise CompareError(f"{run['run_dir']}: 市場の実出荷の Lot_ID {lot} が需要（demand_forecast.csv）にありません")
         s, g, w, _ = parse_lot(lot)
-        if node != g:
-            raise CompareError(f"{run['run_dir']}: Lot_ID {lot} が別の市場 {node} で出荷されています")
+        if node != market_of(run, s, g):
+            raise CompareError(f"{run['run_dir']}: Lot_ID {lot} が別の市場 {node} で出荷されています"
+                               f"（地域 {g} の市場は {market_of(run, s, g)}）")
         if lot in shipped:
             raise CompareError(f"{run['run_dir']}: Lot_ID {lot} が 2 回出荷されています")
         if int(lots) != 1:
@@ -211,7 +260,9 @@ def check_against_flow(sup: pd.DataFrame, run: dict, name: str) -> pd.DataFrame:
     tot = sup.groupby(["sku_id", "region"])[SUPPLY_COLS].sum().reset_index()
     fl = run["flow"]
     fl = fl[~fl["product"].astype(str).str.startswith("Σ") & ~fl["leaf"].fillna("").astype(str).str.startswith("Σ")]
-    fl = fl.rename(columns={"product": "sku_id", "leaf": "region"})
+    fl = fl.rename(columns={"product": "sku_id", "leaf": "market"})
+    inv = {(s, n): g for (s, g), n in market_map(run).items()}       # market node -> demand region
+    fl["region"] = [inv.get((s, n), n) for s, n in zip(fl["sku_id"], fl["market"])]
     m = tot.merge(fl[["sku_id", "region"] + SUPPLY_COLS], on=["sku_id", "region"], how="outer",
                   suffixes=("", "_flow_check"), indicator=True)
     bad = []
@@ -309,9 +360,39 @@ def inventory_weekly(run: dict, name: str) -> pd.DataFrame:
 
 
 def factory_weekly(run: dict, name: str) -> pd.DataFrame:
+    """Per case x product x factory (MOM) x week: production (lots shipped out of the factory) and the capacity.
+    段 4 A3: when the run has run/capacity.csv (the capacity the ENGINE used: run_headless_from_folder
+    --capacity-out), every MOM gets its rows and the capacity comes from that file (capacity_source="engine",
+    with cap_soft_source / shifts / closed). Without it (runs made before), the old reading: capacity_plan.csv,
+    one factory per product (capacity_source="capacity_plan" = not the engine's value)."""
     labels = run["week_labels"]
-    sh = run["ship"][run["ship"]["kind"] == K_HANDOFF]
-    prod = sh.groupby(["product", "ship_week_index"])["lots"].sum()
+    sh = run["ship"]
+    out_of = sh[sh["kind"].isin([K_HANDOFF, K_INBOUND_MOVE])]
+    made = out_of.groupby(["product", "node", "ship_week_index"])["lots"].sum()
+
+    def fl(v, y):
+        try:
+            return math.floor(float(v) * y + 1e-9)
+        except (TypeError, ValueError):
+            return None
+    rows = []
+    cu = run.get("capacity_used")
+    if cu is not None:
+        for (p, f), g in cu.groupby(["product", "factory"], sort=True):
+            byw = {r["week"]: r for _, r in g.iterrows()}
+            for i, w in enumerate(labels):
+                r = byw.get(w, {})
+                y = float(r.get("yield_rate", 1.0) or 1.0) if r is not None and len(r) else 1.0
+                rows.append({"case": name, "product": p, "factory": f, "week_index": i, "week": w,
+                             "production_lots": int(made.get((p, f, i), 0)),
+                             "max_supply": _blank(r.get("cap_hard", "")), "cap_soft": _blank(r.get("cap_soft", "")),
+                             "yield_rate": y, "shippable_hard": fl(r.get("cap_hard", ""), y),
+                             # a closed week (0 shifts / holiday) has no planned output: not "below the plan"
+                             "shippable_soft": None if int(r.get("closed", 0) or 0) else fl(r.get("cap_soft", ""), y),
+                             "capacity_source": "engine",
+                             "cap_soft_source": _blank(r.get("cap_soft_source", "")),
+                             "shifts": _blank(r.get("shifts", "")), "closed": int(r.get("closed", 0) or 0)})
+        return pd.DataFrame(rows)
     tree = run["tree"]
     mom = tree[tree["node_type"] == "mom"]
     yld = {r["product_name"]: float(r["yield_rate"]) if str(r.get("yield_rate", "")).strip() not in ("", "nan") else 1.0
@@ -322,21 +403,22 @@ def factory_weekly(run: dict, name: str) -> pd.DataFrame:
     for _, r in cap.iterrows():
         if r.get("node_name", momname.get(r["sku_id"])) == momname.get(r["sku_id"]):
             capd[(r["sku_id"], r["week"])] = (r.get("max_supply", ""), r.get("cap_soft", ""))
-
-    def fl(v, y):
-        try:
-            return math.floor(float(v) * y + 1e-9)
-        except (TypeError, ValueError):
-            return None
-    rows = []
+    hand = sh[sh["kind"] == K_HANDOFF].groupby(["product", "ship_week_index"])["lots"].sum()
     for p in sorted(momname):
         for i, w in enumerate(labels):
             hard, soft = capd.get((p, w), ("", ""))
-            rows.append({"case": name, "product": p, "week_index": i, "week": w,
-                         "production_lots": int(prod.get((p, i), 0)),
+            rows.append({"case": name, "product": p, "factory": momname[p], "week_index": i, "week": w,
+                         "production_lots": int(hand.get((p, i), 0)),
                          "max_supply": hard, "cap_soft": soft, "yield_rate": yld.get(p, 1.0),
-                         "shippable_hard": fl(hard, yld.get(p, 1.0)), "shippable_soft": fl(soft, yld.get(p, 1.0))})
+                         "shippable_hard": fl(hard, yld.get(p, 1.0)), "shippable_soft": fl(soft, yld.get(p, 1.0)),
+                         "capacity_source": "capacity_plan", "cap_soft_source": "", "shifts": "", "closed": 0})
     return pd.DataFrame(rows)
+
+
+def _blank(v):
+    if v is None or (isinstance(v, float) and math.isnan(v)):
+        return ""
+    return v
 
 
 def age_summary(run: dict, name: str) -> pd.DataFrame:
@@ -463,7 +545,10 @@ def factory_idle(fw: pd.DataFrame) -> pd.DataFrame:
     x["shippable_soft"] = pd.to_numeric(x["shippable_soft"], errors="coerce")
     x = x[x["shippable_soft"].notna() & (x["production_lots"] < x["shippable_soft"])].copy()
     x["unused_vs_soft"] = x["shippable_soft"] - x["production_lots"]
-    return x[["case", "product", "week_index", "week", "production_lots", "shippable_soft", "unused_vs_soft"]]
+    if "factory" not in x.columns:
+        x["factory"] = ""
+    return x[["case", "product", "factory", "week_index", "week", "production_lots", "shippable_soft",
+              "unused_vs_soft"]]
 
 
 # ── 数量配分（上位 Demand Plan）の結果 ─────────────────────────────────
@@ -791,12 +876,14 @@ def planned_output_weeks(fw: pd.DataFrame, report_start: str, report_end: str,
                       "weeks_below_cap_inside_span": int((span["production_lots"] < ss).sum())})
         return r
 
-    for (case, prod), g in fw.groupby(["case", "product"]):
+    if "factory" not in fw.columns:
+        fw = fw.assign(factory=[(mom_names or {}).get(c, {}).get(p, "") for c, p in zip(fw["case"], fw["product"])])
+    for (case, prod, fac), g in fw.groupby(["case", "product", "factory"], sort=True):
         g = g.sort_values("week_index")
         soft = pd.to_numeric(g["shippable_soft"], errors="coerce")
         inrep = g["week"].map(lambda w: ra <= _wk_monday(w) <= rb)
         vals = sorted(soft.dropna().unique())
-        head = {"case": case, "product": prod, "factory": (mom_names or {}).get(case, {}).get(prod, "")}
+        head = {"case": case, "product": prod, "factory": fac}
         rows.append({**head, "row": "全体", "shippable_soft_values": ",".join(str(int(v)) for v in vals),
                      **measure(g, soft, inrep)})
         if len(vals) > 1:
@@ -817,11 +904,13 @@ def planned_output_weeks(fw: pd.DataFrame, report_start: str, report_end: str,
     if varies:   # a uniform plan keeps the table as it was (one row per case x product, same columns)
         cols += ["row", "planned_first_week", "planned_last_week", "planned_weeks", "planned_weeks_in_report",
                  "planned_weeks_outside_report"]
-        t = pd.DataFrame(rows).reindex(columns=cols)
-        for c in ("planned_weeks", "planned_weeks_in_report", "planned_weeks_outside_report"):
-            t[c] = t[c].astype("Int64")   # blank on the whole-case rows, integers on the per-value rows
-        return t
-    return pd.DataFrame(rows).reindex(columns=cols)
+    t = pd.DataFrame(rows).reindex(columns=cols)
+    # counts stay integers when some rows are blank (a factory without a planned output, the whole-case rows)
+    for c in ("span_weeks", "span_weeks_in_report", "span_weeks_outside_report", "weeks_below_cap_inside_span",
+              "planned_weeks", "planned_weeks_in_report", "planned_weeks_outside_report"):
+        if c in t.columns:
+            t[c] = t[c].astype("Int64")
+    return t
 
 
 # ── 全体 ─────────────────────────────────────────────────────────────
@@ -834,6 +923,10 @@ def compare(base_run: str, alt_run: str, base_model: str, alt_model: str, out: s
         raise CompareError("2 案の計画の週が違います（計画期間をそろえてください）")
     labels = base["week_labels"]
     res = {}
+    mm = {**market_map(base), **market_map(alt)}
+    pd.concat([market_table(base), market_table(alt)]).drop_duplicates().to_csv(
+        os.path.join(out, "market_map.csv"), index=False)
+    res["market_map"] = mm
 
     dd = demand_diff(base, alt)
     dd.to_csv(os.path.join(out, "demand_diff.csv"), index=False)
@@ -931,25 +1024,29 @@ def _fmt(v) -> str:
 
 def write_summary(res: dict, path: str, base_run, alt_run, base_model, alt_model) -> None:
     bn, an = res["base_name"], res["alt_name"]
+    mm = res.get("market_map") or {}
+
+    def lab(s, g):
+        return key_label(s, g, mm)
     L = [f"# 2 案の比較（{bn} → {an}）", "",
          f"- base（{bn}）：実行 `{base_run}`、モデル `{base_model}`",
          f"- alt（{an}）：実行 `{alt_run}`、モデル `{alt_model}`",
          f"- 計画の週：{res['labels'][0]}〜{res['labels'][-1]}（{len(res['labels'])} 週）", "",
          "## 入力の表の違い", ""]
     epd = res["entry_plan_diff"]
-    L += ["（違いなし）"] if epd.empty else [f"- {r.sku_id}:{r.region} `{r.column}`：{r.base} → {r.alt}"
+    L += ["（違いなし）"] if epd.empty else [f"- {lab(r.sku_id, r.region)} `{r.column}`：{r.base} → {r.alt}"
                                             for r in epd.itertuples()]
     dd = res["demand_diff"]
     g = dd.groupby(["sku_id", "region"])[["demand_base", "demand_alt", "diff"]].sum().reset_index()
     L += ["", "## 需要（lot、全計画期間）", "", "| 鍵 | base | alt | 差 |", "|---|---:|---:|---:|"]
-    L += [f"| {r.sku_id}:{r.region} | {r.demand_base} | {r.demand_alt} | {r.diff:+d} |" for r in g.itertuples()]
+    L += [f"| {lab(r.sku_id, r.region)} | {r.demand_base} | {r.demand_alt} | {r.diff:+d} |" for r in g.itertuples()]
     s = res["supply"]
     gs = s.groupby(["sku_id", "region"])[[f"{c}_{x}" for c in SUPPLY_COLS for x in ("base", "alt")]].sum().reset_index()
     L += ["", "## 供給（Lot_ID で要求週へ戻した合計。Flow Check の表 2 と一致を確認済み）", "",
           "| 鍵 | 需要 base/alt | 当週 base/alt | 遅配 base/alt | 早出し base/alt | 期末の未充足 base/alt |",
           "|---|---|---|---|---|---|"]
     for r in gs.itertuples():
-        L.append(f"| {r.sku_id}:{r.region} | {r.demand_base:.0f}/{r.demand_alt:.0f} | {r.on_time_base:.0f}/{r.on_time_alt:.0f} "
+        L.append(f"| {lab(r.sku_id, r.region)} | {r.demand_base:.0f}/{r.demand_alt:.0f} | {r.on_time_base:.0f}/{r.on_time_alt:.0f} "
                  f"| {r.late_base:.0f}/{r.late_alt:.0f} | {r.early_base:.0f}/{r.early_alt:.0f} "
                  f"| {r.backlog_end_base:.0f}/{r.backlog_end_alt:.0f} |")
     al = res.get("alloc")
@@ -959,7 +1056,7 @@ def write_summary(res: dict, path: str, base_run, alt_run, base_model, alt_model
               "| 鍵 | ① base/alt | ② base/alt | ③ base/alt | 当週 base/alt | 遅配 base/alt | ⑤ base/alt |",
               "|---|---|---|---|---|---|---|"]
         for r in ga.itertuples():
-            L.append(f"| {r.sku_id}:{r.region} | {r.q1_original_base:.0f}/{r.q1_original_alt:.0f} "
+            L.append(f"| {lab(r.sku_id, r.region)} | {r.q1_original_base:.0f}/{r.q1_original_alt:.0f} "
                      f"| {r.q2_in_scope_base:.0f}/{r.q2_in_scope_alt:.0f} | {r.q3_unallocated_base:.0f}/{r.q3_unallocated_alt:.0f} "
                      f"| {r.on_time_base:.0f}/{r.on_time_alt:.0f} | {r.late_base:.0f}/{r.late_alt:.0f} "
                      f"| {r.q5_backlog_end_base:.0f}/{r.q5_backlog_end_alt:.0f} |")
@@ -995,8 +1092,10 @@ def write_summary(res: dict, path: str, base_run, alt_run, base_model, alt_model
           f"供給の差 {r.supply_abs_diff}、試算利益の差 {_fmt(r.profit_r2_diff)}" for r in res["boundary"].itertuples()]
     fi = res["factory_idle"]
     L += ["", "工場が出荷可能な soft 能力より少なく作った週（計画の両端の効果の候補）："]
-    for (c, p), gg in fi.groupby(["case", "product"]):
-        L.append(f"- {c} {p}：{', '.join(gg['week'])}（未使用 計 {gg['unused_vs_soft'].sum():.0f} lot）")
+    multi = set(fi.groupby("product")["factory"].nunique().loc[lambda x: x > 1].index) if len(fi) else set()
+    for (c, p, f), gg in fi.groupby(["case", "product", "factory"]):
+        L.append(f"- {c} {p}{'・' + f if p in multi else ''}：{', '.join(gg['week'])}"
+                 f"（未使用 計 {gg['unused_vs_soft'].sum():.0f} lot）")
     L += ["", "## 固定費の逆転点（GPT-MC 業務定義 v0.1 §4）", ""]
     for fc in res["fixed_cost"].itertuples():
         fs = str(fc.f_star_per_week)

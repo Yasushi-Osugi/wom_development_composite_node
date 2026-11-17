@@ -47,6 +47,8 @@ WORKSPACE_FILE = "workspace.json"
 CASE_FILE = "case.json"
 ENTRY_PLAN = "market_entry_plan.csv"
 CAPACITY = "capacity_plan.csv"
+OPCAL = "operating_calendar.csv"               # 段 4 A1: the shift plan (the planned output where it has rows)
+MAX_SHIFTS = 21                                # 3 shifts x 7 days (wom.model.plan_node.MAX_SHIFTS)
 DEMAND = "demand_forecast.csv"
 FIXED_COST_FILE = "fixed_cost.csv"            # inputs/ ; only the comparison reads it
 FIXED_COST_COLS = ["cost_item", "entity", "paid_start_week", "paid_end_week", "weekly_amount",
@@ -358,25 +360,17 @@ def set_planned_output(ws_dir: str, cid: str, sku: str, cap_soft, node: Optional
     _guard_not_running(ws_dir, cid)
     p = os.path.join(case_dir(ws_dir, cid), "model", CAPACITY)
     fields, rows, term, bom = _read_rows(p)
+    val = _num_text(cap_soft, "cap_soft")
+    sel, node = _capacity_rows_for(p, rows, sku, node)
+    sel, rng = _select_weeks(p, sel, sku, node, from_week, to_week)
+    gov = calendar_weeks(ws_dir, cid, sku, node) & {r["week"].strip() for r in sel}
+    if gov:
+        raise CaseError(f"SKU {sku}・工場 {node} の計画値は操業カレンダーのシフトで決まります（{len(gov)} 週、"
+                        f"例 {sorted(gov)[0]}。cap_soft は計画の読み込みでシフトから作り直される）。"
+                        "直し方：「シフト…」（CLI は set … shifts）でシフトの数を変える")
     for c in ("max_supply", "cap_soft"):
         if c not in fields:
             raise CaseError(f"{p}: 列 {c} がありません")
-    val = _num_text(cap_soft, "cap_soft")
-    sel, node = _capacity_rows_for(p, rows, sku, node)
-    if (from_week is None) != (to_week is None):
-        raise CaseError("週の範囲は from_week と to_week の両方を指定してください（省略すると全週）")
-    rng = None
-    if from_week is not None:
-        a, b = _check_week(from_week, "from_week"), _check_week(to_week, "to_week")
-        weeks = sorted({r["week"].strip() for r in sel})
-        missing = [w for w in (a, b) if w not in weeks]
-        if missing:
-            raise CaseError(f"{p}: SKU {sku}・工場 {node} の行に週 {missing} がありません（行の週は {weeks[0]}〜{weeks[-1]}）。"
-                            "直し方：行のある週を指定する")
-        if b < a:
-            raise CaseError(f"週の範囲の終わり {b} が始まり {a} より前です")
-        sel = [r for r in sel if a <= r["week"].strip() <= b]
-        rng = (a, b)
     over = []
     for r in sel:
         ms = r["max_supply"].strip()
@@ -394,6 +388,80 @@ def set_planned_output(ws_dir: str, cid: str, sku: str, cap_soft, node: Optional
                                                     "cap_soft_to": val, "rows": len(sel),
                                                     "weeks": list(rng) if rng else "all"})
     return {"sku": sku, "node": node, "rows": len(sel), "cap_soft": val, "weeks": list(rng) if rng else "all"}
+
+
+def _select_weeks(p: str, sel: List[dict], sku: str, node: str, from_week, to_week):
+    """The rows of from_week..to_week (both ends included); all rows when both are omitted. Stops if only one end is
+    given, an end is not a week of the rows, or the range is reversed."""
+    if (from_week is None) != (to_week is None):
+        raise CaseError("週の範囲は from_week と to_week の両方を指定してください（省略すると全週）")
+    if from_week is None:
+        return sel, None
+    a, b = _check_week(from_week, "from_week"), _check_week(to_week, "to_week")
+    weeks = sorted({r["week"].strip() for r in sel})
+    missing = [w for w in (a, b) if w not in weeks]
+    if missing:
+        raise CaseError(f"{p}: SKU {sku}・工場 {node} の行に週 {missing} がありません（行の週は {weeks[0]}〜{weeks[-1]}）。"
+                        "直し方：行のある週を指定する")
+    if b < a:
+        raise CaseError(f"週の範囲の終わり {b} が始まり {a} より前です")
+    return [r for r in sel if a <= r["week"].strip() <= b], (a, b)
+
+
+def calendar_weeks(ws_dir: str, cid: str, sku: str, node: str) -> set:
+    """Weeks where the operating calendar decides the node's planned output (a row with shifts > 0)."""
+    p = os.path.join(case_dir(ws_dir, cid), "model", OPCAL)
+    if not os.path.exists(p):
+        return set()
+    _f, rows, _t, _b = _read_rows(p)
+    out = set()
+    for r in rows:
+        if r.get("sku_id", "").strip() == sku and r.get("node_name", "").strip() == node:
+            try:
+                if int(str(r.get("shifts", "")).strip()) > 0:
+                    out.add(r["week"].strip())
+            except ValueError:
+                pass
+    return out
+
+
+def set_shifts(ws_dir: str, cid: str, sku: str, node: str, shifts, from_week: Optional[str] = None,
+               to_week: Optional[str] = None) -> dict:
+    """段 4 A1: the number of shifts of the SKU x node in the copy's operating_calendar.csv (all weeks, or
+    from_week..to_week, both ends included). 1..21. Weeks with 0 shifts (closed) are kept closed and returned.
+    Stops when the model has no operating calendar or no row for the SKU x node (the file is never created)."""
+    _guard_not_running(ws_dir, cid)
+    p = os.path.join(case_dir(ws_dir, cid), "model", OPCAL)
+    if not os.path.exists(p):
+        raise CaseError(f"このモデルには操業カレンダー（{OPCAL}）がありません。シフトは変えられません。"
+                        "直し方：計画の生産量は「生産量…」（cap_soft）で変える")
+    fields, rows, term, bom = _read_rows(p)
+    try:
+        n = int(str(shifts).strip())
+        if str(n) != str(shifts).strip():
+            raise ValueError
+    except ValueError:
+        raise CaseError(f"shifts={shifts!r} は整数ではありません（1〜{MAX_SHIFTS}）")
+    if not 1 <= n <= MAX_SHIFTS:
+        raise CaseError(f"shifts={n} は 1〜{MAX_SHIFTS} の外です（0 は休業。休業はシフトの操作では作らない・消さない）")
+    if not node:
+        raise CaseError("工場（ノード）を指定してください")
+    sel = [r for r in rows if r.get("sku_id", "").strip() == sku and r.get("node_name", "").strip() == node]
+    if not sel:
+        have = sorted({f"{r.get('sku_id')}@{r.get('node_name')}" for r in rows})
+        raise CaseError(f"{p}: SKU {sku}・工場 {node} の行がありません（今ある行：{have}）")
+    sel, rng = _select_weeks(p, sel, sku, node, from_week, to_week)
+    closed = sorted(r["week"].strip() for r in sel if str(r.get("shifts", "")).strip() == "0")
+    change = [r for r in sel if str(r.get("shifts", "")).strip() != "0"]
+    old = sorted({r["shifts"].strip() for r in change}, key=lambda v: (len(v), v))
+    for r in change:
+        r["shifts"] = str(n)
+    _write_rows(p, fields, rows, term, bom)
+    _record_change(ws_dir, cid, "shifts", {"sku": sku, "node": node, "shifts_from": old, "shifts_to": str(n),
+                                           "rows": len(change), "weeks": list(rng) if rng else "all",
+                                           "closed_kept": closed})
+    return {"sku": sku, "node": node, "rows": len(change), "shifts": n, "weeks": list(rng) if rng else "all",
+            "closed_kept": closed}
 
 
 def capacity_runs(rows: List[dict]) -> List[dict]:

@@ -102,8 +102,8 @@ class CompareScreen(ttk.Frame):
         bb.pack(side="bottom", fill="x")
         ttk.Label(bb, text="入力を変える（変えたら実行し直す）：").grid(row=0, column=0, columnspan=3, sticky="w")
         for i, (text, cmd) in enumerate((("投入週…", self._dlg_launch), ("生産量…", self._dlg_output),
-                                         ("供給の方針…", self._dlg_policy), ("費用の前提…", self._dlg_cost),
-                                         ("増産の有償の週…", self._dlg_raise))):
+                                         ("シフト…", self._dlg_shifts), ("供給の方針…", self._dlg_policy),
+                                         ("費用の前提…", self._dlg_cost), ("増産の有償の週…", self._dlg_raise))):
             w = ttk.Button(bb, text=text, command=cmd)
             w.grid(row=1 + i // 3, column=i % 3, sticky="we", padx=1, pady=1)
             self._write_buttons.append(w)
@@ -188,8 +188,8 @@ class CompareScreen(ttk.Frame):
     def _build_factory_tab(self):
         bar = ttk.Frame(self.tab_factory)
         bar.pack(fill="x")
-        ttk.Label(bar, text="SKU:").pack(side="left")
-        self.factory_sku = ttk.Combobox(bar, state="readonly", width=16)
+        ttk.Label(bar, text="工場（SKU）:").pack(side="left")
+        self.factory_sku = ttk.Combobox(bar, state="readonly", width=30)
         self.factory_sku.pack(side="left")
         self.factory_sku.bind("<<ComboboxSelected>>", lambda e: self._draw_factory())
         self.factory_fig = Figure(figsize=(9, 2.8), dpi=90)
@@ -310,7 +310,7 @@ class CompareScreen(ttk.Frame):
         L += ["", "■ 投入の表"] + [f"  {r['sku_id']}:{r['region']}  投入 {r['launch_week']}  定常 {r['steady_lots_per_week']} lot／週"
                                    f"（立ち上がり {r['ramp_weeks']} 週 × {r['ramp_ratio']}）" for r in d["entry_plan"]]
         L += ["", "■ 計画の生産量（工場 × SKU）"] + \
-            [f"  {r['sku_id']} @ {r['node']}：max_supply {r['max_supply']}・cap_soft {r['cap_soft']}" for r in d["capacity"]]
+            [f"  {r['sku_id']} @ {r['node']}：{r['text']}" for r in d["capacity"]]
         L += ["", "■ 供給の方針"]
         p = d["policy"]
         L += ["  なし"] if not p else [f"  {p['short']}", f"  数量枠 {os.path.basename(p['allocation_file'] or '')}",
@@ -348,10 +348,11 @@ class CompareScreen(ttk.Frame):
         if self.cmp and self.cmp["available"]:
             self._heads_for_pair()
             skus = sorted({k[0] for k in self.cmp["supply"]["keys"]})
-            for cb in (self.supply_sku, self.factory_sku):
-                cb.configure(values=skus)
-                if cb.get() not in skus:
-                    cb.set(skus[0] if skus else "")
+            facs = [c["label"] for c in self.cmp["factory"]["choices"]]
+            for cb, vals in ((self.supply_sku, skus), (self.factory_sku, facs)):
+                cb.configure(values=vals)
+                if cb.get() not in vals:
+                    cb.set(vals[0] if vals else "")
             self._draw_summary()
             self._draw_supply()
             self._draw_factory()
@@ -400,7 +401,7 @@ class CompareScreen(ttk.Frame):
         if sd.empty:
             tv.insert("", "end", values=["供給の差なし"] + [""] * 7)
         for r in sd.itertuples():
-            tv.insert("", "end", values=[f"{r.sku_id}:{r.region}", f"{r.demand:+,}", f"{r.on_time:+,}", f"{r.early:+,}",
+            tv.insert("", "end", values=[V.key_text(sv, r.sku_id, r.region), f"{r.demand:+,}", f"{r.on_time:+,}", f"{r.early:+,}",
                                          f"{r.late:+,}", f"{r.unallocated:+,}", f"{r.backlog:+,}",
                                          f"{r.min_supply_exact_weeks:+,}"])
         sku = self.supply_sku.get()
@@ -431,7 +432,7 @@ class CompareScreen(ttk.Frame):
                 ax.plot(widx[r.request_week], keys.index((r.sku_id, r.region)), "o", ms=2.6,
                         mfc="#222" if r.cut_to_minimum else "none", mec="#222", mew=0.5)
             ax.set_yticks(range(len(keys)))
-            ax.set_yticklabels([k[1] for k in keys], fontsize=7)
+            ax.set_yticklabels([V.key_text(sv, *k).split(":", 1)[1] for k in keys], fontsize=7)
             step = max(1, len(weeks) // 12)
             ax.set_xticks(range(0, len(weeks), step))
             if j == 1:
@@ -446,7 +447,7 @@ class CompareScreen(ttk.Frame):
         tv = self.supply_totals
         tv.delete(*tv.get_children())
         for r in sv["totals"].itertuples():
-            tv.insert("", "end", values=[f"{'基準' if r.side == 'base' else '相手'} {r.case}", f"{r.sku_id}:{r.region}",
+            tv.insert("", "end", values=[f"{'基準' if r.side == 'base' else '相手'} {r.case}", V.key_text(sv, r.sku_id, r.region),
                                          r.demand, r.in_scope, r.unallocated if sv["allocation"] or r.unallocated else "—",
                                          r.on_time, r.early, r.late, r.backlog, r.min_supply_exact_weeks,
                                          r.cut_to_minimum_weeks])
@@ -455,8 +456,11 @@ class CompareScreen(ttk.Frame):
         if not (self.cmp and self.cmp["available"]):
             return
         fv = self.cmp["factory"]
-        sku = self.factory_sku.get()
+        ch = {c["label"]: c for c in fv["choices"]}.get(self.factory_sku.get(), {})
+        sku, fac = ch.get("sku", self.factory_sku.get()), ch.get("factory")
         fw = fv["weekly"]
+        if fac is not None and "factory" in fw.columns:
+            fw = fw[fw["factory"] == fac]
         labels = fv["labels"]
         fig = self.factory_fig
         fig.clear()
@@ -477,7 +481,9 @@ class CompareScreen(ttk.Frame):
         ax.set_xticks(x[::step])
         ax.set_xticklabels(labels[::step], fontsize=6)
         ax.set_ylabel("lot／週", fontsize=8)
-        ax.set_title(f"{sku}：工場の週別の良品の生産と計画の上限（灰色の帯 ＝ {V.EDGE_WEEKS_TEXT}）", fontsize=8, loc="left")
+        src = "エンジンの値" if fv.get("capacity_from_engine") else "capacity_plan.csv の値（エンジンの値ではない）"
+        ax.set_title(f"{self.factory_sku.get()}：工場の週別の良品の生産と計画の上限（{src}。灰色の帯 ＝ {V.EDGE_WEEKS_TEXT}）",
+                     fontsize=8, loc="left")
         ax.legend(fontsize=6, ncol=3, loc="lower center")
         fig.tight_layout()
         self.factory_canvas.draw_idle()
@@ -485,7 +491,8 @@ class CompareScreen(ttk.Frame):
             tv.delete(*tv.get_children())
         pw = fv["planned_output_weeks"]
         if len(pw):
-            for r in pw[pw["product"] == sku].itertuples():
+            sel = pw[(pw["product"] == sku) & ((pw["factory"] == fac) if fac is not None else True)]
+            for r in sel.itertuples():
                 who = "基準" if r.case == self.base else "相手"
                 if getattr(r, "row", "全体") == "値ごと":
                     who = f"　うち {r.planned_first_week}〜{r.planned_last_week}（{r.planned_weeks} 週）"
@@ -572,8 +579,14 @@ class CompareScreen(ttk.Frame):
     def do_set_launch_week(self, sku: str, region: str, week: str) -> A.Result:
         return self._need_selected() or self._report(A.set_launch_week(self.ws, self.selected, sku, region, week))
 
-    def do_set_planned_output(self, sku: str, node: Optional[str], value: str) -> A.Result:
-        return self._need_selected() or self._report(A.set_planned_output(self.ws, self.selected, sku, node, value))
+    def do_set_planned_output(self, sku: str, node: Optional[str], value: str, from_week: str = "",
+                              to_week: str = "") -> A.Result:
+        return self._need_selected() or self._report(
+            A.set_planned_output(self.ws, self.selected, sku, node, value, from_week, to_week))
+
+    def do_set_shifts(self, sku: str, node: str, value: str, from_week: str = "", to_week: str = "") -> A.Result:
+        return self._need_selected() or self._report(
+            A.set_shifts(self.ws, self.selected, sku, node, value, from_week, to_week))
 
     def do_set_policy(self, **kw) -> A.Result:
         return self._need_selected() or self._report(A.set_policy(self.ws, self.selected, **kw))
@@ -697,18 +710,55 @@ class CompareScreen(ttk.Frame):
         cb = ttk.Combobox(d, state="readonly", width=34,
                           values=[f"{r['sku_id']} @ {r['node']}（max_supply {r['max_supply']}）" for r in rows])
         cb.grid(row=0, column=1, padx=6)
-        ttk.Label(d, text="cap_soft（全期間で 1 つの値）").grid(row=1, column=0, padx=6, pady=4)
+        ttk.Label(d, text="cap_soft").grid(row=1, column=0, padx=6, pady=4)
         e = ttk.Entry(d, width=10)
         e.grid(row=1, column=1, sticky="w", padx=6)
         cb.bind("<<ComboboxSelected>>", lambda _e: (e.delete(0, "end"), e.insert(0, rows[cb.current()]["cap_soft_main"])))
+        fw_, tw_ = self._range_fields(d, 2)
 
         def ok():
             if cb.current() < 0:
                 return self._report(A.Result(False, "工場 × SKU を選ぶ"), refresh=False)
             r = rows[cb.current()]
-            if self.do_set_planned_output(r["sku_id"], r["node"], e.get()).ok:
+            if self.do_set_planned_output(r["sku_id"], r["node"], e.get(), fw_.get(), tw_.get()).ok:
                 d.destroy()
-        ttk.Button(d, text="変える", command=ok).grid(row=2, column=1, pady=6, sticky="e")
+        ttk.Button(d, text="変える", command=ok).grid(row=4, column=1, pady=6, sticky="e")
+
+    def _range_fields(self, d, row: int):
+        """始まり・終わり（両端を含む。両方空欄なら全週）。段 4 A5."""
+        ttk.Label(d, text="始まりの週（空欄＝全週）").grid(row=row, column=0, padx=6, pady=2, sticky="w")
+        a = ttk.Entry(d, width=10)
+        a.grid(row=row, column=1, sticky="w", padx=6)
+        ttk.Label(d, text="終わりの週（両端を含む）").grid(row=row + 1, column=0, padx=6, pady=2, sticky="w")
+        b = ttk.Entry(d, width=10)
+        b.grid(row=row + 1, column=1, sticky="w", padx=6)
+        return a, b
+
+    def _dlg_shifts(self):
+        if self._need_selected():
+            return
+        if not self._inputs.get("has_calendar"):
+            return self._report(A.Result(False, "このモデルには操業カレンダー（operating_calendar.csv）が無い。"
+                                                "計画の生産量は「生産量…」で変える"), refresh=False)
+        d = self._dialog(f"{self.selected}：シフトの数を変える（休業の週は変えない）")
+        rows = [r for r in self._inputs["capacity"] if r.get("calendar")]
+        ttk.Label(d, text="工場 × SKU").grid(row=0, column=0, padx=6, pady=4)
+        cb = ttk.Combobox(d, state="readonly", width=40,
+                          values=[f"{r['sku_id']} @ {r['node']}（今 {r['shifts']} シフト）" for r in rows])
+        cb.grid(row=0, column=1, padx=6)
+        ttk.Label(d, text=f"シフトの数（1〜{C.MAX_SHIFTS}）").grid(row=1, column=0, padx=6, pady=4)
+        e = ttk.Entry(d, width=10)
+        e.grid(row=1, column=1, sticky="w", padx=6)
+        cb.bind("<<ComboboxSelected>>", lambda _e: (e.delete(0, "end"), e.insert(0, rows[cb.current()]["shifts_main"])))
+        fw_, tw_ = self._range_fields(d, 2)
+
+        def ok():
+            if cb.current() < 0:
+                return self._report(A.Result(False, "工場 × SKU を選ぶ"), refresh=False)
+            r = rows[cb.current()]
+            if self.do_set_shifts(r["sku_id"], r["node"], e.get(), fw_.get(), tw_.get()).ok:
+                d.destroy()
+        ttk.Button(d, text="変える", command=ok).grid(row=4, column=1, pady=6, sticky="e")
 
     def _dlg_policy(self):
         if self._need_selected():
@@ -844,8 +894,9 @@ class CompareScreen(ttk.Frame):
             if c.get("kind") == "raised":
                 act = ("工場が上限ちょうど作った週は比べると出る" if c["at_cap"] is None
                        else f"そのうち工場が上限ちょうど作った週 {c['at_cap']}")
+                cl = f"、うち休業 {len(c['closed_inside'])} 週" if c.get("closed_inside") else ""
                 lb.insert("end", f"親より上げた週　{c['sku']} @ {c['factory']}（{c['cap']}）：{c['first']}〜{c['last']}　"
-                                 f"{c['span']} 週（報告期間 {c['in_report']}・外 {c['outside']}）、{act}")
+                                 f"{c['span']} 週（報告期間 {c['in_report']}・外 {c['outside']}{cl}）、{act}")
                 continue
             lb.insert("end", f"ちょうど作った週　{c['sku']} @ {c['factory']}（上限 {c['cap']}）：{c['first']}〜{c['last']}　"
                              f"{c['span']} 週（報告期間 {c['in_report']}・助走 {c['outside']}、途中で下回った週 {c['gaps']}）"

@@ -476,9 +476,17 @@ def load_operating_calendar(
 
     Returns
     -------
-    dict : {"applied": N, "node_not_found": M, "week_out_of_range": K}
+    dict : {"applied": N, "node_not_found": M, "week_out_of_range": K,
+            "cap_soft_overridden": J, "cap_soft_overridden_examples": [...]}
+
+    Stage 4 A4 (RequestLetter_Cockpit_Stage4_Shifts_RegionMap): when a week already
+    has a cap_soft from capacity_plan.csv and the calendar derives another value,
+    the calendar still wins (the calculation is unchanged), but the count and up to
+    5 examples (product, node, week, before, after) are returned and ONE warning
+    line is printed, so the overwrite is no longer silent.
     """
-    stats = {"applied": 0, "node_not_found": 0, "week_out_of_range": 0}
+    stats = {"applied": 0, "node_not_found": 0, "week_out_of_range": 0,
+             "cap_soft_overridden": 0, "cap_soft_overridden_examples": []}
 
     if cal_df is None or not {"sku_id", "node_name", "week", "shifts"}.issubset(set(cal_df.columns)):
         return stats
@@ -490,7 +498,8 @@ def load_operating_calendar(
             lut[(pn, nd.node_name)] = nd
 
     for _, row in cal_df.iterrows():
-        nd = lut.get((str(row["sku_id"]), str(row["node_name"])))
+        prod = str(row["sku_id"])
+        nd = lut.get((prod, str(row["node_name"])))
         if nd is None:
             stats["node_not_found"] += 1
             continue
@@ -514,9 +523,21 @@ def load_operating_calendar(
         if sh > 0:
             ch = nd.cap_hard(wi)
             if ch is not None:          # None = no physical ceiling: nothing to derive
-                nd.set_capacity(wi, cap_hard=ch,
-                                cap_soft=float(round(sh * ch / MAX_SHIFTS)))
+                new_soft = float(round(sh * ch / MAX_SHIFTS))
+                before = nd.cap_soft(wi)
+                if before is not None:      # capacity_plan.csv gave a value: the calendar overwrites it
+                    stats["cap_soft_overridden"] += 1
+                    if len(stats["cap_soft_overridden_examples"]) < 5:
+                        stats["cap_soft_overridden_examples"].append(
+                            {"product": prod, "node": nd.node_name, "week": str(row["week"]),
+                             "before": before, "after": new_soft})
+                nd.set_capacity(wi, cap_hard=ch, cap_soft=new_soft)
 
         stats["applied"] += 1
 
+    if stats["cap_soft_overridden"]:
+        ex = stats["cap_soft_overridden_examples"][0]
+        print(f"[operating_calendar] 警告：capacity_plan.csv の cap_soft を操業カレンダーのシフトで "
+              f"{stats['cap_soft_overridden']} 週上書きしました（例 {ex['product']}・{ex['node']}・{ex['week']}："
+              f"{ex['before']:g} → {ex['after']:g}）。計画の生産量はシフトの数で決まります", flush=True)
     return stats
