@@ -168,13 +168,15 @@ class CompareScreen(ttk.Frame):
             t.column(col, width=max(t.column(col, "width"), 11 * len(text)))
 
     def _build_supply_tab(self):
-        bar = ttk.Frame(self.tab_supply)
+        sc, area = self._scroll_area(self.tab_supply)          # 到達点 6: the totals table stays reachable
+        self.supply_scroll = sc
+        bar = ttk.Frame(area)
         bar.pack(fill="x")
         self.diff_label = ttk.Label(bar, text="差（相手 − 基準）", font=("Yu Gothic UI", 9, "bold"))
         self.diff_label.pack(side="left")
-        self.supply_diff = self._table(self.tab_supply, ["鍵", "需要", "当週", "早出し", "遅配", "未配分", "配分後の未充足",
+        self.supply_diff = self._table(area, ["鍵", "需要", "当週", "早出し", "遅配", "未配分", "配分後の未充足",
                                                          "最低ちょうどの週"], height=3)
-        bar2 = ttk.Frame(self.tab_supply)
+        bar2 = ttk.Frame(area)
         bar2.pack(fill="x")
         ttk.Label(bar2, text="SKU:").pack(side="left")
         self.supply_sku = ttk.Combobox(bar2, state="readonly", width=16)
@@ -182,11 +184,13 @@ class CompareScreen(ttk.Frame):
         self.supply_sku.bind("<<ComboboxSelected>>", lambda e: self._draw_supply())
         ttk.Label(bar2, text="  ● ＝ 最低供給量ちょうど（削って最低）  ○ ＝ 需要が最低供給量と同じ").pack(side="left")
         self.supply_fig = Figure(figsize=(9, 2.8), dpi=90)
-        self.supply_canvas = FigureCanvasTkAgg(self.supply_fig, self.tab_supply)
-        self.supply_canvas.get_tk_widget().pack(fill="both", expand=True)
-        self.supply_totals = self._table(self.tab_supply, ["案", "鍵", "需要", "供給の対象", "未配分（③）", "当週",
-                                                           "早出し", "遅配", "配分後の未充足（⑤）", "最低ちょうどの週",
-                                                           "うち削って最低"], height=6)
+        self.supply_canvas = FigureCanvasTkAgg(self.supply_fig, area)
+        self.supply_canvas.get_tk_widget().configure(height=252)
+        self.supply_canvas.get_tk_widget().pack(fill="x")
+        self.supply_totals = self._table(area, ["案", "鍵", "需要", "供給の対象", "未配分（③）", "当週",
+                                                           "早出し", "遅配", "配分後の未充足（⑤）", "②÷①（配分の規則）",
+                                                           "④÷①（納品の結果）", "④÷②", "最低ちょうどの週",
+                                                           "うち削って最低"], height=12)
 
     def _build_factory_tab(self):
         bar = ttk.Frame(self.tab_factory)
@@ -207,23 +211,29 @@ class CompareScreen(ttk.Frame):
         self._heads(self.factory_inv, {"inv_b": "在庫 lot・週 基準", "inv_a": "在庫 lot・週 相手", "max_b": "最大 基準",
                                        "max_a": "最大 相手", "end_b": "期末 基準", "end_a": "期末 相手"})
 
-    def _build_money_tab(self):
-        # 控除後の依頼: the tab scrolls up and down (chart of a fixed height, then the tables), so a short window
-        # squeezes nothing; each table still scrolls sideways
-        sc = tk.Canvas(self.tab_money, highlightthickness=0)
-        vs = ttk.Scrollbar(self.tab_money, orient="vertical", command=sc.yview)
+    @staticmethod
+    def _scroll_area(tab):
+        """A frame inside `tab` that scrolls up and down (控除後の依頼・到達点 6): a chart of a fixed height and the
+        tables below it, so a short window squeezes nothing; each table still scrolls sideways.
+        Returns (canvas, inner frame)."""
+        sc = tk.Canvas(tab, highlightthickness=0)
+        vs = ttk.Scrollbar(tab, orient="vertical", command=sc.yview)
         sc.configure(yscrollcommand=vs.set)
         vs.pack(side="right", fill="y")
         sc.pack(side="left", fill="both", expand=True)
-        low = ttk.Frame(sc)
-        win = sc.create_window((0, 0), window=low, anchor="nw")
-        low.bind("<Configure>", lambda _e: sc.configure(scrollregion=sc.bbox("all")))
+        inner = ttk.Frame(sc)
+        win = sc.create_window((0, 0), window=inner, anchor="nw")
+        inner.bind("<Configure>", lambda _e: sc.configure(scrollregion=sc.bbox("all")))
         sc.bind("<Configure>", lambda e: sc.itemconfigure(win, width=e.width))
 
         def wheel(e):
             sc.yview_scroll(int(-e.delta / 120), "units")
         sc.bind("<Enter>", lambda _e: sc.bind_all("<MouseWheel>", wheel))
         sc.bind("<Leave>", lambda _e: sc.unbind_all("<MouseWheel>"))
+        return sc, inner
+
+    def _build_money_tab(self):
+        sc, low = self._scroll_area(self.tab_money)
         self.money_scroll = sc
         self.money_fig = Figure(figsize=(9, 2.0), dpi=90)
         self.money_canvas = FigureCanvasTkAgg(self.money_fig, low)
@@ -520,8 +530,8 @@ class CompareScreen(ttk.Frame):
         for r in sv["totals"].itertuples():
             tv.insert("", "end", values=[f"{'基準' if r.side == 'base' else '相手'} {r.case}", V.key_text(sv, r.sku_id, r.region),
                                          r.demand, r.in_scope, r.unallocated if sv["allocation"] or r.unallocated else "—",
-                                         r.on_time, r.early, r.late, r.backlog, r.min_supply_exact_weeks,
-                                         r.cut_to_minimum_weeks])
+                                         r.on_time, r.early, r.late, r.backlog, V.fmt_pct(r.r21), V.fmt_pct(r.r41),
+                                         V.fmt_pct(r.r42), r.min_supply_exact_weeks, r.cut_to_minimum_weeks])
 
     def _draw_factory(self):
         if not (self.cmp and self.cmp["available"]):

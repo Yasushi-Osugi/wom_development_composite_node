@@ -1,0 +1,13 @@
+case,sku_id,region,demand,on_time,early,late,backlog_end,demand_flow_check,on_time_flow_check,early_flow_check,late_flow_check,backlog_end_flow_check,flow_check_match
+C03,Soy_Sauce,BE,8261,8179,0,0,82,8261,8179,0,0,82,True
+C03,Soy_Sauce,FR,12391,12300,0,0,91,12391,12300,0,0,91,True
+C03,Soy_Sauce,JP,30150,30150,0,0,0,30150,30150,0,0,0,True
+C03,Soy_Sauce,NL,8261,7803,0,0,458,8261,7803,0,0,458,True
+C03,Soy_Sauce,US_E,14456,14456,0,0,0,14456,14456,0,0,0,True
+C03,Soy_Sauce,US_W,14456,14456,0,0,0,14456,14456,0,0,0,True
+C05,Soy_Sauce,BE,8261,8179,0,0,82,8261,8179,0,0,82,True
+C05,Soy_Sauce,FR,12391,12288,0,0,103,12391,12288,0,0,103,True
+C05,Soy_Sauce,JP,30150,30150,0,0,0,30150,30150,0,0,0,True
+C05,Soy_Sauce,NL,8261,7814,0,0,447,8261,7814,0,0,447,True
+C05,Soy_Sauce,US_E,14456,14456,0,0,0,14456,14456,0,0,0,True
+C05,Soy_Sauce,US_W,14456,14456,0,0,0,14456,14456,0,0,0,True

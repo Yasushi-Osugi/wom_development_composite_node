@@ -535,3 +535,30 @@ def test_inputs_pane_keeps_its_minimum_width(ws):
         assert s.inputs_width() >= V.MIN_INPUTS_WIDTH
     finally:
         root.destroy()
+
+
+# ── 到達点 6 A3：配分の規則（②÷①）と納品の結果（④÷①・④÷②）を分けて ─────────────────────
+def test_supply_ratios_and_the_rule_result_sentence(ws):
+    c = V.comparison(ws, "C01", "C02")
+    t = c["supply"]["totals"].set_index(["side", "region"])
+    # base: X 6 demand, 3 on time + 3 late; Y 6 demand, 3 on time, 3 backlog; alt: all on time
+    assert (t.loc[("base", "X"), "r21"], t.loc[("base", "X"), "r41"], t.loc[("base", "X"), "r42"]) == (1.0, 1.0, 1.0)
+    assert (t.loc[("base", "Y"), "r41"], t.loc[("base", "Y"), "r42"]) == (0.5, 0.5)
+    assert V.fmt_pct(0.8219) == "82.2%" and V.fmt_pct(None) == "—"
+    text = [p for p in c["summary"] if p["title"] == "供給"][0]["text"]
+    assert "配分の規則（② ÷ ①）：基準 C01 は配分なし（② ＝ ①）、相手 C02 は配分なし（② ＝ ①）" in text
+    assert "納品の結果（④ ÷ ①）：基準 C01 は 50.0%（PA:Y）〜100.0%（PA:X）" in text
+    assert "結果の達否は未判定（許容の幅が未決）" in text
+
+
+def test_rule_sentence_with_an_allocation():
+    sv = {"labels": {}, "totals": pd.DataFrame([
+        {"case": c, "side": s, "sku_id": "S", "region": r, "demand": q1, "in_scope": q2, "unallocated": q1 - q2,
+         "on_time": d, "early": 0, "late": 0, "backlog": q2 - d, "r21": q2 / q1, "r41": d / q1, "r42": d / q2}
+        for c, s in (("C02", "base"), ("C03", "alt")) for r, q1, q2, d in (("JP", 100, 100, 98), ("BE", 100, 82, 80))
+        if not (s == "base" and q2 != q1)] + [
+        {"case": "C02", "side": "base", "sku_id": "S", "region": "BE", "demand": 100, "in_scope": 100, "unallocated": 0,
+         "on_time": 43, "early": 0, "late": 0, "backlog": 57, "r21": 1.0, "r41": 0.43, "r42": 0.43}])}
+    s = V.rule_and_result(sv, "C02", "C03")
+    assert "相手 C03 は 82.0%〜100.0%（100% は S:JP）" in s and "基準 C02 は配分なし" in s
+    assert "基準 C02 は 43.0%（S:BE）〜98.0%（S:JP）" in s

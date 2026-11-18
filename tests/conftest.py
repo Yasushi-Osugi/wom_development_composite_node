@@ -106,6 +106,8 @@ AREAS = {
     "test_cockpit_compare_view_model.py": ("allocation", "gui"),
     "test_cockpit_case_actions.py": ("allocation", "gui"),
     "test_cockpit_after_cost.py": ("allocation", "gui"),
+    "test_allocation_equal_quota.py": ("allocation",),
+    "test_period_fulfillment.py": ("allocation",),
     # lovem
     "test_lovem_interval_check.py": ("lovem",),
     "test_lovem_intervals.py": ("lovem",),

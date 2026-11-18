@@ -1,0 +1,4219 @@
+[
+ {
+  "week": "2026-W40",
+  "sp_lots": 65,
+  "sp_region_runs": [
+   [
+    "US_E",
+    22
+   ],
+   [
+    "FR",
+    19
+   ],
+   [
+    "BE",
+    12
+   ],
+   [
+    "NL",
+    12
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 28640,
+  "overflow_regions": {
+   "FR": 9690,
+   "BE": 8500,
+   "NL": 8500,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W41",
+  "sp_lots": 154,
+  "sp_region_runs": [
+   [
+    "US_W",
+    22
+   ],
+   [
+    "US_E",
+    44
+   ],
+   [
+    "FR",
+    38
+   ],
+   [
+    "BE",
+    25
+   ],
+   [
+    "NL",
+    25
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 29261,
+  "overflow_regions": {
+   "BE": 8699,
+   "NL": 8700,
+   "FR": 9912,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W42",
+  "sp_lots": 242,
+  "sp_region_runs": [
+   [
+    "US_W",
+    44
+   ],
+   [
+    "US_E",
+    66
+   ],
+   [
+    "FR",
+    56
+   ],
+   [
+    "BE",
+    38
+   ],
+   [
+    "NL",
+    38
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 29793,
+  "overflow_regions": {
+   "BE": 8803,
+   "NL": 8900,
+   "FR": 10140,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W43",
+  "sp_lots": 329,
+  "sp_region_runs": [
+   [
+    "US_W",
+    66
+   ],
+   [
+    "US_E",
+    88
+   ],
+   [
+    "FR",
+    75
+   ],
+   [
+    "BE",
+    50
+   ],
+   [
+    "NL",
+    50
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 30237,
+  "overflow_regions": {
+   "FR": 10287,
+   "BE": 9000,
+   "NL": 9000,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W44",
+  "sp_lots": 415,
+  "sp_region_runs": [
+   [
+    "US_W",
+    88
+   ],
+   [
+    "US_E",
+    109
+   ],
+   [
+    "FR",
+    94
+   ],
+   [
+    "BE",
+    62
+   ],
+   [
+    "NL",
+    62
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 30594,
+  "overflow_regions": {
+   "NL": 9175,
+   "FR": 10369,
+   "BE": 9100,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W45",
+  "sp_lots": 502,
+  "sp_region_runs": [
+   [
+    "US_W",
+    109
+   ],
+   [
+    "US_E",
+    131
+   ],
+   [
+    "FR",
+    112
+   ],
+   [
+    "BE",
+    75
+   ],
+   [
+    "NL",
+    75
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 30865,
+  "overflow_regions": {
+   "BE": 9244,
+   "NL": 9300,
+   "FR": 10371,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W46",
+  "sp_lots": 591,
+  "sp_region_runs": [
+   [
+    "US_W",
+    131
+   ],
+   [
+    "US_E",
+    153
+   ],
+   [
+    "FR",
+    131
+   ],
+   [
+    "BE",
+    88
+   ],
+   [
+    "NL",
+    88
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 31049,
+  "overflow_regions": {
+   "NL": 9438,
+   "BE": 9290,
+   "FR": 10371,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W47",
+  "sp_lots": 678,
+  "sp_region_runs": [
+   [
+    "US_W",
+    153
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 31144,
+  "overflow_regions": {
+   "NL": 9533,
+   "BE": 9290,
+   "FR": 10371,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W48",
+  "sp_lots": 738,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    38
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 31152,
+  "overflow_regions": {
+   "NL": 9541,
+   "BE": 9290,
+   "FR": 10371,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W49",
+  "sp_lots": 775,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    75
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 31100,
+  "overflow_regions": {
+   "NL": 9489,
+   "BE": 9290,
+   "FR": 10371,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W50",
+  "sp_lots": 812,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    112
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 31011,
+  "overflow_regions": {
+   "BE": 9290,
+   "NL": 9400,
+   "FR": 10371,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W51",
+  "sp_lots": 850,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    150
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 30885,
+  "overflow_regions": {
+   "BE": 9264,
+   "NL": 9300,
+   "FR": 10371,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W52",
+  "sp_lots": 888,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    188
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 30721,
+  "overflow_regions": {
+   "FR": 10371,
+   "BE": 9200,
+   "NL": 9200,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2026-W53",
+  "sp_lots": 925,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    225
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 30519,
+  "overflow_regions": {
+   "FR": 10369,
+   "BE": 9100,
+   "NL": 9100,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W01",
+  "sp_lots": 962,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    262
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 30280,
+  "overflow_regions": {
+   "FR": 10330,
+   "BE": 9000,
+   "NL": 9000,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W02",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 30004,
+  "overflow_regions": {
+   "FR": 10254,
+   "BE": 8900,
+   "NL": 8900,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W03",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 29690,
+  "overflow_regions": {
+   "FR": 10140,
+   "BE": 8800,
+   "NL": 8800,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W04",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 29376,
+  "overflow_regions": {
+   "FR": 10026,
+   "BE": 8700,
+   "NL": 8700,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W05",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 29062,
+  "overflow_regions": {
+   "FR": 9912,
+   "BE": 8600,
+   "NL": 8600,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W06",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 28748,
+  "overflow_regions": {
+   "FR": 9798,
+   "BE": 8500,
+   "NL": 8500,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W07",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 28434,
+  "overflow_regions": {
+   "FR": 9684,
+   "BE": 8400,
+   "NL": 8400,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W08",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 28120,
+  "overflow_regions": {
+   "FR": 9570,
+   "BE": 8300,
+   "NL": 8300,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W09",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 27806,
+  "overflow_regions": {
+   "FR": 9456,
+   "BE": 8200,
+   "NL": 8200,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W10",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 27492,
+  "overflow_regions": {
+   "FR": 9342,
+   "BE": 8100,
+   "NL": 8100,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W11",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 27178,
+  "overflow_regions": {
+   "FR": 9228,
+   "BE": 8000,
+   "NL": 8000,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W12",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 26864,
+  "overflow_regions": {
+   "FR": 9114,
+   "BE": 7900,
+   "NL": 7900,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W13",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 26550,
+  "overflow_regions": {
+   "FR": 9000,
+   "BE": 7800,
+   "NL": 7800,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W14",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 26236,
+  "overflow_regions": {
+   "FR": 8886,
+   "BE": 7700,
+   "NL": 7700,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W15",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 25922,
+  "overflow_regions": {
+   "FR": 8772,
+   "BE": 7600,
+   "NL": 7600,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W16",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 25608,
+  "overflow_regions": {
+   "FR": 8658,
+   "BE": 7500,
+   "NL": 7500,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W17",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 25294,
+  "overflow_regions": {
+   "FR": 8544,
+   "BE": 7400,
+   "NL": 7400,
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900
+  }
+ },
+ {
+  "week": "2027-W18",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 0,
+  "bottling_overflow_CO": 24980,
+  "overflow_regions": {
+   "US_W": 525,
+   "US_E": 525,
+   "JP": 900,
+   "FR": 8430,
+   "BE": 7300,
+   "NL": 7300
+  }
+ },
+ {
+  "week": "2027-W19",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 23980,
+  "overflow_regions": {
+   "FR": 8280,
+   "BE": 7200,
+   "NL": 7200,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W20",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 23666,
+  "overflow_regions": {
+   "FR": 8166,
+   "BE": 7100,
+   "NL": 7100,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W21",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 23352,
+  "overflow_regions": {
+   "FR": 8052,
+   "BE": 7000,
+   "NL": 7000,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W22",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 23038,
+  "overflow_regions": {
+   "FR": 7938,
+   "BE": 6900,
+   "NL": 6900,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W23",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 22724,
+  "overflow_regions": {
+   "FR": 7824,
+   "BE": 6800,
+   "NL": 6800,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W24",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 22410,
+  "overflow_regions": {
+   "FR": 7710,
+   "BE": 6700,
+   "NL": 6700,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W25",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 22096,
+  "overflow_regions": {
+   "FR": 7596,
+   "BE": 6600,
+   "NL": 6600,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W26",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 21782,
+  "overflow_regions": {
+   "FR": 7482,
+   "BE": 6500,
+   "NL": 6500,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W27",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 21468,
+  "overflow_regions": {
+   "FR": 7368,
+   "BE": 6400,
+   "NL": 6400,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W28",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 21154,
+  "overflow_regions": {
+   "FR": 7254,
+   "BE": 6300,
+   "NL": 6300,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W29",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 20840,
+  "overflow_regions": {
+   "FR": 7140,
+   "BE": 6200,
+   "NL": 6200,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W30",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 20526,
+  "overflow_regions": {
+   "FR": 7026,
+   "BE": 6100,
+   "NL": 6100,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W31",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 20212,
+  "overflow_regions": {
+   "FR": 6912,
+   "BE": 6000,
+   "NL": 6000,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W32",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 19898,
+  "overflow_regions": {
+   "FR": 6798,
+   "BE": 5900,
+   "NL": 5900,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W33",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 19584,
+  "overflow_regions": {
+   "FR": 6684,
+   "BE": 5800,
+   "NL": 5800,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W34",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 19270,
+  "overflow_regions": {
+   "FR": 6570,
+   "BE": 5700,
+   "NL": 5700,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W35",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 18956,
+  "overflow_regions": {
+   "FR": 6456,
+   "BE": 5600,
+   "NL": 5600,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W36",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 18642,
+  "overflow_regions": {
+   "FR": 6342,
+   "BE": 5500,
+   "NL": 5500,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W37",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 18328,
+  "overflow_regions": {
+   "FR": 6228,
+   "BE": 5400,
+   "NL": 5400,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W38",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 18014,
+  "overflow_regions": {
+   "FR": 6114,
+   "BE": 5300,
+   "NL": 5300,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W39",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 17700,
+  "overflow_regions": {
+   "FR": 6000,
+   "BE": 5200,
+   "NL": 5200,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W40",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 17386,
+  "overflow_regions": {
+   "FR": 5886,
+   "BE": 5100,
+   "NL": 5100,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W41",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 17072,
+  "overflow_regions": {
+   "FR": 5772,
+   "BE": 5000,
+   "NL": 5000,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W42",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 16758,
+  "overflow_regions": {
+   "FR": 5658,
+   "BE": 4900,
+   "NL": 4900,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W43",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 16444,
+  "overflow_regions": {
+   "FR": 5544,
+   "BE": 4800,
+   "NL": 4800,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W44",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 16130,
+  "overflow_regions": {
+   "FR": 5430,
+   "BE": 4700,
+   "NL": 4700,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W45",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 15816,
+  "overflow_regions": {
+   "FR": 5316,
+   "BE": 4600,
+   "NL": 4600,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W46",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 15502,
+  "overflow_regions": {
+   "FR": 5202,
+   "BE": 4500,
+   "NL": 4500,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W47",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 15188,
+  "overflow_regions": {
+   "FR": 5088,
+   "BE": 4400,
+   "NL": 4400,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W48",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 14874,
+  "overflow_regions": {
+   "FR": 4974,
+   "BE": 4300,
+   "NL": 4300,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W49",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 14560,
+  "overflow_regions": {
+   "FR": 4860,
+   "BE": 4200,
+   "NL": 4200,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W50",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 14246,
+  "overflow_regions": {
+   "FR": 4746,
+   "BE": 4100,
+   "NL": 4100,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W51",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 13932,
+  "overflow_regions": {
+   "FR": 4632,
+   "BE": 4000,
+   "NL": 4000,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2027-W52",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 13618,
+  "overflow_regions": {
+   "FR": 4518,
+   "BE": 3900,
+   "NL": 3900,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W01",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 13304,
+  "overflow_regions": {
+   "FR": 4404,
+   "BE": 3800,
+   "NL": 3800,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W02",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 12990,
+  "overflow_regions": {
+   "FR": 4290,
+   "BE": 3700,
+   "NL": 3700,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W03",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 12676,
+  "overflow_regions": {
+   "FR": 4176,
+   "BE": 3600,
+   "NL": 3600,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W04",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 12362,
+  "overflow_regions": {
+   "FR": 4062,
+   "BE": 3500,
+   "NL": 3500,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W05",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 12048,
+  "overflow_regions": {
+   "FR": 3948,
+   "BE": 3400,
+   "NL": 3400,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W06",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 11734,
+  "overflow_regions": {
+   "FR": 3834,
+   "BE": 3300,
+   "NL": 3300,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W07",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 11420,
+  "overflow_regions": {
+   "FR": 3720,
+   "BE": 3200,
+   "NL": 3200,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W08",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 11106,
+  "overflow_regions": {
+   "FR": 3606,
+   "BE": 3100,
+   "NL": 3100,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W09",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 10792,
+  "overflow_regions": {
+   "FR": 3492,
+   "BE": 3000,
+   "NL": 3000,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W10",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 10478,
+  "overflow_regions": {
+   "FR": 3378,
+   "BE": 2900,
+   "NL": 2900,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W11",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 10164,
+  "overflow_regions": {
+   "FR": 3264,
+   "BE": 2800,
+   "NL": 2800,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W12",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 9850,
+  "overflow_regions": {
+   "FR": 3150,
+   "BE": 2700,
+   "NL": 2700,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W13",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 9536,
+  "overflow_regions": {
+   "FR": 3036,
+   "BE": 2600,
+   "NL": 2600,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W14",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 9222,
+  "overflow_regions": {
+   "FR": 2922,
+   "BE": 2500,
+   "NL": 2500,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W15",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 8908,
+  "overflow_regions": {
+   "FR": 2808,
+   "BE": 2400,
+   "NL": 2400,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W16",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 8594,
+  "overflow_regions": {
+   "FR": 2694,
+   "BE": 2300,
+   "NL": 2300,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W17",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 8280,
+  "overflow_regions": {
+   "FR": 2580,
+   "BE": 2200,
+   "NL": 2200,
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600
+  }
+ },
+ {
+  "week": "2028-W18",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 0,
+  "bottling_overflow_CO": 7966,
+  "overflow_regions": {
+   "US_W": 350,
+   "US_E": 350,
+   "JP": 600,
+   "FR": 2466,
+   "BE": 2100,
+   "NL": 2100
+  }
+ },
+ {
+  "week": "2028-W19",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 6966,
+  "overflow_regions": {
+   "FR": 2316,
+   "BE": 2000,
+   "NL": 2000,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W20",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 6652,
+  "overflow_regions": {
+   "FR": 2202,
+   "BE": 1900,
+   "NL": 1900,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W21",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 6338,
+  "overflow_regions": {
+   "FR": 2088,
+   "BE": 1800,
+   "NL": 1800,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W22",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 6024,
+  "overflow_regions": {
+   "FR": 1974,
+   "BE": 1700,
+   "NL": 1700,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W23",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 5710,
+  "overflow_regions": {
+   "FR": 1860,
+   "BE": 1600,
+   "NL": 1600,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W24",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 5396,
+  "overflow_regions": {
+   "FR": 1746,
+   "BE": 1500,
+   "NL": 1500,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W25",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 5082,
+  "overflow_regions": {
+   "FR": 1632,
+   "BE": 1400,
+   "NL": 1400,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W26",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 4768,
+  "overflow_regions": {
+   "FR": 1518,
+   "BE": 1300,
+   "NL": 1300,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W27",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 4454,
+  "overflow_regions": {
+   "FR": 1404,
+   "BE": 1200,
+   "NL": 1200,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W28",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 4140,
+  "overflow_regions": {
+   "FR": 1290,
+   "BE": 1100,
+   "NL": 1100,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W29",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 3826,
+  "overflow_regions": {
+   "FR": 1176,
+   "BE": 1000,
+   "NL": 1000,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W30",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 3512,
+  "overflow_regions": {
+   "FR": 1062,
+   "BE": 900,
+   "NL": 900,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W31",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 3198,
+  "overflow_regions": {
+   "FR": 948,
+   "BE": 800,
+   "NL": 800,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W32",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 2884,
+  "overflow_regions": {
+   "FR": 834,
+   "BE": 700,
+   "NL": 700,
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300
+  }
+ },
+ {
+  "week": "2028-W33",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 0,
+  "bottling_overflow_CO": 2570,
+  "overflow_regions": {
+   "US_W": 175,
+   "US_E": 175,
+   "JP": 300,
+   "FR": 720,
+   "BE": 600,
+   "NL": 600
+  }
+ },
+ {
+  "week": "2028-W34",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 1570,
+  "overflow_regions": {
+   "FR": 570,
+   "BE": 500,
+   "NL": 500
+  }
+ },
+ {
+  "week": "2028-W35",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 1256,
+  "overflow_regions": {
+   "FR": 456,
+   "BE": 400,
+   "NL": 400
+  }
+ },
+ {
+  "week": "2028-W36",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 942,
+  "overflow_regions": {
+   "FR": 342,
+   "BE": 300,
+   "NL": 300
+  }
+ },
+ {
+  "week": "2028-W37",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 628,
+  "overflow_regions": {
+   "FR": 228,
+   "BE": 200,
+   "NL": 200
+  }
+ },
+ {
+  "week": "2028-W38",
+  "sp_lots": 1000,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "US_E",
+    175
+   ],
+   [
+    "JP",
+    300
+   ],
+   [
+    "FR",
+    150
+   ],
+   [
+    "BE",
+    100
+   ],
+   [
+    "NL",
+    100
+   ]
+  ],
+  "bottling_kept": 686,
+  "bottling_overflow_CO": 314,
+  "overflow_regions": {
+   "FR": 114,
+   "BE": 100,
+   "NL": 100
+  }
+ },
+ {
+  "week": "2028-W39",
+  "sp_lots": 475,
+  "sp_region_runs": [
+   [
+    "US_W",
+    175
+   ],
+   [
+    "JP",
+    300
+   ]
+  ],
+  "bottling_kept": 475,
+  "bottling_overflow_CO": 0,
+  "overflow_regions": {}
+ },
+ {
+  "week": "2028-W40",
+  "sp_lots": 300,
+  "sp_region_runs": [
+   [
+    "JP",
+    300
+   ]
+  ],
+  "bottling_kept": 300,
+  "bottling_overflow_CO": 0,
+  "overflow_regions": {}
+ },
+ {
+  "week": "2028-W41",
+  "sp_lots": 300,
+  "sp_region_runs": [
+   [
+    "JP",
+    300
+   ]
+  ],
+  "bottling_kept": 300,
+  "bottling_overflow_CO": 0,
+  "overflow_regions": {}
+ },
+ {
+  "week": "2028-W42",
+  "sp_lots": 300,
+  "sp_region_runs": [
+   [
+    "JP",
+    300
+   ]
+  ],
+  "bottling_kept": 300,
+  "bottling_overflow_CO": 0,
+  "overflow_regions": {}
+ },
+ {
+  "week": "2028-W43",
+  "sp_lots": 300,
+  "sp_region_runs": [
+   [
+    "JP",
+    300
+   ]
+  ],
+  "bottling_kept": 300,
+  "bottling_overflow_CO": 0,
+  "overflow_regions": {}
+ },
+ {
+  "week": "2028-W44",
+  "sp_lots": 300,
+  "sp_region_runs": [
+   [
+    "JP",
+    300
+   ]
+  ],
+  "bottling_kept": 300,
+  "bottling_overflow_CO": 0,
+  "overflow_regions": {}
+ },
+ {
+  "week": "2028-W45",
+  "sp_lots": 300,
+  "sp_region_runs": [
+   [
+    "JP",
+    300
+   ]
+  ],
+  "bottling_kept": 300,
+  "bottling_overflow_CO": 0,
+  "overflow_regions": {}
+ },
+ {
+  "week": "2028-W46",
+  "sp_lots": 300,
+  "sp_region_runs": [
+   [
+    "JP",
+    300
+   ]
+  ],
+  "bottling_kept": 300,
+  "bottling_overflow_CO": 0,
+  "overflow_regions": {}
+ }
+]

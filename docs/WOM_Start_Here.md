@@ -142,6 +142,7 @@ OutBound（売る側）:                         dad（DC・倉庫） → leaf_o
 11. 実在の企業・団体・製品の名前をサンプルや文書に書く → 公開のリポジトリなので一般名（`EMS_A`、`Retailer_A` など）にする。`tests/test_no_real_names.py` が止める。元の名前との対応表はリポジトリに入れない。
 12. **計画の両端で能力が使えない**（化粧品の配分の試行 P1、`docs/development/WOM_BSSEAF_Cosmetics_AllocationP0P1_Report.md` §4）→ 需要の合計を能力の合計にそろえても、期末の注文残が残ることがある。(a) **最初の週**：Backward は計画の最初の週にも能力があるとして押し戻しの最後尾を置くが、原料の区間（InBound のリードタイム）があると Forward はその週に作れず、注文残になる。Backward・Forward・Flow Check のどの記録にも「置いたが作れない」とは出ない（lot を追跡して初めて分かった）。(b) **最後の週**：店頭在庫（`ss_days`）などで早く作る分があると、最後の数週の工場の余裕を埋める需要が無い（押し戻しは前の週にしか動かない）。実際に使える能力は合計より少し小さい（P1：美容液 2,184 → 2,182）。この量は計画の境界の効果で、業務の欠品と読まない（Owner、2026-10-26）。Backward の扱いは保護対象コアの話で、今は記録だけ
 13. **選んだ週に届くとは限らない**（化粧品 U4、`docs/development/WOM_BSSEAF_Cosmetics_UpperDemandPlan_U4_Report.md` §5）→ 上位で「早い週を残し遠い週を外す」と選んでも、外した遠い週の能力は前の週の需要に使えず余り、能力の足りない区間で押し戻された lot が、残したはずの週で届かない（A1：未充足 119 lot がタイの 2029 年の春〜秋に出た）。どの lot が押し戻されるかは lot の並びの順で決まり、選んだ規則や優先は見ない（`bridge_backward()` の `market_priority` は使われていない置き場）。減らす週は、能力が足りなくなる区間に合わせて選ぶ：`trim_to_capacity_latest` は外す量を各週の能力を超える分に限り、同じ外す量で未充足 0・選んだ全部が当週に届いた（`docs/development/WOM_BSSEAF_Cosmetics_CapacityAwareWeekRule_U4_Report.md`）
+14. **配分をしない計画で、どの市場が欠けるかは木の CSV の行の順で決まる**（醤油 M6 の R0、`docs/development/WOM_M6_R0_R1_GlobalAllocation_Report.md` §3）→ Backward は工場の週の lot を木の子の順（`sc_tree_master.csv` の行の順）に並べ、能力を超えた並びの末尾を前の週へ押し戻すので、最後に並ぶ市場が欠ける（21 シフト：ベルギー・オランダが約 43%、ほかは約 98%）。行の順を入れ替えた写しでは、総納品は同じ 87,375 lot のまま不足が日本に移った。配分をしない案の市場別の欠け方を業務の判断として読まない（13 と同じ仕組み）。直すかは未決（保護対象のコア）
 
 ### 4.4 確かめ方
 

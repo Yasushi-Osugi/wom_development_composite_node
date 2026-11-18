@@ -436,13 +436,46 @@ def supply_view(ws: str, base: str, alt: str) -> dict:
             cells.append(x)
     cdf = pd.DataFrame(cells)
     for (cid, side, sku, reg), g in cdf.groupby(["case", "side", "sku_id", "region"], sort=False):
-        totals.append({"case": cid, "side": side, "sku_id": sku, "region": reg,
-                       **{k: int(g[k].sum()) for k in SUPPLY_KEYS},
+        t = {k: int(g[k].sum()) for k in SUPPLY_KEYS}
+        dl = t["on_time"] + t["early"] + t["late"]
+        totals.append({"case": cid, "side": side, "sku_id": sku, "region": reg, **t,
                        "min_supply_exact_weeks": int(g["min_supply_exact"].sum()),
-                       "cut_to_minimum_weeks": int(g["cut_to_minimum"].sum())})
+                       "cut_to_minimum_weeks": int(g["cut_to_minimum"].sum()),
+                       # 到達点 6 A3: the allocation rule (② ÷ ①) and the delivery result (④ ÷ ①, ④ ÷ ②) apart
+                       "r21": t["in_scope"] / t["demand"] if t["demand"] else None,
+                       "r41": dl / t["demand"] if t["demand"] else None,
+                       "r42": dl / t["in_scope"] if t["in_scope"] else None})
     return {"allocation": allocation, "cells": cdf, "totals": pd.DataFrame(totals),
             "weeks": list(dict.fromkeys(s["request_week"])),
             "keys": list(dict.fromkeys(zip(s["sku_id"], s["region"]))), "labels": market_labels(d)}
+
+
+def fmt_pct(v) -> str:
+    return "—" if v is None or (isinstance(v, float) and math.isnan(v)) else f"{v * 100:.1f}%"
+
+
+def rule_and_result(sv: dict, base: str, alt: str) -> str:
+    """到達点 6 A3: one sentence keeping the allocation rule (② ÷ ①) apart from the delivery result (④ ÷ ①).
+    The tolerance of the result is not decided, so the result is not judged. Never says which case is better."""
+    t = sv["totals"]
+    rule, res = [], []
+    for side, cid in (("base", base), ("alt", alt)):
+        g = t[t["side"] == side]
+        who = f"{'基準' if side == 'base' else '相手'} {cid}"
+        r21 = [x for x in g["r21"] if pd.notna(x)]
+        if (g["unallocated"] == 0).all():
+            rule.append(f"{who} は配分なし（② ＝ ①）")
+        elif r21:
+            lo, hi = min(r21), max(r21)
+            full = [key_text(sv, r.sku_id, r.region) for r in g.itertuples() if pd.notna(r.r21) and r.r21 >= 1]
+            rule.append(f"{who} は {fmt_pct(lo)}〜{fmt_pct(hi)}" + (f"（100% は {'・'.join(full)}）" if full else ""))
+        g41 = g[g["r41"].notna()]
+        if len(g41):
+            mn, mx = g41.loc[g41["r41"].idxmin()], g41.loc[g41["r41"].idxmax()]
+            res.append(f"{who} は {fmt_pct(mn.r41)}（{key_text(sv, mn.sku_id, mn.region)}）〜"
+                       f"{fmt_pct(mx.r41)}（{key_text(sv, mx.sku_id, mx.region)}）")
+    return (f"配分の規則（② ÷ ①）：{'、'.join(rule)}。納品の結果（④ ÷ ①）：{'、'.join(res)}。"
+            "結果の達否は未判定（許容の幅が未決）")
 
 
 DIFF_COLS = ["demand", "on_time", "early", "late", "unallocated", "backlog", "min_supply_exact_weeks"]
@@ -844,7 +877,7 @@ def summary(ws: str, base: str, alt: str, cmp: dict) -> List[dict]:
         g = t[t["sku_id"] == sku]
         if ((g["on_time"] + g["early"] + g["late"]) == g["demand"]).all():
             full.append(sku)
-    text = "。".join(parts) + "。"
+    text = "。".join(parts) + "。" + rule_and_result(sv, base, alt) + "。"
     if full:
         text += f"{'・'.join(full)} は 2 案とも需要が全部届いた。"
     for c in common_shortages(sv):

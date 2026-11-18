@@ -1,0 +1,66 @@
+[cockpit_cases] C01 → C02：ΔP0 7,765,271
+  (固定費の表なし)：ΔW   未算出（固定費の表なし（有償週未設定））  f* 
+  -> output/cockpit_m6/soy\compare\C01__C02
+[cockpit_cases] C02 → C03（R1 同順位・proportional_even）
+[cockpit_cases] C03 policy: {"week_rule": "proportional_even", "unallocated_note": null, "allocation_file": "inputs/allocation_qty_R1_equal.csv", "policy_file": null, "knowledge_file": null}
+[cockpit_cases] C03 の状態：未実行
+[cockpit_cases] C03 → C04（R1b-1 earliest_first）
+[cockpit_cases] C04 policy: {"week_rule": "earliest_first", "unallocated_note": null, "allocation_file": "inputs/allocation_qty_R1_equal.csv", "policy_file": null, "knowledge_file": null}
+[cockpit_cases] C04 の状態：未実行
+[cockpit_cases] C03 → C05（R1b-2 proportional_early_tie）
+[cockpit_cases] C05 policy: {"week_rule": "proportional_early_tie", "unallocated_note": null, "allocation_file": "inputs/allocation_qty_R1_equal.csv", "policy_file": null, "knowledge_file": null}
+[cockpit_cases] C05 の状態：未実行
+[C03] 1/6 需要 …
+[C03] 1/6 需要 済み（0.0 秒）
+[C03] 2/6 数量配分 …
+[C03] 2/6 数量配分 済み（4.9 秒）
+[C03] 3/6 計画・PPC・Flow Check …
+[C03] 3/6 計画・PPC・Flow Check 済み（7.8 秒）
+[C03] 4/6 Value Chain …
+[C03] 4/6 Value Chain 済み（73.7 秒）
+[C03] 5/6 年齢の検査 …
+[C03] 5/6 年齢の検査 済み（11.0 秒）
+[C03] 6/6 突き合わせ …
+[C03] 6/6 突き合わせ 済み（24.8 秒）
+[cockpit_cases] C03：済み（122.2 秒）  P0 77,597,921
+[C04] 1/6 需要 …
+[C04] 1/6 需要 済み（0.0 秒）
+[C04] 2/6 数量配分 …
+[C04] 2/6 数量配分 済み（6.1 秒）
+[C04] 3/6 計画・PPC・Flow Check …
+[C04] 3/6 計画・PPC・Flow Check 済み（9.1 秒）
+[C04] 4/6 Value Chain …
+[C04] 4/6 Value Chain 済み（66.7 秒）
+[C04] 5/6 年齢の検査 …
+[C04] 5/6 年齢の検査 済み（11.3 秒）
+[C04] 6/6 突き合わせ …
+[C04] 6/6 突き合わせ 済み（17.9 秒）
+[cockpit_cases] C04：済み（111.1 秒）  P0 66,779,522
+[C05] 1/6 需要 …
+[C05] 1/6 需要 済み（0.0 秒）
+[C05] 2/6 数量配分 …
+[C05] 2/6 数量配分 済み（4.8 秒）
+[C05] 3/6 計画・PPC・Flow Check …
+[C05] 3/6 計画・PPC・Flow Check 済み（6.6 秒）
+[C05] 4/6 Value Chain …
+[C05] 4/6 Value Chain 済み（62.4 秒）
+[C05] 5/6 年齢の検査 …
+[C05] 5/6 年齢の検査 済み（9.6 秒）
+[C05] 6/6 突き合わせ …
+[C05] 6/6 突き合わせ 済み（19.6 秒）
+[cockpit_cases] C05：済み（103.0 秒）  P0 77,549,050
+[cockpit_cases] C02 → C03：ΔP0 28,012
+  (固定費の表なし)：ΔW   未算出（固定費の表なし（有償週未設定））  f* 
+  -> output/cockpit_m6/soy\compare\C02__C03
+[cockpit_cases] C03 → C04：ΔP0 -10,818,399
+  (固定費の表なし)：ΔW   未算出（固定費の表なし（有償週未設定））  f* 
+  -> output/cockpit_m6/soy\compare\C03__C04
+[cockpit_cases] C03 → C05：ΔP0 -48,871
+  (固定費の表なし)：ΔW   未算出（固定費の表なし（有償週未設定））  f* 
+  -> output/cockpit_m6/soy\compare\C03__C05
+id	name	parent	policy	deliveries	unallocated	backlog_end	P0	state
+C01	参考 18 シフト	—	なし	Soy_Sauce=75291	—	Soy_Sauce:BE=7400 Soy_Sauce:FR=8460 Soy_Sauce:JP=900 Soy_Sauce:NL=7400 Soy_Sauce:US_E=525 Soy_Sauce:US_W=525	69,804,638	済み
+C02	R0 21 シフト・配分なし	C01	なし	Soy_Sauce=87375	—	Soy_Sauce:BE=5726 Soy_Sauce:FR=300 Soy_Sauce:JP=600 Soy_Sauce:NL=5800 Soy_Sauce:US_E=350 Soy_Sauce:US_W=350	77,569,909	済み
+C03	R1 同順位・proportional_even	C02	allocation_qty_R1_equal.csv+-/proportional_even	Soy_Sauce=87344	Soy_Sauce:BE=1789 Soy_Sauce:FR=2684 Soy_Sauce:NL=1789 Soy_Sauce:US_E=3132 Soy_Sauce:US_W=3132	Soy_Sauce:BE=82 Soy_Sauce:FR=91 Soy_Sauce:NL=458	77,597,921	済み
+C04	R1b-1 earliest_first	C03	allocation_qty_R1_equal.csv+-/earliest_first	Soy_Sauce=79249	Soy_Sauce:BE=1789 Soy_Sauce:FR=2684 Soy_Sauce:NL=1789 Soy_Sauce:US_E=3132 Soy_Sauce:US_W=3132	Soy_Sauce:BE=3926 Soy_Sauce:FR=150 Soy_Sauce:JP=300 Soy_Sauce:NL=4000 Soy_Sauce:US_E=175 Soy_Sauce:US_W=175	66,779,522	済み
+C05	R1b-2 proportional_early_tie	C03	allocation_qty_R1_equal.csv+-/proportional_early_tie	Soy_Sauce=87343	Soy_Sauce:BE=1789 Soy_Sauce:FR=2684 Soy_Sauce:NL=1789 Soy_Sauce:US_E=3132 Soy_Sauce:US_W=3132	Soy_Sauce:BE=82 Soy_Sauce:FR=103 Soy_Sauce:NL=447	77,549,050	済み

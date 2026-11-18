@@ -1,0 +1,310 @@
+{
+ "plugins": "HolidayCalendarPlugin,BufferingStockOptimizerPlugin,CapacityOverridePlugin",
+ "bottling": "Bottling_Noda",
+ "past_due_by_node_region": {
+  "IN:leaf_in:Materials_JP:Soy_Sauce|BE": 800,
+  "IN:leaf_in:Materials_JP:Soy_Sauce|NL": 800,
+  "IN:mom:Bottling_Noda:Soy_Sauce|BE": 2926,
+  "IN:mom:Bottling_Noda:Soy_Sauce|FR": 300,
+  "IN:mom:Bottling_Noda:Soy_Sauce|JP": 600,
+  "IN:mom:Bottling_Noda:Soy_Sauce|NL": 3000,
+  "IN:mom:Bottling_Noda:Soy_Sauce|US_E": 350,
+  "IN:mom:Bottling_Noda:Soy_Sauce|US_W": 350,
+  "IN:mom:Brewing_Noda:Soy_Sauce|BE": 1600,
+  "IN:mom:Brewing_Noda:Soy_Sauce|NL": 1600
+ },
+ "past_due_weeks": [
+  "2026-W28",
+  "2026-W29",
+  "2026-W30",
+  "2026-W31"
+ ],
+ "past_due_request_weeks_by_region": {
+  "BE": {
+   "n": 5326,
+   "first": "2027-W51",
+   "last": "2028-W52"
+  },
+  "FR": {
+   "n": 300,
+   "first": "2028-W32",
+   "last": "2028-W47"
+  },
+  "JP": {
+   "n": 600,
+   "first": "2028-W24",
+   "last": "2028-W39"
+  },
+  "NL": {
+   "n": 5400,
+   "first": "2027-W51",
+   "last": "2028-W52"
+  },
+  "US_E": {
+   "n": 350,
+   "first": "2028-W32",
+   "last": "2028-W47"
+  },
+  "US_W": {
+   "n": 350,
+   "first": "2028-W31",
+   "last": "2028-W46"
+  }
+ },
+ "weeks_with_overflow": 104,
+ "actual_ship_found": 87375,
+ "representative": [
+  {
+   "lot": "Soy_Sauce:BE:2027-W50:00001",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2026-W34",
+   "dropped_backward_at": "",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:BE:2027-W50:00060",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2026-W34",
+   "dropped_backward_at": "",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:BE:2028-W20:00001",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2026-W28",
+   "dropped_backward_at": "2026-W28",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:BE:2028-W20:00060",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2026-W28",
+   "dropped_backward_at": "2026-W28",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:BE:2028-W40:00001",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "",
+   "dropped_backward_at": "2026-W28",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:BE:2028-W40:00060",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "",
+   "dropped_backward_at": "2026-W28",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:NL:2027-W50:00001",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2026-W34",
+   "dropped_backward_at": "",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:NL:2027-W50:00060",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2026-W34",
+   "dropped_backward_at": "",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:NL:2028-W20:00001",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2026-W28",
+   "dropped_backward_at": "2026-W28",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:NL:2028-W20:00060",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2026-W28",
+   "dropped_backward_at": "2026-W28",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:NL:2028-W40:00001",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "",
+   "dropped_backward_at": "2026-W28",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:NL:2028-W40:00060",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "",
+   "dropped_backward_at": "2026-W28",
+   "shipped_week": ""
+  },
+  {
+   "lot": "Soy_Sauce:FR:2027-W50:00001",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2027-W36",
+   "dropped_backward_at": "",
+   "shipped_week": "2027-W50"
+  },
+  {
+   "lot": "Soy_Sauce:FR:2027-W50:00060",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2027-W36",
+   "dropped_backward_at": "",
+   "shipped_week": "2027-W50"
+  },
+  {
+   "lot": "Soy_Sauce:FR:2028-W20:00001",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2028-W06",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W20"
+  },
+  {
+   "lot": "Soy_Sauce:FR:2028-W20:00060",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2028-W06",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W20"
+  },
+  {
+   "lot": "Soy_Sauce:FR:2028-W40:00001",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "2028-W26",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W40"
+  },
+  {
+   "lot": "Soy_Sauce:FR:2028-W40:00060",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "2028-W26",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W40"
+  },
+  {
+   "lot": "Soy_Sauce:JP:2027-W50:00001",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2027-W44",
+   "dropped_backward_at": "",
+   "shipped_week": "2027-W50"
+  },
+  {
+   "lot": "Soy_Sauce:JP:2027-W50:00060",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2027-W44",
+   "dropped_backward_at": "",
+   "shipped_week": "2027-W50"
+  },
+  {
+   "lot": "Soy_Sauce:JP:2028-W20:00001",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2028-W14",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W20"
+  },
+  {
+   "lot": "Soy_Sauce:JP:2028-W20:00060",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2028-W14",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W20"
+  },
+  {
+   "lot": "Soy_Sauce:JP:2028-W40:00001",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "2028-W34",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W40"
+  },
+  {
+   "lot": "Soy_Sauce:JP:2028-W40:00060",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "2028-W34",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W40"
+  },
+  {
+   "lot": "Soy_Sauce:US_W:2027-W50:00001",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2027-W37",
+   "dropped_backward_at": "",
+   "shipped_week": "2027-W50"
+  },
+  {
+   "lot": "Soy_Sauce:US_W:2027-W50:00060",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2027-W37",
+   "dropped_backward_at": "",
+   "shipped_week": "2027-W50"
+  },
+  {
+   "lot": "Soy_Sauce:US_W:2028-W20:00001",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2028-W07",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W20"
+  },
+  {
+   "lot": "Soy_Sauce:US_W:2028-W20:00060",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2028-W07",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W20"
+  },
+  {
+   "lot": "Soy_Sauce:US_W:2028-W40:00001",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "2028-W27",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W40"
+  },
+  {
+   "lot": "Soy_Sauce:US_W:2028-W40:00060",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "2028-W27",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W40"
+  },
+  {
+   "lot": "Soy_Sauce:US_E:2027-W50:00001",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2027-W36",
+   "dropped_backward_at": "",
+   "shipped_week": "2027-W50"
+  },
+  {
+   "lot": "Soy_Sauce:US_E:2027-W50:00060",
+   "request_week": "2027-W50",
+   "bottling_planned_week": "2027-W36",
+   "dropped_backward_at": "",
+   "shipped_week": "2027-W50"
+  },
+  {
+   "lot": "Soy_Sauce:US_E:2028-W20:00001",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2028-W06",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W20"
+  },
+  {
+   "lot": "Soy_Sauce:US_E:2028-W20:00060",
+   "request_week": "2028-W20",
+   "bottling_planned_week": "2028-W06",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W20"
+  },
+  {
+   "lot": "Soy_Sauce:US_E:2028-W40:00001",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "2028-W26",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W40"
+  },
+  {
+   "lot": "Soy_Sauce:US_E:2028-W40:00060",
+   "request_week": "2028-W40",
+   "bottling_planned_week": "2028-W26",
+   "dropped_backward_at": "",
+   "shipped_week": "2028-W40"
+  }
+ ]
+}
