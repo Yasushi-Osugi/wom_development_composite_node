@@ -1,0 +1,7 @@
+sku_id,region,alloc_lots,q1_original,group,raw_quota,remainder_lot,quota_source
+Soy_Sauce,BE,8175,10050,equalize,8174.883797,1,"equal priority: Q_A=57225 over BE,FR,NL,US_E,US_W (largest remainder)"
+Soy_Sauce,FR,12262,15075,equalize,12262.325695,0,"equal priority: Q_A=57225 over BE,FR,NL,US_E,US_W (largest remainder)"
+Soy_Sauce,JP,30150,30150,protect,30150.0,0,protect: original demand
+Soy_Sauce,NL,8175,10050,equalize,8174.883797,1,"equal priority: Q_A=57225 over BE,FR,NL,US_E,US_W (largest remainder)"
+Soy_Sauce,US_E,14307,17588,equalize,14306.453355,1,"equal priority: Q_A=57225 over BE,FR,NL,US_E,US_W (largest remainder)"
+Soy_Sauce,US_W,14306,17588,equalize,14306.453355,0,"equal priority: Q_A=57225 over BE,FR,NL,US_E,US_W (largest remainder)"

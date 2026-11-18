@@ -1,0 +1,9 @@
+sku_id,region,request_week,demand_base,on_time_base,early_base,late_base,backlog_end_base,demand_alt,on_time_alt,early_alt,late_alt,backlog_end_alt,demand_diff,on_time_diff,early_diff,late_diff,backlog_end_diff
+Soy_Sauce,BE,2028-W47,82,0,0,0,82,81,81,0,0,0,-1,81,0,0,-82
+Soy_Sauce,FR,2028-W47,124,33,0,0,91,122,122,0,0,0,-2,89,0,0,-91
+Soy_Sauce,NL,2028-W47,82,0,0,0,82,81,81,0,0,0,-1,81,0,0,-82
+Soy_Sauce,NL,2028-W48,82,7,0,0,75,82,82,0,0,0,0,75,0,0,-75
+Soy_Sauce,NL,2028-W49,82,8,0,0,74,81,81,0,0,0,-1,73,0,0,-74
+Soy_Sauce,NL,2028-W50,83,7,0,0,76,81,81,0,0,0,-2,74,0,0,-76
+Soy_Sauce,NL,2028-W51,82,6,0,0,76,82,82,0,0,0,0,76,0,0,-76
+Soy_Sauce,NL,2028-W52,82,7,0,0,75,81,48,0,0,33,-1,41,0,0,-42
