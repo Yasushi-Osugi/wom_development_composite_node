@@ -1,0 +1,1772 @@
+{
+ "model": "soysauce-jpy-2027-alloc",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 7.3,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "Soy_Sauce",
+   "factory": "Bottling_Noda",
+   "overflow_weeks": 113,
+   "overflow_weeks_multi_market": 113,
+   "closed_weeks_pushed": 3,
+   "closed_weeks_pushed_multi_market": 3,
+   "pushed_back_lots": 2121613,
+   "dropped_by_market": {
+    "BE": 6096,
+    "NL": 6100,
+    "FR": 6912,
+    "US_W": 350,
+    "US_E": 350,
+    "JP": 600
+   },
+   "dropped_total": 20408,
+   "first_overflow_week": "2026-W28",
+   "last_overflow_week": "2028-W38"
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "Soy_Sauce",
+   "factory": "Bottling_Noda",
+   "weeks": [
+    {
+     "w": "2026-W28",
+     "closed": false,
+     "list_n": 21094,
+     "overflow": 20408,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 6096,
+      "NL": 6100,
+      "FR": 6912,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2026-W29",
+     "closed": false,
+     "list_n": 21780,
+     "overflow": 21094,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7194,
+      "BE": 6300,
+      "NL": 6300,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2026-W30",
+     "closed": false,
+     "list_n": 22466,
+     "overflow": 21780,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7480,
+      "BE": 6500,
+      "NL": 6500,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2026-W31",
+     "closed": false,
+     "list_n": 23152,
+     "overflow": 22466,
+     "markets": 6,
+     "overflow_markets": {
+      "NL": 6756,
+      "FR": 7710,
+      "BE": 6700,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2026-W32",
+     "closed": false,
+     "list_n": 23838,
+     "overflow": 23152,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 6914,
+      "NL": 7000,
+      "FR": 7938,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2026-W33",
+     "closed": false,
+     "list_n": 24524,
+     "overflow": 23838,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 7172,
+      "NL": 7200,
+      "FR": 8166,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2026-W34",
+     "closed": false,
+     "list_n": 25210,
+     "overflow": 24524,
+     "markets": 6,
+     "overflow_markets": {
+      "JP": 794,
+      "FR": 8430,
+      "BE": 7300,
+      "NL": 7300,
+      "US_W": 350,
+      "US_E": 350
+     }
+    },
+    {
+     "w": "2026-W35",
+     "closed": false,
+     "list_n": 25896,
+     "overflow": 25210,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8460,
+      "BE": 7400,
+      "NL": 7400,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W36",
+     "closed": false,
+     "list_n": 26582,
+     "overflow": 25896,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8746,
+      "BE": 7600,
+      "NL": 7600,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W37",
+     "closed": false,
+     "list_n": 27268,
+     "overflow": 26582,
+     "markets": 6,
+     "overflow_markets": {
+      "NL": 7832,
+      "FR": 9000,
+      "BE": 7800,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W38",
+     "closed": false,
+     "list_n": 27954,
+     "overflow": 27268,
+     "markets": 6,
+     "overflow_markets": {
+      "NL": 8090,
+      "FR": 9228,
+      "BE": 8000,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W39",
+     "closed": false,
+     "list_n": 28640,
+     "overflow": 27954,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 8248,
+      "NL": 8300,
+      "FR": 9456,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W40",
+     "closed": false,
+     "list_n": 29326,
+     "overflow": 28640,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9690,
+      "BE": 8500,
+      "NL": 8500,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W41",
+     "closed": false,
+     "list_n": 29947,
+     "overflow": 29261,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 8699,
+      "NL": 8700,
+      "FR": 9912,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W42",
+     "closed": false,
+     "list_n": 30479,
+     "overflow": 29793,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 8803,
+      "NL": 8900,
+      "FR": 10140,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W43",
+     "closed": false,
+     "list_n": 30923,
+     "overflow": 30237,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 10287,
+      "BE": 9000,
+      "NL": 9000,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W44",
+     "closed": false,
+     "list_n": 31280,
+     "overflow": 30594,
+     "markets": 6,
+     "overflow_markets": {
+      "NL": 9175,
+      "FR": 10369,
+      "BE": 9100,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W45",
+     "closed": false,
+     "list_n": 31551,
+     "overflow": 30865,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 9244,
+      "NL": 9300,
+      "FR": 10371,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W46",
+     "closed": false,
+     "list_n": 31735,
+     "overflow": 31049,
+     "markets": 6,
+     "overflow_markets": {
+      "NL": 9438,
+      "BE": 9290,
+      "FR": 10371,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W47",
+     "closed": false,
+     "list_n": 31830,
+     "overflow": 31144,
+     "markets": 6,
+     "overflow_markets": {
+      "NL": 9533,
+      "BE": 9290,
+      "FR": 10371,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W48",
+     "closed": false,
+     "list_n": 31838,
+     "overflow": 31152,
+     "markets": 6,
+     "overflow_markets": {
+      "NL": 9541,
+      "BE": 9290,
+      "FR": 10371,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W49",
+     "closed": false,
+     "list_n": 31786,
+     "overflow": 31100,
+     "markets": 6,
+     "overflow_markets": {
+      "NL": 9489,
+      "BE": 9290,
+      "FR": 10371,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W50",
+     "closed": false,
+     "list_n": 31697,
+     "overflow": 31011,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 9290,
+      "NL": 9400,
+      "FR": 10371,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W51",
+     "closed": false,
+     "list_n": 31571,
+     "overflow": 30885,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 9264,
+      "NL": 9300,
+      "FR": 10371,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W52",
+     "closed": false,
+     "list_n": 31407,
+     "overflow": 30721,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 10371,
+      "BE": 9200,
+      "NL": 9200,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2026-W53",
+     "closed": false,
+     "list_n": 31205,
+     "overflow": 30519,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 10369,
+      "BE": 9100,
+      "NL": 9100,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W01",
+     "closed": false,
+     "list_n": 30966,
+     "overflow": 30280,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 10330,
+      "BE": 9000,
+      "NL": 9000,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W02",
+     "closed": false,
+     "list_n": 30690,
+     "overflow": 30004,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 10254,
+      "BE": 8900,
+      "NL": 8900,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W03",
+     "closed": false,
+     "list_n": 30376,
+     "overflow": 29690,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 10140,
+      "BE": 8800,
+      "NL": 8800,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W04",
+     "closed": false,
+     "list_n": 30062,
+     "overflow": 29376,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 10026,
+      "BE": 8700,
+      "NL": 8700,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W05",
+     "closed": false,
+     "list_n": 29748,
+     "overflow": 29062,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9912,
+      "BE": 8600,
+      "NL": 8600,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W06",
+     "closed": false,
+     "list_n": 29434,
+     "overflow": 28748,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9798,
+      "BE": 8500,
+      "NL": 8500,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W07",
+     "closed": false,
+     "list_n": 29120,
+     "overflow": 28434,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9684,
+      "BE": 8400,
+      "NL": 8400,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W08",
+     "closed": false,
+     "list_n": 28806,
+     "overflow": 28120,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9570,
+      "BE": 8300,
+      "NL": 8300,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W09",
+     "closed": false,
+     "list_n": 28492,
+     "overflow": 27806,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9456,
+      "BE": 8200,
+      "NL": 8200,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W10",
+     "closed": false,
+     "list_n": 28178,
+     "overflow": 27492,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9342,
+      "BE": 8100,
+      "NL": 8100,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W11",
+     "closed": false,
+     "list_n": 27864,
+     "overflow": 27178,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9228,
+      "BE": 8000,
+      "NL": 8000,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W12",
+     "closed": false,
+     "list_n": 27550,
+     "overflow": 26864,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9114,
+      "BE": 7900,
+      "NL": 7900,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W13",
+     "closed": false,
+     "list_n": 27236,
+     "overflow": 26550,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 9000,
+      "BE": 7800,
+      "NL": 7800,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W14",
+     "closed": false,
+     "list_n": 26922,
+     "overflow": 26236,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8886,
+      "BE": 7700,
+      "NL": 7700,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W15",
+     "closed": false,
+     "list_n": 26608,
+     "overflow": 25922,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8772,
+      "BE": 7600,
+      "NL": 7600,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W16",
+     "closed": false,
+     "list_n": 26294,
+     "overflow": 25608,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8658,
+      "BE": 7500,
+      "NL": 7500,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 25980,
+     "overflow": 25294,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8544,
+      "BE": 7400,
+      "NL": 7400,
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": true,
+     "list_n": 24980,
+     "overflow": 24980,
+     "markets": 6,
+     "overflow_markets": {
+      "US_W": 525,
+      "US_E": 525,
+      "JP": 900,
+      "FR": 8430,
+      "BE": 7300,
+      "NL": 7300
+     }
+    },
+    {
+     "w": "2027-W19",
+     "closed": false,
+     "list_n": 24666,
+     "overflow": 23980,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8280,
+      "BE": 7200,
+      "NL": 7200,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W20",
+     "closed": false,
+     "list_n": 24352,
+     "overflow": 23666,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8166,
+      "BE": 7100,
+      "NL": 7100,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W21",
+     "closed": false,
+     "list_n": 24038,
+     "overflow": 23352,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 8052,
+      "BE": 7000,
+      "NL": 7000,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W22",
+     "closed": false,
+     "list_n": 23724,
+     "overflow": 23038,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7938,
+      "BE": 6900,
+      "NL": 6900,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W23",
+     "closed": false,
+     "list_n": 23410,
+     "overflow": 22724,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7824,
+      "BE": 6800,
+      "NL": 6800,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W24",
+     "closed": false,
+     "list_n": 23096,
+     "overflow": 22410,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7710,
+      "BE": 6700,
+      "NL": 6700,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W25",
+     "closed": false,
+     "list_n": 22782,
+     "overflow": 22096,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7596,
+      "BE": 6600,
+      "NL": 6600,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W26",
+     "closed": false,
+     "list_n": 22468,
+     "overflow": 21782,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7482,
+      "BE": 6500,
+      "NL": 6500,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W27",
+     "closed": false,
+     "list_n": 22154,
+     "overflow": 21468,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7368,
+      "BE": 6400,
+      "NL": 6400,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W28",
+     "closed": false,
+     "list_n": 21840,
+     "overflow": 21154,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7254,
+      "BE": 6300,
+      "NL": 6300,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W29",
+     "closed": false,
+     "list_n": 21526,
+     "overflow": 20840,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7140,
+      "BE": 6200,
+      "NL": 6200,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W30",
+     "closed": false,
+     "list_n": 21212,
+     "overflow": 20526,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 7026,
+      "BE": 6100,
+      "NL": 6100,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W31",
+     "closed": false,
+     "list_n": 20898,
+     "overflow": 20212,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6912,
+      "BE": 6000,
+      "NL": 6000,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 20584,
+     "overflow": 19898,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6798,
+      "BE": 5900,
+      "NL": 5900,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 20270,
+     "overflow": 19584,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6684,
+      "BE": 5800,
+      "NL": 5800,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W34",
+     "closed": false,
+     "list_n": 19956,
+     "overflow": 19270,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6570,
+      "BE": 5700,
+      "NL": 5700,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W35",
+     "closed": false,
+     "list_n": 19642,
+     "overflow": 18956,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6456,
+      "BE": 5600,
+      "NL": 5600,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 19328,
+     "overflow": 18642,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6342,
+      "BE": 5500,
+      "NL": 5500,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W37",
+     "closed": false,
+     "list_n": 19014,
+     "overflow": 18328,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6228,
+      "BE": 5400,
+      "NL": 5400,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W38",
+     "closed": false,
+     "list_n": 18700,
+     "overflow": 18014,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6114,
+      "BE": 5300,
+      "NL": 5300,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W39",
+     "closed": false,
+     "list_n": 18386,
+     "overflow": 17700,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 6000,
+      "BE": 5200,
+      "NL": 5200,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W40",
+     "closed": false,
+     "list_n": 18072,
+     "overflow": 17386,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 5886,
+      "BE": 5100,
+      "NL": 5100,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W41",
+     "closed": false,
+     "list_n": 17758,
+     "overflow": 17072,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 5772,
+      "BE": 5000,
+      "NL": 5000,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W42",
+     "closed": false,
+     "list_n": 17444,
+     "overflow": 16758,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 5658,
+      "BE": 4900,
+      "NL": 4900,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W43",
+     "closed": false,
+     "list_n": 17130,
+     "overflow": 16444,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 5544,
+      "BE": 4800,
+      "NL": 4800,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W44",
+     "closed": false,
+     "list_n": 16816,
+     "overflow": 16130,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 5430,
+      "BE": 4700,
+      "NL": 4700,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W45",
+     "closed": false,
+     "list_n": 16502,
+     "overflow": 15816,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 5316,
+      "BE": 4600,
+      "NL": 4600,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W46",
+     "closed": false,
+     "list_n": 16188,
+     "overflow": 15502,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 5202,
+      "BE": 4500,
+      "NL": 4500,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W47",
+     "closed": false,
+     "list_n": 15874,
+     "overflow": 15188,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 5088,
+      "BE": 4400,
+      "NL": 4400,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W48",
+     "closed": false,
+     "list_n": 15560,
+     "overflow": 14874,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4974,
+      "BE": 4300,
+      "NL": 4300,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W49",
+     "closed": false,
+     "list_n": 15246,
+     "overflow": 14560,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4860,
+      "BE": 4200,
+      "NL": 4200,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W50",
+     "closed": false,
+     "list_n": 14932,
+     "overflow": 14246,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4746,
+      "BE": 4100,
+      "NL": 4100,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W51",
+     "closed": false,
+     "list_n": 14618,
+     "overflow": 13932,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4632,
+      "BE": 4000,
+      "NL": 4000,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2027-W52",
+     "closed": false,
+     "list_n": 14304,
+     "overflow": 13618,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4518,
+      "BE": 3900,
+      "NL": 3900,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W01",
+     "closed": false,
+     "list_n": 13990,
+     "overflow": 13304,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4404,
+      "BE": 3800,
+      "NL": 3800,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W02",
+     "closed": false,
+     "list_n": 13676,
+     "overflow": 12990,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4290,
+      "BE": 3700,
+      "NL": 3700,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W03",
+     "closed": false,
+     "list_n": 13362,
+     "overflow": 12676,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4176,
+      "BE": 3600,
+      "NL": 3600,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W04",
+     "closed": false,
+     "list_n": 13048,
+     "overflow": 12362,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 4062,
+      "BE": 3500,
+      "NL": 3500,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W05",
+     "closed": false,
+     "list_n": 12734,
+     "overflow": 12048,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3948,
+      "BE": 3400,
+      "NL": 3400,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W06",
+     "closed": false,
+     "list_n": 12420,
+     "overflow": 11734,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3834,
+      "BE": 3300,
+      "NL": 3300,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W07",
+     "closed": false,
+     "list_n": 12106,
+     "overflow": 11420,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3720,
+      "BE": 3200,
+      "NL": 3200,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W08",
+     "closed": false,
+     "list_n": 11792,
+     "overflow": 11106,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3606,
+      "BE": 3100,
+      "NL": 3100,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W09",
+     "closed": false,
+     "list_n": 11478,
+     "overflow": 10792,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3492,
+      "BE": 3000,
+      "NL": 3000,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W10",
+     "closed": false,
+     "list_n": 11164,
+     "overflow": 10478,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3378,
+      "BE": 2900,
+      "NL": 2900,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W11",
+     "closed": false,
+     "list_n": 10850,
+     "overflow": 10164,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3264,
+      "BE": 2800,
+      "NL": 2800,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W12",
+     "closed": false,
+     "list_n": 10536,
+     "overflow": 9850,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3150,
+      "BE": 2700,
+      "NL": 2700,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W13",
+     "closed": false,
+     "list_n": 10222,
+     "overflow": 9536,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 3036,
+      "BE": 2600,
+      "NL": 2600,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W14",
+     "closed": false,
+     "list_n": 9908,
+     "overflow": 9222,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 2922,
+      "BE": 2500,
+      "NL": 2500,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W15",
+     "closed": false,
+     "list_n": 9594,
+     "overflow": 8908,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 2808,
+      "BE": 2400,
+      "NL": 2400,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W16",
+     "closed": false,
+     "list_n": 9280,
+     "overflow": 8594,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 2694,
+      "BE": 2300,
+      "NL": 2300,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W17",
+     "closed": false,
+     "list_n": 8966,
+     "overflow": 8280,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 2580,
+      "BE": 2200,
+      "NL": 2200,
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600
+     }
+    },
+    {
+     "w": "2028-W18",
+     "closed": true,
+     "list_n": 7966,
+     "overflow": 7966,
+     "markets": 6,
+     "overflow_markets": {
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 600,
+      "FR": 2466,
+      "BE": 2100,
+      "NL": 2100
+     }
+    },
+    {
+     "w": "2028-W19",
+     "closed": false,
+     "list_n": 7652,
+     "overflow": 6966,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 2316,
+      "BE": 2000,
+      "NL": 2000,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W20",
+     "closed": false,
+     "list_n": 7338,
+     "overflow": 6652,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 2202,
+      "BE": 1900,
+      "NL": 1900,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W21",
+     "closed": false,
+     "list_n": 7024,
+     "overflow": 6338,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 2088,
+      "BE": 1800,
+      "NL": 1800,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W22",
+     "closed": false,
+     "list_n": 6710,
+     "overflow": 6024,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1974,
+      "BE": 1700,
+      "NL": 1700,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W23",
+     "closed": false,
+     "list_n": 6396,
+     "overflow": 5710,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1860,
+      "BE": 1600,
+      "NL": 1600,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W24",
+     "closed": false,
+     "list_n": 6082,
+     "overflow": 5396,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1746,
+      "BE": 1500,
+      "NL": 1500,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W25",
+     "closed": false,
+     "list_n": 5768,
+     "overflow": 5082,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1632,
+      "BE": 1400,
+      "NL": 1400,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W26",
+     "closed": false,
+     "list_n": 5454,
+     "overflow": 4768,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1518,
+      "BE": 1300,
+      "NL": 1300,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W27",
+     "closed": false,
+     "list_n": 5140,
+     "overflow": 4454,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1404,
+      "BE": 1200,
+      "NL": 1200,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W28",
+     "closed": false,
+     "list_n": 4826,
+     "overflow": 4140,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1290,
+      "BE": 1100,
+      "NL": 1100,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W29",
+     "closed": false,
+     "list_n": 4512,
+     "overflow": 3826,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1176,
+      "BE": 1000,
+      "NL": 1000,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W30",
+     "closed": false,
+     "list_n": 4198,
+     "overflow": 3512,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 1062,
+      "BE": 900,
+      "NL": 900,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W31",
+     "closed": false,
+     "list_n": 3884,
+     "overflow": 3198,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 948,
+      "BE": 800,
+      "NL": 800,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W32",
+     "closed": false,
+     "list_n": 3570,
+     "overflow": 2884,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 834,
+      "BE": 700,
+      "NL": 700,
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W33",
+     "closed": true,
+     "list_n": 2570,
+     "overflow": 2570,
+     "markets": 6,
+     "overflow_markets": {
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300,
+      "FR": 720,
+      "BE": 600,
+      "NL": 600
+     }
+    },
+    {
+     "w": "2028-W34",
+     "closed": false,
+     "list_n": 2256,
+     "overflow": 1570,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 570,
+      "BE": 500,
+      "NL": 500
+     }
+    },
+    {
+     "w": "2028-W35",
+     "closed": false,
+     "list_n": 1942,
+     "overflow": 1256,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 456,
+      "BE": 400,
+      "NL": 400
+     }
+    },
+    {
+     "w": "2028-W36",
+     "closed": false,
+     "list_n": 1628,
+     "overflow": 942,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 342,
+      "BE": 300,
+      "NL": 300
+     }
+    },
+    {
+     "w": "2028-W37",
+     "closed": false,
+     "list_n": 1314,
+     "overflow": 628,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 228,
+      "BE": 200,
+      "NL": 200
+     }
+    },
+    {
+     "w": "2028-W38",
+     "closed": false,
+     "list_n": 1000,
+     "overflow": 314,
+     "markets": 6,
+     "overflow_markets": {
+      "FR": 114,
+      "BE": 100,
+      "NL": 100
+     }
+    }
+   ],
+   "dropped": {
+    "BE": 6096,
+    "NL": 6100,
+    "FR": 6912,
+    "US_W": 350,
+    "US_E": 350,
+    "JP": 600
+   }
+  }
+ ]
+}

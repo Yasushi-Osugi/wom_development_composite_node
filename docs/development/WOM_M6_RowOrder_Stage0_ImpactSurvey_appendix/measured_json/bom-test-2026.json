@@ -1,0 +1,32 @@
+{
+ "model": "bom-test-2026",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 0.7,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "EV_Model_A",
+   "factory": "Vehicle_Assy",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "EV_Model_A",
+   "factory": "Vehicle_Assy",
+   "weeks": [],
+   "dropped": {}
+  }
+ ]
+}

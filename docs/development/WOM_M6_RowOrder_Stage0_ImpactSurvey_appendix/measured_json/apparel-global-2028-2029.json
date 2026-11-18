@@ -1,0 +1,236 @@
+{
+ "model": "apparel-global-2028-2029",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 6.0,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "Apparel_Offshore",
+   "factory": "Garment_BD",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Vertical",
+   "factory": "Garment_PT",
+   "overflow_weeks": 18,
+   "overflow_weeks_multi_market": 18,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 18814,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2028-W31",
+   "last_overflow_week": "2029-W39"
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "Apparel_Offshore",
+   "factory": "Garment_BD",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Vertical",
+   "factory": "Garment_PT",
+   "weeks": [
+    {
+     "w": "2028-W31",
+     "closed": false,
+     "list_n": 3278,
+     "overflow": 1278,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 1278
+     }
+    },
+    {
+     "w": "2028-W32",
+     "closed": false,
+     "list_n": 2988,
+     "overflow": 2588,
+     "markets": 2,
+     "overflow_markets": {
+      "US": 897,
+      "JP": 1691
+     }
+    },
+    {
+     "w": "2028-W33",
+     "closed": false,
+     "list_n": 2281,
+     "overflow": 1881,
+     "markets": 2,
+     "overflow_markets": {
+      "US": 575,
+      "JP": 1306
+     }
+    },
+    {
+     "w": "2028-W34",
+     "closed": false,
+     "list_n": 2786,
+     "overflow": 786,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 786
+     }
+    },
+    {
+     "w": "2028-W35",
+     "closed": false,
+     "list_n": 2958,
+     "overflow": 958,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 958
+     }
+    },
+    {
+     "w": "2028-W36",
+     "closed": false,
+     "list_n": 2874,
+     "overflow": 874,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 874
+     }
+    },
+    {
+     "w": "2028-W37",
+     "closed": false,
+     "list_n": 2629,
+     "overflow": 629,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 629
+     }
+    },
+    {
+     "w": "2028-W38",
+     "closed": false,
+     "list_n": 2329,
+     "overflow": 329,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 329
+     }
+    },
+    {
+     "w": "2028-W39",
+     "closed": false,
+     "list_n": 2084,
+     "overflow": 84,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 84
+     }
+    },
+    {
+     "w": "2029-W31",
+     "closed": false,
+     "list_n": 3278,
+     "overflow": 1278,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 1278
+     }
+    },
+    {
+     "w": "2029-W32",
+     "closed": false,
+     "list_n": 2988,
+     "overflow": 2588,
+     "markets": 2,
+     "overflow_markets": {
+      "US": 897,
+      "JP": 1691
+     }
+    },
+    {
+     "w": "2029-W33",
+     "closed": false,
+     "list_n": 2281,
+     "overflow": 1881,
+     "markets": 2,
+     "overflow_markets": {
+      "US": 575,
+      "JP": 1306
+     }
+    },
+    {
+     "w": "2029-W34",
+     "closed": false,
+     "list_n": 2786,
+     "overflow": 786,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 786
+     }
+    },
+    {
+     "w": "2029-W35",
+     "closed": false,
+     "list_n": 2958,
+     "overflow": 958,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 958
+     }
+    },
+    {
+     "w": "2029-W36",
+     "closed": false,
+     "list_n": 2874,
+     "overflow": 874,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 874
+     }
+    },
+    {
+     "w": "2029-W37",
+     "closed": false,
+     "list_n": 2629,
+     "overflow": 629,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 629
+     }
+    },
+    {
+     "w": "2029-W38",
+     "closed": false,
+     "list_n": 2329,
+     "overflow": 329,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 329
+     }
+    },
+    {
+     "w": "2029-W39",
+     "closed": false,
+     "list_n": 2084,
+     "overflow": 84,
+     "markets": 2,
+     "overflow_markets": {
+      "JP": 84
+     }
+    }
+   ],
+   "dropped": {}
+  }
+ ]
+}

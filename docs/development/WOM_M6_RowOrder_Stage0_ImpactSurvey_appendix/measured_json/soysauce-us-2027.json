@@ -1,0 +1,79 @@
+{
+ "model": "soysauce-us-2027",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 3.4,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "Soy_Sauce",
+   "factory": "Bottling_Noda",
+   "overflow_weeks": 2,
+   "overflow_weeks_multi_market": 2,
+   "closed_weeks_pushed": 2,
+   "closed_weeks_pushed_multi_market": 2,
+   "pushed_back_lots": 3000,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2027-W17",
+   "last_overflow_week": "2028-W18"
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "Soy_Sauce",
+   "factory": "Bottling_Noda",
+   "weeks": [
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 2000,
+     "overflow": 500,
+     "markets": 3,
+     "overflow_markets": {
+      "US_E": 200,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": true,
+     "list_n": 1000,
+     "overflow": 1000,
+     "markets": 3,
+     "overflow_markets": {
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W17",
+     "closed": false,
+     "list_n": 2000,
+     "overflow": 500,
+     "markets": 3,
+     "overflow_markets": {
+      "US_E": 200,
+      "JP": 300
+     }
+    },
+    {
+     "w": "2028-W18",
+     "closed": true,
+     "list_n": 1000,
+     "overflow": 1000,
+     "markets": 3,
+     "overflow_markets": {
+      "US_W": 350,
+      "US_E": 350,
+      "JP": 300
+     }
+    }
+   ],
+   "dropped": {}
+  }
+ ]
+}

@@ -1,0 +1,192 @@
+{
+ "model": "soysauce-jpy-2027",
+ "legacy_golden": true,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "legacy",
+ "seconds": 3.8,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "Soy_Sauce",
+   "factory": "Bottling_Noda",
+   "overflow_weeks": 9,
+   "overflow_weeks_multi_market": 9,
+   "closed_weeks_pushed": 3,
+   "closed_weeks_pushed_multi_market": 3,
+   "pushed_back_lots": 6852,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2027-W15",
+   "last_overflow_week": "2028-W33"
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "Soy_Sauce",
+   "factory": "Bottling_Noda",
+   "weeks": [
+    {
+     "w": "2027-W15",
+     "closed": false,
+     "list_n": 1428,
+     "overflow": 142,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 42,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2027-W16",
+     "closed": false,
+     "list_n": 1714,
+     "overflow": 428,
+     "markets": 6,
+     "overflow_markets": {
+      "JP": 78,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 2000,
+     "overflow": 714,
+     "markets": 6,
+     "overflow_markets": {
+      "US_E": 64,
+      "JP": 300,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": true,
+     "list_n": 1000,
+     "overflow": 1000,
+     "markets": 6,
+     "overflow_markets": {
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2028-W15",
+     "closed": false,
+     "list_n": 1428,
+     "overflow": 142,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 42,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2028-W16",
+     "closed": false,
+     "list_n": 1714,
+     "overflow": 428,
+     "markets": 6,
+     "overflow_markets": {
+      "JP": 78,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2028-W17",
+     "closed": false,
+     "list_n": 2000,
+     "overflow": 714,
+     "markets": 6,
+     "overflow_markets": {
+      "US_E": 64,
+      "JP": 300,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2028-W18",
+     "closed": true,
+     "list_n": 1000,
+     "overflow": 1000,
+     "markets": 6,
+     "overflow_markets": {
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2028-W30",
+     "closed": false,
+     "list_n": 1428,
+     "overflow": 142,
+     "markets": 6,
+     "overflow_markets": {
+      "BE": 42,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2028-W31",
+     "closed": false,
+     "list_n": 1714,
+     "overflow": 428,
+     "markets": 6,
+     "overflow_markets": {
+      "JP": 78,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2028-W32",
+     "closed": false,
+     "list_n": 2000,
+     "overflow": 714,
+     "markets": 6,
+     "overflow_markets": {
+      "US_E": 64,
+      "JP": 300,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    },
+    {
+     "w": "2028-W33",
+     "closed": true,
+     "list_n": 1000,
+     "overflow": 1000,
+     "markets": 6,
+     "overflow_markets": {
+      "US_W": 175,
+      "US_E": 175,
+      "JP": 300,
+      "FR": 150,
+      "BE": 100,
+      "NL": 100
+     }
+    }
+   ],
+   "dropped": {}
+  }
+ ]
+}

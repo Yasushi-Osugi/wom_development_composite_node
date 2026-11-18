@@ -1,0 +1,753 @@
+{
+ "model": "Cookie-jp-2026",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 4.2,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "Cookie_Import",
+   "factory": "Factory_GP_CN",
+   "overflow_weeks": 55,
+   "overflow_weeks_multi_market": 55,
+   "closed_weeks_pushed": 4,
+   "closed_weeks_pushed_multi_market": 4,
+   "pushed_back_lots": 69248,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2025-W42",
+   "last_overflow_week": "2027-W03"
+  },
+  {
+   "product": "Cookie_Local",
+   "factory": "Factory_DP_JP",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "Cookie_Import",
+   "factory": "Factory_GP_CN",
+   "weeks": [
+    {
+     "w": "2025-W42",
+     "closed": false,
+     "list_n": 1256,
+     "overflow": 456,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 6,
+      "SM": 300,
+      "EC": 150
+     }
+    },
+    {
+     "w": "2025-W43",
+     "closed": false,
+     "list_n": 2056,
+     "overflow": 1256,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 356,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W44",
+     "closed": false,
+     "list_n": 2068,
+     "overflow": 1268,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 368,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W45",
+     "closed": false,
+     "list_n": 2080,
+     "overflow": 1280,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 380,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W46",
+     "closed": false,
+     "list_n": 2092,
+     "overflow": 1292,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 392,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W47",
+     "closed": false,
+     "list_n": 2104,
+     "overflow": 1304,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 404,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W48",
+     "closed": false,
+     "list_n": 2116,
+     "overflow": 1316,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 416,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W49",
+     "closed": false,
+     "list_n": 2128,
+     "overflow": 1328,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 428,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W50",
+     "closed": false,
+     "list_n": 2140,
+     "overflow": 1340,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 440,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W51",
+     "closed": false,
+     "list_n": 2152,
+     "overflow": 1352,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 452,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2025-W52",
+     "closed": false,
+     "list_n": 2164,
+     "overflow": 1364,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 464,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2026-W01",
+     "closed": false,
+     "list_n": 2176,
+     "overflow": 1376,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 476,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2026-W02",
+     "closed": false,
+     "list_n": 2188,
+     "overflow": 1388,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 488,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2026-W03",
+     "closed": false,
+     "list_n": 2200,
+     "overflow": 1400,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 500,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2026-W04",
+     "closed": false,
+     "list_n": 2250,
+     "overflow": 1450,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 550,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2026-W05",
+     "closed": true,
+     "list_n": 1500,
+     "overflow": 1500,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 600,
+      "SM": 600,
+      "EC": 300
+     }
+    },
+    {
+     "w": "2026-W06",
+     "closed": true,
+     "list_n": 750,
+     "overflow": 750,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 300,
+      "SM": 300,
+      "EC": 150
+     }
+    },
+    {
+     "w": "2026-W15",
+     "closed": false,
+     "list_n": 803,
+     "overflow": 3,
+     "markets": 3,
+     "overflow_markets": {
+      "EC": 3
+     }
+    },
+    {
+     "w": "2026-W16",
+     "closed": false,
+     "list_n": 853,
+     "overflow": 53,
+     "markets": 3,
+     "overflow_markets": {
+      "EC": 53
+     }
+    },
+    {
+     "w": "2026-W17",
+     "closed": false,
+     "list_n": 978,
+     "overflow": 178,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 28,
+      "EC": 150
+     }
+    },
+    {
+     "w": "2026-W18",
+     "closed": false,
+     "list_n": 1103,
+     "overflow": 303,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 153,
+      "EC": 150
+     }
+    },
+    {
+     "w": "2026-W19",
+     "closed": false,
+     "list_n": 1228,
+     "overflow": 428,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 278,
+      "EC": 150
+     }
+    },
+    {
+     "w": "2026-W20",
+     "closed": false,
+     "list_n": 1353,
+     "overflow": 553,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 103,
+      "SM": 300,
+      "EC": 150
+     }
+    },
+    {
+     "w": "2026-W21",
+     "closed": false,
+     "list_n": 1478,
+     "overflow": 678,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 228,
+      "SM": 300,
+      "EC": 150
+     }
+    },
+    {
+     "w": "2026-W22",
+     "closed": false,
+     "list_n": 1603,
+     "overflow": 803,
+     "markets": 3,
+     "overflow_markets": {
+      "EC": 203,
+      "CVS": 300,
+      "SM": 300
+     }
+    },
+    {
+     "w": "2026-W23",
+     "closed": false,
+     "list_n": 1728,
+     "overflow": 928,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 320,
+      "EC": 308,
+      "CVS": 300
+     }
+    },
+    {
+     "w": "2026-W24",
+     "closed": false,
+     "list_n": 1853,
+     "overflow": 1053,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 445,
+      "EC": 308,
+      "CVS": 300
+     }
+    },
+    {
+     "w": "2026-W25",
+     "closed": false,
+     "list_n": 1978,
+     "overflow": 1178,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 570,
+      "EC": 308,
+      "CVS": 300
+     }
+    },
+    {
+     "w": "2026-W26",
+     "closed": false,
+     "list_n": 1990,
+     "overflow": 1190,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 582,
+      "EC": 308,
+      "CVS": 300
+     }
+    },
+    {
+     "w": "2026-W27",
+     "closed": false,
+     "list_n": 2002,
+     "overflow": 1202,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 594,
+      "EC": 308,
+      "CVS": 300
+     }
+    },
+    {
+     "w": "2026-W28",
+     "closed": false,
+     "list_n": 2014,
+     "overflow": 1214,
+     "markets": 3,
+     "overflow_markets": {
+      "SM": 606,
+      "EC": 308,
+      "CVS": 300
+     }
+    },
+    {
+     "w": "2026-W29",
+     "closed": false,
+     "list_n": 2026,
+     "overflow": 1226,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 303,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W30",
+     "closed": false,
+     "list_n": 2038,
+     "overflow": 1238,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 315,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W31",
+     "closed": false,
+     "list_n": 2050,
+     "overflow": 1250,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 327,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W32",
+     "closed": false,
+     "list_n": 2062,
+     "overflow": 1262,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 339,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W33",
+     "closed": false,
+     "list_n": 2074,
+     "overflow": 1274,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 351,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W34",
+     "closed": false,
+     "list_n": 2086,
+     "overflow": 1286,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 363,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W35",
+     "closed": false,
+     "list_n": 2098,
+     "overflow": 1298,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 375,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W36",
+     "closed": false,
+     "list_n": 2110,
+     "overflow": 1310,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 387,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W37",
+     "closed": false,
+     "list_n": 2122,
+     "overflow": 1322,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 399,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W38",
+     "closed": false,
+     "list_n": 2134,
+     "overflow": 1334,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 411,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W39",
+     "closed": false,
+     "list_n": 2146,
+     "overflow": 1346,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 423,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W40",
+     "closed": false,
+     "list_n": 2158,
+     "overflow": 1358,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 435,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W41",
+     "closed": false,
+     "list_n": 2170,
+     "overflow": 1370,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 447,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W42",
+     "closed": false,
+     "list_n": 2182,
+     "overflow": 1382,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 459,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W43",
+     "closed": false,
+     "list_n": 2194,
+     "overflow": 1394,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 471,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W44",
+     "closed": false,
+     "list_n": 2206,
+     "overflow": 1406,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 483,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W45",
+     "closed": false,
+     "list_n": 2218,
+     "overflow": 1418,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 495,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W46",
+     "closed": false,
+     "list_n": 2230,
+     "overflow": 1430,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 507,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W47",
+     "closed": false,
+     "list_n": 2242,
+     "overflow": 1442,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 519,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W48",
+     "closed": false,
+     "list_n": 2254,
+     "overflow": 1454,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 531,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W49",
+     "closed": false,
+     "list_n": 2266,
+     "overflow": 1466,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 543,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W50",
+     "closed": false,
+     "list_n": 2278,
+     "overflow": 1478,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 555,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W51",
+     "closed": false,
+     "list_n": 2290,
+     "overflow": 1490,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 567,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W52",
+     "closed": false,
+     "list_n": 2302,
+     "overflow": 1502,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 579,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2026-W53",
+     "closed": false,
+     "list_n": 2314,
+     "overflow": 1514,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 591,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2027-W01",
+     "closed": false,
+     "list_n": 2326,
+     "overflow": 1526,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 603,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2027-W02",
+     "closed": true,
+     "list_n": 1538,
+     "overflow": 1538,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 615,
+      "SM": 615,
+      "EC": 308
+     }
+    },
+    {
+     "w": "2027-W03",
+     "closed": true,
+     "list_n": 750,
+     "overflow": 750,
+     "markets": 3,
+     "overflow_markets": {
+      "CVS": 300,
+      "SM": 300,
+      "EC": 150
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "Cookie_Local",
+   "factory": "Factory_DP_JP",
+   "weeks": [],
+   "dropped": {}
+  }
+ ]
+}

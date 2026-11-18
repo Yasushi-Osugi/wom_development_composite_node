@@ -1,0 +1,178 @@
+{
+ "model": "ev-europe-2026",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 3.0,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "EVmaker_Local",
+   "factory": "Factory_Local_DE",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 2,
+   "closed_weeks_pushed_multi_market": 2,
+   "pushed_back_lots": 1000,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W32",
+   "last_overflow_week": "2027-W32"
+  },
+  {
+   "product": "EVmaker_Import",
+   "factory": "Factory_Import_HU",
+   "overflow_weeks": 5,
+   "overflow_weeks_multi_market": 5,
+   "closed_weeks_pushed": 4,
+   "closed_weeks_pushed_multi_market": 3,
+   "pushed_back_lots": 830,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W28",
+   "last_overflow_week": "2027-W32"
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "EVmaker_Local",
+   "factory": "Factory_Local_DE",
+   "weeks": [
+    {
+     "w": "2026-W32",
+     "closed": true,
+     "list_n": 500,
+     "overflow": 500,
+     "markets": 3,
+     "overflow_markets": {
+      "BER": 250,
+      "REG": 200,
+      "ONL": 50
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": true,
+     "list_n": 500,
+     "overflow": 500,
+     "markets": 3,
+     "overflow_markets": {
+      "BER": 250,
+      "REG": 200,
+      "ONL": 50
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "EVmaker_Import",
+   "factory": "Factory_Import_HU",
+   "weeks": [
+    {
+     "w": "2026-W28",
+     "closed": false,
+     "list_n": 200,
+     "overflow": 50,
+     "markets": 3,
+     "overflow_markets": {
+      "REG": 40,
+      "ONL": 10
+     }
+    },
+    {
+     "w": "2026-W29",
+     "closed": false,
+     "list_n": 250,
+     "overflow": 100,
+     "markets": 3,
+     "overflow_markets": {
+      "BER": 50,
+      "REG": 40,
+      "ONL": 10
+     }
+    },
+    {
+     "w": "2026-W30",
+     "closed": false,
+     "list_n": 300,
+     "overflow": 150,
+     "markets": 3,
+     "overflow_markets": {
+      "REG": 80,
+      "ONL": 20,
+      "BER": 50
+     }
+    },
+    {
+     "w": "2026-W31",
+     "closed": true,
+     "list_n": 200,
+     "overflow": 200,
+     "markets": 3,
+     "overflow_markets": {
+      "BER": 100,
+      "REG": 80,
+      "ONL": 20
+     }
+    },
+    {
+     "w": "2026-W32",
+     "closed": true,
+     "list_n": 100,
+     "overflow": 100,
+     "markets": 3,
+     "overflow_markets": {
+      "BER": 50,
+      "REG": 40,
+      "ONL": 10
+     }
+    },
+    {
+     "w": "2027-W29",
+     "closed": false,
+     "list_n": 160,
+     "overflow": 10,
+     "markets": 3,
+     "overflow_markets": {
+      "BER": 10
+     }
+    },
+    {
+     "w": "2027-W30",
+     "closed": false,
+     "list_n": 210,
+     "overflow": 60,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 10,
+      "BER": 50
+     }
+    },
+    {
+     "w": "2027-W31",
+     "closed": true,
+     "list_n": 110,
+     "overflow": 110,
+     "markets": 2,
+     "overflow_markets": {
+      "BER": 100,
+      "ONL": 10
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": true,
+     "list_n": 50,
+     "overflow": 50,
+     "markets": 1,
+     "overflow_markets": {
+      "BER": 50
+     }
+    }
+   ],
+   "dropped": {}
+  }
+ ]
+}

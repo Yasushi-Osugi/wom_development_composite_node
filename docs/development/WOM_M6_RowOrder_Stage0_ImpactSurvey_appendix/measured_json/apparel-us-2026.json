@@ -1,0 +1,373 @@
+{
+ "model": "apparel-us-2026",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 4.9,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "Apparel_Outsourced_S1",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Outsourced_S2",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Outsourced_S3",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 1,
+   "overflow_weeks_multi_market": 1,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 708,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W08",
+   "last_overflow_week": "2026-W08"
+  },
+  {
+   "product": "Apparel_Outsourced_S4",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Outsourced_S5",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Outsourced_S6",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Outsourced_S7",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Outsourced_S8",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Integrated_S1",
+   "factory": "Factory_Local_ES",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Integrated_S2",
+   "factory": "Factory_Local_ES",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Integrated_S3",
+   "factory": "Factory_Local_ES",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Integrated_S4",
+   "factory": "Factory_Local_ES",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Integrated_S5",
+   "factory": "Factory_Local_ES",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Integrated_S6",
+   "factory": "Factory_Local_ES",
+   "overflow_weeks": 4,
+   "overflow_weeks_multi_market": 4,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 5284,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W32",
+   "last_overflow_week": "2027-W33"
+  },
+  {
+   "product": "Apparel_Integrated_S7",
+   "factory": "Factory_Local_ES",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Apparel_Integrated_S8",
+   "factory": "Factory_Local_ES",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "Apparel_Outsourced_S1",
+   "factory": "Factory_Import_CN",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Outsourced_S2",
+   "factory": "Factory_Import_CN",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Outsourced_S3",
+   "factory": "Factory_Import_CN",
+   "weeks": [
+    {
+     "w": "2026-W08",
+     "closed": false,
+     "list_n": 2208,
+     "overflow": 708,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 708
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Outsourced_S4",
+   "factory": "Factory_Import_CN",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Outsourced_S5",
+   "factory": "Factory_Import_CN",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Outsourced_S6",
+   "factory": "Factory_Import_CN",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Outsourced_S7",
+   "factory": "Factory_Import_CN",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Outsourced_S8",
+   "factory": "Factory_Import_CN",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Integrated_S1",
+   "factory": "Factory_Local_ES",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Integrated_S2",
+   "factory": "Factory_Local_ES",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Integrated_S3",
+   "factory": "Factory_Local_ES",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Integrated_S4",
+   "factory": "Factory_Local_ES",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Integrated_S5",
+   "factory": "Factory_Local_ES",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Integrated_S6",
+   "factory": "Factory_Local_ES",
+   "weeks": [
+    {
+     "w": "2026-W32",
+     "closed": false,
+     "list_n": 2871,
+     "overflow": 1371,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 879,
+      "CA": 492
+     }
+    },
+    {
+     "w": "2026-W33",
+     "closed": false,
+     "list_n": 2771,
+     "overflow": 1271,
+     "markets": 3,
+     "overflow_markets": {
+      "CA": 492,
+      "NY": 779
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 2871,
+     "overflow": 1371,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 879,
+      "CA": 492
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 2771,
+     "overflow": 1271,
+     "markets": 3,
+     "overflow_markets": {
+      "CA": 492,
+      "NY": 779
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Integrated_S7",
+   "factory": "Factory_Local_ES",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Apparel_Integrated_S8",
+   "factory": "Factory_Local_ES",
+   "weeks": [],
+   "dropped": {}
+  }
+ ]
+}

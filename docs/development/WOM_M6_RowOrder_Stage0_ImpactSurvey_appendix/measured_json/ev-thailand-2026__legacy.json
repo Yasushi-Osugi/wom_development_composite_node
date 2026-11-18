@@ -1,0 +1,219 @@
+{
+ "model": "ev-thailand-2026",
+ "legacy_golden": true,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "legacy",
+ "seconds": 2.7,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "EVmaker_Local",
+   "factory": "Factory_Local_TH",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 2,
+   "closed_weeks_pushed_multi_market": 2,
+   "pushed_back_lots": 1000,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W32",
+   "last_overflow_week": "2027-W32"
+  },
+  {
+   "product": "EVmaker_Import",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 8,
+   "overflow_weeks_multi_market": 8,
+   "closed_weeks_pushed": 4,
+   "closed_weeks_pushed_multi_market": 4,
+   "pushed_back_lots": 1440,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W36",
+   "last_overflow_week": "2027-W41"
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "EVmaker_Local",
+   "factory": "Factory_Local_TH",
+   "weeks": [
+    {
+     "w": "2026-W32",
+     "closed": true,
+     "list_n": 500,
+     "overflow": 500,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 250,
+      "PRO": 200,
+      "ONL": 50
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": true,
+     "list_n": 500,
+     "overflow": 500,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 250,
+      "PRO": 200,
+      "ONL": 50
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "EVmaker_Import",
+   "factory": "Factory_Import_CN",
+   "weeks": [
+    {
+     "w": "2026-W36",
+     "closed": false,
+     "list_n": 171,
+     "overflow": 21,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 9,
+      "ONL": 12
+     }
+    },
+    {
+     "w": "2026-W37",
+     "closed": false,
+     "list_n": 221,
+     "overflow": 71,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 13,
+      "PRO": 46,
+      "ONL": 12
+     }
+    },
+    {
+     "w": "2026-W38",
+     "closed": false,
+     "list_n": 271,
+     "overflow": 121,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 18,
+      "BKK": 57,
+      "PRO": 46
+     }
+    },
+    {
+     "w": "2026-W39",
+     "closed": false,
+     "list_n": 321,
+     "overflow": 171,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 92,
+      "ONL": 22,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W40",
+     "closed": true,
+     "list_n": 221,
+     "overflow": 221,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 107,
+      "PRO": 92,
+      "ONL": 22
+     }
+    },
+    {
+     "w": "2026-W41",
+     "closed": true,
+     "list_n": 115,
+     "overflow": 115,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 57,
+      "PRO": 46,
+      "ONL": 12
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 171,
+     "overflow": 21,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 9,
+      "ONL": 12
+     }
+    },
+    {
+     "w": "2027-W37",
+     "closed": false,
+     "list_n": 221,
+     "overflow": 71,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 13,
+      "PRO": 46,
+      "ONL": 12
+     }
+    },
+    {
+     "w": "2027-W38",
+     "closed": false,
+     "list_n": 271,
+     "overflow": 121,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 18,
+      "BKK": 57,
+      "PRO": 46
+     }
+    },
+    {
+     "w": "2027-W39",
+     "closed": false,
+     "list_n": 321,
+     "overflow": 171,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 92,
+      "ONL": 22,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W40",
+     "closed": true,
+     "list_n": 221,
+     "overflow": 221,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 107,
+      "PRO": 92,
+      "ONL": 22
+     }
+    },
+    {
+     "w": "2027-W41",
+     "closed": true,
+     "list_n": 115,
+     "overflow": 115,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 57,
+      "PRO": 46,
+      "ONL": 12
+     }
+    }
+   ],
+   "dropped": {}
+  }
+ ]
+}

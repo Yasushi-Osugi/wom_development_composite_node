@@ -1,0 +1,1243 @@
+{
+ "model": "ev-thailand-2026_update",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 3.1,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "EVmaker_Local",
+   "factory": "Factory_Local_TH",
+   "overflow_weeks": 2,
+   "overflow_weeks_multi_market": 2,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 700,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W32",
+   "last_overflow_week": "2027-W32"
+  },
+  {
+   "product": "EVmaker_Import",
+   "factory": "Factory_Import_CN",
+   "overflow_weeks": 99,
+   "overflow_weeks_multi_market": 99,
+   "closed_weeks_pushed": 4,
+   "closed_weeks_pushed_multi_market": 4,
+   "pushed_back_lots": 13253,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2025-W47",
+   "last_overflow_week": "2027-W44"
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "EVmaker_Local",
+   "factory": "Factory_Local_TH",
+   "weeks": [
+    {
+     "w": "2026-W32",
+     "closed": false,
+     "list_n": 500,
+     "overflow": 350,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 100,
+      "PRO": 200,
+      "ONL": 50
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 500,
+     "overflow": 350,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 100,
+      "PRO": 200,
+      "ONL": 50
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "EVmaker_Import",
+   "factory": "Factory_Import_CN",
+   "weeks": [
+    {
+     "w": "2025-W47",
+     "closed": false,
+     "list_n": 137,
+     "overflow": 32,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 32
+     }
+    },
+    {
+     "w": "2025-W48",
+     "closed": false,
+     "list_n": 132,
+     "overflow": 27,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 27
+     }
+    },
+    {
+     "w": "2025-W49",
+     "closed": false,
+     "list_n": 127,
+     "overflow": 22,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 22
+     }
+    },
+    {
+     "w": "2025-W50",
+     "closed": false,
+     "list_n": 126,
+     "overflow": 21,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 21
+     }
+    },
+    {
+     "w": "2025-W51",
+     "closed": false,
+     "list_n": 131,
+     "overflow": 26,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 26
+     }
+    },
+    {
+     "w": "2025-W52",
+     "closed": false,
+     "list_n": 136,
+     "overflow": 31,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 31
+     }
+    },
+    {
+     "w": "2026-W01",
+     "closed": false,
+     "list_n": 141,
+     "overflow": 36,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 36
+     }
+    },
+    {
+     "w": "2026-W02",
+     "closed": false,
+     "list_n": 146,
+     "overflow": 41,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 41
+     }
+    },
+    {
+     "w": "2026-W03",
+     "closed": false,
+     "list_n": 151,
+     "overflow": 46,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 46
+     }
+    },
+    {
+     "w": "2026-W04",
+     "closed": false,
+     "list_n": 156,
+     "overflow": 51,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 51
+     }
+    },
+    {
+     "w": "2026-W05",
+     "closed": false,
+     "list_n": 161,
+     "overflow": 56,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 56
+     }
+    },
+    {
+     "w": "2026-W06",
+     "closed": false,
+     "list_n": 166,
+     "overflow": 61,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 61
+     }
+    },
+    {
+     "w": "2026-W07",
+     "closed": false,
+     "list_n": 179,
+     "overflow": 74,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 12,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W08",
+     "closed": false,
+     "list_n": 204,
+     "overflow": 99,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 37,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W09",
+     "closed": false,
+     "list_n": 221,
+     "overflow": 116,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 8,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W10",
+     "closed": false,
+     "list_n": 226,
+     "overflow": 121,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 13,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W11",
+     "closed": false,
+     "list_n": 231,
+     "overflow": 126,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 18,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W12",
+     "closed": false,
+     "list_n": 236,
+     "overflow": 131,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 23,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W13",
+     "closed": false,
+     "list_n": 241,
+     "overflow": 136,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 28,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W14",
+     "closed": false,
+     "list_n": 246,
+     "overflow": 141,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 33,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W15",
+     "closed": false,
+     "list_n": 251,
+     "overflow": 146,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 38,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W16",
+     "closed": false,
+     "list_n": 256,
+     "overflow": 151,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 43,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W17",
+     "closed": false,
+     "list_n": 261,
+     "overflow": 156,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 48,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W18",
+     "closed": false,
+     "list_n": 266,
+     "overflow": 161,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 53,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W19",
+     "closed": false,
+     "list_n": 271,
+     "overflow": 166,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 63,
+      "BKK": 57,
+      "PRO": 46
+     }
+    },
+    {
+     "w": "2026-W20",
+     "closed": false,
+     "list_n": 276,
+     "overflow": 171,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 68,
+      "BKK": 57,
+      "PRO": 46
+     }
+    },
+    {
+     "w": "2026-W21",
+     "closed": false,
+     "list_n": 281,
+     "overflow": 176,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 47,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W22",
+     "closed": false,
+     "list_n": 286,
+     "overflow": 181,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 52,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W23",
+     "closed": false,
+     "list_n": 291,
+     "overflow": 186,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 57,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W24",
+     "closed": false,
+     "list_n": 296,
+     "overflow": 191,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 62,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W25",
+     "closed": false,
+     "list_n": 301,
+     "overflow": 196,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 67,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W26",
+     "closed": false,
+     "list_n": 306,
+     "overflow": 201,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 72,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W27",
+     "closed": false,
+     "list_n": 311,
+     "overflow": 206,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 77,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W28",
+     "closed": false,
+     "list_n": 316,
+     "overflow": 211,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 82,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W29",
+     "closed": false,
+     "list_n": 321,
+     "overflow": 216,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 87,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W30",
+     "closed": false,
+     "list_n": 326,
+     "overflow": 221,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 92,
+      "ONL": 72,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2026-W31",
+     "closed": false,
+     "list_n": 331,
+     "overflow": 226,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 62,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W32",
+     "closed": false,
+     "list_n": 336,
+     "overflow": 231,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 67,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W33",
+     "closed": false,
+     "list_n": 341,
+     "overflow": 236,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 72,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W34",
+     "closed": false,
+     "list_n": 346,
+     "overflow": 241,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 77,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W35",
+     "closed": false,
+     "list_n": 351,
+     "overflow": 246,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 82,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W36",
+     "closed": false,
+     "list_n": 356,
+     "overflow": 251,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 87,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W37",
+     "closed": false,
+     "list_n": 361,
+     "overflow": 256,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 92,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W38",
+     "closed": false,
+     "list_n": 366,
+     "overflow": 261,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 97,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W39",
+     "closed": false,
+     "list_n": 371,
+     "overflow": 266,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 102,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W40",
+     "closed": true,
+     "list_n": 271,
+     "overflow": 271,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 107,
+      "PRO": 92,
+      "ONL": 72
+     }
+    },
+    {
+     "w": "2026-W41",
+     "closed": true,
+     "list_n": 165,
+     "overflow": 165,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 57,
+      "PRO": 46,
+      "ONL": 62
+     }
+    },
+    {
+     "w": "2026-W42",
+     "closed": false,
+     "list_n": 155,
+     "overflow": 50,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 50
+     }
+    },
+    {
+     "w": "2026-W43",
+     "closed": false,
+     "list_n": 145,
+     "overflow": 40,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 40
+     }
+    },
+    {
+     "w": "2026-W44",
+     "closed": false,
+     "list_n": 135,
+     "overflow": 30,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 30
+     }
+    },
+    {
+     "w": "2026-W45",
+     "closed": false,
+     "list_n": 125,
+     "overflow": 20,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 20
+     }
+    },
+    {
+     "w": "2026-W46",
+     "closed": false,
+     "list_n": 121,
+     "overflow": 16,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 16
+     }
+    },
+    {
+     "w": "2026-W47",
+     "closed": false,
+     "list_n": 122,
+     "overflow": 17,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 17
+     }
+    },
+    {
+     "w": "2026-W48",
+     "closed": false,
+     "list_n": 117,
+     "overflow": 12,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 12
+     }
+    },
+    {
+     "w": "2026-W49",
+     "closed": false,
+     "list_n": 112,
+     "overflow": 7,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 7
+     }
+    },
+    {
+     "w": "2026-W50",
+     "closed": false,
+     "list_n": 107,
+     "overflow": 2,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 2
+     }
+    },
+    {
+     "w": "2026-W51",
+     "closed": false,
+     "list_n": 106,
+     "overflow": 1,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 1
+     }
+    },
+    {
+     "w": "2026-W52",
+     "closed": false,
+     "list_n": 111,
+     "overflow": 6,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 6
+     }
+    },
+    {
+     "w": "2026-W53",
+     "closed": false,
+     "list_n": 116,
+     "overflow": 11,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 11
+     }
+    },
+    {
+     "w": "2027-W01",
+     "closed": false,
+     "list_n": 121,
+     "overflow": 16,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 16
+     }
+    },
+    {
+     "w": "2027-W02",
+     "closed": false,
+     "list_n": 126,
+     "overflow": 21,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 21
+     }
+    },
+    {
+     "w": "2027-W03",
+     "closed": false,
+     "list_n": 131,
+     "overflow": 26,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 26
+     }
+    },
+    {
+     "w": "2027-W04",
+     "closed": false,
+     "list_n": 136,
+     "overflow": 31,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 31
+     }
+    },
+    {
+     "w": "2027-W05",
+     "closed": false,
+     "list_n": 141,
+     "overflow": 36,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 36
+     }
+    },
+    {
+     "w": "2027-W06",
+     "closed": false,
+     "list_n": 146,
+     "overflow": 41,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 41
+     }
+    },
+    {
+     "w": "2027-W07",
+     "closed": false,
+     "list_n": 159,
+     "overflow": 54,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 12,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W08",
+     "closed": false,
+     "list_n": 184,
+     "overflow": 79,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 37,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W09",
+     "closed": false,
+     "list_n": 201,
+     "overflow": 96,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 8,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W10",
+     "closed": false,
+     "list_n": 206,
+     "overflow": 101,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 13,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W11",
+     "closed": false,
+     "list_n": 211,
+     "overflow": 106,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 18,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W12",
+     "closed": false,
+     "list_n": 216,
+     "overflow": 111,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 23,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W13",
+     "closed": false,
+     "list_n": 221,
+     "overflow": 116,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 28,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W14",
+     "closed": false,
+     "list_n": 226,
+     "overflow": 121,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 33,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W15",
+     "closed": false,
+     "list_n": 231,
+     "overflow": 126,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 38,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W16",
+     "closed": false,
+     "list_n": 236,
+     "overflow": 131,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 43,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 241,
+     "overflow": 136,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 48,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": false,
+     "list_n": 246,
+     "overflow": 141,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 53,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W19",
+     "closed": false,
+     "list_n": 251,
+     "overflow": 146,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 43,
+      "BKK": 57,
+      "PRO": 46
+     }
+    },
+    {
+     "w": "2027-W20",
+     "closed": false,
+     "list_n": 256,
+     "overflow": 151,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 48,
+      "BKK": 57,
+      "PRO": 46
+     }
+    },
+    {
+     "w": "2027-W21",
+     "closed": false,
+     "list_n": 261,
+     "overflow": 156,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 47,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W22",
+     "closed": false,
+     "list_n": 266,
+     "overflow": 161,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 52,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W23",
+     "closed": false,
+     "list_n": 271,
+     "overflow": 166,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 57,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W24",
+     "closed": false,
+     "list_n": 276,
+     "overflow": 171,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 62,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W25",
+     "closed": false,
+     "list_n": 281,
+     "overflow": 176,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 67,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W26",
+     "closed": false,
+     "list_n": 286,
+     "overflow": 181,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 72,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W27",
+     "closed": false,
+     "list_n": 291,
+     "overflow": 186,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 77,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W28",
+     "closed": false,
+     "list_n": 296,
+     "overflow": 191,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 82,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W29",
+     "closed": false,
+     "list_n": 301,
+     "overflow": 196,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 87,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W30",
+     "closed": false,
+     "list_n": 306,
+     "overflow": 201,
+     "markets": 3,
+     "overflow_markets": {
+      "PRO": 92,
+      "ONL": 52,
+      "BKK": 57
+     }
+    },
+    {
+     "w": "2027-W31",
+     "closed": false,
+     "list_n": 311,
+     "overflow": 206,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 62,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 316,
+     "overflow": 211,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 67,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 321,
+     "overflow": 216,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 72,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W34",
+     "closed": false,
+     "list_n": 326,
+     "overflow": 221,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 77,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W35",
+     "closed": false,
+     "list_n": 331,
+     "overflow": 226,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 82,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 336,
+     "overflow": 231,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 87,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W37",
+     "closed": false,
+     "list_n": 341,
+     "overflow": 236,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 92,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W38",
+     "closed": false,
+     "list_n": 346,
+     "overflow": 241,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 97,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W39",
+     "closed": false,
+     "list_n": 351,
+     "overflow": 246,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 102,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W40",
+     "closed": true,
+     "list_n": 251,
+     "overflow": 251,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 107,
+      "PRO": 92,
+      "ONL": 52
+     }
+    },
+    {
+     "w": "2027-W41",
+     "closed": true,
+     "list_n": 145,
+     "overflow": 145,
+     "markets": 3,
+     "overflow_markets": {
+      "BKK": 57,
+      "PRO": 46,
+      "ONL": 42
+     }
+    },
+    {
+     "w": "2027-W42",
+     "closed": false,
+     "list_n": 135,
+     "overflow": 30,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 30
+     }
+    },
+    {
+     "w": "2027-W43",
+     "closed": false,
+     "list_n": 125,
+     "overflow": 20,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 20
+     }
+    },
+    {
+     "w": "2027-W44",
+     "closed": false,
+     "list_n": 115,
+     "overflow": 10,
+     "markets": 3,
+     "overflow_markets": {
+      "ONL": 10
+     }
+    }
+   ],
+   "dropped": {}
+  }
+ ]
+}

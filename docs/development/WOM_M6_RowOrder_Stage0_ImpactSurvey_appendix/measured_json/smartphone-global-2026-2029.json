@@ -1,0 +1,4082 @@
+{
+ "model": "smartphone-global-2026-2029",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 20.9,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "Phone16",
+   "factory": "EMS_A_CN",
+   "overflow_weeks": 148,
+   "overflow_weeks_multi_market": 128,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 2461276,
+   "dropped_by_market": {
+    "APAC": 24587
+   },
+   "dropped_total": 24587,
+   "first_overflow_week": "2026-W28",
+   "last_overflow_week": "2029-W18"
+  },
+  {
+   "product": "Phone16",
+   "factory": "EMS_A_IN",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Phone15",
+   "factory": "EMS_A_CN_i15",
+   "overflow_weeks": 160,
+   "overflow_weeks_multi_market": 160,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 1609879,
+   "dropped_by_market": {
+    "APAC": 16249,
+    "EMEA": 3298
+   },
+   "dropped_total": 19547,
+   "first_overflow_week": "2026-W28",
+   "last_overflow_week": "2029-W30"
+  },
+  {
+   "product": "Phone17",
+   "factory": "EMS_A_CN_i17",
+   "overflow_weeks": 73,
+   "overflow_weeks_multi_market": 73,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 3217648,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2028-W27",
+   "last_overflow_week": "2029-W47"
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "Phone16",
+   "factory": "EMS_A_CN",
+   "weeks": [
+    {
+     "w": "2026-W28",
+     "closed": false,
+     "list_n": 25387,
+     "overflow": 24587,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 24587
+     }
+    },
+    {
+     "w": "2026-W29",
+     "closed": false,
+     "list_n": 26187,
+     "overflow": 25387,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 25387
+     }
+    },
+    {
+     "w": "2026-W30",
+     "closed": false,
+     "list_n": 26987,
+     "overflow": 26187,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 26187
+     }
+    },
+    {
+     "w": "2026-W31",
+     "closed": false,
+     "list_n": 27787,
+     "overflow": 26987,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 26987
+     }
+    },
+    {
+     "w": "2026-W32",
+     "closed": false,
+     "list_n": 28587,
+     "overflow": 27787,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 27787
+     }
+    },
+    {
+     "w": "2026-W33",
+     "closed": false,
+     "list_n": 29387,
+     "overflow": 28587,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 28587
+     }
+    },
+    {
+     "w": "2026-W34",
+     "closed": false,
+     "list_n": 30187,
+     "overflow": 29387,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 29387
+     }
+    },
+    {
+     "w": "2026-W35",
+     "closed": false,
+     "list_n": 30987,
+     "overflow": 30187,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 30187
+     }
+    },
+    {
+     "w": "2026-W36",
+     "closed": false,
+     "list_n": 31787,
+     "overflow": 30987,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 30987
+     }
+    },
+    {
+     "w": "2026-W37",
+     "closed": false,
+     "list_n": 32587,
+     "overflow": 31787,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 31787
+     }
+    },
+    {
+     "w": "2026-W38",
+     "closed": false,
+     "list_n": 33387,
+     "overflow": 32587,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 32587
+     }
+    },
+    {
+     "w": "2026-W39",
+     "closed": false,
+     "list_n": 34187,
+     "overflow": 33387,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 33387
+     }
+    },
+    {
+     "w": "2026-W40",
+     "closed": false,
+     "list_n": 34987,
+     "overflow": 34187,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 34187
+     }
+    },
+    {
+     "w": "2026-W41",
+     "closed": false,
+     "list_n": 35787,
+     "overflow": 34987,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 34987
+     }
+    },
+    {
+     "w": "2026-W42",
+     "closed": false,
+     "list_n": 36587,
+     "overflow": 35787,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 35787
+     }
+    },
+    {
+     "w": "2026-W43",
+     "closed": false,
+     "list_n": 37387,
+     "overflow": 36587,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 36587
+     }
+    },
+    {
+     "w": "2026-W44",
+     "closed": false,
+     "list_n": 38187,
+     "overflow": 37387,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 37387
+     }
+    },
+    {
+     "w": "2026-W45",
+     "closed": false,
+     "list_n": 38987,
+     "overflow": 38187,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 38187
+     }
+    },
+    {
+     "w": "2026-W46",
+     "closed": false,
+     "list_n": 39787,
+     "overflow": 38987,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 38987
+     }
+    },
+    {
+     "w": "2026-W47",
+     "closed": false,
+     "list_n": 40587,
+     "overflow": 39787,
+     "markets": 1,
+     "overflow_markets": {
+      "APAC": 39787
+     }
+    },
+    {
+     "w": "2026-W48",
+     "closed": false,
+     "list_n": 41387,
+     "overflow": 40587,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 40587
+     }
+    },
+    {
+     "w": "2026-W49",
+     "closed": false,
+     "list_n": 41557,
+     "overflow": 40757,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 40757
+     }
+    },
+    {
+     "w": "2026-W50",
+     "closed": false,
+     "list_n": 41007,
+     "overflow": 40207,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 40207
+     }
+    },
+    {
+     "w": "2026-W51",
+     "closed": false,
+     "list_n": 40457,
+     "overflow": 39657,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 39657
+     }
+    },
+    {
+     "w": "2026-W52",
+     "closed": false,
+     "list_n": 39907,
+     "overflow": 39107,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 39107
+     }
+    },
+    {
+     "w": "2026-W53",
+     "closed": false,
+     "list_n": 39357,
+     "overflow": 38557,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 38557
+     }
+    },
+    {
+     "w": "2027-W01",
+     "closed": false,
+     "list_n": 38807,
+     "overflow": 38007,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 38007
+     }
+    },
+    {
+     "w": "2027-W02",
+     "closed": false,
+     "list_n": 38257,
+     "overflow": 37457,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 37457
+     }
+    },
+    {
+     "w": "2027-W03",
+     "closed": false,
+     "list_n": 37707,
+     "overflow": 36907,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 36907
+     }
+    },
+    {
+     "w": "2027-W04",
+     "closed": false,
+     "list_n": 37157,
+     "overflow": 36357,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 36357
+     }
+    },
+    {
+     "w": "2027-W05",
+     "closed": false,
+     "list_n": 36607,
+     "overflow": 35807,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 35807
+     }
+    },
+    {
+     "w": "2027-W06",
+     "closed": false,
+     "list_n": 36057,
+     "overflow": 35257,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 35257
+     }
+    },
+    {
+     "w": "2027-W07",
+     "closed": false,
+     "list_n": 35507,
+     "overflow": 34707,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 34707
+     }
+    },
+    {
+     "w": "2027-W08",
+     "closed": false,
+     "list_n": 34957,
+     "overflow": 34157,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 34157
+     }
+    },
+    {
+     "w": "2027-W09",
+     "closed": false,
+     "list_n": 34407,
+     "overflow": 33607,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 33607
+     }
+    },
+    {
+     "w": "2027-W10",
+     "closed": false,
+     "list_n": 33857,
+     "overflow": 33057,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 33057
+     }
+    },
+    {
+     "w": "2027-W11",
+     "closed": false,
+     "list_n": 33307,
+     "overflow": 32507,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 32507
+     }
+    },
+    {
+     "w": "2027-W12",
+     "closed": false,
+     "list_n": 32757,
+     "overflow": 31957,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 31957
+     }
+    },
+    {
+     "w": "2027-W13",
+     "closed": false,
+     "list_n": 32207,
+     "overflow": 31407,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 31407
+     }
+    },
+    {
+     "w": "2027-W14",
+     "closed": false,
+     "list_n": 31657,
+     "overflow": 30857,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 30857
+     }
+    },
+    {
+     "w": "2027-W15",
+     "closed": false,
+     "list_n": 31107,
+     "overflow": 30307,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 30307
+     }
+    },
+    {
+     "w": "2027-W16",
+     "closed": false,
+     "list_n": 30557,
+     "overflow": 29757,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 29757
+     }
+    },
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 30007,
+     "overflow": 29207,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 29207
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": false,
+     "list_n": 29457,
+     "overflow": 28657,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 28657
+     }
+    },
+    {
+     "w": "2027-W19",
+     "closed": false,
+     "list_n": 28907,
+     "overflow": 28107,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 28107
+     }
+    },
+    {
+     "w": "2027-W20",
+     "closed": false,
+     "list_n": 28357,
+     "overflow": 27557,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 27557
+     }
+    },
+    {
+     "w": "2027-W21",
+     "closed": false,
+     "list_n": 27807,
+     "overflow": 27007,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 27007
+     }
+    },
+    {
+     "w": "2027-W22",
+     "closed": false,
+     "list_n": 27260,
+     "overflow": 26460,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 26460
+     }
+    },
+    {
+     "w": "2027-W23",
+     "closed": false,
+     "list_n": 26719,
+     "overflow": 25919,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 25919
+     }
+    },
+    {
+     "w": "2027-W24",
+     "closed": false,
+     "list_n": 26185,
+     "overflow": 25385,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 25385
+     }
+    },
+    {
+     "w": "2027-W25",
+     "closed": false,
+     "list_n": 25658,
+     "overflow": 24858,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 24858
+     }
+    },
+    {
+     "w": "2027-W26",
+     "closed": false,
+     "list_n": 25137,
+     "overflow": 24337,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 24337
+     }
+    },
+    {
+     "w": "2027-W27",
+     "closed": false,
+     "list_n": 24623,
+     "overflow": 23824,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 23824
+     }
+    },
+    {
+     "w": "2027-W28",
+     "closed": false,
+     "list_n": 24115,
+     "overflow": 23317,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 23317
+     }
+    },
+    {
+     "w": "2027-W29",
+     "closed": false,
+     "list_n": 23612,
+     "overflow": 22815,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 22815
+     }
+    },
+    {
+     "w": "2027-W30",
+     "closed": false,
+     "list_n": 23115,
+     "overflow": 22319,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 22319
+     }
+    },
+    {
+     "w": "2027-W31",
+     "closed": false,
+     "list_n": 22623,
+     "overflow": 21828,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 21828
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 22136,
+     "overflow": 21342,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 21342
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 21655,
+     "overflow": 20862,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 20862
+     }
+    },
+    {
+     "w": "2027-W34",
+     "closed": false,
+     "list_n": 21180,
+     "overflow": 20388,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 20388
+     }
+    },
+    {
+     "w": "2027-W35",
+     "closed": false,
+     "list_n": 20711,
+     "overflow": 19919,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 19919
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 20249,
+     "overflow": 19458,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 19458
+     }
+    },
+    {
+     "w": "2027-W37",
+     "closed": false,
+     "list_n": 19793,
+     "overflow": 19003,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 19003
+     }
+    },
+    {
+     "w": "2027-W38",
+     "closed": false,
+     "list_n": 19342,
+     "overflow": 18553,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 18553
+     }
+    },
+    {
+     "w": "2027-W39",
+     "closed": false,
+     "list_n": 18897,
+     "overflow": 18109,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 18109
+     }
+    },
+    {
+     "w": "2027-W40",
+     "closed": false,
+     "list_n": 18457,
+     "overflow": 17670,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 17670
+     }
+    },
+    {
+     "w": "2027-W41",
+     "closed": false,
+     "list_n": 18022,
+     "overflow": 17236,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 17236
+     }
+    },
+    {
+     "w": "2027-W42",
+     "closed": false,
+     "list_n": 17480,
+     "overflow": 16695,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 16695
+     }
+    },
+    {
+     "w": "2027-W43",
+     "closed": false,
+     "list_n": 16945,
+     "overflow": 16161,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 16161
+     }
+    },
+    {
+     "w": "2027-W44",
+     "closed": false,
+     "list_n": 16415,
+     "overflow": 15632,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 15632
+     }
+    },
+    {
+     "w": "2027-W45",
+     "closed": false,
+     "list_n": 16004,
+     "overflow": 15222,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 15222
+     }
+    },
+    {
+     "w": "2027-W46",
+     "closed": false,
+     "list_n": 15599,
+     "overflow": 14818,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 14818
+     }
+    },
+    {
+     "w": "2027-W47",
+     "closed": false,
+     "list_n": 15199,
+     "overflow": 14419,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 14419
+     }
+    },
+    {
+     "w": "2027-W48",
+     "closed": false,
+     "list_n": 14809,
+     "overflow": 14030,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 14030
+     }
+    },
+    {
+     "w": "2027-W49",
+     "closed": false,
+     "list_n": 14428,
+     "overflow": 13650,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 13650
+     }
+    },
+    {
+     "w": "2027-W50",
+     "closed": false,
+     "list_n": 14053,
+     "overflow": 13276,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 13276
+     }
+    },
+    {
+     "w": "2027-W51",
+     "closed": false,
+     "list_n": 13683,
+     "overflow": 12907,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 12907
+     }
+    },
+    {
+     "w": "2027-W52",
+     "closed": false,
+     "list_n": 13320,
+     "overflow": 12545,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 12545
+     }
+    },
+    {
+     "w": "2028-W01",
+     "closed": false,
+     "list_n": 12964,
+     "overflow": 12189,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 12189
+     }
+    },
+    {
+     "w": "2028-W02",
+     "closed": false,
+     "list_n": 12615,
+     "overflow": 11841,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 11841
+     }
+    },
+    {
+     "w": "2028-W03",
+     "closed": false,
+     "list_n": 12272,
+     "overflow": 11499,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 11499
+     }
+    },
+    {
+     "w": "2028-W04",
+     "closed": false,
+     "list_n": 11935,
+     "overflow": 11163,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 11163
+     }
+    },
+    {
+     "w": "2028-W05",
+     "closed": false,
+     "list_n": 11604,
+     "overflow": 10833,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 10833
+     }
+    },
+    {
+     "w": "2028-W06",
+     "closed": false,
+     "list_n": 11279,
+     "overflow": 10509,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 10509
+     }
+    },
+    {
+     "w": "2028-W07",
+     "closed": false,
+     "list_n": 10961,
+     "overflow": 10192,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 10192
+     }
+    },
+    {
+     "w": "2028-W08",
+     "closed": false,
+     "list_n": 10649,
+     "overflow": 9881,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 9881
+     }
+    },
+    {
+     "w": "2028-W09",
+     "closed": false,
+     "list_n": 10343,
+     "overflow": 9576,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 9576
+     }
+    },
+    {
+     "w": "2028-W10",
+     "closed": false,
+     "list_n": 10043,
+     "overflow": 9277,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 9277
+     }
+    },
+    {
+     "w": "2028-W11",
+     "closed": false,
+     "list_n": 9750,
+     "overflow": 8985,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 8985
+     }
+    },
+    {
+     "w": "2028-W12",
+     "closed": false,
+     "list_n": 9463,
+     "overflow": 8699,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 8699
+     }
+    },
+    {
+     "w": "2028-W13",
+     "closed": false,
+     "list_n": 9183,
+     "overflow": 8420,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 8420
+     }
+    },
+    {
+     "w": "2028-W14",
+     "closed": false,
+     "list_n": 8909,
+     "overflow": 8147,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 8147
+     }
+    },
+    {
+     "w": "2028-W15",
+     "closed": false,
+     "list_n": 8640,
+     "overflow": 7879,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 7879
+     }
+    },
+    {
+     "w": "2028-W16",
+     "closed": false,
+     "list_n": 8378,
+     "overflow": 7618,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 7618
+     }
+    },
+    {
+     "w": "2028-W17",
+     "closed": false,
+     "list_n": 8122,
+     "overflow": 7363,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 7363
+     }
+    },
+    {
+     "w": "2028-W18",
+     "closed": false,
+     "list_n": 7873,
+     "overflow": 7115,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 7115
+     }
+    },
+    {
+     "w": "2028-W19",
+     "closed": false,
+     "list_n": 7631,
+     "overflow": 6873,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 6873
+     }
+    },
+    {
+     "w": "2028-W20",
+     "closed": false,
+     "list_n": 7395,
+     "overflow": 6638,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 6638
+     }
+    },
+    {
+     "w": "2028-W21",
+     "closed": false,
+     "list_n": 7165,
+     "overflow": 6409,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 6409
+     }
+    },
+    {
+     "w": "2028-W22",
+     "closed": false,
+     "list_n": 6944,
+     "overflow": 6189,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 6189
+     }
+    },
+    {
+     "w": "2028-W23",
+     "closed": false,
+     "list_n": 6731,
+     "overflow": 5977,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 5977
+     }
+    },
+    {
+     "w": "2028-W24",
+     "closed": false,
+     "list_n": 6523,
+     "overflow": 5770,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 5770
+     }
+    },
+    {
+     "w": "2028-W25",
+     "closed": false,
+     "list_n": 6320,
+     "overflow": 5568,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 5568
+     }
+    },
+    {
+     "w": "2028-W26",
+     "closed": false,
+     "list_n": 6121,
+     "overflow": 5370,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 5370
+     }
+    },
+    {
+     "w": "2028-W27",
+     "closed": false,
+     "list_n": 5923,
+     "overflow": 5176,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 5176
+     }
+    },
+    {
+     "w": "2028-W28",
+     "closed": false,
+     "list_n": 5728,
+     "overflow": 4984,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 4984
+     }
+    },
+    {
+     "w": "2028-W29",
+     "closed": false,
+     "list_n": 5537,
+     "overflow": 4795,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 4795
+     }
+    },
+    {
+     "w": "2028-W30",
+     "closed": false,
+     "list_n": 5348,
+     "overflow": 4609,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 4609
+     }
+    },
+    {
+     "w": "2028-W31",
+     "closed": false,
+     "list_n": 5161,
+     "overflow": 4425,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 4425
+     }
+    },
+    {
+     "w": "2028-W32",
+     "closed": false,
+     "list_n": 4978,
+     "overflow": 4245,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 4245
+     }
+    },
+    {
+     "w": "2028-W33",
+     "closed": false,
+     "list_n": 4797,
+     "overflow": 4067,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 4067
+     }
+    },
+    {
+     "w": "2028-W34",
+     "closed": false,
+     "list_n": 4618,
+     "overflow": 3891,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 3891
+     }
+    },
+    {
+     "w": "2028-W35",
+     "closed": false,
+     "list_n": 4442,
+     "overflow": 3717,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 3717
+     }
+    },
+    {
+     "w": "2028-W36",
+     "closed": false,
+     "list_n": 4270,
+     "overflow": 3548,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 3548
+     }
+    },
+    {
+     "w": "2028-W37",
+     "closed": false,
+     "list_n": 4100,
+     "overflow": 3381,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 3381
+     }
+    },
+    {
+     "w": "2028-W38",
+     "closed": false,
+     "list_n": 3932,
+     "overflow": 3216,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 3216
+     }
+    },
+    {
+     "w": "2028-W39",
+     "closed": false,
+     "list_n": 3767,
+     "overflow": 3054,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 3054
+     }
+    },
+    {
+     "w": "2028-W40",
+     "closed": false,
+     "list_n": 3605,
+     "overflow": 2895,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 2895
+     }
+    },
+    {
+     "w": "2028-W41",
+     "closed": false,
+     "list_n": 3446,
+     "overflow": 2738,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2738
+     }
+    },
+    {
+     "w": "2028-W42",
+     "closed": false,
+     "list_n": 3210,
+     "overflow": 2505,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2505
+     }
+    },
+    {
+     "w": "2028-W43",
+     "closed": false,
+     "list_n": 2976,
+     "overflow": 2274,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2274
+     }
+    },
+    {
+     "w": "2028-W44",
+     "closed": false,
+     "list_n": 2745,
+     "overflow": 2046,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 2046
+     }
+    },
+    {
+     "w": "2028-W45",
+     "closed": false,
+     "list_n": 2596,
+     "overflow": 1900,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 1900
+     }
+    },
+    {
+     "w": "2028-W46",
+     "closed": false,
+     "list_n": 2450,
+     "overflow": 1757,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 1757
+     }
+    },
+    {
+     "w": "2028-W47",
+     "closed": false,
+     "list_n": 2307,
+     "overflow": 1616,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 1616
+     }
+    },
+    {
+     "w": "2028-W48",
+     "closed": false,
+     "list_n": 2171,
+     "overflow": 1483,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 1483
+     }
+    },
+    {
+     "w": "2028-W49",
+     "closed": false,
+     "list_n": 2044,
+     "overflow": 1359,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 1359
+     }
+    },
+    {
+     "w": "2028-W50",
+     "closed": false,
+     "list_n": 1922,
+     "overflow": 1240,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 1240
+     }
+    },
+    {
+     "w": "2028-W51",
+     "closed": false,
+     "list_n": 1805,
+     "overflow": 1126,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 1126
+     }
+    },
+    {
+     "w": "2028-W52",
+     "closed": false,
+     "list_n": 1694,
+     "overflow": 1018,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 1018
+     }
+    },
+    {
+     "w": "2029-W01",
+     "closed": false,
+     "list_n": 1588,
+     "overflow": 914,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 914
+     }
+    },
+    {
+     "w": "2029-W02",
+     "closed": false,
+     "list_n": 1487,
+     "overflow": 816,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 816
+     }
+    },
+    {
+     "w": "2029-W03",
+     "closed": false,
+     "list_n": 1392,
+     "overflow": 724,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 724
+     }
+    },
+    {
+     "w": "2029-W04",
+     "closed": false,
+     "list_n": 1302,
+     "overflow": 637,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 637
+     }
+    },
+    {
+     "w": "2029-W05",
+     "closed": false,
+     "list_n": 1218,
+     "overflow": 556,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 556
+     }
+    },
+    {
+     "w": "2029-W06",
+     "closed": false,
+     "list_n": 1140,
+     "overflow": 481,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 481
+     }
+    },
+    {
+     "w": "2029-W07",
+     "closed": false,
+     "list_n": 1068,
+     "overflow": 411,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 411
+     }
+    },
+    {
+     "w": "2029-W08",
+     "closed": false,
+     "list_n": 1001,
+     "overflow": 347,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 347
+     }
+    },
+    {
+     "w": "2029-W09",
+     "closed": false,
+     "list_n": 940,
+     "overflow": 289,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 289
+     }
+    },
+    {
+     "w": "2029-W10",
+     "closed": false,
+     "list_n": 883,
+     "overflow": 235,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 235
+     }
+    },
+    {
+     "w": "2029-W11",
+     "closed": false,
+     "list_n": 831,
+     "overflow": 186,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 186
+     }
+    },
+    {
+     "w": "2029-W12",
+     "closed": false,
+     "list_n": 785,
+     "overflow": 143,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 143
+     }
+    },
+    {
+     "w": "2029-W13",
+     "closed": false,
+     "list_n": 745,
+     "overflow": 105,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 105
+     }
+    },
+    {
+     "w": "2029-W14",
+     "closed": false,
+     "list_n": 711,
+     "overflow": 74,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 74
+     }
+    },
+    {
+     "w": "2029-W15",
+     "closed": false,
+     "list_n": 683,
+     "overflow": 49,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 49
+     }
+    },
+    {
+     "w": "2029-W16",
+     "closed": false,
+     "list_n": 660,
+     "overflow": 29,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 29
+     }
+    },
+    {
+     "w": "2029-W17",
+     "closed": false,
+     "list_n": 642,
+     "overflow": 14,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 14
+     }
+    },
+    {
+     "w": "2029-W18",
+     "closed": false,
+     "list_n": 630,
+     "overflow": 5,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 5
+     }
+    }
+   ],
+   "dropped": {
+    "APAC": 24587
+   }
+  },
+  {
+   "product": "Phone16",
+   "factory": "EMS_A_IN",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Phone15",
+   "factory": "EMS_A_CN_i15",
+   "weeks": [
+    {
+     "w": "2026-W28",
+     "closed": false,
+     "list_n": 20047,
+     "overflow": 19547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 16249,
+      "EMEA": 3298
+     }
+    },
+    {
+     "w": "2026-W29",
+     "closed": false,
+     "list_n": 20547,
+     "overflow": 20047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 16569,
+      "EMEA": 3478
+     }
+    },
+    {
+     "w": "2026-W30",
+     "closed": false,
+     "list_n": 21047,
+     "overflow": 20547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 16889,
+      "EMEA": 3658
+     }
+    },
+    {
+     "w": "2026-W31",
+     "closed": false,
+     "list_n": 21547,
+     "overflow": 21047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 17209,
+      "EMEA": 3838
+     }
+    },
+    {
+     "w": "2026-W32",
+     "closed": false,
+     "list_n": 22047,
+     "overflow": 21547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 17529,
+      "EMEA": 4018
+     }
+    },
+    {
+     "w": "2026-W33",
+     "closed": false,
+     "list_n": 22547,
+     "overflow": 22047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 17849,
+      "EMEA": 4198
+     }
+    },
+    {
+     "w": "2026-W34",
+     "closed": false,
+     "list_n": 23047,
+     "overflow": 22547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 18169,
+      "EMEA": 4378
+     }
+    },
+    {
+     "w": "2026-W35",
+     "closed": false,
+     "list_n": 23547,
+     "overflow": 23047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 18489,
+      "EMEA": 4558
+     }
+    },
+    {
+     "w": "2026-W36",
+     "closed": false,
+     "list_n": 24047,
+     "overflow": 23547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 18809,
+      "EMEA": 4738
+     }
+    },
+    {
+     "w": "2026-W37",
+     "closed": false,
+     "list_n": 24547,
+     "overflow": 24047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 19129,
+      "EMEA": 4918
+     }
+    },
+    {
+     "w": "2026-W38",
+     "closed": false,
+     "list_n": 25047,
+     "overflow": 24547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 19449,
+      "EMEA": 5098
+     }
+    },
+    {
+     "w": "2026-W39",
+     "closed": false,
+     "list_n": 25547,
+     "overflow": 25047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 19769,
+      "EMEA": 5278
+     }
+    },
+    {
+     "w": "2026-W40",
+     "closed": false,
+     "list_n": 26047,
+     "overflow": 25547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 20089,
+      "EMEA": 5458
+     }
+    },
+    {
+     "w": "2026-W41",
+     "closed": false,
+     "list_n": 26547,
+     "overflow": 26047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 20409,
+      "EMEA": 5638
+     }
+    },
+    {
+     "w": "2026-W42",
+     "closed": false,
+     "list_n": 27047,
+     "overflow": 26547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 20729,
+      "EMEA": 5818
+     }
+    },
+    {
+     "w": "2026-W43",
+     "closed": false,
+     "list_n": 27547,
+     "overflow": 27047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 21049,
+      "EMEA": 5998
+     }
+    },
+    {
+     "w": "2026-W44",
+     "closed": false,
+     "list_n": 28047,
+     "overflow": 27547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 21369,
+      "EMEA": 6178
+     }
+    },
+    {
+     "w": "2026-W45",
+     "closed": false,
+     "list_n": 28547,
+     "overflow": 28047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 21689,
+      "EMEA": 6358
+     }
+    },
+    {
+     "w": "2026-W46",
+     "closed": false,
+     "list_n": 29047,
+     "overflow": 28547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 22009,
+      "EMEA": 6538
+     }
+    },
+    {
+     "w": "2026-W47",
+     "closed": false,
+     "list_n": 29547,
+     "overflow": 29047,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 22329,
+      "EMEA": 6718
+     }
+    },
+    {
+     "w": "2026-W48",
+     "closed": false,
+     "list_n": 30047,
+     "overflow": 29547,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 22649,
+      "EMEA": 6898
+     }
+    },
+    {
+     "w": "2026-W49",
+     "closed": false,
+     "list_n": 30267,
+     "overflow": 29767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 7078,
+      "APAC": 22689
+     }
+    },
+    {
+     "w": "2026-W50",
+     "closed": false,
+     "list_n": 29767,
+     "overflow": 29267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 6898,
+      "APAC": 22369
+     }
+    },
+    {
+     "w": "2026-W51",
+     "closed": false,
+     "list_n": 29267,
+     "overflow": 28767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 6718,
+      "APAC": 22049
+     }
+    },
+    {
+     "w": "2026-W52",
+     "closed": false,
+     "list_n": 28767,
+     "overflow": 28267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 6538,
+      "APAC": 21729
+     }
+    },
+    {
+     "w": "2026-W53",
+     "closed": false,
+     "list_n": 28267,
+     "overflow": 27767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 6358,
+      "APAC": 21409
+     }
+    },
+    {
+     "w": "2027-W01",
+     "closed": false,
+     "list_n": 27767,
+     "overflow": 27267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 6178,
+      "APAC": 21089
+     }
+    },
+    {
+     "w": "2027-W02",
+     "closed": false,
+     "list_n": 27267,
+     "overflow": 26767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 5998,
+      "APAC": 20769
+     }
+    },
+    {
+     "w": "2027-W03",
+     "closed": false,
+     "list_n": 26767,
+     "overflow": 26267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 5818,
+      "APAC": 20449
+     }
+    },
+    {
+     "w": "2027-W04",
+     "closed": false,
+     "list_n": 26267,
+     "overflow": 25767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 5638,
+      "APAC": 20129
+     }
+    },
+    {
+     "w": "2027-W05",
+     "closed": false,
+     "list_n": 25767,
+     "overflow": 25267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 5458,
+      "APAC": 19809
+     }
+    },
+    {
+     "w": "2027-W06",
+     "closed": false,
+     "list_n": 25267,
+     "overflow": 24767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 5278,
+      "APAC": 19489
+     }
+    },
+    {
+     "w": "2027-W07",
+     "closed": false,
+     "list_n": 24767,
+     "overflow": 24267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 5098,
+      "APAC": 19169
+     }
+    },
+    {
+     "w": "2027-W08",
+     "closed": false,
+     "list_n": 24267,
+     "overflow": 23767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 4918,
+      "APAC": 18849
+     }
+    },
+    {
+     "w": "2027-W09",
+     "closed": false,
+     "list_n": 23767,
+     "overflow": 23267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 4738,
+      "APAC": 18529
+     }
+    },
+    {
+     "w": "2027-W10",
+     "closed": false,
+     "list_n": 23267,
+     "overflow": 22767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 4558,
+      "APAC": 18209
+     }
+    },
+    {
+     "w": "2027-W11",
+     "closed": false,
+     "list_n": 22767,
+     "overflow": 22267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 4378,
+      "APAC": 17889
+     }
+    },
+    {
+     "w": "2027-W12",
+     "closed": false,
+     "list_n": 22267,
+     "overflow": 21767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 4198,
+      "APAC": 17569
+     }
+    },
+    {
+     "w": "2027-W13",
+     "closed": false,
+     "list_n": 21767,
+     "overflow": 21267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 4018,
+      "APAC": 17249
+     }
+    },
+    {
+     "w": "2027-W14",
+     "closed": false,
+     "list_n": 21267,
+     "overflow": 20767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 3838,
+      "APAC": 16929
+     }
+    },
+    {
+     "w": "2027-W15",
+     "closed": false,
+     "list_n": 20767,
+     "overflow": 20267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 3658,
+      "APAC": 16609
+     }
+    },
+    {
+     "w": "2027-W16",
+     "closed": false,
+     "list_n": 20267,
+     "overflow": 19767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 3478,
+      "APAC": 16289
+     }
+    },
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 19767,
+     "overflow": 19267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 3298,
+      "APAC": 15969
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": false,
+     "list_n": 19267,
+     "overflow": 18767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 3118,
+      "APAC": 15649
+     }
+    },
+    {
+     "w": "2027-W19",
+     "closed": false,
+     "list_n": 18767,
+     "overflow": 18267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 2938,
+      "APAC": 15329
+     }
+    },
+    {
+     "w": "2027-W20",
+     "closed": false,
+     "list_n": 18267,
+     "overflow": 17767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 2758,
+      "APAC": 15009
+     }
+    },
+    {
+     "w": "2027-W21",
+     "closed": false,
+     "list_n": 17767,
+     "overflow": 17267,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 2578,
+      "APAC": 14689
+     }
+    },
+    {
+     "w": "2027-W22",
+     "closed": false,
+     "list_n": 17270,
+     "overflow": 16770,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 2401,
+      "APAC": 14369
+     }
+    },
+    {
+     "w": "2027-W23",
+     "closed": false,
+     "list_n": 16782,
+     "overflow": 16282,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 2230,
+      "APAC": 14052
+     }
+    },
+    {
+     "w": "2027-W24",
+     "closed": false,
+     "list_n": 16303,
+     "overflow": 15803,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 2065,
+      "APAC": 13738
+     }
+    },
+    {
+     "w": "2027-W25",
+     "closed": false,
+     "list_n": 15833,
+     "overflow": 15333,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1906,
+      "APAC": 13427
+     }
+    },
+    {
+     "w": "2027-W26",
+     "closed": false,
+     "list_n": 15373,
+     "overflow": 14873,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1754,
+      "APAC": 13119
+     }
+    },
+    {
+     "w": "2027-W27",
+     "closed": false,
+     "list_n": 14922,
+     "overflow": 14422,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1608,
+      "APAC": 12814
+     }
+    },
+    {
+     "w": "2027-W28",
+     "closed": false,
+     "list_n": 14480,
+     "overflow": 13980,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1468,
+      "APAC": 12512
+     }
+    },
+    {
+     "w": "2027-W29",
+     "closed": false,
+     "list_n": 14048,
+     "overflow": 13548,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1335,
+      "APAC": 12213
+     }
+    },
+    {
+     "w": "2027-W30",
+     "closed": false,
+     "list_n": 13625,
+     "overflow": 13125,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1208,
+      "APAC": 11917
+     }
+    },
+    {
+     "w": "2027-W31",
+     "closed": false,
+     "list_n": 13210,
+     "overflow": 12710,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1087,
+      "APAC": 11623
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 12806,
+     "overflow": 12306,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 973,
+      "APAC": 11333
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 12411,
+     "overflow": 11911,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 865,
+      "APAC": 11046
+     }
+    },
+    {
+     "w": "2027-W34",
+     "closed": false,
+     "list_n": 12024,
+     "overflow": 11524,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 763,
+      "APAC": 10761
+     }
+    },
+    {
+     "w": "2027-W35",
+     "closed": false,
+     "list_n": 11646,
+     "overflow": 11146,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 667,
+      "APAC": 10479
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 11279,
+     "overflow": 10779,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 578,
+      "APAC": 10201
+     }
+    },
+    {
+     "w": "2027-W37",
+     "closed": false,
+     "list_n": 10921,
+     "overflow": 10421,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 495,
+      "APAC": 9926
+     }
+    },
+    {
+     "w": "2027-W38",
+     "closed": false,
+     "list_n": 10571,
+     "overflow": 10071,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 418,
+      "APAC": 9653
+     }
+    },
+    {
+     "w": "2027-W39",
+     "closed": false,
+     "list_n": 10231,
+     "overflow": 9731,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 348,
+      "APAC": 9383
+     }
+    },
+    {
+     "w": "2027-W40",
+     "closed": false,
+     "list_n": 9901,
+     "overflow": 9401,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 284,
+      "APAC": 9117
+     }
+    },
+    {
+     "w": "2027-W41",
+     "closed": false,
+     "list_n": 9579,
+     "overflow": 9079,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 226,
+      "APAC": 8853
+     }
+    },
+    {
+     "w": "2027-W42",
+     "closed": false,
+     "list_n": 9267,
+     "overflow": 8767,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 175,
+      "APAC": 8592
+     }
+    },
+    {
+     "w": "2027-W43",
+     "closed": false,
+     "list_n": 8964,
+     "overflow": 8464,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 130,
+      "APAC": 8334
+     }
+    },
+    {
+     "w": "2027-W44",
+     "closed": false,
+     "list_n": 8670,
+     "overflow": 8170,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 91,
+      "APAC": 8079
+     }
+    },
+    {
+     "w": "2027-W45",
+     "closed": false,
+     "list_n": 8385,
+     "overflow": 7885,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 58,
+      "APAC": 7827
+     }
+    },
+    {
+     "w": "2027-W46",
+     "closed": false,
+     "list_n": 8110,
+     "overflow": 7610,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 32,
+      "APAC": 7578
+     }
+    },
+    {
+     "w": "2027-W47",
+     "closed": false,
+     "list_n": 7844,
+     "overflow": 7344,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 12,
+      "APAC": 7332
+     }
+    },
+    {
+     "w": "2027-W48",
+     "closed": false,
+     "list_n": 7590,
+     "overflow": 7090,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1,
+      "APAC": 7089
+     }
+    },
+    {
+     "w": "2027-W49",
+     "closed": false,
+     "list_n": 7352,
+     "overflow": 6852,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 6852
+     }
+    },
+    {
+     "w": "2027-W50",
+     "closed": false,
+     "list_n": 7123,
+     "overflow": 6623,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 6623
+     }
+    },
+    {
+     "w": "2027-W51",
+     "closed": false,
+     "list_n": 6903,
+     "overflow": 6403,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 6403
+     }
+    },
+    {
+     "w": "2027-W52",
+     "closed": false,
+     "list_n": 6693,
+     "overflow": 6193,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 6193
+     }
+    },
+    {
+     "w": "2028-W01",
+     "closed": false,
+     "list_n": 6487,
+     "overflow": 5992,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 5992
+     }
+    },
+    {
+     "w": "2028-W02",
+     "closed": false,
+     "list_n": 6286,
+     "overflow": 5795,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 5795
+     }
+    },
+    {
+     "w": "2028-W03",
+     "closed": false,
+     "list_n": 6090,
+     "overflow": 5604,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 5604
+     }
+    },
+    {
+     "w": "2028-W04",
+     "closed": false,
+     "list_n": 5898,
+     "overflow": 5417,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 5417
+     }
+    },
+    {
+     "w": "2028-W05",
+     "closed": false,
+     "list_n": 5709,
+     "overflow": 5233,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 5233
+     }
+    },
+    {
+     "w": "2028-W06",
+     "closed": false,
+     "list_n": 5527,
+     "overflow": 5055,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 5055
+     }
+    },
+    {
+     "w": "2028-W07",
+     "closed": false,
+     "list_n": 5349,
+     "overflow": 4882,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 4882
+     }
+    },
+    {
+     "w": "2028-W08",
+     "closed": false,
+     "list_n": 5174,
+     "overflow": 4712,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 4712
+     }
+    },
+    {
+     "w": "2028-W09",
+     "closed": false,
+     "list_n": 5004,
+     "overflow": 4546,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 4546
+     }
+    },
+    {
+     "w": "2028-W10",
+     "closed": false,
+     "list_n": 4840,
+     "overflow": 4387,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 4387
+     }
+    },
+    {
+     "w": "2028-W11",
+     "closed": false,
+     "list_n": 4680,
+     "overflow": 4232,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 4232
+     }
+    },
+    {
+     "w": "2028-W12",
+     "closed": false,
+     "list_n": 4523,
+     "overflow": 4080,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 4080
+     }
+    },
+    {
+     "w": "2028-W13",
+     "closed": false,
+     "list_n": 4372,
+     "overflow": 3933,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3933
+     }
+    },
+    {
+     "w": "2028-W14",
+     "closed": false,
+     "list_n": 4226,
+     "overflow": 3792,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3792
+     }
+    },
+    {
+     "w": "2028-W15",
+     "closed": false,
+     "list_n": 4083,
+     "overflow": 3654,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3654
+     }
+    },
+    {
+     "w": "2028-W16",
+     "closed": false,
+     "list_n": 3946,
+     "overflow": 3521,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3521
+     }
+    },
+    {
+     "w": "2028-W17",
+     "closed": false,
+     "list_n": 3813,
+     "overflow": 3393,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3393
+     }
+    },
+    {
+     "w": "2028-W18",
+     "closed": false,
+     "list_n": 3684,
+     "overflow": 3269,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3269
+     }
+    },
+    {
+     "w": "2028-W19",
+     "closed": false,
+     "list_n": 3559,
+     "overflow": 3149,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3149
+     }
+    },
+    {
+     "w": "2028-W20",
+     "closed": false,
+     "list_n": 3440,
+     "overflow": 3034,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3034
+     }
+    },
+    {
+     "w": "2028-W21",
+     "closed": false,
+     "list_n": 3325,
+     "overflow": 2924,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2924
+     }
+    },
+    {
+     "w": "2028-W22",
+     "closed": false,
+     "list_n": 3216,
+     "overflow": 2820,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2820
+     }
+    },
+    {
+     "w": "2028-W23",
+     "closed": false,
+     "list_n": 3117,
+     "overflow": 2725,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2725
+     }
+    },
+    {
+     "w": "2028-W24",
+     "closed": false,
+     "list_n": 3019,
+     "overflow": 2632,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2632
+     }
+    },
+    {
+     "w": "2028-W25",
+     "closed": false,
+     "list_n": 2922,
+     "overflow": 2540,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2540
+     }
+    },
+    {
+     "w": "2028-W26",
+     "closed": false,
+     "list_n": 2826,
+     "overflow": 2449,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2449
+     }
+    },
+    {
+     "w": "2028-W27",
+     "closed": false,
+     "list_n": 2733,
+     "overflow": 2360,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2360
+     }
+    },
+    {
+     "w": "2028-W28",
+     "closed": false,
+     "list_n": 2643,
+     "overflow": 2275,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2275
+     }
+    },
+    {
+     "w": "2028-W29",
+     "closed": false,
+     "list_n": 2553,
+     "overflow": 2190,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2190
+     }
+    },
+    {
+     "w": "2028-W30",
+     "closed": false,
+     "list_n": 2465,
+     "overflow": 2107,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2107
+     }
+    },
+    {
+     "w": "2028-W31",
+     "closed": false,
+     "list_n": 2378,
+     "overflow": 2024,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2024
+     }
+    },
+    {
+     "w": "2028-W32",
+     "closed": false,
+     "list_n": 2294,
+     "overflow": 1945,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1945
+     }
+    },
+    {
+     "w": "2028-W33",
+     "closed": false,
+     "list_n": 2212,
+     "overflow": 1868,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1868
+     }
+    },
+    {
+     "w": "2028-W34",
+     "closed": false,
+     "list_n": 2132,
+     "overflow": 1792,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1792
+     }
+    },
+    {
+     "w": "2028-W35",
+     "closed": false,
+     "list_n": 2053,
+     "overflow": 1718,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1718
+     }
+    },
+    {
+     "w": "2028-W36",
+     "closed": false,
+     "list_n": 1975,
+     "overflow": 1645,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1645
+     }
+    },
+    {
+     "w": "2028-W37",
+     "closed": false,
+     "list_n": 1899,
+     "overflow": 1574,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1574
+     }
+    },
+    {
+     "w": "2028-W38",
+     "closed": false,
+     "list_n": 1825,
+     "overflow": 1504,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1504
+     }
+    },
+    {
+     "w": "2028-W39",
+     "closed": false,
+     "list_n": 1753,
+     "overflow": 1437,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1437
+     }
+    },
+    {
+     "w": "2028-W40",
+     "closed": false,
+     "list_n": 1683,
+     "overflow": 1372,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1372
+     }
+    },
+    {
+     "w": "2028-W41",
+     "closed": false,
+     "list_n": 1614,
+     "overflow": 1307,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1307
+     }
+    },
+    {
+     "w": "2028-W42",
+     "closed": false,
+     "list_n": 1548,
+     "overflow": 1246,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1246
+     }
+    },
+    {
+     "w": "2028-W43",
+     "closed": false,
+     "list_n": 1482,
+     "overflow": 1185,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1185
+     }
+    },
+    {
+     "w": "2028-W44",
+     "closed": false,
+     "list_n": 1419,
+     "overflow": 1127,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1127
+     }
+    },
+    {
+     "w": "2028-W45",
+     "closed": false,
+     "list_n": 1358,
+     "overflow": 1070,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1070
+     }
+    },
+    {
+     "w": "2028-W46",
+     "closed": false,
+     "list_n": 1299,
+     "overflow": 1016,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 1016
+     }
+    },
+    {
+     "w": "2028-W47",
+     "closed": false,
+     "list_n": 1241,
+     "overflow": 963,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 963
+     }
+    },
+    {
+     "w": "2028-W48",
+     "closed": false,
+     "list_n": 1186,
+     "overflow": 912,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 912
+     }
+    },
+    {
+     "w": "2028-W49",
+     "closed": false,
+     "list_n": 1137,
+     "overflow": 868,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 868
+     }
+    },
+    {
+     "w": "2028-W50",
+     "closed": false,
+     "list_n": 1087,
+     "overflow": 823,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 823
+     }
+    },
+    {
+     "w": "2028-W51",
+     "closed": false,
+     "list_n": 1037,
+     "overflow": 778,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 778
+     }
+    },
+    {
+     "w": "2028-W52",
+     "closed": false,
+     "list_n": 986,
+     "overflow": 731,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 731
+     }
+    },
+    {
+     "w": "2029-W01",
+     "closed": false,
+     "list_n": 932,
+     "overflow": 685,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 685
+     }
+    },
+    {
+     "w": "2029-W02",
+     "closed": false,
+     "list_n": 880,
+     "overflow": 636,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 636
+     }
+    },
+    {
+     "w": "2029-W03",
+     "closed": false,
+     "list_n": 831,
+     "overflow": 589,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 589
+     }
+    },
+    {
+     "w": "2029-W04",
+     "closed": false,
+     "list_n": 784,
+     "overflow": 545,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 545
+     }
+    },
+    {
+     "w": "2029-W05",
+     "closed": false,
+     "list_n": 739,
+     "overflow": 503,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 503
+     }
+    },
+    {
+     "w": "2029-W06",
+     "closed": false,
+     "list_n": 695,
+     "overflow": 462,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 462
+     }
+    },
+    {
+     "w": "2029-W07",
+     "closed": false,
+     "list_n": 651,
+     "overflow": 421,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 421
+     }
+    },
+    {
+     "w": "2029-W08",
+     "closed": false,
+     "list_n": 610,
+     "overflow": 383,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 383
+     }
+    },
+    {
+     "w": "2029-W09",
+     "closed": false,
+     "list_n": 571,
+     "overflow": 346,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 346
+     }
+    },
+    {
+     "w": "2029-W10",
+     "closed": false,
+     "list_n": 535,
+     "overflow": 313,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 313
+     }
+    },
+    {
+     "w": "2029-W11",
+     "closed": false,
+     "list_n": 500,
+     "overflow": 281,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 281
+     }
+    },
+    {
+     "w": "2029-W12",
+     "closed": false,
+     "list_n": 467,
+     "overflow": 251,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 251
+     }
+    },
+    {
+     "w": "2029-W13",
+     "closed": false,
+     "list_n": 434,
+     "overflow": 221,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 221
+     }
+    },
+    {
+     "w": "2029-W14",
+     "closed": false,
+     "list_n": 403,
+     "overflow": 193,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 193
+     }
+    },
+    {
+     "w": "2029-W15",
+     "closed": false,
+     "list_n": 375,
+     "overflow": 167,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 167
+     }
+    },
+    {
+     "w": "2029-W16",
+     "closed": false,
+     "list_n": 349,
+     "overflow": 144,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 144
+     }
+    },
+    {
+     "w": "2029-W17",
+     "closed": false,
+     "list_n": 325,
+     "overflow": 123,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 123
+     }
+    },
+    {
+     "w": "2029-W18",
+     "closed": false,
+     "list_n": 303,
+     "overflow": 104,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 104
+     }
+    },
+    {
+     "w": "2029-W19",
+     "closed": false,
+     "list_n": 282,
+     "overflow": 86,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 86
+     }
+    },
+    {
+     "w": "2029-W20",
+     "closed": false,
+     "list_n": 261,
+     "overflow": 68,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 68
+     }
+    },
+    {
+     "w": "2029-W21",
+     "closed": false,
+     "list_n": 244,
+     "overflow": 53,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 53
+     }
+    },
+    {
+     "w": "2029-W22",
+     "closed": false,
+     "list_n": 229,
+     "overflow": 41,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 41
+     }
+    },
+    {
+     "w": "2029-W23",
+     "closed": false,
+     "list_n": 218,
+     "overflow": 33,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 33
+     }
+    },
+    {
+     "w": "2029-W24",
+     "closed": false,
+     "list_n": 208,
+     "overflow": 26,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 26
+     }
+    },
+    {
+     "w": "2029-W25",
+     "closed": false,
+     "list_n": 198,
+     "overflow": 19,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 19
+     }
+    },
+    {
+     "w": "2029-W26",
+     "closed": false,
+     "list_n": 190,
+     "overflow": 14,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 14
+     }
+    },
+    {
+     "w": "2029-W27",
+     "closed": false,
+     "list_n": 183,
+     "overflow": 9,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 9
+     }
+    },
+    {
+     "w": "2029-W28",
+     "closed": false,
+     "list_n": 177,
+     "overflow": 6,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 6
+     }
+    },
+    {
+     "w": "2029-W29",
+     "closed": false,
+     "list_n": 171,
+     "overflow": 3,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 3
+     }
+    },
+    {
+     "w": "2029-W30",
+     "closed": false,
+     "list_n": 167,
+     "overflow": 2,
+     "markets": 3,
+     "overflow_markets": {
+      "APAC": 2
+     }
+    }
+   ],
+   "dropped": {
+    "APAC": 16249,
+    "EMEA": 3298
+   }
+  },
+  {
+   "product": "Phone17",
+   "factory": "EMS_A_CN_i17",
+   "weeks": [
+    {
+     "w": "2028-W27",
+     "closed": false,
+     "list_n": 75039,
+     "overflow": 75013,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 1555,
+      "EMEA": 31248,
+      "APAC": 42210
+     }
+    },
+    {
+     "w": "2028-W28",
+     "closed": false,
+     "list_n": 74743,
+     "overflow": 74691,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 1448,
+      "EMEA": 31139,
+      "APAC": 42104
+     }
+    },
+    {
+     "w": "2028-W29",
+     "closed": false,
+     "list_n": 74415,
+     "overflow": 74337,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 1344,
+      "EMEA": 31014,
+      "APAC": 41979
+     }
+    },
+    {
+     "w": "2028-W30",
+     "closed": false,
+     "list_n": 74059,
+     "overflow": 73955,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 1244,
+      "EMEA": 30874,
+      "APAC": 41837
+     }
+    },
+    {
+     "w": "2028-W31",
+     "closed": false,
+     "list_n": 73674,
+     "overflow": 73544,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 1148,
+      "EMEA": 30719,
+      "APAC": 41677
+     }
+    },
+    {
+     "w": "2028-W32",
+     "closed": false,
+     "list_n": 73259,
+     "overflow": 73103,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 1056,
+      "EMEA": 30548,
+      "APAC": 41499
+     }
+    },
+    {
+     "w": "2028-W33",
+     "closed": false,
+     "list_n": 72814,
+     "overflow": 72633,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 968,
+      "EMEA": 30361,
+      "APAC": 41304
+     }
+    },
+    {
+     "w": "2028-W34",
+     "closed": false,
+     "list_n": 72338,
+     "overflow": 72131,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 882,
+      "EMEA": 30159,
+      "APAC": 41090
+     }
+    },
+    {
+     "w": "2028-W35",
+     "closed": false,
+     "list_n": 71833,
+     "overflow": 71600,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 800,
+      "EMEA": 29941,
+      "APAC": 40859
+     }
+    },
+    {
+     "w": "2028-W36",
+     "closed": false,
+     "list_n": 71299,
+     "overflow": 71040,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 722,
+      "EMEA": 29708,
+      "APAC": 40610
+     }
+    },
+    {
+     "w": "2028-W37",
+     "closed": false,
+     "list_n": 70736,
+     "overflow": 70451,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 648,
+      "EMEA": 29459,
+      "APAC": 40344
+     }
+    },
+    {
+     "w": "2028-W38",
+     "closed": false,
+     "list_n": 70141,
+     "overflow": 69830,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 577,
+      "EMEA": 29194,
+      "APAC": 40059
+     }
+    },
+    {
+     "w": "2028-W39",
+     "closed": false,
+     "list_n": 69518,
+     "overflow": 69181,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 510,
+      "EMEA": 28914,
+      "APAC": 39757
+     }
+    },
+    {
+     "w": "2028-W40",
+     "closed": false,
+     "list_n": 68866,
+     "overflow": 68503,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 447,
+      "EMEA": 28619,
+      "APAC": 39437
+     }
+    },
+    {
+     "w": "2028-W41",
+     "closed": false,
+     "list_n": 68184,
+     "overflow": 67795,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 388,
+      "EMEA": 28308,
+      "APAC": 39099
+     }
+    },
+    {
+     "w": "2028-W42",
+     "closed": false,
+     "list_n": 67473,
+     "overflow": 67058,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 333,
+      "EMEA": 27981,
+      "APAC": 38744
+     }
+    },
+    {
+     "w": "2028-W43",
+     "closed": false,
+     "list_n": 66731,
+     "overflow": 66290,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 281,
+      "EMEA": 27639,
+      "APAC": 38370
+     }
+    },
+    {
+     "w": "2028-W44",
+     "closed": false,
+     "list_n": 65960,
+     "overflow": 65493,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 233,
+      "EMEA": 27281,
+      "APAC": 37979
+     }
+    },
+    {
+     "w": "2028-W45",
+     "closed": false,
+     "list_n": 65160,
+     "overflow": 64667,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 189,
+      "EMEA": 26908,
+      "APAC": 37570
+     }
+    },
+    {
+     "w": "2028-W46",
+     "closed": false,
+     "list_n": 64331,
+     "overflow": 63812,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 149,
+      "EMEA": 26519,
+      "APAC": 37144
+     }
+    },
+    {
+     "w": "2028-W47",
+     "closed": false,
+     "list_n": 63469,
+     "overflow": 62925,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 112,
+      "EMEA": 26114,
+      "APAC": 36699
+     }
+    },
+    {
+     "w": "2028-W48",
+     "closed": false,
+     "list_n": 62571,
+     "overflow": 62001,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 78,
+      "EMEA": 25686,
+      "APAC": 36237
+     }
+    },
+    {
+     "w": "2028-W49",
+     "closed": false,
+     "list_n": 61632,
+     "overflow": 61036,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 37,
+      "EMEA": 25251,
+      "APAC": 35748
+     }
+    },
+    {
+     "w": "2028-W50",
+     "closed": false,
+     "list_n": 60691,
+     "overflow": 60069,
+     "markets": 3,
+     "overflow_markets": {
+      "AMER": 11,
+      "EMEA": 24808,
+      "APAC": 35250
+     }
+    },
+    {
+     "w": "2028-W51",
+     "closed": false,
+     "list_n": 59749,
+     "overflow": 59101,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 24357,
+      "APAC": 34744
+     }
+    },
+    {
+     "w": "2028-W52",
+     "closed": false,
+     "list_n": 58805,
+     "overflow": 58131,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 23902,
+      "APAC": 34229
+     }
+    },
+    {
+     "w": "2029-W01",
+     "closed": false,
+     "list_n": 57872,
+     "overflow": 57157,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 23453,
+      "APAC": 33704
+     }
+    },
+    {
+     "w": "2029-W02",
+     "closed": false,
+     "list_n": 56926,
+     "overflow": 56196,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 23026,
+      "APAC": 33170
+     }
+    },
+    {
+     "w": "2029-W03",
+     "closed": false,
+     "list_n": 55968,
+     "overflow": 55224,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 22596,
+      "APAC": 32628
+     }
+    },
+    {
+     "w": "2029-W04",
+     "closed": false,
+     "list_n": 54997,
+     "overflow": 54238,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 22161,
+      "APAC": 32077
+     }
+    },
+    {
+     "w": "2029-W05",
+     "closed": false,
+     "list_n": 54013,
+     "overflow": 53239,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 21722,
+      "APAC": 31517
+     }
+    },
+    {
+     "w": "2029-W06",
+     "closed": false,
+     "list_n": 53017,
+     "overflow": 52228,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 21280,
+      "APAC": 30948
+     }
+    },
+    {
+     "w": "2029-W07",
+     "closed": false,
+     "list_n": 52008,
+     "overflow": 51204,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 20834,
+      "APAC": 30370
+     }
+    },
+    {
+     "w": "2029-W08",
+     "closed": false,
+     "list_n": 50987,
+     "overflow": 50168,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 20384,
+      "APAC": 29784
+     }
+    },
+    {
+     "w": "2029-W09",
+     "closed": false,
+     "list_n": 49952,
+     "overflow": 49119,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 19930,
+      "APAC": 29189
+     }
+    },
+    {
+     "w": "2029-W10",
+     "closed": false,
+     "list_n": 48902,
+     "overflow": 48054,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 19470,
+      "APAC": 28584
+     }
+    },
+    {
+     "w": "2029-W11",
+     "closed": false,
+     "list_n": 47839,
+     "overflow": 46976,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 19006,
+      "APAC": 27970
+     }
+    },
+    {
+     "w": "2029-W12",
+     "closed": false,
+     "list_n": 46765,
+     "overflow": 45887,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 18539,
+      "APAC": 27348
+     }
+    },
+    {
+     "w": "2029-W13",
+     "closed": false,
+     "list_n": 45678,
+     "overflow": 44785,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 18068,
+      "APAC": 26717
+     }
+    },
+    {
+     "w": "2029-W14",
+     "closed": false,
+     "list_n": 44577,
+     "overflow": 43670,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 17593,
+      "APAC": 26077
+     }
+    },
+    {
+     "w": "2029-W15",
+     "closed": false,
+     "list_n": 43464,
+     "overflow": 42542,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 17114,
+      "APAC": 25428
+     }
+    },
+    {
+     "w": "2029-W16",
+     "closed": false,
+     "list_n": 42338,
+     "overflow": 41401,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 16631,
+      "APAC": 24770
+     }
+    },
+    {
+     "w": "2029-W17",
+     "closed": false,
+     "list_n": 41200,
+     "overflow": 40248,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 16144,
+      "APAC": 24104
+     }
+    },
+    {
+     "w": "2029-W18",
+     "closed": false,
+     "list_n": 40049,
+     "overflow": 39082,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 15653,
+      "APAC": 23429
+     }
+    },
+    {
+     "w": "2029-W19",
+     "closed": false,
+     "list_n": 38882,
+     "overflow": 37901,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 15157,
+      "APAC": 22744
+     }
+    },
+    {
+     "w": "2029-W20",
+     "closed": false,
+     "list_n": 37702,
+     "overflow": 36706,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 14656,
+      "APAC": 22050
+     }
+    },
+    {
+     "w": "2029-W21",
+     "closed": false,
+     "list_n": 36511,
+     "overflow": 35500,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 14152,
+      "APAC": 21348
+     }
+    },
+    {
+     "w": "2029-W22",
+     "closed": false,
+     "list_n": 35302,
+     "overflow": 34276,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 13639,
+      "APAC": 20637
+     }
+    },
+    {
+     "w": "2029-W23",
+     "closed": false,
+     "list_n": 34070,
+     "overflow": 33029,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 13118,
+      "APAC": 19911
+     }
+    },
+    {
+     "w": "2029-W24",
+     "closed": false,
+     "list_n": 32834,
+     "overflow": 31778,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 12599,
+      "APAC": 19179
+     }
+    },
+    {
+     "w": "2029-W25",
+     "closed": false,
+     "list_n": 31593,
+     "overflow": 30523,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 12082,
+      "APAC": 18441
+     }
+    },
+    {
+     "w": "2029-W26",
+     "closed": false,
+     "list_n": 30348,
+     "overflow": 29263,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 11566,
+      "APAC": 17697
+     }
+    },
+    {
+     "w": "2029-W27",
+     "closed": false,
+     "list_n": 29107,
+     "overflow": 28000,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 11053,
+      "APAC": 16947
+     }
+    },
+    {
+     "w": "2029-W28",
+     "closed": false,
+     "list_n": 27857,
+     "overflow": 26742,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 10550,
+      "APAC": 16192
+     }
+    },
+    {
+     "w": "2029-W29",
+     "closed": false,
+     "list_n": 26594,
+     "overflow": 25472,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 10042,
+      "APAC": 15430
+     }
+    },
+    {
+     "w": "2029-W30",
+     "closed": false,
+     "list_n": 25321,
+     "overflow": 24191,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 9528,
+      "APAC": 14663
+     }
+    },
+    {
+     "w": "2029-W31",
+     "closed": false,
+     "list_n": 24035,
+     "overflow": 22898,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 9009,
+      "APAC": 13889
+     }
+    },
+    {
+     "w": "2029-W32",
+     "closed": false,
+     "list_n": 22739,
+     "overflow": 21595,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 8485,
+      "APAC": 13110
+     }
+    },
+    {
+     "w": "2029-W33",
+     "closed": false,
+     "list_n": 21433,
+     "overflow": 20281,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 7956,
+      "APAC": 12325
+     }
+    },
+    {
+     "w": "2029-W34",
+     "closed": false,
+     "list_n": 20115,
+     "overflow": 18956,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 7422,
+      "APAC": 11534
+     }
+    },
+    {
+     "w": "2029-W35",
+     "closed": false,
+     "list_n": 18786,
+     "overflow": 17619,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 6882,
+      "APAC": 10737
+     }
+    },
+    {
+     "w": "2029-W36",
+     "closed": false,
+     "list_n": 17445,
+     "overflow": 16271,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 6337,
+      "APAC": 9934
+     }
+    },
+    {
+     "w": "2029-W37",
+     "closed": false,
+     "list_n": 16093,
+     "overflow": 14912,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 5787,
+      "APAC": 9125
+     }
+    },
+    {
+     "w": "2029-W38",
+     "closed": false,
+     "list_n": 14730,
+     "overflow": 13541,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 5231,
+      "APAC": 8310
+     }
+    },
+    {
+     "w": "2029-W39",
+     "closed": false,
+     "list_n": 13356,
+     "overflow": 12160,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 4671,
+      "APAC": 7489
+     }
+    },
+    {
+     "w": "2029-W40",
+     "closed": false,
+     "list_n": 11972,
+     "overflow": 10768,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 4105,
+      "APAC": 6663
+     }
+    },
+    {
+     "w": "2029-W41",
+     "closed": false,
+     "list_n": 10575,
+     "overflow": 9364,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 3534,
+      "APAC": 5830
+     }
+    },
+    {
+     "w": "2029-W42",
+     "closed": false,
+     "list_n": 9169,
+     "overflow": 7950,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 2958,
+      "APAC": 4992
+     }
+    },
+    {
+     "w": "2029-W43",
+     "closed": false,
+     "list_n": 7750,
+     "overflow": 6524,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 2377,
+      "APAC": 4147
+     }
+    },
+    {
+     "w": "2029-W44",
+     "closed": false,
+     "list_n": 6321,
+     "overflow": 5088,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1791,
+      "APAC": 3297
+     }
+    },
+    {
+     "w": "2029-W45",
+     "closed": false,
+     "list_n": 4881,
+     "overflow": 3640,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 1199,
+      "APAC": 2441
+     }
+    },
+    {
+     "w": "2029-W46",
+     "closed": false,
+     "list_n": 3429,
+     "overflow": 2181,
+     "markets": 3,
+     "overflow_markets": {
+      "EMEA": 602,
+      "APAC": 1579
+     }
+    },
+    {
+     "w": "2029-W47",
+     "closed": false,
+     "list_n": 1967,
+     "overflow": 711,
+     "markets": 2,
+     "overflow_markets": {
+      "APAC": 711
+     }
+    }
+   ],
+   "dropped": {}
+  }
+ ]
+}

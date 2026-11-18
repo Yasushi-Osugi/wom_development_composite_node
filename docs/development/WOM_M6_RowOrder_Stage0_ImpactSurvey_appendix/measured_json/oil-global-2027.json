@@ -1,0 +1,3073 @@
+{
+ "model": "oil-global-2027",
+ "legacy_golden": false,
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "lot_flow_mode": "identity",
+ "seconds": 7.5,
+ "golden_match": true,
+ "golden_diff_keys": [],
+ "factories": [
+  {
+   "product": "Gasoline_Local",
+   "factory": "Refinery_Local",
+   "overflow_weeks": 18,
+   "overflow_weeks_multi_market": 18,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 5800,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2027-W31",
+   "last_overflow_week": "2027-W50"
+  },
+  {
+   "product": "Gasoline_Import",
+   "factory": "Import_Hub",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "factory": "Refinery_Local_H",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "factory": "Refinery_Local_R",
+   "overflow_weeks": 98,
+   "overflow_weeks_multi_market": 98,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 9023,
+   "dropped_by_market": {
+    "KANSAI": 1,
+    "CHUBU": 3
+   },
+   "dropped_total": 4,
+   "first_overflow_week": "2026-W28",
+   "last_overflow_week": "2028-W20"
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "factory": "Refinery_EU",
+   "overflow_weeks": 81,
+   "overflow_weeks_multi_market": 81,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 170662,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W47",
+   "last_overflow_week": "2028-W22"
+  },
+  {
+   "product": "Gasoline_EU_Import",
+   "factory": "Import_Hub_EU",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "factory": "Refinery_USGulf",
+   "overflow_weeks": 65,
+   "overflow_weeks_multi_market": 65,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 89742,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "2026-W52",
+   "last_overflow_week": "2028-W22"
+  },
+  {
+   "product": "Gasoline_US_Import",
+   "factory": "Import_Hub_US",
+   "overflow_weeks": 0,
+   "overflow_weeks_multi_market": 0,
+   "closed_weeks_pushed": 0,
+   "closed_weeks_pushed_multi_market": 0,
+   "pushed_back_lots": 0,
+   "dropped_by_market": {},
+   "dropped_total": 0,
+   "first_overflow_week": "",
+   "last_overflow_week": ""
+  }
+ ],
+ "weeks_detail": [
+  {
+   "product": "Gasoline_Local",
+   "factory": "Refinery_Local",
+   "weeks": [
+    {
+     "w": "2027-W31",
+     "closed": false,
+     "list_n": 688,
+     "overflow": 38,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 38
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 775,
+     "overflow": 125,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 42,
+      "CHUBU": 83
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 868,
+     "overflow": 218,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 135,
+      "CHUBU": 83
+     }
+    },
+    {
+     "w": "2027-W34",
+     "closed": false,
+     "list_n": 967,
+     "overflow": 317,
+     "markets": 3,
+     "overflow_markets": {
+      "KANTO": 68,
+      "KANSAI": 166,
+      "CHUBU": 83
+     }
+    },
+    {
+     "w": "2027-W35",
+     "closed": false,
+     "list_n": 1069,
+     "overflow": 419,
+     "markets": 3,
+     "overflow_markets": {
+      "KANTO": 170,
+      "KANSAI": 166,
+      "CHUBU": 83
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 1177,
+     "overflow": 527,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 114,
+      "KANTO": 247,
+      "KANSAI": 166
+     }
+    },
+    {
+     "w": "2027-W37",
+     "closed": false,
+     "list_n": 1289,
+     "overflow": 639,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 226,
+      "CHUBU": 166,
+      "KANTO": 247
+     }
+    },
+    {
+     "w": "2027-W38",
+     "closed": false,
+     "list_n": 1404,
+     "overflow": 754,
+     "markets": 3,
+     "overflow_markets": {
+      "KANTO": 256,
+      "KANSAI": 332,
+      "CHUBU": 166
+     }
+    },
+    {
+     "w": "2027-W39",
+     "closed": false,
+     "list_n": 1523,
+     "overflow": 873,
+     "markets": 3,
+     "overflow_markets": {
+      "KANTO": 375,
+      "KANSAI": 332,
+      "CHUBU": 166
+     }
+    },
+    {
+     "w": "2027-W40",
+     "closed": false,
+     "list_n": 1023,
+     "overflow": 993,
+     "markets": 3,
+     "overflow_markets": {
+      "KANTO": 495,
+      "KANSAI": 332,
+      "CHUBU": 166
+     }
+    },
+    {
+     "w": "2027-W41",
+     "closed": false,
+     "list_n": 526,
+     "overflow": 496,
+     "markets": 3,
+     "overflow_markets": {
+      "KANTO": 247,
+      "KANSAI": 166,
+      "CHUBU": 83
+     }
+    },
+    {
+     "w": "2027-W44",
+     "closed": false,
+     "list_n": 659,
+     "overflow": 9,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 9
+     }
+    },
+    {
+     "w": "2027-W45",
+     "closed": false,
+     "list_n": 634,
+     "overflow": 134,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 134
+     }
+    },
+    {
+     "w": "2027-W46",
+     "closed": false,
+     "list_n": 607,
+     "overflow": 107,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 107
+     }
+    },
+    {
+     "w": "2027-W47",
+     "closed": false,
+     "list_n": 579,
+     "overflow": 79,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 79
+     }
+    },
+    {
+     "w": "2027-W48",
+     "closed": false,
+     "list_n": 548,
+     "overflow": 48,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 48
+     }
+    },
+    {
+     "w": "2027-W49",
+     "closed": false,
+     "list_n": 520,
+     "overflow": 20,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 20
+     }
+    },
+    {
+     "w": "2027-W50",
+     "closed": false,
+     "list_n": 504,
+     "overflow": 4,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 4
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "Gasoline_Import",
+   "factory": "Import_Hub",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "factory": "Refinery_Local_H",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "factory": "Refinery_Local_R",
+   "weeks": [
+    {
+     "w": "2026-W28",
+     "closed": false,
+     "list_n": 9,
+     "overflow": 4,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 1,
+      "CHUBU": 3
+     }
+    },
+    {
+     "w": "2026-W29",
+     "closed": false,
+     "list_n": 14,
+     "overflow": 9,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 7,
+      "KANSAI": 2
+     }
+    },
+    {
+     "w": "2026-W30",
+     "closed": false,
+     "list_n": 19,
+     "overflow": 14,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 10,
+      "KANSAI": 4
+     }
+    },
+    {
+     "w": "2026-W31",
+     "closed": false,
+     "list_n": 24,
+     "overflow": 19,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 6,
+      "CHUBU": 13
+     }
+    },
+    {
+     "w": "2026-W32",
+     "closed": false,
+     "list_n": 29,
+     "overflow": 24,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 17,
+      "KANSAI": 7
+     }
+    },
+    {
+     "w": "2026-W33",
+     "closed": false,
+     "list_n": 34,
+     "overflow": 29,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 20,
+      "KANSAI": 9
+     }
+    },
+    {
+     "w": "2026-W34",
+     "closed": false,
+     "list_n": 39,
+     "overflow": 34,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 11,
+      "CHUBU": 23
+     }
+    },
+    {
+     "w": "2026-W35",
+     "closed": false,
+     "list_n": 44,
+     "overflow": 39,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 27,
+      "KANSAI": 12
+     }
+    },
+    {
+     "w": "2026-W36",
+     "closed": false,
+     "list_n": 49,
+     "overflow": 44,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 30,
+      "KANSAI": 14
+     }
+    },
+    {
+     "w": "2026-W37",
+     "closed": false,
+     "list_n": 54,
+     "overflow": 49,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 16,
+      "CHUBU": 33
+     }
+    },
+    {
+     "w": "2026-W38",
+     "closed": false,
+     "list_n": 59,
+     "overflow": 54,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 37,
+      "KANSAI": 17
+     }
+    },
+    {
+     "w": "2026-W39",
+     "closed": false,
+     "list_n": 64,
+     "overflow": 59,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 40,
+      "KANSAI": 19
+     }
+    },
+    {
+     "w": "2026-W40",
+     "closed": false,
+     "list_n": 69,
+     "overflow": 64,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 21,
+      "CHUBU": 43
+     }
+    },
+    {
+     "w": "2026-W41",
+     "closed": false,
+     "list_n": 74,
+     "overflow": 69,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 47,
+      "KANSAI": 22
+     }
+    },
+    {
+     "w": "2026-W42",
+     "closed": false,
+     "list_n": 79,
+     "overflow": 74,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 50,
+      "KANSAI": 24
+     }
+    },
+    {
+     "w": "2026-W43",
+     "closed": false,
+     "list_n": 84,
+     "overflow": 79,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 26,
+      "CHUBU": 53
+     }
+    },
+    {
+     "w": "2026-W44",
+     "closed": false,
+     "list_n": 89,
+     "overflow": 84,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 57,
+      "KANSAI": 27
+     }
+    },
+    {
+     "w": "2026-W45",
+     "closed": false,
+     "list_n": 94,
+     "overflow": 89,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 60,
+      "KANSAI": 29
+     }
+    },
+    {
+     "w": "2026-W46",
+     "closed": false,
+     "list_n": 99,
+     "overflow": 94,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 31,
+      "CHUBU": 63
+     }
+    },
+    {
+     "w": "2026-W47",
+     "closed": false,
+     "list_n": 104,
+     "overflow": 99,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 67,
+      "KANSAI": 32
+     }
+    },
+    {
+     "w": "2026-W48",
+     "closed": false,
+     "list_n": 109,
+     "overflow": 104,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 70,
+      "KANSAI": 34
+     }
+    },
+    {
+     "w": "2026-W49",
+     "closed": false,
+     "list_n": 114,
+     "overflow": 109,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 36,
+      "CHUBU": 73
+     }
+    },
+    {
+     "w": "2026-W50",
+     "closed": false,
+     "list_n": 119,
+     "overflow": 114,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 77,
+      "KANSAI": 37
+     }
+    },
+    {
+     "w": "2026-W51",
+     "closed": false,
+     "list_n": 124,
+     "overflow": 119,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 80,
+      "KANSAI": 39
+     }
+    },
+    {
+     "w": "2026-W52",
+     "closed": false,
+     "list_n": 129,
+     "overflow": 124,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 41,
+      "CHUBU": 83
+     }
+    },
+    {
+     "w": "2026-W53",
+     "closed": false,
+     "list_n": 134,
+     "overflow": 129,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 87,
+      "KANSAI": 42
+     }
+    },
+    {
+     "w": "2027-W01",
+     "closed": false,
+     "list_n": 139,
+     "overflow": 134,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 90,
+      "KANSAI": 44
+     }
+    },
+    {
+     "w": "2027-W02",
+     "closed": false,
+     "list_n": 144,
+     "overflow": 139,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 46,
+      "CHUBU": 93
+     }
+    },
+    {
+     "w": "2027-W03",
+     "closed": false,
+     "list_n": 149,
+     "overflow": 144,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 97,
+      "KANSAI": 47
+     }
+    },
+    {
+     "w": "2027-W04",
+     "closed": false,
+     "list_n": 154,
+     "overflow": 149,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 100,
+      "KANSAI": 49
+     }
+    },
+    {
+     "w": "2027-W05",
+     "closed": false,
+     "list_n": 159,
+     "overflow": 154,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 51,
+      "CHUBU": 103
+     }
+    },
+    {
+     "w": "2027-W06",
+     "closed": false,
+     "list_n": 164,
+     "overflow": 159,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 107,
+      "KANSAI": 52
+     }
+    },
+    {
+     "w": "2027-W07",
+     "closed": false,
+     "list_n": 169,
+     "overflow": 164,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 110,
+      "KANSAI": 54
+     }
+    },
+    {
+     "w": "2027-W08",
+     "closed": false,
+     "list_n": 174,
+     "overflow": 169,
+     "markets": 2,
+     "overflow_markets": {
+      "KANSAI": 56,
+      "CHUBU": 113
+     }
+    },
+    {
+     "w": "2027-W09",
+     "closed": false,
+     "list_n": 179,
+     "overflow": 174,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 117,
+      "KANSAI": 57
+     }
+    },
+    {
+     "w": "2027-W10",
+     "closed": false,
+     "list_n": 183,
+     "overflow": 178,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 59,
+      "CHUBU": 119
+     }
+    },
+    {
+     "w": "2027-W11",
+     "closed": false,
+     "list_n": 185,
+     "overflow": 180,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 121,
+      "KANSAI": 59
+     }
+    },
+    {
+     "w": "2027-W12",
+     "closed": false,
+     "list_n": 185,
+     "overflow": 180,
+     "markets": 3,
+     "overflow_markets": {
+      "CHUBU": 121,
+      "KANSAI": 59
+     }
+    },
+    {
+     "w": "2027-W13",
+     "closed": false,
+     "list_n": 183,
+     "overflow": 178,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 59,
+      "CHUBU": 119
+     }
+    },
+    {
+     "w": "2027-W14",
+     "closed": false,
+     "list_n": 180,
+     "overflow": 175,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 58,
+      "CHUBU": 117
+     }
+    },
+    {
+     "w": "2027-W15",
+     "closed": false,
+     "list_n": 177,
+     "overflow": 172,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 57,
+      "CHUBU": 115
+     }
+    },
+    {
+     "w": "2027-W16",
+     "closed": false,
+     "list_n": 174,
+     "overflow": 169,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 56,
+      "CHUBU": 113
+     }
+    },
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 171,
+     "overflow": 166,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 55,
+      "CHUBU": 111
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": false,
+     "list_n": 168,
+     "overflow": 163,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 54,
+      "CHUBU": 109
+     }
+    },
+    {
+     "w": "2027-W19",
+     "closed": false,
+     "list_n": 165,
+     "overflow": 160,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 53,
+      "CHUBU": 107
+     }
+    },
+    {
+     "w": "2027-W20",
+     "closed": false,
+     "list_n": 162,
+     "overflow": 157,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 52,
+      "CHUBU": 105
+     }
+    },
+    {
+     "w": "2027-W21",
+     "closed": false,
+     "list_n": 159,
+     "overflow": 154,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 51,
+      "CHUBU": 103
+     }
+    },
+    {
+     "w": "2027-W22",
+     "closed": false,
+     "list_n": 156,
+     "overflow": 151,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 50,
+      "CHUBU": 101
+     }
+    },
+    {
+     "w": "2027-W23",
+     "closed": false,
+     "list_n": 153,
+     "overflow": 148,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 49,
+      "CHUBU": 99
+     }
+    },
+    {
+     "w": "2027-W24",
+     "closed": false,
+     "list_n": 150,
+     "overflow": 145,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 48,
+      "CHUBU": 97
+     }
+    },
+    {
+     "w": "2027-W25",
+     "closed": false,
+     "list_n": 147,
+     "overflow": 142,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 47,
+      "CHUBU": 95
+     }
+    },
+    {
+     "w": "2027-W26",
+     "closed": false,
+     "list_n": 144,
+     "overflow": 139,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 46,
+      "CHUBU": 93
+     }
+    },
+    {
+     "w": "2027-W27",
+     "closed": false,
+     "list_n": 141,
+     "overflow": 136,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 45,
+      "CHUBU": 91
+     }
+    },
+    {
+     "w": "2027-W28",
+     "closed": false,
+     "list_n": 138,
+     "overflow": 133,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 44,
+      "CHUBU": 89
+     }
+    },
+    {
+     "w": "2027-W29",
+     "closed": false,
+     "list_n": 135,
+     "overflow": 130,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 43,
+      "CHUBU": 87
+     }
+    },
+    {
+     "w": "2027-W30",
+     "closed": false,
+     "list_n": 132,
+     "overflow": 127,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 42,
+      "CHUBU": 85
+     }
+    },
+    {
+     "w": "2027-W31",
+     "closed": false,
+     "list_n": 129,
+     "overflow": 124,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 41,
+      "CHUBU": 83
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 126,
+     "overflow": 121,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 40,
+      "CHUBU": 81
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 123,
+     "overflow": 118,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 39,
+      "CHUBU": 79
+     }
+    },
+    {
+     "w": "2027-W34",
+     "closed": false,
+     "list_n": 120,
+     "overflow": 115,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 38,
+      "CHUBU": 77
+     }
+    },
+    {
+     "w": "2027-W35",
+     "closed": false,
+     "list_n": 117,
+     "overflow": 112,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 37,
+      "CHUBU": 75
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 114,
+     "overflow": 109,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 36,
+      "CHUBU": 73
+     }
+    },
+    {
+     "w": "2027-W37",
+     "closed": false,
+     "list_n": 111,
+     "overflow": 106,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 35,
+      "CHUBU": 71
+     }
+    },
+    {
+     "w": "2027-W38",
+     "closed": false,
+     "list_n": 108,
+     "overflow": 103,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 34,
+      "CHUBU": 69
+     }
+    },
+    {
+     "w": "2027-W39",
+     "closed": false,
+     "list_n": 105,
+     "overflow": 100,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 33,
+      "CHUBU": 67
+     }
+    },
+    {
+     "w": "2027-W40",
+     "closed": false,
+     "list_n": 102,
+     "overflow": 97,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 32,
+      "CHUBU": 65
+     }
+    },
+    {
+     "w": "2027-W41",
+     "closed": false,
+     "list_n": 99,
+     "overflow": 94,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 31,
+      "CHUBU": 63
+     }
+    },
+    {
+     "w": "2027-W42",
+     "closed": false,
+     "list_n": 96,
+     "overflow": 91,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 30,
+      "CHUBU": 61
+     }
+    },
+    {
+     "w": "2027-W43",
+     "closed": false,
+     "list_n": 93,
+     "overflow": 88,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 29,
+      "CHUBU": 59
+     }
+    },
+    {
+     "w": "2027-W44",
+     "closed": false,
+     "list_n": 90,
+     "overflow": 85,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 28,
+      "CHUBU": 57
+     }
+    },
+    {
+     "w": "2027-W45",
+     "closed": false,
+     "list_n": 87,
+     "overflow": 82,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 27,
+      "CHUBU": 55
+     }
+    },
+    {
+     "w": "2027-W46",
+     "closed": false,
+     "list_n": 84,
+     "overflow": 79,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 26,
+      "CHUBU": 53
+     }
+    },
+    {
+     "w": "2027-W47",
+     "closed": false,
+     "list_n": 81,
+     "overflow": 76,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 25,
+      "CHUBU": 51
+     }
+    },
+    {
+     "w": "2027-W48",
+     "closed": false,
+     "list_n": 78,
+     "overflow": 73,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 24,
+      "CHUBU": 49
+     }
+    },
+    {
+     "w": "2027-W49",
+     "closed": false,
+     "list_n": 75,
+     "overflow": 70,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 23,
+      "CHUBU": 47
+     }
+    },
+    {
+     "w": "2027-W50",
+     "closed": false,
+     "list_n": 72,
+     "overflow": 67,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 22,
+      "CHUBU": 45
+     }
+    },
+    {
+     "w": "2027-W51",
+     "closed": false,
+     "list_n": 69,
+     "overflow": 64,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 21,
+      "CHUBU": 43
+     }
+    },
+    {
+     "w": "2027-W52",
+     "closed": false,
+     "list_n": 66,
+     "overflow": 61,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 20,
+      "CHUBU": 41
+     }
+    },
+    {
+     "w": "2028-W01",
+     "closed": false,
+     "list_n": 63,
+     "overflow": 58,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 19,
+      "CHUBU": 39
+     }
+    },
+    {
+     "w": "2028-W02",
+     "closed": false,
+     "list_n": 60,
+     "overflow": 55,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 18,
+      "CHUBU": 37
+     }
+    },
+    {
+     "w": "2028-W03",
+     "closed": false,
+     "list_n": 57,
+     "overflow": 52,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 17,
+      "CHUBU": 35
+     }
+    },
+    {
+     "w": "2028-W04",
+     "closed": false,
+     "list_n": 54,
+     "overflow": 49,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 16,
+      "CHUBU": 33
+     }
+    },
+    {
+     "w": "2028-W05",
+     "closed": false,
+     "list_n": 51,
+     "overflow": 46,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 15,
+      "CHUBU": 31
+     }
+    },
+    {
+     "w": "2028-W06",
+     "closed": false,
+     "list_n": 48,
+     "overflow": 43,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 14,
+      "CHUBU": 29
+     }
+    },
+    {
+     "w": "2028-W07",
+     "closed": false,
+     "list_n": 45,
+     "overflow": 40,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 13,
+      "CHUBU": 27
+     }
+    },
+    {
+     "w": "2028-W08",
+     "closed": false,
+     "list_n": 42,
+     "overflow": 37,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 12,
+      "CHUBU": 25
+     }
+    },
+    {
+     "w": "2028-W09",
+     "closed": false,
+     "list_n": 39,
+     "overflow": 34,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 11,
+      "CHUBU": 23
+     }
+    },
+    {
+     "w": "2028-W10",
+     "closed": false,
+     "list_n": 36,
+     "overflow": 31,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 10,
+      "CHUBU": 21
+     }
+    },
+    {
+     "w": "2028-W11",
+     "closed": false,
+     "list_n": 33,
+     "overflow": 28,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 9,
+      "CHUBU": 19
+     }
+    },
+    {
+     "w": "2028-W12",
+     "closed": false,
+     "list_n": 30,
+     "overflow": 25,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 8,
+      "CHUBU": 17
+     }
+    },
+    {
+     "w": "2028-W13",
+     "closed": false,
+     "list_n": 27,
+     "overflow": 22,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 7,
+      "CHUBU": 15
+     }
+    },
+    {
+     "w": "2028-W14",
+     "closed": false,
+     "list_n": 24,
+     "overflow": 19,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 6,
+      "CHUBU": 13
+     }
+    },
+    {
+     "w": "2028-W15",
+     "closed": false,
+     "list_n": 21,
+     "overflow": 16,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 5,
+      "CHUBU": 11
+     }
+    },
+    {
+     "w": "2028-W16",
+     "closed": false,
+     "list_n": 18,
+     "overflow": 13,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 4,
+      "CHUBU": 9
+     }
+    },
+    {
+     "w": "2028-W17",
+     "closed": false,
+     "list_n": 15,
+     "overflow": 10,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 3,
+      "CHUBU": 7
+     }
+    },
+    {
+     "w": "2028-W18",
+     "closed": false,
+     "list_n": 12,
+     "overflow": 7,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 2,
+      "CHUBU": 5
+     }
+    },
+    {
+     "w": "2028-W19",
+     "closed": false,
+     "list_n": 9,
+     "overflow": 4,
+     "markets": 3,
+     "overflow_markets": {
+      "KANSAI": 1,
+      "CHUBU": 3
+     }
+    },
+    {
+     "w": "2028-W20",
+     "closed": false,
+     "list_n": 6,
+     "overflow": 1,
+     "markets": 2,
+     "overflow_markets": {
+      "CHUBU": 1
+     }
+    }
+   ],
+   "dropped": {
+    "KANSAI": 1,
+    "CHUBU": 3
+   }
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "factory": "Refinery_EU",
+   "weeks": [
+    {
+     "w": "2026-W47",
+     "closed": false,
+     "list_n": 868,
+     "overflow": 218,
+     "markets": 2,
+     "overflow_markets": {
+      "NL": 218
+     }
+    },
+    {
+     "w": "2026-W48",
+     "closed": false,
+     "list_n": 1518,
+     "overflow": 868,
+     "markets": 2,
+     "overflow_markets": {
+      "NL": 851,
+      "FR": 17
+     }
+    },
+    {
+     "w": "2026-W49",
+     "closed": false,
+     "list_n": 2168,
+     "overflow": 1518,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 116,
+      "NL": 1402
+     }
+    },
+    {
+     "w": "2026-W50",
+     "closed": false,
+     "list_n": 2818,
+     "overflow": 2168,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 317,
+      "NL": 1516,
+      "DE": 335
+     }
+    },
+    {
+     "w": "2026-W51",
+     "closed": false,
+     "list_n": 3442,
+     "overflow": 2792,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1593,
+      "DE": 673,
+      "FR": 526
+     }
+    },
+    {
+     "w": "2026-W52",
+     "closed": false,
+     "list_n": 3985,
+     "overflow": 3335,
+     "markets": 3,
+     "overflow_markets": {
+      "DE": 950,
+      "FR": 754,
+      "NL": 1631
+     }
+    },
+    {
+     "w": "2026-W53",
+     "closed": false,
+     "list_n": 4446,
+     "overflow": 3796,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2028,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W01",
+     "closed": false,
+     "list_n": 4823,
+     "overflow": 4173,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2405,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W02",
+     "closed": false,
+     "list_n": 5115,
+     "overflow": 4465,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2697,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W03",
+     "closed": false,
+     "list_n": 5320,
+     "overflow": 4670,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2902,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W04",
+     "closed": false,
+     "list_n": 5436,
+     "overflow": 4786,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 3018,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W05",
+     "closed": false,
+     "list_n": 5462,
+     "overflow": 4812,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 3044,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W06",
+     "closed": false,
+     "list_n": 5424,
+     "overflow": 4774,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 3006,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W07",
+     "closed": false,
+     "list_n": 5379,
+     "overflow": 4729,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2961,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W08",
+     "closed": false,
+     "list_n": 5328,
+     "overflow": 4678,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2910,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W09",
+     "closed": false,
+     "list_n": 5271,
+     "overflow": 4621,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2853,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W10",
+     "closed": false,
+     "list_n": 5208,
+     "overflow": 4558,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2790,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W11",
+     "closed": false,
+     "list_n": 5140,
+     "overflow": 4490,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2722,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W12",
+     "closed": false,
+     "list_n": 5068,
+     "overflow": 4418,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2650,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W13",
+     "closed": false,
+     "list_n": 4992,
+     "overflow": 4342,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2574,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W14",
+     "closed": false,
+     "list_n": 4913,
+     "overflow": 4263,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2495,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W15",
+     "closed": false,
+     "list_n": 4832,
+     "overflow": 4182,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2414,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W16",
+     "closed": false,
+     "list_n": 4749,
+     "overflow": 4099,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2331,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 4664,
+     "overflow": 4014,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2246,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": false,
+     "list_n": 4580,
+     "overflow": 3930,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2162,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W19",
+     "closed": false,
+     "list_n": 4496,
+     "overflow": 3846,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 2078,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W20",
+     "closed": false,
+     "list_n": 4414,
+     "overflow": 3764,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1996,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W21",
+     "closed": false,
+     "list_n": 4334,
+     "overflow": 3684,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1916,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W22",
+     "closed": false,
+     "list_n": 4257,
+     "overflow": 3607,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1839,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W23",
+     "closed": false,
+     "list_n": 4184,
+     "overflow": 3534,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1766,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W24",
+     "closed": false,
+     "list_n": 4114,
+     "overflow": 3464,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1696,
+      "DE": 1014,
+      "FR": 754
+     }
+    },
+    {
+     "w": "2027-W25",
+     "closed": false,
+     "list_n": 3424,
+     "overflow": 3399,
+     "markets": 3,
+     "overflow_markets": {
+      "DE": 1014,
+      "FR": 754,
+      "NL": 1631
+     }
+    },
+    {
+     "w": "2027-W26",
+     "closed": false,
+     "list_n": 2740,
+     "overflow": 2715,
+     "markets": 3,
+     "overflow_markets": {
+      "DE": 673,
+      "FR": 526,
+      "NL": 1516
+     }
+    },
+    {
+     "w": "2027-W27",
+     "closed": false,
+     "list_n": 2062,
+     "overflow": 2037,
+     "markets": 3,
+     "overflow_markets": {
+      "DE": 335,
+      "FR": 300,
+      "NL": 1402
+     }
+    },
+    {
+     "w": "2027-W28",
+     "closed": false,
+     "list_n": 2015,
+     "overflow": 1365,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1289,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W29",
+     "closed": false,
+     "list_n": 1974,
+     "overflow": 1324,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1248,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W30",
+     "closed": false,
+     "list_n": 1940,
+     "overflow": 1290,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1214,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W31",
+     "closed": false,
+     "list_n": 1912,
+     "overflow": 1262,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1186,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 1890,
+     "overflow": 1240,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1164,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 1875,
+     "overflow": 1225,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1149,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W34",
+     "closed": false,
+     "list_n": 1866,
+     "overflow": 1216,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1140,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W35",
+     "closed": false,
+     "list_n": 1863,
+     "overflow": 1213,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1137,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 1866,
+     "overflow": 1216,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1140,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W37",
+     "closed": false,
+     "list_n": 1874,
+     "overflow": 1224,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1148,
+      "FR": 76
+     }
+    },
+    {
+     "w": "2027-W38",
+     "closed": false,
+     "list_n": 1886,
+     "overflow": 1236,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 80,
+      "NL": 1156
+     }
+    },
+    {
+     "w": "2027-W39",
+     "closed": false,
+     "list_n": 1902,
+     "overflow": 1252,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 96,
+      "NL": 1156
+     }
+    },
+    {
+     "w": "2027-W40",
+     "closed": false,
+     "list_n": 1921,
+     "overflow": 1271,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1167,
+      "FR": 104
+     }
+    },
+    {
+     "w": "2027-W41",
+     "closed": false,
+     "list_n": 1942,
+     "overflow": 1292,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1188,
+      "FR": 104
+     }
+    },
+    {
+     "w": "2027-W42",
+     "closed": false,
+     "list_n": 1965,
+     "overflow": 1315,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1211,
+      "FR": 104
+     }
+    },
+    {
+     "w": "2027-W43",
+     "closed": false,
+     "list_n": 1990,
+     "overflow": 1340,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1236,
+      "FR": 104
+     }
+    },
+    {
+     "w": "2027-W44",
+     "closed": false,
+     "list_n": 2014,
+     "overflow": 1364,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 107,
+      "NL": 1257
+     }
+    },
+    {
+     "w": "2027-W45",
+     "closed": false,
+     "list_n": 1888,
+     "overflow": 1388,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 131,
+      "NL": 1257
+     }
+    },
+    {
+     "w": "2027-W46",
+     "closed": false,
+     "list_n": 1760,
+     "overflow": 1260,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 104,
+      "NL": 1156
+     }
+    },
+    {
+     "w": "2027-W47",
+     "closed": false,
+     "list_n": 1630,
+     "overflow": 1130,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 76,
+      "NL": 1054
+     }
+    },
+    {
+     "w": "2027-W48",
+     "closed": false,
+     "list_n": 1497,
+     "overflow": 997,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 45,
+      "NL": 952
+     }
+    },
+    {
+     "w": "2027-W49",
+     "closed": false,
+     "list_n": 1366,
+     "overflow": 866,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 17,
+      "NL": 849
+     }
+    },
+    {
+     "w": "2027-W50",
+     "closed": false,
+     "list_n": 1251,
+     "overflow": 751,
+     "markets": 3,
+     "overflow_markets": {
+      "FR": 2,
+      "NL": 749
+     }
+    },
+    {
+     "w": "2027-W51",
+     "closed": false,
+     "list_n": 1301,
+     "overflow": 651,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 651
+     }
+    },
+    {
+     "w": "2027-W52",
+     "closed": false,
+     "list_n": 1364,
+     "overflow": 714,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 714
+     }
+    },
+    {
+     "w": "2028-W01",
+     "closed": false,
+     "list_n": 1442,
+     "overflow": 792,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 792
+     }
+    },
+    {
+     "w": "2028-W02",
+     "closed": false,
+     "list_n": 1528,
+     "overflow": 878,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 878
+     }
+    },
+    {
+     "w": "2028-W03",
+     "closed": false,
+     "list_n": 1609,
+     "overflow": 959,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 959
+     }
+    },
+    {
+     "w": "2028-W04",
+     "closed": false,
+     "list_n": 1684,
+     "overflow": 1034,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1034
+     }
+    },
+    {
+     "w": "2028-W05",
+     "closed": false,
+     "list_n": 1747,
+     "overflow": 1097,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1097
+     }
+    },
+    {
+     "w": "2028-W06",
+     "closed": false,
+     "list_n": 1784,
+     "overflow": 1134,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1134
+     }
+    },
+    {
+     "w": "2028-W07",
+     "closed": false,
+     "list_n": 1795,
+     "overflow": 1145,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1145
+     }
+    },
+    {
+     "w": "2028-W08",
+     "closed": false,
+     "list_n": 1780,
+     "overflow": 1130,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1130
+     }
+    },
+    {
+     "w": "2028-W09",
+     "closed": false,
+     "list_n": 1737,
+     "overflow": 1087,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1087
+     }
+    },
+    {
+     "w": "2028-W10",
+     "closed": false,
+     "list_n": 1674,
+     "overflow": 1024,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 1024
+     }
+    },
+    {
+     "w": "2028-W11",
+     "closed": false,
+     "list_n": 1606,
+     "overflow": 956,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 956
+     }
+    },
+    {
+     "w": "2028-W12",
+     "closed": false,
+     "list_n": 1534,
+     "overflow": 884,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 884
+     }
+    },
+    {
+     "w": "2028-W13",
+     "closed": false,
+     "list_n": 1458,
+     "overflow": 808,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 808
+     }
+    },
+    {
+     "w": "2028-W14",
+     "closed": false,
+     "list_n": 1379,
+     "overflow": 729,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 729
+     }
+    },
+    {
+     "w": "2028-W15",
+     "closed": false,
+     "list_n": 1298,
+     "overflow": 648,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 648
+     }
+    },
+    {
+     "w": "2028-W16",
+     "closed": false,
+     "list_n": 1215,
+     "overflow": 565,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 565
+     }
+    },
+    {
+     "w": "2028-W17",
+     "closed": false,
+     "list_n": 1130,
+     "overflow": 480,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 480
+     }
+    },
+    {
+     "w": "2028-W18",
+     "closed": false,
+     "list_n": 1046,
+     "overflow": 396,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 396
+     }
+    },
+    {
+     "w": "2028-W19",
+     "closed": false,
+     "list_n": 962,
+     "overflow": 312,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 312
+     }
+    },
+    {
+     "w": "2028-W20",
+     "closed": false,
+     "list_n": 880,
+     "overflow": 230,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 230
+     }
+    },
+    {
+     "w": "2028-W21",
+     "closed": false,
+     "list_n": 800,
+     "overflow": 150,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 150
+     }
+    },
+    {
+     "w": "2028-W22",
+     "closed": false,
+     "list_n": 723,
+     "overflow": 73,
+     "markets": 3,
+     "overflow_markets": {
+      "NL": 73
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "Gasoline_EU_Import",
+   "factory": "Import_Hub_EU",
+   "weeks": [],
+   "dropped": {}
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "factory": "Refinery_USGulf",
+   "weeks": [
+    {
+     "w": "2026-W52",
+     "closed": false,
+     "list_n": 1530,
+     "overflow": 630,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 207,
+      "CA": 282,
+      "NY": 141
+     }
+    },
+    {
+     "w": "2026-W53",
+     "closed": false,
+     "list_n": 2161,
+     "overflow": 1261,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 412,
+      "CA": 566,
+      "NY": 283
+     }
+    },
+    {
+     "w": "2027-W01",
+     "closed": false,
+     "list_n": 2680,
+     "overflow": 1780,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 555,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W02",
+     "closed": false,
+     "list_n": 3085,
+     "overflow": 2185,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 960,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W03",
+     "closed": false,
+     "list_n": 3375,
+     "overflow": 2475,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1250,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W04",
+     "closed": false,
+     "list_n": 3548,
+     "overflow": 2648,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1423,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W05",
+     "closed": false,
+     "list_n": 3600,
+     "overflow": 2700,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1475,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W06",
+     "closed": false,
+     "list_n": 3587,
+     "overflow": 2687,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1462,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W07",
+     "closed": false,
+     "list_n": 3565,
+     "overflow": 2665,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1440,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W08",
+     "closed": false,
+     "list_n": 3535,
+     "overflow": 2635,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1410,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W09",
+     "closed": false,
+     "list_n": 3497,
+     "overflow": 2597,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1372,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W10",
+     "closed": false,
+     "list_n": 3453,
+     "overflow": 2553,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1328,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W11",
+     "closed": false,
+     "list_n": 3402,
+     "overflow": 2502,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1277,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W12",
+     "closed": false,
+     "list_n": 3345,
+     "overflow": 2445,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1220,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W13",
+     "closed": false,
+     "list_n": 3283,
+     "overflow": 2383,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1158,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W14",
+     "closed": false,
+     "list_n": 3218,
+     "overflow": 2318,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1093,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W15",
+     "closed": false,
+     "list_n": 3149,
+     "overflow": 2249,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 1024,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W16",
+     "closed": false,
+     "list_n": 3078,
+     "overflow": 2178,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 953,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W17",
+     "closed": false,
+     "list_n": 3006,
+     "overflow": 2106,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 881,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W18",
+     "closed": false,
+     "list_n": 2934,
+     "overflow": 2034,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 809,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W19",
+     "closed": false,
+     "list_n": 2863,
+     "overflow": 1963,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 738,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W20",
+     "closed": false,
+     "list_n": 2795,
+     "overflow": 1895,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 670,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W21",
+     "closed": false,
+     "list_n": 2729,
+     "overflow": 1829,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 604,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W22",
+     "closed": false,
+     "list_n": 2667,
+     "overflow": 1767,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 542,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W23",
+     "closed": false,
+     "list_n": 2610,
+     "overflow": 1710,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 485,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W24",
+     "closed": false,
+     "list_n": 2559,
+     "overflow": 1659,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 434,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W25",
+     "closed": false,
+     "list_n": 2514,
+     "overflow": 1614,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 389,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W26",
+     "closed": false,
+     "list_n": 2477,
+     "overflow": 1577,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 352,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W27",
+     "closed": false,
+     "list_n": 2447,
+     "overflow": 1547,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 322,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W28",
+     "closed": false,
+     "list_n": 2425,
+     "overflow": 1525,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 300,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W29",
+     "closed": false,
+     "list_n": 2412,
+     "overflow": 1512,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 287,
+      "TX": 659,
+      "CA": 566
+     }
+    },
+    {
+     "w": "2027-W30",
+     "closed": false,
+     "list_n": 2408,
+     "overflow": 1508,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 659,
+      "CA": 566,
+      "NY": 283
+     }
+    },
+    {
+     "w": "2027-W31",
+     "closed": false,
+     "list_n": 2412,
+     "overflow": 1512,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 663,
+      "CA": 566,
+      "NY": 283
+     }
+    },
+    {
+     "w": "2027-W32",
+     "closed": false,
+     "list_n": 2425,
+     "overflow": 1525,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 676,
+      "CA": 566,
+      "NY": 283
+     }
+    },
+    {
+     "w": "2027-W33",
+     "closed": false,
+     "list_n": 2447,
+     "overflow": 1547,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 698,
+      "CA": 566,
+      "NY": 283
+     }
+    },
+    {
+     "w": "2027-W34",
+     "closed": false,
+     "list_n": 2477,
+     "overflow": 1577,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 728,
+      "CA": 566,
+      "NY": 283
+     }
+    },
+    {
+     "w": "2027-W35",
+     "closed": false,
+     "list_n": 1660,
+     "overflow": 1615,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 766,
+      "CA": 566,
+      "NY": 283
+     }
+    },
+    {
+     "w": "2027-W36",
+     "closed": false,
+     "list_n": 849,
+     "overflow": 804,
+     "markets": 3,
+     "overflow_markets": {
+      "TX": 381,
+      "CA": 282,
+      "NY": 141
+     }
+    },
+    {
+     "w": "2027-W48",
+     "closed": false,
+     "list_n": 1035,
+     "overflow": 35,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 35
+     }
+    },
+    {
+     "w": "2027-W49",
+     "closed": false,
+     "list_n": 1192,
+     "overflow": 192,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 192
+     }
+    },
+    {
+     "w": "2027-W50",
+     "closed": false,
+     "list_n": 1343,
+     "overflow": 343,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 343
+     }
+    },
+    {
+     "w": "2027-W51",
+     "closed": false,
+     "list_n": 1488,
+     "overflow": 488,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 488
+     }
+    },
+    {
+     "w": "2027-W52",
+     "closed": false,
+     "list_n": 1625,
+     "overflow": 625,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 625
+     }
+    },
+    {
+     "w": "2028-W01",
+     "closed": false,
+     "list_n": 1755,
+     "overflow": 755,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 755
+     }
+    },
+    {
+     "w": "2028-W02",
+     "closed": false,
+     "list_n": 1877,
+     "overflow": 877,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 877
+     }
+    },
+    {
+     "w": "2028-W03",
+     "closed": false,
+     "list_n": 1890,
+     "overflow": 990,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 990
+     }
+    },
+    {
+     "w": "2028-W04",
+     "closed": false,
+     "list_n": 1894,
+     "overflow": 994,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 994
+     }
+    },
+    {
+     "w": "2028-W05",
+     "closed": false,
+     "list_n": 1890,
+     "overflow": 990,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 990
+     }
+    },
+    {
+     "w": "2028-W06",
+     "closed": false,
+     "list_n": 1877,
+     "overflow": 977,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 977
+     }
+    },
+    {
+     "w": "2028-W07",
+     "closed": false,
+     "list_n": 1855,
+     "overflow": 955,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 955
+     }
+    },
+    {
+     "w": "2028-W08",
+     "closed": false,
+     "list_n": 1825,
+     "overflow": 925,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 925
+     }
+    },
+    {
+     "w": "2028-W09",
+     "closed": false,
+     "list_n": 1787,
+     "overflow": 887,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 887
+     }
+    },
+    {
+     "w": "2028-W10",
+     "closed": false,
+     "list_n": 1743,
+     "overflow": 843,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 843
+     }
+    },
+    {
+     "w": "2028-W11",
+     "closed": false,
+     "list_n": 1692,
+     "overflow": 792,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 792
+     }
+    },
+    {
+     "w": "2028-W12",
+     "closed": false,
+     "list_n": 1635,
+     "overflow": 735,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 735
+     }
+    },
+    {
+     "w": "2028-W13",
+     "closed": false,
+     "list_n": 1573,
+     "overflow": 673,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 673
+     }
+    },
+    {
+     "w": "2028-W14",
+     "closed": false,
+     "list_n": 1508,
+     "overflow": 608,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 608
+     }
+    },
+    {
+     "w": "2028-W15",
+     "closed": false,
+     "list_n": 1439,
+     "overflow": 539,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 539
+     }
+    },
+    {
+     "w": "2028-W16",
+     "closed": false,
+     "list_n": 1368,
+     "overflow": 468,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 468
+     }
+    },
+    {
+     "w": "2028-W17",
+     "closed": false,
+     "list_n": 1296,
+     "overflow": 396,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 396
+     }
+    },
+    {
+     "w": "2028-W18",
+     "closed": false,
+     "list_n": 1224,
+     "overflow": 324,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 324
+     }
+    },
+    {
+     "w": "2028-W19",
+     "closed": false,
+     "list_n": 1153,
+     "overflow": 253,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 253
+     }
+    },
+    {
+     "w": "2028-W20",
+     "closed": false,
+     "list_n": 1085,
+     "overflow": 185,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 185
+     }
+    },
+    {
+     "w": "2028-W21",
+     "closed": false,
+     "list_n": 1019,
+     "overflow": 119,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 119
+     }
+    },
+    {
+     "w": "2028-W22",
+     "closed": false,
+     "list_n": 957,
+     "overflow": 57,
+     "markets": 3,
+     "overflow_markets": {
+      "NY": 57
+     }
+    }
+   ],
+   "dropped": {}
+  },
+  {
+   "product": "Gasoline_US_Import",
+   "factory": "Import_Hub_US",
+   "weeks": [],
+   "dropped": {}
+  }
+ ]
+}

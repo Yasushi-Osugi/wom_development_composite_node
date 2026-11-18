@@ -1,0 +1,57 @@
+﻿run,model,legacy_golden,product,factory,overflow_weeks,overflow_weeks_multi_market,closed_weeks_pushed,closed_weeks_pushed_multi_market,pushed_back_lots,dropped_total,dropped_by_market,first_week,last_week,expected_change,golden_match
+Cookie-jp-2026,Cookie-jp-2026,False,Cookie_Import,Factory_GP_CN,55,55,4,4,69248,0,,2025-W42,2027-W03,True,True
+Cookie-jp-2026,Cookie-jp-2026,False,Cookie_Local,Factory_DP_JP,0,0,0,0,0,0,,,,False,True
+Cookie-jp-2026__legacy,Cookie-jp-2026,True,Cookie_Import,Factory_GP_CN,55,55,4,4,69248,0,,2025-W42,2027-W03,True,True
+Cookie-jp-2026__legacy,Cookie-jp-2026,True,Cookie_Local,Factory_DP_JP,0,0,0,0,0,0,,,,False,True
+apparel-global-2028-2029,apparel-global-2028-2029,False,Apparel_Offshore,Garment_BD,0,0,0,0,0,0,,,,False,True
+apparel-global-2028-2029,apparel-global-2028-2029,False,Apparel_Vertical,Garment_PT,18,18,0,0,18814,0,,2028-W31,2029-W39,True,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Outsourced_S1,Factory_Import_CN,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Outsourced_S2,Factory_Import_CN,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Outsourced_S3,Factory_Import_CN,1,1,0,0,708,0,,2026-W08,2026-W08,True,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Outsourced_S4,Factory_Import_CN,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Outsourced_S5,Factory_Import_CN,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Outsourced_S6,Factory_Import_CN,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Outsourced_S7,Factory_Import_CN,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Outsourced_S8,Factory_Import_CN,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Integrated_S1,Factory_Local_ES,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Integrated_S2,Factory_Local_ES,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Integrated_S3,Factory_Local_ES,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Integrated_S4,Factory_Local_ES,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Integrated_S5,Factory_Local_ES,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Integrated_S6,Factory_Local_ES,4,4,0,0,5284,0,,2026-W32,2027-W33,True,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Integrated_S7,Factory_Local_ES,0,0,0,0,0,0,,,,False,True
+apparel-us-2026,apparel-us-2026,False,Apparel_Integrated_S8,Factory_Local_ES,0,0,0,0,0,0,,,,False,True
+bom-test-2026,bom-test-2026,False,EV_Model_A,Vehicle_Assy,0,0,0,0,0,0,,,,False,True
+cosmetics-sg-th-2027-2029,cosmetics-sg-th-2027-2029,False,COS_Serum,Factory_JP,0,0,0,0,0,0,,,,False,True
+cosmetics-sg-th-2027-2029,cosmetics-sg-th-2027-2029,False,COS_Cream,Factory_JP,0,0,0,0,0,0,,,,False,True
+ev-europe-2026,ev-europe-2026,False,EVmaker_Local,Factory_Local_DE,0,0,2,2,1000,0,,2026-W32,2027-W32,True,True
+ev-europe-2026,ev-europe-2026,False,EVmaker_Import,Factory_Import_HU,5,5,4,3,830,0,,2026-W28,2027-W32,True,True
+ev-thailand-2026,ev-thailand-2026,False,EVmaker_Local,Factory_Local_TH,0,0,2,2,1000,0,,2026-W32,2027-W32,True,True
+ev-thailand-2026,ev-thailand-2026,False,EVmaker_Import,Factory_Import_CN,8,8,4,4,1440,0,,2026-W36,2027-W41,True,True
+ev-thailand-2026__legacy,ev-thailand-2026,True,EVmaker_Local,Factory_Local_TH,0,0,2,2,1000,0,,2026-W32,2027-W32,True,True
+ev-thailand-2026__legacy,ev-thailand-2026,True,EVmaker_Import,Factory_Import_CN,8,8,4,4,1440,0,,2026-W36,2027-W41,True,True
+ev-thailand-2026_update,ev-thailand-2026_update,False,EVmaker_Local,Factory_Local_TH,2,2,0,0,700,0,,2026-W32,2027-W32,True,True
+ev-thailand-2026_update,ev-thailand-2026_update,False,EVmaker_Import,Factory_Import_CN,99,99,4,4,13253,0,,2025-W47,2027-W44,True,True
+oil-global-2027,oil-global-2027,False,Gasoline_Local,Refinery_Local,18,18,0,0,5800,0,,2027-W31,2027-W50,True,True
+oil-global-2027,oil-global-2027,False,Gasoline_Import,Import_Hub,0,0,0,0,0,0,,,,False,True
+oil-global-2027,oil-global-2027,False,Gasoline_Local_Hormuz,Refinery_Local_H,0,0,0,0,0,0,,,,False,True
+oil-global-2027,oil-global-2027,False,Gasoline_Local_RedSea,Refinery_Local_R,98,98,0,0,9023,4,CHUBU:3 KANSAI:1,2026-W28,2028-W20,True,True
+oil-global-2027,oil-global-2027,False,Gasoline_EU_Local,Refinery_EU,81,81,0,0,170662,0,,2026-W47,2028-W22,True,True
+oil-global-2027,oil-global-2027,False,Gasoline_EU_Import,Import_Hub_EU,0,0,0,0,0,0,,,,False,True
+oil-global-2027,oil-global-2027,False,Gasoline_US_Local,Refinery_USGulf,65,65,0,0,89742,0,,2026-W52,2028-W22,True,True
+oil-global-2027,oil-global-2027,False,Gasoline_US_Import,Import_Hub_US,0,0,0,0,0,0,,,,False,True
+rice-japan-2027-2028,rice-japan-2027-2028,False,Koshihikari,Sanchiku_Niigata,0,0,0,0,0,0,,,,False,True
+rice-japan-2027-2028,rice-japan-2027-2028,False,Yumepirika,Sanchiku_Hokkaido,0,0,0,0,0,0,,,,False,True
+smartphone-global-2026-2029,smartphone-global-2026-2029,False,Phone16,EMS_A_CN,148,128,0,0,2461276,24587,APAC:24587,2026-W28,2029-W18,True,True
+smartphone-global-2026-2029,smartphone-global-2026-2029,False,Phone16,EMS_A_IN,0,0,0,0,0,0,,,,False,True
+smartphone-global-2026-2029,smartphone-global-2026-2029,False,Phone15,EMS_A_CN_i15,160,160,0,0,1609879,19547,APAC:16249 EMEA:3298,2026-W28,2029-W30,True,True
+smartphone-global-2026-2029,smartphone-global-2026-2029,False,Phone17,EMS_A_CN_i17,73,73,0,0,3217648,0,,2028-W27,2029-W47,True,True
+smartx-2027-2029,smartx-2027-2029,False,SmartX,AssemblyCN_g1,127,127,0,0,971956,0,,2028-W01,2030-W23,True,True
+smartx-2027-2029,smartx-2027-2029,False,SmartXNext,AssemblyCN_g3,151,151,0,0,190107,1274,AMER:466 APAC:373 EMEA:435,2025-W36,2028-W29,True,True
+smartx-2027-2029,smartx-2027-2029,False,SmartXPro_CN,AssemblyCN,154,153,0,0,389556,0,,2027-W51,2030-W48,True,True
+smartx-2027-2029,smartx-2027-2029,False,SmartXPro_IN,AssemblyIN,0,0,0,0,0,0,,,,False,True
+soysauce-eu-2027,soysauce-eu-2027,False,Soy_Sauce,Bottling_Noda,2,2,2,2,3000,0,,2027-W17,2028-W18,True,True
+soysauce-jpy-2027,soysauce-jpy-2027,False,Soy_Sauce,Bottling_Noda,9,9,3,3,6852,0,,2027-W15,2028-W33,True,True
+soysauce-jpy-2027-alloc,soysauce-jpy-2027-alloc,False,Soy_Sauce,Bottling_Noda,113,113,3,3,2121613,20408,BE:6096 FR:6912 JP:600 NL:6100 US_E:350 US_W:350,2026-W28,2028-W38,True,True
+soysauce-jpy-2027__legacy,soysauce-jpy-2027,True,Soy_Sauce,Bottling_Noda,9,9,3,3,6852,0,,2027-W15,2028-W33,True,True
+soysauce-us-2027,soysauce-us-2027,False,Soy_Sauce,Bottling_Noda,2,2,2,2,3000,0,,2027-W17,2028-W18,True,True
