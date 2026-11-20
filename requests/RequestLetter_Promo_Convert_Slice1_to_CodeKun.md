@@ -49,7 +49,8 @@ handoff:
 
 | 列 | 意味 |
 |---|---|
-| `measure_id`・`measure_version` | 施策の ID と版（例 `CMP_CREAM_SGEC_2028`・`v01`） |
+| `campaign_id` | キャンペーンの ID（例 `CMP_CREAM_SGEC_2028`）。**一つのキャンペーンの需要の行と費用の行を結ぶ鍵** |
+| `measure_id`・`measure_version` | 行ごとの施策の ID と版（**型ごとに別の ID**。例 `CMP_CREAM_SGEC_2028_DEMAND`・`CMP_CREAM_SGEC_2028_COST`、版 `v01`） |
 | `p4` | Product／Price／Place／Promotion |
 | `measure_type` | 型カタログの型（初版は `promo_demand_delta`・`promo_external_cost`） |
 | `sku_id`・`market` | 対象（`market` は需要の `region`＝leaf_out の識別子） |
@@ -79,7 +80,7 @@ handoff:
 | 列 | 意味 |
 |---|---|
 | `plan_id`・`case_name` | 例 `P_PROMO_MID`・「追加販促 反応 25%」 |
-| `measure_ids` | 使う施策（`;` 区切り。P_BASE は空） |
+| `campaign_ids` | 使うキャンペーン（`;` 区切り。P_BASE は空）。**施策の行ではなくキャンペーンで選ぶ**（需要だけ・費用だけの案を作れないように） |
 | `hypothesis_level` | `low`／`base`／`high`（P_BASE は空） |
 | `env_id` | `ENV_BASE_v01` |
 
@@ -100,7 +101,7 @@ handoff:
 
 1. 基準需要 B は**凍結した元のモデル**（`--base-model data/sample/cosmetics-sg-th-2027-2029`）の `demand_forecast.csv` から読む。案の写しの需要を基準にしない（二重の上乗せを防ぐ）。元のモデルの `demand_forecast.csv` の sha256 と、着手時の SHA を記録する。
 2. 反応週 ＝ 実施の週を `lag_weeks` だけ後ろへ移した区間。`x(w) = B(w) × rate`（**反応週の B を掛ける**。広告の週の B ではない）。反動減は反応の区間の翌週から `rebound_weeks` 週、`x(w) = −B(w) × rebound_rate`。
-3. 整数化：正の区間と負の区間を別々に、区間ごとに累積を切り捨て、前の週の累積との差をその週の d(w) にする（業務定義 §3.3）。区間の終わりの端数は「未反映の端数」として記録し、後の週・別の施策・別の水準へ移さない。
+3. 整数化：正の区間と負の区間を別々に、区間ごとに累積を切り捨て、前の週の累積との差をその週の d(w) にする（業務定義 §3.3）。**計算は `decimal.Decimal`（または分数）で行う**。CSV の数値は文字列から Decimal に読み、累積してから切り捨てる（浮動小数点で 0.1 を足すと、1 よりわずかに小さくなって切り捨てで 0 になることがある）。区間の終わりの端数は「未反映の端数」として記録し、後の週・別の施策・別の水準へ移さない。
 4. D(w) ＝ B(w) ＋ d(w) を、案の `model/demand_forecast.csv` の対象のキーの行に書く。**対象外のキーの行は 1 つも変えない**。
 5. 止める（書き込みの前に）：D が負になる、反応週・反動の週が計画の期間の外、仮説の行が無い・水準が無い・根拠が空、対象の `(sku_id, market)` が木の leaf_out・`ppc_market_price.csv` の `market_node` で解決できない、案のモデルに `market_entry_plan.csv` がある（初版は扱わない）、案の写しの対象外の需要が元のモデルと違う（基準がずれている）。
 
@@ -108,18 +109,22 @@ handoff:
 
 1. 案の `inputs/fixed_cost.csv` に 1 行：`cost_item=promo_campaign_add, entity=E_SG, paid_start_week=2028-W10, paid_end_week=2028-W21, weekly_amount=<円>, currency=JPY, note=<元の 200 SGD・レート・施策 ID・版>`。既存の `set_fixed_cost`（`wom/cockpit/cases.py`）を使って書く。
 2. 円への換算：費用発生の各週の `ppc_fx_rate.csv`（元のモデル）の SGD→JPY。**期間内でレートが 1 つでなければ止める**（初版。週ごとの費目に分けるのは次の版）。現在は 115 → 週 23,000 円・計 276,000 円。
-3. 案に既に同じ `cost_item` があれば、上書きせず止める（施策の重複）。P_BASE には書かない。
-4. PPC・Value Chain の規則（`ppc_node_cost_rule.csv`・`vc_sales_cost_rule.csv`）には書かない。既存の 15% はそのまま。
+3. **既存の費用の行は残す**：`set_fixed_cost()` は渡した行でファイル全体を書き換えるので、案の `inputs/fixed_cost.csv` を読み、今回の施策以外の行をそのまま残したうえで、今回の行を足して渡す。
+4. **再変換の規則（§3.3 と同じ）**：同じ `cost_item` の行が既にあるとき、それが同じキャンペーン・同じ施策の版に由来し（`note` の施策 ID と版で判定）、中身も同じなら「変更なし」。中身が違う、または別の施策が同じ `cost_item` を使っていれば止める。P_BASE には書かない。
+5. `paid_start_week`・`paid_end_week` に入れるのは、業務定義上の**費用の発生の週**で、現金の支払いの週を決めたものではない（`note` にもそう書く）。
+6. PPC・Value Chain の規則（`ppc_node_cost_rule.csv`・`vc_sales_cost_rule.csv`）には書かない。既存の 15% はそのまま。
 
 ### 3.3 変更記録 `inputs/strategy_change_log.csv`（案ごと）
 
-列：`plan_id, measure_id, measure_version, hypothesis_id, hypothesis_version, level, env_id, catalog_version, base_model, base_demand_sha256, start_sha, file, key, column, week, before, after, rule, note`。需要は行ごと（before＝B、after＝D）、費用は 1 行。未反映の端数も 1 行（`rule=residual`）。案の `case.json` の `changes` にも、変換したこと（plan_id と記録のファイル）を 1 件足す。
+列：`plan_id, campaign_id, measure_id, measure_version, hypothesis_id, hypothesis_version, level, env_id, catalog_version, base_model, base_demand_sha256, start_sha, file, key, column, week, before, after, rule, note`。需要は行ごと（before＝B、after＝D）、費用は 1 行。未反映の端数も 1 行（`rule=residual`）。案の `case.json` の `changes` にも、変換したこと（plan_id と記録のファイル）を 1 件足す。
 
-**冪等**：同じシートで同じ案にもう一度変換したら、需要・費用の前提・変更記録が同じになる（2 回目は「変更なし」と出す）。費用の前提に同じ費目があって中身も同じなら、止めずに「変更なし」。
+**冪等**：同じシートで同じ案にもう一度変換したら、需要・費用の前提・変更記録が同じになる（2 回目は「変更なし」と出す）。費用の前提の扱いは §3.2 の 3・4 のとおり（同じ施策・同じ版・同じ中身なら変更なし、違えば止める、他の行は残す）。
+
+**キャンペーンのそろい**（書き込みの前に検査）：販促ありの案は、選んだキャンペーンごとに `promo_demand_delta` と `promo_external_cost` の行が**両方**ある。両者の対象（`sku_id`・`market`）・実施の週・版が合う。どちらかが欠ける、合わないなら止める。
 
 ### 3.4 比較の道具の直し（`tools/compare_scenarios.py`、小さく）
 
-今は `fixed_cost.csv` の週額を、通貨によらず `P0 − 週額 × 週数` に使う（円以外は境目の判定だけ「条件外」と出す）。**円以外（報告通貨以外）の週額は控除後の計算に使わず、未評価として表示する**（または止める）。どちらにしたかと理由を報告に書く。
+今は `fixed_cost.csv` の週額を、通貨によらず `P0 − 週額 × 週数` に使う（円以外は境目の判定だけ「条件外」と出す）。週額は、費目ごとの控除後だけでなく、**合計の行と、他の費目の境目の計算**にも使われる。**初版は、報告通貨以外の週額の行を見つけたら、控除後・合計・境目のどれを計算する前にも止める**（ファイル・行・通貨・直し方〔報告通貨に換算して書く〕を出す）。
 
 ## 4. CLI
 
@@ -151,10 +156,10 @@ python -m tools.strategy_compare --ws output/strategy_slice1/ws --base C01 --cas
 
 | 層 | 中身 |
 |---|---|
-| 単体 | 業務定義 §6.1 の週別の表（4 案、W09〜W28）、§6.2 の合計（追加 0・0・6・12 lot、2028 年 104・104・110・116）。§6.3 の小例（負の差分 `0,-1,0,-1`、端数 0.75 の未反映、非定常の基準で反応週の B を掛ける、費用と反応のずれ、負の需要で止める、計画の外で止める）。円換算（2,400 SGD → 276,000 円）とレートが変わる期間で止める |
-| 単体 | 冪等（2 回変換して同じ）、別の水準の端数を引き継がない、同じ費目の重複で止める、対象外のキーの行が変わらない |
+| 単体 | 業務定義 §6.1 の週別の表（4 案、W09〜W28）、§6.2 の合計（追加 0・0・6・12 lot、2028 年 104・104・110・116）。§6.3 の小例（負の差分 `0,-1,0,-1`、端数 0.75 の未反映、非定常の基準で反応週の B を掛ける、費用と反応のずれ、負の需要で止める、計画の外で止める）。円換算（2,400 SGD → 276,000 円）とレートが変わる期間で止める。**Decimal の小例：基準 2 lot × 反応 5% × 10 週の追加の合計が 1 lot**（浮動小数点では 0 になりうる） |
+| 単体 | 冪等（2 回変換して同じ）、別の水準の端数を引き継がない、対象外のキーの行が変わらない。費用の前提：他の施策の行を残す、同じ施策・版・中身なら変更なし、中身が違う・別の施策が同じ費目なら止める。キャンペーンの需要と費用の片方が欠ける・対象や週が合わないと止まる |
 | 結合 | シートの CSV → 案の `demand_forecast.csv`・`fixed_cost.csv`・変更記録。シートの列の不足・知らない型・× の型・解決できない対象で止まる |
-| 結合 | 比較の道具の §3.4 の直し（円以外の週額） |
+| 結合 | 比較の道具の §3.4 の直し：円の費目と SGD の費目が混ざった費用の前提で、控除後・合計・境目の計算の前に止まる。円だけなら今と同じ結果 |
 | E2E | 4 案を回し、§7 の照合 |
 
 新しいテストのファイルは `tests/conftest.py` の領域の表に足す。最後は `python -m tools.quick_check --changed`。
@@ -196,3 +201,4 @@ Price・Place・Product の型、期間内でレートが変わる費用の分�
 |---|---|---|
 | v0.1 | 2026-11-20 | 初版 |
 | v0.1a | 2026-11-21 | §0 の Q7〜Q9 を採用で埋めた |
+| v0.1b | 2026-11-21 | GPT君のレビューを反映：費用の前提の他の行を残す・再変換の規則を統一、キャンペーン ID で需要と費用を結び必須にする、外貨の行は控除後・合計・境目の全部の前に止める、累積の丸めは Decimal（小例 5% × 10 週 ＝ 1 lot） |

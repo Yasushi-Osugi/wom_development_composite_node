@@ -73,7 +73,7 @@ note 記事の表（4P × WOM の設定 × 確かめる影響）を、Code君が
 
 | # | 定義するもの | 中身 | 担当 | 前提 | 終わりの条件 |
 |---|---|---|---|---|---|
-| D1 | **施策の型カタログ** | 翻訳表 v0.1 の行を「施策の型」（例 `promo_demand_uplift`・`promo_cost_rate`・`price_change`・`launch_week`・`add_channel`）として、機械で読める表にする。型ごとに：必要な入力、書く先のファイル・列、変換の規則、W／H／×、止める条件、確かめる影響 | Claude君（設計）、Code君（列の確かめ） | 翻訳表 v0.1 | 最初の縦の一本で使う型がそろい、翻訳表 v0.1 と食い違わない |
+| D1 | **施策の型カタログ** | 翻訳表 v0.1 の行を「施策の型」（初版の 2 つは `promo_demand_delta`・`promo_external_cost`。後の候補は `price_change`・`launch_week`・`add_channel` など。v0.1 の例の `promo_demand_uplift`・`promo_cost_rate` は使わない）として、機械で読める表にする。型ごとに：必要な入力、書く先のファイル・列、変換の規則、W／H／×、止める条件、確かめる影響 | Claude君（設計）、Code君（列の確かめ） | 翻訳表 v0.1 | 最初の縦の一本で使う型がそろい、翻訳表 v0.1 と食い違わない |
 | D2 | **施策シート** | 1 行 ＝ 施策 × 対象（製品・市場・区間）× 期間 × 値。列：`measure_id, measure_version, plan_id, p4, measure_type, sku_id, market, edge, start_week, end_week, value, unit, currency, entity, hypothesis_id, rationale`。**単位は「数量 lot」「物量（個など、lot × `cpu_size`）」「金額／物量単位」「期間の金額（週額・総額）」を区別して書く**（§4.1） | Claude君 | D1 | 型カタログで全行が検査できる |
 | D3 | **仮説シート** | 1 行 ＝ 仮説 × 水準。列：`hypothesis_id, kind, level, formula, params, lag_weeks, rebound, evidence, owner`。式は少数に限る（例：販促 ＝ 期間中の需要 × (1＋率)、反動 ＝ 後の n 週 × (1−率)。値下げ ＝ 弾力性 × 価格の変化率） | Claude君（形）、GPT-MC君（値と根拠） | — | 水準ごとに数が決まり、根拠の欄が空でない |
 | D4 | **外部環境シート** | 1 行 ＝ 条件の組 × 項目 × 期間 × 値（為替・関税・LT の遅れ）。今の CSV（`ppc_fx_rate.csv`・`edge_cost_master.csv` の scenario・`sc_tree_master.csv` の `lt_wks`）への写し方 | Claude君 | D1 | 最初の縦の一本では「基準の 1 組だけ」と明記 |
