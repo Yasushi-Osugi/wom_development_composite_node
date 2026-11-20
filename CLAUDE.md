@@ -33,7 +33,7 @@ python \-m main \--cli \--start-week 2027-W01 \--num-weeks 156
 | :---- | :---- | :---- | :---- |
 | smoke | 作業の途中に何度でも | `python -m tools.quick_check --smoke` | 497 件・約 1 分 |
 | 領域別 | 直した所に関係する領域だけ | `python -m tools.quick_check --area rice,capacity`／`--changed`（変えたファイルから選ぶ）／`--golden <モデル>` | 1 領域 2 分前後（lovem だけ約 5 分） |
-| full | 依頼書ごとに最後に 1 回。保護対象のコアを直したときは必須（＋3 層テスト） | `python -m tools.quick_check --full` | 892 件（889 passed・3 skipped）・約 15〜18 分 |
+| full | 依頼書ごとに最後に 1 回。保護対象のコアを直したときは必須（＋3 層テスト） | `python -m tools.quick_check --full` | 1,346 件（1,343 passed・3 skipped）・約 36 分（2026-11-20 実測。2026-10-15 は 892 件・約 15〜18 分） |
 
 - 領域：core・capacity・rice・plugins・ppc・allocation・lovem・gui・worldmap・golden・public。ファイルと領域の対応表は `tests/conftest.py` の一か所（新しいテストのファイルは、そこに 1 行足す。足さないと `tests/test_test_areas.py` が落ちる）。
 - `--dry-run` で回す pytest のコマンドだけを表示する。`--changed` は保護対象のコアを変えたとき「full と 3 層テストが必要」と表示する（full は自動では回さない）。

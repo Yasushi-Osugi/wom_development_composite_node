@@ -26,6 +26,7 @@ AREAS = {
     "test_capacity_soft.py": ("core",),
     "test_capacity_soft_backward.py": ("core",),
     "test_capacity_zero_blank.py": ("core",),
+    "test_overflow_policy.py": ("core",),
     "test_composite_kitting_recovery.py": ("core",),
     "test_demand_envelope_soft.py": ("core",),
     "test_ev_update_kitting.py": ("core",),

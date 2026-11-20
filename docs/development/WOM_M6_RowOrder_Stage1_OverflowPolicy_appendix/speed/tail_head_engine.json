@@ -1,0 +1,18 @@
+{
+ "policy": "tail",
+ "total_seconds": 22.7,
+ "backward_seconds": 4.8,
+ "pushed_by_factory": {},
+ "past_due": 56834,
+ "golden_psi_match": true,
+ "ppc": {
+  "base_currency": "JPY",
+  "total_lots": 1127,
+  "revenue_base": 64101413473420.0,
+  "cost_base": 37695124383917.75,
+  "gross_profit_base": 26406289089502.25,
+  "gross_margin_pct": 0.411946,
+  "tariff_base": 4720497327977.75,
+  "trust_event_count": 390
+ }
+}

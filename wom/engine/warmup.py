@@ -201,6 +201,26 @@ def read_lot_flow_mode(model_dir: str) -> Optional[str]:
     return None
 
 
+def read_overflow_policy(model_dir: str) -> str:
+    """
+    planning_config.csv（key,value）の overflow_policy キーを読む
+    （RequestLetter_M6_RowOrder_Stage1）。Backward が工場の能力を超えた週に、どの lot を
+    前の週へ回すか：``tail``（今の動き）／``proportional_week``／``balance_cut_ratio``。
+    ファイル・キーが無い、または値が空なら ``tail``。3 つ以外の値は止める
+    （``OverflowPolicyError``：ファイル・値・使える値・直し方。黙って tail にしない）。
+    """
+    from wom.engine.overflow_policy import TAIL, resolve_overflow_policy
+    path = os.path.join(model_dir, _CONFIG) if model_dir else ""
+    if not model_dir or not os.path.exists(path):
+        return TAIL
+    with open(path, "r", encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            k = (row.get("key") or "").strip()
+            if k == "overflow_policy":
+                return resolve_overflow_policy(row.get("value"), path)
+    return TAIL
+
+
 def first_nonzero_demand_week(demand_path: str) -> Optional[str]:
     """demand_forecast.csv の「最初の“非ゼロ”需要週」（＝real_start）。全ゼロ/空なら None。"""
     lines = _read_lines(demand_path)

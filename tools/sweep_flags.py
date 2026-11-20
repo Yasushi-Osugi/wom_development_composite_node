@@ -308,7 +308,7 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
 
     # ── warm-up materialize（Phase 2, opt-in; run_headless_from_folder と同じ呼び出し）
     wsum = materialize_warmup(model_dir)
-    from wom.engine.warmup import read_lot_flow_mode
+    from wom.engine.warmup import read_lot_flow_mode, read_overflow_policy
     lot_flow_mode = lot_flow_mode or read_lot_flow_mode(model_dir)
     print(format_summary(wsum))
     result["warmup"] = {
@@ -345,7 +345,9 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
     bus = HookBus()
     cfg = {"n_weeks": n_weeks, "start_week": start,
            "cap_path": _p("capacity_plan.csv"),
-           "holiday_cal_path": _p("holiday_calendar.csv")}
+           "holiday_cal_path": _p("holiday_calendar.csv"),
+           # read by BackwardPlanner (RequestLetter_M6_RowOrder_Stage1; tail = current)
+           "overflow_policy": read_overflow_policy(model_dir)}
     active_plugins, _no_opening_plugin = _select_plugins(plugins_spec)
     for pl in active_plugins:
         pl.register(bus)

@@ -1,0 +1,22 @@
+{
+ "policy": "balance_cut_ratio",
+ "total_seconds": 35.4,
+ "backward_seconds": 15.5,
+ "pushed_by_factory": {
+  "IN:mom:EMS_A_CN:Phone16": 2461276,
+  "IN:mom:EMS_A_CN_i15:Phone15": 1609879,
+  "IN:mom:EMS_A_CN_i17:Phone17": 3217648
+ },
+ "past_due": 56834,
+ "golden_psi_match": false,
+ "ppc": {
+  "base_currency": "JPY",
+  "total_lots": 1170,
+  "revenue_base": 63643141843670.0,
+  "cost_base": 37420604208972.85,
+  "gross_profit_base": 26222537634697.15,
+  "gross_margin_pct": 0.412025,
+  "tariff_base": 4463818702489.85,
+  "trust_event_count": 390
+ }
+}

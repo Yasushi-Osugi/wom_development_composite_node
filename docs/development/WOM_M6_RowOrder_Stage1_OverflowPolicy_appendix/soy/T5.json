@@ -1,0 +1,127 @@
+{
+ "tag": "T5",
+ "policy": "balance_cut_ratio",
+ "tree": "swap",
+ "seconds": 12.4,
+ "config": {
+  "plugins": [
+   "BufferingStockOptimizerPlugin",
+   "CapacityOverridePlugin",
+   "HolidayCalendarPlugin"
+  ],
+  "lot_flow_mode": "identity",
+  "overflow_policy": "balance_cut_ratio"
+ },
+ "market": {
+  "Rest_NL": {
+   "demand": 10050,
+   "on_time": 8742,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 1308
+  },
+  "Rest_BE": {
+   "demand": 10050,
+   "on_time": 8741,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 1309
+  },
+  "Rest_FR": {
+   "demand": 15075,
+   "on_time": 13112,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 1963
+  },
+  "Rest_US_West": {
+   "demand": 17588,
+   "on_time": 15297,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 2291
+  },
+  "Rest_US_East": {
+   "demand": 17588,
+   "on_time": 15298,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 2290
+  },
+  "Rest_JP": {
+   "demand": 30150,
+   "on_time": 26185,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 3965
+  },
+  "Σ（製品）": {
+   "demand": 100501,
+   "on_time": 87375,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 13126
+  },
+  "": {
+   "demand": 100501,
+   "on_time": 87375,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 13126
+  }
+ },
+ "burden": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "BE": {
+    "pushed": 137661,
+    "denominator": 10050
+   },
+   "FR": {
+    "pushed": 206491,
+    "denominator": 15075
+   },
+   "JP": {
+    "pushed": 412983,
+    "denominator": 30150
+   },
+   "NL": {
+    "pushed": 137661,
+    "denominator": 10050
+   },
+   "US_E": {
+    "pushed": 240914,
+    "denominator": 17588
+   },
+   "US_W": {
+    "pushed": 240913,
+    "denominator": 17588
+   }
+  }
+ },
+ "mom": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "cap_violations": [
+    [
+     43,
+     0,
+     800,
+     0
+    ],
+    [
+     95,
+     0,
+     800,
+     0
+    ],
+    [
+     110,
+     0,
+     800,
+     0
+    ]
+   ]
+  }
+ },
+ "past_due": 12326,
+ "n_ships": 87375
+}

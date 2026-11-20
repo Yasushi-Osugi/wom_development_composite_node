@@ -1,0 +1,98 @@
+{
+ "T2_eq_T3": {
+  "market": true,
+  "ship_lots_and_weeks": true,
+  "burden": true,
+  "past_due": true
+ },
+ "T4_eq_T5": {
+  "market": true,
+  "ship_lots_and_weeks": true,
+  "burden": true,
+  "past_due": true
+ },
+ "T1_reproduces_C02": {
+  "Rest_US_West": true,
+  "Rest_US_East": true,
+  "Rest_JP": true,
+  "Rest_FR": true,
+  "Rest_BE": true,
+  "Rest_NL": true
+ },
+ "T6_reproduces_swap": {
+  "Rest_US_West": true,
+  "Rest_US_East": true,
+  "Rest_JP": true,
+  "Rest_FR": true,
+  "Rest_BE": true,
+  "Rest_NL": true
+ },
+ "conservation": {
+  "T1": {
+   "demand": 100501,
+   "on_time+late+backlog": 100501,
+   "early": 0
+  },
+  "T2": {
+   "demand": 100501,
+   "on_time+late+backlog": 100501,
+   "early": 0
+  },
+  "T3": {
+   "demand": 100501,
+   "on_time+late+backlog": 100501,
+   "early": 0
+  },
+  "T4": {
+   "demand": 100501,
+   "on_time+late+backlog": 100501,
+   "early": 0
+  },
+  "T5": {
+   "demand": 100501,
+   "on_time+late+backlog": 100501,
+   "early": 0
+  },
+  "T6": {
+   "demand": 100501,
+   "on_time+late+backlog": 100501,
+   "early": 0
+  }
+ },
+ "cap_violations": {
+  "T1": {
+   "IN:mom:Bottling_Noda:Soy_Sauce": 3
+  },
+  "T2": {
+   "IN:mom:Bottling_Noda:Soy_Sauce": 3
+  },
+  "T3": {
+   "IN:mom:Bottling_Noda:Soy_Sauce": 3
+  },
+  "T4": {
+   "IN:mom:Bottling_Noda:Soy_Sauce": 3
+  },
+  "T5": {
+   "IN:mom:Bottling_Noda:Soy_Sauce": 3
+  },
+  "T6": {
+   "IN:mom:Bottling_Noda:Soy_Sauce": 3
+  }
+ },
+ "total_delivered": {
+  "T1": 87375,
+  "T2": 87375,
+  "T3": 87375,
+  "T4": 87375,
+  "T5": 87375,
+  "T6": 87375
+ },
+ "seconds": {
+  "T1": 10.7,
+  "T2": 13.0,
+  "T3": 14.2,
+  "T4": 20.9,
+  "T5": 20.9,
+  "T6": 11.6
+ }
+}

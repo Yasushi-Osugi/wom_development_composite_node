@@ -179,7 +179,7 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
     #   planning_config.csv があれば助走行を materialize（demand=0 / cap・opcal コピー）。
     #   period 検出より前に走らせる（＝早い start 週を含める）。config 無し→no-op。
     from wom.engine.warmup import (materialize_warmup, format_summary, read_cpu_size,
-                                   read_lot_flow_mode)
+                                   read_lot_flow_mode, read_overflow_policy)
     from wom.engine.forward_planner import resolve_lot_flow_mode, LOT_FLOW_LEGACY
     _wsum = materialize_warmup(model_dir, demand_file=demand_file,
                                warmup_real_start=warmup_real_start)
@@ -188,6 +188,10 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
     lot_flow_mode = resolve_lot_flow_mode(lot_flow_mode or read_lot_flow_mode(model_dir))
     if verbose:
         print(f"[Headless] lot_flow_mode={lot_flow_mode}")
+    # RequestLetter_M6_RowOrder_Stage1: Backward overflow policy (tail = current behaviour).
+    overflow_policy = read_overflow_policy(model_dir)
+    if verbose and overflow_policy != "tail":
+        print(f"[Headless] overflow_policy={overflow_policy}")
 
     # ── 期間の自動検出 ─────────────────────────────────────────────
     dem_path = _p(demand_file)
@@ -227,7 +231,9 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
            "cap_path": _p("capacity_plan.csv"),
            "holiday_cal_path": _p("holiday_calendar.csv"),
            # read by plugins that trial-run ForwardPlanner (BufferingStockOptimizer)
-           "lot_flow_mode": lot_flow_mode}
+           "lot_flow_mode": lot_flow_mode,
+           # read by BackwardPlanner (RequestLetter_M6_RowOrder_Stage1)
+           "overflow_policy": overflow_policy}
     active_plugins = active_plugins + list(extra_plugins or [])
     for pl in active_plugins:
         pl.register(bus)
@@ -364,6 +370,8 @@ def run(model_dir: str, plugins_spec: str = None, output_ppc_dir: str = "output/
         "case": os.path.basename(model_dir.rstrip("/\\")),
         "config": {"plugins": sorted(type(p).__name__ for p in active_plugins),
                    **({} if lot_flow_mode == LOT_FLOW_LEGACY else {"lot_flow_mode": lot_flow_mode}),
+                   # only when not the default (tail), so the golden config is unchanged
+                   **({} if overflow_policy == "tail" else {"overflow_policy": overflow_policy}),
                    # only when --plugins was not given (the golden runs give it explicitly)
                    **({"plugins_source": plugins_source} if plugins_source else {})},
         "period": dict({"start": start, "weeks": n_weeks},

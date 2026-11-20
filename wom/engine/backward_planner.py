@@ -80,6 +80,9 @@ from typing import Dict, List, Optional, Tuple
 from wom.model.plan_node import PlanNode, S, CO, I, P
 from wom.model.sc_tree   import SCTree
 from wom.engine.lane_assignment import LaneTable
+from wom.engine.overflow_policy import (
+    TAIL as _OVERFLOW_TAIL, OverflowTracker, resolve_overflow_policy,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -113,6 +116,15 @@ class BackwardPlanResult:
     # Placement is NOT changed by cap_soft; this is a flag only.
     cap_soft_envelope_violations: List[Tuple[str, str, int]] = field(
         default_factory=list
+    )
+
+    # RequestLetter_M6_RowOrder_Stage1: overflow policy used by
+    # _apply_mom_cap_backward, and per factory (node_id) x market (Lot_ID
+    # region): {"pushed": push-backs counted every time, "denominator": lots
+    # seen in the processed weeks (each Lot_ID once)}. Report only.
+    overflow_policy: str = _OVERFLOW_TAIL
+    overflow_by_node: Dict[str, Dict[str, Dict[str, int]]] = field(
+        default_factory=dict
     )
 
     def record_past_due(self, node_id: str, lot_id: str, week: int) -> None:
@@ -170,6 +182,10 @@ class BackwardPlanner:
         self._explicit_closures: Dict[str, set] = cfg.get("explicit_closures", {})
         # v1r0m3: MOM constrained demand allocation (default: True)
         self._mom_constrained: bool = cfg.get("mom_constrained", True)
+        # RequestLetter_M6_RowOrder_Stage1: which lots go back at an over-
+        # capacity week. "tail" (default) = the current code path, unchanged.
+        self._overflow_policy: str = resolve_overflow_policy(
+            cfg.get("overflow_policy"), "BackwardPlanner config")
         # v1r2m2 Phase 2: per-node operating calendar (op_shifts==0 => closed week).
         # Union the plugin-injected explicit_closures with each node's intrinsic
         # closed weeks, keyed by node_name, so _offset_week skips BOTH sources.
@@ -193,7 +209,8 @@ class BackwardPlanner:
         -------
         BackwardPlanResult
         """
-        result = BackwardPlanResult(prod_nm=prod_nm)
+        result = BackwardPlanResult(prod_nm=prod_nm,
+                                    overflow_policy=self._overflow_policy)
         n_weeks = self.sc_tree.num_weeks()
 
         ot_root = self.sc_tree.get_ot_root(prod_nm)
@@ -516,11 +533,22 @@ class BackwardPlanner:
         if node.node_type != "mom":
             return  # only apply to MOM nodes
 
+        # RequestLetter_M6_RowOrder_Stage1: per factory x product state of the
+        # overflow policy (new per run). Only for a factory with a capacity or
+        # closed week; it also counts push-backs/denominators for the report
+        # (read only on the "tail" path).
+        tracker = None
+        if any(node.cap_hard(w) is not None or not node.is_open(w)
+               for w in range(n_weeks)):
+            tracker = OverflowTracker(self._overflow_policy)
+
         for w in range(n_weeks - 1, -1, -1):
             cap_w = node.cap_hard(w)
             # Closed week = week state op_shifts==0 (Phase 2 Slice 2-3b). Since
             # Explicit Closure v1r5m0, holiday supply_closure also lands here.
             is_closed = not node.is_open(w)
+            if tracker is not None:
+                tracker.observe(node.psi4demand[w][S])
             # RequestLetter_CapacityZeroBlank: None = not set (no ceiling);
             # 0.0 = zero capacity -> fill 0, everything is carried back.
             if cap_w is None and not is_closed:
@@ -561,8 +589,14 @@ class BackwardPlanner:
                 continue  # no overflow this week
 
             # -- Clip P at cap_hard ----------------------------------------
-            within_cap = s_lots[:cap_int]
-            overflow   = s_lots[cap_int:]
+            if self._overflow_policy == _OVERFLOW_TAIL:
+                within_cap = s_lots[:cap_int]
+                overflow   = s_lots[cap_int:]
+                tracker.record_tail(within_cap, overflow)
+            else:
+                # proportional_week / balance_cut_ratio (overflow_policy.py):
+                # both lists come back ordered week -> market -> seq.
+                within_cap, overflow = tracker.split(s_lots, len(s_lots) - cap_int)
 
             # Overwrite P: was set to full S by _in_propagate; now capped
             node.psi4demand[w][P].clear()
@@ -588,6 +622,9 @@ class BackwardPlanner:
                 # Week 0: no earlier week — record as past_due
                 for lot_id in overflow:
                     result.record_past_due(node.node_id, lot_id, w)
+
+        if tracker is not None:
+            result.overflow_by_node[node.node_id] = tracker.summary()
 
     # ======================================================================
     # Multi-MOM lane routing helper

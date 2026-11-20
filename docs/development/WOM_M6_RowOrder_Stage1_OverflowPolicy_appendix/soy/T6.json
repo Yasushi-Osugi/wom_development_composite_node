@@ -1,0 +1,126 @@
+{
+ "tag": "T6",
+ "policy": "tail",
+ "tree": "swap",
+ "seconds": 10.3,
+ "config": {
+  "plugins": [
+   "BufferingStockOptimizerPlugin",
+   "CapacityOverridePlugin",
+   "HolidayCalendarPlugin"
+  ],
+  "lot_flow_mode": "identity"
+ },
+ "market": {
+  "Rest_NL": {
+   "demand": 10050,
+   "on_time": 9850,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 200
+  },
+  "Rest_BE": {
+   "demand": 10050,
+   "on_time": 9850,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 200
+  },
+  "Rest_FR": {
+   "demand": 15075,
+   "on_time": 14775,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 300
+  },
+  "Rest_US_West": {
+   "demand": 17588,
+   "on_time": 17238,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 350
+  },
+  "Rest_US_East": {
+   "demand": 17588,
+   "on_time": 17238,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 350
+  },
+  "Rest_JP": {
+   "demand": 30150,
+   "on_time": 18424,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 11726
+  },
+  "Σ（製品）": {
+   "demand": 100501,
+   "on_time": 87375,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 13126
+  },
+  "": {
+   "demand": 100501,
+   "on_time": 87375,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 13126
+  }
+ },
+ "burden": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "BE": {
+    "pushed": 23900,
+    "denominator": 10050
+   },
+   "FR": {
+    "pushed": 35850,
+    "denominator": 15075
+   },
+   "JP": {
+    "pushed": 1209297,
+    "denominator": 30150
+   },
+   "NL": {
+    "pushed": 23900,
+    "denominator": 10050
+   },
+   "US_E": {
+    "pushed": 41851,
+    "denominator": 17588
+   },
+   "US_W": {
+    "pushed": 41825,
+    "denominator": 17588
+   }
+  }
+ },
+ "mom": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "cap_violations": [
+    [
+     43,
+     0,
+     800,
+     0
+    ],
+    [
+     95,
+     0,
+     800,
+     0
+    ],
+    [
+     110,
+     0,
+     800,
+     0
+    ]
+   ]
+  }
+ },
+ "past_due": 12326,
+ "n_ships": 87375
+}
