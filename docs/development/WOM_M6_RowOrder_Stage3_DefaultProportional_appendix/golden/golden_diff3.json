@@ -1,0 +1,483 @@
+{
+ "all": [
+  {
+   "kind": "default",
+   "model": "Cookie-jp-2026",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "apparel-global-2028-2029",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "apparel-us-2026",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "bom-test-2026",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "cosmetics-sg-th-2027-2029",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "ev-europe-2026",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "ev-thailand-2026",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "ev-thailand-2026_update",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "oil-global-2027",
+   "match": false,
+   "diff": [
+    "ppc",
+    "psi"
+   ]
+  },
+  {
+   "kind": "default",
+   "model": "rice-japan-2027-2028",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "smartphone-global-2026-2029",
+   "match": false,
+   "diff": [
+    "ppc",
+    "psi"
+   ]
+  },
+  {
+   "kind": "default",
+   "model": "smartx-2027-2029",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "soysauce-eu-2027",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "soysauce-jpy-2027-alloc",
+   "match": false,
+   "diff": [
+    "ppc",
+    "psi"
+   ]
+  },
+  {
+   "kind": "default",
+   "model": "soysauce-jpy-2027",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "default",
+   "model": "soysauce-us-2027",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "legacy",
+   "model": "Cookie-jp-2026",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "legacy",
+   "model": "ev-thailand-2026",
+   "match": true,
+   "diff": []
+  },
+  {
+   "kind": "legacy",
+   "model": "soysauce-jpy-2027",
+   "match": true,
+   "diff": []
+  }
+ ],
+ "changed": {
+  "oil-global-2027": {
+   "diff_keys": [
+    "ppc",
+    "psi"
+   ],
+   "totals_tail": {
+    "demand": 191058,
+    "delivered": 191029,
+    "on_time": 191029,
+    "late": 0,
+    "backlog_end": 29
+   },
+   "totals_default": {
+    "demand": 191058,
+    "delivered": 191029,
+    "on_time": 191029,
+    "late": 0,
+    "backlog_end": 29
+   },
+   "markets": [
+    {
+     "product": "Gasoline_Local_RedSea",
+     "leaf": "Retail_Local_R_KANTO",
+     "demand": 246,
+     "on_time_tail": 246,
+     "late_tail": 0,
+     "backlog_end_tail": 0,
+     "on_time_default": 232,
+     "late_default": 0,
+     "backlog_end_default": 14
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "leaf": "Retail_Local_R_KANSAI",
+     "demand": 124,
+     "on_time_tail": 115,
+     "late_tail": 0,
+     "backlog_end_tail": 9,
+     "on_time_default": 116,
+     "late_default": 0,
+     "backlog_end_default": 8
+    },
+    {
+     "product": "Gasoline_Local_RedSea",
+     "leaf": "Retail_Local_R_CHUBU",
+     "demand": 124,
+     "on_time_tail": 104,
+     "late_tail": 0,
+     "backlog_end_tail": 20,
+     "on_time_default": 117,
+     "late_default": 0,
+     "backlog_end_default": 7
+    }
+   ],
+   "ppc": {
+    "total_lots": [
+     1399,
+     1408
+    ],
+    "revenue_base": [
+     1571097940180.0,
+     1571457940180.0
+    ],
+    "gross_profit_base": [
+     552339674893.0,
+     552699674893.0
+    ],
+    "gross_margin_pct": [
+     0.351563,
+     0.351711
+    ],
+    "trust_event_count": [
+     733,
+     742
+    ]
+   },
+   "psi_nodes_changed": [
+    "Gasoline_Local_RedSea/Retail_Local_R_KANTO",
+    "Gasoline_Local_RedSea/Retail_Local_R_KANSAI",
+    "Gasoline_Local_RedSea/Retail_Local_R_CHUBU"
+   ],
+   "same_as_stage2_proportional_week": true,
+   "past_due_total": [
+    29,
+    29
+   ],
+   "cap_dropped_total": [
+    4,
+    4
+   ]
+  },
+  "smartphone-global-2026-2029": {
+   "diff_keys": [
+    "ppc",
+    "psi"
+   ],
+   "totals_tail": {
+    "demand": 470924,
+    "delivered": 414090,
+    "on_time": 414090,
+    "late": 0,
+    "backlog_end": 56834
+   },
+   "totals_default": {
+    "demand": 470924,
+    "delivered": 414090,
+    "on_time": 414090,
+    "late": 0,
+    "backlog_end": 56834
+   },
+   "markets": [
+    {
+     "product": "Phone16",
+     "leaf": "Retail_EMEA",
+     "demand": 70736,
+     "on_time_tail": 70736,
+     "late_tail": 0,
+     "backlog_end_tail": 0,
+     "on_time_default": 55626,
+     "late_default": 0,
+     "backlog_end_default": 15110
+    },
+    {
+     "product": "Phone16",
+     "leaf": "Retail_APAC",
+     "demand": 80184,
+     "on_time_tail": 48397,
+     "late_tail": 0,
+     "backlog_end_tail": 31787,
+     "on_time_default": 63507,
+     "late_default": 0,
+     "backlog_end_default": 16677
+    },
+    {
+     "product": "Phone15",
+     "leaf": "Retail_AMER_i15",
+     "demand": 34580,
+     "on_time_tail": 34580,
+     "late_tail": 0,
+     "backlog_end_tail": 0,
+     "on_time_default": 24644,
+     "late_default": 0,
+     "backlog_end_default": 9936
+    },
+    {
+     "product": "Phone15",
+     "leaf": "Retail_EMEA_i15",
+     "demand": 24204,
+     "on_time_tail": 18926,
+     "late_tail": 0,
+     "backlog_end_tail": 5278,
+     "on_time_default": 17041,
+     "late_default": 0,
+     "backlog_end_default": 7163
+    },
+    {
+     "product": "Phone15",
+     "leaf": "Retail_APAC_i15",
+     "demand": 27664,
+     "on_time_tail": 7895,
+     "late_tail": 0,
+     "backlog_end_tail": 19769,
+     "on_time_default": 19716,
+     "late_default": 0,
+     "backlog_end_default": 7948
+    }
+   ],
+   "ppc": {
+    "total_lots": [
+     1127,
+     1170
+    ],
+    "revenue_base": [
+     64101413473420.0,
+     63634388846970.0
+    ],
+    "cost_base": [
+     37695124383917.75,
+     37419216408499.32
+    ],
+    "gross_profit_base": [
+     26406289089502.25,
+     26215172438470.68
+    ],
+    "gross_margin_pct": [
+     0.411946,
+     0.411965
+    ],
+    "tariff_base": [
+     4720497327977.75,
+     4462834176730.33
+    ]
+   },
+   "psi_nodes_changed": [
+    "Phone16/SP_Phone16",
+    "Phone16/DC_EMEA",
+    "Phone16/Retail_EMEA",
+    "Phone16/DC_APAC",
+    "Phone16/Retail_APAC",
+    "Phone15/SP_Phone15",
+    "Phone15/DC_AMER_i15",
+    "Phone15/Retail_AMER_i15",
+    "Phone15/DC_EMEA_i15",
+    "Phone15/Retail_EMEA_i15",
+    "Phone15/DC_APAC_i15",
+    "Phone15/Retail_APAC_i15"
+   ],
+   "same_as_stage2_proportional_week": true,
+   "past_due_total": [
+    56834,
+    56834
+   ],
+   "cap_dropped_total": [
+    44134,
+    44134
+   ]
+  },
+  "soysauce-jpy-2027-alloc": {
+   "diff_keys": [
+    "ppc",
+    "psi"
+   ],
+   "totals_tail": {
+    "demand": 100501,
+    "delivered": 75291,
+    "on_time": 75291,
+    "late": 0,
+    "backlog_end": 25210
+   },
+   "totals_default": {
+    "demand": 100501,
+    "delivered": 75291,
+    "on_time": 75291,
+    "late": 0,
+    "backlog_end": 25210
+   },
+   "markets": [
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_US_West",
+     "demand": 17588,
+     "on_time_tail": 17063,
+     "late_tail": 0,
+     "backlog_end_tail": 525,
+     "on_time_default": 12981,
+     "late_default": 0,
+     "backlog_end_default": 4607
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_US_East",
+     "demand": 17588,
+     "on_time_tail": 17063,
+     "late_tail": 0,
+     "backlog_end_tail": 525,
+     "on_time_default": 12842,
+     "late_default": 0,
+     "backlog_end_default": 4746
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_JP",
+     "demand": 30150,
+     "on_time_tail": 29250,
+     "late_tail": 0,
+     "backlog_end_tail": 900,
+     "on_time_default": 23784,
+     "late_default": 0,
+     "backlog_end_default": 6366
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_FR",
+     "demand": 15075,
+     "on_time_tail": 6615,
+     "late_tail": 0,
+     "backlog_end_tail": 8460,
+     "on_time_default": 11007,
+     "late_default": 0,
+     "backlog_end_default": 4068
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_BE",
+     "demand": 10050,
+     "on_time_tail": 2650,
+     "late_tail": 0,
+     "backlog_end_tail": 7400,
+     "on_time_default": 7339,
+     "late_default": 0,
+     "backlog_end_default": 2711
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_NL",
+     "demand": 10050,
+     "on_time_tail": 2650,
+     "late_tail": 0,
+     "backlog_end_tail": 7400,
+     "on_time_default": 7338,
+     "late_default": 0,
+     "backlog_end_default": 2712
+    }
+   ],
+   "ppc": {
+    "total_lots": [
+     464,
+     607
+    ],
+    "revenue_base": [
+     427957532.0,
+     451673778.0
+    ],
+    "cost_base": [
+     316318290.04,
+     326360886.13
+    ],
+    "gross_profit_base": [
+     111639241.96,
+     125312891.87
+    ],
+    "gross_margin_pct": [
+     0.260865,
+     0.277441
+    ],
+    "tariff_base": [
+     15670707.44,
+     15921024.98
+    ]
+   },
+   "psi_nodes_changed": [
+    "Soy_Sauce/SP_Soy",
+    "Soy_Sauce/FG_WH_Noda",
+    "Soy_Sauce/DC_US_SF",
+    "Soy_Sauce/Rest_US_West",
+    "Soy_Sauce/DC_US_NY",
+    "Soy_Sauce/Rest_US_East",
+    "Soy_Sauce/DC_JP",
+    "Soy_Sauce/Rest_JP",
+    "Soy_Sauce/DC_EU_RTM",
+    "Soy_Sauce/Rest_FR",
+    "Soy_Sauce/Rest_BE",
+    "Soy_Sauce/Rest_NL"
+   ],
+   "same_as_stage2_proportional_week": true,
+   "past_due_total": [
+    24524,
+    24524
+   ],
+   "cap_dropped_total": [
+    20408,
+    20408
+   ]
+  }
+ }
+}

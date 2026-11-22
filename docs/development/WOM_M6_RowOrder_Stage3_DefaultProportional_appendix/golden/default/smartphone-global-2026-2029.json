@@ -1,0 +1,288 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 38.6,
+ "market": [
+  {
+   "product": "Phone16",
+   "leaf": "Retail_AMER",
+   "demand": 100306,
+   "on_time": 100306,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Phone16",
+   "leaf": "Retail_EMEA",
+   "demand": 70736,
+   "on_time": 55626,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 15110
+  },
+  {
+   "product": "Phone16",
+   "leaf": "Retail_APAC",
+   "demand": 80184,
+   "on_time": 63507,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 16677
+  },
+  {
+   "product": "Phone16",
+   "leaf": "Σ（製品）",
+   "demand": 251226,
+   "on_time": 219439,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 31787
+  },
+  {
+   "product": "Phone15",
+   "leaf": "Retail_AMER_i15",
+   "demand": 34580,
+   "on_time": 24644,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 9936
+  },
+  {
+   "product": "Phone15",
+   "leaf": "Retail_EMEA_i15",
+   "demand": 24204,
+   "on_time": 17041,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 7163
+  },
+  {
+   "product": "Phone15",
+   "leaf": "Retail_APAC_i15",
+   "demand": 27664,
+   "on_time": 19716,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 7948
+  },
+  {
+   "product": "Phone15",
+   "leaf": "Σ（製品）",
+   "demand": 86448,
+   "on_time": 61401,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 25047
+  },
+  {
+   "product": "Phone17",
+   "leaf": "Retail_AMER_i17",
+   "demand": 53300,
+   "on_time": 53300,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Phone17",
+   "leaf": "Retail_EMEA_i17",
+   "demand": 37310,
+   "on_time": 37310,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Phone17",
+   "leaf": "Retail_APAC_i17",
+   "demand": 42640,
+   "on_time": 42640,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Phone17",
+   "leaf": "Σ（製品）",
+   "demand": 133250,
+   "on_time": 133250,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 470924,
+   "on_time": 414090,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 56834
+  }
+ ],
+ "burden": {
+  "IN:mom:EMS_A_CN:Phone16": {
+   "APAC": {
+    "pushed": 1304251,
+    "denominator": 80184
+   },
+   "EMEA": {
+    "pushed": 1146937,
+    "denominator": 70160
+   },
+   "XMAS_PRE_2027:Phone16:EMEA": {
+    "pushed": 8987,
+    "denominator": 337
+   },
+   "XMAS_PRE_2028:Phone16:EMEA": {
+    "pushed": 1101,
+    "denominator": 239
+   }
+  },
+  "IN:mom:EMS_A_CN_i15:Phone15": {
+   "AMER": {
+    "pushed": 643402,
+    "denominator": 34580
+   },
+   "APAC": {
+    "pushed": 514714,
+    "denominator": 27664
+   },
+   "EMEA": {
+    "pushed": 451763,
+    "denominator": 24204
+   }
+  },
+  "IN:mom:EMS_A_CN_i17:Phone17": {
+   "AMER": {
+    "pushed": 1282900,
+    "denominator": 53300
+   },
+   "APAC": {
+    "pushed": 1026343,
+    "denominator": 42640
+   },
+   "EMEA": {
+    "pushed": 908405,
+    "denominator": 37310
+   }
+  }
+ },
+ "past_due": {
+  "IN:mom:EMS_A_CN:Phone16": {
+   "EMEA": 11638,
+   "APAC": 12899,
+   "XMAS_PRE_2027": 50
+  },
+  "IN:mom:Foundry_A_TW:Phone16": {
+   "EMEA": 2651,
+   "APAC": 2938,
+   "XMAS_PRE_2027": 11
+  },
+  "IN:leaf_in:SiliconWafer_TW:Phone16": {
+   "EMEA": 757,
+   "APAC": 840,
+   "XMAS_PRE_2027": 3
+  },
+  "IN:mom:EMS_A_CN_i15:Phone15": {
+   "AMER": 7754,
+   "APAC": 6203,
+   "EMEA": 5590
+  },
+  "IN:mom:Foundry_A_TW_i15:Phone15": {
+   "AMER": 1785,
+   "APAC": 1428,
+   "EMEA": 1287
+  },
+  "IN:leaf_in:SiliconWafer_TW_i15:Phone15": {
+   "AMER": 397,
+   "APAC": 317,
+   "EMEA": 286
+  }
+ },
+ "past_due_total": 56834,
+ "cap_dropped": {
+  "IN:mom:EMS_A_CN:Phone16": {
+   "EMEA": 11638,
+   "APAC": 12899,
+   "XMAS_PRE_2027": 50
+  },
+  "IN:mom:EMS_A_CN_i15:Phone15": {
+   "AMER": 7754,
+   "APAC": 6203,
+   "EMEA": 5590
+  }
+ },
+ "cap_dropped_total": 44134,
+ "pushed": {
+  "IN:mom:EMS_A_CN:Phone16": {
+   "open": {
+    "EMEA": 1146937,
+    "APAC": 1304251,
+    "XMAS_PRE_2027": 8987,
+    "XMAS_PRE_2028": 1101
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:EMS_A_IN:Phone16": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:EMS_A_CN_i15:Phone15": {
+   "open": {
+    "AMER": 643402,
+    "APAC": 514714,
+    "EMEA": 451763
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:EMS_A_CN_i17:Phone17": {
+   "open": {
+    "AMER": 1282900,
+    "APAC": 1026343,
+    "EMEA": 908405
+   },
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:EMS_A_CN:Phone16": {
+   "product": "Phone16",
+   "name": "EMS_A_CN",
+   "P_supply": 119133,
+   "I_supply": 119133
+  },
+  "IN:mom:EMS_A_IN:Phone16": {
+   "product": "Phone16",
+   "name": "EMS_A_IN",
+   "P_supply": 100306,
+   "I_supply": 5628
+  },
+  "IN:mom:EMS_A_CN_i15:Phone15": {
+   "product": "Phone15",
+   "name": "EMS_A_CN_i15",
+   "P_supply": 61401,
+   "I_supply": 61401
+  },
+  "IN:mom:EMS_A_CN_i17:Phone17": {
+   "product": "Phone17",
+   "name": "EMS_A_CN_i17",
+   "P_supply": 133250,
+   "I_supply": 77837
+  }
+ },
+ "golden_diff_keys": [
+  "ppc",
+  "psi"
+ ],
+ "golden_match": false,
+ "model": "smartphone-global-2026-2029",
+ "kind": "default"
+}

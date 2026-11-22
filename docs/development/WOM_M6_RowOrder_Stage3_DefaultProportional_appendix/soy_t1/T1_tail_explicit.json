@@ -1,0 +1,117 @@
+{
+ "tag": "T1_tail_explicit",
+ "policy_written": "tail",
+ "engine_policy": [
+  "tail"
+ ],
+ "ref": "T1",
+ "same_market": true,
+ "market_rows": [
+  [
+   "Rest_BE",
+   10050,
+   4324,
+   0,
+   0,
+   5726
+  ],
+  [
+   "Rest_FR",
+   15075,
+   14775,
+   0,
+   0,
+   300
+  ],
+  [
+   "Rest_JP",
+   30150,
+   29550,
+   0,
+   0,
+   600
+  ],
+  [
+   "Rest_NL",
+   10050,
+   4250,
+   0,
+   0,
+   5800
+  ],
+  [
+   "Rest_US_East",
+   17588,
+   17238,
+   0,
+   0,
+   350
+  ],
+  [
+   "Rest_US_West",
+   17588,
+   17238,
+   0,
+   0,
+   350
+  ]
+ ],
+ "burden": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "BE": {
+    "pushed": 591322,
+    "denominator": 10050
+   },
+   "FR": {
+    "pushed": 35976,
+    "denominator": 15075
+   },
+   "JP": {
+    "pushed": 71700,
+    "denominator": 30150
+   },
+   "NL": {
+    "pushed": 593975,
+    "denominator": 10050
+   },
+   "US_E": {
+    "pushed": 41825,
+    "denominator": 17588
+   },
+   "US_W": {
+    "pushed": 41825,
+    "denominator": 17588
+   }
+  }
+ },
+ "burden_stage1": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "BE": {
+    "pushed": 591322,
+    "denominator": 10050
+   },
+   "FR": {
+    "pushed": 35976,
+    "denominator": 15075
+   },
+   "JP": {
+    "pushed": 71700,
+    "denominator": 30150
+   },
+   "NL": {
+    "pushed": 593975,
+    "denominator": 10050
+   },
+   "US_E": {
+    "pushed": 41825,
+    "denominator": 17588
+   },
+   "US_W": {
+    "pushed": 41825,
+    "denominator": 17588
+   }
+  }
+ },
+ "past_due_total": 12326,
+ "past_due_stage1": 12326
+}

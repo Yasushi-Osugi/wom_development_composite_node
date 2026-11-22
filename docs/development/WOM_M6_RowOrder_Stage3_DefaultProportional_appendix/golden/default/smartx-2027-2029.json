@@ -1,0 +1,260 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 34.6,
+ "market": [
+  {
+   "product": "SmartX",
+   "leaf": "Retail_AMER_g1",
+   "demand": 59659,
+   "on_time": 59659,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "SmartX",
+   "leaf": "Retail_EMEA_g1",
+   "demand": 41754,
+   "on_time": 41754,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "SmartX",
+   "leaf": "Retail_APAC_g1",
+   "demand": 47732,
+   "on_time": 47732,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "SmartX",
+   "leaf": "Σ（製品）",
+   "demand": 149145,
+   "on_time": 149145,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "SmartXNext",
+   "leaf": "Retail_AMER_g3",
+   "demand": 117500,
+   "on_time": 117034,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 466
+  },
+  {
+   "product": "SmartXNext",
+   "leaf": "Retail_EMEA_g3",
+   "demand": 82251,
+   "on_time": 81816,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 435
+  },
+  {
+   "product": "SmartXNext",
+   "leaf": "Retail_APAC_g3",
+   "demand": 94013,
+   "on_time": 93640,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 373
+  },
+  {
+   "product": "SmartXNext",
+   "leaf": "Σ（製品）",
+   "demand": 293764,
+   "on_time": 292490,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 1274
+  },
+  {
+   "product": "SmartXPro_CN",
+   "leaf": "Retail_EMEA",
+   "demand": 74736,
+   "on_time": 74736,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "SmartXPro_CN",
+   "leaf": "Retail_APAC",
+   "demand": 85410,
+   "on_time": 85410,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "SmartXPro_CN",
+   "leaf": "Σ（製品）",
+   "demand": 160146,
+   "on_time": 160146,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "SmartXPro_IN",
+   "leaf": "Retail_AMER",
+   "demand": 106756,
+   "on_time": 90683,
+   "early": 0,
+   "late": 16073,
+   "backlog_end": 0
+  },
+  {
+   "product": "SmartXPro_IN",
+   "leaf": "Σ（製品）",
+   "demand": 106756,
+   "on_time": 90683,
+   "early": 0,
+   "late": 16073,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 709811,
+   "on_time": 692464,
+   "early": 0,
+   "late": 16073,
+   "backlog_end": 1274
+  }
+ ],
+ "burden": {
+  "IN:mom:AssemblyCN_g1:SmartX": {
+   "AMER": {
+    "pushed": 391878,
+    "denominator": 59659
+   },
+   "APAC": {
+    "pushed": 313472,
+    "denominator": 47732
+   },
+   "EMEA": {
+    "pushed": 266606,
+    "denominator": 41754
+   }
+  },
+  "IN:mom:AssemblyCN_g3:SmartXNext": {
+   "AMER": {
+    "pushed": 69590,
+    "denominator": 117500
+   },
+   "APAC": {
+    "pushed": 55700,
+    "denominator": 94013
+   },
+   "EMEA": {
+    "pushed": 64817,
+    "denominator": 82251
+   }
+  },
+  "IN:mom:AssemblyCN:SmartXPro_CN": {
+   "APAC": {
+    "pushed": 210343,
+    "denominator": 85410
+   },
+   "EMEA": {
+    "pushed": 179213,
+    "denominator": 74736
+   }
+  },
+  "IN:mom:AssemblyIN:SmartXPro_IN": {
+   "AMER": {
+    "pushed": 0,
+    "denominator": 106756
+   }
+  }
+ },
+ "past_due": {
+  "IN:mom:AssemblyCN_g3:SmartXNext": {
+   "AMER": 466,
+   "APAC": 373,
+   "EMEA": 435
+  }
+ },
+ "past_due_total": 1274,
+ "cap_dropped": {
+  "IN:mom:AssemblyCN_g3:SmartXNext": {
+   "AMER": 466,
+   "APAC": 373,
+   "EMEA": 435
+  }
+ },
+ "cap_dropped_total": 1274,
+ "pushed": {
+  "IN:mom:AssemblyCN_g1:SmartX": {
+   "open": {
+    "AMER": 391878,
+    "APAC": 313472,
+    "EMEA": 266606
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:AssemblyCN_g3:SmartXNext": {
+   "open": {
+    "AMER": 69590,
+    "APAC": 55700,
+    "EMEA": 64817
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:AssemblyCN:SmartXPro_CN": {
+   "open": {
+    "APAC": 210343,
+    "EMEA": 179213
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:AssemblyIN:SmartXPro_IN": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:AssemblyCN_g1:SmartX": {
+   "product": "SmartX",
+   "name": "AssemblyCN_g1",
+   "P_supply": 149145,
+   "I_supply": 0
+  },
+  "IN:mom:AssemblyCN_g3:SmartXNext": {
+   "product": "SmartXNext",
+   "name": "AssemblyCN_g3",
+   "P_supply": 292490,
+   "I_supply": 0
+  },
+  "IN:mom:AssemblyCN:SmartXPro_CN": {
+   "product": "SmartXPro_CN",
+   "name": "AssemblyCN",
+   "P_supply": 160146,
+   "I_supply": 0
+  },
+  "IN:mom:AssemblyIN:SmartXPro_IN": {
+   "product": "SmartXPro_IN",
+   "name": "AssemblyIN",
+   "P_supply": 106756,
+   "I_supply": 335
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "smartx-2027-2029",
+ "kind": "default"
+}

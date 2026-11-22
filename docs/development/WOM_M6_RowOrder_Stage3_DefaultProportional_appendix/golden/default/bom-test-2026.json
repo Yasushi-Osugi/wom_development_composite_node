@@ -1,0 +1,60 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 0.6,
+ "market": [
+  {
+   "product": "EV_Model_A",
+   "leaf": "Dealer_Sales",
+   "demand": 100,
+   "on_time": 100,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EV_Model_A",
+   "leaf": "Σ（製品）",
+   "demand": 100,
+   "on_time": 100,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 100,
+   "on_time": 100,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {},
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Vehicle_Assy:EV_Model_A": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Vehicle_Assy:EV_Model_A": {
+   "product": "EV_Model_A",
+   "name": "Vehicle_Assy",
+   "P_supply": 100,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "bom-test-2026",
+ "kind": "default"
+}

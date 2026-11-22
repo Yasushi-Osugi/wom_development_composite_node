@@ -1,0 +1,180 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 9.5,
+ "market": [
+  {
+   "product": "COS_Serum",
+   "leaf": "SG_Store",
+   "demand": 546,
+   "on_time": 546,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Serum",
+   "leaf": "SG_EC",
+   "demand": 455,
+   "on_time": 455,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Serum",
+   "leaf": "SG_Distributor",
+   "demand": 897,
+   "on_time": 897,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Serum",
+   "leaf": "TH_Distributor",
+   "demand": 390,
+   "on_time": 390,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Serum",
+   "leaf": "Σ（製品）",
+   "demand": 2288,
+   "on_time": 2288,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Cream",
+   "leaf": "SG_Store",
+   "demand": 416,
+   "on_time": 416,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Cream",
+   "leaf": "SG_EC",
+   "demand": 299,
+   "on_time": 299,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Cream",
+   "leaf": "SG_Distributor",
+   "demand": 754,
+   "on_time": 754,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Cream",
+   "leaf": "TH_Distributor",
+   "demand": 299,
+   "on_time": 299,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "COS_Cream",
+   "leaf": "Σ（製品）",
+   "demand": 1768,
+   "on_time": 1768,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 4056,
+   "on_time": 4056,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {
+  "IN:mom:Factory_JP:COS_Serum": {
+   "SG_Distributor": {
+    "pushed": 0,
+    "denominator": 897
+   },
+   "SG_EC": {
+    "pushed": 0,
+    "denominator": 455
+   },
+   "SG_Store": {
+    "pushed": 0,
+    "denominator": 546
+   },
+   "TH_Distributor": {
+    "pushed": 0,
+    "denominator": 390
+   }
+  },
+  "IN:mom:Factory_JP:COS_Cream": {
+   "SG_Distributor": {
+    "pushed": 0,
+    "denominator": 754
+   },
+   "SG_EC": {
+    "pushed": 0,
+    "denominator": 299
+   },
+   "SG_Store": {
+    "pushed": 0,
+    "denominator": 416
+   },
+   "TH_Distributor": {
+    "pushed": 0,
+    "denominator": 299
+   }
+  }
+ },
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Factory_JP:COS_Serum": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Factory_JP:COS_Cream": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Factory_JP:COS_Serum": {
+   "product": "COS_Serum",
+   "name": "Factory_JP",
+   "P_supply": 2288,
+   "I_supply": 0
+  },
+  "IN:mom:Factory_JP:COS_Cream": {
+   "product": "COS_Cream",
+   "name": "Factory_JP",
+   "P_supply": 1768,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "cosmetics-sg-th-2027-2029",
+ "kind": "default"
+}

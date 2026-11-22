@@ -1,0 +1,23 @@
+{
+ "diff_keys": [],
+ "ppc_tail": {
+  "base_currency": "JPY",
+  "total_lots": 1118,
+  "revenue_base": 1119954240.0,
+  "cost_base": 512177400.0,
+  "gross_profit_base": 607776840.0,
+  "gross_margin_pct": 0.54268,
+  "tariff_base": 0.0,
+  "trust_event_count": 0
+ },
+ "ppc_default": {
+  "base_currency": "JPY",
+  "total_lots": 1118,
+  "revenue_base": 1119954240.0,
+  "cost_base": 512177400.0,
+  "gross_profit_base": 607776840.0,
+  "gross_margin_pct": 0.54268,
+  "tariff_base": 0.0,
+  "trust_event_count": 0
+ }
+}

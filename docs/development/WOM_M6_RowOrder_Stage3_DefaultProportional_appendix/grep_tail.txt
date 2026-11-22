@@ -1,0 +1,8 @@
+wom/engine/backward_planner.py:84:    TAIL as _OVERFLOW_TAIL, DEFAULT_POLICY as _OVERFLOW_DEFAULT,
+wom/engine/backward_planner.py:188:        # Stage 3, 2026-11); "tail" = the stage-0 code path, unchanged.
+wom/engine/backward_planner.py:541:        # (read only on the "tail" path).
+wom/engine/backward_planner.py:594:            if self._overflow_policy == _OVERFLOW_TAIL:
+wom/engine/overflow_policy.py:35:TAIL = "tail"
+wom/engine/overflow_policy.py:38:POLICIES: Tuple[str, ...] = (TAIL, PROPORTIONAL_WEEK, BALANCE_CUT_RATIO)
+wom/engine/overflow_policy.py:114:            if self.policy != TAIL:
+wom/engine/overflow_policy.py:338:    "TAIL", "PROPORTIONAL_WEEK", "BALANCE_CUT_RATIO", "POLICIES", "DEFAULT_POLICY",

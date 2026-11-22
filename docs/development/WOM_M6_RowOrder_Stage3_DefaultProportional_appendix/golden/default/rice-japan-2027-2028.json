@@ -1,0 +1,143 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin,RiceSeasonalPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 51.6,
+ "market": [
+  {
+   "product": "Koshihikari",
+   "leaf": "Retail_KANTO",
+   "demand": 73009,
+   "on_time": 63780,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 9229
+  },
+  {
+   "product": "Koshihikari",
+   "leaf": "Retail_TOHOKU",
+   "demand": 45554,
+   "on_time": 38919,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 6635
+  },
+  {
+   "product": "Koshihikari",
+   "leaf": "Retail_KANSAI",
+   "demand": 45554,
+   "on_time": 39237,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 6317
+  },
+  {
+   "product": "Koshihikari",
+   "leaf": "Retail_KYUSHU",
+   "demand": 18216,
+   "on_time": 15463,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 2753
+  },
+  {
+   "product": "Koshihikari",
+   "leaf": "Σ（製品）",
+   "demand": 182333,
+   "on_time": 157399,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 24934
+  },
+  {
+   "product": "Yumepirika",
+   "leaf": "Retail_KANTO",
+   "demand": 13633,
+   "on_time": 13633,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Yumepirika",
+   "leaf": "Retail_TOHOKU",
+   "demand": 10948,
+   "on_time": 10948,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Yumepirika",
+   "leaf": "Retail_KANSAI",
+   "demand": 21807,
+   "on_time": 21807,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Yumepirika",
+   "leaf": "Retail_KYUSHU",
+   "demand": 8216,
+   "on_time": 8216,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Yumepirika",
+   "leaf": "Σ（製品）",
+   "demand": 54604,
+   "on_time": 54604,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 236937,
+   "on_time": 212003,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 24934
+  }
+ ],
+ "burden": {},
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Sanchiku_Niigata:Koshihikari": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Sanchiku_Hokkaido:Yumepirika": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Sanchiku_Niigata:Koshihikari": {
+   "product": "Koshihikari",
+   "name": "Sanchiku_Niigata",
+   "P_supply": 157399,
+   "I_supply": 0
+  },
+  "IN:mom:Sanchiku_Hokkaido:Yumepirika": {
+   "product": "Yumepirika",
+   "name": "Sanchiku_Hokkaido",
+   "P_supply": 54604,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "rice-japan-2027-2028",
+ "kind": "default"
+}

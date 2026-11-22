@@ -140,7 +140,9 @@ Set every row of `capacity_plan.csv` (warm-up rows included) to:
 | COS_Serum | 17 | 14 |
 | COS_Cream | 13 | 11 |
 
-Expected: backlog is 192 lots, all at TH_Distributor (COS_Serum 104, COS_Cream 88). Revenue 1,119,737,280 JPY, trial profit 607,601,448 JPY.
+Expected (default push-back, `proportional_week`, since 2026-11; Start Here R25): backlog is 192 lots, spread over all 8 markets — COS_Serum 104 (SG_Distributor 50, SG_EC 27, SG_Store 22, TH_Distributor 5), COS_Cream 88 (SG_Distributor 47, SG_EC 18, SG_Store 19, TH_Distributor 4). Total deliveries 3,864. Revenue 1,100,849,400 JPY, trial profit 601,449,564 JPY.
+
+When `overflow_policy=tail` is set in `planning_config.csv` (the default until 2026-11): backlog is 192 lots, all at TH_Distributor (COS_Serum 104, COS_Cream 88). Revenue 1,119,737,280 JPY, trial profit 607,601,448 JPY. Which market falls short then depends on the row order of `sc_tree_master.csv`. Evidence: `docs/development/WOM_M6_RowOrder_Stage2_PolicyTrial_Report.md` §1, `docs/development/WOM_M6_RowOrder_Stage3_DefaultProportional_Report.md`.
 
 ### P1, P2-a1, P2-a2: quantity allocation
 
@@ -179,7 +181,7 @@ Expected, in lots:
 | P2-a1 | 4,056 | 3,864 | 192 | 3,860 | 4 |
 | P2-a2 | 4,056 | 3,864 | 192 | 3,856 | 8 |
 
-The tool is a quantity path: its financial result is "not valued". The comparison values are in `docs/development/WOM_BSSEAF_Cosmetics_AllocationP2a_Report.md`.
+The tool is a quantity path: its financial result is "not valued". The comparison values are in `docs/development/WOM_BSSEAF_Cosmetics_AllocationP2a_Report.md`. These totals are the same with the default push-back (`proportional_week`) and with `overflow_policy=tail` (checked 2026-11-22); which markets hold the 4 or 8 lots of backlog can differ.
 
 ### Adopted allocation plan: capacity-aware week rule, minimum supply 50% (Thai cream 70%)
 
@@ -194,7 +196,7 @@ This is the plan the Owner adopted for the cosmetics case (2026-11-02, 2026-11-0
 python -m tools.run_quantity_allocation --model-dir <C3a copy> --allocation-file <allocation_qty_TH70.csv> --week-rule trim_to_capacity_latest --policy-file <udp_policy_MS50TH70.csv> --udp-out <dir> --out-dir output/planning_state
 ```
 
-Expected: original demand 4,056, in supply scope 3,864, not in scope 192, delivered on time 3,864, backlog 0; Thai cream delivered in full every week; no week below the minimum, at plan time or on actual delivery. SG cream cuts run 2029-W07 to W50. Comparison value 607,776,840 JPY (the 50%-only plan: 607,741,740). The meanings (minimum supply, its applicability when lots are coarse, conflict vs. error, exit codes) are in `docs/semantics/supply_allocation.md` §6.1 and Start Here R23. Evidence: `docs/development/WOM_BSSEAF_Cosmetics_ThaiCream_Minimum70_Report.md` and its independent check `docs/development/WOM_BSSEAF_Cosmetics_ThaiCream_Minimum70_Verify_Report.md`.
+Expected: original demand 4,056, in supply scope 3,864, not in scope 192, delivered on time 3,864, backlog 0; Thai cream delivered in full every week; no week below the minimum, at plan time or on actual delivery. SG cream cuts run 2029-W07 to W50. The plan is identical with the default push-back and with `overflow_policy=tail` (checked 2026-11-22). Comparison value 607,776,840 JPY (the 50%-only plan: 607,741,740). The meanings (minimum supply, its applicability when lots are coarse, conflict vs. error, exit codes) are in `docs/semantics/supply_allocation.md` §6.1 and Start Here R23. Evidence: `docs/development/WOM_BSSEAF_Cosmetics_ThaiCream_Minimum70_Report.md` and its independent check `docs/development/WOM_BSSEAF_Cosmetics_ThaiCream_Minimum70_Verify_Report.md`.
 
 ### M0t: Thai tariff 30%
 

@@ -1,0 +1,131 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 9.6,
+ "market": [
+  {
+   "product": "Apparel_Offshore",
+   "leaf": "Retail_US_Offshore",
+   "demand": 57572,
+   "on_time": 57572,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Offshore",
+   "leaf": "Retail_JP_Offshore",
+   "demand": 31188,
+   "on_time": 31188,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Offshore",
+   "leaf": "Σ（製品）",
+   "demand": 88760,
+   "on_time": 88760,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Vertical",
+   "leaf": "Retail_US_Vertical",
+   "demand": 60498,
+   "on_time": 60498,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Vertical",
+   "leaf": "Retail_JP_Vertical",
+   "demand": 32268,
+   "on_time": 32268,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Vertical",
+   "leaf": "Σ（製品）",
+   "demand": 92766,
+   "on_time": 92766,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 181526,
+   "on_time": 181526,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {
+  "IN:mom:Garment_BD:Apparel_Offshore": {
+   "JP": {
+    "pushed": 0,
+    "denominator": 31188
+   },
+   "US": {
+    "pushed": 0,
+    "denominator": 57572
+   }
+  },
+  "IN:mom:Garment_PT:Apparel_Vertical": {
+   "JP": {
+    "pushed": 6544,
+    "denominator": 32268
+   },
+   "US": {
+    "pushed": 12270,
+    "denominator": 60498
+   }
+  }
+ },
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Garment_BD:Apparel_Offshore": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Garment_PT:Apparel_Vertical": {
+   "open": {
+    "JP": 6544,
+    "US": 12270
+   },
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Garment_BD:Apparel_Offshore": {
+   "product": "Apparel_Offshore",
+   "name": "Garment_BD",
+   "P_supply": 88760,
+   "I_supply": 0
+  },
+  "IN:mom:Garment_PT:Apparel_Vertical": {
+   "product": "Apparel_Vertical",
+   "name": "Garment_PT",
+   "P_supply": 92766,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "apparel-global-2028-2029",
+ "kind": "default"
+}

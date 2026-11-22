@@ -1,0 +1,90 @@
+[quick_check] C:\Users\ohsug\anaconda3\python.exe -m pytest -q -p no:cacheprovider tests/
+........................................................................ [  5%]
+........................................................................ [ 10%]
+........................................................................ [ 15%]
+........................................................................ [ 20%]
+........................................................................ [ 26%]
+........................................................................ [ 31%]
+...................................s...ss............................... [ 36%]
+........................................................................ [ 41%]
+........................................................................ [ 47%]
+........................................................................ [ 52%]
+........................................................................ [ 57%]
+........................................................................ [ 62%]
+........................................................................ [ 68%]
+........................................................................ [ 73%]
+........................................................................ [ 78%]
+........................................................................ [ 83%]
+........................................................................ [ 89%]
+........................................................................ [ 94%]
+........................................................................ [ 99%]
+....                                                                     [100%]
+============================== warnings summary ===============================
+tests/test_golden.py::test_golden_matches[ev-europe-2026]
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tools\run_headless_from_folder.py:266: RuntimeWarning: C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\data\sample\ev-europe-2026\capacity_plan.csv�F�v����Ԃ̊O�̏T�̍s 90 ����ǂݔ�΂��܂����i�\�͂̕\���v����Ԃ�蒷���͕̂��ʂł��j
+    load_capacity_dataframe(sc_tree, pd.read_csv(cap_path, dtype={"max_supply": str}),
+
+tests/test_holiday_explicit_closure.py::test_t9_push_node_closed_week_accepts_p_ships_nothing
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_holiday_explicit_closure.py:95: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    pres = PushProductionPlanner(tree).setup(SKU, push)
+
+tests/test_lot_identity_flow.py::test_c2_legacy_push_is_unchanged_arrival_order
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_lot_identity_flow.py:55: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    PushProductionPlanner(t).setup(SKU, push)
+
+tests/test_ppc_no_silent_fallback.py::test_t08_demo_still_uses_sample_data
+  C:\Users\ohsug\anaconda3\Lib\site-packages\_pytest\threadexception.py:73: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-189 (_readerthread)
+  
+  Traceback (most recent call last):
+    File "C:\Users\ohsug\anaconda3\Lib\threading.py", line 1073, in _bootstrap_inner
+      self.run()
+    File "C:\Users\ohsug\anaconda3\Lib\threading.py", line 1010, in run
+      self._target(*self._args, **self._kwargs)
+    File "C:\Users\ohsug\anaconda3\Lib\subprocess.py", line 1599, in _readerthread
+      buffer.append(fh.read())
+                    ^^^^^^^^^
+  UnicodeDecodeError: 'cp932' codec can't decode byte 0x94 in position 768: illegal multibyte sequence
+  
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+tests/test_push_pull_mode4_supply_role.py::test_mode1_fixed_qty_unaffected_by_this_change
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r3m0_DEMO\tests\test_push_pull_mode4_supply_role.py:344: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    result = PushProductionPlanner(tree).setup(
+
+tests/test_stage3a1_stockyard.py::test_ev_europe_2026_import_chain_matches_post_gate_baseline
+tests/test_stage3a1_stockyard.py::test_ev_europe_2026_local_chain_matches_pre_yard_baseline
+tests/test_stage3a2_kitting_gate.py::test_ev_europe_2026_import_factory_p_matches_real_demand
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tools\sweep_flags.py:376: RuntimeWarning: capacity_plan.csv�F�v����Ԃ̊O�̏T�̍s 90 ����ǂݔ�΂��܂����i�\�͂̕\���v����Ԃ�蒷���͕̂��ʂł��j
+    load_capacity_dataframe(sc_tree, pd.read_csv(cap_path), weeks)
+
+tests/test_step8_push_pull.py::test_push_fixed_overwrite
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_step8_push_pull.py:63: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    push_result = PushProductionPlanner(sc_tree).setup(
+
+tests/test_step8_push_pull.py::test_push_vs_pull_leaf_in_p
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_step8_push_pull.py:88: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    PushProductionPlanner(sc_tree_push).setup(
+
+tests/test_step8_push_pull.py::test_push_replenishment
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_step8_push_pull.py:102: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    push_result = PushProductionPlanner(sc_tree).setup(
+
+tests/test_step8_push_pull.py::test_push_region_distribution
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_step8_push_pull.py:119: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    PushProductionPlanner(sc_tree).setup(
+
+tests/test_step8_push_pull.py::test_mark_pull_mode_reset
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_step8_push_pull.py:137: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    PushProductionPlanner(sc_tree).setup(
+
+tests/test_step8_push_pull.py::test_get_push_pull_summary
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_step8_push_pull.py:156: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    PushProductionPlanner(sc_tree).setup(
+
+tests/test_step8_push_pull.py::test_e2e_push_produces_buffer_inventory
+  C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF\tests\test_step8_push_pull.py:183: UserWarning: push �� Mode 1�`3 �͔񐄏��ł��i���v�ɕR�Â��Ȃ� Lot_ID ����邽�߁j�BMode 4�ipush_lead_time_weeks�j���g���Ă�������
+    PushProductionPlanner(sc_tree).setup(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1369 passed, 3 skipped, 15 warnings in 1242.26s (0:20:42)
+[quick_check] tier=full | passed=1369 failed=0 skipped=3 error=0 | 1247 s | OK

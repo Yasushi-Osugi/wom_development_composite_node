@@ -1,0 +1,510 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "tail"
+ ],
+ "seconds": 10.9,
+ "market": [
+  {
+   "product": "Gasoline_Local",
+   "leaf": "Retail_Local_KANTO",
+   "demand": 22314,
+   "on_time": 22314,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local",
+   "leaf": "Retail_Local_KANSAI",
+   "demand": 13388,
+   "on_time": 13388,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local",
+   "leaf": "Retail_Local_CHUBU",
+   "demand": 6693,
+   "on_time": 6693,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local",
+   "leaf": "Σ（製品）",
+   "demand": 42395,
+   "on_time": 42395,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Import",
+   "leaf": "Retail_Import_KANTO_I",
+   "demand": 6044,
+   "on_time": 6044,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Import",
+   "leaf": "Retail_Import_KANSAI_I",
+   "demand": 3779,
+   "on_time": 3779,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Import",
+   "leaf": "Σ（製品）",
+   "demand": 9823,
+   "on_time": 9823,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "leaf": "Retail_Local_H_KANTO",
+   "demand": 51,
+   "on_time": 51,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "leaf": "Retail_Local_H_KANSAI",
+   "demand": 26,
+   "on_time": 26,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "leaf": "Retail_Local_H_CHUBU",
+   "demand": 26,
+   "on_time": 26,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "leaf": "Σ（製品）",
+   "demand": 103,
+   "on_time": 103,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "leaf": "Retail_Local_R_KANTO",
+   "demand": 246,
+   "on_time": 246,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "leaf": "Retail_Local_R_KANSAI",
+   "demand": 124,
+   "on_time": 115,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 9
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "leaf": "Retail_Local_R_CHUBU",
+   "demand": 124,
+   "on_time": 104,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 20
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "leaf": "Σ（製品）",
+   "demand": 494,
+   "on_time": 465,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 29
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "leaf": "Retail_EU_DE",
+   "demand": 26035,
+   "on_time": 26035,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "leaf": "Retail_EU_FR",
+   "demand": 16361,
+   "on_time": 16361,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "leaf": "Retail_EU_NL",
+   "demand": 8185,
+   "on_time": 8185,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "leaf": "Σ（製品）",
+   "demand": 50581,
+   "on_time": 50581,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Import",
+   "leaf": "Retail_EU_Import_DE_I",
+   "demand": 7558,
+   "on_time": 7558,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Import",
+   "leaf": "Retail_EU_Import_FR_I",
+   "demand": 4535,
+   "on_time": 4535,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Import",
+   "leaf": "Σ（製品）",
+   "demand": 12093,
+   "on_time": 12093,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "leaf": "Retail_US_TX",
+   "demand": 34006,
+   "on_time": 34006,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "leaf": "Retail_US_CA",
+   "demand": 22670,
+   "on_time": 22670,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "leaf": "Retail_US_NY",
+   "demand": 11336,
+   "on_time": 11336,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "leaf": "Σ（製品）",
+   "demand": 68012,
+   "on_time": 68012,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Import",
+   "leaf": "Retail_US_Import_MW_I",
+   "demand": 4535,
+   "on_time": 4535,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Import",
+   "leaf": "Retail_US_Import_NE_I",
+   "demand": 3022,
+   "on_time": 3022,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Import",
+   "leaf": "Σ（製品）",
+   "demand": 7557,
+   "on_time": 7557,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 191058,
+   "on_time": 191029,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 29
+  }
+ ],
+ "burden": {
+  "IN:mom:Refinery_Local:Gasoline_Local": {
+   "CHUBU": {
+    "pushed": 1632,
+    "denominator": 6693
+   },
+   "KANSAI": {
+    "pushed": 2063,
+    "denominator": 13388
+   },
+   "KANTO": {
+    "pushed": 2105,
+    "denominator": 22314
+   }
+  },
+  "IN:mom:Import_Hub:Gasoline_Import": {
+   "KANSAI_I": {
+    "pushed": 0,
+    "denominator": 3779
+   },
+   "KANTO_I": {
+    "pushed": 0,
+    "denominator": 6044
+   }
+  },
+  "IN:mom:Refinery_Local_H:Gasoline_Local_Hormuz": {
+   "CHUBU": {
+    "pushed": 0,
+    "denominator": 26
+   },
+   "KANSAI": {
+    "pushed": 0,
+    "denominator": 26
+   },
+   "KANTO": {
+    "pushed": 0,
+    "denominator": 51
+   }
+  },
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "CHUBU": {
+    "pushed": 6061,
+    "denominator": 124
+   },
+   "KANSAI": {
+    "pushed": 2962,
+    "denominator": 124
+   },
+   "KANTO": {
+    "pushed": 0,
+    "denominator": 246
+   }
+  },
+  "IN:mom:Refinery_EU:Gasoline_EU_Local": {
+   "DE": {
+    "pushed": 29330,
+    "denominator": 26035
+   },
+   "FR": {
+    "pushed": 23994,
+    "denominator": 16361
+   },
+   "NL": {
+    "pushed": 117338,
+    "denominator": 8185
+   }
+  },
+  "IN:mom:Import_Hub_EU:Gasoline_EU_Import": {
+   "DE_I": {
+    "pushed": 0,
+    "denominator": 7558
+   },
+   "FR_I": {
+    "pushed": 0,
+    "denominator": 4535
+   }
+  },
+  "IN:mom:Refinery_USGulf:Gasoline_US_Local": {
+   "CA": {
+    "pushed": 20940,
+    "denominator": 22670
+   },
+   "NY": {
+    "pushed": 44501,
+    "denominator": 11336
+   },
+   "TX": {
+    "pushed": 24301,
+    "denominator": 34006
+   }
+  },
+  "IN:mom:Import_Hub_US:Gasoline_US_Import": {
+   "MW_I": {
+    "pushed": 0,
+    "denominator": 4535
+   },
+   "NE_I": {
+    "pushed": 0,
+    "denominator": 3022
+   }
+  }
+ },
+ "past_due": {
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "KANSAI": 1,
+   "CHUBU": 3
+  },
+  "IN:leaf_in:Crude_ME_RedSea:Gasoline_Local_RedSea": {
+   "CHUBU": 17,
+   "KANSAI": 8
+  }
+ },
+ "past_due_total": 29,
+ "cap_dropped": {
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "KANSAI": 1,
+   "CHUBU": 3
+  }
+ },
+ "cap_dropped_total": 4,
+ "pushed": {
+  "IN:mom:Refinery_Local:Gasoline_Local": {
+   "open": {
+    "CHUBU": 1632,
+    "KANSAI": 2063,
+    "KANTO": 2105
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Import_Hub:Gasoline_Import": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Refinery_Local_H:Gasoline_Local_Hormuz": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "open": {
+    "KANSAI": 2962,
+    "CHUBU": 6061
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Refinery_EU:Gasoline_EU_Local": {
+   "open": {
+    "NL": 117338,
+    "FR": 23994,
+    "DE": 29330
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Import_Hub_EU:Gasoline_EU_Import": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Refinery_USGulf:Gasoline_US_Local": {
+   "open": {
+    "TX": 24301,
+    "CA": 20940,
+    "NY": 44501
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Import_Hub_US:Gasoline_US_Import": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Refinery_Local:Gasoline_Local": {
+   "product": "Gasoline_Local",
+   "name": "Refinery_Local",
+   "P_supply": 42395,
+   "I_supply": 0
+  },
+  "IN:mom:Import_Hub:Gasoline_Import": {
+   "product": "Gasoline_Import",
+   "name": "Import_Hub",
+   "P_supply": 9823,
+   "I_supply": 0
+  },
+  "IN:mom:Refinery_Local_H:Gasoline_Local_Hormuz": {
+   "product": "Gasoline_Local_Hormuz",
+   "name": "Refinery_Local_H",
+   "P_supply": 103,
+   "I_supply": 0
+  },
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "product": "Gasoline_Local_RedSea",
+   "name": "Refinery_Local_R",
+   "P_supply": 465,
+   "I_supply": 0
+  },
+  "IN:mom:Refinery_EU:Gasoline_EU_Local": {
+   "product": "Gasoline_EU_Local",
+   "name": "Refinery_EU",
+   "P_supply": 50581,
+   "I_supply": 0
+  },
+  "IN:mom:Import_Hub_EU:Gasoline_EU_Import": {
+   "product": "Gasoline_EU_Import",
+   "name": "Import_Hub_EU",
+   "P_supply": 12093,
+   "I_supply": 0
+  },
+  "IN:mom:Refinery_USGulf:Gasoline_US_Local": {
+   "product": "Gasoline_US_Local",
+   "name": "Refinery_USGulf",
+   "P_supply": 68012,
+   "I_supply": 0
+  },
+  "IN:mom:Import_Hub_US:Gasoline_US_Import": {
+   "product": "Gasoline_US_Import",
+   "name": "Import_Hub_US",
+   "P_supply": 7557,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "oil-global-2027",
+ "kind": "tail"
+}

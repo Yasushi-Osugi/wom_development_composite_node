@@ -218,6 +218,7 @@ Planning Engine完了後に自動実行（`_run_ppc_from_planning`）。
 - GUI・headless とも、能力の読み込みの例外を握りつぶさない（前は `except: pass` で能力が黙って失われていた）。GUI では Planning Engine のエラーとして表示される。
 - **休業と能力ゼロの使い分けの目安**：設備・拠点が止まる週（祝日・保守・ストライキ）は休業（`supply_closure`・操業カレンダーの 0 shift）。Backward はその週を LT オフセットで飛ばし、push の入庫は受け入れる。「その週は作れない」ことだけを言いたい週（発売前・生産終了後・収穫期以外など）は能力 0。Backward はその週に要求を置いたうえで、能力の押し戻しで前の週へ移す。
 - **行が無い週は「未設定＝上限なし」**。製品の発売前の週などで行を省くと、Backward がそこへ作り溜める（smartx の SmartXNext で観測。`docs/development/WOM_CapacityZeroBlank_Report.md` §4）。作れない週は 0 の行を置く。
+- **能力を超えた週の押し戻し方（2026-11-22、段 3）**：既定は `proportional_week`（その週の市場ごとの lot の数に比例。`wom/engine/overflow_policy.py` の `DEFAULT_POLICY` の 1 か所）。`tail`（並びの末尾から＝木の行の順で決まる。段 2 までの既定）・`balance_cut_ratio` は `planning_config.csv` の `overflow_policy` で選べる。知らない値は止まる。headless の snapshot は既定以外のときだけ `config.overflow_policy` を記録する（Start Here R25）。
 - smartx-2027-2029：`capacity_plan.csv` の `node_name=AssemblyCN` のうち、SmartX の 278 行を `AssemblyCN_g1`、SmartXNext の 130 行を `AssemblyCN_g3` に直した（値は同じ。前は計画の木に無いノード名で、黙って読み捨てられていた）。
 
 ---
@@ -1949,3 +1950,12 @@ R1（cap_wkをCSVでなくCLI/テストで渡す）・R2（①の図はランキ
   ```
   `--max-age-weeks` は必須（黙った既定値を作らない）。出力 `shelf_life_deliveries.csv`（納品ごと）・`shelf_life_summary.csv`（SKU・チャネル別の最小・最大・分布・許容超え）、既定の出力先 `output/shelf_life/<モデル名>/`。
 - **先入れ先出しの年齢の定義**：市場への納品（leaf_out の実出荷）ごとに、納品週 − 製造週（工場＝MOM の実出荷週）。物の在る所（supply point＝工場の完成品倉庫、DAD、leaf_out の店頭）ごと・SKU ごとの待ち行列に製造週の札を付けて並べ、出ていく物は一番古い札から出す。入力は `wom/valuechain/records.py` の `build_records`（週の中は上流から）。**Lot_ID は需要の単位で物の個体ではない**ので、Lot_ID で数えた滞留（max（需要週、市場の出荷週）− その Lot_ID の工場の出荷週）は参考の列。作り置きがあると Lot_ID の滞留は物の年齢より大きく出る（化粧品 B3：Lot_ID で最大 165 週・52 週超 195、先入れ先出しで最大 17・21 週・0）。週の差は計画の週の番号で数える。
+
+## 押し戻し方の既定を `proportional_week` に（RequestLetter_M6_RowOrder_Stage3_DefaultProportional、2026-11-22）
+
+**報告**：`docs/development/WOM_M6_RowOrder_Stage3_DefaultProportional_Report.md`（段 1・段 2 の報告書から続く）。保護対象のコアの手続き（3 層のテスト・golden の意図した作り直し）。
+
+- **既定**：`DEFAULT_POLICY = PROPORTIONAL_WEEK`（`wom/engine/overflow_policy.py`）。`resolve_overflow_policy` の空欄・None、`read_overflow_policy` のファイル・キーなし、`OverflowTracker()`、`BackwardPlanner` の config なしがすべてこれ。`tail` を明示すると段 1 までの結果（醤油 T1）を再現する。
+- **golden**：新しい既定で変わったのは oil-global-2027・soysauce-jpy-2027-alloc・smartphone-global-2026-2029 の 3 件だけ（段 2 の見込みどおり）。この 3 件を作り直した。総納品・期末の注文残の合計は 3 件とも不変（市場への分かれ方だけが変わる）。legacy 3 件は不変。
+- **年齢の検査** `tools/shelf_life_check.py`：同じ所・同じ週・同じ SKU の出庫は（行き先のノード名 → Lot_ID）の順に古い札を渡す（木の行の順に依らない）。
+- 化粧品の C3a の期待値（`docs/scenarios/cosmetics.md`）は、新しい既定の値と `overflow_policy=tail` の値を並べた。

@@ -1,0 +1,12 @@
+product,channel,deliveries,fifo_age_min,fifo_age_max,over_max_age,fifo_age_dist,lot_dwell_max,lot_dwell_over_max_age
+*,*,4056,4,6,0,4:3094;6:962,6,0
+COS_Cream,*,1768,4,6,0,4:1352;6:416,6,0
+COS_Cream,SG_Distributor,754,4,4,0,4:754,4,0
+COS_Cream,SG_EC,299,4,4,0,4:299,4,0
+COS_Cream,SG_Store,416,6,6,0,6:416,6,0
+COS_Cream,TH_Distributor,299,4,4,0,4:299,4,0
+COS_Serum,*,2288,4,6,0,4:1742;6:546,6,0
+COS_Serum,SG_Distributor,897,4,4,0,4:897,4,0
+COS_Serum,SG_EC,455,4,4,0,4:455,4,0
+COS_Serum,SG_Store,546,6,6,0,6:546,6,0
+COS_Serum,TH_Distributor,390,4,4,0,4:390,4,0

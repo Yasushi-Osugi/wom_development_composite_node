@@ -1,0 +1,183 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 8.4,
+ "market": [
+  {
+   "product": "Cookie_Import",
+   "leaf": "Retail_JP_CVS",
+   "demand": 31560,
+   "on_time": 31560,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Import",
+   "leaf": "Retail_JP_SM",
+   "demand": 31560,
+   "on_time": 31560,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Import",
+   "leaf": "Retail_JP_EC",
+   "demand": 15810,
+   "on_time": 15810,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Import",
+   "leaf": "Σ（製品）",
+   "demand": 78930,
+   "on_time": 78930,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Local",
+   "leaf": "Retail_JP_CVS",
+   "demand": 26270,
+   "on_time": 26270,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Local",
+   "leaf": "Retail_JP_SM",
+   "demand": 26270,
+   "on_time": 26270,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Local",
+   "leaf": "Retail_JP_EC",
+   "demand": 10520,
+   "on_time": 10520,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Local",
+   "leaf": "Σ（製品）",
+   "demand": 63060,
+   "on_time": 63060,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 141990,
+   "on_time": 141990,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {
+  "IN:mom:Factory_GP_CN:Cookie_Import": {
+   "CVS": {
+    "pushed": 27685,
+    "denominator": 31560
+   },
+   "EC": {
+    "pushed": 13877,
+    "denominator": 15810
+   },
+   "SM": {
+    "pushed": 27686,
+    "denominator": 31560
+   }
+  },
+  "IN:mom:Factory_DP_JP:Cookie_Local": {
+   "CVS": {
+    "pushed": 0,
+    "denominator": 26270
+   },
+   "EC": {
+    "pushed": 0,
+    "denominator": 10520
+   },
+   "SM": {
+    "pushed": 0,
+    "denominator": 26270
+   }
+  }
+ },
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Factory_GP_CN:Cookie_Import": {
+   "open": {
+    "CVS": 25870,
+    "EC": 12969,
+    "SM": 25871
+   },
+   "closed": {
+    "CVS": 1815,
+    "EC": 908,
+    "SM": 1815
+   },
+   "closed_weeks": {
+    "2026-W05": {
+     "CVS": 600,
+     "EC": 300,
+     "SM": 600
+    },
+    "2026-W06": {
+     "CVS": 300,
+     "EC": 150,
+     "SM": 300
+    },
+    "2027-W02": {
+     "CVS": 615,
+     "EC": 308,
+     "SM": 615
+    },
+    "2027-W03": {
+     "CVS": 300,
+     "EC": 150,
+     "SM": 300
+    }
+   }
+  },
+  "IN:mom:Factory_DP_JP:Cookie_Local": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Factory_GP_CN:Cookie_Import": {
+   "product": "Cookie_Import",
+   "name": "Factory_GP_CN",
+   "P_supply": 78930,
+   "I_supply": 0
+  },
+  "IN:mom:Factory_DP_JP:Cookie_Local": {
+   "product": "Cookie_Local",
+   "name": "Factory_DP_JP",
+   "P_supply": 63060,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "Cookie-jp-2026",
+ "kind": "default"
+}

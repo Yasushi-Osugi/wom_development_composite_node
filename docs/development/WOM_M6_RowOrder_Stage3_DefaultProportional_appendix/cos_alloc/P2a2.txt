@@ -1,0 +1,13 @@
+[quantity allocation] model_P2a2 Q01  2026-W37..2029-W52 (173 weeks)  unit lot (cpu_size 24)
+sku_id            region                   q1     q2     q3     q4   (on/early/late)     q5
+COS_Cream         SG_Distributor          754    691     63    689           689/0/0      2
+COS_Cream         SG_EC                   299    299      0    298           298/0/0      1
+COS_Cream         SG_Store                416    416      0    415           415/0/0      1
+COS_Cream         TH_Distributor          299    274     25    274           274/0/0      0
+COS_Serum         SG_Distributor          897    825     72    823           823/0/0      2
+COS_Serum         SG_EC                   455    455      0    454           454/0/0      1
+COS_Serum         SG_Store                546    546      0    545           545/0/0      1
+COS_Serum         TH_Distributor          390    358     32    358           358/0/0      0
+TOTAL                                    4056   3864    192   3856          3856/0/0      8
+財務：未評価  |  配分後の未充足あり  |  未配分の扱い：Forecast demand out of supply scope for this period
+[quantity allocation] -> output/roworder_stage3/cos_alloc/out_P2a2\model_P2a2\Q01.json

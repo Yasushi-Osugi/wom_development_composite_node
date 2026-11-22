@@ -172,7 +172,7 @@ keywords: [供給配分, 配分, 未配分, 納期延期, 注文残, 遅配, 実
 ## 9. WOM との対応と事例
 
 - WOM での表し方（配分の機能、需要への受け渡し、計画、記録）と、その前提：[三層設計 MD](../design/WOM_Production_Allocation_ThreeLayer_BSSEAF_Design_v0.2.md)。①〜⑤を WOM のどの記録で数えるか：`requests/BSSEAF_SupplyAllocation_ALC_Mapping_v0.2.md` の Q02・Q05。
-- 事例：化粧品の試行（変更課題③の C3a：配分をせずに元の需要のまま計画し、タイの代理店の需要の一部が期末の注文残〔⑤〕になった。③ は 0）。`docs/development/WOM_BSSEAF_Cosmetics_ChangeTasks123_Report.md`。
+- 事例：化粧品の試行（変更課題③の C3a：配分をせずに元の需要のまま計画し、タイの代理店の需要の一部が期末の注文残〔⑤〕になった。③ は 0）。`docs/development/WOM_BSSEAF_Cosmetics_ChangeTasks123_Report.md`。これは当時の既定の押し戻し方（`tail`）での結果。2026-11 から既定は比例（`proportional_week`）で、同じ案の注文残 192 lot は 8 市場に分かれる（Start Here R25、`docs/scenarios/cosmetics.md` の C3a）。
 
 ## 10. 確認の問い（新しい AI・新しい人へ）
 

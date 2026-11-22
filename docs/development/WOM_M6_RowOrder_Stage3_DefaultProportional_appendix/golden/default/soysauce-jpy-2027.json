@@ -1,0 +1,171 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 7.9,
+ "market": [
+  {
+   "product": "Soy_Sauce",
+   "leaf": "Rest_US_West",
+   "demand": 17588,
+   "on_time": 17588,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Soy_Sauce",
+   "leaf": "Rest_US_East",
+   "demand": 17588,
+   "on_time": 17588,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Soy_Sauce",
+   "leaf": "Rest_JP",
+   "demand": 30150,
+   "on_time": 30150,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Soy_Sauce",
+   "leaf": "Rest_FR",
+   "demand": 15075,
+   "on_time": 15075,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Soy_Sauce",
+   "leaf": "Rest_BE",
+   "demand": 10050,
+   "on_time": 10050,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Soy_Sauce",
+   "leaf": "Rest_NL",
+   "demand": 10050,
+   "on_time": 10050,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Soy_Sauce",
+   "leaf": "Σ（製品）",
+   "demand": 100501,
+   "on_time": 100501,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 100501,
+   "on_time": 100501,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "BE": {
+    "pushed": 686,
+    "denominator": 10050
+   },
+   "FR": {
+    "pushed": 1027,
+    "denominator": 15075
+   },
+   "JP": {
+    "pushed": 2056,
+    "denominator": 30150
+   },
+   "NL": {
+    "pushed": 685,
+    "denominator": 10050
+   },
+   "US_E": {
+    "pushed": 1199,
+    "denominator": 17588
+   },
+   "US_W": {
+    "pushed": 1199,
+    "denominator": 17588
+   }
+  }
+ },
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "open": {
+    "JP": 1156,
+    "US_W": 674,
+    "BE": 386,
+    "FR": 577,
+    "NL": 385,
+    "US_E": 674
+   },
+   "closed": {
+    "JP": 900,
+    "US_W": 525,
+    "BE": 300,
+    "FR": 450,
+    "NL": 300,
+    "US_E": 525
+   },
+   "closed_weeks": {
+    "2027-W18": {
+     "JP": 300,
+     "US_W": 175,
+     "BE": 100,
+     "FR": 150,
+     "NL": 100,
+     "US_E": 175
+    },
+    "2028-W18": {
+     "JP": 300,
+     "US_W": 175,
+     "BE": 100,
+     "FR": 150,
+     "NL": 100,
+     "US_E": 175
+    },
+    "2028-W33": {
+     "JP": 300,
+     "US_W": 175,
+     "BE": 100,
+     "FR": 150,
+     "NL": 100,
+     "US_E": 175
+    }
+   }
+  }
+ },
+ "moms": {
+  "IN:mom:Bottling_Noda:Soy_Sauce": {
+   "product": "Soy_Sauce",
+   "name": "Bottling_Noda",
+   "P_supply": 100501,
+   "I_supply": 100501
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "soysauce-jpy-2027",
+ "kind": "default"
+}

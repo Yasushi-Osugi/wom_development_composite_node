@@ -1,0 +1,198 @@
+{
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 6.2,
+ "market": [
+  {
+   "product": "EVmaker_Local",
+   "leaf": "Sales_TH_BKK",
+   "demand": 26355,
+   "on_time": 26355,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Local",
+   "leaf": "Sales_TH_PRO",
+   "demand": 21080,
+   "on_time": 21080,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Local",
+   "leaf": "Sales_TH_ONL",
+   "demand": 5265,
+   "on_time": 5265,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Local",
+   "leaf": "Σ（製品）",
+   "demand": 52700,
+   "on_time": 52700,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Import",
+   "leaf": "Sales_TH_BKK_i",
+   "demand": 5265,
+   "on_time": 5265,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Import",
+   "leaf": "Sales_TH_PRO_i",
+   "demand": 4216,
+   "on_time": 4216,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Import",
+   "leaf": "Sales_TH_ONL_i",
+   "demand": 1059,
+   "on_time": 1059,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Import",
+   "leaf": "Σ（製品）",
+   "demand": 10540,
+   "on_time": 10540,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 63240,
+   "on_time": 63240,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {
+  "IN:mom:Factory_Local_TH:EVmaker_Local": {
+   "BKK": {
+    "pushed": 500,
+    "denominator": 26355
+   },
+   "ONL": {
+    "pushed": 100,
+    "denominator": 5265
+   },
+   "PRO": {
+    "pushed": 400,
+    "denominator": 21080
+   }
+  },
+  "IN:mom:Factory_Import_CN:EVmaker_Import": {
+   "BKK": {
+    "pushed": 706,
+    "denominator": 5265
+   },
+   "ONL": {
+    "pushed": 145,
+    "denominator": 1059
+   },
+   "PRO": {
+    "pushed": 589,
+    "denominator": 4216
+   }
+  }
+ },
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Factory_Local_TH:EVmaker_Local": {
+   "open": {},
+   "closed": {
+    "BKK": 500,
+    "ONL": 100,
+    "PRO": 400
+   },
+   "closed_weeks": {
+    "2026-W32": {
+     "BKK": 250,
+     "ONL": 50,
+     "PRO": 200
+    },
+    "2027-W32": {
+     "BKK": 250,
+     "ONL": 50,
+     "PRO": 200
+    }
+   }
+  },
+  "IN:mom:Factory_Import_CN:EVmaker_Import": {
+   "open": {
+    "BKK": 378,
+    "ONL": 77,
+    "PRO": 313
+   },
+   "closed": {
+    "BKK": 328,
+    "ONL": 68,
+    "PRO": 276
+   },
+   "closed_weeks": {
+    "2026-W40": {
+     "BKK": 107,
+     "ONL": 22,
+     "PRO": 92
+    },
+    "2026-W41": {
+     "BKK": 57,
+     "ONL": 12,
+     "PRO": 46
+    },
+    "2027-W40": {
+     "BKK": 107,
+     "ONL": 22,
+     "PRO": 92
+    },
+    "2027-W41": {
+     "BKK": 57,
+     "ONL": 12,
+     "PRO": 46
+    }
+   }
+  }
+ },
+ "moms": {
+  "IN:mom:Factory_Local_TH:EVmaker_Local": {
+   "product": "EVmaker_Local",
+   "name": "Factory_Local_TH",
+   "P_supply": 52700,
+   "I_supply": 0
+  },
+  "IN:mom:Factory_Import_CN:EVmaker_Import": {
+   "product": "EVmaker_Import",
+   "name": "Factory_Import_CN",
+   "P_supply": 10540,
+   "I_supply": 21080
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "ev-thailand-2026",
+ "kind": "legacy"
+}
