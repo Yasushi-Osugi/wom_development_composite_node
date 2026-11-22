@@ -1,0 +1,2 @@
+cost_item,entity,paid_start_week,paid_end_week,weekly_amount,currency,note
+promo_campaign_add,E_SG,2028-W10,2028-W21,23000,JPY,strategy_convert; campaign=CMP_CREAM_SGEC_2028; measure=CMP_CREAM_SGEC_2028_COST; version=v01; 200 SGD/週 × 115 JPY/SGD（ppc_fx_rate.csv、元のモデル） = 23000 JPY/週 × 12 週 = 276000 JPY; paid_start_week・paid_end_week は費用の発生の週（現金の支払いの週を決めたものではない）

@@ -1,0 +1,5 @@
+plan_id,case_name,campaign_ids,hypothesis_level,env_id
+P_BASE,追加販促なし,,,ENV_BASE_v01
+P_PROMO_LOW,追加販促 反応 0%,CMP_CREAM_SGEC_2028,low,ENV_BASE_v01
+P_PROMO_MID,追加販促 反応 25%,CMP_CREAM_SGEC_2028,base,ENV_BASE_v01
+P_PROMO_HIGH,追加販促 反応 50%,CMP_CREAM_SGEC_2028,high,ENV_BASE_v01

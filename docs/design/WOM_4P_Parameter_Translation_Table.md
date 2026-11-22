@@ -63,7 +63,7 @@
 
 | 施策の型 | 人が決める入力 | ファイル・列 | 単位 | 翻訳の規則 | 止める（既存） | 止める（道具） | 印・確かめる影響 |
 |---|---|---|---|---|---|---|---|
-| 販促の需要増（対象市場・実施週） | 市場・開始週・終了週・増える量の仮説 | **H** の換算 → `demand_forecast.csv`：`sku_id, region, week, quantity`（または `market_entry_plan.csv` の数量） | lot／週 | 実施週の需要に上乗せ。反動減の仮説があれば後の週から引く。元の需要と上乗せ分を分けて案に記録する | 需要の CSV のローダ | 仮説の量が書かれていない、対象の `region` が木に無い、上乗せで需要が負になる | **H** → W：追加需要・欠品 |
+| 販促の需要増（対象市場・実施週） | 市場・開始週・終了週・増える量の仮説 | **H** の換算 → `demand_forecast.csv`：`sku_id, region, week, quantity`（`market_entry_plan.csv` のある案は、変換の初版〔`tools/strategy_convert.py`〕では止める。基準需要の生成 → 販促の差分 → 需要の確定の経路は次の版） | lot／週 | **反応週**（実施の週を反応の遅れの分だけ後ろへ移した週）の基準需要に率を掛けて上乗せ（広告の週の需要ではない）。反動減の仮説があれば反応の区間の後の週から引く。凍結した基準需要 B と増減分 d を分けて案に記録し、D ＝ B ＋ d を案の需要にする（型 `promo_demand_delta`） | 需要の CSV のローダ | 仮説の量が書かれていない、対象の `region` が木に無い、上乗せで需要が負になる | **H** → W：追加需要・欠品 |
 | 販促費（売上に比例） | 売上に対する率 | `ppc_node_cost_rule.csv`：`cost_type=marketing_cost`、`basis=revenue`、`rate`（leaf_out の行）。Value Chain は `vc_sales_cost_rule.csv`：`cost_item=digital_ad` など、`ppc_cost_type=marketing_cost`、`basis=revenue` | 比 | PPC と Value Chain の両方に同じ率を置く | Value Chain：知らない費目、`basis` が revenue 以外 | 二つの率が食い違う | W：販促費を含めた利益 |
 | 販促費（物量 1 単位当たりの定額） | 物量 1 単位当たりの額 | `ppc_node_cost_rule.csv`：`marketing_cost`、`basis=qty`、`rate`／`fixed_amount` | 金額／物量単位（lot × `cpu_size` の 1 単位。Start Here R7） | — | — | Value Chain 側に置き場所が無い（`basis` は revenue だけ） | W（PPC だけ） |
 | 販促費（期間を決めた予算、総額） | 期間・総額 | — | — | **×** `ppc_node_cost_rule.csv` には週の列が無く、費用は lot ごとに付く。総額の予算や実施週だけの費用は表せない | — | 止める（「今は表せない」と出す）。代わりに、率 × 想定売上に直すか、案の外の固定費として記録する | **×** |
@@ -96,4 +96,5 @@
 | 版 | 日付 | 内容 |
 |---|---|---|
 | v0.1 | 2026-11-20 | 初版（Code君） |
+| v0.1b | 2026-11-22 | Promotion の需要増の行を、変換の初版（型 `promo_demand_delta`）に合わせた：上乗せは反応週、投入の表のある案は止める（Code君の報告 §6 の食い違い） |
 | v0.1a | 2026-11-21 | 単価の単位を「金額／lot」から「金額／物量単位」に直した（Claude君、GPT君のレビュー）。確かめていない 2 か所は「要確認」 |

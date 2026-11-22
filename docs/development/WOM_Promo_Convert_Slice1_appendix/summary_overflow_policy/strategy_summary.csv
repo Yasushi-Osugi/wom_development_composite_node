@@ -1,0 +1,6 @@
+﻿case,case_name,plan_id,P0,B_add,A,dA_vs_base,dP0_vs_base,target,B_report,d_report,residual,q1,q2,q3,q4_delivered,on_time,early,late,q5,other_markets_d4_total,other_markets_d5_total,other_markets_changes,inventory_lots_max_week,age_max_all,age_max_target,over_max_age_all,overflow_pushed_total,engine_vs_base,model_inputs_vs_base
+C01,P_BASE,P_BASE,631119240.0,0.0,631119240.0,0.0,0.0,COS_Cream×SG_EC,299,0,,299,299,0,299,299,0,0,0,0,0,なし,146,6,4,0,0,（基準）,（基準）
+C03,P_PROMO_MID,P_PROMO_MID,632285424.0,276000.0,632009424.0,890184.0,1166184.0,COS_Cream×SG_EC,299,6,0,305,305,0,305,305,0,0,0,0,0,なし,152,7,5,0,45,"違う（ppc, psi）",違う
+C04,P_PROMO_HIGH,P_PROMO_HIGH,633451608.0,276000.0,633175608.0,2056368.0,2332368.0,COS_Cream×SG_EC,299,12,0,311,311,0,311,311,0,0,0,0,0,なし,157,7,5,0,120,"違う（ppc, psi）",違う
+C05,P_PROMO_MID proportional_week,P_PROMO_MID,632285424.0,276000.0,632009424.0,890184.0,1166184.0,COS_Cream×SG_EC,299,6,0,305,305,0,305,305,0,0,0,0,0,なし,152,7,5,0,45,"違う（ppc, psi）",違う
+C06,P_PROMO_HIGH proportional_week,P_PROMO_HIGH,633451608.0,276000.0,633175608.0,2056368.0,2332368.0,COS_Cream×SG_EC,299,12,0,311,311,0,311,311,0,0,0,0,0,なし,157,7,5,0,120,"違う（ppc, psi）",違う
