@@ -81,7 +81,8 @@ from wom.model.plan_node import PlanNode, S, CO, I, P
 from wom.model.sc_tree   import SCTree
 from wom.engine.lane_assignment import LaneTable
 from wom.engine.overflow_policy import (
-    TAIL as _OVERFLOW_TAIL, OverflowTracker, resolve_overflow_policy,
+    TAIL as _OVERFLOW_TAIL, DEFAULT_POLICY as _OVERFLOW_DEFAULT,
+    OverflowTracker, resolve_overflow_policy,
 )
 
 
@@ -122,7 +123,7 @@ class BackwardPlanResult:
     # _apply_mom_cap_backward, and per factory (node_id) x market (Lot_ID
     # region): {"pushed": push-backs counted every time, "denominator": lots
     # seen in the processed weeks (each Lot_ID once)}. Report only.
-    overflow_policy: str = _OVERFLOW_TAIL
+    overflow_policy: str = _OVERFLOW_DEFAULT
     overflow_by_node: Dict[str, Dict[str, Dict[str, int]]] = field(
         default_factory=dict
     )
@@ -183,7 +184,8 @@ class BackwardPlanner:
         # v1r0m3: MOM constrained demand allocation (default: True)
         self._mom_constrained: bool = cfg.get("mom_constrained", True)
         # RequestLetter_M6_RowOrder_Stage1: which lots go back at an over-
-        # capacity week. "tail" (default) = the current code path, unchanged.
+        # capacity week. Missing/blank = DEFAULT_POLICY (proportional_week since
+        # Stage 3, 2026-11); "tail" = the stage-0 code path, unchanged.
         self._overflow_policy: str = resolve_overflow_policy(
             cfg.get("overflow_policy"), "BackwardPlanner config")
         # v1r2m2 Phase 2: per-node operating calendar (op_shifts==0 => closed week).

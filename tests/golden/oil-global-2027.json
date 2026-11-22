@@ -23,12 +23,12 @@
   "ppc": {
     "base_currency": "JPY",
     "cost_base": 1018758265287.0,
-    "gross_margin_pct": 0.351563,
-    "gross_profit_base": 552339674893.0,
-    "revenue_base": 1571097940180.0,
+    "gross_margin_pct": 0.351711,
+    "gross_profit_base": 552699674893.0,
+    "revenue_base": 1571457940180.0,
     "tariff_base": 53620617.0,
-    "total_lots": 1399,
-    "trust_event_count": 733
+    "total_lots": 1408,
+    "trust_event_count": 742
   },
   "products": [
     "Gasoline_Local",
@@ -333,28 +333,28 @@
         "series_md5": "1ee076a3bc6a"
       },
       "Retail_Local_R_CHUBU": {
-        "CO": 100,
+        "CO": 33,
         "I_max": 0,
         "I_sum": 0,
-        "P": 104,
+        "P": 117,
         "S": 124,
-        "series_md5": "17de30235b89"
+        "series_md5": "fc162f7afbe6"
       },
       "Retail_Local_R_KANSAI": {
-        "CO": 36,
+        "CO": 37,
         "I_max": 0,
         "I_sum": 0,
-        "P": 115,
+        "P": 116,
         "S": 124,
-        "series_md5": "ff19cd7bb589"
+        "series_md5": "9be0b3830dda"
       },
       "Retail_Local_R_KANTO": {
-        "CO": 0,
+        "CO": 67,
         "I_max": 0,
         "I_sum": 0,
-        "P": 246,
+        "P": 232,
         "S": 246,
-        "series_md5": "0eb92442ef70"
+        "series_md5": "e41077cb5beb"
       },
       "SP_Oil_Local_R": {
         "CO": 319,

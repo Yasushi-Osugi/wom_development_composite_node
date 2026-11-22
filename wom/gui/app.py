@@ -5563,10 +5563,11 @@ class WOMApp(tk.Tk):
             read_lot_flow_mode(getattr(self, "_model_dir", "") or ""))
         print(f"[Planning] lot_flow_mode={_cfg['lot_flow_mode']}")
         # RequestLetter_M6_RowOrder_Stage1: Backward overflow policy (planning_config.csv
-        # overflow_policy; none/blank = tail = current behaviour; unknown value stops).
+        # overflow_policy; none/blank = DEFAULT_POLICY (proportional_week); unknown value stops).
         from wom.engine.warmup import read_overflow_policy
+        from wom.engine.overflow_policy import DEFAULT_POLICY as _DEF_OVF
         _cfg["overflow_policy"] = read_overflow_policy(getattr(self, "_model_dir", "") or "")
-        if _cfg["overflow_policy"] != "tail":
+        if _cfg["overflow_policy"] != _DEF_OVF:
             print(f"[Planning] overflow_policy={_cfg['overflow_policy']}")
         # The evaluation (planning DataFrame, Strategic KPI, PPC bridge, node
         # Cost/Revenue chart) reads the mode from the tree -- S2 C2.

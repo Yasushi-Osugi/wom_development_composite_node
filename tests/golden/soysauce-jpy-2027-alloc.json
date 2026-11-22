@@ -22,12 +22,12 @@
   },
   "ppc": {
     "base_currency": "JPY",
-    "cost_base": 316318290.04,
-    "gross_margin_pct": 0.260865,
-    "gross_profit_base": 111639241.96,
-    "revenue_base": 427957532.0,
-    "tariff_base": 15670707.44,
-    "total_lots": 464,
+    "cost_base": 326360886.13,
+    "gross_margin_pct": 0.277441,
+    "gross_profit_base": 125312891.87,
+    "revenue_base": 451673778.0,
+    "tariff_base": 15921024.98,
+    "total_lots": 607,
     "trust_event_count": 30
   },
   "products": [
@@ -52,44 +52,44 @@
         "series_md5": "67cfadc1feb8"
       },
       "DC_EU_RTM": {
-        "CO": 868734,
+        "CO": 378380,
         "I_max": 1050,
-        "I_sum": 35745,
-        "P": 11915,
+        "I_sum": 77052,
+        "P": 25684,
         "S": 35175,
-        "series_md5": "a29408d13a28"
+        "series_md5": "52249b664074"
       },
       "DC_JP": {
-        "CO": 37200,
+        "CO": 247659,
         "I_max": 0,
         "I_sum": 0,
-        "P": 29250,
+        "P": 23784,
         "S": 30150,
-        "series_md5": "eeca0ebba56f"
+        "series_md5": "cf3483007054"
       },
       "DC_US_NY": {
-        "CO": 17500,
+        "CO": 189232,
         "I_max": 525,
-        "I_sum": 51189,
-        "P": 17063,
+        "I_sum": 38526,
+        "P": 12842,
         "S": 17588,
-        "series_md5": "7990a3e53b70"
+        "series_md5": "6ec5c7985499"
       },
       "DC_US_SF": {
-        "CO": 18025,
+        "CO": 182852,
         "I_max": 525,
-        "I_sum": 51189,
-        "P": 17063,
+        "I_sum": 38943,
+        "P": 12981,
         "S": 17588,
-        "series_md5": "28351076c103"
+        "series_md5": "b60766575b69"
       },
       "FG_WH_Noda": {
-        "CO": 1160624,
+        "CO": 1169478,
         "I_max": 3000,
         "I_sum": 225873,
         "P": 75291,
         "S": 100501,
-        "series_md5": "e59b6cde81e7"
+        "series_md5": "d093332bd013"
       },
       "Materials_JP": {
         "CO": 0,
@@ -100,60 +100,60 @@
         "series_md5": "bfce539f89d1"
       },
       "Rest_BE": {
-        "CO": 270100,
+        "CO": 105342,
         "I_max": 0,
         "I_sum": 0,
-        "P": 2650,
+        "P": 7339,
         "S": 10050,
-        "series_md5": "c81e6ce39827"
+        "series_md5": "871a67a0413c"
       },
       "Rest_FR": {
-        "CO": 305274,
+        "CO": 158128,
         "I_max": 0,
         "I_sum": 0,
-        "P": 6615,
+        "P": 11007,
         "S": 15075,
-        "series_md5": "38aa4f3e2a08"
+        "series_md5": "5ddabe57a1d5"
       },
       "Rest_JP": {
-        "CO": 36300,
+        "CO": 241293,
         "I_max": 0,
         "I_sum": 0,
-        "P": 29250,
+        "P": 23784,
         "S": 30150,
-        "series_md5": "d2a7379c11ee"
+        "series_md5": "24876fd60254"
       },
       "Rest_NL": {
-        "CO": 270100,
+        "CO": 105419,
         "I_max": 0,
         "I_sum": 0,
-        "P": 2650,
+        "P": 7338,
         "S": 10050,
-        "series_md5": "c81e6ce39827"
+        "series_md5": "2e10030a7b89"
       },
       "Rest_US_East": {
-        "CO": 16975,
+        "CO": 184486,
         "I_max": 0,
         "I_sum": 0,
-        "P": 17063,
+        "P": 12842,
         "S": 17588,
-        "series_md5": "4c0623ba33a9"
+        "series_md5": "c10cc41edffb"
       },
       "Rest_US_West": {
-        "CO": 17500,
+        "CO": 178245,
         "I_max": 0,
         "I_sum": 0,
-        "P": 17063,
+        "P": 12981,
         "S": 17588,
-        "series_md5": "b0e217ab8538"
+        "series_md5": "57e69f26a7c6"
       },
       "SP_Soy": {
-        "CO": 1261464,
+        "CO": 1270318,
         "I_max": 5942,
-        "I_sum": 124985,
+        "I_sum": 133839,
         "P": 75291,
         "S": 100501,
-        "series_md5": "2d4cc223e496"
+        "series_md5": "05b03b452f81"
       }
     }
   }

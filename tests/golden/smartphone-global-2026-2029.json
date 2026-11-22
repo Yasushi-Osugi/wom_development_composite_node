@@ -22,12 +22,12 @@
   },
   "ppc": {
     "base_currency": "JPY",
-    "cost_base": 37695124383917.75,
-    "gross_margin_pct": 0.411946,
-    "gross_profit_base": 26406289089502.25,
-    "revenue_base": 64101413473420.0,
-    "tariff_base": 4720497327977.75,
-    "total_lots": 1127,
+    "cost_base": 37419216408499.32,
+    "gross_margin_pct": 0.411965,
+    "gross_profit_base": 26215172438470.68,
+    "revenue_base": 63634388846970.0,
+    "tariff_base": 4462834176730.33,
+    "total_lots": 1170,
     "trust_event_count": 390
   },
   "products": [
@@ -38,28 +38,28 @@
   "psi": {
     "Phone15": {
       "DC_AMER_i15": {
-        "CO": 0,
+        "CO": 1141813,
         "I_max": 400,
-        "I_sum": 34580,
-        "P": 34580,
+        "I_sum": 24644,
+        "P": 24644,
         "S": 34580,
-        "series_md5": "a26a597a9c16"
+        "series_md5": "ee1977d412da"
       },
       "DC_APAC_i15": {
-        "CO": 2192616,
+        "CO": 913332,
         "I_max": 320,
-        "I_sum": 7895,
-        "P": 7895,
+        "I_sum": 19716,
+        "P": 19716,
         "S": 27664,
-        "series_md5": "402b257bf406"
+        "series_md5": "e83f409f5ac2"
       },
       "DC_EMEA_i15": {
-        "CO": 689840,
+        "CO": 825540,
         "I_max": 280,
-        "I_sum": 18926,
-        "P": 18926,
+        "I_sum": 17041,
+        "P": 17041,
         "S": 24204,
-        "series_md5": "54f8e4cd4ea2"
+        "series_md5": "561484cd51d7"
       },
       "EMS_A_CN_i15": {
         "CO": 968000,
@@ -78,36 +78,36 @@
         "series_md5": "f4d329d2edc3"
       },
       "Retail_AMER_i15": {
-        "CO": 0,
+        "CO": 1121941,
         "I_max": 400,
-        "I_sum": 34580,
-        "P": 34580,
+        "I_sum": 24644,
+        "P": 24644,
         "S": 34580,
-        "series_md5": "3c4601f93389"
+        "series_md5": "5f01d3f96726"
       },
       "Retail_APAC_i15": {
-        "CO": 2153078,
+        "CO": 897436,
         "I_max": 320,
-        "I_sum": 7895,
-        "P": 7895,
+        "I_sum": 19716,
+        "P": 19716,
         "S": 27664,
-        "series_md5": "63e9cc590a98"
+        "series_md5": "69bd4d5743de"
       },
       "Retail_EMEA_i15": {
-        "CO": 679284,
+        "CO": 811214,
         "I_max": 280,
-        "I_sum": 18926,
-        "P": 18926,
+        "I_sum": 17041,
+        "P": 17041,
         "S": 24204,
-        "series_md5": "4ba063646935"
+        "series_md5": "9db5d9bdfa5d"
       },
       "SP_Phone15": {
-        "CO": 2962875,
+        "CO": 2962989,
         "I_max": 4720,
-        "I_sum": 47200,
+        "I_sum": 47314,
         "P": 61401,
         "S": 86448,
-        "series_md5": "29e5dc2a5ed7"
+        "series_md5": "50af325287ed"
       },
       "SiliconWafer_TW_i15": {
         "CO": 0,
@@ -128,20 +128,20 @@
         "series_md5": "6a328778b64c"
       },
       "DC_APAC": {
-        "CO": 3323087,
+        "CO": 1735425,
         "I_max": 720,
-        "I_sum": 48397,
-        "P": 48397,
+        "I_sum": 63507,
+        "P": 63507,
         "S": 80184,
-        "series_md5": "b268eecc8ff4"
+        "series_md5": "819612a5776f"
       },
       "DC_EMEA": {
-        "CO": 0,
-        "I_max": 678,
-        "I_sum": 70736,
-        "P": 70736,
+        "CO": 1577833,
+        "I_max": 630,
+        "I_sum": 55626,
+        "P": 55626,
         "S": 70736,
-        "series_md5": "bd937289a6c5"
+        "series_md5": "be97bc87dff5"
       },
       "EMS_A_CN": {
         "CO": 1274400,
@@ -176,28 +176,28 @@
         "series_md5": "838b170712ae"
       },
       "Retail_APAC": {
-        "CO": 3259513,
+        "CO": 1702071,
         "I_max": 720,
-        "I_sum": 48397,
-        "P": 48397,
+        "I_sum": 63507,
+        "P": 63507,
         "S": 80184,
-        "series_md5": "0998b7fb148e"
+        "series_md5": "db1217df3c7e"
       },
       "Retail_EMEA": {
-        "CO": 0,
-        "I_max": 678,
-        "I_sum": 70736,
-        "P": 70736,
+        "CO": 1547613,
+        "I_max": 630,
+        "I_sum": 55626,
+        "P": 55626,
         "S": 70736,
-        "series_md5": "20470b455f86"
+        "series_md5": "219ba966b533"
       },
       "SP_Phone16": {
-        "CO": 3418448,
+        "CO": 3423729,
         "I_max": 8970,
-        "I_sum": 130490,
+        "I_sum": 135771,
         "P": 219439,
         "S": 251226,
-        "series_md5": "929ae6e3a841"
+        "series_md5": "1b5b725a8215"
       },
       "Sensor_A_IN": {
         "CO": 0,

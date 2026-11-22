@@ -8,9 +8,9 @@ requests/WOM_M6_RowOrderBias_FixOptions_DesignMD_v0.3.md §3。
 Backward の ``_apply_mom_cap_backward`` が、工場（in-root MOM）の能力を超えた週に
 「どの市場のどの lot を前の週へ回すか」を決める規則。
 
-- ``tail``（既定）           ：今の動き。並びの末尾から n 個（このモジュールは並びを決めない。
-                               Backward が今のコードの経路をそのまま通す）。
-- ``proportional_week``      ：その週の市場ごとの lot の数に比例（§3.1）。端数は累積の丸め誤差
+- ``tail``                   ：段 2 までの既定の動き。並びの末尾から n 個（このモジュールは並びを
+                               決めない。Backward が元のコードの経路をそのまま通す）。行の順で決まる。
+- ``proportional_week``（既定。2026-11 段 3 から）：その週の市場ごとの lot の数に比例（§3.1）。端数は累積の丸め誤差
                                （累積の丸め前の割当 − 累積の実際の押し戻し）の大きい市場へ。
 - ``balance_cut_ratio``      ：累積押戻負担率（延べの押し戻し ÷ 処理済みの週に現れた lot の数）を
                                そろえる（§3.2）。1 lot ずつ、足した後の負担率が一番小さい市場から。
@@ -37,21 +37,25 @@ PROPORTIONAL_WEEK = "proportional_week"
 BALANCE_CUT_RATIO = "balance_cut_ratio"
 POLICIES: Tuple[str, ...] = (TAIL, PROPORTIONAL_WEEK, BALANCE_CUT_RATIO)
 
+# 既定の押し戻し方（1 か所。RequestLetter_M6_RowOrder_Stage3_DefaultProportional、2026-11-22）。
+# 空欄・None・planning_config.csv のファイルやキーが無い・Backward の config に無いとき、すべてこれ。
+DEFAULT_POLICY = PROPORTIONAL_WEEK
+
 
 class OverflowPolicyError(ValueError):
-    """知らない overflow_policy の値（黙って tail にしない）。"""
+    """知らない overflow_policy の値（黙って既定にしない）。"""
 
 
 def resolve_overflow_policy(value: Optional[str], source: str = "") -> str:
-    """None・空欄＝tail。3 つ以外の値は止める（値・使える値・直し方を出す）。"""
+    """None・空欄＝既定（``DEFAULT_POLICY``）。3 つ以外の値は止める（値・使える値・直し方を出す）。"""
     v = (value or "").strip()
     if not v:
-        return TAIL
+        return DEFAULT_POLICY
     if v not in POLICIES:
         where = f"{source}: " if source else ""
         raise OverflowPolicyError(
             f"{where}overflow_policy の値 {v!r} は使えません。"
-            f"使える値: {', '.join(POLICIES)}（空欄・キーなし＝tail）。"
+            f"使える値: {', '.join(POLICIES)}（空欄・キーなし＝{DEFAULT_POLICY}）。"
             f"直し方: planning_config.csv の overflow_policy の値を上のどれかにするか、行を消してください。")
     return v
 
@@ -68,7 +72,7 @@ class OverflowTracker:
     - proportional_week：累積の丸め前の割当 R_m と累積の実際の押し戻し A_m。
     """
 
-    def __init__(self, policy: str = TAIL) -> None:
+    def __init__(self, policy: Optional[str] = None) -> None:
         self.policy = resolve_overflow_policy(policy)
         self._ord: Dict[str, Tuple[str, str, int]] = {}   # lot_id -> (week, region, seq)（並べ替えのキー）
         self._mkt: Dict[str, str] = {}                     # lot_id -> region
@@ -331,6 +335,6 @@ def _rev(s: str) -> Tuple[int, ...]:
 
 
 __all__ = [
-    "TAIL", "PROPORTIONAL_WEEK", "BALANCE_CUT_RATIO", "POLICIES",
+    "TAIL", "PROPORTIONAL_WEEK", "BALANCE_CUT_RATIO", "POLICIES", "DEFAULT_POLICY",
     "OverflowPolicyError", "OverflowTracker", "resolve_overflow_policy",
 ]

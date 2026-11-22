@@ -66,9 +66,10 @@ def test_alloc_tariff_on_border_edges(tmp_path):
     t = ev[ev["ppc_event_type"] == "tariff_cost"]
     assert set(t["edge_id"]) == {"FG_WH_Noda->DC_US_SF", "FG_WH_Noda->DC_US_NY",
                                  "FG_WH_Noda->DC_EU_RTM", "FG_WH_Noda->DC_JP"}
-    # the same total as before the move (the basis is the same transfer price)
-    assert float((t["amount_base"] * t["qty"]).sum()) == pytest.approx(15670707.4425, rel=1e-9)
-    assert snap["ppc"]["tariff_base"] == pytest.approx(15670707.44)
+    # the same total as the golden (the basis is the same transfer price). Default push-back
+    # proportional_week since RequestLetter_M6_RowOrder_Stage3 (tail: 15,670,707.4425)
+    assert float((t["amount_base"] * t["qty"]).sum()) == pytest.approx(15921024.9825, rel=1e-9)
+    assert snap["ppc"]["tariff_base"] == pytest.approx(15921024.98)
 
 
 # ── 0-5: silent substitutions made visible ────────────────────────────

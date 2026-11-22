@@ -3,12 +3,12 @@
 tests/test_overflow_policy.py — 行の順の偏りの直し方 段 1（RequestLetter_M6_RowOrder_Stage1_OverflowPolicy）
 
 能力を超えた週に、どの市場のどの lot を前の週へ回すかを選ぶ ``overflow_policy``
-（tail〔既定・今の動き〕／proportional_week／balance_cut_ratio）の 3 層のうち単体・結合。
+（proportional_week〔既定、段 3 から〕／tail〔段 2 までの既定〕／balance_cut_ratio）の 3 層のうち単体・結合。
 
 - 単体：設計書 v0.3 §4 の例 1〜6（期待値は参照計算 requests/WOM_M6_RowOrderBias_ref_examples.py
   の出力を数で書いた）。合成の木で、木の CSV の行の順を入れ替えた 2 つの結果が一致すること。
 - 結合：planning_config.csv → read_overflow_policy → BackwardPlanner、headless の snapshot の config。
-- E2E は test_golden.py（既定 tail で golden 全件不変）。
+- E2E は test_golden.py（段 3 で既定を proportional_week にし、変わるモデルの golden を意図して作り直した）。
 
 保護対象のコア（backward_planner.py）を変えた依頼の受け入れ条件。
 """
@@ -21,7 +21,7 @@ import pandas as pd
 import pytest
 
 from wom.engine.overflow_policy import (
-    OverflowPolicyError, OverflowTracker, resolve_overflow_policy,
+    DEFAULT_POLICY, OverflowPolicyError, OverflowTracker, resolve_overflow_policy,
 )
 from wom.engine.backward_planner import BackwardPlanner
 from wom.engine.sc_tree_builder import build_sc_tree_from_master
@@ -148,9 +148,32 @@ def test_balance_counts_every_push_back():
 # 単体：設定の値
 # ---------------------------------------------------------------------------
 
-def test_resolve_policy_blank_is_tail_and_unknown_stops():
-    assert resolve_overflow_policy(None) == "tail"
-    assert resolve_overflow_policy("  ") == "tail"
+def test_default_is_proportional_week_in_one_place():
+    """段 3：既定は overflow_policy.DEFAULT_POLICY の 1 か所（proportional_week）。"""
+    import re
+    import wom.engine.overflow_policy as op
+    from wom.engine.backward_planner import BackwardPlanResult
+    assert DEFAULT_POLICY == PC
+    assert OverflowTracker().policy == PC
+    tree = build_sc_tree_from_master(_tree_rows(False), WEEKS)
+    assert BackwardPlanner(tree)._overflow_policy == PC          # config なし
+    assert BackwardPlanner(tree, config={})._overflow_policy == PC
+    assert BackwardPlanResult(PROD).overflow_policy == PC
+    # 既定の値を書いているのは DEFAULT_POLICY の 1 行だけ（ほかは定数を参照）
+    root = os.path.join(os.path.dirname(__file__), "..")
+    src = open(op.__file__, encoding="utf-8").read()
+    assert len(re.findall(r"^DEFAULT_POLICY\s*=", src, re.M)) == 1
+    for rel in ("wom/engine/warmup.py", "wom/engine/backward_planner.py",
+                "tools/run_headless_from_folder.py", "wom/gui/app.py"):
+        text = open(os.path.join(root, rel), encoding="utf-8").read()
+        assert "return TAIL" not in text and "_OVERFLOW_TAIL\n" not in text, rel
+        assert '!= "tail"' not in text and '== "tail"' not in text, rel
+
+
+def test_resolve_policy_blank_is_default_and_unknown_stops():
+    assert resolve_overflow_policy(None) == PC
+    assert resolve_overflow_policy("  ") == PC
+    assert resolve_overflow_policy("tail") == "tail"
     assert resolve_overflow_policy(" balance_cut_ratio ") == BC
     with pytest.raises(OverflowPolicyError) as e:
         resolve_overflow_policy("proportional", "x.csv")
@@ -246,14 +269,17 @@ def test_synthetic_tree_conserves_lots_and_respects_capacity(policy):
 
 def test_read_overflow_policy(tmp_path):
     d = str(tmp_path)
-    assert read_overflow_policy(d) == "tail"                     # ファイルなし
+    assert read_overflow_policy(d) == PC                         # ファイルなし
     (tmp_path / "planning_config.csv").write_text("key,value\nwarmup_lt,4\n", encoding="utf-8")
-    assert read_overflow_policy(d) == "tail"                     # キーなし
+    assert read_overflow_policy(d) == PC                         # キーなし
     (tmp_path / "planning_config.csv").write_text("key,value\noverflow_policy,\n", encoding="utf-8")
-    assert read_overflow_policy(d) == "tail"                     # 空欄
+    assert read_overflow_policy(d) == PC                         # 空欄
     (tmp_path / "planning_config.csv").write_text(
-        "key,value\noverflow_policy,proportional_week\n", encoding="utf-8")
-    assert read_overflow_policy(d) == PC
+        "key,value\noverflow_policy,tail\n", encoding="utf-8")
+    assert read_overflow_policy(d) == "tail"
+    (tmp_path / "planning_config.csv").write_text(
+        "key,value\noverflow_policy,balance_cut_ratio\n", encoding="utf-8")
+    assert read_overflow_policy(d) == BC
     (tmp_path / "planning_config.csv").write_text("key,value\noverflow_policy,even\n", encoding="utf-8")
     with pytest.raises(OverflowPolicyError) as e:
         read_overflow_policy(d)
@@ -274,20 +300,25 @@ def _copy_model(tmp_path, policy):
     return str(dst)
 
 
-def test_headless_config_records_policy_only_when_not_tail(tmp_path):
+def test_headless_config_records_policy_only_when_not_default(tmp_path):
+    """既定（DEFAULT_POLICY）のときは config に何も足さず、違う方式のときだけ記録する（段 3）。
+    soysauce-us-2027 は工場の能力を超える週が無く、どの方式でも psi は golden と同じ。"""
     from tools.run_headless_from_folder import run
     import json
     golden = json.load(open(os.path.join(os.path.dirname(__file__), "golden", "soysauce-us-2027.json"),
                             encoding="utf-8"))
     plugins = ",".join(golden["config"]["plugins"]) or "none"
-    snap_tail = run(_copy_model(tmp_path / "a", "tail"), plugins_spec=plugins,
-                    output_ppc_dir=str(tmp_path / "ppc_a"), verbose=False)
-    assert snap_tail["config"] == golden["config"]
-    assert snap_tail["psi"] == golden["psi"]
-    snap_pc = run(_copy_model(tmp_path / "b", PC), plugins_spec=plugins,
-                  output_ppc_dir=str(tmp_path / "ppc_b"), verbose=False)
-    assert snap_pc["config"]["overflow_policy"] == PC
-    assert {k: v for k, v in snap_pc["config"].items() if k != "overflow_policy"} == golden["config"]
+    for sub, policy in (("a", None), ("b", PC)):          # キーなし・既定を明示
+        snap = run(_copy_model(tmp_path / sub, policy), plugins_spec=plugins,
+                   output_ppc_dir=str(tmp_path / ("ppc_" + sub)), verbose=False)
+        assert snap["config"] == golden["config"], policy
+        assert snap["psi"] == golden["psi"], policy
+    for sub, policy in (("c", "tail"), ("d", BC)):
+        snap = run(_copy_model(tmp_path / sub, policy), plugins_spec=plugins,
+                   output_ppc_dir=str(tmp_path / ("ppc_" + sub)), verbose=False)
+        assert snap["config"]["overflow_policy"] == policy
+        assert {k: v for k, v in snap["config"].items() if k != "overflow_policy"} == golden["config"]
+        assert snap["psi"] == golden["psi"], policy
 
 
 def test_headless_unknown_policy_stops(tmp_path):

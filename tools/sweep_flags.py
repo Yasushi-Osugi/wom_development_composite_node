@@ -346,7 +346,7 @@ def _execute_pipeline(model_dir: str, plugins_spec: str, ppc_out_dir: str,
     cfg = {"n_weeks": n_weeks, "start_week": start,
            "cap_path": _p("capacity_plan.csv"),
            "holiday_cal_path": _p("holiday_calendar.csv"),
-           # read by BackwardPlanner (RequestLetter_M6_RowOrder_Stage1; tail = current)
+           # read by BackwardPlanner (RequestLetter_M6_RowOrder_Stage1/3; blank = DEFAULT_POLICY)
            "overflow_policy": read_overflow_policy(model_dir)}
     active_plugins, _no_opening_plugin = _select_plugins(plugins_spec)
     for pl in active_plugins:

@@ -117,7 +117,9 @@ def test_alloc_conservation_and_external_sales(alloc_run):
     assert c["conservation_ok"]
     es = c["external_sales"]
     assert es["ok_identity"] and es["ok_records"]
-    assert es["v3_external_revenue"] == pytest.approx(231673000.0 + 0.0)   # Rest_JP + Rest_US_West (known)
+    # Rest_JP + Rest_US_West (known). Default push-back proportional_week since
+    # RequestLetter_M6_RowOrder_Stage3 (tail: 231,673,000)
+    assert es["v3_external_revenue"] == pytest.approx(180971560.0)
 
 
 def test_alloc_missing_prices(alloc_run):

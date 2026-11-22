@@ -227,7 +227,9 @@ def test_t4_consecutive_closures_carry_to_w04(tmp_path):
     _apply_plugin(tree, tmp_path, [(MOM_NAME, "2024-W05", "2024-W06", "supply_closure", "0")])
     w04, w05, w06 = (WEEKS.index(x) for x in ("2024-W04", "2024-W05", "2024-W06"))
     mom.psi4demand[w06][S] = ["L1", "L2", "L3"]
-    bp = BackwardPlanner(tree, config={"mom_constrained": True})
+    bp = BackwardPlanner(tree, config={"mom_constrained": True,
+                         # synthetic lot ids (not Lot_ID format): the stage-0 push-back path
+                         "overflow_policy": "tail"})
     bp._apply_mom_cap_backward(mom, N_WEEKS, BackwardPlanResult(prod_nm=SKU))
     assert mom.psi4demand[w05][P] == [] and mom.psi4demand[w06][P] == []
     assert mom.psi4demand[w05][S] == [] and mom.psi4demand[w06][S] == []
@@ -395,7 +397,9 @@ def test_t12_closure_zero_even_with_soft_envelope_and_cap_soft_kept(tmp_path):
     assert mom.cap_soft(w18) == 6.0, "cap_soft=686 analogue survives the closure"
     mom.psi4demand[w18][S] = [f"A{i}" for i in range(6)]
     mom.psi4demand[w18 - 1][S] = [f"B{i}" for i in range(6)]
-    bp = BackwardPlanner(tree, config={"mom_constrained": True})
+    bp = BackwardPlanner(tree, config={"mom_constrained": True,
+                         # synthetic lot ids (not Lot_ID format): the stage-0 push-back path
+                         "overflow_policy": "tail"})
     bp._apply_mom_cap_backward(mom, N_WEEKS, BackwardPlanResult(prod_nm=SKU))
     assert mom.psi4demand[w18][S] == [] and mom.psi4demand[w18][P] == []
     for w in range(N_WEEKS):

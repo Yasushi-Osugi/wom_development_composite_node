@@ -22,6 +22,8 @@ RequestLetter_WarmupSoft_BlankAttrs_ShelfLifeFIFO Part C（大杉さんの決定
 - 年齢 ＝ 納品週 − 製造週（計画の週の番号。ISO の週ラベルを引き算しない）。単位は lot。
 - 入力は段階 D の出荷の記録（`wom/valuechain/records.py` の `build_records`）。週の中は上流から
   （`NodeInfo.rank`）処理するので、同じ週の受け渡し（MOM → supply point）も正しく並ぶ。
+- 同じ所・同じ週・同じ SKU の出庫は、（行き先のノード名の文字の順 → Lot_ID の順）に並べてから
+  古い札を渡す（木の行の順に依らない。RequestLetter_M6_RowOrder_Stage3 §2、2026-11-22）。
 - 参考の列：Lot_ID で数えた滞留 ＝ max（需要週、市場の実出荷週）− その Lot_ID の工場の出荷週。
 - 期末注文残（市場の実出荷が無い需要）は納品ではないので数えない。件数だけ出す。
 
@@ -47,6 +49,13 @@ K_CONSUMER = "consumer_sale"
 
 class ShelfLifeError(ValueError):
     """The shipment records do not add up (a place ships more than it holds, ...)."""
+
+
+def _exit_order(s) -> Tuple[str, str]:
+    """Order of the exits of one place in one week (the oldest tag goes first):
+    receiver node name (``to``; a market's sale is ``CONSUMER:<leaf>``), then Lot_ID.
+    Independent of the row order of sc_tree_master.csv."""
+    return (str(s.to or ""), str(s.lot_id))
 
 
 def compute_fifo(shipments, ranks: Dict[Tuple[str, str], int], week_labels: List[str]) -> dict:
@@ -88,6 +97,10 @@ def compute_fifo(shipments, ranks: Dict[Tuple[str, str], int], week_labels: List
                 heapq.heappush(queues[(prod, place)], tag)
             # a place's exits run once per week (a later same-week arrival only queues)
             out = [] if (r, prod, place) in done else exits.get((w, r, prod, place), [])
+            # the exits of one place in one week get the oldest tags in a declared order,
+            # not the tree's row order: receiver node name, then Lot_ID
+            # (RequestLetter_M6_RowOrder_Stage3 §2)
+            out = sorted(out, key=_exit_order)
             done.add((r, prod, place))
             for i, s in enumerate(out):
                 if s.kind == K_HANDOFF:
@@ -118,6 +131,8 @@ def compute_fifo(shipments, ranks: Dict[Tuple[str, str], int], week_labels: List
                     pending[aw].add(key)
     left = {f"{p}/{pl}": len(q) for (p, pl), q in queues.items() if q}
     rows = []
+    # rows in a declared order (product, channel, delivery week, Lot_ID), not the processing order
+    deliveries.sort(key=lambda d: (d[0].product, d[0].node, d[0].week, str(d[0].lot_id)))
     for s, tag in deliveries:
         rows.append({"product": s.product, "channel": s.node, "lot_id": s.lot_id,
                      "delivery_week": s.week, "manufacture_week": tag,

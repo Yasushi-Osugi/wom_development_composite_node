@@ -51,7 +51,9 @@ def test_soft_mode_levels_at_cap_soft():
     mom.psi4demand[9][S]  = [f"B{i}" for i in range(4)]     # 需要4
 
     result = BackwardPlanResult(prod_nm=sku_id)
-    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True})
+    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True,
+                         # synthetic lot ids (not Lot_ID format): the stage-0 push-back path
+                         "overflow_policy": "tail"})
     bp._apply_mom_cap_backward(mom, n, result)
 
     # cap_soft=5 で平準化（cap_hard=10 まで詰めない）
@@ -75,7 +77,9 @@ def test_hard_mode_unchanged_cap_soft_is_flag_only():
     mom.psi4demand[10][S] = [f"A{i}" for i in range(8)]     # 8 <= cap_hard10
 
     result = BackwardPlanResult(prod_nm=sku_id)
-    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True})
+    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True,
+                         # synthetic lot ids (not Lot_ID format): the stage-0 push-back path
+                         "overflow_policy": "tail"})
     bp._apply_mom_cap_backward(mom, n, result)
 
     # hard: 8 <= cap_hard10 → clip なし・lot 不動（S はそのまま8）
@@ -99,7 +103,9 @@ def test_soft_mode_holiday_spreads_at_cap_soft():
     mom.psi4demand[10][S] = [f"A{i}" for i in range(8)]     # 閉鎖週に8
 
     result = BackwardPlanResult(prod_nm=sku_id)
-    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True})
+    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True,
+                         # synthetic lot ids (not Lot_ID format): the stage-0 push-back path
+                         "overflow_policy": "tail"})
     bp._apply_mom_cap_backward(mom, n, result)
 
     assert mom.psi4demand[10][P] == [], "閉鎖週は生産0（穴）"

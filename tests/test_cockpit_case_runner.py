@@ -126,7 +126,12 @@ def test_cosmetics_base_late_case_end_to_end(tmp_path):
     rec = R.run_case(w, "C01")
     assert rec["state"] == C.ST_DONE, rec["message"]
     s = rec["summary"]
-    assert s["P0_report"] == pytest.approx(606_871_080, abs=0.5)
+    # default push-back proportional_week (RequestLetter_M6_RowOrder_Stage3): the 192 lots of backlog
+    # spread over the 8 markets. With overflow_policy=tail: P0 606,871,080, all at TH_Distributor.
+    assert s["P0_report"] == pytest.approx(600_719_196, abs=0.5)
     assert s["deliveries_by_sku"]["COS_Cream"] == 1680
-    assert s["backlog_end_by_key"] == {"COS_Cream:TH_Distributor": 88, "COS_Serum:TH_Distributor": 104}
+    assert s["backlog_end_by_key"] == {
+        "COS_Cream:SG_Distributor": 47, "COS_Cream:SG_EC": 18, "COS_Cream:SG_Store": 19,
+        "COS_Cream:TH_Distributor": 4, "COS_Serum:SG_Distributor": 50, "COS_Serum:SG_EC": 27,
+        "COS_Serum:SG_Store": 22, "COS_Serum:TH_Distributor": 5}
     assert s["valuation"] == "評価済み"

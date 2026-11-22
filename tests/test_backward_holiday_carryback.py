@@ -54,7 +54,9 @@ def test_closed_week_demand_carried_back_respecting_cap():
     mom.psi4demand[9][S]  = ["B1", "B2", "B3", "B4"]
 
     result = BackwardPlanResult(prod_nm=sku_id)
-    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True})
+    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True,
+                         # synthetic lot ids (not Lot_ID format): the stage-0 push-back path
+                         "overflow_policy": "tail"})
     bp._apply_mom_cap_backward(mom, n, result)
 
     # 閉鎖週 idx10：生産0（P/S 空）、需要は前へ carry-back
@@ -82,7 +84,9 @@ def test_carryback_never_exceeds_cap_hard():
     mom.psi4demand[9][S]  = [f"B{i}" for i in range(5)]   # 前週も5（合計10を cap5 で分散）
 
     result = BackwardPlanResult(prod_nm=sku_id)
-    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True})
+    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True,
+                         # synthetic lot ids (not Lot_ID format): the stage-0 push-back path
+                         "overflow_policy": "tail"})
     bp._apply_mom_cap_backward(mom, n, result)
 
     assert mom.psi4demand[10][P] == [], "閉鎖週は生産0"
@@ -106,7 +110,9 @@ def test_no_calendar_backward_compatible():
     mom.psi4demand[10][S] = ["A1", "A2", "A3"]   # cap 5 以下 → 無変更のはず
 
     result = BackwardPlanResult(prod_nm=sku_id)
-    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True})
+    bp = BackwardPlanner(sc_tree, config={"mom_constrained": True,
+                         # synthetic lot ids (not Lot_ID format): the stage-0 push-back path
+                         "overflow_policy": "tail"})
     bp._apply_mom_cap_backward(mom, n, result)
 
     # cap 未超過・カレンダー無し → S はそのまま（clip の continue 経路）
