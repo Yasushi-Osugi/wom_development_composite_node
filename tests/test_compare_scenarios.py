@@ -172,6 +172,28 @@ def test_compare_end_to_end(tmp_path):
     assert fc["boundary"] == "正の境目なし（base が上）"
 
 
+def test_foreign_currency_weekly_amount_stops_before_any_cost_computation(tmp_path):
+    """Promo_Convert_Slice1 §3.4: a JPY item and an SGD item -> stop before the after-cost value, the 合計 row
+    and the other items' boundary (no fixed_cost_breakeven.csv is written); JPY only -> as before."""
+    rb, mb = _base(tmp_path)
+    ra, ma = _alt(tmp_path)
+    p = str(tmp_path / "fc_mixed.csv")
+    rows = [{"case": c, "cost_item": item, "entity": "E", "paid_start_week": "2027-W02", "paid_end_week": "2027-W04",
+             "weekly_amount": amt, "currency": ccy, "note": ""}
+            for c in ("base", "alt") for item, amt, ccy in (("jp_fee", "10", "JPY"), ("sg_promo", "200", "SGD"))]
+    pd.DataFrame(rows).to_csv(p, index=False)
+    out = str(tmp_path / "out_mixed")
+    with pytest.raises(C.CompareError, match=r"通貨 'SGD' は報告通貨 JPY ではありません.*換算して書く"):
+        C.compare(rb, ra, mb, ma, out, fixed_cost_plan=p, base_name="b", alt_name="a")
+    assert not os.path.exists(os.path.join(out, "fixed_cost_breakeven.csv"))
+    # the same plan with the SGD item converted to yen: computed as before (JPY only)
+    pd.DataFrame([dict(r, currency="JPY", weekly_amount=("23000" if r["cost_item"] == "sg_promo" else r["weekly_amount"]))
+                  for r in rows]).to_csv(p, index=False)
+    res = C.compare(rb, ra, mb, ma, str(tmp_path / "out_jpy"), fixed_cost_plan=p, base_name="b", alt_name="a")
+    fc = res["fixed_cost"].set_index("cost_item")
+    assert fc.loc["合計", "cost_base"] == (10 + 23000) * 3 and fc.loc["sg_promo", "cost_alt"] == 23000 * 3
+
+
 # ── 固定費（GPT-MC 業務定義 v0.1 §3・§4）────────────────────────────────
 def test_paid_weeks():
     R = ("2027-W01", "2029-W52")
@@ -232,10 +254,11 @@ def test_undetermined_cases(tmp_path):
     plan = C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "a.csv")))
     x = C.fixed_cost_table(plan, p0, {"base": "評価済み", "alt": "一部未評価（未評価の明細 3）"}, *R).iloc[0]
     assert x["boundary"].startswith("未算出（連結利益未評価") and x["f_star_per_week"] == ""
-    y = C.fixed_cost_table(C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "b.csv"), ccy="THB")), p0,
-                           {"base": "評価済み", "alt": "評価済み"}, *R).iloc[0]
-    assert "共通の円建て週額の条件外" in y["boundary"]
-    z = C.fixed_cost_table(None, p0, {"base": "評価済み", "alt": "評価済み"}, *R).iloc[0]
+    # Promo_Convert_Slice1 §3.4: another currency than the report currency stops (it used to be "条件外")
+    with pytest.raises(C.CompareError, match="報告通貨 JPY ではありません"):
+        C.fixed_cost_table(C.read_fixed_cost_plan(_fc_plan(str(tmp_path / "b.csv"), ccy="THB")), p0,
+                           {"base": "評価済み", "alt": "評価済み"}, *R)
+    z =C.fixed_cost_table(None, p0, {"base": "評価済み", "alt": "評価済み"}, *R).iloc[0]
     assert z["boundary"].startswith("未算出（固定費の表なし")
 
 

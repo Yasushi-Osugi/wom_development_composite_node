@@ -1,0 +1,4 @@
+hypothesis_id,version,level,kind,rate,lag_weeks,rebound_rate,rebound_weeks,basis,evidence
+H_PROMO_CREAM_SGEC,v01,low,promotion_response,0,2,0,0,validation_placeholder,業務定義 v0.1 §3.1 の低位（0%）。追加販促をしても需要が増えないケース。実績推定ではない
+H_PROMO_CREAM_SGEC,v01,base,promotion_response,0.25,2,0,0,validation_placeholder,業務定義 v0.1 §3.1 の基準（25%）。端数 lot を確かめる中央ケースの名前で、確率ではない
+H_PROMO_CREAM_SGEC,v01,high,promotion_response,0.50,2,0,0,validation_placeholder,業務定義 v0.1 §3.1 の高位（50%）。整数 lot を確かめる水準で、投資効果の予測値ではない

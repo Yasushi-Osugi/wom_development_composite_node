@@ -59,7 +59,10 @@ planned_output_weeks.csv（計画の生産量ちょうど作った週）を足�
 止める条件（CompareError）：ファイルが無い、要求週別の供給の鍵ごとの合計が Flow Check の表 2 と合わない、
 SKU 別の試算利益の合計が vc_v3_weekly.csv の profit_r2_hq_wk と週ごとに合わない、
 数量配分の結果を渡した案で、金額の実行の出荷（Lot_ID）が数量配分の結果と鍵 × 要求週で合わない、
-市場の実出荷の Lot_ID が需要に無い・同じ Lot_ID が 2 回出荷された。
+市場の実出荷の Lot_ID が需要に無い・同じ Lot_ID が 2 回出荷された、
+固定費の表に報告通貨（モデルの vc_config.csv の hq_currency、無ければ JPY）以外の週額の行がある
+（RequestLetter_Promo_Convert_Slice1 §3.4。控除後・合計・境目のどれを計算する前にも止める。前は通貨によらず
+週額をそのまま引き、境目だけ「条件外」と出していた）。
 """
 from __future__ import annotations
 
@@ -744,6 +747,31 @@ NOT_COMPUTED = "未算出"  # the 合計 row only
 NOT_APPLICABLE = "対象外"  # the case does not bear the item (no row): W = 0, cost 0
 
 
+def report_currency(model_dir: str) -> str:
+    """hq_currency of the model's vc_config.csv; JPY when the model has none (the tool's earlier fixed value)."""
+    p = os.path.join(model_dir, "vc_config.csv")
+    if os.path.exists(p):
+        df = _csv(p, dtype=str, keep_default_na=False)
+        if {"key", "value"} <= set(df.columns):
+            v = df.loc[df["key"].str.strip() == "hq_currency", "value"].str.strip()
+            if len(v) and v.iloc[0]:
+                return v.iloc[0]
+    return "JPY"
+
+
+def check_report_currency(plan: pd.DataFrame, hq_currency: str, source: str = "固定費の表") -> None:
+    """RequestLetter_Promo_Convert_Slice1 §3.4: a weekly amount in another currency than the report currency
+    stops before any after-cost value, total or boundary is computed (the weekly amount is used as yen in all
+    three). The fix is to write the amount converted to the report currency."""
+    for i, r in plan.reset_index(drop=True).iterrows():
+        ccy = str(r.get("currency", "")).strip()
+        if ccy != hq_currency:
+            raise CompareError(
+                f"{source} の {i + 2} 行目（case={r.get('case', '')}, cost_item={r.get('cost_item', '')}）：通貨 {ccy!r} は"
+                f"報告通貨 {hq_currency} ではありません。週額は控除後・合計・境目の計算にそのまま使うので、"
+                f"報告通貨以外は計算しません。直し方：週額を報告通貨（{hq_currency}）に換算して書く（換算のレートと元の額は note に）")
+
+
 def fixed_cost_table(plan: Optional[pd.DataFrame], p0: Dict[str, float], status: Dict[str, str],
                      report_start: str, report_end: str, hq_currency: str = "JPY",
                      dp0_by_product: str = "", plan_start: Optional[str] = None,
@@ -766,6 +794,7 @@ def fixed_cost_table(plan: Optional[pd.DataFrame], p0: Dict[str, float], status:
                               "delta_P0": dp0, "delta_P0_by_product": dp0_by_product, "delta_W": "",
                               "boundary": lab, "f_star_per_week": "",
                               "valuation_status": "; ".join(unval) or "評価済み"}], columns=FC_COLS)
+    check_report_currency(plan, hq_currency)
     if COUNT_OUTSIDE_COL not in plan.columns:
         plan = plan.assign(**{COUNT_OUTSIDE_COL: ""})
     if DISPLAY_COL not in plan.columns:
@@ -798,8 +827,6 @@ def fixed_cost_table(plan: Optional[pd.DataFrame], p0: Dict[str, float], status:
         reason = ""
         if unval:
             reason = "連結利益未評価"
-        elif ccys - {hq_currency}:
-            reason = f"共通の円建て週額の条件外（通貨 {sorted(ccys)}）"
         elif has["base"] and has["alt"] and all(amounts[c] is not None for c in ("base", "alt")) \
                 and amounts["base"] != amounts["alt"]:
             reason = "共通の円建て週額の条件外（週額が案で違う）"
@@ -1069,6 +1096,10 @@ def compare(base_run: str, alt_run: str, base_model: str, alt_model: str, out: s
             fixed_cost_plan: Optional[str] = None, base_name: str = "base", alt_name: str = "alt",
             base_udp: Optional[str] = None, alt_udp: Optional[str] = None) -> dict:
     os.makedirs(out, exist_ok=True)
+    # §3.4 (Promo_Convert_Slice1): a weekly amount not in the report currency stops before anything is computed
+    plan = read_fixed_cost_plan(fixed_cost_plan) if fixed_cost_plan else None
+    if plan is not None:
+        check_report_currency(plan, report_currency(base_model), fixed_cost_plan)
     base, alt = load_run(base_run, base_model), load_run(alt_run, alt_model)
     if base["week_labels"] != alt["week_labels"]:
         raise CompareError("2 案の計画の週が違います（計画期間をそろえてください）")
@@ -1141,9 +1172,8 @@ def compare(base_run: str, alt_run: str, base_model: str, alt_model: str, out: s
         raise CompareError(f"2 案の報告期間が違います（{rs}〜{re_} と {rs2}〜{re2}）")
     rep = tsbs[(tsbs["period"] == "report") & (tsbs["product"] != "*")]
     by_prod = "; ".join(f"{r.product}: {r.profit_r2_diff:,.0f}" for r in rep.itertuples())
-    plan = read_fixed_cost_plan(fixed_cost_plan) if fixed_cost_plan else None
     fc = fixed_cost_table(plan, {"base": pb, "alt": pa}, {"base": stb, "alt": sta}, rs, re_, dp0_by_product=by_prod,
-                          plan_start=labels[0], plan_end=labels[-1])
+                          plan_start=labels[0], plan_end=labels[-1], hq_currency=report_currency(base_model))
     fc.to_csv(os.path.join(out, "fixed_cost_breakeven.csv"), index=False)
     moms = {}
     for nm, run in ((base_name, base), (alt_name, alt)):
