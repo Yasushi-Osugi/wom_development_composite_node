@@ -237,3 +237,7 @@ C3a の写しで `tools/run_quantity_allocation` を回した（付録 `cos_allo
 - `commit_msg236.txt`：報告書・文書・付録
 
 git の操作は大杉さんが行う。golden と既定の変更を含むので、diff を見てから commit する。
+
+## 大杉さんの判断（2026-11-23）
+
+- `docs/design/drafts/` の下書き 8 件に残る `tail` のときの C3a の値は直さない。下書きは当時の記録で、今の正典は Start Here（R25）と `docs/scenarios/cosmetics.md`（両方の値を並べた）。
