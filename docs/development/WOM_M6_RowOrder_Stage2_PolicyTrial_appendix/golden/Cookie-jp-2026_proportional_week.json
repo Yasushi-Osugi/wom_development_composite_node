@@ -1,0 +1,348 @@
+{
+ "model_dir": "output/roworder_stage2/golden/models/Cookie-jp-2026_proportional_week",
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 5.8,
+ "snapshot": {
+  "case": "Cookie-jp-2026_proportional_week",
+  "config": {
+   "plugins": [
+    "BufferingStockOptimizerPlugin",
+    "CapacityOverridePlugin",
+    "HolidayCalendarPlugin"
+   ],
+   "lot_flow_mode": "identity",
+   "overflow_policy": "proportional_week"
+  },
+  "period": {
+   "start": "2025-W37",
+   "weeks": 121
+  },
+  "products": [
+   "Cookie_Import",
+   "Cookie_Local"
+  ],
+  "forward": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_soft_violation_count": 0
+  },
+  "backward": {
+   "cap_soft_envelope_count": 0
+  },
+  "ppc": {
+   "base_currency": "JPY",
+   "total_lots": 624,
+   "revenue_base": 4259700000.0,
+   "cost_base": 3494541000.0,
+   "gross_profit_base": 765159000.0,
+   "gross_margin_pct": 0.179627,
+   "tariff_base": 213111000.0,
+   "trust_event_count": 0
+  },
+  "psi": {
+   "Cookie_Import": {
+    "SP_Cookie_Import": {
+     "P": 78930,
+     "S": 78930,
+     "I_sum": 69248,
+     "I_max": 1538,
+     "CO": 0,
+     "series_md5": "b8f1edaf454c"
+    },
+    "DC_Import_Buffer": {
+     "P": 78930,
+     "S": 78930,
+     "I_sum": 236790,
+     "I_max": 2364,
+     "CO": 0,
+     "series_md5": "6b40481abb45"
+    },
+    "DC_Import_Main": {
+     "P": 78930,
+     "S": 78930,
+     "I_sum": 78930,
+     "I_max": 788,
+     "CO": 0,
+     "series_md5": "c920b092134f"
+    },
+    "Retail_JP_CVS": {
+     "P": 31560,
+     "S": 31560,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "491bf9167194"
+    },
+    "Retail_JP_SM": {
+     "P": 31560,
+     "S": 31560,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "491bf9167194"
+    },
+    "Retail_JP_EC": {
+     "P": 15810,
+     "S": 15810,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "1a2ffa35f142"
+    },
+    "Factory_GP_CN": {
+     "P": 78930,
+     "S": 78930,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "ea0ac2488110"
+    },
+    "Ingredients_CN": {
+     "P": 78930,
+     "S": 78930,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "4da7052cceeb"
+    }
+   },
+   "Cookie_Local": {
+    "SP_Cookie_Local": {
+     "P": 63060,
+     "S": 63060,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "9f5becdd1d23"
+    },
+    "DC_Local_JP": {
+     "P": 63060,
+     "S": 63060,
+     "I_sum": 63060,
+     "I_max": 629,
+     "CO": 0,
+     "series_md5": "1481e703e2ab"
+    },
+    "Retail_JP_CVS": {
+     "P": 26270,
+     "S": 26270,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "ae6db3c7986c"
+    },
+    "Retail_JP_SM": {
+     "P": 26270,
+     "S": 26270,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "ae6db3c7986c"
+    },
+    "Retail_JP_EC": {
+     "P": 10520,
+     "S": 10520,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "a1169f33bd4e"
+    },
+    "Factory_DP_JP": {
+     "P": 63060,
+     "S": 63060,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "9f5becdd1d23"
+    },
+    "Ingredients_JP": {
+     "P": 63060,
+     "S": 63060,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "8e953f252135"
+    }
+   }
+  }
+ },
+ "market": [
+  {
+   "product": "Cookie_Import",
+   "leaf": "Retail_JP_CVS",
+   "demand": 31560,
+   "on_time": 31560,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Import",
+   "leaf": "Retail_JP_SM",
+   "demand": 31560,
+   "on_time": 31560,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Import",
+   "leaf": "Retail_JP_EC",
+   "demand": 15810,
+   "on_time": 15810,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Import",
+   "leaf": "Σ（製品）",
+   "demand": 78930,
+   "on_time": 78930,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Local",
+   "leaf": "Retail_JP_CVS",
+   "demand": 26270,
+   "on_time": 26270,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Local",
+   "leaf": "Retail_JP_SM",
+   "demand": 26270,
+   "on_time": 26270,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Local",
+   "leaf": "Retail_JP_EC",
+   "demand": 10520,
+   "on_time": 10520,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Cookie_Local",
+   "leaf": "Σ（製品）",
+   "demand": 63060,
+   "on_time": 63060,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 141990,
+   "on_time": 141990,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {
+  "IN:mom:Factory_GP_CN:Cookie_Import": {
+   "CVS": {
+    "pushed": 27685,
+    "denominator": 31560
+   },
+   "EC": {
+    "pushed": 13877,
+    "denominator": 15810
+   },
+   "SM": {
+    "pushed": 27686,
+    "denominator": 31560
+   }
+  },
+  "IN:mom:Factory_DP_JP:Cookie_Local": {
+   "CVS": {
+    "pushed": 0,
+    "denominator": 26270
+   },
+   "EC": {
+    "pushed": 0,
+    "denominator": 10520
+   },
+   "SM": {
+    "pushed": 0,
+    "denominator": 26270
+   }
+  }
+ },
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Factory_GP_CN:Cookie_Import": {
+   "open": {
+    "CVS": 25870,
+    "EC": 12969,
+    "SM": 25871
+   },
+   "closed": {
+    "CVS": 1815,
+    "EC": 908,
+    "SM": 1815
+   },
+   "closed_weeks": {
+    "2026-W05": {
+     "CVS": 600,
+     "EC": 300,
+     "SM": 600
+    },
+    "2026-W06": {
+     "CVS": 300,
+     "EC": 150,
+     "SM": 300
+    },
+    "2027-W02": {
+     "CVS": 615,
+     "EC": 308,
+     "SM": 615
+    },
+    "2027-W03": {
+     "CVS": 300,
+     "EC": 150,
+     "SM": 300
+    }
+   }
+  },
+  "IN:mom:Factory_DP_JP:Cookie_Local": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Factory_GP_CN:Cookie_Import": {
+   "product": "Cookie_Import",
+   "name": "Factory_GP_CN",
+   "P_supply": 78930,
+   "I_supply": 0
+  },
+  "IN:mom:Factory_DP_JP:Cookie_Local": {
+   "product": "Cookie_Local",
+   "name": "Factory_DP_JP",
+   "P_supply": 63060,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "Cookie-jp-2026",
+ "overflow_policy": "proportional_week"
+}

@@ -1,0 +1,432 @@
+{
+ "model_dir": "output/roworder_stage2/golden/models/ev-europe-2026_proportional_week",
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "proportional_week"
+ ],
+ "seconds": 4.1,
+ "snapshot": {
+  "case": "ev-europe-2026_proportional_week",
+  "config": {
+   "plugins": [
+    "BufferingStockOptimizerPlugin",
+    "CapacityOverridePlugin",
+    "HolidayCalendarPlugin"
+   ],
+   "lot_flow_mode": "identity",
+   "overflow_policy": "proportional_week"
+  },
+  "period": {
+   "start": "2025-W37",
+   "weeks": 105
+  },
+  "products": [
+   "EVmaker_Local",
+   "EVmaker_Import"
+  ],
+  "forward": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_soft_violation_count": 0
+  },
+  "backward": {
+   "cap_soft_envelope_count": 0
+  },
+  "ppc": {
+   "base_currency": "JPY",
+   "total_lots": 526,
+   "revenue_base": 366508230000.0,
+   "cost_base": 174173455500.0,
+   "gross_profit_base": 192334774500.0,
+   "gross_margin_pct": 0.524776,
+   "tariff_base": 1803549000.0,
+   "trust_event_count": 0
+  },
+  "psi": {
+   "EVmaker_Local": {
+    "SP_EV_Local": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 1000,
+     "I_max": 500,
+     "CO": 0,
+     "series_md5": "84d3a14d333a"
+    },
+    "DC_EV_Local": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 44325,
+     "I_max": 575,
+     "CO": 0,
+     "series_md5": "feff73a68f91"
+    },
+    "Sales_DE_BER": {
+     "P": 22165,
+     "S": 22165,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "773e79310da7"
+    },
+    "Sales_DE_REG": {
+     "P": 17730,
+     "S": 17730,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "bcb67efeb9f7"
+    },
+    "Sales_DE_ONL": {
+     "P": 4430,
+     "S": 4430,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "100552e81e37"
+    },
+    "Factory_Local_DE": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "8a83aae7353a"
+    },
+    "Battery_DE_Yard": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "8a83aae7353a"
+    },
+    "Battery_DE": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "5c359e1a76c0"
+    },
+    "Motor_DE_Yard": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "8a83aae7353a"
+    },
+    "Motor_DE": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "5c359e1a76c0"
+    },
+    "ECU_DE_Yard": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "8a83aae7353a"
+    },
+    "ECU_DE": {
+     "P": 44325,
+     "S": 44325,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "7cf68fae6b40"
+    }
+   },
+   "EVmaker_Import": {
+    "SP_EV_Import": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 830,
+     "I_max": 200,
+     "CO": 0,
+     "series_md5": "b526ff1bafd3"
+    },
+    "DC_EV_Import": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 17630,
+     "I_max": 230,
+     "CO": 0,
+     "series_md5": "d2afef364042"
+    },
+    "Sales_DE_BER_i": {
+     "P": 4430,
+     "S": 4430,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "100552e81e37"
+    },
+    "Sales_DE_REG_i": {
+     "P": 3506,
+     "S": 3506,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "2c5c8282e053"
+    },
+    "Sales_DE_ONL_i": {
+     "P": 879,
+     "S": 879,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "cb8faa7bd034"
+    },
+    "Factory_Import_HU": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "d40117a84d83"
+    },
+    "Battery_HU_Yard": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 17630,
+     "I_max": 300,
+     "CO": 0,
+     "series_md5": "f9ac29ae3563"
+    },
+    "Battery_HU": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "4088175414be"
+    },
+    "Motor_HU_Yard": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 17630,
+     "I_max": 300,
+     "CO": 0,
+     "series_md5": "f9ac29ae3563"
+    },
+    "Motor_HU": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "4088175414be"
+    },
+    "ECU_HU_Yard": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 8815,
+     "I_max": 150,
+     "CO": 0,
+     "series_md5": "e20bddd7473c"
+    },
+    "ECU_HU": {
+     "P": 8815,
+     "S": 8815,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "4088175414be"
+    }
+   }
+  }
+ },
+ "market": [
+  {
+   "product": "EVmaker_Local",
+   "leaf": "Sales_DE_BER",
+   "demand": 22165,
+   "on_time": 22165,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Local",
+   "leaf": "Sales_DE_REG",
+   "demand": 17730,
+   "on_time": 17730,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Local",
+   "leaf": "Sales_DE_ONL",
+   "demand": 4430,
+   "on_time": 4430,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Local",
+   "leaf": "Σ（製品）",
+   "demand": 44325,
+   "on_time": 44325,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Import",
+   "leaf": "Sales_DE_BER_i",
+   "demand": 4430,
+   "on_time": 4430,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Import",
+   "leaf": "Sales_DE_REG_i",
+   "demand": 3506,
+   "on_time": 3506,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Import",
+   "leaf": "Sales_DE_ONL_i",
+   "demand": 879,
+   "on_time": 879,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "EVmaker_Import",
+   "leaf": "Σ（製品）",
+   "demand": 8815,
+   "on_time": 8815,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 53140,
+   "on_time": 53140,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {
+  "IN:mom:Factory_Local_DE:EVmaker_Local": {
+   "BER": {
+    "pushed": 500,
+    "denominator": 22165
+   },
+   "ONL": {
+    "pushed": 100,
+    "denominator": 4430
+   },
+   "REG": {
+    "pushed": 400,
+    "denominator": 17730
+   }
+  },
+  "IN:mom:Factory_Import_HU:EVmaker_Import": {
+   "BER": {
+    "pushed": 499,
+    "denominator": 4430
+   },
+   "ONL": {
+    "pushed": 77,
+    "denominator": 879
+   },
+   "REG": {
+    "pushed": 254,
+    "denominator": 3506
+   }
+  }
+ },
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Factory_Local_DE:EVmaker_Local": {
+   "open": {},
+   "closed": {
+    "BER": 500,
+    "ONL": 100,
+    "REG": 400
+   },
+   "closed_weeks": {
+    "2026-W32": {
+     "BER": 250,
+     "ONL": 50,
+     "REG": 200
+    },
+    "2027-W32": {
+     "BER": 250,
+     "ONL": 50,
+     "REG": 200
+    }
+   }
+  },
+  "IN:mom:Factory_Import_HU:EVmaker_Import": {
+   "open": {
+    "BER": 199,
+    "ONL": 37,
+    "REG": 134
+   },
+   "closed": {
+    "BER": 300,
+    "ONL": 40,
+    "REG": 120
+   },
+   "closed_weeks": {
+    "2026-W31": {
+     "BER": 100,
+     "ONL": 20,
+     "REG": 80
+    },
+    "2026-W32": {
+     "BER": 50,
+     "ONL": 10,
+     "REG": 40
+    },
+    "2027-W31": {
+     "BER": 100,
+     "ONL": 10
+    },
+    "2027-W32": {
+     "BER": 50
+    }
+   }
+  }
+ },
+ "moms": {
+  "IN:mom:Factory_Local_DE:EVmaker_Local": {
+   "product": "EVmaker_Local",
+   "name": "Factory_Local_DE",
+   "P_supply": 44325,
+   "I_supply": 0
+  },
+  "IN:mom:Factory_Import_HU:EVmaker_Import": {
+   "product": "EVmaker_Import",
+   "name": "Factory_Import_HU",
+   "P_supply": 8815,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "ev-europe-2026",
+ "overflow_policy": "proportional_week"
+}

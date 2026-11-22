@@ -1,0 +1,22 @@
+﻿case,case_name,week_rule,sku_id,region,market,q1,q2,q3,on_time,early,late,delivered,q5,r21,r41,r42,zero_supply_weeks,longest_zero_run,longest_zero_run_from,zero_check
+C01,C03 tail,proportional_even,Soy_Sauce,BE,Rest_BE,10050,8261,1789,8179,0,0,8179,82,0.8219900497512438,0.8138308457711443,0.9900738409393536,1,1,2028-W47,udp_supply_runs と一致
+C01,C03 tail,proportional_even,Soy_Sauce,FR,Rest_FR,15075,12391,2684,12300,0,0,12300,91,0.8219568822553898,0.8159203980099502,0.9926559599709467,0,0,,udp_supply_runs と一致
+C01,C03 tail,proportional_even,Soy_Sauce,JP,Rest_JP,30150,30150,0,30150,0,0,30150,0,1.0,1.0,1.0,0,0,,udp_supply_runs と一致
+C01,C03 tail,proportional_even,Soy_Sauce,NL,Rest_NL,10050,8261,1789,7803,0,0,7803,458,0.8219900497512438,0.7764179104477612,0.9445587701246823,1,1,2028-W47,udp_supply_runs と一致
+C01,C03 tail,proportional_even,Soy_Sauce,US_E,Rest_US_East,17588,14456,3132,14456,0,0,14456,0,0.8219240391175802,0.8219240391175802,1.0,0,0,,udp_supply_runs と一致
+C01,C03 tail,proportional_even,Soy_Sauce,US_W,Rest_US_West,17588,14456,3132,14456,0,0,14456,0,0.8219240391175802,0.8219240391175802,1.0,0,0,,udp_supply_runs と一致
+C01,C03 tail,proportional_even,*,*,計,100501,87975,12526,87344,0,0,87344,631,0.8753644242345847,0.8690858797424901,0.9928275078147201,,,,
+C02,C03 proportional_week,proportional_even,Soy_Sauce,BE,Rest_BE,10050,8261,1789,8188,0,0,8188,73,0.8219900497512438,0.814726368159204,0.9911632974216197,0,0,,udp_supply_runs と一致
+C02,C03 proportional_week,proportional_even,Soy_Sauce,FR,Rest_FR,15075,12391,2684,12281,0,0,12281,110,0.8219568822553898,0.8146600331674958,0.9911225889758696,0,0,,udp_supply_runs と一致
+C02,C03 proportional_week,proportional_even,Soy_Sauce,JP,Rest_JP,30150,30150,0,30020,0,0,30020,130,1.0,0.9956882255389718,0.9956882255389718,0,0,,udp_supply_runs と一致
+C02,C03 proportional_week,proportional_even,Soy_Sauce,NL,Rest_NL,10050,8261,1789,8188,0,0,8188,73,0.8219900497512438,0.814726368159204,0.9911632974216197,0,0,,udp_supply_runs と一致
+C02,C03 proportional_week,proportional_even,Soy_Sauce,US_E,Rest_US_East,17588,14456,3132,14328,0,0,14328,128,0.8219240391175802,0.8146463497839436,0.9911455451023796,0,0,,udp_supply_runs と一致
+C02,C03 proportional_week,proportional_even,Soy_Sauce,US_W,Rest_US_West,17588,14456,3132,14339,0,0,14339,117,0.8219240391175802,0.815271776211053,0.9919064748201439,0,0,,udp_supply_runs と一致
+C02,C03 proportional_week,proportional_even,*,*,計,100501,87975,12526,87344,0,0,87344,631,0.8753644242345847,0.8690858797424901,0.9928275078147201,,,,
+C03,C03 balance_cut_ratio,proportional_even,Soy_Sauce,BE,Rest_BE,10050,8261,1789,8202,0,0,8202,59,0.8219900497512438,0.8161194029850747,0.9928580075051446,0,0,,udp_supply_runs と一致
+C03,C03 balance_cut_ratio,proportional_even,Soy_Sauce,FR,Rest_FR,15075,12391,2684,12302,0,0,12302,89,0.8219568822553898,0.8160530679933665,0.9928173674441126,0,0,,udp_supply_runs と一致
+C03,C03 balance_cut_ratio,proportional_even,Soy_Sauce,JP,Rest_JP,30150,30150,0,29934,0,0,29934,216,1.0,0.9928358208955224,0.9928358208955224,0,0,,udp_supply_runs と一致
+C03,C03 balance_cut_ratio,proportional_even,Soy_Sauce,NL,Rest_NL,10050,8261,1789,8202,0,0,8202,59,0.8219900497512438,0.8161194029850747,0.9928580075051446,0,0,,udp_supply_runs と一致
+C03,C03 balance_cut_ratio,proportional_even,Soy_Sauce,US_E,Rest_US_East,17588,14456,3132,14352,0,0,14352,104,0.8219240391175802,0.8160109165340005,0.9928057553956835,0,0,,udp_supply_runs と一致
+C03,C03 balance_cut_ratio,proportional_even,Soy_Sauce,US_W,Rest_US_West,17588,14456,3132,14352,0,0,14352,104,0.8219240391175802,0.8160109165340005,0.9928057553956835,0,0,,udp_supply_runs と一致
+C03,C03 balance_cut_ratio,proportional_even,*,*,計,100501,87975,12526,87344,0,0,87344,631,0.8753644242345847,0.8690858797424901,0.9928275078147201,,,,

@@ -1,0 +1,14 @@
+{
+ "C01": {
+  "policy": "tail",
+  "reordered": false
+ },
+ "C02": {
+  "policy": "proportional_week",
+  "reordered": false
+ },
+ "C03": {
+  "policy": "balance_cut_ratio",
+  "reordered": false
+ }
+}

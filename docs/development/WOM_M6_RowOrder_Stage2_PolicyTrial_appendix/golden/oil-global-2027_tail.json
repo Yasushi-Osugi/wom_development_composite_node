@@ -1,0 +1,996 @@
+{
+ "model_dir": "output/roworder_stage2/golden/models/oil-global-2027_tail",
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "tail"
+ ],
+ "seconds": 12.3,
+ "snapshot": {
+  "case": "oil-global-2027_tail",
+  "config": {
+   "plugins": [
+    "BufferingStockOptimizerPlugin",
+    "CapacityOverridePlugin",
+    "HolidayCalendarPlugin"
+   ],
+   "lot_flow_mode": "identity"
+  },
+  "period": {
+   "start": "2026-W28",
+   "weeks": 104
+  },
+  "products": [
+   "Gasoline_Local",
+   "Gasoline_Import",
+   "Gasoline_Local_Hormuz",
+   "Gasoline_Local_RedSea",
+   "Gasoline_EU_Local",
+   "Gasoline_EU_Import",
+   "Gasoline_US_Local",
+   "Gasoline_US_Import"
+  ],
+  "forward": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_soft_violation_count": 0
+  },
+  "backward": {
+   "cap_soft_envelope_count": 0
+  },
+  "ppc": {
+   "base_currency": "JPY",
+   "total_lots": 1399,
+   "revenue_base": 1571097940180.0,
+   "cost_base": 1018758265287.0,
+   "gross_profit_base": 552339674893.0,
+   "gross_margin_pct": 0.351563,
+   "tariff_base": 53620617.0,
+   "trust_event_count": 733
+  },
+  "psi": {
+   "Gasoline_Local": {
+    "SP_Oil_Local": {
+     "P": 42395,
+     "S": 42395,
+     "I_sum": 5800,
+     "I_max": 993,
+     "CO": 0,
+     "series_md5": "8ad990eeb8d6"
+    },
+    "Tank_Local": {
+     "P": 42395,
+     "S": 42395,
+     "I_sum": 42395,
+     "I_max": 615,
+     "CO": 0,
+     "series_md5": "c3e40f2ee41a"
+    },
+    "Retail_Local_KANTO": {
+     "P": 22314,
+     "S": 22314,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "c69abd44951a"
+    },
+    "Retail_Local_KANSAI": {
+     "P": 13388,
+     "S": 13388,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "52e01a0e511c"
+    },
+    "Retail_Local_CHUBU": {
+     "P": 6693,
+     "S": 6693,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "5cdfa4558c23"
+    },
+    "Refinery_Local": {
+     "P": 42395,
+     "S": 42395,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "b20f8e45732d"
+    },
+    "Crude_ME": {
+     "P": 42395,
+     "S": 42395,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "1902d1fea122"
+    }
+   },
+   "Gasoline_Import": {
+    "SP_Oil_Import": {
+     "P": 9823,
+     "S": 9823,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "3f6d3a9e2cb5"
+    },
+    "Tank_Import": {
+     "P": 9823,
+     "S": 9823,
+     "I_sum": 29469,
+     "I_max": 420,
+     "CO": 0,
+     "series_md5": "7603ae45cca8"
+    },
+    "Retail_Import_KANTO_I": {
+     "P": 6044,
+     "S": 6044,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "9a87f0d9b810"
+    },
+    "Retail_Import_KANSAI_I": {
+     "P": 3779,
+     "S": 3779,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "32880c04fbdb"
+    },
+    "Import_Hub": {
+     "P": 9823,
+     "S": 9823,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "3f6d3a9e2cb5"
+    },
+    "Refinery_SG": {
+     "P": 9823,
+     "S": 9823,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "bd696ac096e1"
+    }
+   },
+   "Gasoline_Local_Hormuz": {
+    "SP_Oil_Local_H": {
+     "P": 103,
+     "S": 103,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "00c68e3c3ad0"
+    },
+    "Tank_Local_H": {
+     "P": 103,
+     "S": 103,
+     "I_sum": 412,
+     "I_max": 32,
+     "CO": 0,
+     "series_md5": "ecbffd2e2f21"
+    },
+    "Retail_Local_H_KANTO": {
+     "P": 51,
+     "S": 51,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "7be8fe836802"
+    },
+    "Retail_Local_H_KANSAI": {
+     "P": 26,
+     "S": 26,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "02dd86eeb51d"
+    },
+    "Retail_Local_H_CHUBU": {
+     "P": 26,
+     "S": 26,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "02dd86eeb51d"
+    },
+    "Refinery_Local_H": {
+     "P": 103,
+     "S": 103,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "00c68e3c3ad0"
+    },
+    "Crude_ME_Hormuz": {
+     "P": 103,
+     "S": 103,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "5a231dd2a620"
+    }
+   },
+   "Gasoline_Local_RedSea": {
+    "SP_Oil_Local_R": {
+     "P": 465,
+     "S": 494,
+     "I_sum": 6401,
+     "I_max": 151,
+     "CO": 319,
+     "series_md5": "0b712f21f055"
+    },
+    "Tank_Local_R": {
+     "P": 465,
+     "S": 494,
+     "I_sum": 1860,
+     "I_max": 32,
+     "CO": 174,
+     "series_md5": "e606b1d4e9dd"
+    },
+    "Retail_Local_R_KANTO": {
+     "P": 246,
+     "S": 246,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "0eb92442ef70"
+    },
+    "Retail_Local_R_KANSAI": {
+     "P": 115,
+     "S": 124,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 36,
+     "series_md5": "ff19cd7bb589"
+    },
+    "Retail_Local_R_CHUBU": {
+     "P": 104,
+     "S": 124,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 100,
+     "series_md5": "17de30235b89"
+    },
+    "Refinery_Local_R": {
+     "P": 465,
+     "S": 490,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 2525,
+     "series_md5": "1ee076a3bc6a"
+    },
+    "Crude_ME_RedSea": {
+     "P": 465,
+     "S": 465,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "4227d9516c19"
+    }
+   },
+   "Gasoline_EU_Local": {
+    "SP_Oil_EU_Local": {
+     "P": 50581,
+     "S": 50581,
+     "I_sum": 170662,
+     "I_max": 4812,
+     "CO": 0,
+     "series_md5": "b398a882583b"
+    },
+    "Tank_EU_Local": {
+     "P": 50581,
+     "S": 50581,
+     "I_sum": 50581,
+     "I_max": 735,
+     "CO": 0,
+     "series_md5": "073036f778c8"
+    },
+    "Retail_EU_DE": {
+     "P": 26035,
+     "S": 26035,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "54ace22d7f9a"
+    },
+    "Retail_EU_FR": {
+     "P": 16361,
+     "S": 16361,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "275b7e66194f"
+    },
+    "Retail_EU_NL": {
+     "P": 8185,
+     "S": 8185,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "e610927372c2"
+    },
+    "Refinery_EU": {
+     "P": 50581,
+     "S": 50581,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "286cc4152fb9"
+    },
+    "Crude_ME_EU": {
+     "P": 50581,
+     "S": 50581,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "74906fdd68d7"
+    }
+   },
+   "Gasoline_EU_Import": {
+    "SP_Oil_EU_Import": {
+     "P": 12093,
+     "S": 12093,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "76bb52d9bf00"
+    },
+    "Tank_EU_Import": {
+     "P": 12093,
+     "S": 12093,
+     "I_sum": 36279,
+     "I_max": 519,
+     "CO": 0,
+     "series_md5": "420efb2e1489"
+    },
+    "Retail_EU_Import_DE_I": {
+     "P": 7558,
+     "S": 7558,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "a55290e32dd1"
+    },
+    "Retail_EU_Import_FR_I": {
+     "P": 4535,
+     "S": 4535,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "38e4c1bc894e"
+    },
+    "Import_Hub_EU": {
+     "P": 12093,
+     "S": 12093,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "76bb52d9bf00"
+    },
+    "Refinery_US": {
+     "P": 12093,
+     "S": 12093,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "b8b3b105e484"
+    }
+   },
+   "Gasoline_US_Local": {
+    "SP_Oil_US_Local": {
+     "P": 68012,
+     "S": 68012,
+     "I_sum": 89742,
+     "I_max": 2700,
+     "CO": 0,
+     "series_md5": "ca1e4f9b61c3"
+    },
+    "Tank_US_Local": {
+     "P": 68012,
+     "S": 68012,
+     "I_sum": 68012,
+     "I_max": 972,
+     "CO": 0,
+     "series_md5": "42e524c13093"
+    },
+    "Retail_US_TX": {
+     "P": 34006,
+     "S": 34006,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "f026cfa5eb39"
+    },
+    "Retail_US_CA": {
+     "P": 22670,
+     "S": 22670,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "b96cb758520f"
+    },
+    "Retail_US_NY": {
+     "P": 11336,
+     "S": 11336,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "f20421a94a88"
+    },
+    "Refinery_USGulf": {
+     "P": 68012,
+     "S": 68012,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "154ad4835bb4"
+    },
+    "Shale_Permian": {
+     "P": 68012,
+     "S": 68012,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "13d2ef574743"
+    }
+   },
+   "Gasoline_US_Import": {
+    "SP_Oil_US_Import": {
+     "P": 7557,
+     "S": 7557,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "b2ad700540f3"
+    },
+    "Tank_US_Import": {
+     "P": 7557,
+     "S": 7557,
+     "I_sum": 15114,
+     "I_max": 216,
+     "CO": 0,
+     "series_md5": "51d6cda370c5"
+    },
+    "Retail_US_Import_MW_I": {
+     "P": 4535,
+     "S": 4535,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "38e4c1bc894e"
+    },
+    "Retail_US_Import_NE_I": {
+     "P": 3022,
+     "S": 3022,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "d154b63c5b0f"
+    },
+    "Import_Hub_US": {
+     "P": 7557,
+     "S": 7557,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "b2ad700540f3"
+    },
+    "OilSands_Alberta": {
+     "P": 7557,
+     "S": 7557,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "14903e545224"
+    }
+   }
+  }
+ },
+ "market": [
+  {
+   "product": "Gasoline_Local",
+   "leaf": "Retail_Local_KANTO",
+   "demand": 22314,
+   "on_time": 22314,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local",
+   "leaf": "Retail_Local_KANSAI",
+   "demand": 13388,
+   "on_time": 13388,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local",
+   "leaf": "Retail_Local_CHUBU",
+   "demand": 6693,
+   "on_time": 6693,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local",
+   "leaf": "Σ（製品）",
+   "demand": 42395,
+   "on_time": 42395,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Import",
+   "leaf": "Retail_Import_KANTO_I",
+   "demand": 6044,
+   "on_time": 6044,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Import",
+   "leaf": "Retail_Import_KANSAI_I",
+   "demand": 3779,
+   "on_time": 3779,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Import",
+   "leaf": "Σ（製品）",
+   "demand": 9823,
+   "on_time": 9823,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "leaf": "Retail_Local_H_KANTO",
+   "demand": 51,
+   "on_time": 51,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "leaf": "Retail_Local_H_KANSAI",
+   "demand": 26,
+   "on_time": 26,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "leaf": "Retail_Local_H_CHUBU",
+   "demand": 26,
+   "on_time": 26,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_Hormuz",
+   "leaf": "Σ（製品）",
+   "demand": 103,
+   "on_time": 103,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "leaf": "Retail_Local_R_KANTO",
+   "demand": 246,
+   "on_time": 246,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "leaf": "Retail_Local_R_KANSAI",
+   "demand": 124,
+   "on_time": 115,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 9
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "leaf": "Retail_Local_R_CHUBU",
+   "demand": 124,
+   "on_time": 104,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 20
+  },
+  {
+   "product": "Gasoline_Local_RedSea",
+   "leaf": "Σ（製品）",
+   "demand": 494,
+   "on_time": 465,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 29
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "leaf": "Retail_EU_DE",
+   "demand": 26035,
+   "on_time": 26035,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "leaf": "Retail_EU_FR",
+   "demand": 16361,
+   "on_time": 16361,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "leaf": "Retail_EU_NL",
+   "demand": 8185,
+   "on_time": 8185,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Local",
+   "leaf": "Σ（製品）",
+   "demand": 50581,
+   "on_time": 50581,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Import",
+   "leaf": "Retail_EU_Import_DE_I",
+   "demand": 7558,
+   "on_time": 7558,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Import",
+   "leaf": "Retail_EU_Import_FR_I",
+   "demand": 4535,
+   "on_time": 4535,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_EU_Import",
+   "leaf": "Σ（製品）",
+   "demand": 12093,
+   "on_time": 12093,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "leaf": "Retail_US_TX",
+   "demand": 34006,
+   "on_time": 34006,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "leaf": "Retail_US_CA",
+   "demand": 22670,
+   "on_time": 22670,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "leaf": "Retail_US_NY",
+   "demand": 11336,
+   "on_time": 11336,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Local",
+   "leaf": "Σ（製品）",
+   "demand": 68012,
+   "on_time": 68012,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Import",
+   "leaf": "Retail_US_Import_MW_I",
+   "demand": 4535,
+   "on_time": 4535,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Import",
+   "leaf": "Retail_US_Import_NE_I",
+   "demand": 3022,
+   "on_time": 3022,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Gasoline_US_Import",
+   "leaf": "Σ（製品）",
+   "demand": 7557,
+   "on_time": 7557,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 191058,
+   "on_time": 191029,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 29
+  }
+ ],
+ "burden": {
+  "IN:mom:Refinery_Local:Gasoline_Local": {
+   "CHUBU": {
+    "pushed": 1632,
+    "denominator": 6693
+   },
+   "KANSAI": {
+    "pushed": 2063,
+    "denominator": 13388
+   },
+   "KANTO": {
+    "pushed": 2105,
+    "denominator": 22314
+   }
+  },
+  "IN:mom:Import_Hub:Gasoline_Import": {
+   "KANSAI_I": {
+    "pushed": 0,
+    "denominator": 3779
+   },
+   "KANTO_I": {
+    "pushed": 0,
+    "denominator": 6044
+   }
+  },
+  "IN:mom:Refinery_Local_H:Gasoline_Local_Hormuz": {
+   "CHUBU": {
+    "pushed": 0,
+    "denominator": 26
+   },
+   "KANSAI": {
+    "pushed": 0,
+    "denominator": 26
+   },
+   "KANTO": {
+    "pushed": 0,
+    "denominator": 51
+   }
+  },
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "CHUBU": {
+    "pushed": 6061,
+    "denominator": 124
+   },
+   "KANSAI": {
+    "pushed": 2962,
+    "denominator": 124
+   },
+   "KANTO": {
+    "pushed": 0,
+    "denominator": 246
+   }
+  },
+  "IN:mom:Refinery_EU:Gasoline_EU_Local": {
+   "DE": {
+    "pushed": 29330,
+    "denominator": 26035
+   },
+   "FR": {
+    "pushed": 23994,
+    "denominator": 16361
+   },
+   "NL": {
+    "pushed": 117338,
+    "denominator": 8185
+   }
+  },
+  "IN:mom:Import_Hub_EU:Gasoline_EU_Import": {
+   "DE_I": {
+    "pushed": 0,
+    "denominator": 7558
+   },
+   "FR_I": {
+    "pushed": 0,
+    "denominator": 4535
+   }
+  },
+  "IN:mom:Refinery_USGulf:Gasoline_US_Local": {
+   "CA": {
+    "pushed": 20940,
+    "denominator": 22670
+   },
+   "NY": {
+    "pushed": 44501,
+    "denominator": 11336
+   },
+   "TX": {
+    "pushed": 24301,
+    "denominator": 34006
+   }
+  },
+  "IN:mom:Import_Hub_US:Gasoline_US_Import": {
+   "MW_I": {
+    "pushed": 0,
+    "denominator": 4535
+   },
+   "NE_I": {
+    "pushed": 0,
+    "denominator": 3022
+   }
+  }
+ },
+ "past_due": {
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "KANSAI": 1,
+   "CHUBU": 3
+  },
+  "IN:leaf_in:Crude_ME_RedSea:Gasoline_Local_RedSea": {
+   "CHUBU": 17,
+   "KANSAI": 8
+  }
+ },
+ "past_due_total": 29,
+ "cap_dropped": {
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "KANSAI": 1,
+   "CHUBU": 3
+  }
+ },
+ "cap_dropped_total": 4,
+ "pushed": {
+  "IN:mom:Refinery_Local:Gasoline_Local": {
+   "open": {
+    "CHUBU": 1632,
+    "KANSAI": 2063,
+    "KANTO": 2105
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Import_Hub:Gasoline_Import": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Refinery_Local_H:Gasoline_Local_Hormuz": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "open": {
+    "KANSAI": 2962,
+    "CHUBU": 6061
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Refinery_EU:Gasoline_EU_Local": {
+   "open": {
+    "NL": 117338,
+    "FR": 23994,
+    "DE": 29330
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Import_Hub_EU:Gasoline_EU_Import": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Refinery_USGulf:Gasoline_US_Local": {
+   "open": {
+    "TX": 24301,
+    "CA": 20940,
+    "NY": 44501
+   },
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Import_Hub_US:Gasoline_US_Import": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Refinery_Local:Gasoline_Local": {
+   "product": "Gasoline_Local",
+   "name": "Refinery_Local",
+   "P_supply": 42395,
+   "I_supply": 0
+  },
+  "IN:mom:Import_Hub:Gasoline_Import": {
+   "product": "Gasoline_Import",
+   "name": "Import_Hub",
+   "P_supply": 9823,
+   "I_supply": 0
+  },
+  "IN:mom:Refinery_Local_H:Gasoline_Local_Hormuz": {
+   "product": "Gasoline_Local_Hormuz",
+   "name": "Refinery_Local_H",
+   "P_supply": 103,
+   "I_supply": 0
+  },
+  "IN:mom:Refinery_Local_R:Gasoline_Local_RedSea": {
+   "product": "Gasoline_Local_RedSea",
+   "name": "Refinery_Local_R",
+   "P_supply": 465,
+   "I_supply": 0
+  },
+  "IN:mom:Refinery_EU:Gasoline_EU_Local": {
+   "product": "Gasoline_EU_Local",
+   "name": "Refinery_EU",
+   "P_supply": 50581,
+   "I_supply": 0
+  },
+  "IN:mom:Import_Hub_EU:Gasoline_EU_Import": {
+   "product": "Gasoline_EU_Import",
+   "name": "Import_Hub_EU",
+   "P_supply": 12093,
+   "I_supply": 0
+  },
+  "IN:mom:Refinery_USGulf:Gasoline_US_Local": {
+   "product": "Gasoline_US_Local",
+   "name": "Refinery_USGulf",
+   "P_supply": 68012,
+   "I_supply": 0
+  },
+  "IN:mom:Import_Hub_US:Gasoline_US_Import": {
+   "product": "Gasoline_US_Import",
+   "name": "Import_Hub_US",
+   "P_supply": 7557,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "oil-global-2027",
+ "overflow_policy": "tail"
+}

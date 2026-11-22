@@ -1,0 +1,336 @@
+{
+ "model_dir": "output/roworder_stage2/golden/models/apparel-global-2028-2029_balance_cut_ratio",
+ "plugins": "BufferingStockOptimizerPlugin,CapacityOverridePlugin,HolidayCalendarPlugin",
+ "policy": [
+  "balance_cut_ratio"
+ ],
+ "seconds": 7.7,
+ "snapshot": {
+  "case": "apparel-global-2028-2029_balance_cut_ratio",
+  "config": {
+   "plugins": [
+    "BufferingStockOptimizerPlugin",
+    "CapacityOverridePlugin",
+    "HolidayCalendarPlugin"
+   ],
+   "lot_flow_mode": "identity",
+   "overflow_policy": "balance_cut_ratio"
+  },
+  "period": {
+   "start": "2027-W40",
+   "weeks": 117
+  },
+  "products": [
+   "Apparel_Offshore",
+   "Apparel_Vertical"
+  ],
+  "forward": {
+   "cap_hard_deferred_lots": 0,
+   "cap_hard_deferred_lot_weeks": 0,
+   "cap_soft_violation_count": 0
+  },
+  "backward": {
+   "cap_soft_envelope_count": 0
+  },
+  "ppc": {
+   "base_currency": "USD",
+   "total_lots": 394,
+   "revenue_base": 10387986.16,
+   "cost_base": 6393265.75,
+   "gross_profit_base": 3994720.41,
+   "gross_margin_pct": 0.384552,
+   "tariff_base": 408595.75,
+   "trust_event_count": 0
+  },
+  "psi": {
+   "Apparel_Offshore": {
+    "SP_Apparel_Offshore": {
+     "P": 88760,
+     "S": 88760,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "fe88651d5527"
+    },
+    "FG_WH_BD": {
+     "P": 88760,
+     "S": 88760,
+     "I_sum": 266280,
+     "I_max": 6629,
+     "CO": 0,
+     "series_md5": "33292ad88767"
+    },
+    "DC_US_Offshore": {
+     "P": 57572,
+     "S": 57572,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "b002e875b650"
+    },
+    "Retail_US_Offshore": {
+     "P": 57572,
+     "S": 57572,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "98aec05797d8"
+    },
+    "DC_JP_Offshore": {
+     "P": 31188,
+     "S": 31188,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "55bba95a2756"
+    },
+    "Retail_JP_Offshore": {
+     "P": 31188,
+     "S": 31188,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "f92976fa6483"
+    },
+    "Garment_BD": {
+     "P": 88760,
+     "S": 88760,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "fe88651d5527"
+    },
+    "Trim_VN": {
+     "P": 88760,
+     "S": 88760,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "00e410b753ae"
+    },
+    "Dyeing_BD": {
+     "P": 88760,
+     "S": 88760,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "e897ff18bf04"
+    },
+    "Fabric_CN": {
+     "P": 88760,
+     "S": 88760,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "742723a893eb"
+    }
+   },
+   "Apparel_Vertical": {
+    "SP_Apparel_Vertical": {
+     "P": 92766,
+     "S": 92766,
+     "I_sum": 18814,
+     "I_max": 2588,
+     "CO": 0,
+     "series_md5": "3e0ceb8f2475"
+    },
+    "FG_WH_PT": {
+     "P": 92766,
+     "S": 92766,
+     "I_sum": 92766,
+     "I_max": 2300,
+     "CO": 0,
+     "series_md5": "33b73b60fd25"
+    },
+    "DC_US_Vertical": {
+     "P": 60498,
+     "S": 60498,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "8411a4f11185"
+    },
+    "Retail_US_Vertical": {
+     "P": 60498,
+     "S": 60498,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "f23766ebd9f1"
+    },
+    "DC_JP_Vertical": {
+     "P": 32268,
+     "S": 32268,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "14a6eee017cb"
+    },
+    "Retail_JP_Vertical": {
+     "P": 32268,
+     "S": 32268,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "a1b20c50f6c4"
+    },
+    "Garment_PT": {
+     "P": 92766,
+     "S": 92766,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "cf28ed123e50"
+    },
+    "Trim_MA": {
+     "P": 92766,
+     "S": 92766,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "261d3e529965"
+    },
+    "Dyeing_PT": {
+     "P": 92766,
+     "S": 92766,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "72f2ef5ff880"
+    },
+    "Fabric_ES": {
+     "P": 92766,
+     "S": 92766,
+     "I_sum": 0,
+     "I_max": 0,
+     "CO": 0,
+     "series_md5": "2481c7948a91"
+    }
+   }
+  }
+ },
+ "market": [
+  {
+   "product": "Apparel_Offshore",
+   "leaf": "Retail_US_Offshore",
+   "demand": 57572,
+   "on_time": 57572,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Offshore",
+   "leaf": "Retail_JP_Offshore",
+   "demand": 31188,
+   "on_time": 31188,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Offshore",
+   "leaf": "Σ（製品）",
+   "demand": 88760,
+   "on_time": 88760,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Vertical",
+   "leaf": "Retail_US_Vertical",
+   "demand": 60498,
+   "on_time": 60498,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Vertical",
+   "leaf": "Retail_JP_Vertical",
+   "demand": 32268,
+   "on_time": 32268,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Apparel_Vertical",
+   "leaf": "Σ（製品）",
+   "demand": 92766,
+   "on_time": 92766,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  },
+  {
+   "product": "Σ（モデル全体）",
+   "leaf": "",
+   "demand": 181526,
+   "on_time": 181526,
+   "early": 0,
+   "late": 0,
+   "backlog_end": 0
+  }
+ ],
+ "burden": {
+  "IN:mom:Garment_BD:Apparel_Offshore": {
+   "JP": {
+    "pushed": 0,
+    "denominator": 31188
+   },
+   "US": {
+    "pushed": 0,
+    "denominator": 57572
+   }
+  },
+  "IN:mom:Garment_PT:Apparel_Vertical": {
+   "JP": {
+    "pushed": 6544,
+    "denominator": 32268
+   },
+   "US": {
+    "pushed": 12270,
+    "denominator": 60498
+   }
+  }
+ },
+ "past_due": {},
+ "past_due_total": 0,
+ "cap_dropped": {},
+ "cap_dropped_total": 0,
+ "pushed": {
+  "IN:mom:Garment_BD:Apparel_Offshore": {
+   "open": {},
+   "closed": {},
+   "closed_weeks": {}
+  },
+  "IN:mom:Garment_PT:Apparel_Vertical": {
+   "open": {
+    "JP": 6544,
+    "US": 12270
+   },
+   "closed": {},
+   "closed_weeks": {}
+  }
+ },
+ "moms": {
+  "IN:mom:Garment_BD:Apparel_Offshore": {
+   "product": "Apparel_Offshore",
+   "name": "Garment_BD",
+   "P_supply": 88760,
+   "I_supply": 0
+  },
+  "IN:mom:Garment_PT:Apparel_Vertical": {
+   "product": "Apparel_Vertical",
+   "name": "Garment_PT",
+   "P_supply": 92766,
+   "I_supply": 0
+  }
+ },
+ "golden_diff_keys": [],
+ "golden_match": true,
+ "model": "apparel-global-2028-2029",
+ "overflow_policy": "balance_cut_ratio"
+}

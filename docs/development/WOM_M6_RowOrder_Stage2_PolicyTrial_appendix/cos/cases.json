@@ -1,0 +1,1365 @@
+{
+ "cases": {
+  "C01": {
+   "case": "C01",
+   "name": "C3a tail",
+   "policy": "tail",
+   "reordered": false,
+   "input_hashes": {
+    "(policy)": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "model/README.md": "f2eff5c3d5d6a5a2b65bd6b30eaa0490e230dea09cb221445580803ee87264d1",
+    "model/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+    "model/decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+    "model/demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+    "model/edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+    "model/holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+    "model/inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+    "model/lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+    "model/node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+    "model/node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+    "model/planning_config.csv": "c12cacd0c740832aa015430b9974d78ec2b653b36f43e46da71cee03a4011eb1",
+    "model/ppc_edge_cost_rule.csv": "7a1dbef2bf62c715f7a55ca2f1b1ce0fcedf51a209be4b6fc69576a9f6f8ab0d",
+    "model/ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+    "model/ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+    "model/ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+    "model/ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+    "model/ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+    "model/ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+    "model/ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+    "model/ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+    "model/push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+    "model/route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+    "model/sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+    "model/sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+    "model/vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+    "model/vc_customs_valuation_rule.csv": "991a486a81a631b99396d359ad683e743181b02f7e06b2625a7607e82fbc3a64",
+    "model/vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+    "model/vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98",
+    "model/vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2",
+    "model/vc_sales_cost_rule.csv": "30da14e49384d4e1292b7b490a3a1f6b957ec5efaef5fd973f59e1caefb84297",
+    "model/vc_trade_terms.csv": "f8ac17ea24f4858c871858f564e7f2555a6cf770f4663b3ea962704ff571ca59"
+   },
+   "summary": {
+    "P0_report": 606871080.0,
+    "report_period": [
+     "2027-W01",
+     "2029-W52"
+    ],
+    "valuation": "評価済み",
+    "unvalued_consolidated_lines": 0,
+    "deliveries_by_sku": {
+     "COS_Cream": 1680,
+     "COS_Serum": 2184
+    },
+    "demand_by_sku": {
+     "COS_Cream": 1768,
+     "COS_Serum": 2288
+    },
+    "backlog_end_by_key": {
+     "COS_Cream:TH_Distributor": 88,
+     "COS_Serum:TH_Distributor": 104
+    },
+    "late_by_key": {},
+    "unallocated_by_key": null,
+    "ppc_gross_profit_full": 607601448.0,
+    "ppc_revenue_full": 1119737280.0,
+    "base_currency": "JPY"
+   },
+   "burden": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Distributor": {
+      "pushed": 0,
+      "denominator": 897
+     },
+     "SG_EC": {
+      "pushed": 0,
+      "denominator": 455
+     },
+     "SG_Store": {
+      "pushed": 0,
+      "denominator": 546
+     },
+     "TH_Distributor": {
+      "pushed": 41795,
+      "denominator": 390
+     }
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Distributor": {
+      "pushed": 0,
+      "denominator": 754
+     },
+     "SG_EC": {
+      "pushed": 0,
+      "denominator": 299
+     },
+     "SG_Store": {
+      "pushed": 0,
+      "denominator": 416
+     },
+     "TH_Distributor": {
+      "pushed": 31993,
+      "denominator": 299
+     }
+    }
+   },
+   "past_due": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "TH_Distributor": 91
+    },
+    "IN:leaf_in:Materials_JP:COS_Serum": {
+     "TH_Distributor": 13
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "TH_Distributor": 78
+    },
+    "IN:leaf_in:Materials_JP:COS_Cream": {
+     "TH_Distributor": 10
+    }
+   },
+   "past_due_total": 192,
+   "cap_dropped": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "TH_Distributor": 91
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "TH_Distributor": 78
+    }
+   },
+   "cap_dropped_total": 169,
+   "pushed": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "open": {
+      "TH_Distributor": 41795
+     },
+     "closed": {},
+     "closed_weeks": {}
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "open": {
+      "TH_Distributor": 31993
+     },
+     "closed": {},
+     "closed_weeks": {}
+    }
+   },
+   "capture_policy": [
+    "tail"
+   ],
+   "capture_market": [
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Store",
+     "demand": 546,
+     "on_time": 546,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_EC",
+     "demand": 455,
+     "on_time": 455,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Distributor",
+     "demand": 897,
+     "on_time": 897,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "TH_Distributor",
+     "demand": 390,
+     "on_time": 286,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "Σ（製品）",
+     "demand": 2288,
+     "on_time": 2184,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Store",
+     "demand": 416,
+     "on_time": 416,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_EC",
+     "demand": 299,
+     "on_time": 299,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Distributor",
+     "demand": 754,
+     "on_time": 754,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "TH_Distributor",
+     "demand": 299,
+     "on_time": 211,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 88
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "Σ（製品）",
+     "demand": 1768,
+     "on_time": 1680,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 88
+    },
+    {
+     "product": "Σ（モデル全体）",
+     "leaf": "",
+     "demand": 4056,
+     "on_time": 3864,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 192
+    }
+   ],
+   "inventory_lot_weeks": 63390,
+   "inventory_lot_weeks_report": 59877,
+   "age_max": 28,
+   "over_52": 0,
+   "ship_digest": {
+    "n": 3864,
+    "sha256": "a7efd4de49d69652"
+   }
+  },
+  "C02": {
+   "case": "C02",
+   "name": "C3a proportional_week",
+   "policy": "proportional_week",
+   "reordered": false,
+   "input_hashes": {
+    "(policy)": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "model/README.md": "f2eff5c3d5d6a5a2b65bd6b30eaa0490e230dea09cb221445580803ee87264d1",
+    "model/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+    "model/decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+    "model/demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+    "model/edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+    "model/holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+    "model/inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+    "model/lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+    "model/node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+    "model/node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+    "model/planning_config.csv": "d3f98153cffb425a318e82835bb00ab5f498f95420e83e2d46f755444d5c416d",
+    "model/ppc_edge_cost_rule.csv": "7a1dbef2bf62c715f7a55ca2f1b1ce0fcedf51a209be4b6fc69576a9f6f8ab0d",
+    "model/ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+    "model/ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+    "model/ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+    "model/ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+    "model/ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+    "model/ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+    "model/ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+    "model/ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+    "model/push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+    "model/route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+    "model/sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+    "model/sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+    "model/vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+    "model/vc_customs_valuation_rule.csv": "991a486a81a631b99396d359ad683e743181b02f7e06b2625a7607e82fbc3a64",
+    "model/vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+    "model/vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98",
+    "model/vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2",
+    "model/vc_sales_cost_rule.csv": "30da14e49384d4e1292b7b490a3a1f6b957ec5efaef5fd973f59e1caefb84297",
+    "model/vc_trade_terms.csv": "f8ac17ea24f4858c871858f564e7f2555a6cf770f4663b3ea962704ff571ca59"
+   },
+   "summary": {
+    "P0_report": 600719196.0,
+    "report_period": [
+     "2027-W01",
+     "2029-W52"
+    ],
+    "valuation": "評価済み",
+    "unvalued_consolidated_lines": 0,
+    "deliveries_by_sku": {
+     "COS_Cream": 1680,
+     "COS_Serum": 2184
+    },
+    "demand_by_sku": {
+     "COS_Cream": 1768,
+     "COS_Serum": 2288
+    },
+    "backlog_end_by_key": {
+     "COS_Cream:SG_Distributor": 47,
+     "COS_Cream:SG_EC": 18,
+     "COS_Cream:SG_Store": 19,
+     "COS_Cream:TH_Distributor": 4,
+     "COS_Serum:SG_Distributor": 50,
+     "COS_Serum:SG_EC": 27,
+     "COS_Serum:SG_Store": 22,
+     "COS_Serum:TH_Distributor": 5
+    },
+    "late_by_key": {},
+    "unallocated_by_key": null,
+    "ppc_gross_profit_full": 601449564.0,
+    "ppc_revenue_full": 1100849400.0,
+    "base_currency": "JPY"
+   },
+   "burden": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Distributor": {
+      "pushed": 16469,
+      "denominator": 897
+     },
+     "SG_EC": {
+      "pushed": 8313,
+      "denominator": 455
+     },
+     "SG_Store": {
+      "pushed": 10345,
+      "denominator": 546
+     },
+     "TH_Distributor": {
+      "pushed": 6668,
+      "denominator": 390
+     }
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Distributor": {
+      "pushed": 13685,
+      "denominator": 754
+     },
+     "SG_EC": {
+      "pushed": 5440,
+      "denominator": 299
+     },
+     "SG_Store": {
+      "pushed": 7792,
+      "denominator": 416
+     },
+     "TH_Distributor": {
+      "pushed": 5076,
+      "denominator": 299
+     }
+    }
+   },
+   "past_due": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_EC": 23,
+     "SG_Distributor": 44,
+     "SG_Store": 20,
+     "TH_Distributor": 4
+    },
+    "IN:leaf_in:Materials_JP:COS_Serum": {
+     "SG_EC": 4,
+     "SG_Distributor": 6,
+     "SG_Store": 2,
+     "TH_Distributor": 1
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Distributor": 41,
+     "SG_EC": 16,
+     "SG_Store": 17,
+     "TH_Distributor": 4
+    },
+    "IN:leaf_in:Materials_JP:COS_Cream": {
+     "SG_Distributor": 6,
+     "SG_EC": 2,
+     "SG_Store": 2
+    }
+   },
+   "past_due_total": 192,
+   "cap_dropped": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_EC": 23,
+     "SG_Distributor": 44,
+     "SG_Store": 20,
+     "TH_Distributor": 4
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Distributor": 41,
+     "SG_EC": 16,
+     "SG_Store": 17,
+     "TH_Distributor": 4
+    }
+   },
+   "cap_dropped_total": 169,
+   "pushed": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "open": {
+      "SG_EC": 8313,
+      "SG_Distributor": 16469,
+      "SG_Store": 10345,
+      "TH_Distributor": 6668
+     },
+     "closed": {},
+     "closed_weeks": {}
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "open": {
+      "SG_Distributor": 13685,
+      "SG_EC": 5440,
+      "SG_Store": 7792,
+      "TH_Distributor": 5076
+     },
+     "closed": {},
+     "closed_weeks": {}
+    }
+   },
+   "capture_policy": [
+    "proportional_week"
+   ],
+   "capture_market": [
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Store",
+     "demand": 546,
+     "on_time": 524,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 22
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_EC",
+     "demand": 455,
+     "on_time": 428,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 27
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Distributor",
+     "demand": 897,
+     "on_time": 847,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 50
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "TH_Distributor",
+     "demand": 390,
+     "on_time": 385,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 5
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "Σ（製品）",
+     "demand": 2288,
+     "on_time": 2184,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Store",
+     "demand": 416,
+     "on_time": 397,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 19
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_EC",
+     "demand": 299,
+     "on_time": 281,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 18
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Distributor",
+     "demand": 754,
+     "on_time": 707,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 47
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "TH_Distributor",
+     "demand": 299,
+     "on_time": 295,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 4
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "Σ（製品）",
+     "demand": 1768,
+     "on_time": 1680,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 88
+    },
+    {
+     "product": "Σ（モデル全体）",
+     "leaf": "",
+     "demand": 4056,
+     "on_time": 3864,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 192
+    }
+   ],
+   "inventory_lot_weeks": 63831,
+   "inventory_lot_weeks_report": 60318,
+   "age_max": 28,
+   "over_52": 0,
+   "ship_digest": {
+    "n": 3864,
+    "sha256": "05db8faa51cc89ec"
+   }
+  },
+  "C03": {
+   "case": "C03",
+   "name": "C3a balance_cut_ratio",
+   "policy": "balance_cut_ratio",
+   "reordered": false,
+   "input_hashes": {
+    "(policy)": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "model/README.md": "f2eff5c3d5d6a5a2b65bd6b30eaa0490e230dea09cb221445580803ee87264d1",
+    "model/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+    "model/decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+    "model/demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+    "model/edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+    "model/holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+    "model/inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+    "model/lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+    "model/node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+    "model/node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+    "model/planning_config.csv": "fcf862631b5738fd50b1828a18fe9ab32bd3e9782d8c516c09be8f837f357994",
+    "model/ppc_edge_cost_rule.csv": "7a1dbef2bf62c715f7a55ca2f1b1ce0fcedf51a209be4b6fc69576a9f6f8ab0d",
+    "model/ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+    "model/ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+    "model/ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+    "model/ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+    "model/ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+    "model/ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+    "model/ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+    "model/ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+    "model/push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+    "model/route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+    "model/sc_tree_master.csv": "839b1a72cde594ed3c9ce945c7ede3715a4cfa2c80c8589ead5f95fae871df88",
+    "model/sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+    "model/vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+    "model/vc_customs_valuation_rule.csv": "991a486a81a631b99396d359ad683e743181b02f7e06b2625a7607e82fbc3a64",
+    "model/vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+    "model/vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98",
+    "model/vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2",
+    "model/vc_sales_cost_rule.csv": "30da14e49384d4e1292b7b490a3a1f6b957ec5efaef5fd973f59e1caefb84297",
+    "model/vc_trade_terms.csv": "f8ac17ea24f4858c871858f564e7f2555a6cf770f4663b3ea962704ff571ca59"
+   },
+   "summary": {
+    "P0_report": 601102836.0,
+    "report_period": [
+     "2027-W01",
+     "2029-W52"
+    ],
+    "valuation": "評価済み",
+    "unvalued_consolidated_lines": 0,
+    "deliveries_by_sku": {
+     "COS_Cream": 1680,
+     "COS_Serum": 2184
+    },
+    "demand_by_sku": {
+     "COS_Cream": 1768,
+     "COS_Serum": 2288
+    },
+    "backlog_end_by_key": {
+     "COS_Cream:SG_Distributor": 22,
+     "COS_Cream:SG_EC": 9,
+     "COS_Cream:SG_Store": 32,
+     "COS_Cream:TH_Distributor": 25,
+     "COS_Serum:SG_Distributor": 25,
+     "COS_Serum:SG_EC": 14,
+     "COS_Serum:SG_Store": 40,
+     "COS_Serum:TH_Distributor": 25
+    },
+    "late_by_key": {},
+    "unallocated_by_key": null,
+    "ppc_gross_profit_full": 601833204.0,
+    "ppc_revenue_full": 1098239160.0,
+    "base_currency": "JPY"
+   },
+   "burden": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Distributor": {
+      "pushed": 16379,
+      "denominator": 897
+     },
+     "SG_EC": {
+      "pushed": 8310,
+      "denominator": 455
+     },
+     "SG_Store": {
+      "pushed": 9979,
+      "denominator": 546
+     },
+     "TH_Distributor": {
+      "pushed": 7127,
+      "denominator": 390
+     }
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Distributor": {
+      "pushed": 13665,
+      "denominator": 754
+     },
+     "SG_EC": {
+      "pushed": 5419,
+      "denominator": 299
+     },
+     "SG_Store": {
+      "pushed": 7539,
+      "denominator": 416
+     },
+     "TH_Distributor": {
+      "pushed": 5370,
+      "denominator": 299
+     }
+    }
+   },
+   "past_due": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Store": 35,
+     "SG_EC": 14,
+     "SG_Distributor": 25,
+     "TH_Distributor": 17
+    },
+    "IN:leaf_in:Materials_JP:COS_Serum": {
+     "SG_Store": 5,
+     "TH_Distributor": 8
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Store": 32,
+     "TH_Distributor": 25,
+     "SG_Distributor": 15,
+     "SG_EC": 6
+    },
+    "IN:leaf_in:Materials_JP:COS_Cream": {
+     "SG_EC": 3,
+     "SG_Distributor": 7
+    }
+   },
+   "past_due_total": 192,
+   "cap_dropped": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Store": 35,
+     "SG_EC": 14,
+     "SG_Distributor": 25,
+     "TH_Distributor": 17
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Store": 32,
+     "TH_Distributor": 25,
+     "SG_Distributor": 15,
+     "SG_EC": 6
+    }
+   },
+   "cap_dropped_total": 169,
+   "pushed": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "open": {
+      "SG_Store": 9979,
+      "SG_EC": 8310,
+      "SG_Distributor": 16379,
+      "TH_Distributor": 7127
+     },
+     "closed": {},
+     "closed_weeks": {}
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "open": {
+      "SG_Store": 7539,
+      "TH_Distributor": 5370,
+      "SG_Distributor": 13665,
+      "SG_EC": 5419
+     },
+     "closed": {},
+     "closed_weeks": {}
+    }
+   },
+   "capture_policy": [
+    "balance_cut_ratio"
+   ],
+   "capture_market": [
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Store",
+     "demand": 546,
+     "on_time": 506,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 40
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_EC",
+     "demand": 455,
+     "on_time": 441,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 14
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Distributor",
+     "demand": 897,
+     "on_time": 872,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 25
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "TH_Distributor",
+     "demand": 390,
+     "on_time": 365,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 25
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "Σ（製品）",
+     "demand": 2288,
+     "on_time": 2184,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Store",
+     "demand": 416,
+     "on_time": 384,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 32
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_EC",
+     "demand": 299,
+     "on_time": 290,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 9
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Distributor",
+     "demand": 754,
+     "on_time": 732,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 22
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "TH_Distributor",
+     "demand": 299,
+     "on_time": 274,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 25
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "Σ（製品）",
+     "demand": 1768,
+     "on_time": 1680,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 88
+    },
+    {
+     "product": "Σ（モデル全体）",
+     "leaf": "",
+     "demand": 4056,
+     "on_time": 3864,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 192
+    }
+   ],
+   "inventory_lot_weeks": 63575,
+   "inventory_lot_weeks_report": 60062,
+   "age_max": 28,
+   "over_52": 0,
+   "ship_digest": {
+    "n": 3864,
+    "sha256": "cd5518ddfe5e3132"
+   }
+  },
+  "C04": {
+   "case": "C04",
+   "name": "C3a balance_cut_ratio 行の順を入れ替え",
+   "policy": "balance_cut_ratio",
+   "reordered": true,
+   "input_hashes": {
+    "(policy)": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "model/README.md": "f2eff5c3d5d6a5a2b65bd6b30eaa0490e230dea09cb221445580803ee87264d1",
+    "model/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+    "model/decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+    "model/demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+    "model/edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+    "model/holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+    "model/inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+    "model/lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+    "model/node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+    "model/node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+    "model/planning_config.csv": "fcf862631b5738fd50b1828a18fe9ab32bd3e9782d8c516c09be8f837f357994",
+    "model/ppc_edge_cost_rule.csv": "7a1dbef2bf62c715f7a55ca2f1b1ce0fcedf51a209be4b6fc69576a9f6f8ab0d",
+    "model/ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+    "model/ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+    "model/ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+    "model/ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+    "model/ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+    "model/ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+    "model/ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+    "model/ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+    "model/push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+    "model/route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+    "model/sc_tree_master.csv": "cfa3a8b6fd004a14bf3f5cce61bf1a515c2041dace83a2d495493950b9736d59",
+    "model/sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+    "model/vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+    "model/vc_customs_valuation_rule.csv": "991a486a81a631b99396d359ad683e743181b02f7e06b2625a7607e82fbc3a64",
+    "model/vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+    "model/vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98",
+    "model/vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2",
+    "model/vc_sales_cost_rule.csv": "30da14e49384d4e1292b7b490a3a1f6b957ec5efaef5fd973f59e1caefb84297",
+    "model/vc_trade_terms.csv": "f8ac17ea24f4858c871858f564e7f2555a6cf770f4663b3ea962704ff571ca59"
+   },
+   "summary": {
+    "P0_report": 601102836.0,
+    "report_period": [
+     "2027-W01",
+     "2029-W52"
+    ],
+    "valuation": "評価済み",
+    "unvalued_consolidated_lines": 0,
+    "deliveries_by_sku": {
+     "COS_Cream": 1680,
+     "COS_Serum": 2184
+    },
+    "demand_by_sku": {
+     "COS_Cream": 1768,
+     "COS_Serum": 2288
+    },
+    "backlog_end_by_key": {
+     "COS_Cream:SG_Distributor": 22,
+     "COS_Cream:SG_EC": 9,
+     "COS_Cream:SG_Store": 32,
+     "COS_Cream:TH_Distributor": 25,
+     "COS_Serum:SG_Distributor": 25,
+     "COS_Serum:SG_EC": 14,
+     "COS_Serum:SG_Store": 40,
+     "COS_Serum:TH_Distributor": 25
+    },
+    "late_by_key": {},
+    "unallocated_by_key": null,
+    "ppc_gross_profit_full": 601833204.0,
+    "ppc_revenue_full": 1098239160.0,
+    "base_currency": "JPY"
+   },
+   "burden": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Distributor": {
+      "pushed": 16379,
+      "denominator": 897
+     },
+     "SG_EC": {
+      "pushed": 8310,
+      "denominator": 455
+     },
+     "SG_Store": {
+      "pushed": 9979,
+      "denominator": 546
+     },
+     "TH_Distributor": {
+      "pushed": 7127,
+      "denominator": 390
+     }
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Distributor": {
+      "pushed": 13665,
+      "denominator": 754
+     },
+     "SG_EC": {
+      "pushed": 5419,
+      "denominator": 299
+     },
+     "SG_Store": {
+      "pushed": 7539,
+      "denominator": 416
+     },
+     "TH_Distributor": {
+      "pushed": 5370,
+      "denominator": 299
+     }
+    }
+   },
+   "past_due": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Store": 35,
+     "SG_EC": 14,
+     "SG_Distributor": 25,
+     "TH_Distributor": 17
+    },
+    "IN:leaf_in:Materials_JP:COS_Serum": {
+     "SG_Store": 5,
+     "TH_Distributor": 8
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Store": 32,
+     "TH_Distributor": 25,
+     "SG_Distributor": 15,
+     "SG_EC": 6
+    },
+    "IN:leaf_in:Materials_JP:COS_Cream": {
+     "SG_EC": 3,
+     "SG_Distributor": 7
+    }
+   },
+   "past_due_total": 192,
+   "cap_dropped": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Store": 35,
+     "SG_EC": 14,
+     "SG_Distributor": 25,
+     "TH_Distributor": 17
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Store": 32,
+     "TH_Distributor": 25,
+     "SG_Distributor": 15,
+     "SG_EC": 6
+    }
+   },
+   "cap_dropped_total": 169,
+   "pushed": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "open": {
+      "SG_Store": 9979,
+      "SG_EC": 8310,
+      "SG_Distributor": 16379,
+      "TH_Distributor": 7127
+     },
+     "closed": {},
+     "closed_weeks": {}
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "open": {
+      "SG_Store": 7539,
+      "TH_Distributor": 5370,
+      "SG_Distributor": 13665,
+      "SG_EC": 5419
+     },
+     "closed": {},
+     "closed_weeks": {}
+    }
+   },
+   "capture_policy": [
+    "balance_cut_ratio"
+   ],
+   "capture_market": [
+    {
+     "product": "COS_Serum",
+     "leaf": "TH_Distributor",
+     "demand": 390,
+     "on_time": 365,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 25
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Distributor",
+     "demand": 897,
+     "on_time": 872,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 25
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_EC",
+     "demand": 455,
+     "on_time": 441,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 14
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Store",
+     "demand": 546,
+     "on_time": 506,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 40
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "Σ（製品）",
+     "demand": 2288,
+     "on_time": 2184,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "TH_Distributor",
+     "demand": 299,
+     "on_time": 274,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 25
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Distributor",
+     "demand": 754,
+     "on_time": 732,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 22
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_EC",
+     "demand": 299,
+     "on_time": 290,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 9
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Store",
+     "demand": 416,
+     "on_time": 384,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 32
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "Σ（製品）",
+     "demand": 1768,
+     "on_time": 1680,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 88
+    },
+    {
+     "product": "Σ（モデル全体）",
+     "leaf": "",
+     "demand": 4056,
+     "on_time": 3864,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 192
+    }
+   ],
+   "inventory_lot_weeks": 63575,
+   "inventory_lot_weeks_report": 60062,
+   "age_max": 27,
+   "over_52": 0,
+   "ship_digest": {
+    "n": 3864,
+    "sha256": "cd5518ddfe5e3132"
+   }
+  },
+  "C05": {
+   "case": "C05",
+   "name": "C3a tail 行の順を入れ替え（参考）",
+   "policy": "tail",
+   "reordered": true,
+   "input_hashes": {
+    "(policy)": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "model/README.md": "f2eff5c3d5d6a5a2b65bd6b30eaa0490e230dea09cb221445580803ee87264d1",
+    "model/capacity_plan.csv": "2ca7cf34b3c0719bbe1590dacf19d412e78c7c9dca19c41c988473805524aa54",
+    "model/decouple_optimizer_config.csv": "a625f7b091f2ac3f493ecc80d7a887c8e3908c91ba083920c53fcd332b4eba31",
+    "model/demand_forecast.csv": "b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e",
+    "model/edge_cost_master.csv": "487e0f78228b64d1ef0ebe51b0a6af9bd3aacdce3137972f3b29454e395bd490",
+    "model/holiday_calendar.csv": "f4f29af5821b1694bb477c8ff28261ac551687b02d30b338e32d014b79eeadeb",
+    "model/inventory_master.csv": "6101c4b4c2a1028e617ba432e4d95f2c3aa21a15ce30b4fc4a80808efc587498",
+    "model/lane_assignment.csv": "281e56a90b09e3e7b5d8fb51c8d8fe525c9c3e8cd29fcfb8c3ee327d79bd8046",
+    "model/node_cost_master.csv": "0c383b787c646bb6a1462fbc74992dcc5f0ea75771dad011c5b88bf3affa984b",
+    "model/node_master.csv": "52256777e1708d1a6d90603677905279372663e01ab6ec7e82cf3cfbb228c330",
+    "model/planning_config.csv": "b04e70d9ec840accaf85616a35b6a2ac309316388a83838a5730d7cae34666a8",
+    "model/ppc_edge_cost_rule.csv": "7a1dbef2bf62c715f7a55ca2f1b1ce0fcedf51a209be4b6fc69576a9f6f8ab0d",
+    "model/ppc_fx_rate.csv": "8b010a7b719c8ddd4b5215d8cd6883e59cfe08bfe637a1db39e8f733cb47beee",
+    "model/ppc_market_price.csv": "290d2717b7625053e2ad411e03b26669155d478fe5b943a71e60fa930a653806",
+    "model/ppc_node_cost_rule.csv": "dc490af9f1d185f40b313a33c7f3777241d4ac972ef6e7e6f89ae15b753c9fa5",
+    "model/ppc_node_profit_zone.csv": "35cb6f13c27b99abcba2a5a508b2cd9dc63d6c0d0b85f9330639c40abc1639c5",
+    "model/ppc_profit_zone_rule.csv": "2d6935adf9ea2b162fbc45014eaf723ae507ebdc808f67275aaa062cf20a4cc9",
+    "model/ppc_supplier_cost.csv": "9581cfd399ec2353d1dfd87d862a489bed65e0c20f166c80233045d5c86e90b9",
+    "model/ppc_tariff_rule.csv": "e26bc99abf9995073022301738df6546d532a24225be8c7ebeb050305e2a5b5b",
+    "model/ppc_transfer_price_rule.csv": "358de398a83d80169851385f706d64c3ff3475cdde18511157fbc086cf2adf4f",
+    "model/push_config.csv": "625b14e65944a951f89cccf476eeda0787aeaa5dba856fc554d4dc8ffcbe51d7",
+    "model/route_master.csv": "4dc9750285d9acbf08f55ce08fec9573d9740d7edcd0b64b56de08641c7902bb",
+    "model/sc_tree_master.csv": "cfa3a8b6fd004a14bf3f5cce61bf1a515c2041dace83a2d495493950b9736d59",
+    "model/sku_master.csv": "14b6719df3b1bdd9f9bbbbc98ee8cc23adef78402377280cb93a57106a61a678",
+    "model/vc_config.csv": "e5867d9d877f292fa7650bc648998f37774475c421f2776d5c40361c6ebb2d27",
+    "model/vc_customs_valuation_rule.csv": "991a486a81a631b99396d359ad683e743181b02f7e06b2625a7607e82fbc3a64",
+    "model/vc_entity.csv": "293da8938ec45a6c266524402271b745ab1d932258d5706e5bb764e8a3ca41ff",
+    "model/vc_node_assignment.csv": "cd53da9670344f7dd1e8edee67142a319f1f335be0f1d2e6b4179acf659bff98",
+    "model/vc_price_rule.csv": "92be7714f745ff3314e74bce424777c2c7c8e58c4832c6ad817057ded42ae2e2",
+    "model/vc_sales_cost_rule.csv": "30da14e49384d4e1292b7b490a3a1f6b957ec5efaef5fd973f59e1caefb84297",
+    "model/vc_trade_terms.csv": "f8ac17ea24f4858c871858f564e7f2555a6cf770f4663b3ea962704ff571ca59"
+   },
+   "summary": {
+    "P0_report": 597070584.0,
+    "report_period": [
+     "2027-W01",
+     "2029-W52"
+    ],
+    "valuation": "評価済み",
+    "unvalued_consolidated_lines": 0,
+    "deliveries_by_sku": {
+     "COS_Cream": 1680,
+     "COS_Serum": 2184
+    },
+    "demand_by_sku": {
+     "COS_Cream": 1768,
+     "COS_Serum": 2288
+    },
+    "backlog_end_by_key": {
+     "COS_Cream:SG_Store": 88,
+     "COS_Serum:SG_Store": 104
+    },
+    "late_by_key": {},
+    "unallocated_by_key": null,
+    "ppc_gross_profit_full": 597800952.0,
+    "ppc_revenue_full": 1075405440.0,
+    "base_currency": "JPY"
+   },
+   "burden": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Distributor": {
+      "pushed": 0,
+      "denominator": 897
+     },
+     "SG_EC": {
+      "pushed": 0,
+      "denominator": 455
+     },
+     "SG_Store": {
+      "pushed": 41795,
+      "denominator": 546
+     },
+     "TH_Distributor": {
+      "pushed": 0,
+      "denominator": 390
+     }
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Distributor": {
+      "pushed": 0,
+      "denominator": 754
+     },
+     "SG_EC": {
+      "pushed": 0,
+      "denominator": 299
+     },
+     "SG_Store": {
+      "pushed": 31993,
+      "denominator": 416
+     },
+     "TH_Distributor": {
+      "pushed": 0,
+      "denominator": 299
+     }
+    }
+   },
+   "past_due": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Store": 91
+    },
+    "IN:leaf_in:Materials_JP:COS_Serum": {
+     "SG_Store": 13
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Store": 78
+    },
+    "IN:leaf_in:Materials_JP:COS_Cream": {
+     "SG_Store": 10
+    }
+   },
+   "past_due_total": 192,
+   "cap_dropped": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "SG_Store": 91
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "SG_Store": 78
+    }
+   },
+   "cap_dropped_total": 169,
+   "pushed": {
+    "IN:mom:Factory_JP:COS_Serum": {
+     "open": {
+      "SG_Store": 41795
+     },
+     "closed": {},
+     "closed_weeks": {}
+    },
+    "IN:mom:Factory_JP:COS_Cream": {
+     "open": {
+      "SG_Store": 31993
+     },
+     "closed": {},
+     "closed_weeks": {}
+    }
+   },
+   "capture_policy": [
+    "tail"
+   ],
+   "capture_market": [
+    {
+     "product": "COS_Serum",
+     "leaf": "TH_Distributor",
+     "demand": 390,
+     "on_time": 390,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Distributor",
+     "demand": 897,
+     "on_time": 897,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_EC",
+     "demand": 455,
+     "on_time": 455,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "SG_Store",
+     "demand": 546,
+     "on_time": 442,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "COS_Serum",
+     "leaf": "Σ（製品）",
+     "demand": 2288,
+     "on_time": 2184,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "TH_Distributor",
+     "demand": 299,
+     "on_time": 299,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Distributor",
+     "demand": 754,
+     "on_time": 754,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_EC",
+     "demand": 299,
+     "on_time": 299,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "SG_Store",
+     "demand": 416,
+     "on_time": 328,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 88
+    },
+    {
+     "product": "COS_Cream",
+     "leaf": "Σ（製品）",
+     "demand": 1768,
+     "on_time": 1680,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 88
+    },
+    {
+     "product": "Σ（モデル全体）",
+     "leaf": "",
+     "demand": 4056,
+     "on_time": 3864,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 192
+    }
+   ],
+   "inventory_lot_weeks": 62814,
+   "inventory_lot_weeks_report": 59301,
+   "age_max": 27,
+   "over_52": 0,
+   "ship_digest": {
+    "n": 3864,
+    "sha256": "2826ec8c0538ce25"
+   }
+  }
+ }
+}

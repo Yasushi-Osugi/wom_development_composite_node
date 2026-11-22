@@ -1,0 +1,742 @@
+{
+ "cases": {
+  "C01": {
+   "case": "C01",
+   "name": "C03 tail",
+   "policy": "tail",
+   "reordered": false,
+   "input_hashes": {
+    "(policy)": "ce38426630b8a9e2d2c95bedd327737d8ad6c468b496ef658d75c4364eaf3c88",
+    "inputs/allocation_qty_R1_equal.csv": "e19196e0e32548198fe9cca74e5a652f1f3fab9c6c696b9929c9eb1b1aff1889",
+    "model/README.md": "38aaf252c894221c9b0f00ad2dc6554a9908ed5f5ab95f4c307fc98e0ddd3c13",
+    "model/capacity_plan.csv": "3e4034b252a4fc0308fe0d6f99094e5bff0325a338cc396128e772f7110278c8",
+    "model/demand_forecast.csv": "80940d6104218fc9a6ff35f69e99bc7fda4c83a0be89eddfbfbb37582fccaec0",
+    "model/demand_forecast_A01.csv": "681701910a271c8aa9250754f815b152cbde1ddc59b1c0d0e7cd4112ae2f9ac8",
+    "model/demand_forecast_A02.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A03.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A04.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A05.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A06.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A08.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_S1.csv": "5d2c25cf5091818e2ac4f57d019b5d6837cbc8fc405feded4352aee5b257ba45",
+    "model/demand_forecast_S2.csv": "a4c9ea1b5347b9ab3f17f0fc19f6560c54a98194a74c42624e3d27e95ee2acc6",
+    "model/edge_cost_master.csv": "60c7b33734db2755bda6045185638a9a26515459e32216323be0c43a3d78a1c5",
+    "model/ga_fx_policy_master.csv": "d6b9f35d5173f31583f124548468743ecbd8e18bbd1aede52684e49794ff7093",
+    "model/ga_market_aggregation.csv": "b89f7cc3f8f67ea55f7a1482c8fc3d1e06af05a68615892b8564a8c295e5dd02",
+    "model/ga_scenario_master.csv": "89dc29eeb6160ff59af9a937ac7e090861a554f38492ac711a8022072168f7ad",
+    "model/holiday_calendar.csv": "b5012392952ddd41048e13fe46a57c077828d54caccac0b2f597346fbac81811",
+    "model/inventory_master.csv": "0e281a5f2f2f2b172f44ba4fc2bc78a61b91c8479ec481b2007c7dfaf4c7649b",
+    "model/lane_assignment.csv": "f8fb95860c6794870c5c09322e9c9014be7073233754f926b569cd25f2a5d2d9",
+    "model/node_cost_master.csv": "ab6447424f139a4993a48488d28ea076b135c0a3ce0d73a1e70f5c414631aacd",
+    "model/node_master.csv": "ee6aa84540ef9bbc64fb0c0b499d058488db59d470a3ea8290e169c3cda7c15f",
+    "model/operating_calendar.csv": "4faa6a337c48dfb1d0b901c00bda7e19a363971e81ced59355b5f214966716d0",
+    "model/planning_config.csv": "fbe229548c0d3c6046681222fa349421cdf155e56ffe6b369072ef2271807808",
+    "model/ppc_edge_cost_rule.csv": "379fb7b2ed0bfd3a63b22d46c2e0181820f84b4a01f307c3fc4d8d09a3ac321b",
+    "model/ppc_fx_rate.csv": "9d9eb8b58d99ec48a3312a498fa3bca6fd85176e322d426fae903d2055c79c7e",
+    "model/ppc_market_price.csv": "00e5d81291e5a4cfdc4f780cc5641167701dfff7d3b0b7983f433e4ec0817c19",
+    "model/ppc_node_cost_rule.csv": "7356020fba26a18644a8a2018d395bdf90e5a10e1fbb9269366ff826290d6577",
+    "model/ppc_node_profit_zone.csv": "243fd56a1bf058e95e23dbb54debfadd8ce5fb3d4323ec6e8ad95bffb97f0fca",
+    "model/ppc_profit_zone_rule.csv": "02e12ac08902c184cd682ffa2fd4266d98a104b084e293aa3340d0ce084a924d",
+    "model/ppc_supplier_cost.csv": "c9b5529820e12d20bff0d94d4816ffdf9c92bf947062981c6495f790c562ea26",
+    "model/ppc_tariff_rule.csv": "9d9ff30cb69be60068320067ef03a606d2e351e43fbeea95628a1be2e31dcb2f",
+    "model/ppc_transfer_price_rule.csv": "4e4fc06cd20ceb52946c92ca2095d92db370817ffde81a6691b72727c912ce47",
+    "model/push_config.csv": "bb6e4d1cc7105358694992d75c85308dedff4f6462b17dae4be47c0aca20a1d9",
+    "model/route_master.csv": "2d7beee11e7df0474cd3ea6710e2c383c652075dec52323c420a3e3896a33b64",
+    "model/sc_tree_master.csv": "21a834ccc0eb00a684803cbf2ee8472733ed2e4779c378403636aeafaba01416",
+    "model/sku_master.csv": "4eadfa48ba48d55c83dd247da5a4ccade4ae32932e6d1ccc0309ff232eb97830",
+    "model/vc_config.csv": "e9f262d7e98d9baf91af419190a392e23463bc71300d34b95080f9c47e1ceaf1",
+    "model/vc_entity.csv": "d808c64976eb391a953cf3cb9755ca483d8a688918f43564ee35662616cb168d",
+    "model/vc_node_assignment.csv": "b0cc3ee00d90e0f1a886e5ac560115fc59c41677cf6fb009dea55a8cc2515f10",
+    "model/vc_price_rule.csv": "d55eb66557b18065630ffe634fad9e478896cfe568863303ba22e771e933d3c5"
+   },
+   "summary": {
+    "P0_report": 77597921.12712774,
+    "report_period": [
+     "2027-W01",
+     "2028-W52"
+    ],
+    "valuation": "評価済み",
+    "unvalued_consolidated_lines": 0,
+    "deliveries_by_sku": {
+     "Soy_Sauce": 87344
+    },
+    "demand_by_sku": {
+     "Soy_Sauce": 87975
+    },
+    "backlog_end_by_key": {
+     "Soy_Sauce:BE": 82,
+     "Soy_Sauce:FR": 91,
+     "Soy_Sauce:NL": 458
+    },
+    "late_by_key": {},
+    "unallocated_by_key": {
+     "Soy_Sauce:BE": 1789,
+     "Soy_Sauce:FR": 2684,
+     "Soy_Sauce:NL": 1789,
+     "Soy_Sauce:US_E": 3132,
+     "Soy_Sauce:US_W": 3132
+    },
+    "ppc_gross_profit_full": 142242435.89499998,
+    "ppc_revenue_full": 520924532.0,
+    "base_currency": "JPY"
+   },
+   "burden": {
+    "IN:mom:Bottling_Noda:Soy_Sauce": {
+     "BE": {
+      "pushed": 17865,
+      "denominator": 8261
+     },
+     "FR": {
+      "pushed": 26762,
+      "denominator": 12391
+     },
+     "JP": {
+      "pushed": 64800,
+      "denominator": 30150
+     },
+     "NL": {
+      "pushed": 394395,
+      "denominator": 8261
+     },
+     "US_E": {
+      "pushed": 30978,
+      "denominator": 14456
+     },
+     "US_W": {
+      "pushed": 30816,
+      "denominator": 14456
+     }
+    }
+   },
+   "past_due": {},
+   "past_due_total": 0,
+   "cap_dropped": {},
+   "cap_dropped_total": 0,
+   "pushed": {
+    "IN:mom:Bottling_Noda:Soy_Sauce": {
+     "open": {
+      "FR": 26021,
+      "BE": 17373,
+      "NL": 386819,
+      "US_W": 29952,
+      "US_E": 30114,
+      "JP": 63000
+     },
+     "closed": {
+      "US_W": 864,
+      "US_E": 864,
+      "JP": 1800,
+      "FR": 741,
+      "BE": 492,
+      "NL": 7576
+     },
+     "closed_weeks": {
+      "2027-W18": {
+       "US_W": 432,
+       "US_E": 432,
+       "JP": 900,
+       "FR": 370,
+       "BE": 246,
+       "NL": 5522
+      },
+      "2028-W18": {
+       "US_W": 288,
+       "US_E": 288,
+       "JP": 600,
+       "FR": 247,
+       "BE": 164,
+       "NL": 1596
+      },
+      "2028-W33": {
+       "US_W": 144,
+       "US_E": 144,
+       "JP": 300,
+       "FR": 124,
+       "BE": 82,
+       "NL": 458
+      }
+     }
+    }
+   },
+   "capture_policy": [
+    "tail"
+   ],
+   "capture_market": [
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_US_West",
+     "demand": 14456,
+     "on_time": 14456,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_US_East",
+     "demand": 14456,
+     "on_time": 14456,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_JP",
+     "demand": 30150,
+     "on_time": 30150,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 0
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_FR",
+     "demand": 12391,
+     "on_time": 12300,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 91
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_BE",
+     "demand": 8261,
+     "on_time": 8179,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 82
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_NL",
+     "demand": 8261,
+     "on_time": 7803,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 458
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Σ（製品）",
+     "demand": 87975,
+     "on_time": 87344,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 631
+    },
+    {
+     "product": "Σ（モデル全体）",
+     "leaf": "",
+     "demand": 87975,
+     "on_time": 87344,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 631
+    }
+   ],
+   "inventory_lot_weeks": 2034692,
+   "inventory_lot_weeks_report": 1753946,
+   "age_max": 25,
+   "over_52": 0,
+   "ship_digest": {
+    "n": 87344,
+    "sha256": "319145451c8a2242"
+   }
+  },
+  "C02": {
+   "case": "C02",
+   "name": "C03 proportional_week",
+   "policy": "proportional_week",
+   "reordered": false,
+   "input_hashes": {
+    "(policy)": "ce38426630b8a9e2d2c95bedd327737d8ad6c468b496ef658d75c4364eaf3c88",
+    "inputs/allocation_qty_R1_equal.csv": "e19196e0e32548198fe9cca74e5a652f1f3fab9c6c696b9929c9eb1b1aff1889",
+    "model/README.md": "38aaf252c894221c9b0f00ad2dc6554a9908ed5f5ab95f4c307fc98e0ddd3c13",
+    "model/capacity_plan.csv": "3e4034b252a4fc0308fe0d6f99094e5bff0325a338cc396128e772f7110278c8",
+    "model/demand_forecast.csv": "80940d6104218fc9a6ff35f69e99bc7fda4c83a0be89eddfbfbb37582fccaec0",
+    "model/demand_forecast_A01.csv": "681701910a271c8aa9250754f815b152cbde1ddc59b1c0d0e7cd4112ae2f9ac8",
+    "model/demand_forecast_A02.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A03.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A04.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A05.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A06.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A08.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_S1.csv": "5d2c25cf5091818e2ac4f57d019b5d6837cbc8fc405feded4352aee5b257ba45",
+    "model/demand_forecast_S2.csv": "a4c9ea1b5347b9ab3f17f0fc19f6560c54a98194a74c42624e3d27e95ee2acc6",
+    "model/edge_cost_master.csv": "60c7b33734db2755bda6045185638a9a26515459e32216323be0c43a3d78a1c5",
+    "model/ga_fx_policy_master.csv": "d6b9f35d5173f31583f124548468743ecbd8e18bbd1aede52684e49794ff7093",
+    "model/ga_market_aggregation.csv": "b89f7cc3f8f67ea55f7a1482c8fc3d1e06af05a68615892b8564a8c295e5dd02",
+    "model/ga_scenario_master.csv": "89dc29eeb6160ff59af9a937ac7e090861a554f38492ac711a8022072168f7ad",
+    "model/holiday_calendar.csv": "b5012392952ddd41048e13fe46a57c077828d54caccac0b2f597346fbac81811",
+    "model/inventory_master.csv": "0e281a5f2f2f2b172f44ba4fc2bc78a61b91c8479ec481b2007c7dfaf4c7649b",
+    "model/lane_assignment.csv": "f8fb95860c6794870c5c09322e9c9014be7073233754f926b569cd25f2a5d2d9",
+    "model/node_cost_master.csv": "ab6447424f139a4993a48488d28ea076b135c0a3ce0d73a1e70f5c414631aacd",
+    "model/node_master.csv": "ee6aa84540ef9bbc64fb0c0b499d058488db59d470a3ea8290e169c3cda7c15f",
+    "model/operating_calendar.csv": "4faa6a337c48dfb1d0b901c00bda7e19a363971e81ced59355b5f214966716d0",
+    "model/planning_config.csv": "a0199e8d86909bbf196ec7ea73d5b5d2ac9b0e915d485e3be9caa43c5b50117b",
+    "model/ppc_edge_cost_rule.csv": "379fb7b2ed0bfd3a63b22d46c2e0181820f84b4a01f307c3fc4d8d09a3ac321b",
+    "model/ppc_fx_rate.csv": "9d9eb8b58d99ec48a3312a498fa3bca6fd85176e322d426fae903d2055c79c7e",
+    "model/ppc_market_price.csv": "00e5d81291e5a4cfdc4f780cc5641167701dfff7d3b0b7983f433e4ec0817c19",
+    "model/ppc_node_cost_rule.csv": "7356020fba26a18644a8a2018d395bdf90e5a10e1fbb9269366ff826290d6577",
+    "model/ppc_node_profit_zone.csv": "243fd56a1bf058e95e23dbb54debfadd8ce5fb3d4323ec6e8ad95bffb97f0fca",
+    "model/ppc_profit_zone_rule.csv": "02e12ac08902c184cd682ffa2fd4266d98a104b084e293aa3340d0ce084a924d",
+    "model/ppc_supplier_cost.csv": "c9b5529820e12d20bff0d94d4816ffdf9c92bf947062981c6495f790c562ea26",
+    "model/ppc_tariff_rule.csv": "9d9ff30cb69be60068320067ef03a606d2e351e43fbeea95628a1be2e31dcb2f",
+    "model/ppc_transfer_price_rule.csv": "4e4fc06cd20ceb52946c92ca2095d92db370817ffde81a6691b72727c912ce47",
+    "model/push_config.csv": "bb6e4d1cc7105358694992d75c85308dedff4f6462b17dae4be47c0aca20a1d9",
+    "model/route_master.csv": "2d7beee11e7df0474cd3ea6710e2c383c652075dec52323c420a3e3896a33b64",
+    "model/sc_tree_master.csv": "21a834ccc0eb00a684803cbf2ee8472733ed2e4779c378403636aeafaba01416",
+    "model/sku_master.csv": "4eadfa48ba48d55c83dd247da5a4ccade4ae32932e6d1ccc0309ff232eb97830",
+    "model/vc_config.csv": "e9f262d7e98d9baf91af419190a392e23463bc71300d34b95080f9c47e1ceaf1",
+    "model/vc_entity.csv": "d808c64976eb391a953cf3cb9755ca483d8a688918f43564ee35662616cb168d",
+    "model/vc_node_assignment.csv": "b0cc3ee00d90e0f1a886e5ac560115fc59c41677cf6fb009dea55a8cc2515f10",
+    "model/vc_price_rule.csv": "d55eb66557b18065630ffe634fad9e478896cfe568863303ba22e771e933d3c5"
+   },
+   "summary": {
+    "P0_report": 77442807.75212777,
+    "report_period": [
+     "2027-W01",
+     "2028-W52"
+    ],
+    "valuation": "評価済み",
+    "unvalued_consolidated_lines": 0,
+    "deliveries_by_sku": {
+     "Soy_Sauce": 87344
+    },
+    "demand_by_sku": {
+     "Soy_Sauce": 87975
+    },
+    "backlog_end_by_key": {
+     "Soy_Sauce:BE": 73,
+     "Soy_Sauce:FR": 110,
+     "Soy_Sauce:JP": 130,
+     "Soy_Sauce:NL": 73,
+     "Soy_Sauce:US_E": 128,
+     "Soy_Sauce:US_W": 117
+    },
+    "late_by_key": {},
+    "unallocated_by_key": {
+     "Soy_Sauce:BE": 1789,
+     "Soy_Sauce:FR": 2684,
+     "Soy_Sauce:NL": 1789,
+     "Soy_Sauce:US_E": 3132,
+     "Soy_Sauce:US_W": 3132
+    },
+    "ppc_gross_profit_full": 142617607.14499998,
+    "ppc_revenue_full": 521543332.0,
+    "base_currency": "JPY"
+   },
+   "burden": {
+    "IN:mom:Bottling_Noda:Soy_Sauce": {
+     "BE": {
+      "pushed": 54526,
+      "denominator": 8261
+     },
+     "FR": {
+      "pushed": 81792,
+      "denominator": 12391
+     },
+     "JP": {
+      "pushed": 184577,
+      "denominator": 30150
+     },
+     "NL": {
+      "pushed": 54526,
+      "denominator": 8261
+     },
+     "US_E": {
+      "pushed": 95426,
+      "denominator": 14456
+     },
+     "US_W": {
+      "pushed": 94769,
+      "denominator": 14456
+     }
+    }
+   },
+   "past_due": {},
+   "past_due_total": 0,
+   "cap_dropped": {},
+   "cap_dropped_total": 0,
+   "pushed": {
+    "IN:mom:Bottling_Noda:Soy_Sauce": {
+     "open": {
+      "JP": 180349,
+      "US_W": 92741,
+      "BE": 53368,
+      "FR": 80054,
+      "NL": 53368,
+      "US_E": 93399
+     },
+     "closed": {
+      "JP": 4228,
+      "US_W": 2028,
+      "BE": 1158,
+      "FR": 1738,
+      "NL": 1158,
+      "US_E": 2027
+     },
+     "closed_weeks": {
+      "2027-W18": {
+       "JP": 2708,
+       "US_W": 1299,
+       "BE": 742,
+       "FR": 1113,
+       "NL": 742,
+       "US_E": 1298
+      },
+      "2028-W18": {
+       "JP": 1091,
+       "US_W": 523,
+       "BE": 299,
+       "FR": 448,
+       "NL": 299,
+       "US_E": 523
+      },
+      "2028-W33": {
+       "JP": 429,
+       "US_W": 206,
+       "BE": 117,
+       "FR": 177,
+       "NL": 117,
+       "US_E": 206
+      }
+     }
+    }
+   },
+   "capture_policy": [
+    "proportional_week"
+   ],
+   "capture_market": [
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_US_West",
+     "demand": 14456,
+     "on_time": 14339,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 117
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_US_East",
+     "demand": 14456,
+     "on_time": 14328,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 128
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_JP",
+     "demand": 30150,
+     "on_time": 30020,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 130
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_FR",
+     "demand": 12391,
+     "on_time": 12281,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 110
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_BE",
+     "demand": 8261,
+     "on_time": 8188,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 73
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_NL",
+     "demand": 8261,
+     "on_time": 8188,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 73
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Σ（製品）",
+     "demand": 87975,
+     "on_time": 87344,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 631
+    },
+    {
+     "product": "Σ（モデル全体）",
+     "leaf": "",
+     "demand": 87975,
+     "on_time": 87344,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 631
+    }
+   ],
+   "inventory_lot_weeks": 2035602,
+   "inventory_lot_weeks_report": 1754856,
+   "age_max": 25,
+   "over_52": 0,
+   "ship_digest": {
+    "n": 87344,
+    "sha256": "d598c4a985891161"
+   }
+  },
+  "C03": {
+   "case": "C03",
+   "name": "C03 balance_cut_ratio",
+   "policy": "balance_cut_ratio",
+   "reordered": false,
+   "input_hashes": {
+    "(policy)": "ce38426630b8a9e2d2c95bedd327737d8ad6c468b496ef658d75c4364eaf3c88",
+    "inputs/allocation_qty_R1_equal.csv": "e19196e0e32548198fe9cca74e5a652f1f3fab9c6c696b9929c9eb1b1aff1889",
+    "model/README.md": "38aaf252c894221c9b0f00ad2dc6554a9908ed5f5ab95f4c307fc98e0ddd3c13",
+    "model/capacity_plan.csv": "3e4034b252a4fc0308fe0d6f99094e5bff0325a338cc396128e772f7110278c8",
+    "model/demand_forecast.csv": "80940d6104218fc9a6ff35f69e99bc7fda4c83a0be89eddfbfbb37582fccaec0",
+    "model/demand_forecast_A01.csv": "681701910a271c8aa9250754f815b152cbde1ddc59b1c0d0e7cd4112ae2f9ac8",
+    "model/demand_forecast_A02.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A03.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A04.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A05.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A06.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_A08.csv": "c2b3f23f4023196327c3c25f8b410389926569cbf36a7c53e7362871703e6fee",
+    "model/demand_forecast_S1.csv": "5d2c25cf5091818e2ac4f57d019b5d6837cbc8fc405feded4352aee5b257ba45",
+    "model/demand_forecast_S2.csv": "a4c9ea1b5347b9ab3f17f0fc19f6560c54a98194a74c42624e3d27e95ee2acc6",
+    "model/edge_cost_master.csv": "60c7b33734db2755bda6045185638a9a26515459e32216323be0c43a3d78a1c5",
+    "model/ga_fx_policy_master.csv": "d6b9f35d5173f31583f124548468743ecbd8e18bbd1aede52684e49794ff7093",
+    "model/ga_market_aggregation.csv": "b89f7cc3f8f67ea55f7a1482c8fc3d1e06af05a68615892b8564a8c295e5dd02",
+    "model/ga_scenario_master.csv": "89dc29eeb6160ff59af9a937ac7e090861a554f38492ac711a8022072168f7ad",
+    "model/holiday_calendar.csv": "b5012392952ddd41048e13fe46a57c077828d54caccac0b2f597346fbac81811",
+    "model/inventory_master.csv": "0e281a5f2f2f2b172f44ba4fc2bc78a61b91c8479ec481b2007c7dfaf4c7649b",
+    "model/lane_assignment.csv": "f8fb95860c6794870c5c09322e9c9014be7073233754f926b569cd25f2a5d2d9",
+    "model/node_cost_master.csv": "ab6447424f139a4993a48488d28ea076b135c0a3ce0d73a1e70f5c414631aacd",
+    "model/node_master.csv": "ee6aa84540ef9bbc64fb0c0b499d058488db59d470a3ea8290e169c3cda7c15f",
+    "model/operating_calendar.csv": "4faa6a337c48dfb1d0b901c00bda7e19a363971e81ced59355b5f214966716d0",
+    "model/planning_config.csv": "18616d965af9b604c2822e655ff11f06dffe75620b7c48f1124a59944ca3a8df",
+    "model/ppc_edge_cost_rule.csv": "379fb7b2ed0bfd3a63b22d46c2e0181820f84b4a01f307c3fc4d8d09a3ac321b",
+    "model/ppc_fx_rate.csv": "9d9eb8b58d99ec48a3312a498fa3bca6fd85176e322d426fae903d2055c79c7e",
+    "model/ppc_market_price.csv": "00e5d81291e5a4cfdc4f780cc5641167701dfff7d3b0b7983f433e4ec0817c19",
+    "model/ppc_node_cost_rule.csv": "7356020fba26a18644a8a2018d395bdf90e5a10e1fbb9269366ff826290d6577",
+    "model/ppc_node_profit_zone.csv": "243fd56a1bf058e95e23dbb54debfadd8ce5fb3d4323ec6e8ad95bffb97f0fca",
+    "model/ppc_profit_zone_rule.csv": "02e12ac08902c184cd682ffa2fd4266d98a104b084e293aa3340d0ce084a924d",
+    "model/ppc_supplier_cost.csv": "c9b5529820e12d20bff0d94d4816ffdf9c92bf947062981c6495f790c562ea26",
+    "model/ppc_tariff_rule.csv": "9d9ff30cb69be60068320067ef03a606d2e351e43fbeea95628a1be2e31dcb2f",
+    "model/ppc_transfer_price_rule.csv": "4e4fc06cd20ceb52946c92ca2095d92db370817ffde81a6691b72727c912ce47",
+    "model/push_config.csv": "bb6e4d1cc7105358694992d75c85308dedff4f6462b17dae4be47c0aca20a1d9",
+    "model/route_master.csv": "2d7beee11e7df0474cd3ea6710e2c383c652075dec52323c420a3e3896a33b64",
+    "model/sc_tree_master.csv": "21a834ccc0eb00a684803cbf2ee8472733ed2e4779c378403636aeafaba01416",
+    "model/sku_master.csv": "4eadfa48ba48d55c83dd247da5a4ccade4ae32932e6d1ccc0309ff232eb97830",
+    "model/vc_config.csv": "e9f262d7e98d9baf91af419190a392e23463bc71300d34b95080f9c47e1ceaf1",
+    "model/vc_entity.csv": "d808c64976eb391a953cf3cb9755ca483d8a688918f43564ee35662616cb168d",
+    "model/vc_node_assignment.csv": "b0cc3ee00d90e0f1a886e5ac560115fc59c41677cf6fb009dea55a8cc2515f10",
+    "model/vc_price_rule.csv": "d55eb66557b18065630ffe634fad9e478896cfe568863303ba22e771e933d3c5"
+   },
+   "summary": {
+    "P0_report": 77515284.80275275,
+    "report_period": [
+     "2027-W01",
+     "2028-W52"
+    ],
+    "valuation": "評価済み",
+    "unvalued_consolidated_lines": 0,
+    "deliveries_by_sku": {
+     "Soy_Sauce": 87344
+    },
+    "demand_by_sku": {
+     "Soy_Sauce": 87975
+    },
+    "backlog_end_by_key": {
+     "Soy_Sauce:BE": 59,
+     "Soy_Sauce:FR": 89,
+     "Soy_Sauce:JP": 216,
+     "Soy_Sauce:NL": 59,
+     "Soy_Sauce:US_E": 104,
+     "Soy_Sauce:US_W": 104
+    },
+    "late_by_key": {},
+    "unallocated_by_key": {
+     "Soy_Sauce:BE": 1789,
+     "Soy_Sauce:FR": 2684,
+     "Soy_Sauce:NL": 1789,
+     "Soy_Sauce:US_E": 3132,
+     "Soy_Sauce:US_W": 3132
+    },
+    "ppc_gross_profit_full": 142845149.015,
+    "ppc_revenue_full": 521911284.0,
+    "base_currency": "JPY"
+   },
+   "burden": {
+    "IN:mom:Bottling_Noda:Soy_Sauce": {
+     "BE": {
+      "pushed": 53112,
+      "denominator": 8261
+     },
+     "FR": {
+      "pushed": 79665,
+      "denominator": 12391
+     },
+     "JP": {
+      "pushed": 193843,
+      "denominator": 30150
+     },
+     "NL": {
+      "pushed": 53112,
+      "denominator": 8261
+     },
+     "US_E": {
+      "pushed": 92942,
+      "denominator": 14456
+     },
+     "US_W": {
+      "pushed": 92942,
+      "denominator": 14456
+     }
+    }
+   },
+   "past_due": {},
+   "past_due_total": 0,
+   "cap_dropped": {},
+   "cap_dropped_total": 0,
+   "pushed": {
+    "IN:mom:Bottling_Noda:Soy_Sauce": {
+     "open": {
+      "JP": 189401,
+      "US_W": 90956,
+      "BE": 51985,
+      "FR": 77977,
+      "NL": 51985,
+      "US_E": 90975
+     },
+     "closed": {
+      "JP": 4442,
+      "US_W": 1986,
+      "BE": 1127,
+      "FR": 1688,
+      "NL": 1127,
+      "US_E": 1967
+     },
+     "closed_weeks": {
+      "2027-W18": {
+       "JP": 2777,
+       "US_W": 1284,
+       "BE": 733,
+       "FR": 1097,
+       "NL": 733,
+       "US_E": 1278
+      },
+      "2028-W18": {
+       "JP": 1177,
+       "US_W": 507,
+       "BE": 286,
+       "FR": 428,
+       "NL": 286,
+       "US_E": 499
+      },
+      "2028-W33": {
+       "JP": 488,
+       "US_W": 195,
+       "BE": 108,
+       "FR": 163,
+       "NL": 108,
+       "US_E": 190
+      }
+     }
+    }
+   },
+   "capture_policy": [
+    "balance_cut_ratio"
+   ],
+   "capture_market": [
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_US_West",
+     "demand": 14456,
+     "on_time": 14352,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_US_East",
+     "demand": 14456,
+     "on_time": 14352,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 104
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_JP",
+     "demand": 30150,
+     "on_time": 29934,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 216
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_FR",
+     "demand": 12391,
+     "on_time": 12302,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 89
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_BE",
+     "demand": 8261,
+     "on_time": 8202,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 59
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Rest_NL",
+     "demand": 8261,
+     "on_time": 8202,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 59
+    },
+    {
+     "product": "Soy_Sauce",
+     "leaf": "Σ（製品）",
+     "demand": 87975,
+     "on_time": 87344,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 631
+    },
+    {
+     "product": "Σ（モデル全体）",
+     "leaf": "",
+     "demand": 87975,
+     "on_time": 87344,
+     "early": 0,
+     "late": 0,
+     "backlog_end": 631
+    }
+   ],
+   "inventory_lot_weeks": 2036204,
+   "inventory_lot_weeks_report": 1755458,
+   "age_max": 25,
+   "over_52": 0,
+   "ship_digest": {
+    "n": 87344,
+    "sha256": "f6c352ffec84b0bb"
+   }
+  }
+ }
+}
