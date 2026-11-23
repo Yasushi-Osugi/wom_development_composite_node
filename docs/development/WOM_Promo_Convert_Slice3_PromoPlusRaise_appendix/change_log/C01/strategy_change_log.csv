@@ -1,0 +1,2 @@
+plan_id,campaign_id,measure_id,measure_version,hypothesis_id,hypothesis_version,level,env_id,catalog_version,base_model,base_demand_sha256,start_sha,file,key,column,week,before,after,rule,note
+P_BASE,,,,,,,ENV_BASE_v01,v0.1 (sha256:325c39c8aaca),data/sample/cosmetics-sg-th-2027-2029,b9ae795e4a713cd880a5b35cb41035106b227b0e2b9d12c37b0c519c619d829e,d42a088dbfc9a3fd80a85894a1fdf4746937e282,,,,,,,no_measure,施策なし（需要・費用の前提を変えない）
