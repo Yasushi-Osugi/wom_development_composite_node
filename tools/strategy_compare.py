@@ -12,6 +12,10 @@ fulfillment_by_key.csv・overflow_by_factory_market.csv（と compare/<基準>__
 --holding-rates 0,0.10 を付けると、年率ごとの在庫の保有費 H と A（＝P0 − 追加費用 − H）の列を足す
 （保有費は wom.cockpit.after_cost.case_facts の在庫の連結原価 × 週、助走を含む。Slice 3 §3）。
 費用の前提の費目ごとの額（cost_<費目>）はいつも出す。
+--avoidable store_operating=1,0.5,0 を付けると、その費目（Value Chain の明細の cost_item）のうち避けられる割合ごとに、
+基準との費目の差 × (1 − 割合) を戻した A の列（A_…_avoid<割合>）を足す（割合 1 ＝ 今の A）。
+--protect <表> を付けると、守る供給の判定（protect_check.csv：市場ごとの ④ と下限、2029 年の内訳）と両立の必要量
+（protect_need.csv）を書く。判定は結果の確かめだけ（Slice 4 §2）。
 --weekly を付けると、案ごとに weekly_<案>.csv・.md（週別の差。⑤ が出た週は範囲の外でも行を足す）、
 market_money_<案>.csv（報告期間の市場別の売上・費用・試算利益）、market_year_<案>.csv（市場 × 要求年の ①・④・⑤）
 （RequestLetter_Promo_Convert_Slice2 §3）。
@@ -33,6 +37,19 @@ from wom.strategy import StrategyError        # noqa: E402
 from wom.strategy import compare as SC        # noqa: E402
 
 
+def _avoidable(spec):
+    """'store_operating=1,0.5,0' -> ('store_operating', [1.0, 0.5, 0.0])."""
+    if not spec:
+        return None
+    if "=" not in spec:
+        raise SystemExit("--avoidable は <費目>=<割合,…>（例 store_operating=1,0.5,0）")
+    item, rs = spec.split("=", 1)
+    ratios = [float(x) for x in rs.split(",") if x.strip()]
+    if not item.strip() or not ratios or any(r < 0 or r > 1 for r in ratios):
+        raise SystemExit("--avoidable の割合は 0〜1（例 store_operating=1,0.5,0）")
+    return item.strip(), ratios
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Summarise converted strategy cases")
     ap.add_argument("--ws", required=True)
@@ -44,6 +61,10 @@ def main(argv=None) -> int:
     ap.add_argument("--no-overflow", action="store_true", help="skip the push-back record (one plan run per case)")
     ap.add_argument("--holding-rates", default=None,
                     help="annual holding rates, e.g. 0,0.10 (holding cost and A per rate; 0 = none)")
+    ap.add_argument("--avoidable", default=None,
+                    help="<cost item>=<ratios>, e.g. store_operating=1,0.5,0 (A per avoidable ratio of that item)")
+    ap.add_argument("--protect", default=None,
+                    help="protected supply table (sku_id,market,floor_lots,basis,note[,floor_lots_2029])")
     ap.add_argument("--weekly", nargs=2, metavar=("START", "END"), default=None,
                     help="weekly differences for these weeks (and every week with backlog), and market money")
     a = ap.parse_args(argv)
@@ -53,7 +74,8 @@ def main(argv=None) -> int:
         res = SC.compare_plans(a.ws, a.base, [c.strip() for c in a.cases.split(",") if c.strip()], a.sku, a.market,
                                a.out, overflow=not a.no_overflow, weekly=tuple(a.weekly) if a.weekly else None,
                                holding_rates=([float(x) for x in a.holding_rates.split(",")] if a.holding_rates
-                                              else None))
+                                              else None),
+                               avoidable=_avoidable(a.avoidable), protect=a.protect)
     except (StrategyError, C.CaseError, StopError, CompareError) as e:
         print(f"[strategy_compare] 止めました: {e}", file=sys.stderr)
         return 2

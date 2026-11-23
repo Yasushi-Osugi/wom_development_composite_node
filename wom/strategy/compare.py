@@ -98,9 +98,12 @@ def _snapshot_same(a: Optional[dict], b: Optional[dict]) -> str:
 
 def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, out: Optional[str] = None,
                   overflow: bool = True, weekly: Optional[tuple] = None,
-                  holding_rates: Optional[List[float]] = None) -> dict:
+                  holding_rates: Optional[List[float]] = None, avoidable: Optional[tuple] = None,
+                  protect: Optional[str] = None) -> dict:
     """weekly=(start week, end week): also write the weekly table and the market tables (Slice 2 §3).
-    holding_rates (e.g. [0, 0.10]): holding cost and A per rate (Slice 3 §3); B_add per cost item."""
+    holding_rates (e.g. [0, 0.10]): holding cost and A per rate (Slice 3 §3); B_add per cost item.
+    avoidable=(cost item, [ratios]): A per avoidable ratio of that item (Slice 4 §2.1).
+    protect=<table>: protected-supply check per case (Slice 4 §2.2), protect_check.csv / protect_need.csv."""
     _ensure_path()
     from wom.cockpit import case_runner as R
     from tools import compare_scenarios as CS
@@ -219,9 +222,35 @@ def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, o
                 else "違う"),
             **extra,
         })
+    if avoidable:
+        item, ratios = avoidable
+        amt = {c: expense_item_amount(runs[c], item) for c in allc}
+        for r in rows:
+            r[f"item_{item}"] = amt[r["case"]]
+            r[f"d_item_{item}_vs_base"] = amt[r["case"]] - amt[base]
+            r.update(avoidable_columns(r, item, amt[r["case"]], amt[base], ratios))
     summ = pd.DataFrame(rows)
     for k in [k for k in summ.columns if k.startswith("A_")]:
         summ["d" + k + "_vs_base"] = summ[k] - float(summ.loc[summ["case"] == base, k].iloc[0])
+    if protect:
+        pt = read_protect(protect)
+        prow = []
+        for c in allc:
+            dbw = _d_by_week(ws, c, sku, market, rs, re_)
+            prow += protect_rows(c, cts[c]["req"], cts[c]["market"], pt, (sku, market), dbw)
+        pr = pd.DataFrame(prow)
+        pr.to_csv(os.path.join(out, "protect_check.csv"), index=False, encoding="utf-8-sig")
+        need = []
+        prods = set(pt["sku_id"])
+        for c in allc:
+            dnet = sum(_d_by_week(ws, c, sku, market, rs, re_).values())
+            tot = int(keys[(keys["case"] == c) & keys["sku_id"].isin(prods)]["delivered"].sum())
+            fl = int(pt["floor_lots"].astype(int).sum())
+            need.append({"case": c, "floors_total": fl, "promo_increment_net": dnet, "need": fl + dnet,
+                         "delivered_total": tot, "surplus": tot - (fl + dnet),
+                         "protected_markets_met": int((pr[(pr["case"] == c)]["status"] == "達成").sum()),
+                         "protected_markets": len(pt)})
+        pd.DataFrame(need).to_csv(os.path.join(out, "protect_need.csv"), index=False, encoding="utf-8-sig")
     summ.to_csv(os.path.join(out, "strategy_summary.csv"), index=False, encoding="utf-8-sig")
     keys.to_csv(os.path.join(out, "fulfillment_by_key.csv"), index=False, encoding="utf-8-sig")
     _write_md(summ, os.path.join(out, "strategy_summary.md"), ws, base, cases, rs, re_)
@@ -474,3 +503,106 @@ def weekly_and_market(ws: str, base: str, cases: List[str], sku: str, market: st
             f.write("\n".join(L) + "\n")
         res[c] = {"weekly": wt, "market_money": mm, "market_year": my}
     return res
+
+
+# ── 費用の避けられる割合・守る供給の判定（RequestLetter_Promo_Convert_Slice4 §2） ─────────────────────────
+
+def expense_item_amount(run: dict, item: str) -> float:
+    """Report-period amount of one expense item (vc_money_lines price_type, e.g. store_operating) of the
+    consolidated entities (the lines P0 subtracts)."""
+    _ensure_path()
+    from tools import compare_scenarios as CS
+    _rev, _cogs, exp = CS.consolidated_money_frames(run)
+    v3 = run["v3"][run["v3"]["group_key"] == "GROUP"]
+    rep = set(v3.loc[v3["in_report"].astype(str) == "True", "week_index"].astype(int))
+    e = exp[(exp["price_type"].astype(str) == item) & exp["week_index"].astype(int).isin(rep)]
+    return float(e["amt_hq"].sum())
+
+
+def ratio_text(r: float) -> str:
+    return f"{r * 100:g}%"
+
+
+def avoidable_columns(row: dict, item: str, item_alt: float, item_base: float, ratios: List[float]) -> Dict[str, float]:
+    """The cost item is avoidable only by the ratio r: (1 − r) × (item(case) − item(base)) goes back into every
+    A column of the row (r = 1 leaves A as it is). Works on A and on each A_<holding rate>."""
+    out = {}
+    back = {r: (1.0 - r) * (item_alt - item_base) for r in ratios}
+    a_cols = [k for k in row if k == "A" or (k.startswith("A_") and "_avoid" not in k)]
+    for k in a_cols:
+        for r in ratios:
+            out[f"{k}_avoid{ratio_text(r)}"] = row[k] + back[r]
+    return out
+
+
+PROTECT_COLS = ["sku_id", "market", "floor_lots", "basis", "note"]
+
+
+def read_protect(path: str) -> pd.DataFrame:
+    """The protected supply table: sku_id, market, floor_lots, basis, note (optional floor_lots_2029)."""
+    t = pd.read_csv(path, dtype=str, keep_default_na=False)
+    miss = [c for c in PROTECT_COLS if c not in t.columns]
+    if miss:
+        raise StrategyError(f"{path}: 列が足りません {miss}（列は {PROTECT_COLS}、任意で floor_lots_2029）")
+    for c in ("floor_lots", "floor_lots_2029"):
+        if c in t.columns:
+            for i, v in enumerate(t[c], start=2):
+                if v.strip() == "" and c == "floor_lots_2029":
+                    continue
+                try:
+                    if int(v) < 0:
+                        raise ValueError
+                except ValueError:
+                    raise StrategyError(f"{path} の {i} 行目: {c}={v!r} は 0 以上の整数")
+    if t.duplicated(["sku_id", "market"]).any():
+        raise StrategyError(f"{path}: 同じ sku_id・market の行が重複しています")
+    return t
+
+
+def protect_rows(case: str, req: pd.DataFrame, market_map: Dict[tuple, str], protect: pd.DataFrame,
+                 target: tuple, d_by_week: Dict[str, int], year: str = "2029") -> List[dict]:
+    """Check the delivered lots (④, request weeks of the report period) against the floors — a check of the
+    result only, the engine is not told to protect anything. For the target key, the existing part is
+    ④ − (net promotion increment), and the increment is 「届いた」 when every request week the promotion raised
+    was delivered in full on time (the increment's Lot_IDs are not told apart from the existing ones)."""
+    inv = {(s, n): g for (s, g), n in market_map.items()}
+    rows = []
+    for p in protect.itertuples():
+        reg = inv.get((p.sku_id, p.market))
+        if reg is None:
+            raise StrategyError(f"守る供給の表の {p.sku_id} × {p.market} に当たる市場がありません")
+        k = req[(req["sku_id"] == p.sku_id) & (req["region"] == reg)]
+        dlv = int(k["delivered"].sum())
+        dlv_y = int(k.loc[k["request_week"].str[:4] == year, "delivered"].sum())
+        is_t = (p.sku_id, reg) == target
+        d_net = sum(d_by_week.values()) if is_t else 0
+        existing = dlv - d_net
+        r = {"case": case, "sku_id": p.sku_id, "market": p.market, "floor_lots": int(p.floor_lots),
+             "delivered": dlv, "promo_increment_net": d_net, "existing_delivered": existing,
+             "diff": existing - int(p.floor_lots), "status": "達成" if existing >= int(p.floor_lots) else "未達",
+             f"delivered_{year}": dlv_y, "basis": p.basis}
+        f2 = getattr(p, "floor_lots_2029", "")
+        if str(f2).strip() != "":
+            ey = dlv_y - (sum(v for w, v in d_by_week.items() if w[:4] == year) if is_t else 0)
+            r.update({f"floor_lots_{year}": int(f2), f"existing_delivered_{year}": ey,
+                      f"diff_{year}": ey - int(f2), f"status_{year}": "達成" if ey >= int(f2) else "未達"})
+        if is_t:
+            up = [w for w, v in d_by_week.items() if v > 0]
+            kk = k.set_index("request_week")
+            full = [w for w in up if w in kk.index and int(kk.loc[w, "on_time"]) == int(kk.loc[w, "q1"])]
+            r["promo_weeks_raised"] = len(up)
+            r["promo_weeks_full_on_time"] = len(full)
+            r["promo_increment_delivered"] = ("増分なし" if not up else
+                                              ("届いた" if len(full) == len(up) else "一部届かない"))
+        rows.append(r)
+    return rows
+
+
+def _d_by_week(ws: str, cid: str, sku: str, market: str, rs: str, re_: str) -> Dict[str, int]:
+    p = os.path.join(C.case_dir(ws, cid), "inputs", "strategy_change_log.csv")
+    if not os.path.exists(p):
+        return {}
+    log = pd.read_csv(p, dtype=str, keep_default_na=False)
+    dm = log[(log["key"] == f"{sku}|{market}") & (log["column"] == "quantity") & (log["rule"] != "residual")]
+    return {w: int(a) - int(b) for w, a, b in zip(dm["week"], dm["after"], dm["before"])
+            if rs <= w <= re_ and int(a) != int(b)}

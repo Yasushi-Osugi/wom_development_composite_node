@@ -141,3 +141,40 @@ def test_weekly_cost_item_columns_add_up(two):
     assert wt.set_index("week").loc["その他の週", "cost_raise"] == 5            # W03 is outside the range
     mm = SC.market_money(base, alt)
     assert SC.check_weekly_sums(wt, mm, base, alt, SKU, TGT, 100.0, "2028-W01", "2028-W04") == []
+
+
+# ── Slice 4 §2: avoidable ratio of a cost item, protected supply check ────────────────────────────────
+def test_avoidable_ratio_one_keeps_A_and_zero_puts_the_whole_difference_back():
+    row = {"A": 1000.0, "A_なし": 1000.0, "A_10%": 900.0}
+    out = SC.avoidable_columns(row, "store_operating", item_alt=200.0, item_base=333.0, ratios=[1, 0.5, 0])
+    assert out["A_avoid100%"] == 1000.0 and out["A_10%_avoid100%"] == 900.0          # ratio 1 = A as it is
+    assert out["A_avoid0%"] == pytest.approx(1000.0 - 133.0)                       # the whole difference back
+    assert out["A_なし_avoid50%"] == pytest.approx(1000.0 - 66.5)
+    assert out["A_10%_avoid0%"] == pytest.approx(900.0 - 133.0)
+
+
+def test_protect_check_met_short_2029_and_increment(tmp_path):
+    p = tmp_path / "protect.csv"
+    p.write_text("sku_id,market,floor_lots,floor_lots_2029,basis,note\n"
+                 "P,DIST,5,3,C02,x\nP,Shop_EC,4,2,C02,existing part\n", encoding="utf-8")
+    pt = SC.read_protect(str(p))
+    req = pd.DataFrame([
+        {"sku_id": "P", "region": "DIST", "request_week": "2028-W10", "q1": 2, "on_time": 2, "delivered": 2},
+        {"sku_id": "P", "region": "DIST", "request_week": "2029-W10", "q1": 3, "on_time": 2, "delivered": 2},
+        {"sku_id": "P", "region": "EC", "request_week": "2028-W12", "q1": 3, "on_time": 3, "delivered": 3},
+        {"sku_id": "P", "region": "EC", "request_week": "2029-W12", "q1": 2, "on_time": 2, "delivered": 2},
+    ])
+    mm = {("P", "DIST"): "DIST", ("P", "EC"): "Shop_EC"}
+    rows = {r["market"]: r for r in SC.protect_rows("C07", req, mm, pt, ("P", "EC"), {"2028-W12": 1})}
+    d = rows["DIST"]
+    assert (d["delivered"], d["diff"], d["status"]) == (4, -1, "未達")
+    assert (d["existing_delivered_2029"], d["diff_2029"], d["status_2029"]) == (2, -1, "未達")
+    e = rows["Shop_EC"]
+    assert (e["delivered"], e["existing_delivered"], e["status"]) == (5, 4, "達成")   # 5 − increment 1
+    assert e["status_2029"] == "達成" and e["promo_increment_delivered"] == "届いた"
+    req.loc[2, "on_time"] = 2                                                        # one raised lot late
+    e = {r["market"]: r for r in SC.protect_rows("C07", req, mm, pt, ("P", "EC"), {"2028-W12": 1})}["Shop_EC"]
+    assert e["promo_increment_delivered"] == "一部届かない"
+    p.write_text("sku_id,market,floor_lots,basis,note\nP,DIST,-1,x,y\n", encoding="utf-8")
+    with pytest.raises(StrategyError):
+        SC.read_protect(str(p))
