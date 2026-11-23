@@ -53,6 +53,7 @@ AREAS = {
     "test_warmup_soft_blank_attrs_fifo.py": ("core",),
     "test_shelf_life_demand_file.py": ("core", "allocation"),
     "test_shelf_life_row_order.py": ("core",),
+    "test_strategy_weekly_market.py": ("allocation",),
     "test_quantity_allocation.py": ("allocation", "core"),
     "test_upper_demand_plan.py": ("allocation",),
     # capacity: the upper (capacity) layer

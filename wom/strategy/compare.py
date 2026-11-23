@@ -69,7 +69,8 @@ def _snapshot_same(a: Optional[dict], b: Optional[dict]) -> str:
 
 
 def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, out: Optional[str] = None,
-                  overflow: bool = True) -> dict:
+                  overflow: bool = True, weekly: Optional[tuple] = None) -> dict:
+    """weekly=(start week, end week): also write the weekly table and the market tables (Slice 2 §3)."""
     _ensure_path()
     from wom.cockpit import case_runner as R
     from tools import compare_scenarios as CS
@@ -176,7 +177,11 @@ def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, o
     summ.to_csv(os.path.join(out, "strategy_summary.csv"), index=False, encoding="utf-8-sig")
     keys.to_csv(os.path.join(out, "fulfillment_by_key.csv"), index=False, encoding="utf-8-sig")
     _write_md(summ, os.path.join(out, "strategy_summary.md"), ws, base, cases, rs, re_)
-    return {"dir": out, "summary": summ, "keys": keys, "overflow": ov_rows, "compares": recs}
+    wk = None
+    if weekly:
+        dP0 = {r.case: float(r.dP0_vs_base) for r in summ.itertuples()}
+        wk = weekly_and_market(ws, base, cases, sku, market, weekly[0], weekly[1], out, dP0)
+    return {"dir": out, "summary": summ, "keys": keys, "overflow": ov_rows, "compares": recs, "weekly": wk}
 
 
 def _write_md(summ: pd.DataFrame, path: str, ws: str, base: str, cases: List[str], rs: str, re_: str) -> None:
@@ -193,3 +198,212 @@ def _write_md(summ: pd.DataFrame, path: str, ws: str, base: str, cases: List[str
     L += ["", "他の市場の変化：", ""] + [f"- {r.case}：{r.other_markets_changes}" for r in summ.itertuples()]
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(L) + "\n")
+
+
+# ── 週別の表・市場別の金額・市場 × 年（RequestLetter_Promo_Convert_Slice2 §2.2・§2.3・§3） ──────────────────
+#
+# 計算は比較の道具の関数を使う：要求週別の ①〜⑤ は period_fulfillment.request_table、金額は
+# compare_scenarios.money_by_week_market（money_by_week_sku と同じ明細）、工場の生産は compare_scenarios.factory_weekly、
+# 在庫は vc_inventory_weekly（グループの所有）。ここでは案ごとの表を並べて差を取るだけ。
+
+WEEKLY_COLS = ["cost_add", "target_on_time", "target_q5", "other_on_time", "other_q5", "production_all",
+               "production_target_sku", "inventory_lots", "profit_r2", "profit_r2_target_market",
+               "profit_r2_other_markets"]
+MONEY = ["external_revenue", "external_cogs_group", "expense", "profit_r2"]   # = compare_scenarios.MONEY_COLS
+
+
+def cost_by_week(cost_rows: List[dict], labels: List[str]) -> Dict[str, float]:
+    """The case's cost premises (inputs/fixed_cost.csv rows) spread over their paid weeks (report currency)."""
+    out = {w: 0.0 for w in labels}
+    for r in cost_rows:
+        amt = str(r.get("weekly_amount", "")).strip()
+        if amt == "":
+            raise StrategyError(f"費用の前提の {r.get('cost_item')} の週額が未設定です（週別の表に出せない）")
+        a, b = r["paid_start_week"].strip(), r["paid_end_week"].strip()
+        if a not in out or b not in out:
+            raise StrategyError(f"費用の前提の {r.get('cost_item')} の週 {a}〜{b} が計画の週にありません")
+        for w in labels[labels.index(a): labels.index(b) + 1]:
+            out[w] += float(amt)
+    return out
+
+
+def case_frames(ws: str, cid: str) -> dict:
+    """The per-case tables the weekly and market tables need (from the case's run)."""
+    _ensure_path()
+    from tools import compare_scenarios as CS
+    from tools import period_fulfillment as PF
+    cd = C.case_dir(ws, cid)
+    rr = C.read_case(ws, cid)["run"]
+    run = CS.load_run(os.path.join(cd, "run"), os.path.join(cd, rr["money_model"]))
+    udp = os.path.join(cd, rr["udp_dir"]) if rr.get("udp_dir") else None
+    labels = run["week_labels"]
+    req = PF.request_table(run, udp, cid)
+    money = CS.money_by_week_market(run, cid)
+    fw = CS.factory_weekly(run, cid)
+    inv = run["inv"]
+    inv = inv[inv["external"].astype(int) == 0].groupby("week")["lots"].sum()
+    p = os.path.join(cd, "inputs", C.FIXED_COST_FILE)
+    cost_rows = pd.read_csv(p, dtype=str, keep_default_na=False).to_dict("records") if os.path.exists(p) else []
+    return {"case": cid, "labels": labels, "req": req, "money": money,
+            "prod": fw.groupby(["week", "product"])["production_lots"].sum().reset_index(),
+            "inv": {w: int(inv.get(w, 0)) for w in labels}, "cost": cost_by_week(cost_rows, labels)}
+
+
+def _per_week(f: dict, sku: str, region: str) -> pd.DataFrame:
+    labels = f["labels"]
+    req = f["req"]
+    tgt = (req["sku_id"] == sku) & (req["region"] == region)
+    g_t = req[tgt].groupby("request_week")[["on_time", "q5"]].sum()
+    g_o = req[~tgt].groupby("request_week")[["on_time", "q5"]].sum()
+    m = f["money"]
+    mt = (m["sku_id"] == sku) & (m["region"] == region)
+    p_all = m.groupby("week")["profit_r2"].sum()
+    p_t = m[mt].groupby("week")["profit_r2"].sum()
+    prod = f["prod"]
+    pr_all = prod.groupby("week")["production_lots"].sum()
+    pr_s = prod[prod["product"] == sku].groupby("week")["production_lots"].sum()
+    rows = []
+    for w in labels:
+        pa, pt = float(p_all.get(w, 0.0)), float(p_t.get(w, 0.0))
+        rows.append({"week": w, "cost_add": f["cost"].get(w, 0.0),
+                     "target_on_time": int(g_t["on_time"].get(w, 0)), "target_q5": int(g_t["q5"].get(w, 0)),
+                     "other_on_time": int(g_o["on_time"].get(w, 0)), "other_q5": int(g_o["q5"].get(w, 0)),
+                     "production_all": int(pr_all.get(w, 0)), "production_target_sku": int(pr_s.get(w, 0)),
+                     "inventory_lots": int(f["inv"].get(w, 0)),
+                     "profit_r2": pa, "profit_r2_target_market": pt, "profit_r2_other_markets": pa - pt})
+    return pd.DataFrame(rows).set_index("week")
+
+
+def weekly_table(base: dict, alt: dict, sku: str, region: str, w0: str, w1: str) -> pd.DataFrame:
+    """Weekly differences alt − base (§2.3). Rows: the weeks w0..w1, every request week where ⑤ is not 0 in
+    either case (any key), then 「その他の週」 and 「計」 so that every column adds up to the whole plan.
+    ①〜⑤ columns are by request week; cost, production, inventory and profit by the week they happen."""
+    if base["labels"] != alt["labels"]:
+        raise StrategyError("2 案の計画の週が違います（週別の表を並べられない）")
+    labels = base["labels"]
+    for w in (w0, w1):
+        if w not in labels:
+            raise StrategyError(f"週 {w} が計画の週にありません")
+    d = _per_week(alt, sku, region)[WEEKLY_COLS] - _per_week(base, sku, region)[WEEKLY_COLS]
+    q5w = set(base["req"].loc[base["req"]["q5"] > 0, "request_week"]) | set(
+        alt["req"].loc[alt["req"]["q5"] > 0, "request_week"])
+    sel = [w for w in labels if (w0 <= w <= w1) or w in q5w]
+    out = d.loc[sel].copy()
+    out.insert(0, "in_range", [w0 <= w <= w1 for w in sel])
+    out.insert(1, "q5_week", [w in q5w for w in sel])
+    out.loc["その他の週"] = [False, False] + d.drop(index=sel).sum().tolist()
+    out.loc["計"] = [False, False] + d.sum().tolist()
+    out.index.name = "week"
+    return out.reset_index()
+
+
+def _side_by_side(b: pd.DataFrame, a: pd.DataFrame) -> pd.DataFrame:
+    idx = b.index.union(a.index)
+    b, a = b.reindex(idx, fill_value=0), a.reindex(idx, fill_value=0)
+    df = pd.concat({"base": b, "alt": a, "diff": a - b}, axis=1)
+    df.columns = [f"{c}_{s}" for s, c in df.columns]
+    return df.reset_index()
+
+
+def market_money(base: dict, alt: dict) -> pd.DataFrame:
+    """Report-period money by market (§2.2): external revenue, group COGS, expense, round-2 profit; base, alt,
+    alt − base. The last row 「計」 is the whole (= ΔP0)."""
+    def agg(f):
+        m = f["money"]
+        return m[m["in_report"]].groupby(["sku_id", "region", "market"])[MONEY].sum()
+    df = _side_by_side(agg(base), agg(alt))
+    tot = {"sku_id": "*", "region": "*", "market": "計",
+           **df.drop(columns=["sku_id", "region", "market"]).sum().to_dict()}
+    return pd.concat([df, pd.DataFrame([tot])], ignore_index=True)
+
+
+def market_year(base: dict, alt: dict) -> pd.DataFrame:
+    """Key x request year: ①・④ on time・④ delivered・⑤ for base, alt and alt − base (§2.2)."""
+    cols = ["q1", "on_time", "delivered", "q5"]
+
+    def agg(f):
+        r = f["req"].assign(year=f["req"]["request_week"].str[:4])
+        return r.groupby(["sku_id", "region", "year"])[cols].sum()
+    return _side_by_side(agg(base), agg(alt))
+
+
+def check_weekly_sums(wt: pd.DataFrame, mm: pd.DataFrame, base: dict, alt: dict, sku: str, region: str,
+                      dP0: float, rs: str, re_: str) -> List[str]:
+    """S4 checks: the rows of each weekly column add up to 計, and 計 equals the whole difference; the market rows
+    add up to ΔP0 and to the report-period weekly profit difference. Returns the problems (empty = all add up)."""
+    bad = []
+    tot = wt[wt["week"] == "計"].iloc[0]
+    parts = wt[wt["week"] != "計"]
+    for c in WEEKLY_COLS:
+        if abs(parts[c].sum() - tot[c]) > 0.5:
+            bad.append(f"週別の {c}：行の和 {parts[c].sum()} ≠ 計 {tot[c]}")
+
+    def on(f, target):
+        q = f["req"]
+        k = (q["sku_id"] == sku) & (q["region"] == region)
+        return int(q[k if target else ~k]["on_time"].sum())
+    for c, target in (("target_on_time", True), ("other_on_time", False)):
+        if int(tot[c]) != on(alt, target) - on(base, target):
+            bad.append(f"週別の {c} の計 {int(tot[c])} ≠ 当週の差 {on(alt, target) - on(base, target)}")
+    mt = mm[mm["market"] == "計"].iloc[0]
+    if abs(mm[mm["market"] != "計"]["profit_r2_diff"].sum() - mt["profit_r2_diff"]) > 0.5:
+        bad.append("市場別の試算利益の差の和が計と合いません")
+    if abs(mt["profit_r2_diff"] - dP0) > 0.5:
+        bad.append(f"市場別の試算利益の差の計 {mt['profit_r2_diff']:,.0f} ≠ ΔP0 {dP0:,.0f}")
+    pw = _per_week(alt, sku, region)["profit_r2"] - _per_week(base, sku, region)["profit_r2"]
+    rep = pw[(pw.index >= rs) & (pw.index <= re_)].sum()
+    if abs(rep - dP0) > 0.5:
+        bad.append(f"週別の試算利益の差（報告期間）{rep:,.0f} ≠ ΔP0 {dP0:,.0f}")
+    return bad
+
+
+def _md_table(df: pd.DataFrame, fmt: Dict[str, str]) -> List[str]:
+    cols = list(df.columns)
+    L = ["| " + " | ".join(cols) + " |", "|" + "|".join("---" for _ in cols) + "|"]
+    for r in df.itertuples(index=False):
+        cells = []
+        for c, v in zip(cols, r):
+            f = fmt.get(c)
+            num = isinstance(v, (int, float)) and not isinstance(v, bool)
+            cells.append(format(v, f) if f and num else str(v))
+        L.append("| " + " | ".join(cells) + " |")
+    return L
+
+
+def weekly_and_market(ws: str, base: str, cases: List[str], sku: str, market: str, w0: str, w1: str, out: str,
+                      dP0: Dict[str, float]) -> dict:
+    """Write weekly_<case>.csv/.md, market_money_<case>.csv, market_year_<case>.csv for each case vs base;
+    raise StrategyError when a sum does not add up (S4)."""
+    wsj = C.open_workspace(ws)
+    rs, re_ = wsj["report_period"]["start"], wsj["report_period"]["end"]
+    fb = case_frames(ws, base)
+    res = {}
+    for c in cases:
+        fa = case_frames(ws, c)
+        wt = weekly_table(fb, fa, sku, market, w0, w1)
+        mm = market_money(fb, fa)
+        my = market_year(fb, fa)
+        bad = check_weekly_sums(wt, mm, fb, fa, sku, market, dP0[c], rs, re_)
+        if bad:
+            raise StrategyError(f"{base} と {c}：差の和が合いません:\n  " + "\n  ".join(bad))
+        wt.to_csv(os.path.join(out, f"weekly_{c}.csv"), index=False, encoding="utf-8-sig")
+        mm.to_csv(os.path.join(out, f"market_money_{c}.csv"), index=False, encoding="utf-8-sig")
+        my.to_csv(os.path.join(out, f"market_year_{c}.csv"), index=False, encoding="utf-8-sig")
+        L = [f"# 週別の差（{c} − {base}、{w0}〜{w1} と ⑤ が出た週）", "",
+             f"- 対象 {sku} × {market}。①〜⑤ の列（target_*・other_*）は要求週、費用・生産・在庫・試算利益は起きた週。",
+             "- cost_add は案の外の追加費用（円、P0 に入っていない）。profit_r2 は P0 の週の値（試算）。保有費は未設定。",
+             "- 「その他の週」と「計」まで足すと、どの列も計画全体の差になる。",
+             "- ⑤ が出た週のうち、どの列にも差の無い週はここでは省いた（CSV には全部ある。省いた週は「その他の週」"
+             "に入れていない）。", ""]
+        nz = (wt[WEEKLY_COLS].abs() > 0.5).any(axis=1)
+        show = wt[wt["in_range"] | nz | wt["week"].isin(["その他の週", "計"])]
+        L += _md_table(show, {k: ",.0f" for k in WEEKLY_COLS})
+        mmv = mm[[k for k in mm.columns if k.endswith("_diff") or k in ("sku_id", "region", "market")]]
+        L += ["", f"## 市場別の金額の差（報告期間 {rs}〜{re_}、円）", ""]
+        L += _md_table(mmv, {k: ",.0f" for k in mmv.columns if k.endswith("_diff")})
+        myv = my[(my[[k for k in my.columns if k.endswith("_diff")]] != 0).any(axis=1)]
+        L += ["", "## 市場 × 要求年の差（差のある行だけ）", ""] + (_md_table(myv, {}) if len(myv) else ["（差なし）"])
+        with open(os.path.join(out, f"weekly_{c}.md"), "w", encoding="utf-8", newline="\n") as f:
+            f.write("\n".join(L) + "\n")
+        res[c] = {"weekly": wt, "market_money": mm, "market_year": my}
+    return res

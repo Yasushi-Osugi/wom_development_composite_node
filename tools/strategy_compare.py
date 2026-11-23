@@ -5,10 +5,13 @@ tools/strategy_compare.py — 変換した案を並べる（P0・追加費用・
 RequestLetter_Promo_Convert_Slice1 §4・§5。wom/strategy/compare.py を呼ぶだけ。
 
     python -m tools.strategy_compare --ws <作業> --base C01 --cases C02,C03,C04 \
-        [--sku COS_Cream --market SG_EC] [--out <フォルダ>] [--no-overflow]
+        [--sku COS_Cream --market SG_EC] [--out <フォルダ>] [--no-overflow] [--weekly 2028-W08 2028-W30]
 
 出力（既定 <作業>/strategy_compare/<案>/）：strategy_summary.csv・strategy_summary.md・
 fulfillment_by_key.csv・overflow_by_factory_market.csv（と compare/<基準>__<案>/ の比較の道具の出力）。
+--weekly を付けると、案ごとに weekly_<案>.csv・.md（週別の差。⑤ が出た週は範囲の外でも行を足す）、
+market_money_<案>.csv（報告期間の市場別の売上・費用・試算利益）、market_year_<案>.csv（市場 × 要求年の ①・④・⑤）
+（RequestLetter_Promo_Convert_Slice2 §3）。
 終了コード：0 成功、2 止めた（理由を出す）。
 """
 from __future__ import annotations
@@ -36,12 +39,15 @@ def main(argv=None) -> int:
     ap.add_argument("--market", default="SG_EC")
     ap.add_argument("--out", default=None)
     ap.add_argument("--no-overflow", action="store_true", help="skip the push-back record (one plan run per case)")
+    ap.add_argument("--weekly", nargs=2, metavar=("START", "END"), default=None,
+                    help="weekly differences for these weeks (and every week with backlog), and market money")
     a = ap.parse_args(argv)
     from tools.period_fulfillment import StopError
+    from tools.compare_scenarios import CompareError
     try:
         res = SC.compare_plans(a.ws, a.base, [c.strip() for c in a.cases.split(",") if c.strip()], a.sku, a.market,
-                               a.out, overflow=not a.no_overflow)
-    except (StrategyError, C.CaseError, StopError) as e:
+                               a.out, overflow=not a.no_overflow, weekly=tuple(a.weekly) if a.weekly else None)
+    except (StrategyError, C.CaseError, StopError, CompareError) as e:
         print(f"[strategy_compare] 止めました: {e}", file=sys.stderr)
         return 2
     except R.StageStop as e:

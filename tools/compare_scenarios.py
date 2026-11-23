@@ -302,8 +302,9 @@ def _has_basis(series: pd.Series, b: str) -> pd.Series:
     return series.fillna("").astype(str).str.split(",").apply(lambda xs: b in xs or "all" in xs)
 
 
-def money_by_week_sku(run: dict, name: str) -> pd.DataFrame:
-    """Consolidated round-2 profit by week x SKU from vc_money_lines; checked against vc_v3_weekly."""
+def consolidated_money_frames(run: dict) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """(external revenue, group external COGS, expense) lines of the consolidated entities (valued only):
+    the lines whose sum is the round-2 profit (vc_v3_weekly profit_r2_hq_wk)."""
     ent = run["entity"]
     cons = set(ent.loc[ent["consolidated"].astype(str).str.strip() == "1", "entity_id"])
     m = run["money"]
@@ -311,6 +312,54 @@ def money_by_week_sku(run: dict, name: str) -> pd.DataFrame:
     rev = m[(m["kind"] == "revenue") & (m["scope"] == "external")]
     cogs = m[(m["kind"] == "cogs") & (m["scope"] == "external") & _has_basis(m["basis"], "group")]
     exp = m[m["kind"] == "expense"]
+    return rev, cogs, exp
+
+
+NO_LOT_MARKET = "(Lot_ID なし)"
+
+
+def money_by_week_market(run: dict, name: str) -> pd.DataFrame:
+    """Consolidated round-2 profit by week x market (the market of each line's Lot_ID: product x demand region ->
+    market node). Lines without a Lot_ID go to (Lot_ID なし). Same lines as money_by_week_sku, so the sum over
+    markets of a week equals profit_r2_hq_wk (checked; RequestLetter_Promo_Convert_Slice2 §3)."""
+    rev, cogs, exp = consolidated_money_frames(run)
+    labels = run["week_labels"]
+    mk_cache: Dict[str, Tuple[str, str, str]] = {}
+
+    def mk(lot) -> Tuple[str, str, str]:
+        if not isinstance(lot, str) or not lot.strip():
+            return ("", "", NO_LOT_MARKET)
+        if lot not in mk_cache:
+            s, g, _w, _n = parse_lot(lot)
+            mk_cache[lot] = (s, g, market_of(run, s, g))
+        return mk_cache[lot]
+    out: Dict[Tuple[int, str, str, str], Dict[str, float]] = defaultdict(lambda: {c: 0.0 for c in MONEY_COLS})
+    for frame, col in ((rev, "external_revenue"), (cogs, "external_cogs_group"), (exp, "expense")):
+        for (w, lot), v in frame.groupby(["week_index", frame["lot_id"].fillna("")])["amt_hq"].sum().items():
+            s, g, node = mk(lot)
+            out[(int(w), s, g, node)][col] += float(v)
+    rows = []
+    for (w, s, g, node), v in out.items():
+        v["profit_r2"] = v["external_revenue"] - v["external_cogs_group"] - v["expense"]
+        rows.append({"case": name, "week_index": w, "week": labels[w], "sku_id": s, "region": g, "market": node, **v})
+    df = pd.DataFrame(rows, columns=["case", "week_index", "week", "sku_id", "region", "market"] + MONEY_COLS)
+    v3 = run["v3"][run["v3"]["group_key"] == "GROUP"].set_index("week_index")
+    df["in_report"] = df["week_index"].map(lambda i: str(v3.loc[i, "in_report"]) == "True")
+    s = df.groupby("week_index")["profit_r2"].sum()
+    bad = [labels[i] for i in s.index if abs(s[i] - float(v3.loc[i, "profit_r2_hq_wk"])) > TOL]
+    if bad:
+        raise CompareError(f"{name}: 市場別の試算利益の合計が vc_v3_weekly.csv の profit_r2_hq_wk と合いません（{len(bad)} 週。"
+                           f"最初：{bad[0]}）")
+    return df.sort_values(["week_index", "sku_id", "region"]).reset_index(drop=True)
+
+
+def money_by_week_sku(run: dict, name: str) -> pd.DataFrame:
+    """Consolidated round-2 profit by week x SKU from vc_money_lines; checked against vc_v3_weekly."""
+    ent = run["entity"]
+    cons = set(ent.loc[ent["consolidated"].astype(str).str.strip() == "1", "entity_id"])
+    m = run["money"]
+    m = m[m["entity"].isin(cons) & (m["valued"].astype(int) == 1)]
+    rev, cogs, exp = consolidated_money_frames(run)
     labels = run["week_labels"]
     prods = sorted(set(m["product"].fillna("(none)")))
     out = {(w, p): {c: 0.0 for c in MONEY_COLS} for w in range(len(labels)) for p in prods}
