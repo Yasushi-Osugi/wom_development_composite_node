@@ -9,6 +9,9 @@ RequestLetter_Promo_Convert_Slice1 §4・§5。wom/strategy/compare.py を呼ぶ
 
 出力（既定 <作業>/strategy_compare/<案>/）：strategy_summary.csv・strategy_summary.md・
 fulfillment_by_key.csv・overflow_by_factory_market.csv（と compare/<基準>__<案>/ の比較の道具の出力）。
+--holding-rates 0,0.10 を付けると、年率ごとの在庫の保有費 H と A（＝P0 − 追加費用 − H）の列を足す
+（保有費は wom.cockpit.after_cost.case_facts の在庫の連結原価 × 週、助走を含む。Slice 3 §3）。
+費用の前提の費目ごとの額（cost_<費目>）はいつも出す。
 --weekly を付けると、案ごとに weekly_<案>.csv・.md（週別の差。⑤ が出た週は範囲の外でも行を足す）、
 market_money_<案>.csv（報告期間の市場別の売上・費用・試算利益）、market_year_<案>.csv（市場 × 要求年の ①・④・⑤）
 （RequestLetter_Promo_Convert_Slice2 §3）。
@@ -39,6 +42,8 @@ def main(argv=None) -> int:
     ap.add_argument("--market", default="SG_EC")
     ap.add_argument("--out", default=None)
     ap.add_argument("--no-overflow", action="store_true", help="skip the push-back record (one plan run per case)")
+    ap.add_argument("--holding-rates", default=None,
+                    help="annual holding rates, e.g. 0,0.10 (holding cost and A per rate; 0 = none)")
     ap.add_argument("--weekly", nargs=2, metavar=("START", "END"), default=None,
                     help="weekly differences for these weeks (and every week with backlog), and market money")
     a = ap.parse_args(argv)
@@ -46,7 +51,9 @@ def main(argv=None) -> int:
     from tools.compare_scenarios import CompareError
     try:
         res = SC.compare_plans(a.ws, a.base, [c.strip() for c in a.cases.split(",") if c.strip()], a.sku, a.market,
-                               a.out, overflow=not a.no_overflow, weekly=tuple(a.weekly) if a.weekly else None)
+                               a.out, overflow=not a.no_overflow, weekly=tuple(a.weekly) if a.weekly else None,
+                               holding_rates=([float(x) for x in a.holding_rates.split(",")] if a.holding_rates
+                                              else None))
     except (StrategyError, C.CaseError, StopError, CompareError) as e:
         print(f"[strategy_compare] 止めました: {e}", file=sys.stderr)
         return 2

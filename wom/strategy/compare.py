@@ -48,6 +48,34 @@ def _cost_cell(rows: List[dict], side: str) -> float:
     return float(v)
 
 
+def _item_costs(rows: List[dict], side: str) -> Dict[str, float]:
+    """{cost_item: cost} of one side from the fixed-cost table rows of compare_cases (item rows, not 合計).
+    An item the side does not bear is 0 (対象外); an unset weekly amount stops (no silent 0)."""
+    out = {}
+    for r in rows:
+        it = r.get("cost_item")
+        if not it or it == "合計":
+            continue
+        v = r.get(f"cost_{side}")
+        if v in ("", None, "未算出"):
+            raise StrategyError(f"費用の前提の {it} の {side} が未設定・未算出です（費目ごとの額が出せない）")
+        out[it] = float(v)
+    return out
+
+
+def holding_columns(P0: float, B_add: float, B_inventory: float, rates: List[float]) -> Dict[str, float]:
+    """Holding cost per annual rate (rate ÷ 52 × the group's valued inventory at consolidated cost × weeks,
+    warm-up included: the holding-cost stage, wom.cockpit.after_cost) and A = P0 − B_add − H for each rate."""
+    from wom.cockpit.after_cost import WEEKS_PER_YEAR, rate_text
+    out = {}
+    for r in rates:
+        h = r / WEEKS_PER_YEAR * B_inventory
+        t = rate_text(r if r else None)
+        out[f"H_{t}"] = h
+        out[f"A_{t}"] = P0 - B_add - h
+    return out
+
+
 def _demand_log_totals(ws: str, cid: str, sku: str, market: str, rs: str, re_: str) -> dict:
     p = os.path.join(C.case_dir(ws, cid), "inputs", "strategy_change_log.csv")
     if not os.path.exists(p):
@@ -69,8 +97,10 @@ def _snapshot_same(a: Optional[dict], b: Optional[dict]) -> str:
 
 
 def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, out: Optional[str] = None,
-                  overflow: bool = True, weekly: Optional[tuple] = None) -> dict:
-    """weekly=(start week, end week): also write the weekly table and the market tables (Slice 2 §3)."""
+                  overflow: bool = True, weekly: Optional[tuple] = None,
+                  holding_rates: Optional[List[float]] = None) -> dict:
+    """weekly=(start week, end week): also write the weekly table and the market tables (Slice 2 §3).
+    holding_rates (e.g. [0, 0.10]): holding cost and A per rate (Slice 3 §3); B_add per cost item."""
     _ensure_path()
     from wom.cockpit import case_runner as R
     from tools import compare_scenarios as CS
@@ -130,6 +160,14 @@ def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, o
     p0b = recs[cases[0]]["P0_base"] if cases else C.read_case(ws, base)["run"]["summary"]["P0_report"]
     costb = _cost_cell(recs[cases[0]]["fixed_cost"], "base") if cases else 0.0
     A_base = p0b - costb
+    items_base = _item_costs(recs[cases[0]]["fixed_cost"], "base") if cases else {}
+    all_items = sorted({it for c in cases for it in _item_costs(recs[c]["fixed_cost"], "alt")} | set(items_base))
+    hfacts = {}
+    if holding_rates is not None:
+        from wom.cockpit import after_cost as AC
+        for c in allc:
+            f = AC.case_facts(ws, c)
+            hfacts[c] = f["B_report"] + f["B_warmup"]
     for c in allc:
         rec = recs.get(c)
         p0 = p0b if c == base else rec["P0_alt"]
@@ -154,6 +192,13 @@ def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, o
         moved = "; ".join(f"{r.sku_id}×{r.region} ④{int(a):+d} ⑤{int(b):+d}"
                           for r, a, b in zip(mo.itertuples(), d4, d5) if a or b)
         A = p0 - cost
+        items = items_base if c == base else _item_costs(rec["fixed_cost"], "alt")
+        if abs(sum(items.values()) - cost) > 0.5:
+            raise StrategyError(f"案 {c}：費目ごとの額の和 {sum(items.values()):,.0f} が B_add {cost:,.0f} と合いません")
+        extra = {f"cost_{it}": items.get(it, 0.0) for it in all_items}
+        if holding_rates is not None:
+            extra["inventory_B_group_hq"] = hfacts[c]
+            extra.update(holding_columns(p0, cost, hfacts[c], holding_rates))
         rows.append({
             "case": c, "case_name": C.read_case(ws, c)["name"], "plan_id": lg["plan_id"],
             "P0": p0, "B_add": cost, "A": A, "dA_vs_base": A - A_base, "dP0_vs_base": p0 - p0b,
@@ -172,8 +217,11 @@ def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, o
             "model_inputs_vs_base": "（基準）" if c == base else (
                 "同じ" if C.read_case(ws, c)["run"]["input_hashes"] == C.read_case(ws, base)["run"]["input_hashes"]
                 else "違う"),
+            **extra,
         })
     summ = pd.DataFrame(rows)
+    for k in [k for k in summ.columns if k.startswith("A_")]:
+        summ["d" + k + "_vs_base"] = summ[k] - float(summ.loc[summ["case"] == base, k].iloc[0])
     summ.to_csv(os.path.join(out, "strategy_summary.csv"), index=False, encoding="utf-8-sig")
     keys.to_csv(os.path.join(out, "fulfillment_by_key.csv"), index=False, encoding="utf-8-sig")
     _write_md(summ, os.path.join(out, "strategy_summary.md"), ws, base, cases, rs, re_)
@@ -195,6 +243,11 @@ def _write_md(summ: pd.DataFrame, path: str, ws: str, base: str, cases: List[str
         L.append(f"| {r.case} | {r.case_name} | {r.P0:,.0f} | {r.B_add:,.0f} | {r.A:,.0f} | {r.dA_vs_base:+,.0f} | "
                  f"{r.q1} | {r.q2} | {r.q3} | {r.q4_delivered} | {r.q5} | {r.other_markets_d4_total:+d} | "
                  f"{r.other_markets_d5_total:+d} | {r.overflow_pushed_total} | {r.engine_vs_base} |")
+    xc = [k for k in summ.columns if k.startswith("cost_") or k.startswith("H_") or k.startswith("A_")
+          or (k.startswith("dA_") and k != "dA_vs_base") or k == "inventory_B_group_hq"]
+    if xc:
+        L += ["", "費目ごとの追加費用・在庫の保有費（年率 ÷ 52 × 連結原価の在庫・週、助走を含む）・A（＝P0 − 追加費用 − 保有費）：", ""]
+        L += _md_table(summ[["case"] + xc], {k: ",.0f" for k in xc})
     L += ["", "他の市場の変化：", ""] + [f"- {r.case}：{r.other_markets_changes}" for r in summ.itertuples()]
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(L) + "\n")
@@ -246,10 +299,11 @@ def case_frames(ws: str, cid: str) -> dict:
     cost_rows = pd.read_csv(p, dtype=str, keep_default_na=False).to_dict("records") if os.path.exists(p) else []
     return {"case": cid, "labels": labels, "req": req, "money": money,
             "prod": fw.groupby(["week", "product"])["production_lots"].sum().reset_index(),
-            "inv": {w: int(inv.get(w, 0)) for w in labels}, "cost": cost_by_week(cost_rows, labels)}
+            "inv": {w: int(inv.get(w, 0)) for w in labels}, "cost": cost_by_week(cost_rows, labels),
+            "cost_items": {r["cost_item"]: cost_by_week([r], labels) for r in cost_rows}}
 
 
-def _per_week(f: dict, sku: str, region: str) -> pd.DataFrame:
+def _per_week(f: dict, sku: str, region: str, items: Optional[List[str]] = None) -> pd.DataFrame:
     labels = f["labels"]
     req = f["req"]
     tgt = (req["sku_id"] == sku) & (req["region"] == region)
@@ -270,8 +324,13 @@ def _per_week(f: dict, sku: str, region: str) -> pd.DataFrame:
                      "other_on_time": int(g_o["on_time"].get(w, 0)), "other_q5": int(g_o["q5"].get(w, 0)),
                      "production_all": int(pr_all.get(w, 0)), "production_target_sku": int(pr_s.get(w, 0)),
                      "inventory_lots": int(f["inv"].get(w, 0)),
-                     "profit_r2": pa, "profit_r2_target_market": pt, "profit_r2_other_markets": pa - pt})
+                     "profit_r2": pa, "profit_r2_target_market": pt, "profit_r2_other_markets": pa - pt,
+                     **{f"cost_{it}": f.get("cost_items", {}).get(it, {}).get(w, 0.0) for it in (items or [])}})
     return pd.DataFrame(rows).set_index("week")
+
+
+def _items(base: dict, alt: dict) -> List[str]:
+    return sorted(set(base.get("cost_items", {})) | set(alt.get("cost_items", {})))
 
 
 def weekly_table(base: dict, alt: dict, sku: str, region: str, w0: str, w1: str) -> pd.DataFrame:
@@ -284,7 +343,9 @@ def weekly_table(base: dict, alt: dict, sku: str, region: str, w0: str, w1: str)
     for w in (w0, w1):
         if w not in labels:
             raise StrategyError(f"週 {w} が計画の週にありません")
-    d = _per_week(alt, sku, region)[WEEKLY_COLS] - _per_week(base, sku, region)[WEEKLY_COLS]
+    items = _items(base, alt)
+    cols = WEEKLY_COLS + [f"cost_{it}" for it in items]
+    d = _per_week(alt, sku, region, items)[cols] - _per_week(base, sku, region, items)[cols]
     q5w = set(base["req"].loc[base["req"]["q5"] > 0, "request_week"]) | set(
         alt["req"].loc[alt["req"]["q5"] > 0, "request_week"])
     sel = [w for w in labels if (w0 <= w <= w1) or w in q5w]
@@ -334,9 +395,14 @@ def check_weekly_sums(wt: pd.DataFrame, mm: pd.DataFrame, base: dict, alt: dict,
     bad = []
     tot = wt[wt["week"] == "計"].iloc[0]
     parts = wt[wt["week"] != "計"]
-    for c in WEEKLY_COLS:
+    icols = [c for c in wt.columns if c.startswith("cost_") and c != "cost_add"]
+    for c in WEEKLY_COLS + icols:
         if abs(parts[c].sum() - tot[c]) > 0.5:
             bad.append(f"週別の {c}：行の和 {parts[c].sum()} ≠ 計 {tot[c]}")
+    if icols:
+        s = wt[icols].sum(axis=1)
+        if ((s - wt["cost_add"]).abs() > 0.5).any():
+            bad.append("週別の費目ごとの追加費用の和が cost_add と合いません")
 
     def on(f, target):
         q = f["req"]
@@ -395,9 +461,10 @@ def weekly_and_market(ws: str, base: str, cases: List[str], sku: str, market: st
              "- 「その他の週」と「計」まで足すと、どの列も計画全体の差になる。",
              "- ⑤ が出た週のうち、どの列にも差の無い週はここでは省いた（CSV には全部ある。省いた週は「その他の週」"
              "に入れていない）。", ""]
-        nz = (wt[WEEKLY_COLS].abs() > 0.5).any(axis=1)
+        num = [k for k in wt.columns if k not in ("week", "in_range", "q5_week")]
+        nz = (wt[num].abs() > 0.5).any(axis=1)
         show = wt[wt["in_range"] | nz | wt["week"].isin(["その他の週", "計"])]
-        L += _md_table(show, {k: ",.0f" for k in WEEKLY_COLS})
+        L += _md_table(show, {k: ",.0f" for k in num})
         mmv = mm[[k for k in mm.columns if k.endswith("_diff") or k in ("sku_id", "region", "market")]]
         L += ["", f"## 市場別の金額の差（報告期間 {rs}〜{re_}、円）", ""]
         L += _md_table(mmv, {k: ",.0f" for k in mmv.columns if k.endswith("_diff")})

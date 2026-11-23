@@ -112,3 +112,32 @@ def test_money_by_week_market_matches_v3():
     run["v3"].loc[1, "profit_r2_hq_wk"] = 46.0
     with pytest.raises(CS.CompareError):
         CS.money_by_week_market(run, "C01")
+
+
+# ── Slice 3 §3: cost items and the holding-cost columns ───────────────────────────────────────────────
+def test_item_costs_and_holding_columns():
+    rows = [{"cost_item": "promo", "cost_base": 0.0, "cost_alt": 276000.0},
+            {"cost_item": "raise", "cost_base": 0.0, "cost_alt": 138000.0},
+            {"cost_item": "合計", "cost_base": 0.0, "cost_alt": 414000.0}]
+    it = SC._item_costs(rows, "alt")
+    assert it == {"promo": 276000.0, "raise": 138000.0} and sum(it.values()) == 414000.0
+    assert SC._item_costs(rows, "base") == {"promo": 0.0, "raise": 0.0}
+    with pytest.raises(StrategyError):
+        SC._item_costs([{"cost_item": "raise", "cost_alt": ""}], "alt")
+    h = SC.holding_columns(1000.0, 100.0, 52000.0, [0, 0.10])
+    assert h["H_なし"] == 0 and h["A_なし"] == 900
+    assert h["H_10%"] == pytest.approx(100.0) and h["A_10%"] == pytest.approx(800.0)
+
+
+def test_weekly_cost_item_columns_add_up(two):
+    base, alt = two
+    rows = [{"cost_item": "promo", "paid_start_week": "2028-W01", "paid_end_week": "2028-W02", "weekly_amount": "10"},
+            {"cost_item": "raise", "paid_start_week": "2028-W02", "paid_end_week": "2028-W03", "weekly_amount": "5"}]
+    alt = {**alt, "cost": SC.cost_by_week(rows, LABELS),
+           "cost_items": {r["cost_item"]: SC.cost_by_week([r], LABELS) for r in rows}}
+    wt = SC.weekly_table(base, alt, SKU, TGT, "2028-W01", "2028-W02")
+    tot = wt.set_index("week").loc["計"]
+    assert tot["cost_promo"] == 20 and tot["cost_raise"] == 10 and tot["cost_add"] == 30
+    assert wt.set_index("week").loc["その他の週", "cost_raise"] == 5            # W03 is outside the range
+    mm = SC.market_money(base, alt)
+    assert SC.check_weekly_sums(wt, mm, base, alt, SKU, TGT, 100.0, "2028-W01", "2028-W04") == []
