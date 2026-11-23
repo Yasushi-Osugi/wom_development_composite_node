@@ -214,3 +214,7 @@ $PY="C:\Users\ohsug\anaconda3\python.exe"; $W="output/strategy_slice2/ws"; $M="d
 
 - `commit_msg237.txt`：道具とテスト
 - `commit_msg238.txt`：報告書と付録
+
+## 大杉さんの判断（2026-11-23）
+
+- 市場別の金額は、P0 と同じ Value Chain の明細から出す（依頼書の「PPC の台帳」は誤り。PPC の台帳での内訳は要らない）。
