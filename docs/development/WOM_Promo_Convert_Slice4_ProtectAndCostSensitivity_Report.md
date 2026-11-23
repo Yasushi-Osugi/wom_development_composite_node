@@ -299,3 +299,8 @@ $PY="C:\Users\ohsug\anaconda3\python.exe"
 
 - `commit_msg241.txt`：道具とテスト
 - `commit_msg242.txt`：報告書と付録
+
+## 大杉さんの判断（2026-11-23）
+
+- 反動減は別の仮説 ID として書く（今のやり方のまま。変換の道具の水準名は直さない）。
+- C07・C08 の「増産だけ（C02、12 週）と比べた差」には、増産を延ばした効果と販促の効果が混ざっている。§7 の「延ばした 6 週で販促を賄う」等の読みは、対照「増産だけ 18 週・24 週」を回すまで保留（依頼書 `requests/RequestLetter_Promo_Convert_Slice4b_RaiseOnlyControls_to_CodeKun.md`）。
