@@ -1,0 +1,9 @@
+﻿case,sku_id,market,floor_lots,delivered,promo_increment_net,existing_delivered,diff,status,delivered_2029,basis,floor_lots_2029,existing_delivered_2029,diff_2029,status_2029,promo_weeks_raised,promo_weeks_full_on_time,promo_increment_delivered
+C12,COS_Cream,SG_Distributor,713,720,0,720,7,達成,226,C02_actual_delivered,219,226,7,達成,,,
+C12,COS_Cream,SG_Store,399,402,0,402,3,達成,142,C02_actual_delivered,139,142,3,達成,,,
+C12,COS_Cream,TH_Distributor,296,296,0,296,0,達成,153,C02_actual_delivered,153,153,0,達成,,,
+C12,COS_Cream,SG_EC,284,286,0,286,2,達成,91,C02_actual_delivered,89,91,2,達成,0.0,0.0,増分なし
+C08,COS_Cream,SG_Distributor,713,713,0,713,0,達成,219,C02_actual_delivered,219,219,0,達成,,,
+C08,COS_Cream,SG_Store,399,400,0,400,1,達成,140,C02_actual_delivered,139,140,1,達成,,,
+C08,COS_Cream,TH_Distributor,296,296,0,296,0,達成,153,C02_actual_delivered,153,153,0,達成,,,
+C08,COS_Cream,SG_EC,284,295,12,283,-1,未達,88,C02_actual_delivered,89,88,-1,未達,12.0,12.0,届いた
