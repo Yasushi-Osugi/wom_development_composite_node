@@ -1,0 +1,5 @@
+campaign_id,measure_id,measure_version,p4,measure_type,sku_id,market,start_week,end_week,value,unit,currency,entity,cost_item,hypothesis_id,rationale
+CMP_CREAM_SGEC_2028,CMP_CREAM_SGEC_2028_DEMAND,v01,Promotion,promo_demand_delta,COS_Cream,SG_EC,2028-W10,2028-W21,,,,,,H_PROMO_CREAM_SGEC,公式ECのクリームに、通常の広告とは別の12週間の追加キャンペーン（品質性能を説明する顧客接点を増やす。値引きなし）。業務定義 v0.1 §1・§3
+CMP_CREAM_SGEC_2028,CMP_CREAM_SGEC_2028_COST,v01,Promotion,promo_external_cost,COS_Cream,SG_EC,2028-W10,2028-W21,200,amount_per_week,SGD,E_SG,promo_campaign_add,,追加キャンペーン費（税抜 2,400 SGD＝週 200 SGD × 12 週）。既存のデジタル広告費 15% とは別。業務定義 v0.1 §2.2
+CMP_CREAM_SGEC_2028_RB,CMP_CREAM_SGEC_2028_RB_DEMAND,v01,Promotion,promo_demand_delta,COS_Cream,SG_EC,2028-W10,2028-W21,,,,,,H_PROMO_CREAM_SGEC_RB,CMP_CREAM_SGEC_2028 と同じ施策に、反動減の仮説を付けたもの（4 本目 C09）
+CMP_CREAM_SGEC_2028_RB,CMP_CREAM_SGEC_2028_RB_COST,v01,Promotion,promo_external_cost,COS_Cream,SG_EC,2028-W10,2028-W21,200,amount_per_week,SGD,E_SG,promo_campaign_add,,CMP_CREAM_SGEC_2028 と同じ追加キャンペーン費（週 200 SGD × 12 週）

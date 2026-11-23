@@ -1,0 +1,5 @@
+sku_id,market,floor_lots,floor_lots_2029,basis,note
+COS_Cream,SG_Distributor,713,219,C02_actual_delivered,判断票 D1：増産だけ（C02）の実納品（報告期間の要求週。2029 年の内訳つき）
+COS_Cream,SG_Store,399,139,C02_actual_delivered,判断票 D1：同上
+COS_Cream,TH_Distributor,296,153,C02_actual_delivered,判断票 D1：同上
+COS_Cream,SG_EC,284,89,C02_actual_delivered,判断票 D1：SG の EC の既存分（販促の増分は別に「全部届いたか」を見る）
