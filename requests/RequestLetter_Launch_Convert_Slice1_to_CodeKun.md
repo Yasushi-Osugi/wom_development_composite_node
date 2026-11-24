@@ -1,0 +1,151 @@
+---
+handoff:
+  case_id: STRATEGY-CONVERT-L1
+  task_id: launch-week-convert-slice1
+  role_from: design            # Claude君
+  role_to: implement           # Code君
+  target_commit: "この依頼書の commit 以降の HEAD（着手時の SHA を記録）"
+  knowledge_used:
+    - id: 投入週の業務定義
+      version: "docs/design/drafts/WOM_4P_ProductLaunchWeek_Business_Definition_v0.1.md（GPT-MC、読取 e48d412）"
+      applicability: "二案の前提表 §2、需要の三つの名前 §3、費用 §4、評価 §5、代表週 §6、照合 PL01〜PL10 §8"
+    - id: 判断票
+      version: "requests/WOM_LaunchWeek_Definition_DecisionSheet_v0.1.md（L1〜L9 採用 2026-11-25）"
+      applicability: "二案＋増産の一対（L9）"
+    - id: 変換の道具
+      version: "wom/strategy（販促の試行 1〜4b）、変換の定義 v0.2 §4.2"
+      applicability: "投入の表のある案は今は止める。この依頼で、投入週と投入の費用の型だけ通す"
+  acceptance:
+    ref: "この依頼書 §5"
+  status: "試行可能"
+  open_items: []
+  stop_reasons: []
+  next: implement
+---
+
+# Request Letter：経営施策の変換 — 投入週の 1 本目：タイのクリームの投入週（2028-W01／2027-W27）を、投入の表を正本にして変換・比較する
+
+- 宛先：Code君（Claude Code、Windows）／依頼者：大杉（WOM Project Owner）／起草：Claude君（2026-11-25）／版：v0.1
+- 作業フォルダ：`C:\Users\ohsug\WOM_V0R2M1_new_cockpit\wom-v1r6m0_BS-SEAF`
+- 範囲：**変換の道具（`wom/strategy`）に Product の型を 3 つ足し、投入の表のある案を、その型に限って通す。** エンジン・PPC・Value Chain・正式なサンプル・golden は変えない（保護対象のコアに触れない）。比較の道具は、必要なら市場の既定値を引数で渡すだけで、変えない
+- 作業：新しい作業 `output/strategy_launch1/ws`。出力 `output/strategy_launch1/`
+
+---
+
+## 一言で
+
+**販促のときに作った「打ち手のシート → 案 → 計画 → 比較 → 追跡」を、Product の打ち手（投入週）に広げてください。** 需要の正本は投入の表（`market_entry_plan.csv`）のままにして、変換の道具は投入週と投入の費用だけを書きます。最初の比較は、タイのクリームを 2028-W01 に入れる案（基準）と 2027-W27 に入れる案の二つ、続けて両案に同じ増産を置いた一対です（大杉さんの判断 L1〜L9、2026-11-25）。
+
+## 1. 対応表（業務定義 → WOM）
+
+| 業務定義 | WOM での表し方 | 根拠・確認済みのこと |
+|---|---|---|
+| 投入週（タイの代理店の需要が立ち上がる週） | 案の `model/market_entry_plan.csv` の対象の行の `launch_week` だけを変え、既存の需要の生成（`tools.gen_demand_from_entry_plan`、各週の四捨五入）で `demand_forecast.csv` を作り直す。`wom.cockpit.cases.set_launch_week` と同じ経路 | **Claude君の確認**：到達点 2 の遅い案の投入の表（`docs/development/WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix/inputs/market_entry_plan_A_late.csv`）から作った需要は、正式なサンプルの `demand_forecast.csv` と全 1,384 行で一致する |
+| 投入前の需要は作らず、繰り越さない（L2） | 生成の規則のまま（投入週より前は 0） | 需要を作る段階の仮定。未配分・未充足に数えない |
+| 一時の立ち上げ費（L5） | 案の `inputs/fixed_cost.csv` に 1 行：`paid_start_week ＝ paid_end_week ＝ 発生の週`、`weekly_amount ＝ 総額` | 比較の道具は週額 × 週数を引くので、1 週の行で総額を 1 回引く |
+| 販路の維持費（L6） | 同じ表に 1 行：有償の開始〜終了の週、週額 | 採用済みのタイの販路の週固定費の定義（有償週、売上 0 の週も 1 件） |
+| 負担する法人 | 日本本社 `E_JP` | 対象の市場 `TH_Distributor` は外部の代理店（`EXT_CH_TH_DIST`）。販促の型の検査「負担法人 ＝ 対象の市場の法人」は使えない（§2.3） |
+| 在庫の保有費（L7） | 比較の道具の `--holding-rates 0,0.05,0.10,0.15` | 初回の在庫の取得額は費用の行にしない（二重計上） |
+| 店舗費用の 3 通り（E4） | `--avoidable store_operating=1,0.5,0` | SG の店舗の売上に差が出たときだけ効く |
+| 増産の一対（L9） | `set planned-output --sku COS_Cream --cap-soft 12`（全期間、助走の行も）と確保費の行 `planned_output_raise`（全期間の有償週） | 到達点 2 の「クリームを全期間で週 1 lot」と同じ置き方 |
+
+## 2. 変換の道具に足すもの
+
+### 2.1 型（`wom/strategy/measure_type_catalog.csv` に 3 行、`p4 ＝ Product`）
+
+| 型 | 入力（`measures.csv` の列） | 書くもの |
+|---|---|---|
+| `product_launch_week` | `sku_id`・`market`・`start_week`（＝投入週）。`end_week`・`value` は空 | 案の投入の表の対象の行の `launch_week`、作り直した需要 |
+| `launch_one_time_cost` | `start_week ＝ end_week`（発生の週）・`value`（総額）・`unit ＝ amount_total`・`currency`・`entity`・`cost_item` | 費用の前提に 1 週の行 |
+| `launch_weekly_cost` | `start_week`〜`end_week`（有償の週）・`value`（週額）・`unit ＝ amount_per_week`・`currency`・`entity`・`cost_item` | 費用の前提に週額の行（販促の費用の型と同じ書き方） |
+
+費用の 2 つの型は、販促の費用の型と同じ換算・同じ重複の検査を使ってよい（中の関数の共有は任せる）。**販促の型の名前は変えない**（販促の費用に使っているので誤読はない。販路の維持費を販促の型で書かないために、型を分ける）。
+
+### 2.2 投入の表のある案の扱い
+
+- **Product の型だけを含む案は通す。** 販促の型（需要の差・費用）を投入の表のある案に書くことは、今までどおり止める（基準需要の生成 → 販促の差分 → 需要の確定の経路は、まだ定義していない）。
+- **一致の検査**（変換の前に全部を検査、止めたら何も書かない）：案の投入の表の対象の行の `launch_week` を施策の値に置き換えて需要を作り、
+  1. 対象の外の全部の鍵・週が、凍結した元のモデルの需要と一致する（違えば止める：投入の表と元のモデルの需要が食い違っている）。
+  2. 投入の表の対象の行の、`launch_week` 以外の列が変わっていない。
+  3. 同じ鍵の `product_launch_week` が案の中に 2 つあれば止める。
+- 案の今の需要が、作った需要と同じなら「変更なし」（冪等）。
+- 変更の記録：投入週の前後、対象の鍵の需要の年ごとの合計の前後、施策・版の ID。
+
+### 2.3 費用の負担法人の検査（投入の費用の 2 つの型）
+
+対象の市場のノードの法人が外部（`vc_entity.csv` の `consolidated ＝ 0`）なら、**その市場へ売る親のノードの法人**（タイのクリームなら `DC_TH` → `E_JP`）と一致すること。法人が連結の内なら、今の販促の型と同じ検査。どちらでもなければ止める。
+
+### 2.4 テスト
+
+`tests/test_strategy_convert.py` に足す（小さな写しのモデルでよい）：投入週の変更で対象の鍵だけ変わる・一致の検査で止まる（対象の外の需要を 1 行変えた写し）・冪等・投入の表の無い案に `product_launch_week` は止まる・投入の表のある案に販促の型は止まる・一時の費用が 1 週の行になる・外部の市場の負担法人の検査。最後の確認は `quick_check --changed`。
+
+## 3. シートと案
+
+### 3.1 シート（`tests/data/strategy_launch1/`。値はすべて業務定義の検証用の仮置き）
+
+| campaign_id | 型 | 中身 |
+|---|---|---|
+| `CMP_TH_CREAM_LATE` | `product_launch_week` | COS_Cream × TH_Distributor、2028-W01 |
+| 同 | `launch_one_time_cost` | 2027-W51、300,000 JPY、E_JP、`th_cream_launch_prep` |
+| 同 | `launch_weekly_cost` | 2028-W01〜2029-W52、50,000 JPY／週、E_JP、`th_cream_channel_fee` |
+| `CMP_TH_CREAM_EARLY` | `product_launch_week` | 同じ鍵、2027-W27 |
+| 同 | `launch_one_time_cost` | 2027-W25、300,000 JPY（以下同じ） |
+| 同 | `launch_weekly_cost` | 2027-W27〜2029-W52、50,000 JPY／週 |
+
+費用は中の値で書く。低（10 万円・4 万円／週）と高（60 万円・6 万円／週）は、同じ実行の結果に算術で当てる（実行を増やさない、業務定義 §2）。`hypotheses.csv` は使わない（投入週の型は仮説の水準を持たない。`plans.csv` の `hypothesis_level` は空でよいようにする）。
+
+### 3.2 案
+
+| 案 | 作り方 |
+|---|---|
+| C00 基準の土台 | `cockpit_cases new`（元：正式なサンプル）→ `set capacity` で C3a（美容液 17／14、クリーム 13／11、全行）→ `set entry-plan` に到達点 2 の遅い案の投入の表 |
+| C01 遅く入る（LATE） | C00 を複製 → 変換 `P_LAUNCH_LATE`（需要は変更なし、費用 2 行） |
+| C02 早く入る（EARLY） | C00 を複製 → 変換 `P_LAUNCH_EARLY` |
+| C03 遅く入る＋増産 | C00 を複製 → `set planned-output --sku COS_Cream --cap-soft 12`（全行）→ 確保費の行 `planned_output_raise`（全期間の有償週、中 40,000 円／週）→ 変換 `P_LAUNCH_LATE` |
+| C04 早く入る＋増産 | C03 と同じ増産と確保費の行 → 変換 `P_LAUNCH_EARLY` |
+
+- **先に C00 が C3a の記録（今の既定）を再現することを確かめる**（`docs/scenarios/cosmetics.md`：注文残 192〔市場別も〕、総納品 3,864、売上 1,100,849,400 円、試算利益 601,449,564 円）。需要は正式なサンプルと同じなので、同じになるはず。再現しなければ止める。
+- 確保費の低（10,000）・高（132,000）は算術で当てる（GPT-MC君の全期間の感度）。C03 と C04 は確保費が同じなので、一対の差では消える。
+
+## 4. 表（報告書）
+
+比較の道具は `--base C01 --cases C02` と `--base C03 --cases C04`、`--sku COS_Cream --market TH_Distributor`、`--weekly 2027-W25 2028-W14`、`--holding-rates 0,0.05,0.10,0.15`、`--avoidable store_operating=1,0.5,0`、`--protect`（下の 2）。C01 → C03 も 1 回（増産だけの効果の参考）。
+
+1. **需要と ①〜⑤**：鍵ごと・年ごと（2027・2028・2029）。タイのクリームの ① は 299 と 377 で母数が違うので、充足率だけで並べない。
+2. **守る供給**（L4）：下限は **C01 の実納品**（増産の一対は C03 の実納品）。
+   - タイのクリーム以外の 7 つの鍵：期間合計、許容 0 lot。2029 年の内訳も。
+   - タイのクリームの継続分：遅い案の 2028-W01〜2029-W52 の実納品 `F_TH` と、早い案の同じ期間の実納品から、その期間の追加の需要（13 lot）のうち届いた量を引いた値を比べる。区分できなければ 13 を全部引いた値を「保守的な下限」と表示し、下回れば「保護未確認」（業務定義 §5.2。比較の道具を変えずに、週別の出力から報告書で計算してよい）。
+3. **金額**：`P0`、`ΔP0`、費用（一時 L・維持 F・確保 R・保有 H）を分けて、`A` と `ΔA ＝ ΔP0 − ΔL − ΔF − ΔR − ΔH`。費用の低・中・高 × 保有費 4 通り × 店舗費用 3 通り。L は両案で同じ額なので差では消えるが、案ごとの `A` からは引く。境目 `f* ＝ (ΔP0 − ΔH) ／ 26` は、`ΔP0` が正のときだけ出す（旧版の 340,560 円／週は使わない）。
+4. **代表週**（業務定義 §6.1）：2027-W26・W27・W39・W40、2028-W01・W13・W14 のタイのクリームの ①〜⑤、費用の件数。
+5. **在庫と年齢**：クリームのグループの在庫 lot・週、期末、年齢の最大・52 週超。
+6. **どこで差が出たか**：早い案で増えた ④ と、減った ④（市場・年）。代表の lot（`Lot_ID`）を 1〜2。
+
+## 5. 合格の条件
+
+| # | 条件 |
+|---|---|
+| S1 | C00 が C3a の記録を再現。C01 の需要は C00 と同じ（変換は「需要は変更なし」） |
+| S2 | C02 のタイのクリームの需要：合計 377（2027 年 65・2028 年 156・2029 年 156）、2027-W26 は 0・W27〜W39 は 2・W40 から 3、2028-W01 は 3。他の 7 つの鍵は C01 と全週同じ |
+| S3 | 費用の前提：C01 は 2027-W51 に 300,000 の 1 行と 2028-W01〜2029-W52（104 週）の 50,000、C02 は 2027-W25 と 2027-W27〜2029-W52（130 週）。中の合計 5,500,000 と 6,800,000 |
+| S4 | 同じシートでもう一度変換すると「変更なし」。投入の表のある案に販促の型を渡すと止まる |
+| S5 | C03 と C04 の計画の生産量の設定・確保費の行が同じ |
+| S6 | §4 の表。①＝②＋③、②＝④＋⑤ が鍵ごとに合う。旧版の値（利益の差 0・8,854,560 円）への一致は求めない |
+| S7 | エンジン・PPC・Value Chain・正式なサンプル・golden が変わっていない。`quick_check --changed` が通る |
+
+**止める理由**：S1 の再現が崩れる。一致の検査が C01 で止まる（投入の表と元のモデルの需要が違う）。S2・S3 の値が違う。
+
+## 6. 書き方の注意
+
+- どちらの投入週が良いかは書かない。守る供給の未達は「業務の条件の未達」として書き、数量の不整合と分ける。
+- 費用の額はすべて検証用の仮置き（実見積ではない）。
+- 早い案で増えた需要 78 lot を「待っていた顧客」と書かない（二つの需要の仮説の差）。
+
+## 7. 報告書
+
+- `docs/development/WOM_Launch_Convert_Slice1_Report.md` と付録。冒頭に引き継ぎの欄（YAML、`next: owner`）。
+- 翻訳表（`docs/design/WOM_4P_Parameter_Translation_Table.md`）の投入週の行に、変換の型を書き足す（版を上げる）。Start Here に変更が要るなら案を書く。
+- commit メッセージの下書きを 2 つ（`commit_msg244.txt`：道具とテスト、`commit_msg245.txt`：報告書）。git の操作は大杉さんが行う。
+
+| 版 | 日付 | 内容 |
+|---|---|---|
+| v0.1 | 2026-11-25 | 初版 |
