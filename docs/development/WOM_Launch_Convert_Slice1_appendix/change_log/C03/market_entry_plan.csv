@@ -1,0 +1,9 @@
+sku_id,region,launch_week,steady_lots_per_week,ramp_weeks,ramp_ratio,price,currency,promotion_note,basis_note
+COS_Serum,SG_Store,2027-W14,4,13,0.5,165,SGD,,docs/scenarios/cosmetics.md Demand assumptions
+COS_Serum,SG_EC,2027-W01,3,13,0.5,157,SGD,,docs/scenarios/cosmetics.md Demand assumptions
+COS_Serum,SG_Distributor,2027-W01,6,13,0.5,74,SGD,,docs/scenarios/cosmetics.md Demand assumptions
+COS_Cream,SG_Store,2027-W14,3,13,0.5,138,SGD,,docs/scenarios/cosmetics.md Demand assumptions
+COS_Cream,SG_EC,2027-W01,2,13,0.5,131,SGD,,docs/scenarios/cosmetics.md Demand assumptions
+COS_Cream,SG_Distributor,2027-W01,5,13,0.5,62,SGD,,docs/scenarios/cosmetics.md Demand assumptions
+COS_Serum,TH_Distributor,2028-W01,4,13,0.5,1900,THB,,docs/scenarios/cosmetics.md Demand assumptions
+COS_Cream,TH_Distributor,2027-W27,3,13,0.5,1600,THB,,docs/scenarios/cosmetics.md Demand assumptions

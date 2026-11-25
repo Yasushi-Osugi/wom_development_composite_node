@@ -1,0 +1,11 @@
+﻿pair,sku_id,region,year,q1_diff,delivered_diff,q5_diff
+compare_C02_C03,COS_Cream,SG_Distributor,2028,0,-21,21
+compare_C02_C03,COS_Cream,SG_Distributor,2029,0,-11,11
+compare_C02_C03,COS_Cream,SG_EC,2028,0,-8,8
+compare_C02_C03,COS_Cream,SG_EC,2029,0,-5,5
+compare_C02_C03,COS_Cream,SG_Store,2029,0,-16,16
+compare_C02_C03,COS_Cream,TH_Distributor,2027,65,65,0
+compare_C02_C03,COS_Cream,TH_Distributor,2028,13,13,0
+compare_C02_C03,COS_Cream,TH_Distributor,2029,0,-17,17
+compare_C04_C05,COS_Cream,TH_Distributor,2027,65,65,0
+compare_C04_C05,COS_Cream,TH_Distributor,2028,13,13,0

@@ -1,0 +1,4 @@
+﻿pair,kind,lot_id,ship_week_early,ship_week_late
+compare_C02_C03,早い案で届いた（遅い案には無い需要）,COS_Cream:TH_Distributor:2027-W27:00001,2027-W27,
+compare_C02_C03,遅い案で届き、早い案で届かなかった,COS_Cream:SG_Distributor:2028-W35:00004,,2028-W35
+compare_C04_C05,早い案で届いた（遅い案には無い需要）,COS_Cream:TH_Distributor:2027-W27:00001,2027-W27,

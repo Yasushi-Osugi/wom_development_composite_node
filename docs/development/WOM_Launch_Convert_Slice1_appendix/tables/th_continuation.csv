@@ -1,0 +1,3 @@
+﻿pair,late_delivered_F_TH,early_delivered,extra_demand,extra_delivered_by_seq,early_continuing_by_seq,early_continuing_conservative,status_by_seq,status_conservative
+C03 − C02,295,291,13,13,278,278,保護未確認,保護未確認
+C05 − C04,299,312,13,13,299,299,保護,保護

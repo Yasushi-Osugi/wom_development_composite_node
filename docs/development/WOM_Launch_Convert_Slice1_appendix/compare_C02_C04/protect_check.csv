@@ -1,0 +1,15 @@
+﻿case,sku_id,market,floor_lots,delivered,promo_increment_net,existing_delivered,diff,status,delivered_2029,basis,floor_lots_2029,existing_delivered_2029,diff_2029,status_2029
+C02,COS_Cream,SG_Distributor,707,707,0,707,0,達成,213,C02_actual_delivered,213,213,0,達成
+C02,COS_Cream,SG_EC,281,281,0,281,0,達成,86,C02_actual_delivered,86,86,0,達成
+C02,COS_Cream,SG_Store,397,397,0,397,0,達成,137,C02_actual_delivered,137,137,0,達成
+C02,COS_Serum,SG_Distributor,847,847,0,847,0,達成,262,C02_actual_delivered,262,262,0,達成
+C02,COS_Serum,SG_EC,428,428,0,428,0,達成,129,C02_actual_delivered,129,129,0,達成
+C02,COS_Serum,SG_Store,524,524,0,524,0,達成,186,C02_actual_delivered,186,186,0,達成
+C02,COS_Serum,TH_Distributor,385,385,0,385,0,達成,203,C02_actual_delivered,203,203,0,達成
+C04,COS_Cream,SG_Distributor,707,754,0,754,47,達成,260,C02_actual_delivered,213,260,47,達成
+C04,COS_Cream,SG_EC,281,299,0,299,18,達成,104,C02_actual_delivered,86,104,18,達成
+C04,COS_Cream,SG_Store,397,416,0,416,19,達成,156,C02_actual_delivered,137,156,19,達成
+C04,COS_Serum,SG_Distributor,847,847,0,847,0,達成,262,C02_actual_delivered,262,262,0,達成
+C04,COS_Serum,SG_EC,428,428,0,428,0,達成,129,C02_actual_delivered,129,129,0,達成
+C04,COS_Serum,SG_Store,524,524,0,524,0,達成,186,C02_actual_delivered,186,186,0,達成
+C04,COS_Serum,TH_Distributor,385,385,0,385,0,達成,203,C02_actual_delivered,203,203,0,達成

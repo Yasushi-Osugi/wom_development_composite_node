@@ -1,0 +1,4 @@
+cost_item,entity,paid_start_week,paid_end_week,weekly_amount,currency,note,count_outside_report,display_name
+planned_output_raise,E_JP,2026-W37,2029-W52,40000,JPY,"有償の週は COS_Cream の計画の生産量を 11→12（cap_soft）に上げた全期間（助走を含む）。中 40,000 円／週は GPT-MC 見積もりの全期間の仮置き（採用額ではない）。低 10,000・高 132,000 は算術で当てる",1,増産の確保費
+th_cream_launch_prep,E_JP,2027-W25,2027-W25,300000,JPY,strategy_convert; campaign=CMP_TH_CREAM_EARLY; measure=TH_CREAM_EARLY_PREP; version=v01; 一時の費用 総額 300000 JPY × 1 JPY/JPY（ppc_fx_rate.csv、元のモデル） = 300000 JPY、発生の週 2027-W25 の 1 週の行（週額 ＝ 総額）; paid_start_week・paid_end_week は費用の発生の週（現金の支払いの週を決めたものではない）,,
+th_cream_channel_fee,E_JP,2027-W27,2029-W52,50000,JPY,strategy_convert; campaign=CMP_TH_CREAM_EARLY; measure=TH_CREAM_EARLY_FEE; version=v01; 50000 JPY/週 × 1 JPY/JPY（ppc_fx_rate.csv、元のモデル） = 50000 JPY/週 × 130 週 = 6500000 JPY; paid_start_week・paid_end_week は費用の発生の週（現金の支払いの週を決めたものではない）,,

@@ -1,4 +1,4 @@
-# 4P 施策 → WOM の設定 翻訳表（v0.1）
+# 4P 施策 → WOM の設定 翻訳表（v0.1c）
 
 - 作成：Code君（2026-11-20）／依頼：大杉さん
 - 目的：note 記事「戦略 WOM コックピット」のステップ 3 の表を、実際のファイル・列・単位・止める条件に落とす。Claude君の設計と、翻訳の道具の依頼書の材料。
@@ -34,7 +34,7 @@
 | 歩留まり | 良品の割合 | `sc_tree_master.csv`：`yield_rate`（mom の行だけ） | 0 < y ≦ 1 | 能力 × y が良品の上限になる | 範囲外、mom 以外に 1.0 以外、legacy・push の mom（`YieldRateError`） | — | W：必要な投入能力 |
 | 必要生産能力 | 工場の週の能力 | `capacity_plan.csv`：`sku_id, node_name, week, max_supply`、任意で `cap_soft` | lot／週 | 計画期間の全週に行を置く。**行が無い週は上限なし**。作れない週は 0 | 計画の木に無いノード名、負・数値でない値 | 計画期間内に行の無い週がある（発売前に作り溜めが起きる） | W：設備負荷、能力不足による未充足 |
 | 操業の日程 | 休業・シフト | `operating_calendar.csv`：`sku_id, node_name, week, shifts`（0〜21）。`holiday_calendar.csv`：`start_week, end_week, node_name, effect, value` | shift／週 | 0 shift ＝ 休業。shift から cap_soft を導く | — | `effect` が既知の値でない | W：休業前の作り溜め |
-| 投入週 | 発売の週・立ち上がり | `market_entry_plan.csv`：`sku_id, region, launch_week, steady_lots_per_week, ramp_weeks, ramp_ratio` → `tools.gen_demand_from_entry_plan` → `demand_forecast.csv` | 週、lot／週、比 | 発売前は 0、立ち上がり期は steady × ramp_ratio、その後は steady | 列の不足、鍵の重複、鍵が木に無い、週のラベルが不正、期間の外、負・空欄、価格・通貨が `ppc_market_price.csv` と違う | — | W：既存製品と能力を取り合う量 |
+| 投入週 | 発売の週・立ち上がり | `market_entry_plan.csv`：`sku_id, region, launch_week, steady_lots_per_week, ramp_weeks, ramp_ratio` → `tools.gen_demand_from_entry_plan` → `demand_forecast.csv` | 週、lot／週、比 | 発売前は 0、立ち上がり期は steady × ramp_ratio、その後は steady。**変換の道具の型 `product_launch_week`**（2026-11-25）：案の投入の表の対象の行の `launch_week` だけを施策の週に置き換え、道具 1 で需要を作り直す（需要の正本は投入の表のまま）。立ち上げの一時費用は型 `launch_one_time_cost`（発生の週の 1 週の行、週額＝総額）、販路の維持費は型 `launch_weekly_cost`（有償の週の週額）で、案の `inputs/fixed_cost.csv` に書く | 列の不足、鍵の重複、鍵が木に無い、週のラベルが不正、期間の外、負・空欄、価格・通貨が `ppc_market_price.csv` と違う | 投入の表が無い案、投入の表の対象の行が 1 行でない、作った需要が対象の外で凍結した元のモデルの需要と違う、同じ鍵の投入週が案に 2 つ、一時費用の週が 1 週でない、投入の費用の負担法人（対象の市場が外部なら、その市場へ売る親のノードの法人と一致） | W：既存製品と能力を取り合う量 |
 | 原価 | 仕入値・加工費 | `ppc_supplier_cost.csv`：`supplier_node, product_id, week, purchase_price, currency`。`ppc_node_cost_rule.csv`：`node_id, product_id, cost_type, basis, rate, fixed_amount, currency` | 金額／物量単位（lot × `cpu_size` の 1 単位。Start Here R7） | 仕入値は週の段階（その週以前の最後の行）。拠点の費用は週によらない | 規則の無い製品の販売は評価から外す（`valuation_status=partial`） | 計画に出る工場・拠点に規則が無い | W：粗利 |
 
 ### Price（価格）
@@ -98,3 +98,4 @@
 | v0.1 | 2026-11-20 | 初版（Code君） |
 | v0.1b | 2026-11-22 | Promotion の需要増の行を、変換の初版（型 `promo_demand_delta`）に合わせた：上乗せは反応週、投入の表のある案は止める（Code君の報告 §6 の食い違い） |
 | v0.1a | 2026-11-21 | 単価の単位を「金額／lot」から「金額／物量単位」に直した（Claude君、GPT君のレビュー）。確かめていない 2 か所は「要確認」 |
+| v0.1c | 2026-11-25 | Product の投入週の行に、変換の型（`product_launch_week`・`launch_one_time_cost`・`launch_weekly_cost`、型カタログ v0.2）と道具の止める条件を書き足した（RequestLetter_Launch_Convert_Slice1、Code君）。販促の型は、投入の表のある案では今も止める |
