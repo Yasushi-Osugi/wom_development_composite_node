@@ -42,6 +42,10 @@ def main(argv=None) -> int:
         return 2
     print(f"[strategy_convert] {a.case} ← {a.plan}：{pc['state']}（型カタログ {pc['catalog']['version']}）")
     for s in pc["summary"]:
+        if s.get("type") == "product_launch_week":
+            print(f"  投入週 {s['key']}：{s['launch_week_before']} → {s['launch_week_after']}、需要の合計 "
+                  f"{s['total_before']} → {s['total_after']}（{s['diff']:+d} lot。凍結した基準需要との差）")
+            continue
         print(f"  需要 {s['key']}：水準 {s['level']}（率 {s['rate']}）、反応 {s['response_weeks']}、"
               f"追加 {s['added_lots']} lot・減 {s['removed_lots']} lot、未反映の端数 {s['residuals']}")
     for r in pc["cost"]["new"]:

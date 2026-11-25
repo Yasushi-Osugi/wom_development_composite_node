@@ -19,4 +19,4 @@ class StrategyError(ValueError):
     """The conversion cannot be made: the message says the file, the row, the value and how to fix it."""
 
 
-CATALOG_VERSION = "v0.1"
+CATALOG_VERSION = "v0.2"   # v0.2 (2026-11-25): the three Product launch types (RequestLetter_Launch_Convert_Slice1)

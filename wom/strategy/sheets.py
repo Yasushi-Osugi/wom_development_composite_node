@@ -37,11 +37,20 @@ PLAN_COLS = ["plan_id", "case_name", "campaign_ids", "hypothesis_level", "env_id
 P4 = ("Product", "Price", "Place", "Promotion")
 T_DEMAND = "promo_demand_delta"
 T_COST = "promo_external_cost"
-IMPLEMENTED = (T_DEMAND, T_COST)
+# Product: the launch week (RequestLetter_Launch_Convert_Slice1 §2.1). The demand stays generated from the
+# case's entry plan (market_entry_plan.csv); the converter writes only the launch week and the two cost rows.
+T_LAUNCH = "product_launch_week"
+T_LAUNCH_ONE = "launch_one_time_cost"
+T_LAUNCH_WEEKLY = "launch_weekly_cost"
+PROMO_TYPES = (T_DEMAND, T_COST)
+PRODUCT_TYPES = (T_LAUNCH, T_LAUNCH_ONE, T_LAUNCH_WEEKLY)
+COST_TYPES = (T_COST, T_LAUNCH_ONE, T_LAUNCH_WEEKLY)
+IMPLEMENTED = PROMO_TYPES + PRODUCT_TYPES
 LEVELS = ("low", "base", "high")
 KINDS = ("promotion_response",)
 BASES = ("validation_placeholder",)
-COST_UNITS = ("amount_per_week",)
+COST_UNITS = {T_COST: ("amount_per_week",), T_LAUNCH_WEEKLY: ("amount_per_week",),
+              T_LAUNCH_ONE: ("amount_total",)}
 
 
 def sha256_file(path: str) -> str:
@@ -109,11 +118,12 @@ def read_sheets(sheets_dir: str, catalog: dict) -> dict:
     seen = set()
     for r in measures:
         at = _at(pm, r)
-        for c in ("campaign_id", "measure_id", "measure_version", "p4", "measure_type", "sku_id", "market",
-                  "start_week", "end_week"):
+        t = r["measure_type"]
+        need = ["campaign_id", "measure_id", "measure_version", "p4", "measure_type", "sku_id", "market",
+                "start_week"] + ([] if t == T_LAUNCH else ["end_week"])
+        for c in need:
             if not r[c]:
                 raise StrategyError(f"{at}: {c} が空欄です")
-        t = r["measure_type"]
         if t not in cat:
             raise StrategyError(f"{at}: 知らない型 {t!r}（型カタログ {os.path.basename(catalog['path'])} にありません。"
                                 f"使える型：{sorted(cat)}）")
@@ -124,7 +134,7 @@ def read_sheets(sheets_dir: str, catalog: dict) -> dict:
             raise StrategyError(f"{at}: 型 {t} はカタログにありますが、変換の規則がまだありません（初版は {IMPLEMENTED}）")
         if r["p4"] != cat[t]["p4"]:
             raise StrategyError(f"{at}: p4={r['p4']!r} が型 {t} の p4 {cat[t]['p4']!r} と違います")
-        week_range(r["start_week"], r["end_week"])
+        week_range(r["start_week"], r["start_week"] if t == T_LAUNCH else r["end_week"])
         key = (r["measure_id"], r["measure_version"])
         if key in seen:
             raise StrategyError(f"{at}: 施策 {key[0]} の版 {key[1]} が重複しています（同じ施策を二重に入れない）")
@@ -134,17 +144,24 @@ def read_sheets(sheets_dir: str, catalog: dict) -> dict:
                 raise StrategyError(f"{at}: {T_DEMAND} には hypothesis_id が要ります（量は仮説から）")
             if r["value"]:
                 raise StrategyError(f"{at}: {T_DEMAND} の value は空欄にしてください（量は仮説 {r['hypothesis_id']} から）")
+        elif t == T_LAUNCH:
+            for c in ("end_week", "value", "unit", "currency", "entity", "cost_item", "hypothesis_id"):
+                if r[c]:
+                    raise StrategyError(f"{at}: {T_LAUNCH} の {c} は空欄にしてください（投入週は start_week だけで書く）")
         else:
             for c in ("value", "unit", "currency", "entity", "cost_item"):
                 if not r[c]:
-                    raise StrategyError(f"{at}: {T_COST} の {c} が空欄です")
-            if r["unit"] not in COST_UNITS:
-                raise StrategyError(f"{at}: unit={r['unit']!r} は {COST_UNITS}（初版）")
+                    raise StrategyError(f"{at}: {t} の {c} が空欄です")
+            if r["unit"] not in COST_UNITS[t]:
+                raise StrategyError(f"{at}: {t} の unit={r['unit']!r} は {COST_UNITS[t]}")
             v = dec(r["value"], f"{at} の value")
             if v < 0:
                 raise StrategyError(f"{at}: value={r['value']} は 0 以上にしてください")
             if r["hypothesis_id"]:
-                raise StrategyError(f"{at}: {T_COST} に hypothesis_id は使いません（{r['hypothesis_id']}）")
+                raise StrategyError(f"{at}: {t} に hypothesis_id は使いません（{r['hypothesis_id']}）")
+            if t == T_LAUNCH_ONE and r["start_week"] != r["end_week"]:
+                raise StrategyError(f"{at}: {T_LAUNCH_ONE} は start_week ＝ end_week（発生の週）にしてください"
+                                    f"（{r['start_week']}〜{r['end_week']}）")
 
     hseen = set()
     for r in hyps:
@@ -202,15 +219,25 @@ def select_plan(sheets: dict, plan_id: str) -> dict:
     level = p["hypothesis_level"]
     if len(set(camps)) != len(camps):
         raise StrategyError(f"案 {plan_id}: campaign_ids に同じキャンペーンが 2 回あります（{camps}）")
-    if camps and level not in LEVELS:
-        raise StrategyError(f"案 {plan_id}: キャンペーンがあるのに hypothesis_level={level!r}（{LEVELS} のどれか）")
-    if not camps and level:
-        raise StrategyError(f"案 {plan_id}: キャンペーンが無いのに hypothesis_level={level!r} です")
-    chosen = []
-    for c in camps:
-        rows = [r for r in sheets["measures"] if r["campaign_id"] == c]
+    rows_of = {c: [r for r in sheets["measures"] if r["campaign_id"] == c] for c in camps}
+    for c, rows in rows_of.items():
         if not rows:
             raise StrategyError(f"案 {plan_id}: キャンペーン {c} の行が measures.csv にありません")
+    has_promo = any(r["measure_type"] in PROMO_TYPES for rows in rows_of.values() for r in rows)
+    if has_promo and level not in LEVELS:
+        raise StrategyError(f"案 {plan_id}: 販促のキャンペーンがあるのに hypothesis_level={level!r}（{LEVELS} のどれか）")
+    if not has_promo and level:
+        raise StrategyError(f"案 {plan_id}: 仮説の水準を使うキャンペーンが無いのに hypothesis_level={level!r} です"
+                            "（投入週の型は仮説の水準を持たない。空欄にする）")
+    chosen = []
+    for c in camps:
+        rows = rows_of[c]
+        kinds = {r["measure_type"] in PRODUCT_TYPES for r in rows}
+        if len(kinds) != 1:
+            raise StrategyError(f"キャンペーン {c}: 販促の型と投入の型が混ざっています（1 つのキャンペーンはどちらか一方）")
+        if kinds == {True}:
+            chosen += _launch_campaign(c, rows)
+            continue
         dem = [r for r in rows if r["measure_type"] == T_DEMAND]
         cost = [r for r in rows if r["measure_type"] == T_COST]
         if len(dem) != 1 or len(cost) != 1:
@@ -221,6 +248,11 @@ def select_plan(sheets: dict, plan_id: str) -> dict:
             if a[col] != b[col]:
                 raise StrategyError(f"キャンペーン {c}: 需要の行と費用の行の {col} が違います（{a[col]} と {b[col]}）")
         chosen += [a, b]
+    launch = [r for r in chosen if r["measure_type"] == T_LAUNCH]
+    lk = [(r["sku_id"], r["market"]) for r in launch]
+    dup = sorted({k for k in lk if lk.count(k) > 1})
+    if dup:
+        raise StrategyError(f"案 {plan_id}: 同じ鍵 {dup[0][0]} × {dup[0][1]} の {T_LAUNCH} が 2 つあります（投入週は 1 つ）")
     # one demand measure per key with overlapping weeks is not allowed in the first version
     dem = [r for r in chosen if r["measure_type"] == T_DEMAND]
     for i, a in enumerate(dem):
@@ -238,3 +270,17 @@ def select_plan(sheets: dict, plan_id: str) -> dict:
         hyps[r["measure_id"]] = h[0]
     return {"plan": p, "env": envs[p["env_id"]], "campaigns": camps, "level": level, "measures": chosen,
             "hypotheses": hyps}
+
+
+def _launch_campaign(c: str, rows: List[dict]) -> List[dict]:
+    """A launch campaign: exactly one product_launch_week, and any launch cost rows for the same target and
+    version (RequestLetter_Launch_Convert_Slice1 §2.1)."""
+    lw = [r for r in rows if r["measure_type"] == T_LAUNCH]
+    if len(lw) != 1:
+        raise StrategyError(f"キャンペーン {c}: {T_LAUNCH} の行が 1 つ要ります（今 {len(lw)}）")
+    a = lw[0]
+    for b in rows:
+        for col in ("sku_id", "market", "measure_version"):
+            if a[col] != b[col]:
+                raise StrategyError(f"キャンペーン {c}: 投入週の行と {b['measure_id']} の {col} が違います（{a[col]} と {b[col]}）")
+    return list(rows)

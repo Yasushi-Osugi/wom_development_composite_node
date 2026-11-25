@@ -1,0 +1,3 @@
+plan_id,case_name,campaign_ids,hypothesis_level,env_id
+P_LAUNCH_LATE,タイのクリームを 2028-W01 に投入（基準）,CMP_TH_CREAM_LATE,,ENV_BASE_v01
+P_LAUNCH_EARLY,タイのクリームを 2027-W27 に投入,CMP_TH_CREAM_EARLY,,ENV_BASE_v01

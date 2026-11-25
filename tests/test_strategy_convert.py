@@ -144,7 +144,7 @@ def test_cosmetics_four_plans(cos_ws):
         log = list(csv.DictReader(f))
     assert list(log[0]) == CV.LOG_COLS
     assert {r["base_demand_sha256"] for r in log} == {SH.sha256_file(os.path.join(COSMETICS, "demand_forecast.csv"))}
-    assert {r["env_id"] for r in log} == {"ENV_BASE_v01"} and all(r["catalog_version"].startswith("v0.1") for r in log)
+    assert {r["env_id"] for r in log} == {"ENV_BASE_v01"} and all(r["catalog_version"].startswith("v0.2") for r in log)
     assert [r["after"] for r in log if r["rule"] == "residual"] == ["0"]
     assert sum(int(r["after"]) - int(r["before"]) for r in log if r["column"] == "quantity" and r["rule"] != "residual") == 6
     assert [r["after"] for r in log if r["rule"] == "promo_external_cost"] == ["23000"]
@@ -355,3 +355,126 @@ def test_negative_demand_from_rebound_stops_before_writing(small):
     with pytest.raises(StrategyError, match="負になります"):
         CV.convert(small["ws"], "C02", "P1", s, small["model"])
     assert open(os.path.join(small["ws"], "C02", "model", "demand_forecast.csv"), encoding="utf-8").read() == before
+
+
+# ── 投入週の型（RequestLetter_Launch_Convert_Slice1 §2.4） ─────────────────────────────────────────
+LAUNCH_SHEETS = os.path.join(REPO, "tests", "data", "strategy_launch1")
+ENTRY_LATE = os.path.join(REPO, "docs", "development", "WOM_Cockpit_FirstComparison_PolicyAndCapacity_appendix",
+                          "inputs", "market_entry_plan_A_late.csv")
+TH = ("COS_Cream", "TH_Distributor")
+
+
+@pytest.fixture
+def launch_ws(tmp_path):
+    ws = str(tmp_path / "ws")
+    CC.create_workspace(ws, COSMETICS, max_age_weeks=52, first_name="base")
+    CC.set_entry_plan(ws, "C01", ENTRY_LATE)
+    for n in ("late", "early", "noplan"):
+        CC.copy_case(ws, "C01", n)
+    os.remove(os.path.join(ws, "C04", "model", CC.ENTRY_PLAN))        # C04: a case without the entry plan
+    return ws
+
+
+def _launch_sheets(root, extra_measures=(), plans=None):
+    """The launch sheets with extra measure rows / replaced plans (a copy; the test data is not changed)."""
+    d = os.path.join(str(root), "launch_sheets")
+    shutil.copytree(LAUNCH_SHEETS, d, dirs_exist_ok=True)
+    if extra_measures:
+        with open(os.path.join(d, "measures.csv"), "a", encoding="utf-8", newline="") as f:
+            for line in extra_measures:
+                f.write(line + "\n")
+    if plans is not None:
+        with open(os.path.join(d, "plans.csv"), "w", encoding="utf-8", newline="") as f:
+            f.write("plan_id,case_name,campaign_ids,hypothesis_level,env_id\n" + "\n".join(plans) + "\n")
+    return d
+
+
+def test_launch_week_changes_only_the_target_key_and_is_idempotent(launch_ws):
+    ws = launch_ws
+    base = _demand(ws, "C01")
+    assert CV.convert(ws, "C02", "P_LAUNCH_LATE", LAUNCH_SHEETS, COSMETICS)["state"] == "変換した"
+    assert _demand(ws, "C02") == base                                         # the late plan = the base demand
+    pc = CV.convert(ws, "C03", "P_LAUNCH_EARLY", LAUNCH_SHEETS, COSMETICS)
+    assert pc["state"] == "変換した"
+    d = _demand(ws, "C03")
+    diff = {k for k in d if d[k] != base[k]}
+    assert {(k[0], k[1]) for k in diff} == {TH}
+    th = {k[2]: int(v) for k, v in d.items() if (k[0], k[1]) == TH}
+    assert sum(th.values()) == 377 and th["2027-W26"] == 0 and th["2027-W27"] == 2 and th["2027-W40"] == 3
+    assert sum(v for w, v in th.items() if w.startswith("2027")) == 65
+    # the entry plan: only launch_week of the target row changed
+    with open(os.path.join(ws, "C03", "model", CC.ENTRY_PLAN), encoding="utf-8-sig") as f:
+        rows = {(r["sku_id"], r["region"]): r for r in csv.DictReader(f)}
+    with open(ENTRY_LATE, encoding="utf-8-sig") as f:
+        late = {(r["sku_id"], r["region"]): r for r in csv.DictReader(f)}
+    for k, r in rows.items():
+        changed = [c for c in r if r[c] != late[k][c]]
+        assert changed == (["launch_week"] if k == TH else []), k
+    assert rows[TH]["launch_week"] == "2027-W27"
+    # the change log: weekly quantity rows add up to +78; the year totals are a separate column
+    log = list(csv.DictReader(open(os.path.join(ws, "C03", "inputs", CV.LOG_FILE), encoding="utf-8")))
+    q = [r for r in log if r["column"] == "quantity"]
+    assert sum(int(r["after"]) - int(r["before"]) for r in q) == 78
+    assert {r["column"] for r in log} == {"launch_week", "quantity", "quantity_year_total", "weekly_amount"}
+    assert all(r["rule"] == "summary" for r in log if r["column"] == "quantity_year_total")
+    assert CV.convert(ws, "C03", "P_LAUNCH_EARLY", LAUNCH_SHEETS, COSMETICS)["state"] == "変更なし"
+
+
+def test_launch_costs_one_week_row_and_weekly_row(launch_ws):
+    ws = launch_ws
+    CV.convert(ws, "C02", "P_LAUNCH_LATE", LAUNCH_SHEETS, COSMETICS)
+    rows = {r["cost_item"]: r for r in _fc(ws, "C02")}
+    one, fee = rows["th_cream_launch_prep"], rows["th_cream_channel_fee"]
+    assert (one["paid_start_week"], one["paid_end_week"], one["weekly_amount"]) == ("2027-W51", "2027-W51", "300000")
+    assert (fee["paid_start_week"], fee["paid_end_week"], fee["weekly_amount"]) == ("2028-W01", "2029-W52", "50000")
+    assert one["entity"] == fee["entity"] == "E_JP"
+
+
+def test_launch_stops(launch_ws, tmp_path):
+    ws = launch_ws
+    # a case without the entry plan
+    with pytest.raises(StrategyError, match="market_entry_plan.csv がありません"):
+        CV.convert(ws, "C04", "P_LAUNCH_EARLY", LAUNCH_SHEETS, COSMETICS)
+    # promotion types on a case with the entry plan
+    with pytest.raises(StrategyError, match="販促の型"):
+        CV.convert(ws, "C02", "P_PROMO_MID", SHEETS, COSMETICS)
+    # the entry plan disagrees with the frozen base outside the target (another key's steady changed)
+    p = os.path.join(ws, "C02", "model", CC.ENTRY_PLAN)
+    before = open(p, "rb").read()
+    open(p, "wb").write(before.replace(b"COS_Cream,SG_EC,2027-W01,2,", b"COS_Cream,SG_EC,2027-W01,3,"))
+    with pytest.raises(StrategyError, match="食い違って"):
+        CV.convert(ws, "C02", "P_LAUNCH_LATE", LAUNCH_SHEETS, COSMETICS)
+    assert not os.path.exists(os.path.join(ws, "C02", "inputs", CV.LOG_FILE))   # nothing written
+    open(p, "wb").write(before)
+    # the case's demand drifted outside the target (one row)
+    dp = os.path.join(ws, "C03", "model", "demand_forecast.csv")
+    txt = open(dp, encoding="utf-8").read().replace("COS_Serum,SG_EC,2028-W10,3", "COS_Serum,SG_EC,2028-W10,4", 1)
+    open(dp, "w", encoding="utf-8", newline="").write(txt)
+    with pytest.raises(StrategyError, match="施策の対象の外"):
+        CV.convert(ws, "C03", "P_LAUNCH_EARLY", LAUNCH_SHEETS, COSMETICS)
+
+
+def test_launch_cost_entity_of_an_external_market(launch_ws, tmp_path):
+    ws = launch_ws
+    bad = "CMP_X,X_WEEK,v01,Product,product_launch_week,COS_Cream,TH_Distributor,2027-W27,,,,,,,,x"
+    bad_cost = "CMP_X,X_PREP,v01,Product,launch_one_time_cost,COS_Cream,TH_Distributor,2027-W25,2027-W25,1,amount_total,JPY,E_SG,x_prep,,x"
+    s = _launch_sheets(tmp_path, [bad, bad_cost], plans=["P_X,x,CMP_X,,ENV_BASE_v01"])
+    with pytest.raises(StrategyError, match="親のノード DC_TH の法人 E_JP"):
+        CV.convert(ws, "C03", "P_X", s, COSMETICS)
+
+
+@pytest.mark.parametrize("extra,plans,match", [
+    (["CMP_A,A_WEEK,v01,Product,product_launch_week,COS_Cream,TH_Distributor,2027-W27,2027-W30,,,,,,,x"],
+     ["P_A,x,CMP_A,,ENV_BASE_v01"], "end_week は空欄"),
+    (["CMP_A,A_WEEK,v01,Product,product_launch_week,COS_Cream,TH_Distributor,2027-W27,,,,,,,,x",
+      "CMP_A,A_PREP,v01,Product,launch_one_time_cost,COS_Cream,TH_Distributor,2027-W25,2027-W26,1,amount_total,JPY,E_JP,a,,x"],
+     ["P_A,x,CMP_A,,ENV_BASE_v01"], "start_week ＝ end_week"),
+    (["CMP_A,A_PREP,v01,Product,launch_one_time_cost,COS_Cream,TH_Distributor,2027-W25,2027-W25,1,amount_per_week,JPY,E_JP,a,,x"],
+     ["P_A,x,CMP_A,,ENV_BASE_v01"], "unit="),
+    ([], ["P_A,x,CMP_TH_CREAM_EARLY,base,ENV_BASE_v01"], "仮説の水準を使うキャンペーンが無い"),
+    ([], ["P_A,x,CMP_TH_CREAM_EARLY;CMP_TH_CREAM_LATE,,ENV_BASE_v01"], "が 2 つあります"),
+])
+def test_launch_sheet_stops(launch_ws, tmp_path, extra, plans, match):
+    s = _launch_sheets(tmp_path, extra, plans=plans)
+    with pytest.raises(StrategyError, match=match):
+        CV.convert(launch_ws, "C03", "P_A", s, COSMETICS)

@@ -8,6 +8,11 @@ RequestLetter_Promo_Convert_Slice1 §3。
     model/demand_forecast.csv        promo_demand_delta：対象のキーの、反応・反動の週の行だけ（D ＝ B ＋ d）
     inputs/fixed_cost.csv            promo_external_cost：報告通貨の週額 1 行（既存の他の行は残す。
                                      wom.cockpit.cases.set_fixed_cost で書く）
+                                     launch_one_time_cost：発生の週の 1 週の行（週額＝総額）
+                                     launch_weekly_cost：有償の週の週額の行（販促の費用と同じ書き方）
+    model/market_entry_plan.csv      product_launch_week：対象の行の launch_week だけ。需要は投入の表から
+    model/demand_forecast.csv        道具 1（tools.gen_demand_from_entry_plan）で作り直す（cockpit の
+                                     set_launch_week と同じ経路。RequestLetter_Launch_Convert_Slice1 §2）
     inputs/strategy_change_log.csv   変更記録（変換の前後・規則・端数・ID と版）
     case.json の changes             変換したこと（plan_id と記録のファイル）
 
@@ -124,12 +129,18 @@ def plan_changes(ws_dir: str, cid: str, plan_id: str, sheets_dir: str, base_mode
         if now != h:
             raise StrategyError(f"元のモデルの {fn} が作業を作った時から変わっています（sha256 {h[:12]} → {now[:12]}）。"
                                 "直し方：基準が凍結されていないので、作業を作り直す")
-    if os.path.exists(os.path.join(mdir, C.ENTRY_PLAN)):
-        raise StrategyError(f"案 {cid} のモデルに {C.ENTRY_PLAN} があります。初版は投入の表のある案を扱いません"
-                            "（需要の正本が 2 つになる）")
     catalog = SH.read_catalog(catalog_path)
     sheets = SH.read_sheets(sheets_dir, catalog)
     sel = SH.select_plan(sheets, plan_id)
+    has_entry = os.path.exists(os.path.join(mdir, C.ENTRY_PLAN))
+    mtypes = {m["measure_type"] for m in sel["measures"]}
+    if has_entry and mtypes & set(SH.PROMO_TYPES):
+        raise StrategyError(f"案 {cid} のモデルに {C.ENTRY_PLAN} があります。投入の表のある案に販促の型"
+                            f"（{sorted(mtypes & set(SH.PROMO_TYPES))}）は書けません（基準需要の生成 → 販促の差分 → "
+                            "需要の確定の経路をまだ定義していない。需要の正本が 2 つになる）")
+    if not has_entry and SH.T_LAUNCH in mtypes:
+        raise StrategyError(f"案 {cid} のモデルに {C.ENTRY_PLAN} がありません。{SH.T_LAUNCH} は投入の表の対象の行の "
+                            "launch_week を書く型です。直し方：先に投入の表を案に置く（cockpit_cases set entry-plan）")
     plan_weeks = RU.week_range(ws["demand_period"]["start"], ws["demand_period"]["end"])
 
     base_csv = os.path.join(base_model, C.DEMAND)
@@ -152,7 +163,8 @@ def plan_changes(ws_dir: str, cid: str, plan_id: str, sheets_dir: str, base_mode
     touched_keys = set()
     measures = sel["measures"]
     demand_ms = [m for m in measures if m["measure_type"] == SH.T_DEMAND]
-    cost_ms = [m for m in measures if m["measure_type"] == SH.T_COST]
+    cost_ms = [m for m in measures if m["measure_type"] in SH.COST_TYPES]
+    launch_ms = [m for m in measures if m["measure_type"] == SH.T_LAUNCH]
     targets = {}
     for m in measures:
         targets[(m["sku_id"], m["market"])] = resolve_target(mdir, m["sku_id"], m["market"])
@@ -190,6 +202,10 @@ def plan_changes(ws_dir: str, cid: str, plan_id: str, sheets_dir: str, base_mode
                         "removed_lots": -sum(v for v in res["d"].values() if v < 0),
                         "residuals": [RU.num_text(iv["residual"]) for iv in res["intervals"]]})
 
+    entry = None
+    if launch_ms:
+        entry = _plan_launch(ws, mdir, cid, launch_ms, bmap, common, log, new_q, summary)
+
     # the inputs of every key the measures do not touch, and the untouched weeks of touched keys, are the base
     drift = [k for k in cmap if k not in new_q and cmap[k] != bmap[k]]
     if drift:
@@ -209,16 +225,26 @@ def plan_changes(ws_dir: str, cid: str, plan_id: str, sheets_dir: str, base_mode
     new_cost = []
     for m in cost_ms:
         t = targets[(m["sku_id"], m["market"])]
-        if t["entity"] is not None and t["entity"] != m["entity"]:
-            raise StrategyError(f"施策 {m['measure_id']}: 負担法人 {m['entity']} が対象の市場 {t['node']} の法人 {t['entity']}"
-                                "（vc_node_assignment.csv）と違います")
+        if m["measure_type"] == SH.T_COST:
+            if t["entity"] is not None and t["entity"] != m["entity"]:
+                raise StrategyError(f"施策 {m['measure_id']}: 負担法人 {m['entity']} が対象の市場 {t['node']} の法人 {t['entity']}"
+                                    "（vc_node_assignment.csv）と違います")
+        else:
+            _check_launch_cost_entity(mdir, m, t)
         weeks = RU.week_range(m["start_week"], m["end_week"])
         rate = RU.fx_rate_for_weeks(fx_rows, m["currency"], hq, weeks, "ppc_fx_rate.csv（元のモデル）")
         val = RU.dec(m["value"], "value")
         yen = val * rate
-        note = (f"{TAG}; campaign={m['campaign_id']}; measure={m['measure_id']}; version={m['measure_version']}; "
-                f"{RU.num_text(val)} {m['currency']}/週 × {RU.num_text(rate)} {hq}/{m['currency']}（ppc_fx_rate.csv、元のモデル）"
-                f" = {RU.num_text(yen)} {hq}/週 × {len(weeks)} 週 = {RU.num_text(yen * len(weeks))} {hq}; {COST_WEEKS_NOTE}")
+        if m["measure_type"] == SH.T_LAUNCH_ONE:
+            # one week: the weekly amount is the total, so the comparison subtracts it once
+            note = (f"{TAG}; campaign={m['campaign_id']}; measure={m['measure_id']}; version={m['measure_version']}; "
+                    f"一時の費用 総額 {RU.num_text(val)} {m['currency']} × {RU.num_text(rate)} {hq}/{m['currency']}"
+                    f"（ppc_fx_rate.csv、元のモデル） = {RU.num_text(yen)} {hq}、発生の週 {m['start_week']} の 1 週の行"
+                    f"（週額 ＝ 総額）; {COST_WEEKS_NOTE}")
+        else:
+            note = (f"{TAG}; campaign={m['campaign_id']}; measure={m['measure_id']}; version={m['measure_version']}; "
+                    f"{RU.num_text(val)} {m['currency']}/週 × {RU.num_text(rate)} {hq}/{m['currency']}（ppc_fx_rate.csv、元のモデル）"
+                    f" = {RU.num_text(yen)} {hq}/週 × {len(weeks)} 週 = {RU.num_text(yen * len(weeks))} {hq}; {COST_WEEKS_NOTE}")
         row = {"cost_item": m["cost_item"], "entity": m["entity"], "paid_start_week": m["start_week"],
                "paid_end_week": m["end_week"], "weekly_amount": RU.num_text(yen), "currency": hq, "note": note,
                C.COUNT_OUTSIDE_COL: "", C.DISPLAY_COL: ""}
@@ -258,10 +284,13 @@ def plan_changes(ws_dir: str, cid: str, plan_id: str, sheets_dir: str, base_mode
                     "measure_version": m["measure_version"], "hypothesis_id": "", "hypothesis_version": "",
                     "file": f"inputs/{C.FIXED_COST_FILE}", "key": f"{row['cost_item']}|{row['entity']}",
                     "column": "weekly_amount", "week": f"{m['start_week']}..{m['end_week']}", "before": before,
-                    "after": row["weekly_amount"], "rule": SH.T_COST,
-                    "note": f"{RU.num_text(val)} {m['currency']}/週 × {RU.num_text(rate)} = {row['weekly_amount']} {hq}/週、"
-                            f"{len(weeks)} 週・計 {RU.num_text(val * rate * len(weeks))} {hq}（元 "
-                            f"{RU.num_text(val * len(weeks))} {m['currency']}）。案の外の費用（PPC・Value Chain の規則には書かない）"})
+                    "after": row["weekly_amount"], "rule": m["measure_type"],
+                    "note": (f"一時の費用 {RU.num_text(val)} {m['currency']} × {RU.num_text(rate)} = {row['weekly_amount']} {hq}"
+                             f"（{m['start_week']} の 1 週）" if m["measure_type"] == SH.T_LAUNCH_ONE else
+                             f"{RU.num_text(val)} {m['currency']}/週 × {RU.num_text(rate)} = {row['weekly_amount']} {hq}/週、"
+                             f"{len(weeks)} 週・計 {RU.num_text(val * rate * len(weeks))} {hq}（元 "
+                             f"{RU.num_text(val * len(weeks))} {m['currency']}）") +
+                            "。案の外の費用（PPC・Value Chain の規則には書かない）"})
     if not measures:
         log.append({**common, "campaign_id": "", "measure_id": "", "measure_version": "", "hypothesis_id": "",
                     "hypothesis_version": "", "file": "", "key": "", "column": "", "week": "", "before": "", "after": "",
@@ -273,13 +302,15 @@ def plan_changes(ws_dir: str, cid: str, plan_id: str, sheets_dir: str, base_mode
         if cmap[k] != v:
             new_rows[cidx[k]]["quantity"] = RU.num_text(v)
             demand_changed = True
+    if entry is not None and entry["changed"]:
+        demand_changed = True
     log_path = os.path.join(cdir, "inputs", LOG_FILE)
     log_text = _log_text(log)
     old_log = open(log_path, encoding="utf-8").read() if os.path.exists(log_path) else None
     return {"ws": ws_dir, "case": cid, "plan_id": plan_id, "selection": sel, "catalog": catalog, "log": log,
             "log_text": log_text, "log_changed": old_log != log_text, "log_path": log_path,
             "demand": {"path": case_csv, "fields": fields, "rows": new_rows, "term": term, "bom": bom,
-                       "changed": demand_changed},
+                       "changed": demand_changed, "entry_plan": entry, "expected": dict(new_q)},
             "cost": {"keep": keep, "new": [r for _m, r, _v, _r, _w in new_cost], "changed": not unchanged_cost},
             "summary": summary, "start_sha": start_sha, "base_demand_sha256": base_sha}
 
@@ -306,7 +337,9 @@ def convert(ws_dir: str, cid: str, plan_id: str, sheets_dir: str, base_model: st
         pc["state"] = "変更なし"
         return pc
     d = pc["demand"]
-    if d["changed"]:
+    if d["changed"] and d["entry_plan"] is not None:
+        _write_launch(ws_dir, cid, d)
+    elif d["changed"]:
         C._write_rows(d["path"], d["fields"], d["rows"], d["term"], d["bom"])
     if pc["cost"]["changed"]:
         C.set_fixed_cost(ws_dir, cid, rows=pc["cost"]["keep"] + pc["cost"]["new"])
@@ -321,3 +354,144 @@ def convert(ws_dir: str, cid: str, plan_id: str, sheets_dir: str, base_model: st
                       "cost_changed": pc["cost"]["changed"]})
     pc["state"] = "変換した"
     return pc
+
+
+# ── 投入週（RequestLetter_Launch_Convert_Slice1 §2.2・§2.3） ─────────────────────────────────
+LAUNCH_NOTE = "投入の表の対象の行の launch_week だけを変え、道具 1（tools.gen_demand_from_entry_plan）で需要を作る"
+
+
+def _gen():
+    import sys
+    if C.REPO not in sys.path:
+        sys.path.insert(0, C.REPO)
+    from tools import gen_demand_from_entry_plan as G
+    return G
+
+
+def _plan_launch(ws: dict, mdir: str, cid: str, launch_ms: List[dict], bmap: Dict[tuple, Decimal], common: dict,
+                 log: List[dict], new_q: Dict[tuple, Decimal], summary: List[dict]) -> dict:
+    """Put each measure's week into the case's entry plan (in memory), generate the demand with tool 1's
+    functions and check it (§2.2): every key / week outside the targets equals the frozen base demand; only
+    launch_week of the target rows changes. Fills new_q (every week of the target keys), the log and the
+    summary. Returns the entry plan to write."""
+    G = _gen()
+    path = os.path.join(mdir, C.ENTRY_PLAN)
+    try:
+        prows, _raw, _p = G.read_plan(mdir)
+    except G.EntryPlanError as e:
+        raise StrategyError(f"案 {cid} の投入の表を読めません：{e}")
+    fields, rows, term, bom = C._read_rows(path)
+    before_rows = [dict(r) for r in rows]
+    weeks = G.week_range(ws["demand_period"]["start"], ws["demand_period"]["end"])
+    targets = {}
+    for m in launch_ms:
+        k = (m["sku_id"], m["market"])
+        hit = [r for r in prows if (r["sku_id"], r["region"]) == k]
+        raw = [r for r in rows if (r.get("sku_id", "").strip(), r.get("region", "").strip()) == k]
+        if len(hit) != 1 or len(raw) != 1:
+            raise StrategyError(f"案 {cid} の投入の表に鍵 {k[0]}:{k[1]} の行が {len(hit)} 行です（1 行のはず）")
+        targets[k] = (m, hit[0]["launch_week"])
+        hit[0]["launch_week"] = m["start_week"]
+        raw[0]["launch_week"] = m["start_week"]
+    # 2. only launch_week of the target rows differs from the entry plan the case has
+    for a, b in zip(before_rows, rows):
+        diff = [c for c in fields if (a.get(c) or "") != (b.get(c) or "")]
+        k = (a.get("sku_id", "").strip(), a.get("region", "").strip())
+        if diff and (k not in targets or diff != ["launch_week"]):
+            raise StrategyError(f"投入の表の {k} で launch_week 以外の列 {diff} が変わります（変換の誤り）")
+    try:
+        lines = G.generate(prows, weeks, path)
+    except G.EntryPlanError as e:
+        raise StrategyError(f"案 {cid} の需要を投入の表から作れません：{e}")
+    gmap = {(s_, g, w): Decimal(q) for s_, g, w, q in lines}
+    if set(gmap) != set(bmap):
+        extra = sorted(set(gmap) ^ set(bmap))
+        raise StrategyError(f"投入の表から作った需要の鍵・週が元のモデルの需要と違います（{len(extra)} 件、例 {extra[0]}）。"
+                            "投入の表と元のモデルの需要が食い違っています")
+    # 1. outside the targets the generated demand must be the frozen base demand
+    bad = [k for k in gmap if (k[0], k[1]) not in targets and gmap[k] != bmap[k]]
+    if bad:
+        raise StrategyError(f"投入の表から作った需要が、対象の外で元のモデルの需要と違います（{len(bad)} 行、例 {bad[0]}："
+                            f"投入の表 {RU.num_text(gmap[bad[0]])}、元 {RU.num_text(bmap[bad[0]])}）。"
+                            "投入の表と元のモデルの需要が食い違っています。直し方：投入の表を見直す")
+    for (sku, mk), (m, plan_week) in targets.items():
+        mc = {"campaign_id": m["campaign_id"], "measure_id": m["measure_id"], "measure_version": m["measure_version"],
+              "hypothesis_id": "", "hypothesis_version": ""}
+        base_nz = [w for w in weeks if bmap[(sku, mk, w)] != 0]
+        base_week = base_nz[0] if base_nz else ""
+        log.append({**common, **mc, "file": f"model/{C.ENTRY_PLAN}", "key": f"{sku}|{mk}", "column": "launch_week",
+                    "week": "", "before": base_week, "after": m["start_week"], "rule": SH.T_LAUNCH,
+                    # the case's pre-conversion value is not written here (it changes on a second run: idempotent)
+                    "note": f"before は凍結した基準需要の最初の非ゼロの週。{LAUNCH_NOTE}"})
+        tb = ta = Decimal(0)
+        years: Dict[str, List[Decimal]] = {}
+        for w in weeks:
+            k = (sku, mk, w)
+            new_q[k] = gmap[k]
+            tb += bmap[k]
+            ta += gmap[k]
+            y = years.setdefault(w[:4], [Decimal(0), Decimal(0)])
+            y[0] += bmap[k]
+            y[1] += gmap[k]
+            log.append({**common, **mc, "file": f"model/{C.DEMAND}", "key": f"{sku}|{mk}", "column": "quantity",
+                        "week": w, "before": RU.num_text(bmap[k]), "after": RU.num_text(gmap[k]),
+                        "rule": f"{SH.T_LAUNCH} launch_week={m['start_week']}",
+                        "note": "before は凍結した基準需要、after は投入の表から作った需要"})
+        for y, (b, a) in sorted(years.items()):
+            log.append({**common, **mc, "file": f"model/{C.DEMAND}", "key": f"{sku}|{mk}",
+                        "column": "quantity_year_total", "week": y, "before": RU.num_text(b), "after": RU.num_text(a),
+                        "rule": "summary", "note": "年の合計（要約。週別の行と重ねて数えない）"})
+        summary.append({"measure_id": m["measure_id"], "key": f"{sku}|{mk}", "type": SH.T_LAUNCH,
+                        "launch_week_before": plan_week, "launch_week_after": m["start_week"],
+                        "total_before": int(tb), "total_after": int(ta), "diff": int(ta - tb)})
+    changed = any((a.get("launch_week") or "") != (b.get("launch_week") or "") for a, b in zip(before_rows, rows))
+    return {"path": path, "fields": fields, "rows": rows, "term": term, "bom": bom, "changed": changed,
+            "before_bytes": open(path, "rb").read()}
+
+
+def _write_launch(ws_dir: str, cid: str, d: dict) -> None:
+    """Write the entry plan and regenerate the demand with tool 1 (cockpit's path), then check the demand is the
+    one planned; put the entry plan back if not."""
+    e = d["entry_plan"]
+    C._write_rows(e["path"], e["fields"], e["rows"], e["term"], e["bom"])
+    try:
+        C.regenerate_demand(ws_dir, cid)
+        _f, _r, _t, _b, got, _i = _demand_map(d["path"])
+        bad = [k for k, v in d["expected"].items() if got.get(k) != v]
+        if bad:
+            raise StrategyError(f"作り直した需要が変換の予定と違います（{len(bad)} 行、例 {bad[0]}）")
+    except Exception:
+        open(e["path"], "wb").write(e["before_bytes"])
+        C.regenerate_demand(ws_dir, cid)
+        raise
+
+
+def _check_launch_cost_entity(mdir: str, m: dict, t: dict) -> None:
+    """§2.3: the market's entity is external (vc_entity consolidated = 0) -> the entity of the parent node that
+    sells to it must be the measure's entity; consolidated -> the market's entity itself; otherwise stop."""
+    node, ent = t["node"], t["entity"]
+    pe = os.path.join(mdir, "vc_entity.csv")
+    cons = {}
+    if os.path.exists(pe):
+        _f, er, _t, _b = C._read_rows(pe)
+        cons = {r["entity_id"].strip(): (r.get("consolidated") or "").strip() for r in er}
+    flag = cons.get(ent or "")
+    if flag == "1":
+        if ent != m["entity"]:
+            raise StrategyError(f"施策 {m['measure_id']}: 負担法人 {m['entity']} が対象の市場 {node} の法人 {ent} と違います")
+        return
+    if flag == "0":
+        _f, tree, _t, _b = C._read_rows(os.path.join(mdir, "sc_tree_master.csv"))
+        par = [r.get("parent_node", "").strip() for r in tree if r.get("node_name", "").strip() == node
+               and r.get("product_name", "").strip() == m["sku_id"]]
+        parent = par[0] if len(par) == 1 else ""
+        _f, asg, _t, _b = C._read_rows(os.path.join(mdir, "vc_node_assignment.csv"))
+        pe_ = [r["entity_id"].strip() for r in asg if r.get("node_id", "").strip() == parent
+               and r.get("product_id", "").strip() == m["sku_id"]]
+        pent = pe_[0] if len(pe_) == 1 else None
+        if pent is None or pent != m["entity"]:
+            raise StrategyError(f"施策 {m['measure_id']}: 対象の市場 {node} の法人 {ent} は外部なので、負担法人は"
+                                f"その市場へ売る親のノード {parent or '（不明）'} の法人 {pent} のはずですが、{m['entity']} です")
+        return
+    raise StrategyError(f"施策 {m['measure_id']}: 対象の市場 {node} の法人 {ent!r} が vc_node_assignment.csv・vc_entity.csv で"
+                        "決まりません（連結の内か外か）")

@@ -1,0 +1,7 @@
+campaign_id,measure_id,measure_version,p4,measure_type,sku_id,market,start_week,end_week,value,unit,currency,entity,cost_item,hypothesis_id,rationale
+CMP_TH_CREAM_LATE,TH_CREAM_LATE_WEEK,v01,Product,product_launch_week,COS_Cream,TH_Distributor,2028-W01,,,,,,,,投入週の業務定義 v0.1 §2 の遅い案（基準）。タイの代理店のクリームの需要が 2028-W01 に立ち上がる
+CMP_TH_CREAM_LATE,TH_CREAM_LATE_PREP,v01,Product,launch_one_time_cost,COS_Cream,TH_Distributor,2027-W51,2027-W51,300000,amount_total,JPY,E_JP,th_cream_launch_prep,,一時の立ち上げ費（中、検証用の仮置き。低 100,000・高 600,000 は算術で当てる）。投入週の 2 週前に発生
+CMP_TH_CREAM_LATE,TH_CREAM_LATE_FEE,v01,Product,launch_weekly_cost,COS_Cream,TH_Distributor,2028-W01,2029-W52,50000,amount_per_week,JPY,E_JP,th_cream_channel_fee,,販路の維持費（中、検証用の仮置き。低 40,000・高 60,000 円／週は算術で当てる）。有償の週は投入週から報告期間の終わりまで
+CMP_TH_CREAM_EARLY,TH_CREAM_EARLY_WEEK,v01,Product,product_launch_week,COS_Cream,TH_Distributor,2027-W27,,,,,,,,投入週の業務定義 v0.1 §2 の早い案。タイの代理店のクリームの需要が 2027-W27 に立ち上がる
+CMP_TH_CREAM_EARLY,TH_CREAM_EARLY_PREP,v01,Product,launch_one_time_cost,COS_Cream,TH_Distributor,2027-W25,2027-W25,300000,amount_total,JPY,E_JP,th_cream_launch_prep,,一時の立ち上げ費（中、検証用の仮置き）。投入週の 2 週前に発生（遅い案と同じ）
+CMP_TH_CREAM_EARLY,TH_CREAM_EARLY_FEE,v01,Product,launch_weekly_cost,COS_Cream,TH_Distributor,2027-W27,2029-W52,50000,amount_per_week,JPY,E_JP,th_cream_channel_fee,,販路の維持費（中、検証用の仮置き）。有償の週は投入週から報告期間の終わりまで

@@ -1,0 +1,2 @@
+env_id,version,description
+ENV_BASE_v01,v01,元のモデルの為替・関税・LT のまま（変換では何も書き換えない）
