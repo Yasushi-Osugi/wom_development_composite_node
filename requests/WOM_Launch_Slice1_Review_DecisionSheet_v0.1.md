@@ -3,7 +3,7 @@ title: 投入週の 1 本目の業務評価を受けた判断票 — GPT-MC君�
 version: v0.1
 date: 2026-11-26
 author: Claude君（設計）
-status: 判断待ち（M1〜M6）
+status: 採用（M1〜M6 すべて推奨どおり、大杉さん 2026-11-26）
 inputs:
   - docs/design/drafts/WOM_4P_ProductLaunchWeek_Slice1_Business_Review_v0.1.md（GPT-MC君、読取 03487a6）
   - docs/development/WOM_Launch_Convert_Slice1_Report.md（数字の正）
