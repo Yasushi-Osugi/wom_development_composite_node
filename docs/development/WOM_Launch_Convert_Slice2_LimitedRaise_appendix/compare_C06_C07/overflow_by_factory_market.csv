@@ -1,0 +1,17 @@
+﻿case,policy,product,factory,market,pushed,denominator
+C06,proportional_week,COS_Cream,IN:mom:Factory_JP:COS_Cream,SG_Distributor,9165,754
+C06,proportional_week,COS_Cream,IN:mom:Factory_JP:COS_Cream,SG_EC,3640,299
+C06,proportional_week,COS_Cream,IN:mom:Factory_JP:COS_Cream,SG_Store,5194,416
+C06,proportional_week,COS_Cream,IN:mom:Factory_JP:COS_Cream,TH_Distributor,3136,299
+C06,proportional_week,COS_Serum,IN:mom:Factory_JP:COS_Serum,SG_Distributor,16469,897
+C06,proportional_week,COS_Serum,IN:mom:Factory_JP:COS_Serum,SG_EC,8313,455
+C06,proportional_week,COS_Serum,IN:mom:Factory_JP:COS_Serum,SG_Store,10345,546
+C06,proportional_week,COS_Serum,IN:mom:Factory_JP:COS_Serum,TH_Distributor,6668,390
+C07,proportional_week,COS_Cream,IN:mom:Factory_JP:COS_Cream,SG_Distributor,9120,754
+C07,proportional_week,COS_Cream,IN:mom:Factory_JP:COS_Cream,SG_EC,3623,299
+C07,proportional_week,COS_Cream,IN:mom:Factory_JP:COS_Cream,SG_Store,5162,416
+C07,proportional_week,COS_Cream,IN:mom:Factory_JP:COS_Cream,TH_Distributor,4504,377
+C07,proportional_week,COS_Serum,IN:mom:Factory_JP:COS_Serum,SG_Distributor,16469,897
+C07,proportional_week,COS_Serum,IN:mom:Factory_JP:COS_Serum,SG_EC,8313,455
+C07,proportional_week,COS_Serum,IN:mom:Factory_JP:COS_Serum,SG_Store,10345,546
+C07,proportional_week,COS_Serum,IN:mom:Factory_JP:COS_Serum,TH_Distributor,6668,390

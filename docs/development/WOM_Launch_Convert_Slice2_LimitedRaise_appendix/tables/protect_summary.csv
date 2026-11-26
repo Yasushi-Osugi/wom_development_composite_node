@@ -1,0 +1,7 @@
+﻿compare,case,basis,keys_met,keys,keys_met_2029,diff_min,diff_2029_min,floors_total,delivered_total,surplus,th_cream_delivered,th_cream_floor,th_cream_increment_subtracted,keys_met_by_delivered
+compare_C04_C06,C04,C04_actual_delivered,8,8,8,0,0,3952,3952,0,299,299,0,8
+compare_C04_C06,C06,C04_actual_delivered,8,8,8,0,0,3952,3952,0,299,299,0,8
+compare_C05_C07,C05,C05_actual_delivered,7,8,8,-78,0,4030,4030,-78,377,377,78,8
+compare_C05_C07,C07,C05_actual_delivered,7,8,8,-78,0,4030,4030,-78,377,377,78,8
+compare_C06_C07,C06,C05_actual_delivered,7,8,8,-78,0,4030,3952,-78,299,377,0,7
+compare_C06_C07,C07,C05_actual_delivered,7,8,8,-78,0,4030,4030,-78,377,377,78,8

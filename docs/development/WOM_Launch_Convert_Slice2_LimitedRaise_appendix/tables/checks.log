@@ -1,0 +1,39 @@
+== 状態
+C01 BASE_C3a_ENTRYPLAN 済み
+C02 LATE 済み
+C03 EARLY 済み
+C04 LATE_RAISE 済み
+C05 EARLY_RAISE 済み
+C06 LATE_RAISE88 済み
+C07 EARLY_RAISE166 済み
+== S1 需要（全週・全行）
+C06 vs C02 demand True entry_plan True
+C07 vs C03 demand True entry_plan True
+== S1 L・F の行
+C06 vs C02 L/F rows equal True rows ['planned_output_raise', 'th_cream_launch_prep', 'th_cream_channel_fee']
+C07 vs C03 L/F rows equal True rows ['planned_output_raise', 'th_cream_launch_prep', 'th_cream_channel_fee']
+== S2 計画の生産量（C01 と比べ、窓の週だけ違う）
+C06 差の行 88 窓の中 88 窓の外 0 max_supply の差 0 sku ['COS_Cream'] 値 [('11', '12')]
+   窓の週の数（COS_Cream の行） 88 全部 12 True
+   確保費の行 [{'paid_start_week': '2028-W11', 'paid_end_week': '2029-W46', 'weekly_amount': '40000', 'count_outside_report': '1'}]
+C07 差の行 167 窓の中 167 窓の外 0 max_supply の差 0 sku ['COS_Cream'] 値 [('11', '12')]
+   窓の週の数（COS_Cream の行） 167 全部 12 True
+   確保費の行 [{'paid_start_week': '2026-W37', 'paid_end_week': '2029-W46', 'weekly_amount': '40000', 'count_outside_report': '1'}]
+== クリームの総納品・美容液
+C02 {'COS_Cream': {'q1': 1768, 'delivered': 1680, 'q5': 88}, 'COS_Serum': {'q1': 2288, 'delivered': 2184, 'q5': 104}}
+C03 {'COS_Cream': {'q1': 1846, 'delivered': 1680, 'q5': 166}, 'COS_Serum': {'q1': 2288, 'delivered': 2184, 'q5': 104}}
+C04 {'COS_Cream': {'q1': 1768, 'delivered': 1768, 'q5': 0}, 'COS_Serum': {'q1': 2288, 'delivered': 2184, 'q5': 104}}
+C05 {'COS_Cream': {'q1': 1846, 'delivered': 1846, 'q5': 0}, 'COS_Serum': {'q1': 2288, 'delivered': 2184, 'q5': 104}}
+C06 {'COS_Cream': {'q1': 1768, 'delivered': 1768, 'q5': 0}, 'COS_Serum': {'q1': 2288, 'delivered': 2184, 'q5': 104}}
+C07 {'COS_Cream': {'q1': 1846, 'delivered': 1846, 'q5': 0}, 'COS_Serum': {'q1': 2288, 'delivered': 2184, 'q5': 104}}
+美容液 C03 == C02 True
+美容液 C04 == C02 True
+美容液 C05 == C02 True
+美容液 C06 == C02 True
+美容液 C07 == C02 True
+C06 − C04 クリームの納品の差 0
+   差の出た行 {}
+   ⑤ が出た行 {}
+C07 − C05 クリームの納品の差 0
+   差の出た行 {}
+   ⑤ が出た行 {}
