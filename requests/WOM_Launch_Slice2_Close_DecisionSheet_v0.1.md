@@ -3,7 +3,7 @@ title: 投入週の 2 本目（期間を絞った増産）を受けた区切り�
 version: v0.1
 date: 2026-11-27
 author: Claude君（設計）
-status: 判断待ち（N1〜N5）
+status: 採用（N1〜N5 すべて推奨どおり、大杉さん 2026-11-27）
 inputs:
   - docs/development/WOM_Launch_Convert_Slice2_LimitedRaise_Report.md（Code君、数字の正）
   - requests/WOM_Launch_Slice1_Review_DecisionSheet_v0.1.md（M1〜M6 採用）
