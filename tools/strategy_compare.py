@@ -15,7 +15,9 @@ fulfillment_by_key.csv・overflow_by_factory_market.csv（と compare/<基準>__
 --avoidable store_operating=1,0.5,0 を付けると、その費目（Value Chain の明細の cost_item）のうち避けられる割合ごとに、
 基準との費目の差 × (1 − 割合) を戻した A の列（A_…_avoid<割合>）を足す（割合 1 ＝ 今の A）。
 --protect <表> を付けると、守る供給の判定（protect_check.csv：市場ごとの ④ と下限、2029 年の内訳）と両立の必要量
-（protect_need.csv）を書く。判定は結果の確かめだけ（Slice 4 §2）。
+（protect_need.csv）を書く。判定は結果の確かめだけ（Slice 4 §2）。対象の鍵は ④ から需要の増分を引いた値を下限と比べる。
+表に任意の列 floor_case（下限の数量を取った案の ID）があれば、引く増分は「その案の増分 − floor_case の増分」
+（下限が floor_case の増分を含むため。投入週の 2 本目の補い）。空なら増分を全部引く。
 --weekly を付けると、案ごとに weekly_<案>.csv・.md（週別の差。⑤ が出た週は範囲の外でも行を足す）、
 market_money_<案>.csv（報告期間の市場別の売上・費用・試算利益）、market_year_<案>.csv（市場 × 要求年の ①・④・⑤）
 （RequestLetter_Promo_Convert_Slice2 §3）。
@@ -64,7 +66,7 @@ def main(argv=None) -> int:
     ap.add_argument("--avoidable", default=None,
                     help="<cost item>=<ratios>, e.g. store_operating=1,0.5,0 (A per avoidable ratio of that item)")
     ap.add_argument("--protect", default=None,
-                    help="protected supply table (sku_id,market,floor_lots,basis,note[,floor_lots_2029])")
+                    help="protected supply table (sku_id,market,floor_lots,basis,note[,floor_lots_2029][,floor_case])")
     ap.add_argument("--weekly", nargs=2, metavar=("START", "END"), default=None,
                     help="weekly differences for these weeks (and every week with backlog), and market money")
     a = ap.parse_args(argv)

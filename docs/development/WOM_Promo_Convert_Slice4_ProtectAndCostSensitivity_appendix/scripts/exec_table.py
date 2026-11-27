@@ -42,7 +42,7 @@ def main():
         cc = "C02" if c == "N4" else c
         p = pc[pc["case"] == cc]
         short = "; ".join(f"{r.market} {r.diff:+d}" for r in p.itertuples() if r.status == "未達")
-        inc = p[p["market"] == "SG_EC"]["promo_increment_delivered"].iloc[0]
+        inc = p[p["market"] == "SG_EC"]["demand_increment_delivered"].iloc[0]
         if c == "N4":
             inc = "増分なし（反応 0%）"
         row = {"case": c, "name": NAMES[c],
@@ -58,7 +58,7 @@ def main():
                "protect_met": f"{int(need.loc[cc, 'protected_markets_met'])}/4",
                "protect_short": short or "—", "promo_increment": inc,
                "delivered_cream": int(need.loc[cc, "delivered_total"]), "need": int(need.loc[cc, "floors_total"])
-               + (0 if c == "N4" else int(need.loc[cc, "promo_increment_net"]))}
+               + (0 if c == "N4" else int(need.loc[cc, "demand_increment_net"]))}
         rows.append(row)
     t = pd.DataFrame(rows)
     t.to_csv(f"{O}/exec_table.csv", index=False, encoding="utf-8-sig")

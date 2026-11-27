@@ -1,3 +1,3 @@
-﻿case,floors_total,promo_increment_net,need,delivered_total,surplus,protected_markets_met,protected_markets
-C04,3952,0,3952,3952,0,8,8
-C06,3952,0,3952,3952,0,8,8
+﻿case,floors_total,floor_case,demand_increment_net,need,delivered_total,surplus,protected_markets_met,protected_markets
+C04,3952,C04,0,3952,3952,0,8,8
+C06,3952,C04,0,3952,3952,0,8,8

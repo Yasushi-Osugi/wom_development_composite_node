@@ -201,13 +201,13 @@ def protect():
                          "diff_min": int(x["diff"].min()), "diff_2029_min": int(x["diff_2029"].min()),
                          "floors_total": int(y["floors_total"]), "delivered_total": int(y["delivered_total"]),
                          "surplus": int(y["surplus"]),
-                         # the target key (TH cream): the tool subtracts the net demand increment over the frozen base
-                         # demand (78 lots in the early cases) from ④ before comparing; here ④ itself against the floor
+                         # the target key (TH cream): the tool subtracts the demand increment (over the floor_case increment when the
+                         # table has floor_case, Slice 2b) from ④ before comparing; here ④ itself against the floor as well
                          "th_cream_delivered": 
                          int(x[(x["sku_id"] == TH[0]) & (x["market"] == TH[1])]["delivered"].iloc[0]),
                          "th_cream_floor": int(x[(x["sku_id"] == TH[0]) & (x["market"] == TH[1])]["floor_lots"].iloc[0]),
                          "th_cream_increment_subtracted":
-                             int(x[(x["sku_id"] == TH[0]) & (x["market"] == TH[1])]["promo_increment_net"].iloc[0]),
+                             int(x[(x["sku_id"] == TH[0]) & (x["market"] == TH[1])]["demand_increment_net"].iloc[0]),
                          "keys_met_by_delivered": int((x["delivered"] >= x["floor_lots"]).sum())})
     return pd.DataFrame(rows)
 

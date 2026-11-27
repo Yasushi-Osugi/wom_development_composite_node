@@ -171,10 +171,48 @@ def test_protect_check_met_short_2029_and_increment(tmp_path):
     assert (d["existing_delivered_2029"], d["diff_2029"], d["status_2029"]) == (2, -1, "未達")
     e = rows["Shop_EC"]
     assert (e["delivered"], e["existing_delivered"], e["status"]) == (5, 4, "達成")   # 5 − increment 1
-    assert e["status_2029"] == "達成" and e["promo_increment_delivered"] == "届いた"
+    assert e["status_2029"] == "達成" and e["demand_increment_delivered"] == "届いた"
     req.loc[2, "on_time"] = 2                                                        # one raised lot late
     e = {r["market"]: r for r in SC.protect_rows("C07", req, mm, pt, ("P", "EC"), {"2028-W12": 1})}["Shop_EC"]
-    assert e["promo_increment_delivered"] == "一部届かない"
+    assert e["demand_increment_delivered"] == "一部届かない"
     p.write_text("sku_id,market,floor_lots,basis,note\nP,DIST,-1,x,y\n", encoding="utf-8")
     with pytest.raises(StrategyError):
         SC.read_protect(str(p))
+
+
+# ── Launch Slice 2b: floor_case (the floor already contains that case's demand increment) ─────────────────
+def test_net_increment_subtracts_the_floor_case_increment():
+    assert SC.net_increment_by_week({"W1": 2, "W2": 1}, None) == {"W1": 2, "W2": 1}      # empty = as before
+    assert SC.net_increment_by_week({"W1": 2, "W2": 1}, {"W1": 2, "W2": 1}) == {}
+    assert SC.net_increment_by_week({"W1": 2}, {"W1": 1, "W3": 1}) == {"W1": 1, "W3": -1}
+    assert SC.net_increment_by_week({"W1": 2}, {}) == {"W1": 2}                           # floor case unchanged
+
+
+def test_protect_floor_case_met_with_zero_diff_and_empty_is_unchanged(tmp_path):
+    req = pd.DataFrame([
+        {"sku_id": "P", "region": "EC", "request_week": "2028-W12", "q1": 3, "on_time": 3, "delivered": 3},
+        {"sku_id": "P", "region": "EC", "request_week": "2029-W12", "q1": 2, "on_time": 2, "delivered": 2},
+    ])
+    mm = {("P", "EC"): "Shop_EC"}
+    inc = {"2028-W12": 1}                       # the case's increment = the floor case's increment
+    p = tmp_path / "protect.csv"
+    # the floor (5, 2 in 2029) is the floor case's deliveries, which include its increment of 1
+    p.write_text("sku_id,market,floor_lots,floor_lots_2029,basis,note,floor_case\n"
+                 "P,Shop_EC,5,2,C05_actual,x,C05\n", encoding="utf-8")
+    pt = SC.read_protect(str(p), case_ids=["C05", "C07"])
+    assert SC.target_floor_case(pt, mm, ("P", "EC")) == "C05"
+    e = SC.protect_rows("C07", req, mm, pt, ("P", "EC"), SC.net_increment_by_week(inc, inc))[0]
+    assert (e["delivered"], e["demand_increment_net"], e["existing_delivered"]) == (5, 0, 5)
+    assert (e["diff"], e["status"], e["diff_2029"], e["status_2029"]) == (0, "達成", 0, "達成")
+    assert e["floor_case"] == "C05" and e["demand_increment_delivered"] == "増分なし"
+    # empty floor_case: the whole increment is subtracted, as before (the double subtraction shows as -1)
+    p.write_text("sku_id,market,floor_lots,floor_lots_2029,basis,note,floor_case\n"
+                 "P,Shop_EC,5,2,C05_actual,x,\n", encoding="utf-8")
+    pt = SC.read_protect(str(p), case_ids=["C05", "C07"])
+    assert SC.target_floor_case(pt, mm, ("P", "EC")) == ""
+    e = SC.protect_rows("C07", req, mm, pt, ("P", "EC"), SC.net_increment_by_week(inc, None))[0]
+    assert (e["existing_delivered"], e["diff"], e["status"]) == (4, -1, "未達")
+    # an unknown floor case stops
+    p.write_text("sku_id,market,floor_lots,basis,note,floor_case\nP,Shop_EC,5,x,y,C99\n", encoding="utf-8")
+    with pytest.raises(StrategyError):
+        SC.read_protect(str(p), case_ids=["C05", "C07"])

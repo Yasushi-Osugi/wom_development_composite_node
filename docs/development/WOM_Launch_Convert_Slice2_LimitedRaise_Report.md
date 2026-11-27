@@ -11,7 +11,7 @@ handoff:
   status: "S1〜S5 合う。ただし C07 の窓は依頼書の 2026-W38 開始（166 週）ではなく 2026-W37 開始（167 週）。大杉さんの判断（2026-11-26）"
   open_items:
     - "助走の期間の中から始まる窓は、助走の全週に広がる（§2）。窓の決め方・有償の週の数え方をどうするかは大杉さん・Claude君"
-    - "比較の道具の --protect は、対象の鍵（タイのクリーム）の需要の増分を ④ から引いてから下限と比べる。下限を全期間の案の実納品（増分を含む）にすると、増分 78 lot が二重に引かれて「未達 −78」と出る（§4）"
+    - "（2026-11-27 解消）守る供給の判定の二重の差し引きは、表の列 floor_case で直した（§4、投入週の 2 本目の補い）"
     - "期間を絞った割増 15% を置くかは業務上の未確認事項（依頼書 §3）"
   stop_reasons: []
   next: owner
@@ -105,13 +105,14 @@ C08 は回していません（C07 の納品が C05 に届いたため）。
 | C04 → C06（下限 C04） | C06 | 8／8 | 8／8 | 3,952／3,952 |
 | C05 → C07（下限 C05） | C07 | 8／8 | 8／8 | 4,030／4,030 |
 
-**道具の表示について（数量の不整合ではない）**
+**道具の表示について（2026-11-27、投入週の 2 本目の補いで直した）**
 
-- `compare_C05_C07/protect_check.csv` では、タイのクリームが C05・C07 とも「未達 −78」と出ています。
-- 理由：比較の道具は、対象の鍵（`--sku COS_Cream --market TH_Distributor`）について、凍結した基準需要からの需要の増分（早く入る案では 78 lot）を ④ から引いた値（既存の分）を下限と比べます（販促の増分を既存の分と分けるための作り）。
-- 今回の下限は全期間の案の実納品 377 lot で、増分 78 lot を含みます。そのため増分が二重に引かれ、299 − 377 = −78 と出ます。④ 自体は 377 で、下限 377 と同じです（`tables/protect_summary.csv` の `th_cream_delivered`・`th_cream_floor`・`keys_met_by_delivered`）。
-- 下限の基準の C05 自身も同じく「未達 −78」と出ることから、この表示は下限の決め方と道具の引き算の組み合わせによるもので、C07 の納品の不足ではありません。
-- `compare_C06_C07` の守る供給は参考です（下限 C05 を、需要の違う C06 にも当てているため。C06 のタイのクリームは 299、下限 377）。
+- 比較の道具は、対象の鍵（`--sku COS_Cream --market TH_Distributor`）について、④ から需要の増分を引いた値（既存の分）を下限と比べます（販促の増分を既存の分と分けるための作り）。
+- 初版では、下限（全期間の案の実納品 377 lot）が早く入る案の増分 78 lot を含むのに、道具がその増分をもう一度引いていたので、C05・C07 とも「未達 −78」と出ていました。
+- 補い（`requests/RequestLetter_Launch_Convert_Slice2b_ProtectFix_to_CodeKun.md`）で、守る供給の表に任意の列 `floor_case`（下限の数量を取った案の ID）を足しました。引く増分は「その案の増分 − `floor_case` の増分」です。下限の表は `floor_case` を C04・C05 にして作り直しました。
+- 作り直した結果：C04・C05・C06・C07 とも 8／8、タイのクリームの差は 0（C07 は ④ 377・引く増分 0・下限 377）。上の表の数字は初版と同じです。
+- 出力の列名も、`promo_increment_net` などから `demand_increment_net` などに直しました（`protect_check.csv`・`protect_need.csv`）。
+- `compare_C06_C07` の守る供給は参考です（下限 C05 を、需要の違う C06 にも当てているため）。C06 のタイのクリームは ④ 299 で、引く増分は C06 の増分 0 − C05 の増分 78 ＝ −78。既存の分は 299 −（−78）＝ 377 と数えられ、「達成」と出ます。④ そのものは 299 で下限 377 に届いていません（`tables/protect_summary.csv` の `keys_met_by_delivered` 7／8）。
 
 ## 5. 確保した週の使い方（依頼書 §2-3）
 
@@ -258,9 +259,9 @@ C03〜C07 の美容液（COS_Serum）は、市場別・要求週別の ①②③
 | 案 | 作り方 | 実行 | P0 |
 |---|---|---|---:|
 | C06 LATE_RAISE88 | C01 を複製 → 窓 2028-W11〜2029-W46 → 確保費の行 → 変換 P_LAUNCH_LATE | 済み | 612,962,964 |
-| C07 EARLY_RAISE166 | C01 を複製 → 窓 2026-W38〜2029-W46 → 確保費の行 → 変換 P_LAUNCH_EARLY → 実行は突き合わせで止まった（§2）→ 窓を 2026-W37〜2029-W46・確保費の行を直し、変換を当て直して実行 | 済み（54.6 秒） | 621,817,524 |
+| C07 EARLY_RAISE167（初版の名前 EARLY_RAISE166） | C01 を複製 → 窓 2026-W38〜2029-W46 → 確保費の行 → 変換 P_LAUNCH_EARLY → 実行は突き合わせで止まった（§2）→ 窓を 2026-W37〜2029-W46・確保費の行を直し、変換を当て直して実行 | 済み（54.6 秒） | 621,817,524 |
 
-- 案の名前 `EARLY_RAISE166` は最初の窓のまま残しています（中身は 167 週）。
+- 案の名前は、初版では最初の窓の `EARLY_RAISE166` のままでした。補い（2026-11-27）で `EARLY_RAISE167` に直しました（名前だけ。入力・計画の結果は変えていない。`scripts/rename_c07.py`）。比較の出力の案の名前の列も新しい名前です。`tables/checks.log` は初版の記録なので古い名前のままです。
 - 比較：`compare.sh`（C04 → C06、C05 → C07、C06 → C07。`--sku COS_Cream --market TH_Distributor --weekly 2027-W25 2028-W14 --holding-rates 0,0.05,0.10,0.15 --avoidable store_operating=1,0.5,0 --protect`）。
 
 ## 10. 付録
@@ -270,9 +271,10 @@ C03〜C07 の美容液（COS_Serum）は、市場別・要求週別の ①②③
 - `tables/`：`key_year.csv`・`raise_usage.csv`・`raise_usage_weeks.csv`・`raise_unused_runs.csv`・`money_cases.csv`・`money_diff.csv`・`money_decomp.csv`・`inventory_age.csv`・`protect_summary.csv`・`protect_floor_C04.csv`・`protect_floor_C05.csv`・`checks.log`・`tables.log`
 - `compare_C04_C06/`・`compare_C05_C07/`・`compare_C06_C07/`：比較の道具の出力
 - `cases/`：C06・C07 の費用の前提（`fixed_cost.csv`）と変更記録（`strategy_change_log.csv`）
-- `scripts/`：`setup_cases.sh`・`set_raise.py`・`make_floors.py`・`compare.sh`・`checks.py`・`tables.py`
+- `scripts/`：`setup_cases.sh`・`set_raise.py`・`make_floors.py`・`compare.sh`・`checks.py`・`tables.py`・`rename_c07.py`
 - `run_C07.log`：C07 の 2 回目の実行の記録
 
 | 版 | 日付 | 内容 |
 |---|---|---|
 | v0.1 | 2026-11-26 | 初版 |
+| v0.2 | 2026-11-27 | 投入週の 2 本目の補い：守る供給の判定を `floor_case` で直した結果に §4 を差し替え、C07 の名前を `EARLY_RAISE167` に直した。数字の本文は変わらない |

@@ -233,20 +233,24 @@ def compare_plans(ws: str, base: str, cases: List[str], sku: str, market: str, o
     for k in [k for k in summ.columns if k.startswith("A_")]:
         summ["d" + k + "_vs_base"] = summ[k] - float(summ.loc[summ["case"] == base, k].iloc[0])
     if protect:
-        pt = read_protect(protect)
+        pt = read_protect(protect, case_ids=C.case_ids(ws))
+        fcase = target_floor_case(pt, cts[allc[0]]["market"], (sku, market))
         prow = []
+        dbws = {}
         for c in allc:
-            dbw = _d_by_week(ws, c, sku, market, rs, re_)
-            prow += protect_rows(c, cts[c]["req"], cts[c]["market"], pt, (sku, market), dbw)
+            dbws[c] = net_increment_by_week(_d_by_week(ws, c, sku, market, rs, re_),
+                                            _d_by_week(ws, fcase, sku, market, rs, re_) if fcase else None)
+            prow += protect_rows(c, cts[c]["req"], cts[c]["market"], pt, (sku, market), dbws[c])
         pr = pd.DataFrame(prow)
         pr.to_csv(os.path.join(out, "protect_check.csv"), index=False, encoding="utf-8-sig")
         need = []
         prods = set(pt["sku_id"])
         for c in allc:
-            dnet = sum(_d_by_week(ws, c, sku, market, rs, re_).values())
+            dnet = sum(dbws[c].values())
             tot = int(keys[(keys["case"] == c) & keys["sku_id"].isin(prods)]["delivered"].sum())
             fl = int(pt["floor_lots"].astype(int).sum())
-            need.append({"case": c, "floors_total": fl, "promo_increment_net": dnet, "need": fl + dnet,
+            need.append({"case": c, "floors_total": fl, "floor_case": fcase, "demand_increment_net": dnet,
+                         "need": fl + dnet,
                          "delivered_total": tot, "surplus": tot - (fl + dnet),
                          "protected_markets_met": int((pr[(pr["case"] == c)]["status"] == "達成").sum()),
                          "protected_markets": len(pt)})
@@ -536,14 +540,23 @@ def avoidable_columns(row: dict, item: str, item_alt: float, item_base: float, r
 
 
 PROTECT_COLS = ["sku_id", "market", "floor_lots", "basis", "note"]
+PROTECT_OPTIONAL = ["floor_lots_2029", "floor_case"]
 
 
-def read_protect(path: str) -> pd.DataFrame:
-    """The protected supply table: sku_id, market, floor_lots, basis, note (optional floor_lots_2029)."""
+def read_protect(path: str, case_ids: Optional[List[str]] = None) -> pd.DataFrame:
+    """The protected supply table: sku_id, market, floor_lots, basis, note (optional floor_lots_2029, floor_case).
+
+    floor_case (Slice 2b) is the ID of the case whose deliveries the floor was taken from. When it is set on the
+    target key's row, the demand increment subtracted from ④ is the case's increment minus that case's increment
+    (the floor already contains the floor case's increment). Empty = subtract the whole increment (as before)."""
     t = pd.read_csv(path, dtype=str, keep_default_na=False)
     miss = [c for c in PROTECT_COLS if c not in t.columns]
     if miss:
-        raise StrategyError(f"{path}: 列が足りません {miss}（列は {PROTECT_COLS}、任意で floor_lots_2029）")
+        raise StrategyError(f"{path}: 列が足りません {miss}（列は {PROTECT_COLS}、任意で {PROTECT_OPTIONAL}）")
+    if "floor_case" in t.columns and case_ids is not None:
+        for i, v in enumerate(t["floor_case"], start=2):
+            if v.strip() and v.strip() not in case_ids:
+                raise StrategyError(f"{path} の {i} 行目: floor_case={v!r} はこの作業に無い案です（案は {case_ids}）")
     for c in ("floor_lots", "floor_lots_2029"):
         if c in t.columns:
             for i, v in enumerate(t[c], start=2):
@@ -563,8 +576,9 @@ def protect_rows(case: str, req: pd.DataFrame, market_map: Dict[tuple, str], pro
                  target: tuple, d_by_week: Dict[str, int], year: str = "2029") -> List[dict]:
     """Check the delivered lots (④, request weeks of the report period) against the floors — a check of the
     result only, the engine is not told to protect anything. For the target key, the existing part is
-    ④ − (net promotion increment), and the increment is 「届いた」 when every request week the promotion raised
-    was delivered in full on time (the increment's Lot_IDs are not told apart from the existing ones)."""
+    ④ − (net demand increment; with floor_case, the increment over the floor case's), and the increment is
+    「届いた」 when every request week it raised was delivered in full on time (the increment's Lot_IDs are not told
+    apart from the existing ones)."""
     inv = {(s, n): g for (s, g), n in market_map.items()}
     rows = []
     for p in protect.itertuples():
@@ -578,9 +592,10 @@ def protect_rows(case: str, req: pd.DataFrame, market_map: Dict[tuple, str], pro
         d_net = sum(d_by_week.values()) if is_t else 0
         existing = dlv - d_net
         r = {"case": case, "sku_id": p.sku_id, "market": p.market, "floor_lots": int(p.floor_lots),
-             "delivered": dlv, "promo_increment_net": d_net, "existing_delivered": existing,
+             "delivered": dlv, "demand_increment_net": d_net, "existing_delivered": existing,
              "diff": existing - int(p.floor_lots), "status": "達成" if existing >= int(p.floor_lots) else "未達",
-             f"delivered_{year}": dlv_y, "basis": p.basis}
+             f"delivered_{year}": dlv_y, "basis": p.basis,
+             "floor_case": str(getattr(p, "floor_case", "")).strip()}
         f2 = getattr(p, "floor_lots_2029", "")
         if str(f2).strip() != "":
             ey = dlv_y - (sum(v for w, v in d_by_week.items() if w[:4] == year) if is_t else 0)
@@ -590,12 +605,36 @@ def protect_rows(case: str, req: pd.DataFrame, market_map: Dict[tuple, str], pro
             up = [w for w, v in d_by_week.items() if v > 0]
             kk = k.set_index("request_week")
             full = [w for w in up if w in kk.index and int(kk.loc[w, "on_time"]) == int(kk.loc[w, "q1"])]
-            r["promo_weeks_raised"] = len(up)
-            r["promo_weeks_full_on_time"] = len(full)
-            r["promo_increment_delivered"] = ("増分なし" if not up else
-                                              ("届いた" if len(full) == len(up) else "一部届かない"))
+            r["demand_weeks_raised"] = len(up)
+            r["demand_weeks_full_on_time"] = len(full)
+            r["demand_increment_delivered"] = ("増分なし" if not up else
+                                               ("届いた" if len(full) == len(up) else "一部届かない"))
         rows.append(r)
     return rows
+
+
+def target_floor_case(protect: pd.DataFrame, market_map: Dict[tuple, str], target: tuple) -> str:
+    """The floor_case of the target key's row ('' when the column or the value is absent)."""
+    if "floor_case" not in protect.columns:
+        return ""
+    inv = {(s, n): g for (s, g), n in market_map.items()}
+    for p in protect.itertuples():
+        if (p.sku_id, inv.get((p.sku_id, p.market))) == target:
+            return str(p.floor_case).strip()
+    return ""
+
+
+def net_increment_by_week(d_case: Dict[str, int], d_floor: Optional[Dict[str, int]]) -> Dict[str, int]:
+    """The demand increment per request week to subtract from ④: the case's increment, minus the floor case's
+    when a floor case is given (weeks whose difference is 0 are dropped)."""
+    if d_floor is None:
+        return dict(d_case)
+    out = {}
+    for w in sorted(set(d_case) | set(d_floor)):
+        v = d_case.get(w, 0) - d_floor.get(w, 0)
+        if v:
+            out[w] = v
+    return out
 
 
 def _d_by_week(ws: str, cid: str, sku: str, market: str, rs: str, re_: str) -> Dict[str, int]:

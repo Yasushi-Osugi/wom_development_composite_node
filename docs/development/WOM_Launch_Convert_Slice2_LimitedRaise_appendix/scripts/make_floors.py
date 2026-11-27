@@ -14,7 +14,7 @@ for c, use in (("C04", "C06"), ("C05", "C07")):
     g = r.groupby(["sku_id", "region"])["delivered"].sum()
     g29 = r[r["request_week"].str[:4] == "2029"].groupby(["sku_id", "region"])["delivered"].sum()
     rows = [{"sku_id": s, "market": m, "floor_lots": int(v), "floor_lots_2029": int(g29.get((s, m), 0)),
-             "basis": f"{c}_actual_delivered",
+             "basis": f"{c}_actual_delivered", "floor_case": c,
              "note": f"投入週の 2 本目：{c}（同じ投入週の全期間の増産）の実納品を {use} の下限に。報告期間の要求週、期間合計・2029 年。許容 0 lot"}
             for (s, m), v in g.items()]
     pd.DataFrame(rows).to_csv(os.path.join(O, f"protect_floor_{c}.csv"), index=False, encoding="utf-8")
