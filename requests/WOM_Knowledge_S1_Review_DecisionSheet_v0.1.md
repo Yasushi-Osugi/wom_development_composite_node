@@ -3,7 +3,7 @@ title: 知識体系 S1 の会計レビューを受けた判断票
 version: v0.1
 date: 2026-11-28
 author: Claude君（設計）
-status: 判断待ち（P1〜P4）
+status: 採用（P1〜P4 すべて推奨どおり、大杉さん 2026-11-28）
 inputs:
   - docs/design/drafts/WOM_Knowledge_S1_Accounting_Review_v0.1.md（GPT-MC君、読取 604c60c）
 ---
