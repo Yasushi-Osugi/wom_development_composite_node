@@ -3,7 +3,7 @@ title: 会計とサプライチェーン・シミュレーションをつなぐ 
 version: v0.2
 date: 2026-11-27
 author: Claude君（設計）／発案：大杉さん
-status: 課題の定義と進め方の提案（判断待ち K1〜K7）。GPT君・GPT-MC君のレビュー（2026-11-27）を反映
+status: 採用（K1〜K7 すべて推奨どおり、大杉さん 2026-11-27）。GPT君・GPT-MC君のレビュー（2026-11-27）を反映
 related:
   - docs/business/WOM_Academy_BusinessModel_v0.2.md（WOM Academy の事業モデル）
   - docs/design/drafts/WOM_Academy_Knowledge_Transfer_v0.1.md（知識の移転、大杉さんの下書き）
