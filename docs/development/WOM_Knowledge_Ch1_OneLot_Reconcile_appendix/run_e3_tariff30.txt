@@ -1,0 +1,4 @@
+[valuechain] plan model_e3_tariff30@668b69e:vc  shipments 24,336  report from 2027-W01  (9.6s)
+[valuechain] conservation OK  external sales identity True / records x price True  missing prices 0  fx first-week 0  fx unvalued 0  unvalued lines 0  issues 0
+[valuechain] round 2 (unrealized profit eliminated) OK: weekly diff 0  period round1 618,480,864 round2 620,204,544  unrealized opening 1,723,680 closing 0  to unvalued 0
+[valuechain] -> output/knowledge_ch1/e3_tariff30

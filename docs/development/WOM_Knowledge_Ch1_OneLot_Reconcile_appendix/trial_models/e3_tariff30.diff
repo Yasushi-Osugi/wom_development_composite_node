@@ -1,0 +1,11 @@
+--- data/sample/cosmetics-sg-th-2027-2029/ppc_tariff_rule.csv	2026-10-30 19:47:01.567307600 +0900
++++ output/knowledge_ch1/model_e3_tariff30/ppc_tariff_rule.csv	2026-11-28 00:49:42.186762500 +0900
+@@ -6,7 +6,7 @@
+ WH_JP_Released->DC_SG,JP,SG,COS_Serum,3304,0,transfer_price
+ WH_JP_Released->DC_SG,JP,SG,COS_Cream,3304,0,transfer_price
+ WH_JP_Released->DC_TH,JP,TH,COS_Serum,3304,0,transfer_price
+-WH_JP_Released->DC_TH,JP,TH,COS_Cream,3304,0,transfer_price
++WH_JP_Released->DC_TH,JP,TH,COS_Cream,3304,0.3,transfer_price
+ DC_SG->SG_Store,SG,SG,COS_Serum,3304,0,material_cost
+ DC_SG->SG_Store,SG,SG,COS_Cream,3304,0,material_cost
+ DC_SG->SG_EC,SG,SG,COS_Serum,3304,0,material_cost

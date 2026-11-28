@@ -1,0 +1,23 @@
+﻿line_id,week,kind,scope,basis,family,price_type,entity,counterparty,node,amount_orig,currency_orig,amt_hq,valued,src_id,note
+48770,2028-W25,acquisition,external,"v1,entity,group",purchase,external_purchase,E_JP,EXT_SUP_JP,Factory_JP,31200.0,JPY,31200.0,1,ship:COS_Cream:IN:leaf_in:Materials_JP:COS_Cream:93:10,
+48771,2028-W25,acquisition,internal,"v1,entity,group",freight,logistics_cost,E_JP,EXT_SUP_JP,Factory_JP,0.0,JPY,0.0,1,ship:COS_Cream:IN:leaf_in:Materials_JP:COS_Cream:93:10,
+48772,2028-W25,acquisition,internal,"v1,entity,group",tariff,tariff_cost,E_JP,EXT_SUP_JP,Factory_JP,0.0,JPY,0.0,1,ship:COS_Cream:IN:leaf_in:Materials_JP:COS_Cream:93:10,
+49615,2028-W26,acquisition,internal,"v1,entity,group",conversion_cost,conversion_cost,E_JP,,Factory_JP,14400.0,JPY,14400.0,1,ship:COS_Cream:IN:leaf_in:Materials_JP:COS_Cream:93:10,
+49753,2028-W26,revenue,management,all,sale,management,E_JP,E_JP,Factory_JP,120000.0,JPY,120000.0,1,ship:COS_Cream:OUT:supply_point:SP_COS_Cream:COS_Cream:94:10,
+49754,2028-W26,cogs,management,v1,sale,management,E_JP,E_JP,Factory_JP,45600.0,JPY,45600.0,1,ship:COS_Cream:OUT:supply_point:SP_COS_Cream:COS_Cream:94:10,
+49755,2028-W26,acquisition,management,v1,purchase,management,E_JP,E_JP,WH_JP_Released,120000.0,JPY,120000.0,1,ship:COS_Cream:OUT:supply_point:SP_COS_Cream:COS_Cream:94:10,
+49756,2028-W26,acquisition,internal,"v1,entity,group",freight,logistics_cost,E_JP,E_JP,WH_JP_Released,480.0,JPY,480.0,1,ship:COS_Cream:OUT:supply_point:SP_COS_Cream:COS_Cream:94:10,
+49757,2028-W26,acquisition,internal,"v1,entity,group",tariff,tariff_cost,E_JP,E_JP,WH_JP_Released,0.0,JPY,0.0,1,ship:COS_Cream:OUT:supply_point:SP_COS_Cream:COS_Cream:94:10,
+50604,2028-W27,expense,period,"v1,entity,group",warehouse_cost,warehouse_cost,E_JP,,WH_JP_Released,720.0,JPY,720.0,1,ship:COS_Cream:OUT:supply_point:SP_COS_Cream:COS_Cream:94:10,
+50803,2028-W27,revenue,management,v1,transfer,cost_transfer,E_JP,E_JP,WH_JP_Released,120480.0,JPY,120480.0,1,ship:COS_Cream:OUT:dad:WH_JP_Released:COS_Cream:95:10,原価振替（管理利益 0）
+50804,2028-W27,cogs,management,v1,transfer,cost_transfer,E_JP,E_JP,WH_JP_Released,120480.0,JPY,120480.0,1,ship:COS_Cream:OUT:dad:WH_JP_Released:COS_Cream:95:10,原価振替
+50805,2028-W27,acquisition,internal,"v1,entity,group",freight,logistics_cost,E_JP,E_JP,DC_TH,1680.0,JPY,1680.0,1,ship:COS_Cream:OUT:dad:WH_JP_Released:COS_Cream:95:10,
+52675,2028-W29,acquisition,internal,"v1,entity,group",conversion_cost,conversion_cost,E_JP,,DC_TH,288.0,THB,1296.0,1,ship:COS_Cream:OUT:dad:WH_JP_Released:COS_Cream:95:10,
+52706,2028-W29,revenue,external,all,sale,wholesale,E_JP,EXT_CH_TH_DIST,DC_TH,38400.0,THB,172800.0,1,ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:97:0,
+52707,2028-W29,cogs,external,v1,sale,wholesale,E_JP,EXT_CH_TH_DIST,DC_TH,123456.0,JPY,123456.0,1,ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:97:0,
+52708,2028-W29,cogs,external,entity,sale,wholesale,E_JP,EXT_CH_TH_DIST,DC_TH,49056.0,JPY,49056.0,1,ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:97:0,
+52709,2028-W29,cogs,external,group,sale,wholesale,E_JP,EXT_CH_TH_DIST,DC_TH,49056.0,JPY,49056.0,1,ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:97:0,
+52710,2028-W29,expense,selling,"v1,entity,group",marketing_cost,distributor_mdf,E_JP,EXT_CH_TH_DIST,DC_TH,1920.0,THB,8640.0,1,ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:97:0,販促の対象：TH_Distributor
+52711,2028-W29,expense,selling,"v1,entity,group",freight,logistics_cost,E_JP,EXT_CH_TH_DIST,DC_TH,192.0,THB,864.0,1,ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:97:0,
+52712,2028-W29,expense,selling,"v1,entity,group",tariff,tariff_cost,E_JP,EXT_CH_TH_DIST,DC_TH,0.0,JPY,0.0,1,ship:COS_Cream:OUT:dad:DC_TH:COS_Cream:97:0,
+53540,2028-W30,observation_sale,observation,obs,sale,market,EXT_CH_TH_DIST,CONSUMER:TH_Distributor,TH_Distributor,38400.0,THB,172800.0,1,ship:COS_Cream:OUT:leaf_out:TH_Distributor:COS_Cream:98:0,外部チャネルの消費者への販売（観測。グループの売上ではない）

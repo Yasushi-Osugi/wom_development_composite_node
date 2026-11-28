@@ -1,0 +1,6 @@
+﻿week,location,owner,agg_lots,agg_entity_per_lot,agg_group_per_lot,agg_unrealized_per_lot,lot_entity,lot_group,lot_unrealized,same
+2028-W25,Materials_JP->Factory_JP,E_JP,13.0,31200.0,31200.0,0.0,31200.0,31200.0,0.0,True
+2028-W26,Factory_JP->WH_JP_Released,E_JP,13.0,46080.0,46080.0,0.0,46080.0,46080.0,0.0,True
+2028-W27,WH_JP_Released->DC_SG,E_SG,20.0,120000.0,47520.0,72480.0,120000.0,47520.0,72480.0,True
+2028-W28,WH_JP_Released->DC_SG,E_SG,20.0,120000.0,47520.0,72480.0,120000.0,47520.0,72480.0,True
+2028-W29,DC_SG->SG_EC,E_SG,2.0,122208.0,49728.0,72480.0,122208.0,49728.0,72480.0,True

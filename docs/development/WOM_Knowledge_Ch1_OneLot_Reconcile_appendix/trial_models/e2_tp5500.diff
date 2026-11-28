@@ -1,0 +1,17 @@
+--- data/sample/cosmetics-sg-th-2027-2029/vc_price_rule.csv	2026-10-30 19:47:01.580234600 +0900
++++ output/knowledge_ch1/model_e2_tp5500/vc_price_rule.csv	2026-11-28 00:49:42.084195200 +0900
+@@ -1,6 +1,6 @@
+ edge_id,product_id,price_type,week,price,currency
+ WH_JP_Released->DC_SG,COS_Serum,intercompany,2026-W37,6000,JPY
+-WH_JP_Released->DC_SG,COS_Cream,intercompany,2026-W37,5000,JPY
++WH_JP_Released->DC_SG,COS_Cream,intercompany,2026-W37,5500,JPY
+ DC_SG->SG_Distributor,COS_Serum,wholesale,2026-W37,74,SGD
+ DC_SG->SG_Distributor,COS_Cream,wholesale,2026-W37,62,SGD
+ DC_TH->TH_Distributor,COS_Serum,wholesale,2026-W37,1900,THB
+--- data/sample/cosmetics-sg-th-2027-2029/ppc_transfer_price_rule.csv	2026-10-30 19:47:01.567307600 +0900
++++ output/knowledge_ch1/model_e2_tp5500/ppc_transfer_price_rule.csv	2026-11-28 00:49:42.124106100 +0900
+@@ -1,3 +1,3 @@
+ mom_node,product_id,method,margin_rate,fixed_price,currency
+ Factory_JP,COS_Serum,fixed,0,6000,JPY
+-Factory_JP,COS_Cream,fixed,0,5000,JPY
++Factory_JP,COS_Cream,fixed,0,5500,JPY

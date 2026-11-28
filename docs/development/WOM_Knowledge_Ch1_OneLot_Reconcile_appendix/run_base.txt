@@ -1,0 +1,4 @@
+[valuechain] plan cosmetics-sg-th-2027-2029@668b69e:vc  shipments 24,336  report from 2027-W01  (12.8s)
+[valuechain] conservation OK  external sales identity True / records x price True  missing prices 0  fx first-week 0  fx unvalued 0  unvalued lines 0  issues 0
+[valuechain] round 2 (unrealized profit eliminated) OK: weekly diff 0  period round1 629,395,560 round2 631,119,240  unrealized opening 1,723,680 closing 0  to unvalued 0
+[valuechain] -> output/knowledge_ch1/base

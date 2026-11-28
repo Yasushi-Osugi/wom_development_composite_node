@@ -1,0 +1,347 @@
+{
+ "ec_lot": {
+  "lot_id": "COS_Cream:SG_EC:2028-W30:00001",
+  "checks": [
+   {
+    "check": "原料の仕入 1,300×24",
+    "expected": 31200,
+    "got": 31200.0,
+    "ok": true
+   },
+   {
+    "check": "工場の加工費 600×24",
+    "expected": 14400,
+    "got": 14400.0,
+    "ok": true
+   },
+   {
+    "check": "工場 → 倉庫の運賃 20×24",
+    "expected": 480,
+    "got": 480.0,
+    "ok": true
+   },
+   {
+    "check": "倉庫費 720（金額）",
+    "expected": 720,
+    "got": 720.0,
+    "ok": true
+   },
+   {
+    "check": "倉庫費の行の数（受入の 1 回）",
+    "expected": 1,
+    "got": 1,
+    "ok": true
+   },
+   {
+    "check": "日本本社の法人間売上",
+    "expected": 120000,
+    "got": 120000.0,
+    "ok": true
+   },
+   {
+    "check": "法人間売上の行の数",
+    "expected": 1,
+    "got": 1,
+    "ok": true
+   },
+   {
+    "check": "法人間売上に対応する原価（entity、海上運賃を含む）",
+    "expected": 47520,
+    "got": 47520.0,
+    "ok": true
+   },
+   {
+    "check": "日本本社の法人間粗利益",
+    "expected": 72480,
+    "got": 72480.0,
+    "ok": true
+   },
+   {
+    "check": "海上運賃（日本本社の負担、グループの在庫原価）",
+    "expected": 1440,
+    "got": 1440.0,
+    "ok": true
+   },
+   {
+    "check": "販社の取得に海上運賃を足していない（E_SG の DC_SG の運賃の行の額）",
+    "expected": 0,
+    "got": 0.0,
+    "ok": true
+   },
+   {
+    "check": "販社の取得（法人間の価格）",
+    "expected": 120000,
+    "got": 120000.0,
+    "ok": true
+   },
+   {
+    "check": "DC の取扱・通関 0.5 SGD×24",
+    "expected": 1380,
+    "got": 1380.0,
+    "ok": true
+   },
+   {
+    "check": "DC → EC の運賃 0.3 SGD×24",
+    "expected": 828,
+    "got": 827.9999999999999,
+    "ok": true
+   },
+   {
+    "check": "外部売上",
+    "expected": 361560,
+    "got": 361560.0,
+    "ok": true
+   },
+   {
+    "check": "外部売上の行の数",
+    "expected": 1,
+    "got": 1,
+    "ok": true
+   },
+   {
+    "check": "外部売上原価（販社、entity）",
+    "expected": 122208,
+    "got": 122208.0,
+    "ok": true
+   },
+   {
+    "check": "外部売上原価（連結、group）",
+    "expected": 49728,
+    "got": 49728.0,
+    "ok": true
+   },
+   {
+    "check": "粗利益（販社）",
+    "expected": 239352,
+    "got": 239352.0,
+    "ok": true
+   },
+   {
+    "check": "粗利益（連結）",
+    "expected": 311832,
+    "got": 311832.0,
+    "ok": true
+   },
+   {
+    "check": "販売費 hq_sga_allocation",
+    "expected": 36156,
+    "got": 36156.00000000001,
+    "ok": true
+   },
+   {
+    "check": "販売費 payment_platform_fee",
+    "expected": 18078,
+    "got": 18078.000000000004,
+    "ok": true
+   },
+   {
+    "check": "販売費 digital_ad",
+    "expected": 54234,
+    "got": 54233.99999999999,
+    "ok": true
+   },
+   {
+    "check": "販売費 delivery_packing_cost",
+    "expected": 8280,
+    "got": 8280.0,
+    "ok": true
+   },
+   {
+    "check": "販売費の行の数（4 費目）",
+    "expected": 4,
+    "got": 4,
+    "ok": true
+   },
+   {
+    "check": "売上比率の 3 費目",
+    "expected": 108468,
+    "got": 108468.0,
+    "ok": true
+   },
+   {
+    "check": "販売の週の連結の試算損益",
+    "expected": 195084,
+    "got": 195084.0,
+    "ok": true
+   },
+   {
+    "check": "ロット全期間の試算の採算（倉庫費を含む）",
+    "expected": 194364,
+    "got": 194364.0,
+    "ok": true
+   },
+   {
+    "check": "倉庫費の週が販売の週より前（週の差）",
+    "expected": true,
+    "got": true,
+    "ok": true
+   },
+   {
+    "check": "未評価の行の数",
+    "expected": 0,
+    "got": 0,
+    "ok": true
+   },
+   {
+    "check": "外部販売の週に実現する内部の利益（entity − group の売上原価）",
+    "expected": 72480,
+    "got": 72480.0,
+    "ok": true
+   }
+  ],
+  "management_rows": 5
+ },
+ "th_lot": {
+  "lot_id": "COS_Cream:TH_Distributor:2028-W30:00001",
+  "checks": [
+   {
+    "check": "日本本社 → タイの DC の法人間売上の行の数",
+    "expected": 0,
+    "got": 0,
+    "ok": true
+   },
+   {
+    "check": "代理店への卸売（バーツ）1,600×24",
+    "expected": 38400,
+    "got": 38400.0,
+    "ok": true
+   },
+   {
+    "check": "卸売の行の数",
+    "expected": 1,
+    "got": 1,
+    "ok": true
+   },
+   {
+    "check": "課税価格の記録の行の数",
+    "expected": 1,
+    "got": 1,
+    "ok": true
+   },
+   {
+    "check": "商品価額 5,000×24",
+    "expected": 120000,
+    "got": 120000.0,
+    "ok": true
+   },
+   {
+    "check": "加える運賃 70×24",
+    "expected": 1680,
+    "got": 1680.0,
+    "ok": true
+   },
+   {
+    "check": "課税価格 5,070×24",
+    "expected": 121680,
+    "got": 121680.0,
+    "ok": true
+   }
+  ]
+ },
+ "e3": {
+  "checks": [
+   {
+    "check": "関税の行の数（0 でない）",
+    "expected": 1,
+    "got": 1,
+    "ok": true
+   },
+   {
+    "check": "関税の額 5,070×24×0.3",
+    "expected": 36504,
+    "got": 36504.0,
+    "ok": true
+   },
+   {
+    "check": "関税の行は在庫原価（acquisition）",
+    "expected": true,
+    "got": "True",
+    "ok": true
+   },
+   {
+    "check": "関税の週 ＝ 受入の週（課税価格の記録の duty_week）",
+    "expected": true,
+    "got": true,
+    "ok": true
+   },
+   {
+    "check": "受入の週（出荷の記録）＝ 関税の週",
+    "expected": true,
+    "got": true,
+    "ok": true
+   },
+   {
+    "check": "関税の期間費用（expense）の 0 でない行",
+    "expected": 0,
+    "got": 0,
+    "ok": true
+   },
+   {
+    "check": "卸売の売上原価の増加（entity）",
+    "expected": 36504,
+    "got": 36504.0,
+    "ok": true
+   },
+   {
+    "check": "卸売の売上原価の増加（group）",
+    "expected": 36504,
+    "got": 36504.0,
+    "ok": true
+   },
+   {
+    "check": "このロットの連結の試算利益の減少",
+    "expected": 36504,
+    "got": 36504.0,
+    "ok": true
+   }
+  ],
+  "duty_week": "2028-W29",
+  "sale_week": "2028-W29"
+ },
+ "e2": {
+  "checks": [
+   {
+    "check": "日本本社の粗利益／個（基準）",
+    "expected": 3020,
+    "got": 3020.0,
+    "ok": true
+   },
+   {
+    "check": "日本本社の粗利益／個（E2）",
+    "expected": 3520,
+    "got": 3520.0,
+    "ok": true
+   },
+   {
+    "check": "販社の粗利益／個（基準）",
+    "expected": 9973,
+    "got": 9973.0,
+    "ok": true
+   },
+   {
+    "check": "販社の粗利益／個（E2）",
+    "expected": 9473,
+    "got": 9473.0,
+    "ok": true
+   },
+   {
+    "check": "未販売の内部の利益の増加（2028-W27 の週末、1 ロット）",
+    "expected": 12000,
+    "got": 12000.0,
+    "ok": true
+   },
+   {
+    "check": "連結の粗利益（E2）",
+    "expected": 311832,
+    "got": 311832.0,
+    "ok": true
+   },
+   {
+    "check": "全期間の採算（E2）",
+    "expected": 194364,
+    "got": 194364.0,
+    "ok": true
+   }
+  ]
+ }
+}

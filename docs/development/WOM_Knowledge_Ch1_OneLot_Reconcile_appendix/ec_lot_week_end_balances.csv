@@ -1,0 +1,6 @@
+﻿week,location_kind,location,owner,entity_hq,group_hq,unrealized_hq
+2028-W25,transit,Materials_JP->Factory_JP,E_JP,31200.0,31200.0,0.0
+2028-W26,transit,Factory_JP->WH_JP_Released,E_JP,46080.0,46080.0,0.0
+2028-W27,transit,WH_JP_Released->DC_SG,E_SG,120000.0,47520.0,72480.0
+2028-W28,transit,WH_JP_Released->DC_SG,E_SG,120000.0,47520.0,72480.0
+2028-W29,transit,DC_SG->SG_EC,E_SG,122208.0,49728.0,72480.0
